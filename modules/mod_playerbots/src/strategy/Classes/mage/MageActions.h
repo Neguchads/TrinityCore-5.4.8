@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_MAGEACTIONS_H
 #define _PLAYERBOT_MAGEACTIONS_H
@@ -187,6 +184,12 @@ public:
     CastIceBarrierAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "ice barrier") {}
 };
 
+class CastTemporalShieldAction : public CastBuffSpellAction
+{
+public:
+    CastTemporalShieldAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "temporal shield") {}
+};
+
 class CastSummonWaterElementalAction : public CastBuffSpellAction
 {
 public:
@@ -233,6 +236,12 @@ class CastIceBlockAction : public CastBuffSpellAction
 {
 public:
     CastIceBlockAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "ice block") {}
+};
+
+class CastGreaterInvisibilityAction : public CastBuffSpellAction
+{
+public:
+    CastGreaterInvisibilityAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "greater invisibility") {}
 };
 
 class CastMoltenArmorAction : public CastBuffSpellAction
@@ -296,6 +305,15 @@ public:
     CastLivingBombOnAttackersAction(PlayerbotAI* botAI) : CastDebuffSpellOnAttackerAction(botAI, "living bomb", true) {}
 };
 
+class CastNetherTempestOnAttackersAction : public CastDebuffSpellOnAttackerAction
+{
+public:
+    CastNetherTempestOnAttackersAction(PlayerbotAI* botAI)
+        : CastDebuffSpellOnAttackerAction(botAI, "nether tempest", true)
+    {
+    }
+};
+
 class CastDragonsBreathAction : public CastSpellAction
 {
 public:
@@ -323,6 +341,12 @@ class CastInvisibilityAction : public CastBuffSpellAction
 {
 public:
     CastInvisibilityAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "invisibility") {}
+};
+
+class CastTimeWarpAction : public CastBuffSpellAction
+{
+public:
+    CastTimeWarpAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "time warp") {}
 };
 
 class CastRuneOfPowerAction : public CastSpellAction

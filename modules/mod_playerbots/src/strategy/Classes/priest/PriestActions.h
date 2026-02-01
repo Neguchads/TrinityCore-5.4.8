@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_PRIESTACTIONS_H
 #define _PLAYERBOT_PRIESTACTIONS_H
@@ -19,6 +16,7 @@ BUFF_PARTY_ACTION(CastPrayerOfFortitudeOnPartyAction, "prayer of fortitude");
 BUFF_ACTION(CastPowerWordShieldAction, "power word: shield");
 
 BUFF_ACTION(CastInnerFireAction, "inner fire");
+BUFF_ACTION(CastInnerWillAction, "inner will");
 CURE_ACTION(CastDispelMagicAction, "dispel magic");
 CURE_PARTY_ACTION(CastDispelMagicOnPartyAction, "dispel magic", DISPEL_MAGIC);
 SPELL_ACTION(CastDispelMagicOnTargetAction, "dispel magic");
@@ -88,6 +86,12 @@ public:
     CastHolyFireAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "holy fire", true, 0.0f) {}
 };
 
+class CastPowerWordSolaceAction : public CastDebuffSpellAction
+{
+public:
+    CastPowerWordSolaceAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "power word: solace", true, 0.0f) {}
+};
+
 // shadow 2.4.3
 // BUFF_ACTION(CastShadowfiendAction, "shadowfiend");
 SPELL_ACTION(CastShadowWordDeathAction, "shadow word: death");
@@ -109,6 +113,7 @@ DEBUFF_ACTION(CastVampiricEmbraceAction, "vampiric embrace");
 BUFF_ACTION(CastShadowformAction, "shadowform");
 SPELL_ACTION(CastSilenceAction, "silence");
 ENEMY_HEALER_ACTION(CastSilenceOnEnemyHealerAction, "silence");
+SPELL_ACTION(CastMindSpikeAction, "mind spike");
 // shadow talents 2.4.3
 DEBUFF_CHECKISOWNER_ACTION(CastVampiricTouchAction, "vampiric touch");
 DEBUFF_ENEMY_ACTION(CastVampiricTouchOnAttackerAction, "vampiric touch");
@@ -175,6 +180,13 @@ public:
     virtual std::string const GetTargetName() { return "current target"; }
 };
 
+class CastMindbenderAction : public CastSpellAction
+{
+public:
+    CastMindbenderAction(PlayerbotAI* ai) : CastSpellAction(ai, "mindbender") {}
+    virtual std::string const GetTargetName() { return "current target"; }
+};
+
 class CastPowerWordShieldOnAlmostFullHealthBelowAction : public HealPartyMemberAction
 {
 public:
@@ -208,6 +220,72 @@ class CastGuardianSpiritOnPartyAction : public HealPartyMemberAction
 {
 public:
     CastGuardianSpiritOnPartyAction(PlayerbotAI* ai) : HealPartyMemberAction(ai, "guardian spirit", 40.0f, HealingManaEfficiency::MEDIUM) {}
+};
+
+class CastPenanceAction : public CastSpellAction
+{
+public:
+    CastPenanceAction(PlayerbotAI* ai) : CastSpellAction(ai, "penance") {}
+};
+
+class CastArchangelAction : public CastBuffSpellAction
+{
+public:
+    CastArchangelAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "archangel") {}
+};
+
+class CastSpiritShellAction : public CastBuffSpellAction
+{
+public:
+    CastSpiritShellAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "spirit shell") {}
+};
+
+class CastCascadeAction : public CastSpellAction
+{
+public:
+    CastCascadeAction(PlayerbotAI* ai) : CastSpellAction(ai, "cascade") {}
+};
+
+class CastDivineStarAction : public CastSpellAction
+{
+public:
+    CastDivineStarAction(PlayerbotAI* ai) : CastSpellAction(ai, "divine star") {}
+};
+
+class CastHaloAction : public CastSpellAction
+{
+public:
+    CastHaloAction(PlayerbotAI* ai) : CastSpellAction(ai, "halo") {}
+};
+
+class CastChakraSerenityAction : public CastBuffSpellAction
+{
+public:
+    CastChakraSerenityAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "chakra: serenity") {}
+};
+
+class CastChakraSanctuaryAction : public CastBuffSpellAction
+{
+public:
+    CastChakraSanctuaryAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "chakra: sanctuary") {}
+};
+
+class CastChakraChastiseAction : public CastBuffSpellAction
+{
+public:
+    CastChakraChastiseAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "chakra: chastise") {}
+};
+
+class CastHolyWordSerenityAction : public CastHealingSpellAction
+{
+public:
+    CastHolyWordSerenityAction(PlayerbotAI* ai) : CastHealingSpellAction(ai, "holy word: serenity") {}
+};
+
+class CastHolyWordSanctuaryAction : public CastSpellAction
+{
+public:
+    CastHolyWordSanctuaryAction(PlayerbotAI* ai) : CastSpellAction(ai, "holy word: sanctuary") {}
 };
 
 #endif

@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "CombatStrategy.h"
 
@@ -47,4 +44,12 @@ void TankFaceStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 NextAction** CombatFormationStrategy::getDefaultActions()
 {
     return NextAction::array(0, new NextAction("combat formation move", ACTION_NORMAL), nullptr);
+}
+
+void WaitForAttackStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+{
+}
+
+void HealInterruptStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+{
 }

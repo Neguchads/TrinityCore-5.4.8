@@ -5,9 +5,14 @@
 #include "AttackersValue.h"
 #include "AttackerCountValues.h"
 #include "AttackerWithoutAuraTargetValue.h"
+#include "CcTargetValue.h"
+#include "CollisionValue.h"
+#include "CurrentCcTargetValue.h"
 #include "CurrentTargetValue.h"
 #include "DistanceValue.h"
+#include "DuelTargetValue.h"
 #include "DpsTargetValue.h"
+#include "EnemyHealerTargetValue.h"
 #include "EnemyPlayerValue.h"
 #include "EstimatedLifetimeValue.h"
 #include "Formations.h"
@@ -17,24 +22,31 @@
 #include "InvalidTargetValue.h"
 #include "IsBehindValue.h"
 #include "IsMovingValue.h"
+#include "LastSaidValue.h"
 #include "LastMovementValue.h"
 #include "LastSpellCastValue.h"
 #include "LastSpellCastTimeValue.h"
+#include "LfgValues.h"
 #include "MaintenanceValues.h"
 #include "ManaSaveLevelValue.h"
 #include "MasterTargetValue.h"
+#include "NearestNpcsValue.h"
 #include "NearestUnitsValue.h"
+#include "NearestVehiclesValue.h"
 #include "NearestFriendlyPlayersValue.h"
+#include "NearestGameObjects.h"
 #include "PartyMemberWithoutAuraValue.h"
 #include "PartyMemberToDispelValue.h"
 #include "PartyMemberToHealValue.h"
 #include "PartyMemberToResurectValue.h"
 #include "PetTargetValue.h"
 #include "PositionValue.h"
+#include "PvpValues.h"
 #include "StatsValues.h"
 #include "SelfTargetValue.h"
 #include "SpellCastUsefulValue.h"
 #include "SpellIdValue.h"
+#include "SkipSpellsListValue.h"
 #include "TankTargetValue.h"
 #include "ThreatValues.h"
 #include "PossibleTargetsValue.h"
@@ -42,6 +54,8 @@
 #include "RangeValues.h"
 #include "RtiValue.h"
 #include "RtiTargetValue.h"
+#include "NewPlayerNearbyValue.h"
+#include "SnareTargetValue.h"
 
 class PlayerbotAI;
 class ValueContext : public NamedObjectContext<UntypedValue>
@@ -55,6 +69,7 @@ public:
         creators["mana"] = &ValueContext::mana;
         creators["mana save level"] = &ValueContext::mana_save_level;
         creators["combo"] = &ValueContext::combo;
+        creators["combo points"] = &ValueContext::combo;
         creators["dead"] = &ValueContext::dead;
         creators["pet dead"] = &ValueContext::pet_dead;
         creators["has mana"] = &ValueContext::has_mana;
@@ -72,10 +87,15 @@ public:
         creators["disperse distance"] = &ValueContext::disperse_distance;
         creators["random bot update"] = &ValueContext::random_bot_update_value;
         creators["has totem"] = &ValueContext::has_totem;
+        creators["last said"] = &ValueContext::last_said;
+        creators["last emote"] = &ValueContext::last_emote;
+        creators["new player nearby"] = &ValueContext::new_player_nearby;
+        creators["already seen players"] = &ValueContext::already_seen_players;
 
         creators["distance"] = &ValueContext::distance;
         creators["moving"] = &ValueContext::moving;
         creators["swimming"] = &ValueContext::swimming;
+        creators["collision"] = &ValueContext::collision;
         creators["behind"] = &ValueContext::behind;
         creators["facing"] = &ValueContext::facing;
         creators["balance"] = &ValueContext::balance;
@@ -83,6 +103,7 @@ public:
         creators["attacker count"] = &ValueContext::attacker_count;
         creators["my attacker count"] = &ValueContext::my_attacker_count;
         creators["possible adds"] = &ValueContext::possible_adds;
+        creators["duel target"] = &ValueContext::duel_target;
 
         creators["rti target"] = &ValueContext::rti_target;
         creators["rti cc target"] = &ValueContext::rti_cc_target;
@@ -110,7 +131,16 @@ public:
         creators["nearest friendly players"] = &ValueContext::nearest_friendly_players;
         creators["closest friendly players"] = &ValueContext::closest_friendly_players;
         creators["nearest enemy players"] = &ValueContext::nearest_enemy_players;
+        creators["nearest game objects"] = &ValueContext::nearest_game_objects;
+        creators["nearest game objects no los"] = &ValueContext::nearest_game_objects_no_los;
+        creators["closest game objects"] = &ValueContext::closest_game_objects;
+        creators["nearest npcs"] = &ValueContext::nearest_npcs;
+        creators["nearest vehicles"] = &ValueContext::nearest_vehicles;
         creators["enemy player target"] = &ValueContext::enemy_player_target;
+        creators["cc target"] = &ValueContext::cc_target;
+        creators["current cc target"] = &ValueContext::current_cc_target;
+        creators["enemy flag carrier"] = &ValueContext::enemy_flag_carrier;
+        creators["team flag carrier"] = &ValueContext::team_flag_carrier;
         creators["dps target"] = &ValueContext::dps_target;
         creators["dps aoe target"] = &ValueContext::dps_aoe_target;
 
@@ -141,6 +171,7 @@ public:
         creators["vehicle spell id"] = &ValueContext::vehicle_spell_id;
         //creators["item for spell"] = &ValueContext::item_for_spell;
         creators["spell cast useful"] = &ValueContext::spell_cast_useful;
+        creators["skip spells list"] = &ValueContext::skip_spells_list;
         creators["last spell cast"] = &ValueContext::last_spell_cast;
         creators["last spell cast time"] = &ValueContext::last_spell_cast_time;
 
@@ -159,6 +190,12 @@ public:
         creators["threat"] = &ValueContext::threat;
         creators["has aggro"] = &ValueContext::has_aggro;
         creators["tank target"] = &ValueContext::tank_target;
+        creators["lfg proposal"] = &ValueContext::lfg_proposal;
+        creators["bg type"] = &ValueContext::bg_type;
+        creators["bg role"] = &ValueContext::bg_role;
+        creators["arena type"] = &ValueContext::arena_type;
+        creators["enemy healer target"] = &ValueContext::enemy_healer_target;
+        creators["snare target"] = &ValueContext::snare_target;
 
         creators["last flee angle"] = &ValueContext::last_flee_angle;
         creators["last flee timestamp"] = &ValueContext::last_flee_timestamp;
@@ -187,6 +224,11 @@ private:
     static UntypedValue* disperse_distance(PlayerbotAI* ai) { return new DisperseDistanceValue(ai); }
     static UntypedValue* random_bot_update_value(PlayerbotAI* botAI) { return new RandomBotUpdateValue(botAI); }
     static UntypedValue* has_totem(PlayerbotAI* botAI) { return new HasTotemValue(botAI); }
+    static UntypedValue* last_said(PlayerbotAI* botAI) { return new LastSaidValue(botAI); }
+    static UntypedValue* last_emote(PlayerbotAI* botAI) { return new LastEmoteValue(botAI); }
+    static UntypedValue* new_player_nearby(PlayerbotAI* botAI) { return new NewPlayerNearbyValue(botAI); }
+    static UntypedValue* already_seen_players(PlayerbotAI* botAI) { return new AlreadySeenPlayersValue(botAI); }
+    static UntypedValue* duel_target(PlayerbotAI* botAI) { return new DuelTargetValue(botAI); }
 
     static UntypedValue* position(PlayerbotAI* botAI) { return new PositionValue(botAI); }
     static UntypedValue* current_position(PlayerbotAI* botAI) { return new CurrentPositionValue(botAI); }
@@ -194,6 +236,7 @@ private:
     static UntypedValue* facing(PlayerbotAI* botAI) { return new IsFacingValue(botAI); }
     static UntypedValue* moving(PlayerbotAI* botAI) { return new IsMovingValue(botAI); }
     static UntypedValue* swimming(PlayerbotAI* botAI) { return new IsSwimmingValue(botAI); }
+    static UntypedValue* collision(PlayerbotAI* botAI) { return new CollisionValue(botAI); }
     static UntypedValue* distance(PlayerbotAI* botAI) { return new DistanceValue(botAI); }
     static UntypedValue* rti_target(PlayerbotAI* botAI) { return new RtiTargetValue(botAI); }
     static UntypedValue* rti_cc_target(PlayerbotAI* botAI) { return new RtiCcTargetValue(botAI); }
@@ -223,7 +266,22 @@ private:
     static UntypedValue* nearest_friendly_players(PlayerbotAI* botAI) { return new NearestFriendlyPlayersValue(botAI); }
     static UntypedValue* closest_friendly_players(PlayerbotAI* botAI) { return new NearestFriendlyPlayersValue(botAI, INTERACTION_DISTANCE); }
     static UntypedValue* nearest_enemy_players(PlayerbotAI* botAI) { return new NearestEnemyPlayersValue(botAI); }
+    static UntypedValue* nearest_game_objects(PlayerbotAI* botAI) { return new NearestGameObjects(botAI); }
+    static UntypedValue* nearest_game_objects_no_los(PlayerbotAI* botAI)
+    {
+        return new NearestGameObjects(botAI, sPlayerbotAIConfig->sightDistance, true);
+    }
+    static UntypedValue* closest_game_objects(PlayerbotAI* botAI)
+    {
+        return new NearestGameObjects(botAI, INTERACTION_DISTANCE);
+    }
+    static UntypedValue* nearest_npcs(PlayerbotAI* botAI) { return new NearestNpcsValue(botAI); }
+    static UntypedValue* nearest_vehicles(PlayerbotAI* botAI) { return new NearestVehiclesValue(botAI); }
     static UntypedValue* enemy_player_target(PlayerbotAI* botAI) { return new EnemyPlayerValue(botAI); }
+    static UntypedValue* cc_target(PlayerbotAI* botAI) { return new CcTargetValue(botAI); }
+    static UntypedValue* current_cc_target(PlayerbotAI* botAI) { return new CurrentCcTargetValue(botAI); }
+    static UntypedValue* enemy_flag_carrier(PlayerbotAI* botAI) { return new FlagCarrierValue(botAI, false); }
+    static UntypedValue* team_flag_carrier(PlayerbotAI* botAI) { return new FlagCarrierValue(botAI, true); }
     static UntypedValue* dps_target(PlayerbotAI* botAI) { return new DpsTargetValue(botAI); }
     static UntypedValue* dps_aoe_target(PlayerbotAI* botAI) { return new DpsAoeTargetValue(botAI); }
 
@@ -256,6 +314,7 @@ private:
     static UntypedValue* last_spell_cast(PlayerbotAI* botAI) { return new LastSpellCastValue(botAI); }
     static UntypedValue* last_spell_cast_time(PlayerbotAI* botAI) { return new LastSpellCastTimeValue(botAI); }
     static UntypedValue* spell_cast_useful(PlayerbotAI* botAI) { return new SpellCastUsefulValue(botAI); }
+    static UntypedValue* skip_spells_list(PlayerbotAI* botAI) { return new SkipSpellsListValue(botAI); }
 
     static UntypedValue* expected_lifetime(PlayerbotAI* ai) { return new EstimatedLifetimeValue(ai); }
     static UntypedValue* expected_group_dps(PlayerbotAI* ai) { return new EstimatedGroupDpsValue(ai); }
@@ -270,8 +329,14 @@ private:
 
     static UntypedValue* main_tank(PlayerbotAI* ai) { return new PartyMemberMainTankValue(ai); }
     static UntypedValue* tank_target(PlayerbotAI* botAI) { return new TankTargetValue(botAI); }
+    static UntypedValue* lfg_proposal(PlayerbotAI* botAI) { return new LfgProposalValue(botAI); }
+    static UntypedValue* bg_type(PlayerbotAI* botAI) { return new BgTypeValue(botAI); }
+    static UntypedValue* bg_role(PlayerbotAI* botAI) { return new BgRoleValue(botAI); }
+    static UntypedValue* arena_type(PlayerbotAI* botAI) { return new ArenaTypeValue(botAI); }
     static UntypedValue* threat(PlayerbotAI* botAI) { return new ThreatValue(botAI); }
     static UntypedValue* has_aggro(PlayerbotAI* botAI) { return new HasAggroValue(botAI); }
+    static UntypedValue* enemy_healer_target(PlayerbotAI* botAI) { return new EnemyHealerTargetValue(botAI); }
+    static UntypedValue* snare_target(PlayerbotAI* botAI) { return new SnareTargetValue(botAI); }
 
     static UntypedValue* last_flee_angle(PlayerbotAI* ai) { return new LastFleeAngleValue(ai); }
     static UntypedValue* last_flee_timestamp(PlayerbotAI* ai) { return new LastFleeTimestampValue(ai); }

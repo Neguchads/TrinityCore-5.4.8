@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "FrostMageStrategy.h"
 
@@ -20,6 +17,7 @@ public:
         creators["cold snap"] = &cold_snap;
         creators["deep freeze"] = &deep_freeze;
         creators["frost bomb"] = &frost_bomb;
+        creators["nether tempest"] = &nether_tempest;
     }
 
 private:
@@ -79,6 +77,13 @@ private:
             /*A*/ nullptr,
             /*C*/ nullptr);
     }
+    static ActionNode* nether_tempest([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("nether tempest",
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
+    }
 };
 
 FrostMageStrategy::FrostMageStrategy(PlayerbotAI* botAI) : GenericMageStrategy(botAI)
@@ -89,11 +94,13 @@ FrostMageStrategy::FrostMageStrategy(PlayerbotAI* botAI) : GenericMageStrategy(b
 NextAction** FrostMageStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-        new NextAction("frostjaw", ACTION_DEFAULT + 0.10f),
-        new NextAction("frostbolt", ACTION_DEFAULT + 0.9f),
+        new NextAction("icy veins", ACTION_DEFAULT + 0.9f),
+        new NextAction("frozen orb", ACTION_DEFAULT + 0.85f),
         new NextAction("frost bomb", ACTION_DEFAULT + 0.8f),
+        new NextAction("nether tempest", ACTION_DEFAULT + 0.75f),
         new NextAction("frostfire bolt", ACTION_DEFAULT + 0.7f),
-        new NextAction("ice lance", ACTION_DEFAULT + 0.5f),
+        new NextAction("ice lance", ACTION_DEFAULT + 0.6f),
+        new NextAction("frostbolt", ACTION_DEFAULT + 0.5f),
         new NextAction("shoot", ACTION_DEFAULT), nullptr);
 }
 
@@ -106,24 +113,35 @@ void FrostMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("has pet", NextAction::array(0, new NextAction("toggle pet spell", ACTION_HIGH + 1), nullptr)));
     triggers.push_back(new TriggerNode("brain freeze", NextAction::array(0, new NextAction("frostfire bolt", ACTION_NORMAL + 3), nullptr)));
     triggers.push_back(new TriggerNode("medium health", NextAction::array(0, new NextAction("ice barrier", ACTION_NORMAL), nullptr)));
+    triggers.push_back(new TriggerNode("frost armor", NextAction::array(0, new NextAction("frost armor", ACTION_NORMAL + 1), nullptr)));
     // Combo cast the last charge of fingers of frost for double crits.
     // Should only do this on the final charge of FoF.
     triggers.push_back(new TriggerNode("fingers of frost single",
         NextAction::array(0, new NextAction("deep freeze", ACTION_NORMAL + 2),
         new NextAction("ice lance", ACTION_NORMAL + 1), nullptr)));
 
-    triggers.push_back(new TriggerNode("forst bomb", NextAction::array(0, new NextAction("forst bomb", 19.0f), nullptr)));
+    triggers.push_back(new TriggerNode("fingers of frost double",
+        NextAction::array(0, new NextAction("ice lance", ACTION_HIGH + 4), nullptr)));
+    triggers.push_back(new TriggerNode("frost bomb", NextAction::array(0, new NextAction("frost bomb", 19.0f), nullptr)));
+    triggers.push_back(new TriggerNode("frozen orb", NextAction::array(0, new NextAction("frozen orb", 18.0f), nullptr)));
+    triggers.push_back(new TriggerNode("nether tempest", NextAction::array(0, new NextAction("nether tempest", 18.0f), nullptr)));
 }
 
 void FrostMageAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode("medium aoe", NextAction::array(0,
+        new NextAction("nether tempest on attackers", 25.0f),
         new NextAction("frost bomb on attackers", 24.0f),
         new NextAction("frozen orb", 23.0f),
         new NextAction("blizzard", 22.0f), nullptr)));
 
     triggers.push_back(new TriggerNode("light aoe", NextAction::array(0,
+        new NextAction("nether tempest on attackers", 25.0f),
         new NextAction("frost bomb on attackers", 24.0f),
         new NextAction("cone of cold", 23.0f),
         new NextAction("frozen orb", 22.0f), nullptr)));
+
+    triggers.push_back(new TriggerNode("frost nova on target", NextAction::array(0,
+        new NextAction("flamestrike", ACTION_HIGH + 2),
+        new NextAction("cone of cold", ACTION_HIGH + 1), nullptr)));
 }

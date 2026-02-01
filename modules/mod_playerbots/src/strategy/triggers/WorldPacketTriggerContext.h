@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_WORLDPACKETTRIGGERCONTEXT_H
 #define _PLAYERBOT_WORLDPACKETTRIGGERCONTEXT_H
@@ -21,8 +18,14 @@ public:
 
         creators["release spirit"] = &WorldPacketTriggerContext::release_spirit;
         creators["revive from corpse"] = &WorldPacketTriggerContext::revive_from_corpse;
+        creators["resurrect request"] = &WorldPacketTriggerContext::resurrect_request;
 
         creators["levelup"] = &WorldPacketTriggerContext::levelup;
+        creators["duel requested"] = &WorldPacketTriggerContext::duel_requested;
+        creators["bg status"] = &WorldPacketTriggerContext::bg_status;
+        creators["lfg role check"] = &WorldPacketTriggerContext::lfg_role_check;
+        creators["lfg proposal"] = &WorldPacketTriggerContext::lfg_proposal;
+        creators["lfg teleport"] = &WorldPacketTriggerContext::lfg_teleport;
     }
 
 private:
@@ -33,8 +36,14 @@ private:
 
     static Trigger* release_spirit(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "release spirit"); }
     static Trigger* revive_from_corpse(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "revive from corpse"); }
+    static Trigger* resurrect_request(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "resurrect request"); }
 
     static Trigger* levelup(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "levelup"); }
+    static Trigger* duel_requested(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "duel requested"); }
+    static Trigger* bg_status(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "bg status"); }
+    static Trigger* lfg_role_check(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg role check"); }
+    static Trigger* lfg_proposal(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg proposal"); }
+    static Trigger* lfg_teleport(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg teleport"); }
 };
 
 #endif

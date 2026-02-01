@@ -1,16 +1,18 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_TRIGGERCONTEXT_H
 #define _PLAYERBOT_TRIGGERCONTEXT_H
 
 
 #include "NamedObjectContext.h"
+#include "ChatCommandTrigger.h"
 #include "GenericTriggers.h"
 #include "HealthTriggers.h"
+#include "LfgTriggers.h"
+#include "PvpTriggers.h"
 #include "RangeTriggers.h"
+#include "RtiTriggers.h"
+#include "NewRpgTriggers.h"
 
 class PlayerbotAI;
 class TriggerContext : public NamedObjectContext<Trigger>
@@ -19,11 +21,16 @@ public:
     TriggerContext()
     {
         creators["timer"] = &TriggerContext::Timer;
+        creators["timer bg"] = &TriggerContext::TimerBG;
         creators["random"] = &TriggerContext::Random;
         creators["seldom"] = &TriggerContext::seldom;
         creators["often"] = &TriggerContext::often;
         creators["always trigger"] = &TriggerContext::always;
         creators["random bot update"] = &TriggerContext::random_bot_update_trigger;
+        creators["return"] = &TriggerContext::return_trigger;
+        creators["no rti target"] = &TriggerContext::no_rti_target;
+        creators["collision"] = &TriggerContext::collision;
+        creators["new player nearby"] = &TriggerContext::new_player_nearby;
 
         creators["target critical health"] = &TriggerContext::TargetCriticalHealth;
 
@@ -57,6 +64,10 @@ public:
         creators["party member low health"] = &TriggerContext::PartyMemberLowHealth;
         creators["party member medium health"] = &TriggerContext::PartyMemberMediumHealth;
         creators["party member almost full health"] = &TriggerContext::PartyMemberAlmostFullHealth;
+        creators["party member dead"] = &TriggerContext::PartyMemberDead;
+        creators["combat party member dead"] = &TriggerContext::CombatPartyMemberDead;
+        creators["resurrect"] = &TriggerContext::PartyMemberDead;
+        creators["combat party member to resurrect"] = &TriggerContext::CombatPartyMemberDead;
 
         creators["dead"] = &TriggerContext::Dead;
         creators["corpse near"] = &TriggerContext::corpse_near;
@@ -97,15 +108,45 @@ public:
         creators["pet attack"] = &TriggerContext::pet_attack;
 
         creators["protect party member"] = &TriggerContext::protect_party_member;
+        creators["lfg proposal active"] = &TriggerContext::lfg_proposal_active;
+        creators["lfg teleport in"] = &TriggerContext::lfg_teleport_in;
+        creators["lfg"] = &TriggerContext::lfg;
+        creators["maintenance"] = &TriggerContext::maintenance;
+
+        creators["bg waiting"] = &TriggerContext::bg_waiting;
+        creators["bg active"] = &TriggerContext::bg_active;
+        creators["bg invite active"] = &TriggerContext::bg_invite_active;
+        creators["player has flag"] = &TriggerContext::player_has_flag;
+        creators["player has no flag"] = &TriggerContext::player_has_no_flag;
+        creators["enemy flagcarrier near"] = &TriggerContext::enemy_flagcarrier_near;
+        creators["team flagcarrier near"] = &TriggerContext::team_flagcarrier_near;
+        creators["team has flag"] = &TriggerContext::team_has_flag;
+        creators["enemy team has flag"] = &TriggerContext::enemy_team_has_flag;
+        creators["in Battleground"] = &TriggerContext::in_battleground;
+        creators["inside bg"] = &TriggerContext::inside_bg;
+        creators["in Battleground without flag"] = &TriggerContext::in_battleground_without_flag;
+        creators["wants in bg"] = &TriggerContext::wants_in_bg;
+        creators["vehicle near"] = &TriggerContext::vehicle_near;
+        creators["in vehicle"] = &TriggerContext::in_vehicle;
+        creators["alliance no snowfall gy"] = &TriggerContext::alliance_no_snowfall_gy;
+        creators["go grind status"] = &TriggerContext::go_grind_status;
+        creators["go innkeeper status"] = &TriggerContext::go_innkeeper_status;
+        creators["near random status"] = &TriggerContext::near_random_status;
+        creators["near npc status"] = &TriggerContext::near_npc_status;
     }
 
 private:
     static Trigger* Timer(PlayerbotAI* botAI) { return new TimerTrigger(botAI); }
+    static Trigger* TimerBG(PlayerbotAI* botAI) { return new TimerBGTrigger(botAI); }
     static Trigger* Random(PlayerbotAI* botAI) { return new RandomTrigger(botAI, "random", 20); }
     static Trigger* seldom(PlayerbotAI* botAI) { return new RandomTrigger(botAI, "seldom", 300); }
     static Trigger* often(PlayerbotAI* botAI) { return new RandomTrigger(botAI, "often", 5); }
     static Trigger* always(PlayerbotAI* botAI) { return new AlwaysTrigger(botAI); }
     static Trigger* random_bot_update_trigger(PlayerbotAI* botAI) { return new RandomBotUpdateTrigger(botAI); }
+    static Trigger* return_trigger(PlayerbotAI* botAI) { return new ReturnTrigger(botAI); }
+    static Trigger* no_rti_target(PlayerbotAI* botAI) { return new NoRtiTrigger(botAI); }
+    static Trigger* collision(PlayerbotAI* botAI) { return new CollisionTrigger(botAI); }
+    static Trigger* new_player_nearby(PlayerbotAI* botAI) { return new NewPlayerNearbyTrigger(botAI); }
 
     static Trigger* LowHealth(PlayerbotAI* botAI) { return new LowHealthTrigger(botAI); }
     static Trigger* MediumHealth(PlayerbotAI* botAI) { return new MediumHealthTrigger(botAI); }
@@ -177,6 +218,31 @@ private:
     static Trigger* pet_attack(PlayerbotAI* botAI) { return new PetAttackTrigger(botAI); }
 
     static Trigger* protect_party_member(PlayerbotAI* botAI) { return new ProtectPartyMemberTrigger(botAI); }
+    static Trigger* lfg_proposal_active(PlayerbotAI* botAI) { return new LfgProposalActiveTrigger(botAI); }
+    static Trigger* lfg_teleport_in(PlayerbotAI* botAI) { return new LfgTeleportInTrigger(botAI); }
+    static Trigger* lfg(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "lfg"); }
+    static Trigger* maintenance(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "maintenance"); }
+
+    static Trigger* bg_waiting(PlayerbotAI* botAI) { return new BgWaitingTrigger(botAI); }
+    static Trigger* bg_active(PlayerbotAI* botAI) { return new BgActiveTrigger(botAI); }
+    static Trigger* bg_invite_active(PlayerbotAI* botAI) { return new BgInviteActiveTrigger(botAI); }
+    static Trigger* player_has_flag(PlayerbotAI* botAI) { return new PlayerHasFlag(botAI); }
+    static Trigger* player_has_no_flag(PlayerbotAI* botAI) { return new PlayerHasNoFlag(botAI); }
+    static Trigger* enemy_flagcarrier_near(PlayerbotAI* botAI) { return new EnemyFlagCarrierNear(botAI); }
+    static Trigger* team_flagcarrier_near(PlayerbotAI* botAI) { return new TeamFlagCarrierNear(botAI); }
+    static Trigger* team_has_flag(PlayerbotAI* botAI) { return new TeamHasFlag(botAI); }
+    static Trigger* enemy_team_has_flag(PlayerbotAI* botAI) { return new EnemyTeamHasFlag(botAI); }
+    static Trigger* in_battleground(PlayerbotAI* botAI) { return new PlayerIsInBattleground(botAI); }
+    static Trigger* inside_bg(PlayerbotAI* botAI) { return new InsideBGTrigger(botAI); }
+    static Trigger* in_battleground_without_flag(PlayerbotAI* botAI) { return new PlayerIsInBattlegroundWithoutFlag(botAI); }
+    static Trigger* wants_in_bg(PlayerbotAI* botAI) { return new PlayerWantsInBattlegroundTrigger(botAI); }
+    static Trigger* vehicle_near(PlayerbotAI* botAI) { return new VehicleNearTrigger(botAI); }
+    static Trigger* in_vehicle(PlayerbotAI* botAI) { return new InVehicleTrigger(botAI); }
+    static Trigger* alliance_no_snowfall_gy(PlayerbotAI* botAI) { return new AllianceNoSnowfallGY(botAI); }
+    static Trigger* go_grind_status(PlayerbotAI* botAI) { return new NewRpgStatusTrigger(botAI, NewRpgStatus::GO_GRIND); }
+    static Trigger* go_innkeeper_status(PlayerbotAI* botAI) { return new NewRpgStatusTrigger(botAI, NewRpgStatus::GO_INNKEEPER); }
+    static Trigger* near_random_status(PlayerbotAI* botAI) { return new NewRpgStatusTrigger(botAI, NewRpgStatus::NEAR_RANDOM); }
+    static Trigger* near_npc_status(PlayerbotAI* botAI) { return new NewRpgStatusTrigger(botAI, NewRpgStatus::NEAR_NPC); }
 };
 
 #endif

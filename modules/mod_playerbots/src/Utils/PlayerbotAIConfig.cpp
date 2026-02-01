@@ -17,11 +17,13 @@
 
 #include "PlayerbotAIConfig.h"
 
+#include <cctype>
 #include <iostream>
 
 #include "Config.h"
 #include "Helper.h"
 #include "Playerbots.h"
+#include "PlayerbotTextMgr.h"
 #include "RandomPlayerbotMgr.h"
 #include "Factory/RandomPlayerbotFactory.h"
 
@@ -71,7 +73,7 @@ bool PlayerbotAIConfig::Initialize()
     enabled = sConfigMgr->GetBoolDefault("AiPlayerbot.Enabled", true);
     if (!enabled)
     {
-        TC_LOG_INFO("server.loading", "AI Playerbots is Disabled in aiplayerbot.conf");
+        TC_LOG_INFO("server.loading", "AI Playerbots is Disabled in playerbots.conf");
         return false;
     }
 
@@ -84,6 +86,7 @@ bool PlayerbotAIConfig::Initialize()
     dispelAuraDuration = sConfigMgr->GetIntDefault("AiPlayerbot.DispelAuraDuration", 7000);
     reactDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ReactDelay", 100);
     dynamicReactDelay = sConfigMgr->GetBoolDefault("AiPlayerbot.DynamicReactDelay", true);
+    fastReactInBG = sConfigMgr->GetBoolDefault("AiPlayerbot.FastReactInBG", true);
     passiveDelay = sConfigMgr->GetIntDefault("AiPlayerbot.PassiveDelay", 10000);
     repeatDelay = sConfigMgr->GetIntDefault("AiPlayerbot.RepeatDelay", 2000);
     errorDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ErrorDelay", 5000);
@@ -125,6 +128,54 @@ bool PlayerbotAIConfig::Initialize()
         aoeAvoidSpellWhitelist);
     tellWhenAvoidAoe = sConfigMgr->GetBoolDefault("AiPlayerbot.TellWhenAvoidAoe", false);
 
+    maintenanceCommand = sConfigMgr->GetIntDefault("AiPlayerbot.MaintenanceCommand", 1);
+    botCheatMask = BotCheatMask::none;
+    std::vector<std::string> botCheats;
+    LoadListString<std::vector<std::string>>(sConfigMgr->GetStringDefault("AiPlayerbot.BotCheats", "food,taxi"),
+        botCheats);
+    for (std::string const& cheat : botCheats)
+    {
+        if (cheat == "food")
+            botCheatMask = BotCheatMask(static_cast<uint32>(botCheatMask) | static_cast<uint32>(BotCheatMask::food));
+        else if (cheat == "taxi")
+            botCheatMask = BotCheatMask(static_cast<uint32>(botCheatMask) | static_cast<uint32>(BotCheatMask::taxi));
+        else if (cheat == "gold")
+            botCheatMask = BotCheatMask(static_cast<uint32>(botCheatMask) | static_cast<uint32>(BotCheatMask::gold));
+        else if (cheat == "health")
+            botCheatMask = BotCheatMask(static_cast<uint32>(botCheatMask) | static_cast<uint32>(BotCheatMask::health));
+        else if (cheat == "mana")
+            botCheatMask = BotCheatMask(static_cast<uint32>(botCheatMask) | static_cast<uint32>(BotCheatMask::mana));
+        else if (cheat == "power")
+            botCheatMask = BotCheatMask(static_cast<uint32>(botCheatMask) | static_cast<uint32>(BotCheatMask::power));
+        else if (cheat == "raid")
+            botCheatMask = BotCheatMask(static_cast<uint32>(botCheatMask) | static_cast<uint32>(BotCheatMask::raid));
+    }
+
+    useGroundMountAtMinLevel = sConfigMgr->GetIntDefault("AiPlayerbot.UseGroundMountAtMinLevel", 20);
+    useFastGroundMountAtMinLevel = sConfigMgr->GetIntDefault("AiPlayerbot.UseFastGroundMountAtMinLevel", 40);
+    useFlyMountAtMinLevel = sConfigMgr->GetIntDefault("AiPlayerbot.UseFlyMountAtMinLevel", 60);
+    useFastFlyMountAtMinLevel = sConfigMgr->GetIntDefault("AiPlayerbot.UseFastFlyMountAtMinLevel", 70);
+    minEnchantingBotLevel = sConfigMgr->GetIntDefault("AiPlayerbot.MinEnchantingBotLevel", 60);
+    randomBotSpellIds.clear();
+    LoadList<std::vector<uint32>>(sConfigMgr->GetStringDefault("AiPlayerbot.RandomBotSpellIds", ""), randomBotSpellIds);
+
+    altMaintenanceBags = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceBags", true);
+    altMaintenanceFood = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceFood", true);
+    altMaintenanceReagents = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceReagents", true);
+    altMaintenanceConsumables = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceConsumables", true);
+    altMaintenancePotions = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenancePotions", true);
+    altMaintenanceMounts = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceMounts", true);
+    altMaintenanceSkills = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceSkills", true);
+    altMaintenanceClassSpells = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceClassSpells", true);
+    altMaintenanceAvailableSpells = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceAvailableSpells", true);
+    altMaintenanceSpecialSpells = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceSpecialSpells", true);
+    altMaintenanceTalentTree = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceTalentTree", true);
+    altMaintenanceGlyphs = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceGlyphs", true);
+    altMaintenanceGemsEnchants = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceGemsEnchants", true);
+    altMaintenancePet = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenancePet", true);
+    altMaintenancePetTalents = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenancePetTalents", true);
+    altMaintenanceReputation = sConfigMgr->GetBoolDefault("AiPlayerbot.AltMaintenanceReputation", true);
+
     iterationsPerTick = sConfigMgr->GetIntDefault("AiPlayerbot.IterationsPerTick", 100);
 
     LoadList<std::vector<uint32>>(
@@ -138,6 +189,124 @@ bool PlayerbotAIConfig::Initialize()
     randomBotAutologin = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotAutologin", true);
     randomBotAccountPrefix = sConfigMgr->GetStringDefault("AiPlayerbot.RandomBotAccountPrefix", "rndbot");
     randomBotAccountCount = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotAccountCount", 200);
+    randomBotJoinBG = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotJoinBG", true);
+    randomBotAutoJoinBG = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotAutoJoinBG", false);
+    randomBotJoinLfg = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotJoinLfg", true);
+    randomBotTalk = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotTalk", true);
+    randomBotEmote = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotEmote", false);
+    enableGreet = sConfigMgr->GetBoolDefault("AiPlayerbot.EnableGreet", false);
+    randomBotSayWithoutMaster = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotSayWithoutMaster", false);
+    botTextLocaleWeightsEnabled = false;
+    botTextLocaleWeights.fill(0);
+    std::string botTextLocaleWeightsStr = sConfigMgr->GetStringDefault("AiPlayerbot.BotTextLocaleWeights", "");
+    if (!botTextLocaleWeightsStr.empty())
+    {
+        auto Trim = [](std::string& value)
+        {
+            size_t start = 0;
+            while (start < value.size() && std::isspace(static_cast<unsigned char>(value[start])))
+                ++start;
+
+            size_t end = value.size();
+            while (end > start && std::isspace(static_cast<unsigned char>(value[end - 1])))
+                --end;
+
+            value = value.substr(start, end - start);
+        };
+
+        uint32 totalWeight = 0;
+        std::vector<std::string> entries = split(botTextLocaleWeightsStr, ',');
+        for (std::string& entry : entries)
+        {
+            Trim(entry);
+            if (entry.empty())
+                continue;
+
+            size_t sep = entry.find(':');
+            if (sep == std::string::npos)
+                sep = entry.find('=');
+            if (sep == std::string::npos)
+            {
+                TC_LOG_WARN("playerbots", "Ignoring bot text locale weight '%s' (expected locale:weight)", entry.c_str());
+                continue;
+            }
+
+            std::string localeName = entry.substr(0, sep);
+            std::string weightStr = entry.substr(sep + 1);
+            Trim(localeName);
+            Trim(weightStr);
+
+            if (localeName.empty() || weightStr.empty())
+                continue;
+
+            bool localeFound = false;
+            LocaleConstant locale = LOCALE_enUS;
+            for (uint32 i = 0; i < TOTAL_LOCALES; ++i)
+            {
+                if (localeName == localeNames[i])
+                {
+                    locale = static_cast<LocaleConstant>(i);
+                    localeFound = true;
+                    break;
+                }
+            }
+
+            if (!localeFound)
+            {
+                TC_LOG_WARN("playerbots", "Unknown bot text locale '%s' in AiPlayerbot.BotTextLocaleWeights", localeName.c_str());
+                continue;
+            }
+
+            if (locale >= MAX_LOCALES)
+            {
+                TC_LOG_WARN("playerbots", "Ignoring bot text locale '%s' because it exceeds MAX_LOCALES (%u)",
+                    localeName.c_str(), MAX_LOCALES - 1);
+                continue;
+            }
+
+            uint32 weight = atoi(weightStr.c_str());
+            botTextLocaleWeights[locale] = weight;
+            totalWeight += weight;
+        }
+
+        if (totalWeight > 0)
+        {
+            botTextLocaleWeightsEnabled = true;
+            TC_LOG_INFO("playerbots", "Bot text locale weights enabled (total=%u)", totalWeight);
+        }
+    }
+
+    botActiveAlone = sConfigMgr->GetIntDefault("AiPlayerbot.BotActiveAlone", 100);
+    BotActiveAloneForceWhenInRadius = sConfigMgr->GetIntDefault("AiPlayerbot.BotActiveAloneForceWhenInRadius", 150);
+    BotActiveAloneForceWhenInZone = sConfigMgr->GetBoolDefault("AiPlayerbot.BotActiveAloneForceWhenInZone", true);
+    BotActiveAloneForceWhenInMap = sConfigMgr->GetBoolDefault("AiPlayerbot.BotActiveAloneForceWhenInMap", false);
+    BotActiveAloneForceWhenIsFriend = sConfigMgr->GetBoolDefault("AiPlayerbot.BotActiveAloneForceWhenIsFriend", true);
+    BotActiveAloneForceWhenInGuild = sConfigMgr->GetBoolDefault("AiPlayerbot.BotActiveAloneForceWhenInGuild", true);
+    botActiveAloneSmartScale = sConfigMgr->GetBoolDefault("AiPlayerbot.botActiveAloneSmartScale", true);
+    botActiveAloneSmartScaleDiffLimitfloor =
+        sConfigMgr->GetIntDefault("AiPlayerbot.botActiveAloneSmartScaleDiffLimitfloor", 50);
+    botActiveAloneSmartScaleDiffLimitCeiling =
+        sConfigMgr->GetIntDefault("AiPlayerbot.botActiveAloneSmartScaleDiffLimitCeiling", 200);
+    botActiveAloneSmartScaleWhenMinLevel =
+        sConfigMgr->GetIntDefault("AiPlayerbot.botActiveAloneSmartScaleWhenMinLevel", 1);
+    botActiveAloneSmartScaleWhenMaxLevel =
+        sConfigMgr->GetIntDefault("AiPlayerbot.botActiveAloneSmartScaleWhenMaxLevel", 80);
+
+    randomBotAutoJoinArenaBracket = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotAutoJoinArenaBracket", 7);
+    randomBotAutoJoinICBrackets = sConfigMgr->GetStringDefault("AiPlayerbot.RandomBotAutoJoinICBrackets", "0,1");
+    randomBotAutoJoinEYBrackets = sConfigMgr->GetStringDefault("AiPlayerbot.RandomBotAutoJoinEYBrackets", "0,1,2");
+    randomBotAutoJoinAVBrackets = sConfigMgr->GetStringDefault("AiPlayerbot.RandomBotAutoJoinAVBrackets", "0,1,2,3");
+    randomBotAutoJoinABBrackets = sConfigMgr->GetStringDefault("AiPlayerbot.RandomBotAutoJoinABBrackets", "0,1,2,3,4,5,6");
+    randomBotAutoJoinWSBrackets = sConfigMgr->GetStringDefault("AiPlayerbot.RandomBotAutoJoinWSBrackets", "0,1,2,3,4,5,6,7");
+
+    randomBotAutoJoinBGICCount = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotAutoJoinBGICCount", 0);
+    randomBotAutoJoinBGEYCount = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotAutoJoinBGEYCount", 0);
+    randomBotAutoJoinBGAVCount = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotAutoJoinBGAVCount", 0);
+    randomBotAutoJoinBGABCount = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotAutoJoinBGABCount", 0);
+    randomBotAutoJoinBGWSCount = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotAutoJoinBGWSCount", 0);
+    randomBotAutoJoinBGRatedArena2v2Count = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotAutoJoinBGRatedArena2v2Count", 0);
+    randomBotAutoJoinBGRatedArena3v3Count = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotAutoJoinBGRatedArena3v3Count", 0);
+    randomBotAutoJoinBGRatedArena5v5Count = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotAutoJoinBGRatedArena5v5Count", 0);
     maxAddedBotsPerClass = sConfigMgr->GetIntDefault("AiPlayerbot.MaxAddedBotsPerClass", 50);
     maxAddedBots = sConfigMgr->GetIntDefault("AiPlayerbot.MaxAddedBots", 200);
     minRandomBots = sConfigMgr->GetIntDefault("AiPlayerbot.MinRandomBots", 50);
@@ -145,6 +314,11 @@ bool PlayerbotAIConfig::Initialize()
     disableRandomLevels = sConfigMgr->GetBoolDefault("AiPlayerbot.DisableRandomLevels", true);
     randomBotMaxLevel = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotMaxLevel", 90);
     randomBotMinLevel = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotMinLevel", 1);
+    randombotStartingLevel = sConfigMgr->GetIntDefault("AiPlayerbot.RandombotStartingLevel", 5);
+    if (randomBotMaxLevel > sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
+        randomBotMaxLevel = sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL);
+    if (randomBotMinLevel > randomBotMaxLevel)
+        randomBotMinLevel = randomBotMaxLevel;
     randomBotMaxLevelChance = sConfigMgr->GetFloatDefault("AiPlayerbot.RandomBotMaxLevelChance", 0.25f);
     randomBotsPerInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotsPerInterval", 60);
     randomBotUpdateInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotUpdateInterval", 20);
@@ -158,6 +332,8 @@ bool PlayerbotAIConfig::Initialize()
     maxRandomBotRandomizeTime = sConfigMgr->GetIntDefault("AiPlayerbot.MaxRandomBotRandomizeTime", 14 * 24 * HOUR);
     minRandomBotTeleportInterval = sConfigMgr->GetIntDefault("AiPlayerbot.MinRandomBotTeleportInterval", 1 * HOUR);
     maxRandomBotTeleportInterval = sConfigMgr->GetIntDefault("AiPlayerbot.MaxRandomBotTeleportInterval", 5 * HOUR);
+    minRandomBotReviveTime = sConfigMgr->GetIntDefault("AiPlayerbot.MinRandomBotReviveTime", 60);
+    maxRandomBotReviveTime = sConfigMgr->GetIntDefault("AiPlayerbot.MaxRandomBotReviveTime", 300);
 
     randomBotLoginAtStartup = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotLoginAtStartup", true);
     openGoSpell = sConfigMgr->GetIntDefault("AiPlayerbot.OpenGoSpell", 6477);
@@ -178,6 +354,9 @@ bool PlayerbotAIConfig::Initialize()
 
     sRandomPlayerbotMgr->PrepareAddclassCache();
     sRandomPlayerbotMgr->PrepareTeleportCache();
+
+    sPlayerbotTextMgr->LoadBotTexts();
+    sPlayerbotTextMgr->LoadBotTextChance();
 
     TC_LOG_INFO("server.loading", "---------------------------------------");
     TC_LOG_INFO("server.loading", "          Loading TalentSpecs          ");

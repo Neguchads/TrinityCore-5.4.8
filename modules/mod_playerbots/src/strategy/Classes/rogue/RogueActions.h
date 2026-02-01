@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_ROGUEACTIONS_H
 #define _PLAYERBOT_ROGUEACTIONS_H
@@ -118,6 +115,66 @@ class CastKillingSpreeAction : public CastMeleeSpellAction
 {
 public:
     CastKillingSpreeAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "killing spree") {}
+};
+
+class CastShadowBladesAction : public CastBuffSpellAction
+{
+public:
+    CastShadowBladesAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "shadow blades") {}
+};
+
+class CastVendettaAction : public CastDebuffSpellAction
+{
+public:
+    CastVendettaAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "vendetta") {}
+};
+
+class CastShadowDanceAction : public CastBuffSpellAction
+{
+public:
+    CastShadowDanceAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "shadow dance") {}
+};
+
+class CastPreparationAction : public CastBuffSpellAction
+{
+public:
+    CastPreparationAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "preparation") {}
+};
+
+class CastPremeditationAction : public CastSpellAction
+{
+public:
+    CastPremeditationAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "premeditation") {}
+};
+
+class CastDispatchAction : public CastMeleeSpellAction
+{
+public:
+    CastDispatchAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "dispatch") {}
+};
+
+class CastRevealingStrikeAction : public CastMeleeSpellAction
+{
+public:
+    CastRevealingStrikeAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "revealing strike") {}
+};
+
+class CastHemorrhageAction : public CastMeleeSpellAction
+{
+public:
+    CastHemorrhageAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "hemorrhage") {}
+};
+
+class CastShivAction : public CastMeleeSpellAction
+{
+public:
+    CastShivAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "shiv") {}
+};
+
+class CastCrimsonTempestAction : public CastMeleeSpellAction
+{
+public:
+    CastCrimsonTempestAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "crimson tempest") {}
 };
 
 class CastKickOnEnemyHealerAction : public CastSpellOnEnemyHealerAction

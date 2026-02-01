@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "HunterActions.h"
 
@@ -44,3 +41,13 @@ bool CastScareBeastCcAction::Execute(Event event) { return botAI->CastSpell("sca
 bool CastWingClipAction::isUseful() { return CastSpellAction::isUseful() && !botAI->HasAura(spell, GetTarget()); }
 
 NextAction** CastWingClipAction::getPrerequisites() { return nullptr; }
+
+bool CastFocusFireAction::isUseful()
+{
+    Unit* pet = AI_VALUE(Unit*, "pet target");
+    if (!pet)
+        return false;
+
+    Aura* aura = botAI->GetAura("frenzy", pet, false, true, 5);
+    return aura && CastBuffSpellAction::isUseful();
+}

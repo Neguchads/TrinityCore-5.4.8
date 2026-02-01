@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "TankPaladinStrategy.h"
 
@@ -60,11 +57,12 @@ TankPaladinStrategy::TankPaladinStrategy(PlayerbotAI* botAI) : GenericPaladinStr
 
 NextAction** TankPaladinStrategy::getDefaultActions()
 {
-    return NextAction::array(0, new NextAction("shield of righteousness", ACTION_DEFAULT + 0.6f),
+    return NextAction::array(0, new NextAction("shield of righteousness", ACTION_DEFAULT + 0.7f),
+                             new NextAction("avenger's shield", ACTION_DEFAULT + 0.6f),
                              new NextAction("hammer of the righteous", ACTION_DEFAULT + 0.5f),
-                             new NextAction("judgement of wisdom", ACTION_DEFAULT + 0.4f),
-                             // new NextAction("avenger's shield", ACTION_NORMAL + 3),
-                             // new NextAction("consecration", ACTION_NORMAL + 2),
+                             new NextAction("judgement", ACTION_DEFAULT + 0.4f),
+                             new NextAction("holy wrath", ACTION_DEFAULT + 0.3f),
+                             new NextAction("consecration", ACTION_DEFAULT + 0.2f),
                              new NextAction("melee", ACTION_DEFAULT), NULL);
 }
 

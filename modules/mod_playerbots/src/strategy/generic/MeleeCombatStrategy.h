@@ -24,4 +24,13 @@ public:
     std::string const getName() override { return "behind"; }
 };
 
+class ChaseJumpStrategy : public Strategy
+{
+public:
+    ChaseJumpStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+
+    std::string const getName() override { return "chase jump"; }
+    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+};
+
 #endif

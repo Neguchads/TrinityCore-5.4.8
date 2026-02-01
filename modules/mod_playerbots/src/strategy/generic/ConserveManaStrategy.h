@@ -22,4 +22,12 @@ public:
     std::string const getName() override { return "save mana"; }
 };
 
+class ConserveManaStrategy : public HealerAutoSaveManaStrategy
+{
+public:
+    ConserveManaStrategy(PlayerbotAI* botAI) : HealerAutoSaveManaStrategy(botAI) {}
+
+    std::string const getName() override { return "conserve mana"; }
+};
+
 #endif

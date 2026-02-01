@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "DKAiObjectContext.h"
 
@@ -68,9 +65,21 @@ class DeathKnightTriggerFactoryInternal : public NamedObjectContext<Trigger>
 public:
     DeathKnightTriggerFactoryInternal()
     {
+        creators["freezing fog"] = &DeathKnightTriggerFactoryInternal::freezing_fog;
+        creators["killing machine"] = &DeathKnightTriggerFactoryInternal::killing_machine;
+        creators["crimson scourge"] = &DeathKnightTriggerFactoryInternal::crimson_scourge;
+        creators["sudden doom"] = &DeathKnightTriggerFactoryInternal::sudden_doom;
+        creators["dark transformation"] = &DeathKnightTriggerFactoryInternal::dark_transformation;
+        creators["scent of blood"] = &DeathKnightTriggerFactoryInternal::scent_of_blood;
     }
 
 private:
+    static Trigger* freezing_fog(PlayerbotAI* botAI) { return new FreezingFogTrigger(botAI); }
+    static Trigger* killing_machine(PlayerbotAI* botAI) { return new KillingMachineTrigger(botAI); }
+    static Trigger* crimson_scourge(PlayerbotAI* botAI) { return new CrimsonScourgeTrigger(botAI); }
+    static Trigger* sudden_doom(PlayerbotAI* botAI) { return new SuddenDoomTrigger(botAI); }
+    static Trigger* dark_transformation(PlayerbotAI* botAI) { return new DarkTransformationTrigger(botAI); }
+    static Trigger* scent_of_blood(PlayerbotAI* botAI) { return new ScentOfBloodTrigger(botAI); }
 };
 
 class DeathKnightAiObjectContextInternal : public NamedObjectContext<Action>
@@ -82,16 +91,22 @@ public:
         creators["bone shield"] = &DeathKnightAiObjectContextInternal::bone_shield;
         creators["plague strike"] = &DeathKnightAiObjectContextInternal::plague_strike;
         creators["plague strike on attacker"] = &DeathKnightAiObjectContextInternal::plague_strike_on_attacker;
+        creators["outbreak"] = &DeathKnightAiObjectContextInternal::outbreak;
         creators["death grip"] = &DeathKnightAiObjectContextInternal::death_grip;
         creators["death coil"] = &DeathKnightAiObjectContextInternal::death_coil;
         creators["death strike"] = &DeathKnightAiObjectContextInternal::death_strike;
+        creators["festering strike"] = &DeathKnightAiObjectContextInternal::festering_strike;
         creators["unholy blight"] = &DeathKnightAiObjectContextInternal::unholy_blight;
         creators["scourge strike"] = &DeathKnightAiObjectContextInternal::scourge_strike;
+        creators["soul reaper"] = &DeathKnightAiObjectContextInternal::soul_reaper;
+        creators["dark transformation"] = &DeathKnightAiObjectContextInternal::dark_transformation;
         creators["death and decay"] = &DeathKnightAiObjectContextInternal::death_and_decay;
         creators["unholy presence"] = &DeathKnightAiObjectContextInternal::unholy_presence;
         creators["raise dead"] = &DeathKnightAiObjectContextInternal::raise_dead;
+        creators["raise ally"] = &DeathKnightAiObjectContextInternal::raise_ally;
         creators["army of the dead"] = &DeathKnightAiObjectContextInternal::army_of_the_dead;
         creators["summon gargoyle"] = &DeathKnightAiObjectContextInternal::summon_gargoyle;
+        creators["unholy frenzy"] = &DeathKnightAiObjectContextInternal::unholy_frenzy;
         creators["anti magic shell"] = &DeathKnightAiObjectContextInternal::anti_magic_shell;
         creators["anti magic zone"] = &DeathKnightAiObjectContextInternal::anti_magic_zone;
         creators["ghoul frenzy"] = &DeathKnightAiObjectContextInternal::ghoul_frenzy;
@@ -114,6 +129,7 @@ public:
         creators["empower rune weapon"] = &DeathKnightAiObjectContextInternal::empower_rune_weapon;
         creators["hungering cold"] = &DeathKnightAiObjectContextInternal::hungering_cold;
         creators["unbreakable armor"] = &DeathKnightAiObjectContextInternal::unbreakable_armor;
+        creators["pillar of frost"] = &DeathKnightAiObjectContextInternal::pillar_of_frost;
         creators["improved icy talons"] = &DeathKnightAiObjectContextInternal::improved_icy_talons;
         // blood
         creators["blood strike"] = &DeathKnightAiObjectContextInternal::blood_strike;
@@ -138,16 +154,22 @@ private:
     static Action* bone_shield(PlayerbotAI* botAI) { return new CastBoneShieldAction(botAI); }
     static Action* plague_strike(PlayerbotAI* botAI) { return new CastPlagueStrikeAction(botAI); }
     static Action* plague_strike_on_attacker(PlayerbotAI* botAI) { return new CastPlagueStrikeOnAttackerAction(botAI); }
+    static Action* outbreak(PlayerbotAI* botAI) { return new CastOutbreakAction(botAI); }
     static Action* death_grip(PlayerbotAI* botAI) { return new CastDeathGripAction(botAI); }
     static Action* death_coil(PlayerbotAI* botAI) { return new CastDeathCoilAction(botAI); }
     static Action* death_strike(PlayerbotAI* botAI) { return new CastDeathStrikeAction(botAI); }
+    static Action* festering_strike(PlayerbotAI* botAI) { return new CastFesteringStrikeAction(botAI); }
     static Action* unholy_blight(PlayerbotAI* botAI) { return new CastUnholyBlightAction(botAI); }
     static Action* scourge_strike(PlayerbotAI* botAI) { return new CastScourgeStrikeAction(botAI); }
+    static Action* soul_reaper(PlayerbotAI* botAI) { return new CastSoulReaperAction(botAI); }
+    static Action* dark_transformation(PlayerbotAI* botAI) { return new CastDarkTransformationAction(botAI); }
     static Action* death_and_decay(PlayerbotAI* botAI) { return new CastDeathAndDecayAction(botAI); }
     static Action* unholy_presence(PlayerbotAI* botAI) { return new CastUnholyPresenceAction(botAI); }
     static Action* raise_dead(PlayerbotAI* botAI) { return new CastRaiseDeadAction(botAI); }
+    static Action* raise_ally(PlayerbotAI* botAI) { return new CastRaiseAllyAction(botAI); }
     static Action* army_of_the_dead(PlayerbotAI* botAI) { return new CastArmyOfTheDeadAction(botAI); }
     static Action* summon_gargoyle(PlayerbotAI* botAI) { return new CastSummonGargoyleAction(botAI); }
+    static Action* unholy_frenzy(PlayerbotAI* botAI) { return new CastUnholyFrenzyAction(botAI); }
     static Action* anti_magic_shell(PlayerbotAI* botAI) { return new CastAntiMagicShellAction(botAI); }
     static Action* anti_magic_zone(PlayerbotAI* botAI) { return new CastAntiMagicZoneAction(botAI); }
     static Action* ghoul_frenzy(PlayerbotAI* botAI) { return new CastGhoulFrenzyAction(botAI); }
@@ -170,6 +192,7 @@ private:
     static Action* empower_rune_weapon(PlayerbotAI* botAI) { return new CastEmpowerRuneWeaponAction(botAI); }
     static Action* hungering_cold(PlayerbotAI* botAI) { return new CastHungeringColdAction(botAI); }
     static Action* unbreakable_armor(PlayerbotAI* botAI) { return new CastUnbreakableArmorAction(botAI); }
+    static Action* pillar_of_frost(PlayerbotAI* botAI) { return new CastPillarOfFrostAction(botAI); }
     static Action* improved_icy_talons(PlayerbotAI* botAI) { return new CastImprovedIcyTalonsAction(botAI); }
     // blood
     static Action* blood_strike(PlayerbotAI* botAI) { return new CastBloodStrikeAction(botAI); }

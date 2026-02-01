@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "DpsRogueStrategy.h"
 
@@ -80,7 +77,12 @@ DpsRogueStrategy::DpsRogueStrategy(PlayerbotAI* botAI) : MeleeCombatStrategy(bot
 
 NextAction** DpsRogueStrategy::getDefaultActions()
 {
-    return NextAction::array(0, new NextAction("killing spree", ACTION_DEFAULT + 0.1f),
+    return NextAction::array(0,
+                             new NextAction("killing spree", ACTION_DEFAULT + 0.7f),
+                             new NextAction("slice and dice", ACTION_DEFAULT + 0.6f),
+                             new NextAction("rupture", ACTION_DEFAULT + 0.5f),
+                             new NextAction("eviscerate", ACTION_DEFAULT + 0.4f),
+                             new NextAction("sinister strike", ACTION_DEFAULT + 0.3f),
                              new NextAction("melee", ACTION_DEFAULT), nullptr);
 }
 

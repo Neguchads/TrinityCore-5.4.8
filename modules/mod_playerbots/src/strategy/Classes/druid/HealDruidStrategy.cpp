@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "HealDruidStrategy.h"
 
@@ -57,6 +54,11 @@ void HealDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericDruidStrategy::InitTriggers(triggers);
 
+    triggers.push_back(new TriggerNode("lifebloom on main tank",
+        NextAction::array(0, new NextAction("lifebloom on main tank", ACTION_HIGH + 4), nullptr)));
+    triggers.push_back(new TriggerNode("cenarion ward on main tank",
+        NextAction::array(0, new NextAction("cenarion ward on main tank", ACTION_HIGH + 3), nullptr)));
+
     // triggers.push_back(
     //     new TriggerNode("tree form", NextAction::array(0, new NextAction("tree form", ACTION_HIGH + 1), nullptr)));
 
@@ -69,6 +71,7 @@ void HealDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         new TriggerNode("party member critical health",
                         NextAction::array(0,
                                           new NextAction("tree form", ACTION_CRITICAL_HEAL + 4.1f),
+                                          new NextAction("ironbark on party", ACTION_CRITICAL_HEAL + 4.05f),
                                           new NextAction("swiftmend on party", ACTION_CRITICAL_HEAL + 4),
                                           new NextAction("regrowth on party", ACTION_CRITICAL_HEAL + 3),
                                           new NextAction("wild growth on party", ACTION_CRITICAL_HEAL + 2),
@@ -84,6 +87,9 @@ void HealDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         "group heal setting",
         NextAction::array(0, 
                           new NextAction("tree form", ACTION_MEDIUM_HEAL + 2.3f),
+                          new NextAction("wild mushroom", ACTION_MEDIUM_HEAL + 2.25f),
+                          new NextAction("wild mushroom: bloom", ACTION_MEDIUM_HEAL + 2.2f),
+                          new NextAction("genesis", ACTION_MEDIUM_HEAL + 2.15f),
                           new NextAction("wild growth on party", ACTION_MEDIUM_HEAL + 2.2f),
                           new NextAction("rejuvenation on not full", ACTION_MEDIUM_HEAL + 2.1f),
                           nullptr)));

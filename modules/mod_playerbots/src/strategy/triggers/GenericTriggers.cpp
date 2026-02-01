@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "GenericTriggers.h"
 
@@ -462,6 +459,19 @@ bool TimerTrigger::IsActive()
     return false;
 }
 
+bool TimerBGTrigger::IsActive()
+{
+    time_t now = time(nullptr);
+
+    if (now - lastCheck >= 60)
+    {
+        lastCheck = now;
+        return true;
+    }
+
+    return false;
+}
+
 bool HasNoAuraTrigger::IsActive() { return !botAI->HasAura(getName(), GetTarget()); }
 
 bool TankAssistTrigger::IsActive()
@@ -549,7 +559,8 @@ bool HasItemForSpellTrigger::IsActive()
 {
     std::string const spell = getName();
     uint32 spellId = AI_VALUE2(uint32, "spell id", spell);
-    return spellId && AI_VALUE2(Item*, "item for spell", spellId);
+    Value<Item*>* itemValue = context->GetValue<Item*>("item for spell", spellId);
+    return spellId && itemValue && itemValue->Get();
 }
 
 bool TargetChangedTrigger::IsActive()

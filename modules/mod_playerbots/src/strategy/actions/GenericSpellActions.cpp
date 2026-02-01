@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "GenericSpellActions.h"
 
@@ -192,7 +189,8 @@ bool CastEnchantItemAction::isPossible()
     // Item* item = AI_VALUE2(Item*, "item for spell", spellId);
     // botAI->TellMasterNoFacing("spell: " + spell + ", spell id: " + std::to_string(spellId) + " item for spell: " +
     // std::to_string(ok));
-    return spellId && AI_VALUE2(Item*, "item for spell", spellId);
+    Value<Item*>* itemValue = context->GetValue<Item*>("item for spell", spellId);
+    return spellId && itemValue && itemValue->Get();
 }
 
 CastHealingSpellAction::CastHealingSpellAction(PlayerbotAI* botAI, std::string const spell, uint8 estAmount,

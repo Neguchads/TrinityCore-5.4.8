@@ -149,9 +149,9 @@ float EnemyPlayerValue::GetMaxAttackDistance()
     if (!bg)
         return 40.0f;
 
-    BattlegroundTypeId bgType = bg->GetBgTypeID();
+    BattlegroundTypeId bgType = bg->GetTypeID();
     if (bgType == BATTLEGROUND_RB)
-        bgType = bg->GetBgTypeID(true);
+        bgType = bg->GetTypeID(true);
 
     if (bgType == BATTLEGROUND_IC)
     {

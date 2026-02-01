@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "ReleaseSpiritAction.h"
 
@@ -93,20 +90,20 @@ bool AutoReleaseSpiritAction::Execute(Event event)
     }
 
     TC_LOG_DEBUG("playerbots", "Bot %s %s:%u <%s> auto released", bot->GetGUID().ToString().c_str(),
-              bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", bot->GetLevel(), bot->GetName().c_str());
+        bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", bot->GetLevel(), bot->GetName().c_str());
 
     WorldPacket packet(CMSG_REPOP_REQUEST);
     packet << uint8(0);
     bot->GetSession()->HandleRepopRequestOpcode(packet);
 
     TC_LOG_DEBUG("playerbots", "Bot %s %s:%u <%s> releases spirit", bot->GetGUID().ToString().c_str(),
-              bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", bot->GetLevel(), bot->GetName().c_str());
+        bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", bot->GetLevel(), bot->GetName().c_str());
 
     if (bot->InBattleground() && (time(NULL) - bg_gossip_time >= 15 || !bot->HasAura(SPELL_WAITING_FOR_RESURRECT)))
     {
         GuidVector npcs = AI_VALUE(GuidVector, "nearest npcs");
         ObjectGuid guid;
-        Unit* unit;
+        Unit* unit = nullptr;  // Initialize to nullptr
         for (GuidVector::iterator i = npcs.begin(); i != npcs.end(); i++)
         {
             unit = botAI->GetUnit(*i);
@@ -117,6 +114,10 @@ bool AutoReleaseSpiritAction::Execute(Event event)
             }
         }
         if (!guid)
+        {
+            return true;
+        }
+        if (!unit)
         {
             return true;
         }

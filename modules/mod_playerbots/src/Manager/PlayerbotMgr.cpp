@@ -733,6 +733,8 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
             BotFactory factory(bot, bot->GetLevel());
             factory.InitTalentsTree(false);
             factory.InitEquipment(true);
+            if (bot->GetLevel() >= sPlayerbotAIConfig->minEnchantingBotLevel)
+                factory.ApplyEnchantAndGemsNew();
             GET_PLAYERBOT_AI(bot)->ResetStrategies();
             GET_PLAYERBOT_AI(bot)->Reset(true);
         }
@@ -829,6 +831,8 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
                 BotFactory factory(bot, bot->GetLevel());
                 factory.InitTalentsTree(true);
                 factory.InitEquipment(true);
+                if (bot->GetLevel() >= sPlayerbotAIConfig->minEnchantingBotLevel)
+                    factory.ApplyEnchantAndGemsNew();
             }).detach();
             
             messages.push_back("Add class " + std::string(charname));

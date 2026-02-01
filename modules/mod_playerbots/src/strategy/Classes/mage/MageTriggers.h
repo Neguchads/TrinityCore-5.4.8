@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_MAGETRIGGERS_H
 #define _PLAYERBOT_MAGETRIGGERS_H
@@ -149,6 +146,25 @@ class RuneOfPowerTrigger : public BuffTrigger
 {
 public:
     RuneOfPowerTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "rune of power", 5 * 2000) {}
+    bool IsActive() override;
+};
+
+class TemporalShieldTrigger : public BuffTrigger
+{
+public:
+    TemporalShieldTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "temporal shield") {}
+};
+
+class GreaterInvisibilityTrigger : public BuffTrigger
+{
+public:
+    GreaterInvisibilityTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "greater invisibility") {}
+};
+
+class TimeWarpTrigger : public Trigger
+{
+public:
+    TimeWarpTrigger(PlayerbotAI* botAI) : Trigger(botAI, "time warp", 10) {}
     bool IsActive() override;
 };
 

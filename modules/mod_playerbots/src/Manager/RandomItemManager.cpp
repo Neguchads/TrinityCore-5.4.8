@@ -700,10 +700,11 @@ uint32 RandomItemManager::FindBestItemForLevelAndEquip(Player* bot, InventoryTyp
     uint32 bot_race = bot->GetRace();
     int32 delta = std::min(level, 10u);
 
-    for (uint32 requiredLevel = bot->GetLevel(); requiredLevel > std::max((int32)bot->GetLevel() - delta, 0); requiredLevel--)
+    int32 minRequiredLevel = std::max(static_cast<int32>(bot->GetLevel()) - delta, 0);
+    for (int32 requiredLevel = static_cast<int32>(bot->GetLevel()); requiredLevel >= minRequiredLevel; --requiredLevel)
     {
         std::mt19937 gen(std::chrono::system_clock::now().time_since_epoch().count());
-        auto& items = _equipCacheNew[requiredLevel][invType];
+        auto& items = _equipCacheNew[static_cast<uint32>(requiredLevel)][invType];
         std::shuffle(items.begin(), items.end(), gen);
 
         for (auto it = items.end(); it != items.begin(); )
@@ -716,7 +717,10 @@ uint32 RandomItemManager::FindBestItemForLevelAndEquip(Player* bot, InventoryTyp
 
             ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemID);
             if (proto->RequiredLevel > level) continue;
-            if ((proto->AllowableClass & bot->GetClassMask()) == 0 || (proto->AllowableRace & bot->GetRaceMask()) == 0) continue;
+            if (proto->AllowableClass && (proto->AllowableClass & bot->GetClassMask()) == 0)
+                continue;
+            if (proto->AllowableRace && (proto->AllowableRace & bot->GetRaceMask()) == 0)
+                continue;
             if (level < 10 && proto->ItemLevel > 100) continue;
 
             // Item Quality
@@ -771,16 +775,26 @@ uint32 RandomItemManager::FindBestItemForLevelAndEquip(Player* bot, InventoryTyp
             else
             {
                 uint8 sp = 0, ap = 0, tank = 0;
+                bool hasStats = false;
                 for (uint8 j = 0; j < MAX_ITEM_PROTO_STATS; ++j)
                 {
                     // for ItemStatValue != 0
                     if (!proto->ItemStat[j].ItemStatValue)
                         continue;
 
+                    hasStats = true;
                     AddItemStats(proto->ItemStat[j].ItemStatType, sp, ap, tank);
                 }
 
-                if (!CheckItemStats((Classes)bot_class, sp, ap, tank)) continue;
+                if (hasStats)
+                {
+                    if (!CheckItemStats((Classes)bot_class, sp, ap, tank))
+                        continue;
+                }
+                else if (level > 20)
+                {
+                    continue;
+                }
             }
 
             // ok ?

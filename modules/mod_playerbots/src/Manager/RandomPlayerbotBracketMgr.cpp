@@ -100,6 +100,26 @@ void RandomBotBacketManager::Update(uint32 diff)
         return;
     _timer = 0;
 
+    uint32 minLevel = sPlayerbotAIConfig->randomBotMinLevel;
+    uint32 maxLevel = sPlayerbotAIConfig->randomBotMaxLevel;
+    auto isRangeAllowed = [&](LevelRangeConfig const& range) -> bool
+    {
+        return range.upper >= minLevel && range.lower <= maxLevel;
+    };
+
+    uint32 totalAlliancePercent = 0;
+    uint32 totalHordePercent = 0;
+    for (uint8 i = 0; i < NUM_RANGES; ++i)
+    {
+        if (isRangeAllowed(_AllianceLevelRanges[i]))
+            totalAlliancePercent += _AllianceLevelRanges[i].desiredPercent;
+        if (isRangeAllowed(_HordeLevelRanges[i]))
+            totalHordePercent += _HordeLevelRanges[i].desiredPercent;
+    }
+
+    if (!totalAlliancePercent && !totalHordePercent)
+        return;
+
     // Containers for Alliance bots.
     uint32 totalAllianceBots = 0;
     int allianceActualCounts[NUM_RANGES] = {0};
@@ -159,7 +179,14 @@ void RandomBotBacketManager::Update(uint32 diff)
         int allianceDesiredCounts[NUM_RANGES] = {0};
         for (int i = 0; i < NUM_RANGES; ++i)
         {
-            allianceDesiredCounts[i] = static_cast<int>(round((_AllianceLevelRanges[i].desiredPercent / 100.0) * totalAllianceBots));
+            if (!isRangeAllowed(_AllianceLevelRanges[i]) || !totalAlliancePercent)
+            {
+                allianceDesiredCounts[i] = 0;
+            }
+            else
+            {
+                allianceDesiredCounts[i] = static_cast<int>(round((_AllianceLevelRanges[i].desiredPercent / static_cast<double>(totalAlliancePercent)) * totalAllianceBots));
+            }
             if (_BotDistDebugMode)
             {
                 TC_LOG_INFO("server.loading", "[BotLevelBrackets] Alliance Range %u (%u-%u): Desired = %u, Actual = %u.",
@@ -179,6 +206,8 @@ void RandomBotBacketManager::Update(uint32 diff)
                 {
                     for (int j = 0; j < NUM_RANGES; ++j)
                     {
+                        if (!isRangeAllowed(_AllianceLevelRanges[j]))
+                            continue;
                         if (allianceActualCounts[j] < allianceDesiredCounts[j] && _AllianceLevelRanges[j].upper >= 55)
                         {
                             targetRange = j;
@@ -190,6 +219,8 @@ void RandomBotBacketManager::Update(uint32 diff)
                 {
                     for (int j = 0; j < NUM_RANGES; ++j)
                     {
+                        if (!isRangeAllowed(_AllianceLevelRanges[j]))
+                            continue;
                         if (allianceActualCounts[j] < allianceDesiredCounts[j])
                         {
                             targetRange = j;
@@ -212,7 +243,14 @@ void RandomBotBacketManager::Update(uint32 diff)
         int hordeDesiredCounts[NUM_RANGES] = {0};
         for (int i = 0; i < NUM_RANGES; ++i)
         {
-            hordeDesiredCounts[i] = static_cast<int>(round((_HordeLevelRanges[i].desiredPercent / 100.0) * totalHordeBots));
+            if (!isRangeAllowed(_HordeLevelRanges[i]) || !totalHordePercent)
+            {
+                hordeDesiredCounts[i] = 0;
+            }
+            else
+            {
+                hordeDesiredCounts[i] = static_cast<int>(round((_HordeLevelRanges[i].desiredPercent / static_cast<double>(totalHordePercent)) * totalHordeBots));
+            }
             if (_BotDistDebugMode)
             {
                 TC_LOG_INFO("server.loading", "[BotLevelBrackets] Horde Range %u (%u-%u): Desired = %u, Actual = %u.",
@@ -231,6 +269,8 @@ void RandomBotBacketManager::Update(uint32 diff)
                 {
                     for (int j = 0; j < NUM_RANGES; ++j)
                     {
+                        if (!isRangeAllowed(_HordeLevelRanges[j]))
+                            continue;
                         if (hordeActualCounts[j] < hordeDesiredCounts[j] && _HordeLevelRanges[j].upper >= 55)
                         {
                             targetRange = j;
@@ -242,6 +282,8 @@ void RandomBotBacketManager::Update(uint32 diff)
                 {
                     for (int j = 0; j < NUM_RANGES; ++j)
                     {
+                        if (!isRangeAllowed(_HordeLevelRanges[j]))
+                            continue;
                         if (hordeActualCounts[j] < hordeDesiredCounts[j])
                         {
                             targetRange = j;

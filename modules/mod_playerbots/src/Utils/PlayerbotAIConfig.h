@@ -1,11 +1,9 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_PLAYERbotAICONFIG_H
 #define _PLAYERBOT_PLAYERbotAICONFIG_H
 
+#include <array>
 #include <mutex>
 
 #include "Common.h"
@@ -20,6 +18,19 @@ enum class HealingManaEfficiency : uint8
     HIGH = 8,
     VERY_HIGH = 16,
     SUPERIOR = 32
+};
+
+enum class BotCheatMask : uint32
+{
+    none   = 0,
+    food   = 1 << 0,
+    taxi   = 1 << 1,
+    gold   = 1 << 2,
+    health = 1 << 3,
+    mana   = 1 << 4,
+    power  = 1 << 5,
+    raid   = 1 << 6,
+    maxMask = 1 << 7
 };
 
 class PlayerbotAIConfig
@@ -42,6 +53,7 @@ public:
     uint32 globalCoolDown, reactDelay, maxWaitForMove, disableMoveSplinePath, maxMovementSearchTime, expireActionTime,
         dispelAuraDuration, passiveDelay, repeatDelay, errorDelay, rpgDelay, sitDelay, returnDelay, lootDelay;
     bool dynamicReactDelay;
+    bool fastReactInBG;
     float sightDistance, spellDistance, reactDistance, grindDistance, lootDistance, shootDistance, fleeDistance,
         tooCloseDistance, meleeDistance, followDistance, whisperDistance, contactDistance, aoeRadius, rpgDistance,
         targetPosRecalcDistance, farDistance, healDistance, aggroDistance;
@@ -54,22 +66,86 @@ public:
     std::set<uint32> aoeAvoidSpellWhitelist;
     bool tellWhenAvoidAoe;
 
+    int32 maintenanceCommand;
+    BotCheatMask botCheatMask;
+    uint32 useGroundMountAtMinLevel;
+    uint32 useFastGroundMountAtMinLevel;
+    uint32 useFlyMountAtMinLevel;
+    uint32 useFastFlyMountAtMinLevel;
+    uint32 minEnchantingBotLevel;
+    std::vector<uint32> randomBotSpellIds;
+
+    bool altMaintenanceBags;
+    bool altMaintenanceFood;
+    bool altMaintenanceReagents;
+    bool altMaintenanceConsumables;
+    bool altMaintenancePotions;
+    bool altMaintenanceMounts;
+    bool altMaintenanceSkills;
+    bool altMaintenanceClassSpells;
+    bool altMaintenanceAvailableSpells;
+    bool altMaintenanceSpecialSpells;
+    bool altMaintenanceTalentTree;
+    bool altMaintenanceGlyphs;
+    bool altMaintenanceGemsEnchants;
+    bool altMaintenancePet;
+    bool altMaintenancePetTalents;
+    bool altMaintenanceReputation;
+
     uint32 openGoSpell;
     bool randomBotAutologin, disableRandomLevels;
     uint32 randomBotMaxLevel, randomBotMinLevel;
     float randomBotMaxLevelChance;
+    uint32 randombotStartingLevel;
     uint32 minRandomBots, maxRandomBots, maxAddedBotsPerClass, maxAddedBots;
     uint32 randomBotUpdateInterval, randomBotCountChangeMinInterval, randomBotCountChangeMaxInterval;
     uint32 minRandomBotRandomizeTime, maxRandomBotRandomizeTime;
     uint32 minRandomBotTeleportInterval, maxRandomBotTeleportInterval;
     uint32 minRandomBotInWorldTime, maxRandomBotInWorldTime;
+    uint32 minRandomBotReviveTime, maxRandomBotReviveTime;
     uint32 randomBotsPerInterval;
     float randomChangeMultiplier;
     bool randomBotLoginAtStartup;
+    bool randomBotTalk;
+    bool randomBotEmote;
+    bool enableGreet;
+    bool randomBotSayWithoutMaster;
+    bool botTextLocaleWeightsEnabled;
+    std::array<uint32, MAX_LOCALES> botTextLocaleWeights;
     std::string randomBotAccountPrefix;
     uint32 randomBotAccountCount;
     bool randomBotRandomPassword;
     std::vector<uint32> randomBotAccounts;
+    bool randomBotJoinBG;
+    bool randomBotAutoJoinBG;
+    bool randomBotJoinLfg;
+
+    uint32 botActiveAlone;
+    uint32 BotActiveAloneForceWhenInRadius;
+    bool BotActiveAloneForceWhenInZone;
+    bool BotActiveAloneForceWhenInMap;
+    bool BotActiveAloneForceWhenIsFriend;
+    bool BotActiveAloneForceWhenInGuild;
+    bool botActiveAloneSmartScale;
+    uint32 botActiveAloneSmartScaleDiffLimitfloor;
+    uint32 botActiveAloneSmartScaleDiffLimitCeiling;
+    uint32 botActiveAloneSmartScaleWhenMinLevel;
+    uint32 botActiveAloneSmartScaleWhenMaxLevel;
+
+    uint32 randomBotAutoJoinArenaBracket;
+    std::string randomBotAutoJoinICBrackets;
+    std::string randomBotAutoJoinEYBrackets;
+    std::string randomBotAutoJoinAVBrackets;
+    std::string randomBotAutoJoinABBrackets;
+    std::string randomBotAutoJoinWSBrackets;
+    uint32 randomBotAutoJoinBGICCount;
+    uint32 randomBotAutoJoinBGEYCount;
+    uint32 randomBotAutoJoinBGAVCount;
+    uint32 randomBotAutoJoinBGABCount;
+    uint32 randomBotAutoJoinBGWSCount;
+    uint32 randomBotAutoJoinBGRatedArena2v2Count;
+    uint32 randomBotAutoJoinBGRatedArena3v3Count;
+    uint32 randomBotAutoJoinBGRatedArena5v5Count;
 
     std::string premadeSpecName[MAX_CLASSES][MAX_SPECIALIZATIONS - 1];
     std::vector<uint16> premadeSpecLink[MAX_CLASSES][MAX_SPECIALIZATIONS - 1];

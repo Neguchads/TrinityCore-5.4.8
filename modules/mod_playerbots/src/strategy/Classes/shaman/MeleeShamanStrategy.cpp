@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "MeleeShamanStrategy.h"
 
@@ -52,9 +49,14 @@ MeleeShamanStrategy::MeleeShamanStrategy(PlayerbotAI* botAI) : GenericShamanStra
 NextAction** MeleeShamanStrategy::getDefaultActions()
 {
     return NextAction::array(
-        0, new NextAction("stormstrike", ACTION_DEFAULT + 0.5f), new NextAction("earth shock", ACTION_DEFAULT + 0.4f),
-        new NextAction("feral spirit", ACTION_DEFAULT + 0.3f), new NextAction("fire nova", ACTION_DEFAULT + 0.2f),
-        new NextAction("lava lash", ACTION_DEFAULT + 0.1f), new NextAction("melee", ACTION_DEFAULT), NULL);
+        0, new NextAction("stormstrike", ACTION_DEFAULT + 0.7f),
+        new NextAction("lava lash", ACTION_DEFAULT + 0.6f),
+        new NextAction("unleash elements", ACTION_DEFAULT + 0.5f),
+        new NextAction("earth shock", ACTION_DEFAULT + 0.4f),
+        new NextAction("flame shock", ACTION_DEFAULT + 0.3f),
+        new NextAction("feral spirit", ACTION_DEFAULT + 0.2f),
+        new NextAction("fire nova", ACTION_DEFAULT + 0.1f),
+        new NextAction("melee", ACTION_DEFAULT), NULL);
 }
 
 void MeleeShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
@@ -71,8 +73,10 @@ void MeleeShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     // new NextAction("searing totem", 22.0f), nullptr)));
     triggers.push_back(
         new TriggerNode("flame shock", NextAction::array(0, new NextAction("flame shock", 20.0f), nullptr)));
-    triggers.push_back(
-        new TriggerNode("maelstrom weapon 4", NextAction::array(0, new NextAction("lightning bolt", 25.0f), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "maelstrom weapon 5",
+        NextAction::array(0, new NextAction("elemental blast", 25.0f), new NextAction("lightning bolt", 24.0f),
+                          nullptr)));
 
     triggers.push_back(new TriggerNode(
         "medium aoe", NextAction::array(0, new NextAction("strength of earth totem", ACTION_LIGHT_HEAL), nullptr)));
@@ -81,7 +85,7 @@ void MeleeShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
     triggers.push_back(new TriggerNode(
         "no fire totem",
-        NextAction::array(0, new NextAction("reach melee", 23.0f), new NextAction("magma totem", 22.0f), nullptr)));
+        NextAction::array(0, new NextAction("reach melee", 23.0f), new NextAction("searing totem", 22.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "fire elemental totem", NextAction::array(0, new NextAction("fire elemental totem melee", 32.0f), nullptr)));
@@ -100,6 +104,7 @@ void MeleeAoeShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     // triggers.push_back(new TriggerNode("magma totem", NextAction::array(0, new NextAction("magma totem", 26.0f),
     // nullptr)));
-    triggers.push_back(
-        new TriggerNode("medium aoe", NextAction::array(0, new NextAction("fire nova", 25.0f), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "medium aoe",
+        NextAction::array(0, new NextAction("magma totem", 26.0f), new NextAction("fire nova", 25.0f), nullptr)));
 }

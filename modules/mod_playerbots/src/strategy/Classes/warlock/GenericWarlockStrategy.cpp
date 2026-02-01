@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "GenericWarlockStrategy.h"
 
@@ -97,7 +94,7 @@ void GenericWarlockStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
     triggers.push_back(new TriggerNode("soul link", NextAction::array(0, new NextAction("soul link", ACTION_EMERGENCY + 5), nullptr)));
     triggers.push_back(new TriggerNode("low mana", NextAction::array(0, new NextAction("life tap", ACTION_EMERGENCY + 5), nullptr)));
-    triggers.push_back(new TriggerNode("medium health", NextAction::array(0, new NextAction("dark bargaing", ACTION_INTERRUPT), new NextAction("twilight ward", ACTION_INTERRUPT), new NextAction("soul burn", ACTION_INTERRUPT), new NextAction("drain life", ACTION_INTERRUPT), nullptr)));
+    triggers.push_back(new TriggerNode("medium health", NextAction::array(0, new NextAction("dark bargain", ACTION_INTERRUPT), new NextAction("twilight ward", ACTION_INTERRUPT), new NextAction("soul burn", ACTION_INTERRUPT), new NextAction("drain life", ACTION_INTERRUPT), nullptr)));
     triggers.push_back(new TriggerNode("low health", NextAction::array(0, new NextAction("sacrificial pact", ACTION_INTERRUPT), new NextAction("unending resolve", ACTION_INTERRUPT), nullptr)));
     triggers.push_back(new TriggerNode("critical health", NextAction::array(0, new NextAction("dark regeneration", ACTION_INTERRUPT), new NextAction("drain life", ACTION_INTERRUPT), nullptr)));
 

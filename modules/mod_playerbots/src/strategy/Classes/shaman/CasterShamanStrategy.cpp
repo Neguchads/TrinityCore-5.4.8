@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "CasterShamanStrategy.h"
 
@@ -40,9 +37,12 @@ CasterShamanStrategy::CasterShamanStrategy(PlayerbotAI* botAI) : GenericShamanSt
 
 NextAction** CasterShamanStrategy::getDefaultActions()
 {
-    return NextAction::array(0, new NextAction("lava burst", ACTION_DEFAULT + 0.2f),
-                             new NextAction("lightning bolt", ACTION_DEFAULT + 0.1f),
-                            //  new NextAction("earth shock", ACTION_DEFAULT), // cast during movement
+    return NextAction::array(0,
+                             new NextAction("flame shock", ACTION_DEFAULT + 0.5f),
+                             new NextAction("lava burst", ACTION_DEFAULT + 0.4f),
+                             new NextAction("chain lightning", ACTION_DEFAULT + 0.3f),
+                             new NextAction("lightning bolt", ACTION_DEFAULT + 0.2f),
+                             new NextAction("earth shock", ACTION_DEFAULT + 0.1f), // cast during movement
                              nullptr);
 }
 
@@ -67,7 +67,7 @@ void CasterShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     // triggers.push_back(new TriggerNode("frost shock snare", NextAction::array(0, new NextAction("frost
     // shock", 21.0f), nullptr)));
     triggers.push_back(
-        new TriggerNode("no fire totem", NextAction::array(0, new NextAction("totem of wrath", 15.0f), NULL)));
+        new TriggerNode("no fire totem", NextAction::array(0, new NextAction("searing totem", 15.0f), NULL)));
     triggers.push_back(new TriggerNode("fire elemental totem",
                                        NextAction::array(0, new NextAction("fire elemental totem", 32.0f), nullptr)));
                                        
@@ -86,4 +86,9 @@ void CasterAoeShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(
         new TriggerNode("light aoe", NextAction::array(0, new NextAction("chain lightning", 25.0f), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "medium aoe",
+        NextAction::array(0, new NextAction("magma totem", 26.0f), new NextAction("fire nova", 25.0f), nullptr)));
+    triggers.push_back(
+        new TriggerNode("high aoe", NextAction::array(0, new NextAction("earthquake", 27.0f), nullptr)));
 }

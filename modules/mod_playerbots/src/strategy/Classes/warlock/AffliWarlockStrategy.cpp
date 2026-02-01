@@ -36,10 +36,11 @@ AffliWarlockStrategy::AffliWarlockStrategy(PlayerbotAI* botAI) : GenericWarlockS
 NextAction** AffliWarlockStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-        new NextAction("dark soul: misery", ACTION_DEFAULT + 0.5f),
-        new NextAction("haunt", ACTION_DEFAULT + 0.4f),
-        new NextAction("fel flame", 3.0f),
-        new NextAction("malefic grasp", ACTION_HIGH),
+        new NextAction("dark soul: misery", ACTION_DEFAULT + 0.8f),
+        new NextAction("haunt", ACTION_DEFAULT + 0.7f),
+        new NextAction("malefic grasp", ACTION_DEFAULT + 0.6f),
+        new NextAction("shadow bolt", ACTION_DEFAULT + 0.5f),
+        new NextAction("fel flame", ACTION_DEFAULT + 0.2f),
         nullptr);
 }
 
@@ -50,11 +51,13 @@ void AffliWarlockStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("corruption", NextAction::array(0, new NextAction("corruption", 20.0f), nullptr)));
     triggers.push_back(new TriggerNode("agony", NextAction::array(0, new NextAction("agony", 20.0f), nullptr)));
     triggers.push_back(new TriggerNode("unstable affliction", NextAction::array(0, new NextAction("unstable affliction", 20.0f), nullptr)));
+    triggers.push_back(new TriggerNode("haunt", NextAction::array(0, new NextAction("haunt", ACTION_HIGH + 3), nullptr)));
 
     triggers.push_back(new TriggerNode("target critical health", NextAction::array(0, new NextAction("drain soul", ACTION_HIGH + 20), nullptr)));
     // cast during movement
-    triggers.push_back(new TriggerNode("high mana", NextAction::array(0, new NextAction("life tap", ACTION_DEFAULT + 0.1f), nullptr)));
+    triggers.push_back(new TriggerNode("low mana", NextAction::array(0, new NextAction("life tap", ACTION_DEFAULT + 0.1f), nullptr)));
     triggers.push_back(new TriggerNode("life tap glyph buff", NextAction::array(0, new NextAction("life tap", 28.0f), nullptr)));
-    triggers.push_back(new TriggerNode("metamorphosis", NextAction::array(0, new NextAction("metamorphosis", 20.0f), nullptr)));
+    triggers.push_back(new TriggerNode("dark soul: misery", NextAction::array(0, new NextAction("dark soul: misery", 20.0f), nullptr)));
+    triggers.push_back(new TriggerNode("high aoe", NextAction::array(0, new NextAction("seed of corruption", 25.0f), nullptr)));
 }
 

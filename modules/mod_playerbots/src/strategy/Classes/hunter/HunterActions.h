@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_HUNTERACTIONS_H
 #define _PLAYERBOT_HUNTERACTIONS_H
@@ -73,6 +70,9 @@ BEGIN_RANGED_SPELL_ACTION(CastScorpidStingAction, "scorpid sting")
 END_SPELL_ACTION()
 
 BEGIN_RANGED_SPELL_ACTION(CastSteadyShotAction, "steady shot")
+END_SPELL_ACTION()
+
+BEGIN_RANGED_SPELL_ACTION(CastCobraShotAction, "cobra shot")
 END_SPELL_ACTION()
 
 BEGIN_RANGED_SPELL_ACTION(CastKillShotAction, "kill shot")
@@ -174,6 +174,12 @@ public:
     CastRapidFireAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "rapid fire") {}
 };
 
+class CastFervorAction : public CastBuffSpellAction
+{
+public:
+    CastFervorAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "fervor") {}
+};
+
 class CastDeterrenceAction : public CastBuffSpellAction
 {
 public:
@@ -190,6 +196,24 @@ class CastBlackArrow : public CastDebuffSpellAction
 {
 public:
     CastBlackArrow(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "black arrow", true) {}
+};
+
+BEGIN_RANGED_SPELL_ACTION(CastGlaiveTossAction, "glaive toss")
+END_SPELL_ACTION()
+
+BEGIN_RANGED_SPELL_ACTION(CastBarrageAction, "barrage")
+END_SPELL_ACTION()
+
+BEGIN_RANGED_SPELL_ACTION(CastDireBeastAction, "dire beast")
+END_SPELL_ACTION()
+
+BEGIN_RANGED_SPELL_ACTION(CastAMurderOfCrowsAction, "a murder of crows")
+END_SPELL_ACTION()
+
+class CastExplosiveTrapAction : public CastSpellAction
+{
+public:
+    CastExplosiveTrapAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "explosive trap") {}
 };
 
 class CastFreezingTrap : public CastDebuffSpellAction
@@ -234,6 +258,19 @@ class CastBestialWrathAction : public CastBuffSpellAction
 public:
     CastBestialWrathAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "bestial wrath") {}
     std::string const GetTargetName() override { return "pet target"; }
+};
+
+class CastFocusFireAction : public CastBuffSpellAction
+{
+public:
+    CastFocusFireAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "focus fire") {}
+    bool isUseful() override;
+};
+
+class CastStampedeAction : public CastBuffSpellAction
+{
+public:
+    CastStampedeAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "stampede") {}
 };
 
 class CastScareBeastAction : public CastSpellAction

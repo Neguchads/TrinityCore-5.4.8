@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_COMBATSTRATEGY_H
 #define _PLAYERBOT_COMBATSTRATEGY_H
@@ -44,6 +41,32 @@ public:
     CombatFormationStrategy(PlayerbotAI* ai) : Strategy(ai) {}
     const std::string getName() override { return "formation"; }
     NextAction** getDefaultActions() override;
+};
+
+class WaitForAttackStrategy : public Strategy
+{
+public:
+    WaitForAttackStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+
+    std::string const getName() override { return "wait for attack"; }
+    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+};
+
+class HealInterruptStrategy : public Strategy
+{
+public:
+    HealInterruptStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+
+    std::string const getName() override { return "heal interrupt"; }
+    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+};
+
+class PreHealStrategy : public Strategy
+{
+public:
+    PreHealStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+
+    std::string const getName() override { return "preheal"; }
 };
 
 #endif

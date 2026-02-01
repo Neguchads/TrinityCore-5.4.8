@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "BearTankDruidStrategy.h"
 
@@ -19,6 +16,8 @@ public:
         creators["bear form"] = &bear_form;
         creators["dire bear form"] = &dire_bear_form;
         creators["mangle (bear)"] = &mangle_bear;
+        creators["thrash (bear)"] = &thrash_bear;
+        creators["savage defense"] = &savage_defense;
         creators["maul"] = &maul;
         creators["bash"] = &bash;
         creators["swipe"] = &swipe;
@@ -84,6 +83,20 @@ private:
                               nullptr,
                               /*C*/ nullptr);
     }
+    static ActionNode* thrash_bear([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("thrash (bear)",
+                              /*P*/ nullptr,
+                              /*A*/ nullptr,
+                              /*C*/ nullptr);
+    }
+    static ActionNode* savage_defense([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("savage defense",
+                              /*P*/ nullptr,
+                              /*A*/ nullptr,
+                              /*C*/ nullptr);
+    }
 
     static ActionNode* maul([[maybe_unused]] PlayerbotAI* botAI)
     {
@@ -142,9 +155,13 @@ BearTankDruidStrategy::BearTankDruidStrategy(PlayerbotAI* botAI) : FeralDruidStr
 NextAction** BearTankDruidStrategy::getDefaultActions()
 {
     return NextAction::array(
-        0, new NextAction("mangle (bear)", ACTION_DEFAULT + 0.5f),
-        new NextAction("faerie fire (feral)", ACTION_DEFAULT + 0.4f), new NextAction("lacerate", ACTION_DEFAULT + 0.3f),
-        new NextAction("maul", ACTION_DEFAULT + 0.2f), new NextAction("enrage", ACTION_DEFAULT + 0.1f),
+        0, new NextAction("savage defense", ACTION_DEFAULT + 0.7f),
+        new NextAction("thrash (bear)", ACTION_DEFAULT + 0.6f),
+        new NextAction("mangle (bear)", ACTION_DEFAULT + 0.5f),
+        new NextAction("faerie fire (feral)", ACTION_DEFAULT + 0.4f),
+        new NextAction("lacerate", ACTION_DEFAULT + 0.3f),
+        new NextAction("maul", ACTION_DEFAULT + 0.2f),
+        new NextAction("enrage", ACTION_DEFAULT + 0.1f),
         new NextAction("melee", ACTION_DEFAULT), nullptr);
 }
 
@@ -160,7 +177,21 @@ void BearTankDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode(
         "low health", NextAction::array(0, new NextAction("frenzied regeneration", ACTION_HIGH + 7), nullptr)));
     triggers.push_back(new TriggerNode(
+        "critical health", NextAction::array(0,
+            new NextAction("barkskin", ACTION_EMERGENCY + 3),
+            new NextAction("might of ursoc", ACTION_EMERGENCY + 2),
+            new NextAction("survival instincts", ACTION_EMERGENCY + 1),
+            nullptr)));
+    triggers.push_back(new TriggerNode(
         "faerie fire (feral)", NextAction::array(0, new NextAction("faerie fire (feral)", ACTION_HIGH + 7), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "thrash", NextAction::array(0, new NextAction("thrash (bear)", ACTION_HIGH + 6), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "savage defense", NextAction::array(0, new NextAction("savage defense", ACTION_HIGH + 5), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "berserk", NextAction::array(0, new NextAction("berserk", ACTION_HIGH + 4), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "enrage", NextAction::array(0, new NextAction("enrage", ACTION_HIGH + 3), nullptr)));
     triggers.push_back(
         new TriggerNode("lose aggro", NextAction::array(0, new NextAction("growl", ACTION_HIGH + 8), nullptr)));
     triggers.push_back(

@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_STRATEGY_H
 #define _PLAYERBOT_STRATEGY_H
@@ -25,6 +22,7 @@ enum StrategyType : uint32
 };
 
 static float ACTION_IDLE = 0.0f;
+static float ACTION_BG = 1.0f;
 static float ACTION_DEFAULT = 5.0f;
 static float ACTION_NORMAL = 10.0f;
 static float ACTION_HIGH = 20.0f;

@@ -1,10 +1,8 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "AiFactory.h"
 
+#include "BattlegroundMgr.h"
 #include "BotAIObjectContext.h"
 
 #include "Engine.h"
@@ -31,6 +29,7 @@
 #include "MageAiObjectContext.h"
 #include "WarriorAIObjectContext.h"
 #include "WarlockAiObjectContext.h"
+#include "MonkAiObjectContext.h"
 
 AiObjectContext* AiFactory::createAiObjectContext(Player* player, PlayerbotAI* botAI)
 {
@@ -56,8 +55,8 @@ AiObjectContext* AiFactory::createAiObjectContext(Player* player, PlayerbotAI* b
             return new RogueAiObjectContext(botAI);
         case CLASS_DEATH_KNIGHT:
             return new DKAiObjectContext(botAI);
-        //case CLASS_MONK:
-            //return new MonkAiObjectContext(botAI);
+        case CLASS_MONK:
+            return new MonkAiObjectContext(botAI);
     }
 
     return new BotAiObjectContext(botAI);
@@ -450,6 +449,39 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
         engine->ChangeStrategy(sPlayerbotAIConfig->combatStrategies);
     }
 
+    // Battleground switch
+    if (player->InBattleground() && player->GetBattleground())
+    {
+        BattlegroundTypeId bgType = player->GetBattlegroundTypeId();
+        if (bgType == BATTLEGROUND_RB)
+            bgType = player->GetBattleground()->GetTypeID(true);
+
+        if (bgType == BATTLEGROUND_WS)
+            engine->addStrategy("warsong", false);
+        if (bgType == BATTLEGROUND_AB)
+            engine->addStrategy("arathi", false);
+        if (bgType == BATTLEGROUND_AV)
+            engine->addStrategy("alterac", false);
+        if (bgType == BATTLEGROUND_EY)
+            engine->addStrategy("eye", false);
+        if (bgType == BATTLEGROUND_IC)
+            engine->addStrategy("isle", false);
+
+        if (player->InArena())
+        {
+            engine->addStrategy("arena", false);
+            engine->addStrategiesNoInit("boost", "racials", "chat", "default", "aoe", "cast time", "dps assist", nullptr);
+        }
+        else
+        {
+            engine->addStrategiesNoInit("boost", "racials", "chat", "default", "aoe", "cast time", "dps assist", nullptr);
+        }
+
+        engine->removeStrategy("flee", false);
+        engine->removeStrategy("threat", false);
+        engine->addStrategy("boost", false);
+    }
+
     // temporary
     //engine->addStrategy("ranged");
     //engine->addStrategy("melee");
@@ -566,6 +598,45 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
     {
         nonCombatEngine->addStrategiesNoInit("nc", "food", "chat", "follow", "default", "quest", "loot", "gather", "duel",
             "buff", "mount", "emote", nullptr);
+    }
+    if (sRandomPlayerbotMgr->IsRandomBot(player) && !player->InBattleground())
+    {
+        if (sPlayerbotAIConfig->randomBotJoinLfg)
+            nonCombatEngine->addStrategy("lfg", false);
+        if (sPlayerbotAIConfig->randomBotJoinBG)
+            nonCombatEngine->addStrategy("bg", false);
+    }
+
+    // Battleground switch
+    if (player->InBattleground() && player->GetBattleground())
+    {
+        nonCombatEngine->addStrategiesNoInit("nc", "chat", "default", "buff", "food", "mount", "emote", "dps assist", nullptr);
+        nonCombatEngine->removeStrategy("rpg", false);
+        nonCombatEngine->removeStrategy("grind", false);
+
+        BattlegroundTypeId bgType = player->GetBattlegroundTypeId();
+        if (bgType == BATTLEGROUND_RB)
+            bgType = player->GetBattleground()->GetTypeID(true);
+
+        if ((bgType <= BATTLEGROUND_EY || bgType == BATTLEGROUND_IC) && !player->InArena())
+            nonCombatEngine->addStrategy("battleground", false);
+
+        if (bgType == BATTLEGROUND_WS)
+            nonCombatEngine->addStrategy("warsong", false);
+        if (bgType == BATTLEGROUND_AV)
+            nonCombatEngine->addStrategy("alterac", false);
+        if (bgType == BATTLEGROUND_AB)
+            nonCombatEngine->addStrategy("arathi", false);
+        if (bgType == BATTLEGROUND_EY)
+            nonCombatEngine->addStrategy("eye", false);
+        if (bgType == BATTLEGROUND_IC)
+            nonCombatEngine->addStrategy("isle", false);
+
+        if (player->InArena())
+        {
+            nonCombatEngine->addStrategy("arena", false);
+            nonCombatEngine->removeStrategy("mount", false);
+        }
     }
     nonCombatEngine->addStrategy("say hello");
 }

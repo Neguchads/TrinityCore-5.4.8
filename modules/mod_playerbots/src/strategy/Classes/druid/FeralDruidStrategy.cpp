@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "FeralDruidStrategy.h"
 
@@ -114,4 +111,6 @@ void FeralDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
                                        NextAction::array(0, new NextAction("dash", ACTION_EMERGENCY + 2), nullptr)));
     triggers.push_back(
         new TriggerNode("berserk", NextAction::array(0, new NextAction("berserk", ACTION_HIGH + 6), nullptr)));
+    triggers.push_back(
+        new TriggerNode("tiger's fury", NextAction::array(0, new NextAction("tiger's fury", ACTION_HIGH + 5), nullptr)));
 }

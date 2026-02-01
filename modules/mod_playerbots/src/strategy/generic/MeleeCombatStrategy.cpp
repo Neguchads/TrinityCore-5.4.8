@@ -15,3 +15,7 @@ void SetBehindCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
     triggers.push_back(new TriggerNode("not behind target", NextAction::array(0, new NextAction("set behind", ACTION_MOVE + 7), nullptr)));
 }
+
+void ChaseJumpStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+{
+}

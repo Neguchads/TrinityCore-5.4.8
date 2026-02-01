@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_DRUIDACTIONS_H
 #define _PLAYERBOT_DRUIDACTIONS_H
@@ -159,6 +156,12 @@ public:
     CastMoonfireAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "moonfire", true) {}
 };
 
+class CastSunfireAction : public CastDebuffSpellAction
+{
+public:
+    CastSunfireAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "sunfire", true) {}
+};
+
 class CastInsectSwarmAction : public CastDebuffSpellAction
 {
 public:
@@ -169,6 +172,114 @@ class CastStarfireAction : public CastSpellAction
 {
 public:
     CastStarfireAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "starfire") {}
+};
+
+class CastThrashAction : public CastMeleeSpellAction
+{
+public:
+    CastThrashAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "thrash") {}
+};
+
+class CastThrashBearAction : public CastMeleeSpellAction
+{
+public:
+    CastThrashBearAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "thrash") {}
+};
+
+class CastStarsurgeAction : public CastSpellAction
+{
+public:
+    CastStarsurgeAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "starsurge") {}
+};
+
+class CastAstralCommunionAction : public CastSpellAction
+{
+public:
+    CastAstralCommunionAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "astral communion") {}
+};
+
+class CastCelestialAlignmentAction : public CastBuffSpellAction
+{
+public:
+    CastCelestialAlignmentAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "celestial alignment") {}
+};
+
+class CastWildMushroomAction : public CastSpellAction
+{
+public:
+    CastWildMushroomAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "wild mushroom") {}
+};
+
+class CastWildMushroomDetonateAction : public CastSpellAction
+{
+public:
+    CastWildMushroomDetonateAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "wild mushroom: detonate") {}
+};
+
+class CastAstralStormAction : public CastSpellAction
+{
+public:
+    CastAstralStormAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "astral storm") {}
+};
+
+class CastSolarBeamAction : public CastSpellAction
+{
+public:
+    CastSolarBeamAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "solar beam") {}
+};
+
+class CastTyphoonAction : public CastSpellAction
+{
+public:
+    CastTyphoonAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "typhoon") {}
+};
+
+class CastUrsolsVortexAction : public CastSpellAction
+{
+public:
+    CastUrsolsVortexAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "ursol's vortex") {}
+};
+
+class CastMightOfUrsocAction : public CastBuffSpellAction
+{
+public:
+    CastMightOfUrsocAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "might of ursoc") {}
+};
+
+class CastSavageDefenseAction : public CastBuffSpellAction
+{
+public:
+    CastSavageDefenseAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "savage defense") {}
+};
+
+class CastLifebloomOnMainTankAction : public BuffOnMainTankAction
+{
+public:
+    CastLifebloomOnMainTankAction(PlayerbotAI* botAI) : BuffOnMainTankAction(botAI, "lifebloom", false) {}
+};
+
+class CastCenarionWardOnMainTankAction : public BuffOnMainTankAction
+{
+public:
+    CastCenarionWardOnMainTankAction(PlayerbotAI* botAI) : BuffOnMainTankAction(botAI, "cenarion ward", false) {}
+};
+
+class CastIronbarkOnPartyAction : public BuffOnPartyAction
+{
+public:
+    CastIronbarkOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(botAI, "ironbark") {}
+};
+
+class CastGenesisAction : public CastSpellAction
+{
+public:
+    CastGenesisAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "genesis") {}
+};
+
+class CastWildMushroomBloomAction : public CastSpellAction
+{
+public:
+    CastWildMushroomBloomAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "wild mushroom: bloom") {}
 };
 
 class CastEntanglingRootsAction : public CastSpellAction
@@ -303,6 +414,12 @@ class CastMoonfireOnAttackerAction : public CastDebuffSpellOnAttackerAction
 {
 public:
     CastMoonfireOnAttackerAction(PlayerbotAI* ai) : CastDebuffSpellOnAttackerAction(ai, "moonfire") {}
+};
+
+class CastSunfireOnAttackerAction : public CastDebuffSpellOnAttackerAction
+{
+public:
+    CastSunfireOnAttackerAction(PlayerbotAI* ai) : CastDebuffSpellOnAttackerAction(ai, "sunfire") {}
 };
 
 class CastEnrageAction : public CastBuffSpellAction

@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_PALADINACTIONS_H
 #define _PLAYERBOT_PALADINACTIONS_H
@@ -17,6 +14,7 @@ class Unit;
 BUFF_ACTION(CastSealOfRighteousnessAction, "seal of righteousness");
 BUFF_ACTION(CastSealOfCommandAction, "seal of command");
 BUFF_ACTION(CastSealOfInsightAction, "seal of insight");
+BUFF_ACTION(CastSealOfTruthAction, "seal of truth");
 
 // judgements
 SPELL_ACTION(CastJudgementAction, "judgement");
@@ -148,6 +146,87 @@ public:
     }
 };
 
+class CastDivineLightAction : public CastHealingSpellAction
+{
+public:
+    CastDivineLightAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "divine light") {}
+};
+
+class CastDivineLightOnPartyAction : public HealPartyMemberAction
+{
+public:
+    CastDivineLightOnPartyAction(PlayerbotAI* botAI)
+        : HealPartyMemberAction(botAI, "divine light", 50.0f, HealingManaEfficiency::LOW)
+    {
+    }
+};
+
+class CastHolyRadianceAction : public CastHealingSpellAction
+{
+public:
+    CastHolyRadianceAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "holy radiance") {}
+};
+
+class CastHolyRadianceOnPartyAction : public HealPartyMemberAction
+{
+public:
+    CastHolyRadianceOnPartyAction(PlayerbotAI* botAI)
+        : HealPartyMemberAction(botAI, "holy radiance", 20.0f, HealingManaEfficiency::LOW)
+    {
+    }
+};
+
+class CastLightOfDawnAction : public CastHealingSpellAction
+{
+public:
+    CastLightOfDawnAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "light of dawn") {}
+    bool isUseful() override;
+};
+
+class CastLightOfDawnOnPartyAction : public HealPartyMemberAction
+{
+public:
+    CastLightOfDawnOnPartyAction(PlayerbotAI* botAI)
+        : HealPartyMemberAction(botAI, "light of dawn", 30.0f, HealingManaEfficiency::HIGH)
+    {
+    }
+    bool isUseful() override;
+};
+
+class CastWordOfGloryAction : public CastHealingSpellAction
+{
+public:
+    CastWordOfGloryAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "word of glory") {}
+    bool isUseful() override;
+};
+
+class CastWordOfGloryOnPartyAction : public HealPartyMemberAction
+{
+public:
+    CastWordOfGloryOnPartyAction(PlayerbotAI* botAI)
+        : HealPartyMemberAction(botAI, "word of glory", 30.0f, HealingManaEfficiency::HIGH)
+    {
+    }
+    bool isUseful() override;
+};
+
+class CastEternalFlameAction : public CastHealingSpellAction
+{
+public:
+    CastEternalFlameAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "eternal flame") {}
+    bool isUseful() override;
+};
+
+class CastEternalFlameOnPartyAction : public HealPartyMemberAction
+{
+public:
+    CastEternalFlameOnPartyAction(PlayerbotAI* botAI)
+        : HealPartyMemberAction(botAI, "eternal flame", 30.0f, HealingManaEfficiency::HIGH)
+    {
+    }
+    bool isUseful() override;
+};
+
 class CastLayOnHandsAction : public CastHealingSpellAction
 {
 public:
@@ -178,6 +257,12 @@ class CastDivineShieldAction : public CastBuffSpellAction
 {
 public:
     CastDivineShieldAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "divine shield") {}
+};
+
+class CastArdentDefenderAction : public CastBuffSpellAction
+{
+public:
+    CastArdentDefenderAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "ardent defender") {}
 };
 
 class CastHolyWrathAction : public CastMeleeSpellAction
@@ -330,6 +415,13 @@ public:
     CastDivinePleaAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "divine plea") {}
 };
 
+class CastInquisitionAction : public CastBuffSpellAction
+{
+public:
+    CastInquisitionAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "inquisition") {}
+    bool isUseful() override;
+};
+
 class ShieldOfRighteousnessAction : public CastMeleeSpellAction
 {
 public:
@@ -354,6 +446,18 @@ public:
     CastAvengingWrathAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "avenging wrath") {}
 };
 
+class CastHolyAvengerAction : public CastBuffSpellAction
+{
+public:
+    CastHolyAvengerAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "holy avenger") {}
+};
+
+class CastGuardianOfAncientKingsAction : public CastBuffSpellAction
+{
+public:
+    CastGuardianOfAncientKingsAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "guardian of ancient kings") {}
+};
+
 class CastDivineIlluminationAction : public CastBuffSpellAction
 {
 public:
@@ -373,5 +477,30 @@ public:
     CastCancelDivineSacrificeAction(PlayerbotAI* botAI) : Action(botAI, "cancel divine sacrifice") {}
     bool Execute(Event event) override;
     bool isUseful() override;
+};
+
+class CastTemplarsVerdictAction : public CastMeleeSpellAction
+{
+public:
+    CastTemplarsVerdictAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "templar's verdict") {}
+    bool isUseful() override;
+};
+
+class CastExecutionSentenceAction : public CastSpellAction
+{
+public:
+    CastExecutionSentenceAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "execution sentence") {}
+};
+
+class CastLightsHammerAction : public CastSpellAction
+{
+public:
+    CastLightsHammerAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "light's hammer") {}
+};
+
+class CastHolyPrismAction : public CastSpellAction
+{
+public:
+    CastHolyPrismAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "holy prism") {}
 };
 #endif

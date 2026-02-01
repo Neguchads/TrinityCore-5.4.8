@@ -1,6 +1,8 @@
 #ifndef _PLAYERBOT_PLAYERBOTAI_H
 #define _PLAYERBOT_PLAYERBOTAI_H
 
+#include <map>
+#include <mutex>
 #include <queue>
 #include <stack>
 
@@ -8,6 +10,7 @@
 #include "Event.h"
 #include "Item.h"
 #include "PlayerbotAIBase.h"
+#include "PlayerbotAIConfig.h"
 #include "NewRpgStrategy.h"
 #include "WorldPacket.h"
 
@@ -97,6 +100,7 @@ public:
 private:
     std::map<uint16, std::string> _handlers;
     std::stack<WorldPacket> _queue;
+    std::mutex _mutex;
 };
 
 class PlayerbotAI : public PlayerbotAIBase
@@ -137,6 +141,9 @@ public:
     Player* GetBot() { return bot; }
     Player* GetMaster() { return master; }
     Player* GetGroupMaster();
+    uint32 GetFixedBotNumer(uint32 maxNum = 100, float cyclePerMin = 1);
+    uint32 AutoScaleActivity(uint32 mod);
+    bool IsInRealGuild();
     Creature* GetCreature(ObjectGuid guid);
     Unit* GetUnit(ObjectGuid guid);
     Player* GetPlayer(ObjectGuid guid);
@@ -146,7 +153,8 @@ public:
     WorldObject* GetWorldObject(ObjectGuid guid);
     AiObjectContext* GetAiObjectContext() { return _aiObjectContext; }
     BotState GetState() { return _currentState; };
-    const NewRpgInfo& GetRpgInfo() { return _rpgInfo; }
+    NewRpgInfo& GetRpgInfo() { return _rpgInfo; }
+    const NewRpgInfo& GetRpgInfo() const { return _rpgInfo; }
     float GetRange(std::string const type);
 
     bool IsOpposing(Player* player);
@@ -157,6 +165,13 @@ public:
     bool HasRealPlayerMaster();
     // Bot has a master that is activly playing.
     bool HasActivePlayerMaster();
+    bool HasCheat(BotCheatMask mask)
+    {
+        return (static_cast<uint32>(mask) & static_cast<uint32>(cheatMask)) != 0 ||
+            (static_cast<uint32>(mask) & static_cast<uint32>(sPlayerbotAIConfig->botCheatMask)) != 0;
+    }
+    BotCheatMask GetCheat() { return cheatMask; }
+    void SetCheat(BotCheatMask mask) { cheatMask = mask; }
     bool HasPlayerNearby(WorldPosition* pos, float range = sPlayerbotAIConfig->reactDistance);
     bool HasPlayerNearby(float range = sPlayerbotAIConfig->reactDistance);
     bool HasManyPlayersNearby(uint32 trigerrValue = 20, float range = sPlayerbotAIConfig->sightDistance);
@@ -243,7 +258,7 @@ protected:
     bool _allowActive[MAX_ACTIVITY_TYPE];
     time_t _allowActiveCheckTimer[MAX_ACTIVITY_TYPE];
     //bool inCombat = false;
-    //BotCheatMask cheatMask = BotCheatMask::none;
+    BotCheatMask cheatMask = BotCheatMask::none;
     //Position jumpDestination = Position();
     //uint32 nextTransportCheck = 0;
 };

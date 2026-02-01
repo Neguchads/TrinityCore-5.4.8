@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "TankWarriorStrategy.h"
 
@@ -51,10 +48,12 @@ TankWarriorStrategy::TankWarriorStrategy(PlayerbotAI* botAI) : GenericWarriorStr
 NextAction** TankWarriorStrategy::getDefaultActions()
 {
     return NextAction::array(0, 
-        new NextAction("shield slam", ACTION_DEFAULT + 0.5f),
-        new NextAction("storm bolt", ACTION_DEFAULT + 0.4f),
-        new NextAction("devastate", ACTION_DEFAULT + 0.3f),
-        new NextAction("revenge", ACTION_DEFAULT + 0.2f),
+        new NextAction("shield block", ACTION_DEFAULT + 0.8f),
+        new NextAction("shield barrier", ACTION_DEFAULT + 0.7f),
+        new NextAction("shield slam", ACTION_DEFAULT + 0.6f),
+        new NextAction("revenge", ACTION_DEFAULT + 0.5f),
+        new NextAction("devastate", ACTION_DEFAULT + 0.4f),
+        new NextAction("thunder clap", ACTION_DEFAULT + 0.3f),
         new NextAction("melee", ACTION_DEFAULT), nullptr);
 }
 
@@ -70,5 +69,7 @@ void TankWarriorStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("revenge", NextAction::array(0, new NextAction("revenge", ACTION_HIGH + 2), nullptr)));
     triggers.push_back(new TriggerNode("lose aggro", NextAction::array(0, new NextAction("taunt", ACTION_INTERRUPT + 1), nullptr)));
     triggers.push_back(new TriggerNode("shield barrier", NextAction::array(0, new NextAction("shield barrier", ACTION_HIGH), nullptr)));
-    triggers.push_back(new TriggerNode("medium rage available",NextAction::array(0, new NextAction("thunder clap", ACTION_HIGH + 1), nullptr)));
+    triggers.push_back(new TriggerNode("medium rage available",NextAction::array(0, new NextAction("heroic strike", ACTION_HIGH + 1), nullptr)));
+    triggers.push_back(new TriggerNode("medium aoe", NextAction::array(0, new NextAction("thunder clap", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(new TriggerNode("high aoe", NextAction::array(0, new NextAction("shockwave", ACTION_HIGH + 3), nullptr)));
 }

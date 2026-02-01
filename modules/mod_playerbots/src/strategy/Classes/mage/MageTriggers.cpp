@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "MageTriggers.h"
 
@@ -16,6 +13,20 @@ bool ArcaneBrillianceTrigger::IsActive()
 bool RuneOfPowerTrigger::IsActive()
 {
     return BuffTrigger::IsActive() && !botAI->HasAura("rune of power", GetTarget());
+}
+
+bool TimeWarpTrigger::IsActive()
+{
+    Player* bot = botAI->GetBot();
+    if (!bot || !bot->IsInCombat() || !bot->GetGroup())
+    {
+        return false;
+    }
+    if (botAI->HasAura("sated", bot) || botAI->HasAura("temporal displacement", bot) || botAI->HasAura("exhaustion", bot))
+    {
+        return false;
+    }
+    return true;
 }
 
 bool MageArmorTrigger::IsActive()

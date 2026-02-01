@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "GenericMageStrategy.h"
 
@@ -32,6 +29,9 @@ public:
         creators["rune of power"] = &rune_of_power;
         creators["ice barrier"] = &ice_barrier;
         creators["flameglow"] = &flameglow;
+        creators["temporal shield"] = &temporal_shield;
+        creators["greater invisibility"] = &greater_invisibility;
+        creators["time warp"] = &time_warp;
         creators["frostjaw"] = &frostjaw;
     }
 
@@ -148,6 +148,27 @@ private:
             /*A*/ nullptr,
             /*C*/ nullptr);
     }
+    static ActionNode* temporal_shield([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("temporal shield",
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
+    }
+    static ActionNode* greater_invisibility([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("greater invisibility",
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
+    }
+    static ActionNode* time_warp([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("time warp",
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
+    }
     static ActionNode* blink([[maybe_unused]] PlayerbotAI* botAI)
     {
         return new ActionNode("blink",
@@ -182,6 +203,8 @@ void GenericMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("frost nova on target", NextAction::array(0, new NextAction("deep freeze", ACTION_NORMAL + 1), nullptr)));
     triggers.push_back(new TriggerNode("counterspell on enemy healer",NextAction::array(0, new NextAction("counterspell on enemy healer", 40.0f), nullptr)));
     triggers.push_back(new TriggerNode("critical health", NextAction::array(0, new NextAction("ice block", 80.0f), nullptr)));
+    triggers.push_back(new TriggerNode("low health", NextAction::array(0, new NextAction("greater invisibility", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(new TriggerNode("medium health", NextAction::array(0, new NextAction("temporal shield", ACTION_HIGH + 1), nullptr)));
     triggers.push_back(new TriggerNode("spellsteal", NextAction::array(0, new NextAction("spellsteal", 40.0f), nullptr)));
     triggers.push_back(new TriggerNode("medium threat", NextAction::array(0, new NextAction("invisibility", 60.0f), nullptr)));
     triggers.push_back(new TriggerNode("low mana", NextAction::array(0, new NextAction("evocation", ACTION_EMERGENCY + 5), nullptr)));
@@ -189,4 +212,5 @@ void GenericMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("frost ward", NextAction::array(0, new NextAction("frost ward", ACTION_EMERGENCY), nullptr)));
     triggers.push_back(new TriggerNode("rune of power", NextAction::array(0, new NextAction("rune of power", 50.0f), nullptr)));
     triggers.push_back(new TriggerNode("mirror image", NextAction::array(0, new NextAction("mirror image", 41.0f), nullptr)));
+    triggers.push_back(new TriggerNode("time warp", NextAction::array(0, new NextAction("time warp", ACTION_HIGH + 3), nullptr)));
 }

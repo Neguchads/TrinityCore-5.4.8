@@ -30,6 +30,28 @@ class ObjectGuid;
 class RandomPlayerbotMgr : public PlayerbotHolder
 {
 public:
+    struct BattlegroundInfo
+    {
+        std::vector<uint32> bgInstances;
+        std::vector<uint32> ratedArenaInstances;
+        std::vector<uint32> skirmishArenaInstances;
+        uint32 bgInstanceCount = 0;
+        uint32 ratedArenaInstanceCount = 0;
+        uint32 skirmishArenaInstanceCount = 0;
+        uint32 minLevel = 0;
+        uint32 maxLevel = 0;
+        uint32 activeBgQueue = 0;
+        uint32 activeRatedArenaQueue = 0;
+        uint32 activeSkirmishArenaQueue = 0;
+        uint32 bgHordeBotCount = 0;
+        uint32 bgAllianceBotCount = 0;
+        uint32 bgHordePlayerCount = 0;
+        uint32 bgAlliancePlayerCount = 0;
+        uint32 ratedArenaBotCount = 0;
+        uint32 ratedArenaPlayerCount = 0;
+        uint32 skirmishArenaBotCount = 0;
+        uint32 skirmishArenaPlayerCount = 0;
+    };
 
     struct farm_spot
     {
@@ -112,6 +134,8 @@ public:
     void SetValue(Player* bot, std::string const type, uint32 value, std::string const data = "");
     void Remove(Player* bot);
     void CheckPlayers();
+    void CheckBgQueue();
+    void CheckLfgQueue();
     float getActivityMod() { return _activityMod; }
     float getActivityPercentage() { return _activityMod * 100.0f; }
     void setActivityPercentage(float percentage) { _activityMod = percentage / 100.0f; }
@@ -122,6 +146,8 @@ public:
     std::map<uint8, std::vector<ObjectGuid>>& AddclassCache() { return _addclassCache; };
     void PrepareTeleportCache();
     void RandomTeleportForLevel(Player* bot);
+    std::map<uint32, std::map<uint32, BattlegroundInfo>> BattlegroundData;
+    std::map<TeamId, std::vector<uint32>> LfgDungeons;
 
 protected:
     void OnBotLoginInternal(Player* const bot) override;
@@ -148,6 +174,8 @@ private:
     std::vector<Player*> _players;
     uint32 _processTicks;
     uint32 _playersLevel;
+    time_t _bgCheckTimer = 0;
+    time_t _lfgCheckTimer = 0;
 
     // -- lists
     std::map<uint32, std::map<std::string, CachedEvent>> _eventCache;

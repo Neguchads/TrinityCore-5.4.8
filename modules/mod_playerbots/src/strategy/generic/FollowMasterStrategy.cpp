@@ -6,3 +6,7 @@ NextAction** FollowMasterStrategy::getDefaultActions()
 {
     return NextAction::array(0, new NextAction("follow", 1.0f), nullptr);
 }
+
+void FollowJumpStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+{
+}

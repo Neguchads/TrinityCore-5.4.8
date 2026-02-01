@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "WarlockTriggers.h"
 
@@ -27,6 +24,27 @@ bool CorruptionTrigger::IsActive()
 
     spell = "corruption";
     return DebuffTrigger::IsActive() && !botAI->HasAura("doom", GetTarget(), false, true);
+}
+
+bool SoulstoneTrigger::IsActive()
+{
+    Unit* mainTank = AI_VALUE(Unit*, "main tank");
+    if (mainTank && mainTank->IsAlive() && !botAI->HasAura("soulstone", mainTank))
+        return botAI->CanCastSpell("soulstone", mainTank);
+
+    Player* master = GetMaster();
+    if (master && master->IsAlive() && !botAI->HasAura("soulstone", master))
+        return botAI->CanCastSpell("soulstone", master);
+
+    if (!botAI->HasAura("soulstone", bot))
+        return botAI->CanCastSpell("soulstone", bot);
+
+    return false;
+}
+
+bool LifeTapGlyphBuffTrigger::IsActive()
+{
+    return !botAI->HasAura("life tap", bot);
 }
 
 bool FireAndBrimeStoneTrigger::IsActive()

@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "CatDpsDruidStrategy.h"
 
@@ -19,6 +16,7 @@ public:
         creators["claw"] = &claw;
         creators["mangle (cat)"] = &mangle_cat;
         creators["rake"] = &rake;
+        creators["thrash"] = &thrash;
         creators["ferocious bite"] = &ferocious_bite;
         creators["rip"] = &rip;
         creators["pounce"] = &pounce;
@@ -81,6 +79,13 @@ private:
                               /*A*/ nullptr,
                               /*C*/ nullptr);
     }
+    static ActionNode* thrash([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("thrash",
+                              /*P*/ nullptr,
+                              /*A*/ nullptr,
+                              /*C*/ nullptr);
+    }
 
     static ActionNode* ferocious_bite([[maybe_unused]] PlayerbotAI* botAI)
     {
@@ -122,7 +127,14 @@ CatDpsDruidStrategy::CatDpsDruidStrategy(PlayerbotAI* botAI) : FeralDruidStrateg
 
 NextAction** CatDpsDruidStrategy::getDefaultActions()
 {
-    return NextAction::array(0, new NextAction("tiger's fury", ACTION_DEFAULT + 0.1f), nullptr);
+    return NextAction::array(0,
+        new NextAction("tiger's fury", ACTION_DEFAULT + 0.4f),
+        new NextAction("berserk", ACTION_DEFAULT + 0.35f),
+        new NextAction("savage roar", ACTION_DEFAULT + 0.3f),
+        new NextAction("thrash", ACTION_DEFAULT + 0.25f),
+        new NextAction("rake", ACTION_DEFAULT + 0.2f),
+        new NextAction("shred", ACTION_DEFAULT + 0.1f),
+        nullptr);
 }
 
 void CatDpsDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
@@ -161,12 +173,15 @@ void CatDpsDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("mangle (cat)",
                                        NextAction::array(0, new NextAction("mangle (cat)", ACTION_HIGH + 3), nullptr)));
     triggers.push_back(new TriggerNode("rake", NextAction::array(0, new NextAction("rake", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(new TriggerNode("thrash", NextAction::array(0, new NextAction("thrash", ACTION_HIGH + 2), nullptr)));
     triggers.push_back(
         new TriggerNode("medium threat", NextAction::array(0, new NextAction("cower", ACTION_HIGH + 1), nullptr)));
 
     // AOE
     triggers.push_back(
-        new TriggerNode("medium aoe", NextAction::array(0, new NextAction("swipe (cat)", ACTION_HIGH + 3), nullptr)));
+        new TriggerNode("medium aoe", NextAction::array(0,
+            new NextAction("thrash", ACTION_HIGH + 4),
+            new NextAction("swipe (cat)", ACTION_HIGH + 3), nullptr)));
     triggers.push_back(new TriggerNode(
         "light aoe", NextAction::array(0, new NextAction("rake on attacker", ACTION_HIGH + 2), nullptr)));
     // Reach target
@@ -176,4 +191,16 @@ void CatDpsDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         new TriggerNode("enemy out of melee", NextAction::array(0, new NextAction("dash", ACTION_HIGH + 8), nullptr)));
 }
 
-void CatAoeDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers) {}
+void CatAoeDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+{
+    CombatStrategy::InitTriggers(triggers);
+
+    triggers.push_back(
+        new TriggerNode("cat form", NextAction::array(0, new NextAction("cat form", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(
+        new TriggerNode("medium aoe", NextAction::array(0,
+            new NextAction("thrash", ACTION_HIGH + 3),
+            new NextAction("swipe (cat)", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(
+        new TriggerNode("light aoe", NextAction::array(0, new NextAction("rake on attacker", ACTION_HIGH + 1), nullptr)));
+}

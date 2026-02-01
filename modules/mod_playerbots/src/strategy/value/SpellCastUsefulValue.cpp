@@ -1,12 +1,11 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "SpellCastUsefulValue.h"
 
 #include "LastSpellCastValue.h"
 #include "Playerbots.h"
+
+#include <string_view>
 
 bool SpellCastUsefulValue::Calculate()
 {
@@ -44,12 +43,18 @@ bool SpellCastUsefulValue::Calculate()
     if (qualifier == "windfury weapon" || qualifier == "flametongue weapon" || qualifier == "frostbrand weapon" ||
         qualifier == "rockbiter weapon" || qualifier == "earthliving weapon" || qualifier == "spellstone")
     {
-        /*if (Item* item = AI_VALUE2(Item*, "item for spell", spellid))
-            if (item->IsInWorld() && item->GetEnchantmentId(TEMP_ENCHANTMENT_SLOT))*/
-                return false;
+        Value<Item*>* itemValue = context->GetValue<Item*>("item for spell", spellid);
+        if (itemValue)
+        {
+            if (Item* item = itemValue->Get())
+            {
+                if (item->IsInWorld() && item->GetEnchantmentId(TEMP_ENCHANTMENT_SLOT))
+                    return false;
+            }
+        }
     }
 
-    /*std::set<uint32>& skipSpells = AI_VALUE(std::set<uint32>&, "skip spells list");
+    std::set<uint32> const& skipSpells = AI_VALUE(std::set<uint32>, "skip spells list");
     if (skipSpells.find(spellid) != skipSpells.end())
         return false;
 
@@ -61,13 +66,13 @@ bool SpellCastUsefulValue::Calculate()
             continue;
 
         std::wstring wnamepart;
-        if (!Utf8toWStr(std::string(skipSpellInfo->SpellName[0]), wnamepart))
+        if (!Utf8toWStr(std::string_view(skipSpellInfo->SpellName[0]), wnamepart))
             continue;
 
         wstrToLower(wnamepart);
         if (!spellName.empty() && spellName.length() == wnamepart.length() && Utf8FitTo(spellName, wnamepart))
             return false;
-    }*/
+    }
 
     return true;
 }

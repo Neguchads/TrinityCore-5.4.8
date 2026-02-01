@@ -1,7 +1,4 @@
-﻿/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+﻿
 
 #include "MovementActions.h"
 
@@ -10,6 +7,7 @@
 #include <iomanip>
 #include <string>
 #include <algorithm>
+#include <limits>
 
 #include "Event.h"
 #include "PositionValue.h"
@@ -515,6 +513,29 @@ bool MoveRandomAction::isPossible()
         !botAI->CanMove()) return false;
 
     return true;
+}
+
+bool MoveOutOfCollisionAction::Execute(Event event)
+{
+    float angle = static_cast<float>(M_PI) * 2000.0f / frand(1.0f, 1000.0f);
+    float distance = sPlayerbotAIConfig->followDistance;
+    return MoveTo(bot->GetMapId(),
+        bot->GetPositionX() + cos(angle) * distance,
+        bot->GetPositionY() + sin(angle) * distance,
+        bot->GetPositionZ());
+}
+
+bool MoveOutOfCollisionAction::isUseful()
+{
+    // do not avoid collision on vehicle
+    if (botAI->IsInVehicle())
+        return false;
+
+    GuidVector const& nearby = AI_VALUE(GuidVector, "nearest friendly players");
+    if (nearby.size() >= 15)
+        return false;
+
+    return AI_VALUE2(bool, "collision", "self target");
 }
 
 bool MovementAction::Follow(Unit* target, float distance) { return Follow(target, distance, GetFollowAngle()); }

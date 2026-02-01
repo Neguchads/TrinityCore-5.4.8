@@ -83,6 +83,15 @@ public:
     bool isPossible() override;
 };
 
+class MoveOutOfCollisionAction : public MovementAction
+{
+public:
+    MoveOutOfCollisionAction(PlayerbotAI* botAI) : MovementAction(botAI, "move out of collision") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
 class CombatFormationMoveAction : public MovementAction
 {
 public:

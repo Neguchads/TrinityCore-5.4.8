@@ -1,14 +1,18 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "WarlockActions.h"
 
 #include "Event.h"
 #include "Playerbots.h"
 
-bool CastDrainSoulAction::isUseful() { /*return AI_VALUE2(uint32, "item count", "soul shard") < 10;*/ return std::rand() % 5 < 2; }
+bool CastDrainSoulAction::isUseful()
+{
+    Unit* target = AI_VALUE(Unit*, "current target");
+    if (!target)
+        return false;
+
+    return AI_VALUE2(uint8, "health", "current target") < 20;
+}
 
 Value<Unit*>* CastBanishAction::GetTargetValue() { return context->GetValue<Unit*>("cc target", "banish"); }
 
@@ -23,6 +27,31 @@ bool CastFearOnCcAction::isPossible() { return true; }
 bool CastFearOnCcAction::isUseful() { return true; }
 
 bool CastLifeTapAction::isUseful() { return AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig->lowHealth; }
+
+Unit* CastSoulstoneAction::GetTarget()
+{
+    Unit* mainTank = AI_VALUE(Unit*, "main tank");
+    if (mainTank && mainTank->IsAlive() && !botAI->HasAura("soulstone", mainTank))
+        return mainTank;
+
+    Player* master = GetMaster();
+    if (master && master->IsAlive() && !botAI->HasAura("soulstone", master))
+        return master;
+
+    if (!botAI->HasAura("soulstone", bot))
+        return bot;
+
+    return nullptr;
+}
+
+bool CastSoulstoneAction::isUseful()
+{
+    Unit* target = GetTarget();
+    if (!target)
+        return false;
+
+    return CastBuffSpellAction::isUseful();
+}
 
 bool CastHandOfGuldanAction::Execute(Event event)
 {

@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "CasterDruidStrategy.h"
 
@@ -21,7 +18,14 @@ public:
         creators["starfall"] = &starfall;
         creators["insect swarm"] = &insect_swarm;
         creators["moonfire"] = &moonfire;
+        creators["sunfire"] = &sunfire;
         creators["starfire"] = &starfire;
+        creators["starsurge"] = &starsurge;
+        creators["astral communion"] = &astral_communion;
+        creators["celestial alignment"] = &celestial_alignment;
+        creators["wild mushroom"] = &wild_mushroom;
+        creators["wild mushroom: detonate"] = &wild_mushroom_detonate;
+        creators["astral storm"] = &astral_storm;
         creators["moonkin form"] = &moonkin_form;
     }
 
@@ -89,10 +93,59 @@ private:
                               /*A*/ nullptr,
                               /*C*/ nullptr);
     }
+    static ActionNode* sunfire([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("sunfire",
+                              /*P*/ NextAction::array(0, new NextAction("moonkin form"), nullptr),
+                              /*A*/ nullptr,
+                              /*C*/ nullptr);
+    }
 
     static ActionNode* starfire([[maybe_unused]] PlayerbotAI* botAI)
     {
         return new ActionNode("starfire",
+                              /*P*/ NextAction::array(0, new NextAction("moonkin form"), nullptr),
+                              /*A*/ nullptr,
+                              /*C*/ nullptr);
+    }
+    static ActionNode* starsurge([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("starsurge",
+                              /*P*/ NextAction::array(0, new NextAction("moonkin form"), nullptr),
+                              /*A*/ nullptr,
+                              /*C*/ nullptr);
+    }
+    static ActionNode* astral_communion([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("astral communion",
+                              /*P*/ NextAction::array(0, new NextAction("moonkin form"), nullptr),
+                              /*A*/ nullptr,
+                              /*C*/ nullptr);
+    }
+    static ActionNode* celestial_alignment([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("celestial alignment",
+                              /*P*/ NextAction::array(0, new NextAction("moonkin form"), nullptr),
+                              /*A*/ nullptr,
+                              /*C*/ nullptr);
+    }
+    static ActionNode* wild_mushroom([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("wild mushroom",
+                              /*P*/ NextAction::array(0, new NextAction("moonkin form"), nullptr),
+                              /*A*/ nullptr,
+                              /*C*/ nullptr);
+    }
+    static ActionNode* wild_mushroom_detonate([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("wild mushroom: detonate",
+                              /*P*/ NextAction::array(0, new NextAction("moonkin form"), nullptr),
+                              /*A*/ nullptr,
+                              /*C*/ nullptr);
+    }
+    static ActionNode* astral_storm([[maybe_unused]] PlayerbotAI* botAI)
+    {
+        return new ActionNode("astral storm",
                               /*P*/ NextAction::array(0, new NextAction("moonkin form"), nullptr),
                               /*A*/ nullptr,
                               /*C*/ nullptr);
@@ -116,10 +169,12 @@ CasterDruidStrategy::CasterDruidStrategy(PlayerbotAI* botAI) : GenericDruidStrat
 NextAction** CasterDruidStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-                             new NextAction("starfall", ACTION_HIGH + 1.0f),
-                             new NextAction("force of nature", ACTION_DEFAULT + 1.0f),
-                             new NextAction("wrath", ACTION_DEFAULT + 0.1f),
-                             // new NextAction("starfire", ACTION_NORMAL),
+                             new NextAction("starfall", ACTION_DEFAULT + 0.7f),
+                             new NextAction("force of nature", ACTION_DEFAULT + 0.6f),
+                             new NextAction("moonfire", ACTION_DEFAULT + 0.5f),
+                             new NextAction("insect swarm", ACTION_DEFAULT + 0.4f),
+                             new NextAction("starfire", ACTION_DEFAULT + 0.3f),
+                             new NextAction("wrath", ACTION_DEFAULT + 0.2f),
                              nullptr);
 }
 
@@ -136,6 +191,8 @@ void CasterDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
                                        
     triggers.push_back(new TriggerNode(
         "insect swarm", NextAction::array(0, new NextAction("insect swarm", ACTION_NORMAL + 5), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "sunfire", NextAction::array(0, new NextAction("sunfire", ACTION_NORMAL + 5), nullptr)));
     triggers.push_back(
         new TriggerNode("moonfire", NextAction::array(0, new NextAction("moonfire", ACTION_NORMAL + 4), nullptr)));
     triggers.push_back(
@@ -151,10 +208,19 @@ void CasterDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 void CasterDruidAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(
-        new TriggerNode("medium aoe", NextAction::array(0, new NextAction("hurricane", ACTION_HIGH + 1), nullptr)));
+        new TriggerNode("medium aoe", NextAction::array(0,
+            new NextAction("starfall", ACTION_HIGH + 4),
+            new NextAction("wild mushroom", ACTION_HIGH + 3),
+            new NextAction("wild mushroom: detonate", ACTION_HIGH + 2),
+            new NextAction("astral storm", ACTION_HIGH + 1),
+            new NextAction("hurricane", ACTION_NORMAL + 1),
+            nullptr)));
     triggers.push_back(new TriggerNode(
-        "light aoe", NextAction::array(0, new NextAction("insect swarm on attacker", ACTION_NORMAL + 3),
-                                       new NextAction("moonfire on attacker", ACTION_NORMAL + 3), NULL)));
+        "light aoe", NextAction::array(0,
+            new NextAction("sunfire on attacker", ACTION_NORMAL + 4),
+            new NextAction("moonfire on attacker", ACTION_NORMAL + 3),
+            new NextAction("insect swarm on attacker", ACTION_NORMAL + 2),
+            nullptr)));
 }
 
 void CasterDruidDebuffStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

@@ -10,6 +10,7 @@ public:
     {
         creators["mutilate"] = &mutilate;
         creators["envenom"] = &envenom;
+        creators["dispatch"] = &dispatch;
     }
 
 private:
@@ -27,6 +28,13 @@ private:
                               /*A*/ NextAction::array(0, new NextAction("eviscerate"), NULL),
                               /*C*/ NULL);
     }
+    static ActionNode* dispatch(PlayerbotAI* ai)
+    {
+        return new ActionNode("dispatch",
+                              /*P*/ NULL,
+                              /*A*/ NextAction::array(0, new NextAction("mutilate"), NULL),
+                              /*C*/ NULL);
+    }
 };
 
 AssassinationRogueStrategy::AssassinationRogueStrategy(PlayerbotAI* ai) : MeleeCombatStrategy(ai)
@@ -36,7 +44,15 @@ AssassinationRogueStrategy::AssassinationRogueStrategy(PlayerbotAI* ai) : MeleeC
 
 NextAction** AssassinationRogueStrategy::getDefaultActions()
 {
-    return NextAction::array(0, new NextAction("melee", ACTION_DEFAULT), NULL);
+    return NextAction::array(0,
+                             new NextAction("vendetta", ACTION_DEFAULT + 0.9f),
+                             new NextAction("shadow blades", ACTION_DEFAULT + 0.85f),
+                             new NextAction("slice and dice", ACTION_DEFAULT + 0.8f),
+                             new NextAction("rupture", ACTION_DEFAULT + 0.7f),
+                             new NextAction("envenom", ACTION_DEFAULT + 0.6f),
+                             new NextAction("dispatch", ACTION_DEFAULT + 0.5f),
+                             new NextAction("mutilate", ACTION_DEFAULT + 0.4f),
+                             new NextAction("melee", ACTION_DEFAULT), NULL);
 }
 
 void AssassinationRogueStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
@@ -51,13 +67,22 @@ void AssassinationRogueStrategy::InitTriggers(std::vector<TriggerNode*>& trigger
                                        NextAction::array(0, new NextAction("mutilate", ACTION_NORMAL + 3), NULL)));
 
     triggers.push_back(new TriggerNode(
-        "hunger for blood", NextAction::array(0, new NextAction("hunger for blood", ACTION_HIGH + 6), NULL)));
+        "vendetta", NextAction::array(0, new NextAction("vendetta", ACTION_HIGH + 6), NULL)));
+
+    triggers.push_back(new TriggerNode("shadow blades",
+                                       NextAction::array(0, new NextAction("shadow blades", ACTION_HIGH + 5), NULL)));
 
     triggers.push_back(new TriggerNode("slice and dice",
-                                       NextAction::array(0, new NextAction("slice and dice", ACTION_HIGH + 5), NULL)));
+                                       NextAction::array(0, new NextAction("slice and dice", ACTION_HIGH + 4), NULL)));
+
+    triggers.push_back(new TriggerNode("rupture",
+                                       NextAction::array(0, new NextAction("rupture", ACTION_HIGH + 3), NULL)));
+
+    triggers.push_back(new TriggerNode("blindside",
+                                       NextAction::array(0, new NextAction("dispatch", ACTION_HIGH + 2), NULL)));
 
     triggers.push_back(new TriggerNode("combo points 3 available",
-                                       NextAction::array(0, new NextAction("envenom", ACTION_HIGH + 4), NULL)));
+                                       NextAction::array(0, new NextAction("envenom", ACTION_HIGH + 1), NULL)));
 
     triggers.push_back(
         new TriggerNode("expose armor", NextAction::array(0, new NextAction("expose armor", ACTION_HIGH + 3), NULL)));
@@ -80,7 +105,10 @@ void AssassinationRogueStrategy::InitTriggers(std::vector<TriggerNode*>& trigger
                         NextAction::array(0, new NextAction("kick on enemy healer", ACTION_INTERRUPT + 1), NULL)));
 
     triggers.push_back(
-        new TriggerNode("medium aoe", NextAction::array(0, new NextAction("fan of knives", ACTION_NORMAL + 5), NULL)));
+        new TriggerNode("medium aoe",
+                        NextAction::array(0,
+                                          new NextAction("fan of knives", ACTION_NORMAL + 6),
+                                          new NextAction("crimson tempest", ACTION_NORMAL + 5), NULL)));
 
     triggers.push_back(new TriggerNode(
         "low tank threat",

@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "PlayerbotAI.h"
 
+class Item;
+
 class BotFactory
 {
 public:
@@ -15,12 +17,32 @@ public:
     void Randomize(bool incremental);
     void ClearEverything();
 
+    void InitSkills();
+    void InitAvailableSpells();
+    void InitClassSpells();
+    void InitSpecialSpells();
+    void InitReagents();
+    void InitConsumables();
+    void InitPotions();
+    void InitFood();
+    void InitMounts();
+    void InitBags(bool destroyOld = true);
+    void InitGlyphs(bool increment = false);
+    void ApplyEnchantAndGemsNew(bool destroyOld = true);
+    void InitPetTalents();
+    void InitReputation();
+
     void InitEquipment(bool incremental, bool second_chance = false);
     void InitPet();
     void InitTalentsTree(bool reset);
 private:
     void Prepare();
     void CancelAuras();
+    void SetRandomSkill(uint16 id);
+    Item* StoreItem(uint32 itemId, uint32 count);
+    std::vector<uint32> GetCurrentGemsCount();
+    static void LoadEnchantCaches();
+    static bool AreEnchantCachesLoaded();
 
     // -- GEARING
     bool CanEquipItem(ItemTemplate const* proto);

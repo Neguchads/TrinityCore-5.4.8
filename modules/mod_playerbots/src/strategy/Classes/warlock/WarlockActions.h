@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_WARLOCKACTIONS_H
 #define _PLAYERBOT_WARLOCKACTIONS_H
@@ -111,6 +108,15 @@ public:
     CastLifeTapAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "life tap") {}
 
     std::string const GetTargetName() override { return "self target"; }
+    bool isUseful() override;
+};
+
+class CastSoulstoneAction : public CastBuffSpellAction
+{
+public:
+    CastSoulstoneAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "soulstone") {}
+
+    Unit* GetTarget() override;
     bool isUseful() override;
 };
 

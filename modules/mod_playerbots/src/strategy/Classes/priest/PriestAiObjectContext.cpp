@@ -1,16 +1,15 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "PriestAiObjectContext.h"
 
+#include "DisciplinePriestStrategy.h"
 #include "GenericPriestStrategy.h"
 #include "HolyPriestStrategy.h"
 #include "NamedObjectContext.h"
 #include "Playerbots.h"
 #include "PriestActions.h"
 #include "PriestNonCombatStrategy.h"
+#include "PriestStrategy.h"
 #include "PriestTriggers.h"
 #include "ShadowPriestStrategy.h"
 
@@ -31,6 +30,7 @@ public:
         creators["rshadow"] = &PriestStrategyFactoryInternal::rshadow;
         creators["cc"] = &PriestStrategyFactoryInternal::cc;
         creators["healer dps"] = &PriestStrategyFactoryInternal::healer_dps;
+        creators["priest"] = &PriestStrategyFactoryInternal::priest;
     }
 
 private:
@@ -44,6 +44,7 @@ private:
     static Strategy* shadow_debuff(PlayerbotAI* botAI) { return new ShadowPriestDebuffStrategy(botAI); }
     static Strategy* cure(PlayerbotAI* botAI) { return new PriestCureStrategy(botAI); }
     static Strategy* healer_dps(PlayerbotAI* botAI) { return new PriestHealerDpsStrategy(botAI); }
+    static Strategy* priest(PlayerbotAI* botAI) { return new PriestStrategy(botAI); }
 };
 
 class PriestCombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -56,6 +57,7 @@ public:
         creators["dps"] = &PriestCombatStrategyFactoryInternal::dps;
         creators["holy dps"] = &PriestCombatStrategyFactoryInternal::holy_dps;
         creators["holy heal"] = &PriestCombatStrategyFactoryInternal::holy_heal;
+        creators["discipline"] = &PriestCombatStrategyFactoryInternal::discipline;
     }
 
 private:
@@ -63,6 +65,7 @@ private:
     static Strategy* dps(PlayerbotAI* botAI) { return new ShadowPriestStrategy(botAI); }
     static Strategy* holy_dps(PlayerbotAI* botAI) { return new HolyPriestStrategy(botAI); }
     static Strategy* holy_heal(PlayerbotAI* botAI) { return new HolyHealPriestStrategy(botAI); }
+    static Strategy* discipline(PlayerbotAI* botAI) { return new DisciplinePriestStrategy(botAI); }
 };
 
 class PriestTriggerFactoryInternal : public NamedObjectContext<Trigger>
@@ -70,9 +73,31 @@ class PriestTriggerFactoryInternal : public NamedObjectContext<Trigger>
 public:
     PriestTriggerFactoryInternal()
     {
+        creators["shadowform"] = &PriestTriggerFactoryInternal::shadowform;
+        creators["inner fire"] = &PriestTriggerFactoryInternal::inner_fire;
+        creators["inner will"] = &PriestTriggerFactoryInternal::inner_will;
+        creators["holy fire"] = &PriestTriggerFactoryInternal::holy_fire;
+        creators["power word: solace"] = &PriestTriggerFactoryInternal::power_word_solace;
+        creators["vampiric touch"] = &PriestTriggerFactoryInternal::vampiric_touch;
+        creators["shadow word: pain"] = &PriestTriggerFactoryInternal::shadow_word_pain;
+        creators["evangelism"] = &PriestTriggerFactoryInternal::evangelism;
+        creators["shadow orbs"] = &PriestTriggerFactoryInternal::shadow_orbs;
+        creators["shadow orbs 3"] = &PriestTriggerFactoryInternal::shadow_orbs_3;
+        creators["surge of darkness"] = &PriestTriggerFactoryInternal::surge_of_darkness;
     }
 
 private:
+    static Trigger* shadowform(PlayerbotAI* botAI) { return new ShadowformTrigger(botAI); }
+    static Trigger* inner_fire(PlayerbotAI* botAI) { return new InnerFireTrigger(botAI); }
+    static Trigger* inner_will(PlayerbotAI* botAI) { return new InnerWillTrigger(botAI); }
+    static Trigger* holy_fire(PlayerbotAI* botAI) { return new HolyFireTrigger(botAI); }
+    static Trigger* power_word_solace(PlayerbotAI* botAI) { return new PowerWordSolaceTrigger(botAI); }
+    static Trigger* vampiric_touch(PlayerbotAI* botAI) { return new VampiricTouchTrigger(botAI); }
+    static Trigger* shadow_word_pain(PlayerbotAI* botAI) { return new ShadowWordPainTrigger(botAI); }
+    static Trigger* evangelism(PlayerbotAI* botAI) { return new EvangelismTrigger(botAI, 5); }
+    static Trigger* shadow_orbs(PlayerbotAI* botAI) { return new ShadowOrbsTrigger(botAI, 3); }
+    static Trigger* shadow_orbs_3(PlayerbotAI* botAI) { return new ShadowOrbsTrigger(botAI, 3); }
+    static Trigger* surge_of_darkness(PlayerbotAI* botAI) { return new SurgeOfDarknessTrigger(botAI); }
 };
 
 class PriestAiObjectContextInternal : public NamedObjectContext<Action>
@@ -82,13 +107,16 @@ public:
     {
         creators["power infusion"] = &PriestAiObjectContextInternal::power_infusion;
         creators["inner focus"] = &PriestAiObjectContextInternal::inner_focus;
+        creators["inner will"] = &PriestAiObjectContextInternal::inner_will;
         creators["shadow word: pain"] = &PriestAiObjectContextInternal::shadow_word_pain;
         creators["shadow word: pain on attacker"] = &PriestAiObjectContextInternal::shadow_word_pain_on_attacker;
         creators["devouring plague"] = &PriestAiObjectContextInternal::devouring_plague;
         creators["mind flay"] = &PriestAiObjectContextInternal::mind_flay;
         creators["holy fire"] = &PriestAiObjectContextInternal::holy_fire;
+        creators["power word: solace"] = &PriestAiObjectContextInternal::power_word_solace;
         creators["smite"] = &PriestAiObjectContextInternal::smite;
         creators["mind blast"] = &PriestAiObjectContextInternal::mind_blast;
+        creators["mind spike"] = &PriestAiObjectContextInternal::mind_spike;
         creators["shadowform"] = &PriestAiObjectContextInternal::shadowform;
         creators["remove shadowform"] = &PriestAiObjectContextInternal::remove_shadowform;
         creators["holy nova"] = &PriestAiObjectContextInternal::holy_nova;
@@ -155,6 +183,18 @@ public:
         creators["chastise"] = &PriestAiObjectContextInternal::chastise;
         creators["shadow word: death"] = &PriestAiObjectContextInternal::shadow_word_death;
         creators["shadowfiend"] = &PriestAiObjectContextInternal::shadowfiend;
+        creators["mindbender"] = &PriestAiObjectContextInternal::mindbender;
+        creators["penance"] = &PriestAiObjectContextInternal::penance;
+        creators["archangel"] = &PriestAiObjectContextInternal::archangel;
+        creators["spirit shell"] = &PriestAiObjectContextInternal::spirit_shell;
+        creators["divine star"] = &PriestAiObjectContextInternal::divine_star;
+        creators["cascade"] = &PriestAiObjectContextInternal::cascade;
+        creators["halo"] = &PriestAiObjectContextInternal::halo;
+        creators["chakra: serenity"] = &PriestAiObjectContextInternal::chakra_serenity;
+        creators["chakra: sanctuary"] = &PriestAiObjectContextInternal::chakra_sanctuary;
+        creators["chakra: chastise"] = &PriestAiObjectContextInternal::chakra_chastise;
+        creators["holy word: serenity"] = &PriestAiObjectContextInternal::holy_word_serenity;
+        creators["holy word: sanctuary"] = &PriestAiObjectContextInternal::holy_word_sanctuary;
         creators["mass dispel"] = &PriestAiObjectContextInternal::mass_dispel;
         creators["pain suppression"] = &PriestAiObjectContextInternal::pain_suppression;
         creators["pain suppression on party"] = &PriestAiObjectContextInternal::pain_suppression_on_party;
@@ -175,6 +215,7 @@ private:
     static Action* shadow_protection(PlayerbotAI* botAI) { return new CastShadowProtectionAction(botAI); }
     static Action* power_infusion(PlayerbotAI* botAI) { return new CastPowerInfusionAction(botAI); }
     static Action* inner_focus(PlayerbotAI* botAI) { return new CastInnerFocusAction(botAI); }
+    static Action* inner_will(PlayerbotAI* botAI) { return new CastInnerWillAction(botAI); }
     static Action* dispersion(PlayerbotAI* botAI) { return new CastDispersionAction(botAI); }
     static Action* vampiric_embrace(PlayerbotAI* botAI) { return new CastVampiricEmbraceAction(botAI); }
     static Action* vampiric_touch(PlayerbotAI* botAI) { return new CastVampiricTouchAction(botAI); }
@@ -193,8 +234,10 @@ private:
     static Action* devouring_plague(PlayerbotAI* botAI) { return new CastDevouringPlagueAction(botAI); }
     static Action* mind_flay(PlayerbotAI* botAI) { return new CastMindFlayAction(botAI); }
     static Action* holy_fire(PlayerbotAI* botAI) { return new CastHolyFireAction(botAI); }
+    static Action* power_word_solace(PlayerbotAI* botAI) { return new CastPowerWordSolaceAction(botAI); }
     static Action* smite(PlayerbotAI* botAI) { return new CastSmiteAction(botAI); }
     static Action* mind_blast(PlayerbotAI* botAI) { return new CastMindBlastAction(botAI); }
+    static Action* mind_spike(PlayerbotAI* botAI) { return new CastMindSpikeAction(botAI); }
     static Action* shadowform(PlayerbotAI* botAI) { return new CastShadowformAction(botAI); }
     static Action* remove_shadowform(PlayerbotAI* botAI) { return new CastRemoveShadowformAction(botAI); }
     static Action* holy_nova(PlayerbotAI* botAI) { return new CastHolyNovaAction(botAI); }
@@ -266,6 +309,7 @@ private:
     static Action* pain_suppression(PlayerbotAI* botAI) { return new CastPainSuppressionAction(botAI); }
     static Action* mass_dispel(PlayerbotAI* botAI) { return new CastMassDispelAction(botAI); }
     static Action* shadowfiend(PlayerbotAI* botAI) { return new CastShadowfiendAction(botAI); }
+    static Action* mindbender(PlayerbotAI* botAI) { return new CastMindbenderAction(botAI); }
     static Action* shadow_word_death(PlayerbotAI* botAI) { return new CastShadowWordDeathAction(botAI); }
     static Action* chastise(PlayerbotAI* botAI) { return new CastChastiseAction(botAI); }
     static Action* consume_magic(PlayerbotAI* botAI) { return new CastConsumeMagicAction(botAI); }
@@ -275,6 +319,17 @@ private:
     static Action* divine_hymn(PlayerbotAI* ai) { return new CastDivineHymnAction(ai); }
     static Action* mind_sear(PlayerbotAI* ai) { return new CastMindSearAction(ai); }
     static Action* guardian_spirit_on_party(PlayerbotAI* ai) { return new CastGuardianSpiritOnPartyAction(ai); }
+    static Action* penance(PlayerbotAI* ai) { return new CastPenanceAction(ai); }
+    static Action* archangel(PlayerbotAI* ai) { return new CastArchangelAction(ai); }
+    static Action* spirit_shell(PlayerbotAI* ai) { return new CastSpiritShellAction(ai); }
+    static Action* divine_star(PlayerbotAI* ai) { return new CastDivineStarAction(ai); }
+    static Action* cascade(PlayerbotAI* ai) { return new CastCascadeAction(ai); }
+    static Action* halo(PlayerbotAI* ai) { return new CastHaloAction(ai); }
+    static Action* chakra_serenity(PlayerbotAI* ai) { return new CastChakraSerenityAction(ai); }
+    static Action* chakra_sanctuary(PlayerbotAI* ai) { return new CastChakraSanctuaryAction(ai); }
+    static Action* chakra_chastise(PlayerbotAI* ai) { return new CastChakraChastiseAction(ai); }
+    static Action* holy_word_serenity(PlayerbotAI* ai) { return new CastHolyWordSerenityAction(ai); }
+    static Action* holy_word_sanctuary(PlayerbotAI* ai) { return new CastHolyWordSanctuaryAction(ai); }
 };
 
 PriestAiObjectContext::PriestAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)

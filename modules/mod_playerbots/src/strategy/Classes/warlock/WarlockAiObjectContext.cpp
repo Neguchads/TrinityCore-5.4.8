@@ -1,13 +1,18 @@
 #include "WarlockAiObjectContext.h"
 
 #include "AffliWarlockStrategy.h"
+#include "AfflictionWarlockStrategy.h"
 #include "DemonoWarlockStrategy.h"
+#include "DemonologyWarlockStrategy.h"
 #include "DestruWarlockStrategy.h"
+#include "DestructionWarlockStrategy.h"
 #include "GenericTriggers.h"
 #include "GenericWarlockNonCombatStrategy.h"
 #include "NamedObjectContext.h"
 #include "Playerbots.h"
 #include "Strategy.h"
+#include "TankWarlockStrategy.h"
+#include "WarlockStrategy.h"
 #include "WarlockActions.h"
 #include "WarlockTriggers.h"
 
@@ -22,6 +27,7 @@ public:
         creators["boost"] = &WarlockStrategyFactoryInternal::boost;
         creators["cc"] = &WarlockStrategyFactoryInternal::cc;
         creators["pet"] = &WarlockStrategyFactoryInternal::pet;
+        creators["warlock"] = &WarlockStrategyFactoryInternal::warlock;
     }
 
 private:
@@ -31,6 +37,7 @@ private:
     //static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(botAI, "shoot"); }
     static Strategy* boost(PlayerbotAI* botAI) { return new WarlockBoostStrategy(botAI); }
     static Strategy* cc(PlayerbotAI* botAI) { return new WarlockCcStrategy(botAI); }
+    static Strategy* warlock(PlayerbotAI* botAI) { return new WarlockStrategy(botAI); }
 };
 
 class WarlockCombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -41,12 +48,24 @@ public:
         creators["affli"] = &WarlockCombatStrategyFactoryInternal::affli;
         creators["demono"] = &WarlockCombatStrategyFactoryInternal::demono;
         creators["destru"] = &WarlockCombatStrategyFactoryInternal::destru;
+        creators["affliction"] = &WarlockCombatStrategyFactoryInternal::affliction;
+        creators["demonology"] = &WarlockCombatStrategyFactoryInternal::demonology;
+        creators["destruction"] = &WarlockCombatStrategyFactoryInternal::destruction;
+        creators["demo"] = &WarlockCombatStrategyFactoryInternal::demo;
+        creators["destro"] = &WarlockCombatStrategyFactoryInternal::destro;
+        creators["tank"] = &WarlockCombatStrategyFactoryInternal::tank;
     }
 
 private:
     static Strategy* affli(PlayerbotAI* botAI) { return new AffliWarlockStrategy(botAI); }
     static Strategy* demono(PlayerbotAI* botAI) { return new DemonoWarlockStrategy(botAI); }
     static Strategy* destru(PlayerbotAI* botAI) { return new DestruWarlockStrategy(botAI); }
+    static Strategy* affliction(PlayerbotAI* botAI) { return new AfflictionWarlockStrategy(botAI); }
+    static Strategy* demonology(PlayerbotAI* botAI) { return new DemonologyWarlockStrategy(botAI); }
+    static Strategy* destruction(PlayerbotAI* botAI) { return new DestructionWarlockStrategy(botAI); }
+    static Strategy* demo(PlayerbotAI* botAI) { return new DemonologyWarlockStrategy(botAI); }
+    static Strategy* destro(PlayerbotAI* botAI) { return new DestructionWarlockStrategy(botAI); }
+    static Strategy* tank(PlayerbotAI* botAI) { return new TankWarlockStrategy(botAI); }
 };
 
 class NonCombatBuffStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -76,20 +95,26 @@ public:
         // -- generic
         creators["corruption"] = &WarlockTriggerFactoryInternal::corruption;
         creators["dark intent"] = &WarlockTriggerFactoryInternal::dark_intent;
+        creators["soulstone"] = &WarlockTriggerFactoryInternal::soulstone;
         creators["curse of enfeeblement"] = &WarlockTriggerFactoryInternal::curse_enfeeblement;
         creators["curse of the elements"] = &WarlockTriggerFactoryInternal::curse_elements;
 
         // -- Affliction
         creators["agony"] = &WarlockTriggerFactoryInternal::agony;
         creators["unstable affliction"] = &WarlockTriggerFactoryInternal::unstable_affliction;
+        creators["life tap glyph buff"] = &WarlockTriggerFactoryInternal::life_tap_glyph_buff;
 
         // -- Demonologie
         creators["metamorphosis"] = &WarlockTriggerFactoryInternal::metamorphosis;
         creators["molten core"] = &WarlockTriggerFactoryInternal::molten_core;
+        creators["hand of guldan"] = &WarlockTriggerFactoryInternal::hand_of_guldan;
+        creators["soul fire"] = &WarlockTriggerFactoryInternal::soul_fire;
+        creators["haunt"] = &WarlockTriggerFactoryInternal::haunt;
 
         // -- Destru
         creators["immolate"] = &WarlockTriggerFactoryInternal::immolate;
         creators["backdraft"] = &WarlockTriggerFactoryInternal::backdraft;
+        creators["conflagrate"] = &WarlockTriggerFactoryInternal::conflagrate;
         creators["fire and brimstone"] = &WarlockTriggerFactoryInternal::fire_and_brimstone;
 
         // -- Pet
@@ -104,20 +129,26 @@ private:
     // -- generic
     static Trigger* corruption(PlayerbotAI* botAI) { return new CorruptionTrigger(botAI); }
     static Trigger* dark_intent(PlayerbotAI* botAI) { return new DarkIntentTrigger(botAI); }
+    static Trigger* soulstone(PlayerbotAI* botAI) { return new SoulstoneTrigger(botAI); }
     static Trigger* curse_enfeeblement(PlayerbotAI* botAI) { return new CurseOfEnfeeblementTrigger(botAI); }
     static Trigger* curse_elements(PlayerbotAI* botAI) { return new CurseOfElementsTrigger(botAI); }
 
     // -- Affliction
     static Trigger* agony(PlayerbotAI* botAI) { return new CurseOfAgonyTrigger(botAI); }
     static Trigger* unstable_affliction(PlayerbotAI* botAI) { return new UnstableAfflictionTrigger(botAI); }
+    static Trigger* life_tap_glyph_buff(PlayerbotAI* botAI) { return new LifeTapGlyphBuffTrigger(botAI); }
 
     // -- Demonologie
     static Trigger* metamorphosis(PlayerbotAI* botAI) { return new MetamorphosisTrigger(botAI); }
     static Trigger* molten_core(PlayerbotAI* botAI) { return new MoltenCoreTrigger(botAI); }
+    static Trigger* hand_of_guldan(PlayerbotAI* botAI) { return new HandOfGuldanTrigger(botAI); }
+    static Trigger* soul_fire(PlayerbotAI* botAI) { return new SoulFireTrigger(botAI); }
+    static Trigger* haunt(PlayerbotAI* botAI) { return new HauntTrigger(botAI); }
 
     // -- Destr
     static Trigger* immolate(PlayerbotAI* botAI) { return new ImmolateTrigger(botAI); }
     static Trigger* backdraft(PlayerbotAI* botAI) { return new BackdraftTrigger(botAI); }
+    static Trigger* conflagrate(PlayerbotAI* botAI) { return new ConflagrateTrigger(botAI); }
     static Trigger* fire_and_brimstone(PlayerbotAI* botAI) { return new FireAndBrimeStoneTrigger(botAI); }
 
     // -- Pet
@@ -139,6 +170,7 @@ public:
         creators["unending resolve"] = &WarlockAiObjectContextInternal::unending_resolve;
         creators["twilight ward"] = &WarlockAiObjectContextInternal::twilight_ward;
         creators["health funnel"] = &WarlockAiObjectContextInternal::health_funnel;
+        creators["soulstone"] = &WarlockAiObjectContextInternal::soulstone;
         // -- talents
         creators["dark regeneration"] = &WarlockAiObjectContextInternal::dark_regeneration;
         creators["demonic breath"] = &WarlockAiObjectContextInternal::demonic_breath;
@@ -247,6 +279,7 @@ private:
     static Action* unending_resolve(PlayerbotAI* botAI) { return new CastUnendingResolveAction(botAI); }
     static Action* fel_flame(PlayerbotAI* botAI) { return new CastFelFlameAction(botAI); }
     static Action* dark_intent(PlayerbotAI* botAI) { return new CastDarkIntentAction(botAI); }
+    static Action* soulstone(PlayerbotAI* botAI) { return new CastSoulstoneAction(botAI); }
     static Action* twilight_ward(PlayerbotAI* botAI) { return new CastTwilightWardAction(botAI); }
     static Action* health_funnel(PlayerbotAI* botAI) { return new CastHealthFunnelAction(botAI); }
 

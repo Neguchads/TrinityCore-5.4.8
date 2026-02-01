@@ -69,7 +69,7 @@ protected:
 class NewRpgMoveNpcAction : public MovementAction
 {
 public:
-    NewRpgMoveNpcAction(PlayerbotAI* botAI) : MovementAction(botAI, "new rpg move npcs") {}
+    NewRpgMoveNpcAction(PlayerbotAI* botAI) : MovementAction(botAI, "new rpg move npc") {}
     bool Execute(Event event) override;
 protected:
     const uint32 stayTime = 8 * 1000;

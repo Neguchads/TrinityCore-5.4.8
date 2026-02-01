@@ -1,29 +1,26 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "ChooseTargetActions.h"
 
 #include "Event.h"
 #include "NewRpgStrategy.h"
 #include "Playerbots.h"
+#include "PvpTriggers.h"
 #include "ServerFacade.h"
 
 bool AttackEnemyPlayerAction::isUseful()
 {
-    //if (PlayerHasFlag::IsCapturingFlag(bot))
-        //return false;
+    if (PlayerHasFlag::IsCapturingFlag(bot))
+        return false;
 
     return !sPlayerbotAIConfig->IsPvpProhibited(bot->GetZoneId(), bot->GetAreaId());
 }
 
 bool AttackEnemyFlagCarrierAction::isUseful()
 {
-    //Unit* target = context->GetValue<Unit*>("enemy flag carrier")->Get();
-    //return target && sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(bot, target), 75.0f) && PlayerHasFlag::IsCapturingFlag(bot);
-
-    return false;
+    Unit* target = context->GetValue<Unit*>("enemy flag carrier")->Get();
+    return target && sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(bot, target), 100.0f) &&
+        PlayerHasFlag::IsCapturingFlag(bot);
 }
 
 bool AttackAnythingAction::isUseful()
@@ -104,8 +101,8 @@ bool AttackAnythingAction::isPossible()
 
 bool DpsAssistAction::isUseful()
 {
-    //if (PlayerHasFlag::IsCapturingFlag(bot))
-        //return false;
+    if (PlayerHasFlag::IsCapturingFlag(bot))
+        return false;
 
     return true;
 }

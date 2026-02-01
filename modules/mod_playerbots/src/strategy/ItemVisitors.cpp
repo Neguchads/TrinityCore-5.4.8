@@ -1,11 +1,36 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "ItemVisitors.h"
 
 #include "Playerbots.h"
+
+#include <cctype>
+
+char* strstri(char const* haystack, char const* needle)
+{
+    if (!*needle)
+        return (char*)haystack;
+
+    for (; *haystack; ++haystack)
+    {
+        if (tolower(*haystack) == tolower(*needle))
+        {
+            char const* h = haystack;
+            char const* n = needle;
+
+            for (; *h && *n; ++h, ++n)
+            {
+                if (tolower(*h) != tolower(*n))
+                    break;
+            }
+
+            if (!*n)
+                return (char*)haystack;
+        }
+    }
+
+    return nullptr;
+}
 
 bool FindUsableItemVisitor::Visit(Item* item)
 {

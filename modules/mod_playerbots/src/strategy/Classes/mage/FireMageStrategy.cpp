@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "FireMageStrategy.h"
 
@@ -78,12 +75,13 @@ FireMageStrategy::FireMageStrategy(PlayerbotAI* botAI)
 NextAction** FireMageStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-        new NextAction("frostjaw", ACTION_DEFAULT + 0.10f),
-        new NextAction("combustion", ACTION_DEFAULT + 0.9f),
-        new NextAction("inferno blast", ACTION_DEFAULT + 0.8f), // cast during movement
+        new NextAction("pyroblast", ACTION_DEFAULT + 0.9f),
+        new NextAction("combustion", ACTION_DEFAULT + 0.8f),
         new NextAction("living bomb", ACTION_DEFAULT + 0.7f),
-        new NextAction("fireball", ACTION_DEFAULT + 0.6f),
-        new NextAction("scorch", ACTION_DEFAULT), nullptr);
+        new NextAction("inferno blast", ACTION_DEFAULT + 0.6f), // cast during movement
+        new NextAction("fireball", ACTION_DEFAULT + 0.5f),
+        new NextAction("scorch", ACTION_DEFAULT + 0.1f),
+        new NextAction("shoot", ACTION_DEFAULT), nullptr);
 }
 
 void FireMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
@@ -91,6 +89,8 @@ void FireMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     GenericMageStrategy::InitTriggers(triggers);
 
     triggers.push_back(new TriggerNode("medium health", NextAction::array(0, new NextAction("ice barrier", ACTION_NORMAL), nullptr)));
+    triggers.push_back(new TriggerNode("molten armor", NextAction::array(0, new NextAction("molten armor", ACTION_NORMAL + 1), nullptr)));
+    triggers.push_back(new TriggerNode("presence of mind", NextAction::array(0, new NextAction("presence of mind", ACTION_HIGH + 2), nullptr)));
     triggers.push_back(new TriggerNode("heating up", NextAction::array(0, new NextAction("inferno blast", ACTION_INTERRUPT), nullptr)));
     triggers.push_back(new TriggerNode("pyroblast!", NextAction::array(0, new NextAction("pyroblast", ACTION_INTERRUPT + 10), nullptr)));
     triggers.push_back(new TriggerNode("combustion", NextAction::array(0, new NextAction("combustion", 50.0f), nullptr)));
@@ -103,8 +103,13 @@ void FireMageAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(
         new TriggerNode("medium aoe", NextAction::array(0,
+            new NextAction("nether tempest on attackers", 25.0f),
             new NextAction("dragon's breath", 24.0f),
             new NextAction("flamestrike", 23.0f), 
             new NextAction("living bomb on attackers", 21.0f), 
             new NextAction("blizzard", 20.0f), nullptr)));
+
+    triggers.push_back(new TriggerNode("frost nova on target", NextAction::array(0,
+        new NextAction("flamestrike", ACTION_HIGH + 2),
+        new NextAction("cone of cold", ACTION_HIGH + 1), nullptr)));
 }

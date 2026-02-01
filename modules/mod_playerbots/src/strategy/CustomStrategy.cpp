@@ -1,13 +1,11 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "CustomStrategy.h"
 #include "Helper.h"
 
 #include <regex>
 
+#include "DatabaseEnv.h"
 #include "Playerbots.h"
 
 std::map<std::string, std::string> CustomStrategy::actionLinesCache;
@@ -90,10 +88,8 @@ void CustomStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
 void CustomStrategy::LoadActionLines(uint32 owner)
 {
-    PlayerbotsPreparedStatement* stmt = PlayerbotsDatabase.GetPreparedStatement(PLAYERBOTS_SEL_CUSTOM_STRATEGY_BY_OWNER_AND_NAME);
-    stmt->setUInt32(0, owner);
-    stmt->setString(1, qualifier);
-    PreparedQueryResult result = PlayerbotsDatabase.Query(stmt);
+    QueryResult result = CharacterDatabase.PQuery("SELECT idx, action_line FROM playerbots_custom_strategy WHERE owner = %u AND name = '%s' ORDER BY idx",
+        owner, qualifier.c_str());
     if (result)
     {
         do

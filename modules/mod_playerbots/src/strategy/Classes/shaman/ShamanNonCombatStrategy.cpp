@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "ShamanNonCombatStrategy.h"
 
@@ -36,7 +33,7 @@ void ShamanNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
     triggers.push_back(new TriggerNode("party member almost full health",
                                        NextAction::array(0, new NextAction("riptide on party", 25.0f),
-                                                         new NextAction("lesser healing wave on party", 24.0f), NULL)));
+                                                         new NextAction("healing wave on party", 24.0f), NULL)));
 
     triggers.push_back(
         new TriggerNode("group heal setting", NextAction::array(0, new NextAction("chain heal on party", 27.0f), NULL)));

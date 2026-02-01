@@ -3,10 +3,11 @@
  * and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
-#include "DKTriggers.h"
+#include "DuelTargetValue.h"
 
-#include <string>
-
-#include "GenericTriggers.h"
 #include "Playerbots.h"
-#include "SharedDefines.h"
+
+Unit* DuelTargetValue::Calculate()
+{
+    return bot && bot->duel ? bot->duel->opponent : nullptr;
+}

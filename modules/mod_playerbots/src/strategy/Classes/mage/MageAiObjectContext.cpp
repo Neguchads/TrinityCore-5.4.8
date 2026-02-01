@@ -1,14 +1,13 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "MageAiObjectContext.h"
 
 #include "ArcaneMageStrategy.h"
 #include "FireMageStrategy.h"
+#include "FrostFireMageStrategy.h"
 #include "FrostMageStrategy.h"
 #include "GenericMageNonCombatStrategy.h"
+#include "MageStrategy.h"
 #include "MageActions.h"
 #include "MageTriggers.h"
 #include "NamedObjectContext.h"
@@ -33,6 +32,7 @@ public:
         creators["buff"] = &MageStrategyFactoryInternal::buff;
         //creators["boost"] = &MageStrategyFactoryInternal::boost;
         //creators["cc"] = &MageStrategyFactoryInternal::cc;
+        creators["mage"] = &MageStrategyFactoryInternal::mage;
     }
 
 private:
@@ -45,6 +45,7 @@ private:
     static Strategy* buff(PlayerbotAI* botAI) { return new MageBuffStrategy(botAI); }
     //static Strategy* boost(PlayerbotAI* botAI) { return new MageBoostStrategy(botAI); }
     //static Strategy* cc(PlayerbotAI* botAI) { return new MageCcStrategy(botAI); }
+    static Strategy* mage(PlayerbotAI* botAI) { return new MageStrategy(botAI); }
 };
 
 class MageCombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -55,12 +56,14 @@ public:
         creators["frost"] = &MageCombatStrategyFactoryInternal::frost;
         creators["fire"] = &MageCombatStrategyFactoryInternal::fire;
         creators["arcane"] = &MageCombatStrategyFactoryInternal::arcane;
+        creators["frostfire"] = &MageCombatStrategyFactoryInternal::frostfire;
     }
 
 private:
     static Strategy* frost(PlayerbotAI* botAI) { return new FrostMageStrategy(botAI); }
     static Strategy* fire(PlayerbotAI* botAI) { return new FireMageStrategy(botAI); }
     static Strategy* arcane(PlayerbotAI* botAI) { return new ArcaneMageStrategy(botAI); }
+    static Strategy* frostfire(PlayerbotAI* botAI) { return new FrostFireMageStrategy(botAI); }
 };
 
 class MageBuffStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -93,6 +96,9 @@ public:
         creators["frost nova on target"] = &MageTriggerFactoryInternal::frost_nova_on_target;
         creators["counterspell"] = &MageTriggerFactoryInternal::counterspell;
         creators["spellsteal"] = &MageTriggerFactoryInternal::spellsteal;
+        creators["temporal shield"] = &MageTriggerFactoryInternal::temporal_shield;
+        creators["greater invisibility"] = &MageTriggerFactoryInternal::greater_invisibility;
+        creators["time warp"] = &MageTriggerFactoryInternal::time_warp;
 
         // -- fire
         creators["heating up"] = &MageTriggerFactoryInternal::heating_up;
@@ -125,6 +131,9 @@ private:
     static Trigger* frost_nova_on_target(PlayerbotAI* botAI) { return new FrostNovaOnTargetTrigger(botAI); }
     static Trigger* counterspell(PlayerbotAI* botAI) { return new CounterspellInterruptSpellTrigger(botAI); }
     static Trigger* spellsteal(PlayerbotAI* botAI) { return new SpellstealTrigger(botAI); }
+    static Trigger* temporal_shield(PlayerbotAI* botAI) { return new TemporalShieldTrigger(botAI); }
+    static Trigger* greater_invisibility(PlayerbotAI* botAI) { return new GreaterInvisibilityTrigger(botAI); }
+    static Trigger* time_warp(PlayerbotAI* botAI) { return new TimeWarpTrigger(botAI); }
 
     // -- fire
     static Trigger* heating_up(PlayerbotAI* botAI) { return new HeatingUpTrigger(botAI); }
@@ -175,6 +184,9 @@ public:
         creators["evocation"] = &MageAiObjectContextInternal::evocation;
         creators["deep freeze"] = &MageAiObjectContextInternal::deepfreeze;
         creators["ice block"] = &MageAiObjectContextInternal::ice_block;
+        creators["temporal shield"] = &MageAiObjectContextInternal::temporal_shield;
+        creators["greater invisibility"] = &MageAiObjectContextInternal::greater_invisibility;
+        creators["time warp"] = &MageAiObjectContextInternal::time_warp;
         creators["blink"] = &MageAiObjectContextInternal::blink;
         creators["frostjaw"] = &MageAiObjectContextInternal::frostjaw;
 
@@ -206,6 +218,7 @@ public:
         creators["arcane blast"] = &MageAiObjectContextInternal::arcane_blast;
         creators["slow"] = &MageAiObjectContextInternal::slow;
         creators["nether tempest"] = &MageAiObjectContextInternal::nether_tempest;
+        creators["nether tempest on attackers"] = &MageAiObjectContextInternal::nether_tempest_on_attackers;
     }
 
 private:
@@ -232,6 +245,9 @@ private:
     static Action* evocation(PlayerbotAI* botAI) { return new CastEvocationAction(botAI); }
     static Action* deepfreeze(PlayerbotAI* botAI) { return new CastDeepFreezeAction(botAI); }
     static Action* ice_block(PlayerbotAI* botAI) { return new CastIceBlockAction(botAI); }
+    static Action* temporal_shield(PlayerbotAI* botAI) { return new CastTemporalShieldAction(botAI); }
+    static Action* greater_invisibility(PlayerbotAI* botAI) { return new CastGreaterInvisibilityAction(botAI); }
+    static Action* time_warp(PlayerbotAI* botAI) { return new CastTimeWarpAction(botAI); }
     static Action* blink(PlayerbotAI* botAI) { return new CastBlinkAction(botAI); }
     static Action* fingers_of_frost(PlayerbotAI* botAI) { return new CastFingersOfFrostAction(botAI); }
     static Action* icy_veins(PlayerbotAI* botAI) { return new CastIcyVeinsAction(botAI); }
@@ -260,6 +276,7 @@ private:
     static Action* arcane_barrage(PlayerbotAI* botAI) { return new CastArcaneBarrageAction(botAI); }
     static Action* slow(PlayerbotAI* botAI) { return new CastSlowAction(botAI); }
     static Action* nether_tempest(PlayerbotAI* botAI) { return new CastNetherTempestAction(botAI); }
+    static Action* nether_tempest_on_attackers(PlayerbotAI* botAI) { return new CastNetherTempestOnAttackersAction(botAI); }
 
     static Action* focus_magic_on_party(PlayerbotAI* botAI) { return new CastFocusMagicOnPartyAction(botAI); }
 };

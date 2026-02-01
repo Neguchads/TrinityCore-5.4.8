@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_SHAMANACTIONS_H
 #define _PLAYERBOT_SHAMANACTIONS_H
@@ -49,6 +46,27 @@ public:
         : HealPartyMemberAction(botAI, "chain heal", 15.0f, HealingManaEfficiency::HIGH)
     {
     }
+};
+
+class CastHealingSurgeAction : public CastHealingSpellAction
+{
+public:
+    CastHealingSurgeAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "healing surge") {}
+};
+
+class CastHealingSurgeOnPartyAction : public HealPartyMemberAction
+{
+public:
+    CastHealingSurgeOnPartyAction(PlayerbotAI* botAI)
+        : HealPartyMemberAction(botAI, "healing surge", 35.0f, HealingManaEfficiency::LOW)
+    {
+    }
+};
+
+class CastHealingRainAction : public CastAoeHealSpellAction
+{
+public:
+    CastHealingRainAction(PlayerbotAI* botAI) : CastAoeHealSpellAction(botAI, "healing rain", 20.0f) {}
 };
 
 class CastRiptideAction : public CastHealingSpellAction
@@ -232,6 +250,22 @@ public:
     bool isUseful() override;
 };
 
+class CastHealingTideTotemAction : public CastTotemAction
+{
+public:
+    CastHealingTideTotemAction(PlayerbotAI* botAI) : CastTotemAction(botAI, "healing tide totem", "", 0.0f) {}
+
+    std::string const GetTargetName() override { return "self target"; }
+};
+
+class CastSpiritLinkTotemAction : public CastTotemAction
+{
+public:
+    CastSpiritLinkTotemAction(PlayerbotAI* botAI) : CastTotemAction(botAI, "spirit link totem", "", 0.0f) {}
+
+    std::string const GetTargetName() override { return "self target"; }
+};
+
 class CastFireNovaAction : public CastMeleeSpellAction
 {
 public:
@@ -363,6 +397,19 @@ public:
     CastLightningBoltAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "lightning bolt") {}
 };
 
+class CastElementalBlastAction : public CastSpellAction
+{
+public:
+    CastElementalBlastAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "elemental blast") {}
+};
+
+class CastEarthquakeAction : public CastSpellAction
+{
+public:
+    CastEarthquakeAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "earthquake") {}
+    ActionThreatType getThreatType() override { return ActionThreatType::Aoe; }
+};
+
 class CastThunderstormAction : public CastSpellAction
 {
 public:
@@ -385,6 +432,18 @@ class CastElementalMasteryAction : public CastBuffSpellAction
 {
 public:
     CastElementalMasteryAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "elemental mastery") {}
+};
+
+class CastAscendanceAction : public CastBuffSpellAction
+{
+public:
+    CastAscendanceAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "ascendance") {}
+};
+
+class CastUnleashElementsAction : public CastSpellAction
+{
+public:
+    CastUnleashElementsAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "unleash elements") {}
 };
 
 class CastWindShearOnEnemyHealerAction : public CastSpellOnEnemyHealerAction
@@ -423,6 +482,14 @@ class CastFireElementalTotemAction : public CastTotemAction
 {
 public:
     CastFireElementalTotemAction(PlayerbotAI* ai) : CastTotemAction(ai, "fire elemental totem", "", 0.0f) {}
+    virtual std::string const GetTargetName() override { return "self target"; }
+    virtual bool isUseful() override { return CastTotemAction::isUseful(); }
+};
+
+class CastEarthElementalTotemAction : public CastTotemAction
+{
+public:
+    CastEarthElementalTotemAction(PlayerbotAI* ai) : CastTotemAction(ai, "earth elemental totem", "", 0.0f) {}
     virtual std::string const GetTargetName() override { return "self target"; }
     virtual bool isUseful() override { return CastTotemAction::isUseful(); }
 };

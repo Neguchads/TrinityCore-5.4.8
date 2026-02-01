@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "PaladinTriggers.h"
 
@@ -11,5 +8,10 @@
 
 bool SealTrigger::IsActive()
 {
-	return !botAI->HasAura("seal of righteousness", bot) || !botAI->HasAura("seal of command", bot) || !botAI->HasAura("seal of insight", bot);
+    return !botAI->HasAnyAuraOf(bot, "seal of righteousness", "seal of command", "seal of insight", "seal of truth", nullptr);
+}
+
+bool HolyPowerTrigger::IsActive()
+{
+    return bot->GetPower(Powers::POWER_HOLY_POWER) >= minHolyPower;
 }

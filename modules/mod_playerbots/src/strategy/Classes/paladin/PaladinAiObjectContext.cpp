@@ -1,18 +1,21 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "PaladinAiObjectContext.h"
 
 #include "DpsPaladinStrategy.h"
 #include "GenericPaladinNonCombatStrategy.h"
+#include "GenericPaladinStrategy.h"
 #include "HealPaladinStrategy.h"
+#include "HolyPaladinStrategy.h"
 #include "NamedObjectContext.h"
+#include "OffhealRetPaladinStrategy.h"
 #include "PaladinActions.h"
 #include "PaladinBuffStrategies.h"
+#include "PaladinStrategy.h"
 #include "PaladinTriggers.h"
 #include "Playerbots.h"
+#include "ProtectionPaladinStrategy.h"
+#include "RetributionPaladinStrategy.h"
 #include "TankPaladinStrategy.h"
 
 class PaladinStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -26,6 +29,7 @@ public:
         creators["cc"] = &PaladinStrategyFactoryInternal::cc;
         creators["bthreat"] = &PaladinStrategyFactoryInternal::bthreat;
         creators["healer dps"] = &PaladinStrategyFactoryInternal::healer_dps;
+        creators["paladin"] = &PaladinStrategyFactoryInternal::paladin;
     }
 
 private:
@@ -35,6 +39,7 @@ private:
     static Strategy* cc(PlayerbotAI* botAI) { return new PaladinCcStrategy(botAI); }
     static Strategy* bthreat(PlayerbotAI* botAI) { return new PaladinBuffThreatStrategy(botAI); }
     static Strategy* healer_dps(PlayerbotAI* botAI) { return new PaladinHealerDpsStrategy(botAI); }
+    static Strategy* paladin(PlayerbotAI* botAI) { return new PaladinStrategy(botAI); }
 };
 
 class PaladinResistanceStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -81,12 +86,20 @@ public:
         creators["tank"] = &PaladinCombatStrategyFactoryInternal::tank;
         creators["dps"] = &PaladinCombatStrategyFactoryInternal::dps;
         creators["heal"] = &PaladinCombatStrategyFactoryInternal::heal;
+        creators["holy"] = &PaladinCombatStrategyFactoryInternal::holy;
+        creators["retribution"] = &PaladinCombatStrategyFactoryInternal::retribution;
+        creators["protection"] = &PaladinCombatStrategyFactoryInternal::protection;
+        creators["offheal"] = &PaladinCombatStrategyFactoryInternal::offheal;
     }
 
 private:
     static Strategy* tank(PlayerbotAI* botAI) { return new TankPaladinStrategy(botAI); }
     static Strategy* dps(PlayerbotAI* botAI) { return new DpsPaladinStrategy(botAI); }
     static Strategy* heal(PlayerbotAI* botAI) { return new HealPaladinStrategy(botAI); }
+    static Strategy* holy(PlayerbotAI* botAI) { return new HolyPaladinStrategy(botAI); }
+    static Strategy* retribution(PlayerbotAI* botAI) { return new RetributionPaladinStrategy(botAI); }
+    static Strategy* protection(PlayerbotAI* botAI) { return new ProtectionPaladinStrategy(botAI); }
+    static Strategy* offheal(PlayerbotAI* botAI) { return new OffhealRetPaladinStrategy(botAI); }
 };
 
 class PaladinTriggerFactoryInternal : public NamedObjectContext<Trigger>
@@ -95,9 +108,25 @@ public:
     PaladinTriggerFactoryInternal()
     {
         creators["seal"] = &PaladinTriggerFactoryInternal::seal;
+        creators["holy power"] = &PaladinTriggerFactoryInternal::holy_power;
+        creators["holy power 5"] = &PaladinTriggerFactoryInternal::holy_power_5;
+        creators["the art of war"] = &PaladinTriggerFactoryInternal::the_art_of_war;
+        creators["grand crusader"] = &PaladinTriggerFactoryInternal::grand_crusader;
+        creators["divine purpose"] = &PaladinTriggerFactoryInternal::divine_purpose;
+        creators["inquisition"] = &PaladinTriggerFactoryInternal::inquisition;
+        creators["bastion of glory"] = &PaladinTriggerFactoryInternal::bastion_of_glory;
+        creators["bastion of glory 5"] = &PaladinTriggerFactoryInternal::bastion_of_glory_5;
     }
 private:
     static Trigger* seal(PlayerbotAI* botAI) { return new SealTrigger(botAI); }
+    static Trigger* holy_power(PlayerbotAI* botAI) { return new HolyPowerTrigger(botAI, 3); }
+    static Trigger* holy_power_5(PlayerbotAI* botAI) { return new HolyPowerTrigger(botAI, 5); }
+    static Trigger* the_art_of_war(PlayerbotAI* botAI) { return new ArtOfWarTrigger(botAI); }
+    static Trigger* grand_crusader(PlayerbotAI* botAI) { return new GrandCrusaderTrigger(botAI); }
+    static Trigger* divine_purpose(PlayerbotAI* botAI) { return new DivinePurposeTrigger(botAI); }
+    static Trigger* inquisition(PlayerbotAI* botAI) { return new InquisitionTrigger(botAI); }
+    static Trigger* bastion_of_glory(PlayerbotAI* botAI) { return new BastionOfGloryTrigger(botAI, 3); }
+    static Trigger* bastion_of_glory_5(PlayerbotAI* botAI) { return new BastionOfGloryTrigger(botAI, 5); }
 };
 
 class PaladinAiObjectContextInternal : public NamedObjectContext<Action>
@@ -108,6 +137,7 @@ public:
         creators["seal of command"] = &PaladinAiObjectContextInternal::seal_of_command;
         creators["seal of insight"] = &PaladinAiObjectContextInternal::seal_of_insight;
         creators["seal of righteousness"] = &PaladinAiObjectContextInternal::seal_of_righteousness;
+        creators["seal of truth"] = &PaladinAiObjectContextInternal::seal_of_truth;
 
         creators["blessing of might"] = &PaladinAiObjectContextInternal::blessing_of_might;
         creators["blessing of kings"] = &PaladinAiObjectContextInternal::blessing_of_kings;
@@ -132,6 +162,11 @@ public:
         creators["purify disease on party"] = &PaladinAiObjectContextInternal::purify_disease_on_party;
         
         creators["flash of light"] = &PaladinAiObjectContextInternal::flash_of_light;
+        creators["divine light"] = &PaladinAiObjectContextInternal::divine_light;
+        creators["holy radiance"] = &PaladinAiObjectContextInternal::holy_radiance;
+        creators["light of dawn"] = &PaladinAiObjectContextInternal::light_of_dawn;
+        creators["word of glory"] = &PaladinAiObjectContextInternal::word_of_glory;
+        creators["eternal flame"] = &PaladinAiObjectContextInternal::eternal_flame;
         creators["hand of reckoning"] = &PaladinAiObjectContextInternal::hand_of_reckoning;
         creators["avenger's shield"] = &PaladinAiObjectContextInternal::avengers_shield;
         creators["exorcism"] = &PaladinAiObjectContextInternal::exorcism;
@@ -141,6 +176,11 @@ public:
         creators["divine protection on party"] = &PaladinAiObjectContextInternal::divine_protection_on_party;
         creators["hammer of justice"] = &PaladinAiObjectContextInternal::hammer_of_justice;
         creators["flash of light on party"] = &PaladinAiObjectContextInternal::flash_of_light_on_party;
+        creators["divine light on party"] = &PaladinAiObjectContextInternal::divine_light_on_party;
+        creators["holy radiance on party"] = &PaladinAiObjectContextInternal::holy_radiance_on_party;
+        creators["light of dawn on party"] = &PaladinAiObjectContextInternal::light_of_dawn_on_party;
+        creators["word of glory on party"] = &PaladinAiObjectContextInternal::word_of_glory_on_party;
+        creators["eternal flame on party"] = &PaladinAiObjectContextInternal::eternal_flame_on_party;
         creators["holy light"] = &PaladinAiObjectContextInternal::holy_light;
         creators["holy light on party"] = &PaladinAiObjectContextInternal::holy_light_on_party;
         creators["lay on hands"] = &PaladinAiObjectContextInternal::lay_on_hands;
@@ -168,15 +208,24 @@ public:
         creators["beacon of light on main tank"] = &PaladinAiObjectContextInternal::beacon_of_light_on_main_tank;
         creators["sacred shield on main tank"] = &PaladinAiObjectContextInternal::sacred_shield_on_main_tank;
         creators["avenging wrath"] = &PaladinAiObjectContextInternal::avenging_wrath;
+        creators["holy avenger"] = &PaladinAiObjectContextInternal::holy_avenger;
+        creators["guardian of ancient kings"] = &PaladinAiObjectContextInternal::guardian_of_ancient_kings;
+        creators["ardent defender"] = &PaladinAiObjectContextInternal::ardent_defender;
         creators["divine illumination"] = &PaladinAiObjectContextInternal::divine_illumination;
         creators["divine sacrifice"] = &PaladinAiObjectContextInternal::divine_sacrifice;
         creators["cancel divine sacrifice"] = &PaladinAiObjectContextInternal::cancel_divine_sacrifice;
+        creators["templar's verdict"] = &PaladinAiObjectContextInternal::templars_verdict;
+        creators["inquisition"] = &PaladinAiObjectContextInternal::inquisition;
+        creators["execution sentence"] = &PaladinAiObjectContextInternal::execution_sentence;
+        creators["light's hammer"] = &PaladinAiObjectContextInternal::lights_hammer;
+        creators["holy prism"] = &PaladinAiObjectContextInternal::holy_prism;
     }
 
 private:
     static Action* seal_of_command(PlayerbotAI* botAI) { return new CastSealOfCommandAction(botAI); }
     static Action* seal_of_righteousness(PlayerbotAI* botAI) { return new CastSealOfRighteousnessAction(botAI); }
     static Action* seal_of_insight(PlayerbotAI* botAI) { return new CastSealOfInsightAction(botAI); }
+    static Action* seal_of_truth(PlayerbotAI* botAI) { return new CastSealOfTruthAction(botAI); }
 
     static Action* blessing_of_might(PlayerbotAI* botAI) { return new CastBlessingOfMightAction(botAI); }
     static Action* blessing_of_kings(PlayerbotAI* botAI) { return new CastBlessingOfKingsAction(botAI); }
@@ -206,6 +255,11 @@ private:
     static Action* purify_disease_on_party(PlayerbotAI* botAI) { return new CastPurifyDiseaseOnPartyAction(botAI); }
     
     static Action* flash_of_light(PlayerbotAI* botAI) { return new CastFlashOfLightAction(botAI); }
+    static Action* divine_light(PlayerbotAI* botAI) { return new CastDivineLightAction(botAI); }
+    static Action* holy_radiance(PlayerbotAI* botAI) { return new CastHolyRadianceAction(botAI); }
+    static Action* light_of_dawn(PlayerbotAI* botAI) { return new CastLightOfDawnAction(botAI); }
+    static Action* word_of_glory(PlayerbotAI* botAI) { return new CastWordOfGloryAction(botAI); }
+    static Action* eternal_flame(PlayerbotAI* botAI) { return new CastEternalFlameAction(botAI); }
     static Action* hand_of_reckoning(PlayerbotAI* botAI) { return new CastHandOfReckoningAction(botAI); }
     static Action* avengers_shield(PlayerbotAI* botAI) { return new CastAvengersShieldAction(botAI); }
     static Action* exorcism(PlayerbotAI* botAI) { return new CastExorcismAction(botAI); }
@@ -218,6 +272,11 @@ private:
     }
     static Action* hammer_of_justice(PlayerbotAI* botAI) { return new CastHammerOfJusticeAction(botAI); }
     static Action* flash_of_light_on_party(PlayerbotAI* botAI) { return new CastFlashOfLightOnPartyAction(botAI); }
+    static Action* divine_light_on_party(PlayerbotAI* botAI) { return new CastDivineLightOnPartyAction(botAI); }
+    static Action* holy_radiance_on_party(PlayerbotAI* botAI) { return new CastHolyRadianceOnPartyAction(botAI); }
+    static Action* light_of_dawn_on_party(PlayerbotAI* botAI) { return new CastLightOfDawnOnPartyAction(botAI); }
+    static Action* word_of_glory_on_party(PlayerbotAI* botAI) { return new CastWordOfGloryOnPartyAction(botAI); }
+    static Action* eternal_flame_on_party(PlayerbotAI* botAI) { return new CastEternalFlameOnPartyAction(botAI); }
     static Action* holy_light(PlayerbotAI* botAI) { return new CastHolyLightAction(botAI); }
     static Action* holy_light_on_party(PlayerbotAI* botAI) { return new CastHolyLightOnPartyAction(botAI); }
     static Action* lay_on_hands(PlayerbotAI* botAI) { return new CastLayOnHandsAction(botAI); }
@@ -246,9 +305,17 @@ private:
     static Action* beacon_of_light_on_main_tank(PlayerbotAI* ai) { return new CastBeaconOfLightOnMainTankAction(ai); }
     static Action* sacred_shield_on_main_tank(PlayerbotAI* ai) { return new CastSacredShieldOnMainTankAction(ai); }
     static Action* avenging_wrath(PlayerbotAI* ai) { return new CastAvengingWrathAction(ai); }
+    static Action* holy_avenger(PlayerbotAI* ai) { return new CastHolyAvengerAction(ai); }
+    static Action* guardian_of_ancient_kings(PlayerbotAI* ai) { return new CastGuardianOfAncientKingsAction(ai); }
+    static Action* ardent_defender(PlayerbotAI* ai) { return new CastArdentDefenderAction(ai); }
     static Action* divine_illumination(PlayerbotAI* ai) { return new CastDivineIlluminationAction(ai); }
     static Action* divine_sacrifice(PlayerbotAI* ai) { return new CastDivineSacrificeAction(ai); }
     static Action* cancel_divine_sacrifice(PlayerbotAI* ai) { return new CastCancelDivineSacrificeAction(ai); }
+    static Action* templars_verdict(PlayerbotAI* ai) { return new CastTemplarsVerdictAction(ai); }
+    static Action* inquisition(PlayerbotAI* ai) { return new CastInquisitionAction(ai); }
+    static Action* execution_sentence(PlayerbotAI* ai) { return new CastExecutionSentenceAction(ai); }
+    static Action* lights_hammer(PlayerbotAI* ai) { return new CastLightsHammerAction(ai); }
+    static Action* holy_prism(PlayerbotAI* ai) { return new CastHolyPrismAction(ai); }
 };
 
 PaladinAiObjectContext::PaladinAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)

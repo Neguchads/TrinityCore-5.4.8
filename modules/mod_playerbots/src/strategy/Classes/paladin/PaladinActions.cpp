@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "PaladinActions.h"
 
@@ -51,4 +48,47 @@ bool CastCrusaderStrikeAction::isUseful()
     if (!target) return false;
 
     return !botAI->HasAura("weakened blows", GetTarget(), false, true, -1, false) || bot->GetPower(Powers::POWER_HOLY_POWER) < 3;
+}
+
+bool CastWordOfGloryAction::isUseful()
+{
+    return bot->GetPower(Powers::POWER_HOLY_POWER) >= 3 && CastHealingSpellAction::isUseful();
+}
+
+bool CastWordOfGloryOnPartyAction::isUseful()
+{
+    return bot->GetPower(Powers::POWER_HOLY_POWER) >= 3 && HealPartyMemberAction::isUseful();
+}
+
+bool CastEternalFlameAction::isUseful()
+{
+    return bot->GetPower(Powers::POWER_HOLY_POWER) >= 3 && CastHealingSpellAction::isUseful();
+}
+
+bool CastEternalFlameOnPartyAction::isUseful()
+{
+    return bot->GetPower(Powers::POWER_HOLY_POWER) >= 3 && HealPartyMemberAction::isUseful();
+}
+
+bool CastLightOfDawnAction::isUseful()
+{
+    return bot->GetPower(Powers::POWER_HOLY_POWER) >= 3 && CastHealingSpellAction::isUseful();
+}
+
+bool CastLightOfDawnOnPartyAction::isUseful()
+{
+    return bot->GetPower(Powers::POWER_HOLY_POWER) >= 3 && HealPartyMemberAction::isUseful();
+}
+
+bool CastInquisitionAction::isUseful()
+{
+    if (bot->GetPower(Powers::POWER_HOLY_POWER) < 1)
+        return false;
+
+    return !botAI->HasAura("inquisition", bot) && CastBuffSpellAction::isUseful();
+}
+
+bool CastTemplarsVerdictAction::isUseful()
+{
+    return bot->GetPower(Powers::POWER_HOLY_POWER) >= 3 && CastMeleeSpellAction::isUseful();
 }

@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "DpsPaladinStrategy.h"
 
@@ -28,7 +25,15 @@ DpsPaladinStrategy::DpsPaladinStrategy(PlayerbotAI* botAI) : GenericPaladinStrat
 NextAction** DpsPaladinStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-                             new NextAction("melee", ACTION_DEFAULT + 0.6f),
+                             new NextAction("avenging wrath", ACTION_DEFAULT + 0.8f),
+                             new NextAction("hammer of wrath", ACTION_DEFAULT + 0.7f),
+                             new NextAction("divine storm", ACTION_DEFAULT + 0.6f),
+                             new NextAction("crusader strike", ACTION_DEFAULT + 0.5f),
+                             new NextAction("judgement", ACTION_DEFAULT + 0.4f),
+                             new NextAction("exorcism", ACTION_DEFAULT + 0.3f),
+                             new NextAction("holy wrath", ACTION_DEFAULT + 0.2f),
+                             new NextAction("consecration", ACTION_DEFAULT + 0.1f),
+                             new NextAction("melee", ACTION_DEFAULT),
                              nullptr);
 }
 
@@ -38,4 +43,5 @@ void DpsPaladinStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
     triggers.push_back(new TriggerNode("seal", NextAction::array(0, new NextAction("seal of righteousness", ACTION_HIGH), nullptr)));
     triggers.push_back(new TriggerNode("enemy out of melee", NextAction::array(0, new NextAction("reach melee", ACTION_HIGH + 1), NULL)));
+    triggers.push_back(new TriggerNode("target critical health", NextAction::array(0, new NextAction("hammer of wrath", ACTION_HIGH + 7), nullptr)));
 }

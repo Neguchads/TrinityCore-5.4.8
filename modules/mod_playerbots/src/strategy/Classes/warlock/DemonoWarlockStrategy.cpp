@@ -41,10 +41,13 @@ DemonoWarlockStrategy::DemonoWarlockStrategy(PlayerbotAI* botAI) : GenericWarloc
 NextAction** DemonoWarlockStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-        new NextAction("dark soul: knowledge", ACTION_DEFAULT + 0.5f),
-        new NextAction("void ray", ACTION_DEFAULT + 0.4f),
-        new NextAction("chaos wave", ACTION_HIGH + 0.3f),
-        new NextAction("touch of chaos", ACTION_HIGH),
+        new NextAction("dark soul: knowledge", ACTION_DEFAULT + 0.8f),
+        new NextAction("hand of guldan", ACTION_DEFAULT + 0.7f),
+        new NextAction("soul fire", ACTION_DEFAULT + 0.6f),
+        new NextAction("doom", ACTION_DEFAULT + 0.5f),
+        new NextAction("touch of chaos", ACTION_DEFAULT + 0.4f),
+        new NextAction("shadow bolt", ACTION_DEFAULT + 0.3f),
+        new NextAction("fel flame", ACTION_DEFAULT + 0.2f),
         nullptr);
 }
 
@@ -52,8 +55,17 @@ void DemonoWarlockStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericWarlockStrategy::InitTriggers(triggers);
 
-    triggers.push_back(new TriggerNode("corruption", NextAction::array(0, new NextAction("doom", 20.0f), nullptr)));
-    triggers.push_back(new TriggerNode("metamorphosis", NextAction::array(0, new NextAction("metamorphosis", ACTION_HIGH), nullptr)));
-    triggers.push_back(new TriggerNode("molten core", NextAction::array(0, new NextAction("soul fire", ACTION_INTERRUPT), nullptr)));
+    triggers.push_back(new TriggerNode("corruption", NextAction::array(0, new NextAction("corruption", 20.0f), nullptr)));
+    triggers.push_back(new TriggerNode("metamorphosis",
+                                       NextAction::array(0, new NextAction("metamorphosis", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(new TriggerNode("molten core",
+                                       NextAction::array(0, new NextAction("soul fire", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(new TriggerNode("hand of guldan",
+                                       NextAction::array(0, new NextAction("hand of guldan", ACTION_HIGH + 4), nullptr)));
+    triggers.push_back(new TriggerNode("soul fire",
+                                       NextAction::array(0, new NextAction("soul fire", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(new TriggerNode("dark soul: knowledge",
+                                       NextAction::array(0, new NextAction("dark soul: knowledge", ACTION_HIGH + 1),
+                                                         nullptr)));
 }
 

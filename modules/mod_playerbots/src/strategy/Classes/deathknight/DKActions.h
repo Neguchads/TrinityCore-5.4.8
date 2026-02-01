@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #ifndef _PLAYERBOT_DKACTIONS_H
 #define _PLAYERBOT_DKACTIONS_H
@@ -27,6 +24,12 @@ class CastUnholyPresenceAction : public CastBuffSpellAction
 {
 public:
     CastUnholyPresenceAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "unholy presence") {}
+};
+
+class CastRaiseAllyAction : public ResurrectPartyMemberAction
+{
+public:
+    CastRaiseAllyAction(PlayerbotAI* botAI) : ResurrectPartyMemberAction(botAI, "raise ally") {}
 };
 
 class CastDeathchillAction : public CastBuffSpellAction
@@ -129,6 +132,12 @@ public:
 // BEGIN_DEBUFF_ACTION(CastPlagueStrikeAction, "plague strike")
 // END_SPELL_ACTION()
 
+class CastOutbreakAction : public CastSpellAction
+{
+public:
+    CastOutbreakAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "outbreak") {}
+};
+
 class CastPlagueStrikeOnAttackerAction : public CastDebuffSpellOnMeleeAttackerAction
 {
 public:
@@ -184,6 +193,12 @@ public:
     CastChainsOfIceAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "chains of ice") {}
 };
 
+class CastFesteringStrikeAction : public CastMeleeSpellAction
+{
+public:
+    CastFesteringStrikeAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "festering strike") {}
+};
+
 class CastHungeringColdAction : public CastMeleeSpellAction
 {
 public:
@@ -230,6 +245,18 @@ class CastDeathCoilAction : public CastSpellAction
 {
 public:
     CastDeathCoilAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "death coil") {}
+};
+
+class CastSoulReaperAction : public CastMeleeSpellAction
+{
+public:
+    CastSoulReaperAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "soul reaper") {}
+};
+
+class CastDarkTransformationAction : public CastBuffSpellAction
+{
+public:
+    CastDarkTransformationAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "dark transformation") {}
 };
 
 class CastBloodBoilAction : public CastMeleeSpellAction
@@ -318,10 +345,22 @@ public:
     CastUnbreakableArmorAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "unbreakable armor") {}
 };
 
+class CastPillarOfFrostAction : public CastBuffSpellAction
+{
+public:
+    CastPillarOfFrostAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "pillar of frost") {}
+};
+
 class CastVampiricBloodAction : public CastBuffSpellAction
 {
 public:
     CastVampiricBloodAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "vampiric blood") {}
+};
+
+class CastUnholyFrenzyAction : public CastBuffSpellAction
+{
+public:
+    CastUnholyFrenzyAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "unholy frenzy") {}
 };
 
 class CastMindFreezeAction : public CastMeleeSpellAction

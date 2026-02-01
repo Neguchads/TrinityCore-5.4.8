@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "WarriorAIObjectContext.h"
 
@@ -10,7 +7,9 @@
 #include "GenericWarriorNonCombatStrategy.h"
 #include "NamedObjectContext.h"
 #include "Playerbots.h"
+#include "ProtectionWarriorStrategy.h"
 #include "TankWarriorStrategy.h"
+#include "WarriorStrategy.h"
 #include "WarriorActions.h"
 #include "WarriorTriggers.h"
 
@@ -21,11 +20,13 @@ public:
     {
         creators["nc"] = &WarriorStrategyFactoryInternal::nc;
         creators["aoe"] = &WarriorStrategyFactoryInternal::aoe;
+        creators["warrior"] = &WarriorStrategyFactoryInternal::warrior;
     }
 
 private:
     static Strategy* nc(PlayerbotAI* botAI) { return new GenericWarriorNonCombatStrategy(botAI); }
     static Strategy* aoe(PlayerbotAI* botAI) { return new WarriorAoeStrategy(botAI); }
+    static Strategy* warrior(PlayerbotAI* botAI) { return new WarriorStrategy(botAI); }
 };
 
 class WarriorCombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -36,11 +37,13 @@ public:
         creators["tank"] = &WarriorCombatStrategyFactoryInternal::tank;
         creators["arms"] = &WarriorCombatStrategyFactoryInternal::arms;
         creators["fury"] = &WarriorCombatStrategyFactoryInternal::fury;
+        creators["protection"] = &WarriorCombatStrategyFactoryInternal::protection;
     }
 private:
     static Strategy* tank(PlayerbotAI* botAI) { return new TankWarriorStrategy(botAI); }
     static Strategy* arms(PlayerbotAI* botAI) { return new ArmsWarriorStrategy(botAI); }
     static Strategy* fury(PlayerbotAI* botAI) { return new FuryWarriorStrategy(botAI); }
+    static Strategy* protection(PlayerbotAI* botAI) { return new ProtectionWarriorStrategy(botAI); }
 };
 
 class WarriorTriggerFactoryInternal : public NamedObjectContext<Trigger>

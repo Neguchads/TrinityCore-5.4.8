@@ -1,13 +1,13 @@
-/*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
+
 
 #include "DruidAiObjectContext.h"
 
 #include "BearTankDruidStrategy.h"
+#include "BalanceDruidStrategy.h"
 #include "CasterDruidStrategy.h"
 #include "CatDpsDruidStrategy.h"
+#include "DpsFeralDruidStrategy.h"
+#include "DruidStrategy.h"
 #include "DruidActions.h"
 #include "DruidBearActions.h"
 #include "DruidCatActions.h"
@@ -17,7 +17,10 @@
 #include "GenericDruidStrategy.h"
 #include "HealDruidStrategy.h"
 #include "MeleeDruidStrategy.h"
+#include "OffhealDruidCatStrategy.h"
 #include "Playerbots.h"
+#include "RestorationDruidStrategy.h"
+#include "TankFeralDruidStrategy.h"
 
 class DruidStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {
@@ -57,10 +60,18 @@ public:
     {
         creators["bear"] = &DruidDruidStrategyFactoryInternal::bear;
         creators["tank"] = &DruidDruidStrategyFactoryInternal::bear;
+        creators["guardian"] = &DruidDruidStrategyFactoryInternal::bear;
+        creators["guardiantank"] = &DruidDruidStrategyFactoryInternal::bear;
         creators["cat"] = &DruidDruidStrategyFactoryInternal::cat;
         creators["caster"] = &DruidDruidStrategyFactoryInternal::caster;
         creators["dps"] = &DruidDruidStrategyFactoryInternal::cat;
         creators["heal"] = &DruidDruidStrategyFactoryInternal::heal;
+        creators["balance"] = &DruidDruidStrategyFactoryInternal::balance;
+        creators["restoration"] = &DruidDruidStrategyFactoryInternal::restoration;
+        creators["dps feral"] = &DruidDruidStrategyFactoryInternal::dps_feral;
+        creators["tank feral"] = &DruidDruidStrategyFactoryInternal::tank_feral;
+        creators["offheal"] = &DruidDruidStrategyFactoryInternal::offheal;
+        creators["druid"] = &DruidDruidStrategyFactoryInternal::druid;
     }
 
 private:
@@ -68,6 +79,12 @@ private:
     static Strategy* cat(PlayerbotAI* botAI) { return new CatDpsDruidStrategy(botAI); }
     static Strategy* caster(PlayerbotAI* botAI) { return new CasterDruidStrategy(botAI); }
     static Strategy* heal(PlayerbotAI* botAI) { return new HealDruidStrategy(botAI); }
+    static Strategy* balance(PlayerbotAI* botAI) { return new BalanceDruidStrategy(botAI); }
+    static Strategy* restoration(PlayerbotAI* botAI) { return new RestorationDruidStrategy(botAI); }
+    static Strategy* dps_feral(PlayerbotAI* botAI) { return new DpsFeralDruidStrategy(botAI); }
+    static Strategy* tank_feral(PlayerbotAI* botAI) { return new TankFeralDruidStrategy(botAI); }
+    static Strategy* offheal(PlayerbotAI* botAI) { return new OffhealDruidCatStrategy(botAI); }
+    static Strategy* druid(PlayerbotAI* botAI) { return new DruidStrategy(botAI); }
 };
 
 class DruidTriggerFactoryInternal : public NamedObjectContext<Trigger>
@@ -75,9 +92,73 @@ class DruidTriggerFactoryInternal : public NamedObjectContext<Trigger>
 public:
     DruidTriggerFactoryInternal()
     {
+        creators["moonfire"] = &DruidTriggerFactoryInternal::moonfire;
+        creators["sunfire"] = &DruidTriggerFactoryInternal::sunfire;
+        creators["thrash"] = &DruidTriggerFactoryInternal::thrash;
+        creators["rake"] = &DruidTriggerFactoryInternal::rake;
+        creators["rip"] = &DruidTriggerFactoryInternal::rip;
+        creators["faerie fire (feral)"] = &DruidTriggerFactoryInternal::faerie_fire_feral;
+        creators["savage roar"] = &DruidTriggerFactoryInternal::savage_roar;
+        creators["tiger's fury"] = &DruidTriggerFactoryInternal::tigers_fury;
+        creators["berserk"] = &DruidTriggerFactoryInternal::berserk;
+        creators["enrage"] = &DruidTriggerFactoryInternal::enrage;
+        creators["mangle (cat)"] = &DruidTriggerFactoryInternal::mangle_cat;
+        creators["mangle (bear)"] = &DruidTriggerFactoryInternal::mangle_bear;
+        creators["lacerate"] = &DruidTriggerFactoryInternal::lacerate;
+        creators["insect swarm"] = &DruidTriggerFactoryInternal::insect_swarm;
+        creators["starsurge"] = &DruidTriggerFactoryInternal::starsurge;
+        creators["shooting stars"] = &DruidTriggerFactoryInternal::shooting_stars;
+        creators["starfall"] = &DruidTriggerFactoryInternal::starfall;
+        creators["celestial alignment"] = &DruidTriggerFactoryInternal::celestial_alignment;
+        creators["astral communion"] = &DruidTriggerFactoryInternal::astral_communion;
+        creators["force of nature"] = &DruidTriggerFactoryInternal::force_of_nature;
+        creators["wild mushroom: detonate"] = &DruidTriggerFactoryInternal::wild_mushroom_detonate;
+        creators["astral storm"] = &DruidTriggerFactoryInternal::astral_storm;
+        creators["solar beam"] = &DruidTriggerFactoryInternal::solar_beam;
+        creators["typhoon"] = &DruidTriggerFactoryInternal::typhoon;
+        creators["ursol's vortex"] = &DruidTriggerFactoryInternal::ursols_vortex;
+        creators["might of ursoc"] = &DruidTriggerFactoryInternal::might_of_ursoc;
+        creators["savage defense"] = &DruidTriggerFactoryInternal::savage_defense;
+        creators["ferocious bite time"] = &DruidTriggerFactoryInternal::ferocious_bite_time;
+        creators["lifebloom on main tank"] = &DruidTriggerFactoryInternal::lifebloom_on_main_tank;
+        creators["cenarion ward on main tank"] = &DruidTriggerFactoryInternal::cenarion_ward_on_main_tank;
+        creators["genesis"] = &DruidTriggerFactoryInternal::genesis;
+        creators["wild mushroom: bloom"] = &DruidTriggerFactoryInternal::wild_mushroom_bloom;
     }
 
 private:
+    static Trigger* moonfire(PlayerbotAI* botAI) { return new MoonfireTrigger(botAI); }
+    static Trigger* sunfire(PlayerbotAI* botAI) { return new SunfireTrigger(botAI); }
+    static Trigger* thrash(PlayerbotAI* botAI) { return new ThrashTrigger(botAI); }
+    static Trigger* rake(PlayerbotAI* botAI) { return new RakeTrigger(botAI); }
+    static Trigger* rip(PlayerbotAI* botAI) { return new RipTrigger(botAI); }
+    static Trigger* faerie_fire_feral(PlayerbotAI* botAI) { return new FaerieFireFeralTrigger(botAI); }
+    static Trigger* savage_roar(PlayerbotAI* botAI) { return new SavageRoarTrigger(botAI); }
+    static Trigger* tigers_fury(PlayerbotAI* botAI) { return new TigersFuryTrigger(botAI); }
+    static Trigger* berserk(PlayerbotAI* botAI) { return new BerserkTrigger(botAI); }
+    static Trigger* enrage(PlayerbotAI* botAI) { return new EnrageTrigger(botAI); }
+    static Trigger* mangle_cat(PlayerbotAI* botAI) { return new MangleCatTrigger(botAI); }
+    static Trigger* mangle_bear(PlayerbotAI* botAI) { return new MangleBearTrigger(botAI); }
+    static Trigger* lacerate(PlayerbotAI* botAI) { return new LacerateTrigger(botAI); }
+    static Trigger* insect_swarm(PlayerbotAI* botAI) { return new InsectSwarmTrigger(botAI); }
+    static Trigger* starsurge(PlayerbotAI* botAI) { return new StarsurgeTrigger(botAI); }
+    static Trigger* shooting_stars(PlayerbotAI* botAI) { return new ShootingStarsTrigger(botAI); }
+    static Trigger* starfall(PlayerbotAI* botAI) { return new StarfallTrigger(botAI); }
+    static Trigger* celestial_alignment(PlayerbotAI* botAI) { return new CelestialAlignmentTrigger(botAI); }
+    static Trigger* astral_communion(PlayerbotAI* botAI) { return new AstralCommunionTrigger(botAI); }
+    static Trigger* force_of_nature(PlayerbotAI* botAI) { return new ForceOfNatureTrigger(botAI); }
+    static Trigger* wild_mushroom_detonate(PlayerbotAI* botAI) { return new WildMushroomDetonateTrigger(botAI); }
+    static Trigger* astral_storm(PlayerbotAI* botAI) { return new AstralStormTrigger(botAI); }
+    static Trigger* solar_beam(PlayerbotAI* botAI) { return new SolarBeamTrigger(botAI); }
+    static Trigger* typhoon(PlayerbotAI* botAI) { return new TyphoonTrigger(botAI); }
+    static Trigger* ursols_vortex(PlayerbotAI* botAI) { return new UrsolsVortexTrigger(botAI); }
+    static Trigger* might_of_ursoc(PlayerbotAI* botAI) { return new MightOfUrsocTrigger(botAI); }
+    static Trigger* savage_defense(PlayerbotAI* botAI) { return new SavageDefenseTrigger(botAI); }
+    static Trigger* ferocious_bite_time(PlayerbotAI* botAI) { return new FerociousBiteTimeTrigger(botAI); }
+    static Trigger* lifebloom_on_main_tank(PlayerbotAI* botAI) { return new LifebloomOnMainTankTrigger(botAI); }
+    static Trigger* cenarion_ward_on_main_tank(PlayerbotAI* botAI) { return new CenarionWardOnMainTankTrigger(botAI); }
+    static Trigger* genesis(PlayerbotAI* botAI) { return new GenesisTrigger(botAI); }
+    static Trigger* wild_mushroom_bloom(PlayerbotAI* botAI) { return new WildMushroomBloomTrigger(botAI); }
 };
 
 class DruidAiObjectContextInternal : public NamedObjectContext<Action>
@@ -114,7 +195,26 @@ public:
         creators["starfall"] = &DruidAiObjectContextInternal::starfall;
         creators["insect swarm"] = &DruidAiObjectContextInternal::insect_swarm;
         creators["moonfire"] = &DruidAiObjectContextInternal::moonfire;
+        creators["sunfire"] = &DruidAiObjectContextInternal::sunfire;
         creators["starfire"] = &DruidAiObjectContextInternal::starfire;
+        creators["thrash"] = &DruidAiObjectContextInternal::thrash;
+        creators["thrash (bear)"] = &DruidAiObjectContextInternal::thrash_bear;
+        creators["starsurge"] = &DruidAiObjectContextInternal::starsurge;
+        creators["astral communion"] = &DruidAiObjectContextInternal::astral_communion;
+        creators["celestial alignment"] = &DruidAiObjectContextInternal::celestial_alignment;
+        creators["wild mushroom"] = &DruidAiObjectContextInternal::wild_mushroom;
+        creators["wild mushroom: detonate"] = &DruidAiObjectContextInternal::wild_mushroom_detonate;
+        creators["astral storm"] = &DruidAiObjectContextInternal::astral_storm;
+        creators["solar beam"] = &DruidAiObjectContextInternal::solar_beam;
+        creators["typhoon"] = &DruidAiObjectContextInternal::typhoon;
+        creators["ursol's vortex"] = &DruidAiObjectContextInternal::ursols_vortex;
+        creators["might of ursoc"] = &DruidAiObjectContextInternal::might_of_ursoc;
+        creators["savage defense"] = &DruidAiObjectContextInternal::savage_defense;
+        creators["lifebloom on main tank"] = &DruidAiObjectContextInternal::lifebloom_on_main_tank;
+        creators["cenarion ward on main tank"] = &DruidAiObjectContextInternal::cenarion_ward_on_main_tank;
+        creators["ironbark on party"] = &DruidAiObjectContextInternal::ironbark_on_party;
+        creators["genesis"] = &DruidAiObjectContextInternal::genesis;
+        creators["wild mushroom: bloom"] = &DruidAiObjectContextInternal::wild_mushroom_bloom;
         creators["nature's grasp"] = &DruidAiObjectContextInternal::natures_grasp;
         creators["claw"] = &DruidAiObjectContextInternal::claw;
         creators["mangle (cat)"] = &DruidAiObjectContextInternal::mangle_cat;
@@ -166,6 +266,7 @@ public:
         creators["remove curse on party"] = &DruidAiObjectContextInternal::remove_curse_on_party;
         creators["insect swarm on attacker"] = &DruidAiObjectContextInternal::insect_swarm_on_attacker;
         creators["moonfire on attacker"] = &DruidAiObjectContextInternal::moonfire_on_attacker;
+        creators["sunfire on attacker"] = &DruidAiObjectContextInternal::sunfire_on_attacker;
         creators["enrage"] = &DruidAiObjectContextInternal::enrage;
         creators["force of nature"] = &DruidAiObjectContextInternal::force_of_nature;
     }
@@ -202,7 +303,26 @@ private:
     static Action* starfall(PlayerbotAI* botAI) { return new CastStarfallAction(botAI); }
     static Action* insect_swarm(PlayerbotAI* botAI) { return new CastInsectSwarmAction(botAI); }
     static Action* moonfire(PlayerbotAI* botAI) { return new CastMoonfireAction(botAI); }
+    static Action* sunfire(PlayerbotAI* botAI) { return new CastSunfireAction(botAI); }
     static Action* starfire(PlayerbotAI* botAI) { return new CastStarfireAction(botAI); }
+    static Action* thrash(PlayerbotAI* botAI) { return new CastThrashAction(botAI); }
+    static Action* thrash_bear(PlayerbotAI* botAI) { return new CastThrashBearAction(botAI); }
+    static Action* starsurge(PlayerbotAI* botAI) { return new CastStarsurgeAction(botAI); }
+    static Action* astral_communion(PlayerbotAI* botAI) { return new CastAstralCommunionAction(botAI); }
+    static Action* celestial_alignment(PlayerbotAI* botAI) { return new CastCelestialAlignmentAction(botAI); }
+    static Action* wild_mushroom(PlayerbotAI* botAI) { return new CastWildMushroomAction(botAI); }
+    static Action* wild_mushroom_detonate(PlayerbotAI* botAI) { return new CastWildMushroomDetonateAction(botAI); }
+    static Action* astral_storm(PlayerbotAI* botAI) { return new CastAstralStormAction(botAI); }
+    static Action* solar_beam(PlayerbotAI* botAI) { return new CastSolarBeamAction(botAI); }
+    static Action* typhoon(PlayerbotAI* botAI) { return new CastTyphoonAction(botAI); }
+    static Action* ursols_vortex(PlayerbotAI* botAI) { return new CastUrsolsVortexAction(botAI); }
+    static Action* might_of_ursoc(PlayerbotAI* botAI) { return new CastMightOfUrsocAction(botAI); }
+    static Action* savage_defense(PlayerbotAI* botAI) { return new CastSavageDefenseAction(botAI); }
+    static Action* lifebloom_on_main_tank(PlayerbotAI* botAI) { return new CastLifebloomOnMainTankAction(botAI); }
+    static Action* cenarion_ward_on_main_tank(PlayerbotAI* botAI) { return new CastCenarionWardOnMainTankAction(botAI); }
+    static Action* ironbark_on_party(PlayerbotAI* botAI) { return new CastIronbarkOnPartyAction(botAI); }
+    static Action* genesis(PlayerbotAI* botAI) { return new CastGenesisAction(botAI); }
+    static Action* wild_mushroom_bloom(PlayerbotAI* botAI) { return new CastWildMushroomBloomAction(botAI); }
     static Action* natures_grasp(PlayerbotAI* botAI) { return new CastNaturesGraspAction(botAI); }
     static Action* claw(PlayerbotAI* botAI) { return new CastClawAction(botAI); }
     static Action* mangle_cat(PlayerbotAI* botAI) { return new CastMangleCatAction(botAI); }
@@ -251,6 +371,7 @@ private:
     static Action* remove_curse_on_party(PlayerbotAI* ai) { return new CastDruidRemoveCurseOnPartyAction(ai); }
     static Action* insect_swarm_on_attacker(PlayerbotAI* ai) { return new CastInsectSwarmOnAttackerAction(ai); }
     static Action* moonfire_on_attacker(PlayerbotAI* ai) { return new CastMoonfireOnAttackerAction(ai); }
+    static Action* sunfire_on_attacker(PlayerbotAI* ai) { return new CastSunfireOnAttackerAction(ai); }
     static Action* enrage(PlayerbotAI* ai) { return new CastEnrageAction(ai); }
     static Action* force_of_nature(PlayerbotAI* ai) { return new CastForceOfNatureAction(ai); }
 };

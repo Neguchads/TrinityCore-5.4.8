@@ -54,6 +54,8 @@ void AutoMaintenanceOnLevelupAction::AutoUpgradeEquip()
     BotFactory factory(bot, bot->GetLevel());
     factory.InitEquipment(true);
     factory.InitPet();
+    if (bot->GetLevel() >= sPlayerbotAIConfig->minEnchantingBotLevel)
+        factory.ApplyEnchantAndGemsNew();
     /*if (!sPlayerbotAIConfig->autoUpgradeEquip || !sRandomPlayerbotMgr->IsRandomBot(bot))
     {
         return;
