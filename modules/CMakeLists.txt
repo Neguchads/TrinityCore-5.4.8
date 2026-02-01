@@ -1,6 +1,5 @@
 ﻿# Fichier source temporaire généré
-set(MODULES_LOADER_TEMP "${CMAKE_BINARY_DIR}/ModulesLoader.cpp")
-set(MODULES_LOADER_FINAL "${CMAKE_SOURCE_DIR}/modules/ModulesLoader.cpp")
+set(MODULES_LOADER_TEMP "${CMAKE_CURRENT_BINARY_DIR}/gen_scriptloader/ModulesLoader.cpp")
 set(MODULES_LOADER_TEMPLATE "${CMAKE_SOURCE_DIR}/modules/ModulesLoader.cpp.in.cmake")
 
 # Fonction pour récupérer tous les sous-dossiers d'un répertoire donné
@@ -36,6 +35,12 @@ endif()
 
 message(STATUS "Modules : ${VALID_MODULES}")
 
+# Collect module config templates
+file(GLOB_RECURSE MODULE_CONF_DISTS
+  "${CMAKE_CURRENT_SOURCE_DIR}/*/conf/*.conf.dist"
+  "${CMAKE_CURRENT_SOURCE_DIR}/*/config/*.conf.dist"
+)
+
 # Ajout des fichiers dans les groupes Visual Studio
 set(MODULES_SOURCES "")
 foreach(MODULE ${VALID_MODULES})
@@ -60,23 +65,20 @@ set(MODULES_CALLS "")
 foreach(MODULE ${VALID_MODULES})
     string(REPLACE "-" "_" MODULE_FUNC_NAME ${MODULE})
 
-    # Ajout des includes des modules
-    set(MODULES_INCLUDES "${MODULES_INCLUDES}void AddSC_${MODULE_FUNC_NAME}();\n")
+    # AzerothCore-style module loader naming: Add<module>Scripts()
+    set(MODULES_INCLUDES "${MODULES_INCLUDES}void Add${MODULE_FUNC_NAME}Scripts();\n")
 
     # Ajout des déclarations et appels pour ModulesLoader.cpp
-    set(MODULES_DECLARATIONS "${MODULES_DECLARATIONS}void AddSC_${MODULE_FUNC_NAME}();\n")
-    set(MODULES_CALLS "${MODULES_CALLS}    AddSC_${MODULE_FUNC_NAME}();\n")
+    set(MODULES_DECLARATIONS "${MODULES_DECLARATIONS}void Add${MODULE_FUNC_NAME}Scripts();\n")
+    set(MODULES_CALLS "${MODULES_CALLS}    Add${MODULE_FUNC_NAME}Scripts();\n")
 endforeach()
 
-# Génération temporaire du fichier ModulesLoader.cpp
+# Génération du fichier ModulesLoader.cpp dans le build tree
 configure_file(${MODULES_LOADER_TEMPLATE} ${MODULES_LOADER_TEMP} @ONLY)
 
-# Copie du fichier généré dans le dossier source réel (remplace l'ancien)
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${MODULES_LOADER_TEMP} ${MODULES_LOADER_FINAL})
-
-# Inclure explicitement ModulesLoader.cpp et ModulesLoader.h
+# Inclure explicitement ModulesLoader.cpp (généré) et ModulesLoader.h
 set(MODULES_LOADER_FILES
-    ${MODULES_LOADER_FINAL}
+    ${MODULES_LOADER_TEMP}
     ${CMAKE_SOURCE_DIR}/modules/ModulesLoader.h
 )
 
@@ -91,6 +93,19 @@ endif()
 
 # Création de la bibliothèque statique "modules"
 add_library(modules STATIC ${MODULES_SOURCES})
+
+# Copy module configs to build output (AzerothCore-style)
+if (MODULE_CONF_DISTS)
+  foreach(MODULE_CONF_DIST ${MODULE_CONF_DISTS})
+    get_filename_component(MODULE_CONF_NAME ${MODULE_CONF_DIST} NAME)
+
+    add_custom_command(TARGET modules POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/modules"
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different "${MODULE_CONF_DIST}" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/modules/${MODULE_CONF_NAME}"
+      COMMENT "Copying module configs"
+    )
+  endforeach()
+endif()
 
 # Fonction pour récupérer récursivement tous les sous-dossiers
 function(get_all_subdirectories result curdir)
@@ -111,6 +126,7 @@ get_all_subdirectories(ALL_MODULE_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(modules PRIVATE
   ${ALL_MODULE_INCLUDES}
   ${CMAKE_BINARY_DIR}
+  ${CMAKE_SOURCE_DIR}/modules
   game
   common
   database
@@ -123,4 +139,4 @@ target_link_libraries(modules
     database
 )
 
-add_dependencies(modules revision.h)
+add_dependencies(modules revision_data.h)

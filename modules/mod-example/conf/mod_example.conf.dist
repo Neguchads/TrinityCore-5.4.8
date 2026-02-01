@@ -1,0 +1,22 @@
+[worldserver]
+
+########################################
+# My module configuration
+########################################
+#
+#    ModExample.Enable
+#        Description: Enable my module and print "Hello World" message at server start
+#        Default:     0 - Disabled
+#                     1 - Enabled
+#
+
+ModExample.Enable = 0
+
+#
+#    ModExample.Updates.EnableDatabases
+#        Description: Enable module database updates.
+#        Default:     1 - Enabled
+#                     0 - Disabled
+#
+
+ModExample.Updates.EnableDatabases = 1
