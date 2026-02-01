@@ -469,9 +469,9 @@ public:
 #define NORMAL_COLOR    "|cFFFFFF00"
 #define BAD_COLOR       "|cFFFF0000"
 
-    static bool HandleServerStatsMapUpdateCommand(ChatHandler* handler, const char* args)
+    static bool HandleServerStatsMapUpdateCommand(ChatHandler* handler, char const* args)
     {
-        static const char* difficulty[MAX_DIFFICULTY] = { "REGULAR", "5N", "5H", "10N", "25N", "10H", "25H", "LFR", "CHALLENGE", "40", "UNUSED", "SCENARIO_H", "SCENARIO_N", "UNUSED2", "FLEX" };
+        static char const* difficulty[MAX_DIFFICULTY] = { "REGULAR", "5N", "5H", "10N", "25N", "10H", "25H", "LFR", "CHALLENGE", "40", "UNUSED", "SCENARIO_H", "SCENARIO_N", "UNUSED2", "FLEX" };
         struct InstanceInfo
         {
             uint32 InstanceID;

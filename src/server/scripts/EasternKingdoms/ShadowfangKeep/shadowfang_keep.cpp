@@ -582,7 +582,7 @@ class npc_apothecary_frye : public CreatureScript
                 }
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 switch (spell->Id)
                 {

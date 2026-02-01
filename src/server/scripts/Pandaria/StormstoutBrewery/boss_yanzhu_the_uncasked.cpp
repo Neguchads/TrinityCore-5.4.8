@@ -2033,7 +2033,7 @@ class spell_blackout_brew : public SpellScriptLoader
         {
             PrepareAuraScript(spell_blackout_brew_AuraScript);
 
-            void HandleEffectPeriodic(const AuraEffect* aurEff)
+            void HandleEffectPeriodic(AuraEffect const* aurEff)
             {
                 if (GetOwner() && GetOwner()->ToUnit())
                 {
@@ -2086,7 +2086,7 @@ class spell_bloat_aura : public SpellScriptLoader
         {
             PrepareAuraScript(spell_bloat_aura_AuraScript);
 
-            void HandleOnApply(const AuraEffect* /*aurEff*/, AuraEffectHandleModes /*mode*/)
+            void HandleOnApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
                 if (GetOwner() && GetOwner()->ToUnit())
                 {

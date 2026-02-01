@@ -122,7 +122,7 @@ void WorldPosition::set(const WorldPosition& pos)
     WorldRelocate(pos.m_mapId, pos.GetPositionX(), pos.GetPositionY(), pos.GetPositionZ(), pos.GetOrientation());
 }
 
-void WorldPosition::set(const WorldObject* pos)
+void WorldPosition::set(WorldObject const* pos)
 {
     WorldRelocate(pos->GetMapId(), pos->GetPositionX(), pos->GetPositionY(), pos->GetPositionZ(), pos->GetOrientation());
 }
@@ -448,7 +448,7 @@ std::string const WorldPosition::getAreaName(bool fullName, bool zoneName)
 std::set<Transport*> WorldPosition::getTransports(uint32 entry)
 {
     /*
-    if(!entry)
+    if (!entry)
         return getMap()->m_transports;
     else
     {
@@ -456,7 +456,7 @@ std::set<Transport*> WorldPosition::getTransports(uint32 entry)
     std::set<Transport*> transports;
     /*
     for (auto transport : getMap()->m_transports)
-        if(transport->GetEntry() == entry)
+        if (transport->GetEntry() == entry)
             transports.insert(transport);
 
     return transports;

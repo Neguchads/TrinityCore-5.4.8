@@ -155,7 +155,7 @@ void CreateDir(std::filesystem::path const& path)
 bool FileExists(TCHAR const* fileName)
 {
     int fp = _open(fileName, OPEN_FLAGS);
-    if(fp != -1)
+    if (fp != -1)
     {
         _close(fp);
         return true;
@@ -947,7 +947,7 @@ bool ConvertADT(char *filename, char *filename2, int /*cell_y*/, int /*cell_x*/,
     // Store area data
     fwrite(&areaHeader, sizeof(areaHeader), 1, output);
     if (!(areaHeader.flags & MAP_AREA_NO_AREA))
-        fwrite(reinterpret_cast<const char*>(area_ids), sizeof(area_ids), 1, output);
+        fwrite(reinterpret_cast<char const*>(area_ids), sizeof(area_ids), 1, output);
 
     // Store height data
     fwrite(&heightHeader, sizeof(heightHeader), 1, output);
@@ -1052,7 +1052,7 @@ void ExtractMapsFromMpq(uint32 build)
 bool ExtractFile(HANDLE fileInArchive, char const* filename)
 {
     FILE* output = fopen(filename, "wb");
-    if(!output)
+    if (!output)
     {
         printf("Can't create the output file '%s'\n", filename);
         return false;

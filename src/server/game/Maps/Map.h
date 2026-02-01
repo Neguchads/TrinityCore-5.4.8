@@ -418,7 +418,7 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         uint32 GetInstanceId() const { return i_InstanceId; }
         uint16 GetSpawnMode() const { return (i_spawnMode); }
         virtual bool CanEnter(Player* /*player*/) { return true; }
-        const char* GetMapName() const;
+        char const* GetMapName() const;
 
         // have meaning only for instanced map (that have set real difficulty)
         Difficulty GetDifficulty() const { return Difficulty(GetSpawnMode()); }
@@ -536,10 +536,10 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         }
 
         MapInstanced* ToMapInstanced(){ if (Instanceable())  return reinterpret_cast<MapInstanced*>(this); else return NULL;  }
-        const MapInstanced* ToMapInstanced() const { if (Instanceable())  return (const MapInstanced*)((MapInstanced*)this); else return NULL;  }
+        MapInstanced const* ToMapInstanced() const { if (Instanceable())  return (MapInstanced const*)((MapInstanced*)this); else return NULL;  }
 
         InstanceMap* ToInstanceMap(){ if (IsDungeon())  return reinterpret_cast<InstanceMap*>(this); else return NULL;  }
-        const InstanceMap* ToInstanceMap() const { if (IsDungeon())  return (const InstanceMap*)((InstanceMap*)this); else return NULL;  }
+        InstanceMap const* ToInstanceMap() const { if (IsDungeon())  return (InstanceMap const*)((InstanceMap*)this); else return NULL;  }
 
         BattlegroundMap* ToBattlegroundMap() { if (IsBattlegroundOrArena()) return reinterpret_cast<BattlegroundMap*>(this); else return NULL; }
         BattlegroundMap const* ToBattlegroundMap() const { if (IsBattlegroundOrArena()) return reinterpret_cast<BattlegroundMap const*>(this); return NULL; }
@@ -655,7 +655,7 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
 
         /* BOT HELPER FUNCTION*/
         [[nodiscard]] bool HasEnoughWater(WorldObject const* searcher, float x, float y, float z) const;
-        [[nodiscard]] bool HasEnoughWater(WorldObject const* searcher, const LiquidData* liquidData) const;
+        [[nodiscard]] bool HasEnoughWater(WorldObject const* searcher, LiquidData const* liquidData) const;
 
         bool CanReachPositionAndGetValidCoords(WorldObject const* source, PathGenerator* path, float& destX, float& destY, float& destZ, bool failOnCollision = true, bool failOnSlopes = true) const;
         bool CanReachPositionAndGetValidCoords(WorldObject const* source, float& destX, float& destY, float& destZ, bool failOnCollision = true, bool failOnSlopes = true) const;
@@ -757,13 +757,13 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         uint32 m_updateTime = 0;
 
     private:
-        Player* _GetScriptPlayerSourceOrTarget(Object* source, Object* target, const ScriptInfo* scriptInfo) const;
-        Creature* _GetScriptCreatureSourceOrTarget(Object* source, Object* target, const ScriptInfo* scriptInfo, bool bReverse = false) const;
-        Unit* _GetScriptUnit(Object* obj, bool isSource, const ScriptInfo* scriptInfo) const;
-        Player* _GetScriptPlayer(Object* obj, bool isSource, const ScriptInfo* scriptInfo) const;
-        Creature* _GetScriptCreature(Object* obj, bool isSource, const ScriptInfo* scriptInfo) const;
-        WorldObject* _GetScriptWorldObject(Object* obj, bool isSource, const ScriptInfo* scriptInfo) const;
-        void _ScriptProcessDoor(Object* source, Object* target, const ScriptInfo* scriptInfo) const;
+        Player* _GetScriptPlayerSourceOrTarget(Object* source, Object* target, ScriptInfo const* scriptInfo) const;
+        Creature* _GetScriptCreatureSourceOrTarget(Object* source, Object* target, ScriptInfo const* scriptInfo, bool bReverse = false) const;
+        Unit* _GetScriptUnit(Object* obj, bool isSource, ScriptInfo const* scriptInfo) const;
+        Player* _GetScriptPlayer(Object* obj, bool isSource, ScriptInfo const* scriptInfo) const;
+        Creature* _GetScriptCreature(Object* obj, bool isSource, ScriptInfo const* scriptInfo) const;
+        WorldObject* _GetScriptWorldObject(Object* obj, bool isSource, ScriptInfo const* scriptInfo) const;
+        void _ScriptProcessDoor(Object* source, Object* target, ScriptInfo const* scriptInfo) const;
         GameObject* _FindGameObject(WorldObject* pWorldObject, uint32 guid) const;
 
         time_t i_gridExpiry;

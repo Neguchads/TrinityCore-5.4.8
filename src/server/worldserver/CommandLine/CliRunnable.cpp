@@ -53,10 +53,10 @@ namespace Trinity::Impl::Readline
             return nullptr;
     }
 
-    char* command_finder(const char* text, int state)
+    char* command_finder(char const* text, int state)
     {
         static int idx, len;
-        const char* ret;
+        char const* ret;
         std::vector<ChatCommand> const& cmd = ChatHandler::getCommandTable();
 
         if (!state)
@@ -102,7 +102,7 @@ namespace Trinity::Impl::Readline
 #endif
 
 // void utf8print(void* /*arg*/, std::string_view str)
-void utf8print(void* /*arg*/, const char* str)
+void utf8print(void* /*arg*/, char const* str)
 {
 #if TRINITY_PLATFORM == TRINITY_PLATFORM_WINDOWS
     WriteWinConsole(std::string_view(str));

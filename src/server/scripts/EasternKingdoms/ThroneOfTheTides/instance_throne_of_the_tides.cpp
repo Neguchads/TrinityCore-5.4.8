@@ -295,7 +295,7 @@ class instance_throne_of_the_tides : public InstanceMapScript
                 return str_data;
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

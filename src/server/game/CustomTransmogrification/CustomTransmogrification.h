@@ -139,7 +139,7 @@ public:
 
     std::string GetItemIcon(uint32 entry, uint32 width, uint32 height, int x, int y) const;
     std::string GetSlotIcon(uint8 slot, uint32 width, uint32 height, int x, int y) const;
-    const char * GetSlotName(uint8 slot, WorldSession* session) const;
+    char const* GetSlotName(uint8 slot, WorldSession* session) const;
     std::string GetItemLink(Item* item, WorldSession* session) const;
     std::string GetItemLink(uint32 entry, WorldSession* session) const;
     uint32 GetFakeEntry(ObjectGuid itemGUID) const;

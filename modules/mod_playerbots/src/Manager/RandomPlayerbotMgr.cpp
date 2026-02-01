@@ -1495,7 +1495,7 @@ void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
     }
 }
 
-const RandomPlayerbotMgr::city* RandomPlayerbotMgr::GetCityForPlayer(Player* player)
+RandomPlayerbotMgr::city const* RandomPlayerbotMgr::GetCityForPlayer(Player* player)
 {
     if (_city_cache_data.empty()) return nullptr;
 
@@ -1512,7 +1512,7 @@ const RandomPlayerbotMgr::city* RandomPlayerbotMgr::GetCityForPlayer(Player* pla
     return nullptr;
 }
 
-const RandomPlayerbotMgr::farm_spot* RandomPlayerbotMgr::GetFarmZoneForPlayer(Player* player)
+RandomPlayerbotMgr::farm_spot const* RandomPlayerbotMgr::GetFarmZoneForPlayer(Player* player)
 {
     if (_farm_cache_data.empty()) return nullptr;
 

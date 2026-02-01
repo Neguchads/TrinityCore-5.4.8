@@ -52,7 +52,7 @@ enum SelectAggroTarget
 // default predicate function to select target based on distance, player and/or aura criteria
 struct DefaultTargetSelector
 {
-    const Unit* me;
+    Unit const* me;
     float m_dist;
     bool m_playerOnly;
     int32 m_aura;

@@ -923,7 +923,7 @@ public:
     // items support end
 
     // titles support
-    static bool HasTitle(ObjectGuid guid, const CharTitlesEntry* title)
+    static bool HasTitle(ObjectGuid guid, CharTitlesEntry const* title)
     {
         if (title->bit_index > MAX_TITLE_INDEX)
             return false;
@@ -941,7 +941,7 @@ public:
         }
         return false;
     }
-    static bool SetTitle(ObjectGuid guid, std::string name, const CharTitlesEntry* title, ChatHandler* handler, bool lost)
+    static bool SetTitle(ObjectGuid guid, std::string name, CharTitlesEntry const* title, ChatHandler* handler, bool lost)
     {
         uint32 fieldIndexOffset = title->bit_index / 32;
         uint32 flag = 1 << (title->bit_index % 32);

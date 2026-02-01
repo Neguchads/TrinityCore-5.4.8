@@ -194,7 +194,7 @@ std::string WordFilterMgr::FindBadWord(const std::string& text, bool mail)
         if (_text.find(it->first) != std::string::npos)
             return it->second;
 
-    if(mail)
+    if (mail)
     {
         for (BadWordMapMail::const_iterator it = m_badWordsMail.begin(); it != m_badWordsMail.end(); ++it)
             if (_text.find(it->first) != std::string::npos)
@@ -211,12 +211,12 @@ std::string WordFilterMgr::FindBadWord(const std::string& text, bool mail)
         }
         else if (it->second.size() <= 7)
         {
-            if(FindWordInSequence(_text, it->first, 1))
+            if (FindWordInSequence(_text, it->first, 1))
                 return it->second;
         }
         else
         {
-            if(FindWordInSequence(_text, it->first, 2))
+            if (FindWordInSequence(_text, it->first, 2))
                 return it->second;
         }
     }

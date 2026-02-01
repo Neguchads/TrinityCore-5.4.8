@@ -106,7 +106,7 @@ class boss_baron_ashbury : public CreatureScript
                 DoZoneInCombat();
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* /*spell*/) override { }
+            void SpellHit(Unit* /*caster*/, SpellInfo const* /*spell*/) override { }
 
             void HealReceived(Unit* healer, uint32& /*heal*/) override
             {

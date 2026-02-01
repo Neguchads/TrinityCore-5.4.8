@@ -118,7 +118,7 @@ std::unordered_map<std::string, WMODoodadData> WmoDoodads;
 
 // Constants
 
-const char* szWorkDirWmo = "./Buildings";
+char const* szWorkDirWmo = "./Buildings";
 
 std::map<std::pair<uint32, uint16>, uint32> uniqueObjectIds;
 
@@ -243,7 +243,7 @@ void LoadCommonMPQFiles(uint32 build)
 
 // Local testing functions
 
-bool FileExists(const char* file)
+bool FileExists(char const* file)
 {
     if (FILE* n = fopen(file, "rb"))
     {
@@ -313,7 +313,7 @@ void ReadLiquidTypeTableDBC()
 // {
 //     bool success = false;
 
-//     //const char* ParsArchiveNames[] = {"patch-2.MPQ", "patch.MPQ", "common.MPQ", "expansion.MPQ"};
+//     //char const* ParsArchiveNames[] = {"patch-2.MPQ", "patch.MPQ", "common.MPQ", "expansion.MPQ"};
 
 //     SFILE_FIND_DATA data;
 //     HANDLE find = SFileFindFirstFile(WorldMpq, "*.wmo", &data, NULL);
@@ -370,13 +370,13 @@ bool ExtractSingleWmo(std::string& fname)
     bool file_ok = true;
     printf("Extracting %s\n", originalName.c_str());
     WMORoot froot(originalName);
-    if(!froot.open())
+    if (!froot.open())
     {
         printf("Couldn't open RootWmo!!!\n");
         return true;
     }
     FILE *output = fopen(szLocalFile,"wb");
-    if(!output)
+    if (!output)
     {
         printf("couldn't open %s for writing!\n", szLocalFile);
         return false;
@@ -473,7 +473,7 @@ void getGamePath()
 #endif
 }
 
-bool processArgv(int argc, char ** argv, const char *versionString)
+bool processArgv(int argc, char ** argv, char const*versionString)
 {
     bool result = true;
     bool hasInputPathParam = false;
@@ -481,13 +481,13 @@ bool processArgv(int argc, char ** argv, const char *versionString)
 
     for(int i = 1; i < argc; ++i)
     {
-        if(strcmp("-s",argv[i]) == 0)
+        if (strcmp("-s",argv[i]) == 0)
         {
             preciseVectorData = false;
         }
-        else if(strcmp("-d",argv[i]) == 0)
+        else if (strcmp("-d",argv[i]) == 0)
         {
-            if((i+1)<argc)
+            if ((i+1)<argc)
             {
                 hasInputPathParam = true;
                 strcpy(input_path, argv[i+1]);
@@ -500,15 +500,15 @@ bool processArgv(int argc, char ** argv, const char *versionString)
                 result = false;
             }
         }
-        else if(strcmp("-?",argv[1]) == 0)
+        else if (strcmp("-?",argv[1]) == 0)
         {
             result = false;
         }
-        else if(strcmp("-l",argv[i]) == 0)
+        else if (strcmp("-l",argv[i]) == 0)
         {
             preciseVectorData = true;
         }
-        else if(strcmp("-b",argv[i]) == 0)
+        else if (strcmp("-b",argv[i]) == 0)
         {
             if (i + 1 < argc)                            // all ok
                 CONF_TargetBuild = atoi(argv[i++ + 1]);
@@ -520,7 +520,7 @@ bool processArgv(int argc, char ** argv, const char *versionString)
         }
     }
 
-    if(!result)
+    if (!result)
     {
         printf("Extract %s.\n",versionString);
         printf("%s [-?][-s][-l][-d <path>]\n", argv[0]);
@@ -531,7 +531,7 @@ bool processArgv(int argc, char ** argv, const char *versionString)
         printf("   -? : This message.\n");
     }
 
-    if(!hasInputPathParam)
+    if (!hasInputPathParam)
         getGamePath();
 
     return result;
@@ -550,7 +550,7 @@ bool processArgv(int argc, char ** argv, const char *versionString)
 int main(int argc, char ** argv)
 {
     bool success=true;
-    const char *versionString = "V4.03 2017_04";
+    char const*versionString = "V4.03 2017_04";
 
     // Use command line arguments, when some
     if (!processArgv(argc, argv, versionString))

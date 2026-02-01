@@ -1862,7 +1862,7 @@ class instance_siege_of_orgrimmar : public InstanceMapScript
                 return true;
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

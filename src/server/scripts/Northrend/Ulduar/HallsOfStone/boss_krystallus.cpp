@@ -155,7 +155,7 @@ public:
             Talk(SAY_KILL);
         }
 
-        void SpellHitTarget(Unit* /*target*/, const SpellInfo* pSpell) override
+        void SpellHitTarget(Unit* /*target*/, SpellInfo const* pSpell) override
         {
             //this part should be in the core
             if (pSpell->Id == SPELL_SHATTER || pSpell->Id == H_SPELL_SHATTER)

@@ -225,7 +225,7 @@ class boss_alakir : public CreatureScript
                 Talk(SAY_KILL);
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_LIGHTNING_CLOUDS)
                 {
@@ -448,7 +448,7 @@ class boss_alakir : public CreatureScript
                     StartPhaseThree();
             }
 
-            SpellMissInfo SpellHitResult(Unit* attacker, const SpellInfo* /*spell*/, Spell const* /*spellInstance*/) override
+            SpellMissInfo SpellHitResult(Unit* attacker, SpellInfo const* /*spell*/, Spell const* /*spellInstance*/) override
             {
                 return attacker->GetExactDist2d(me) >= 150 ? SPELL_MISS_MISS : SPELL_MISS_NONE;
             }
@@ -943,7 +943,7 @@ class npc_squall_line : public CreatureScript
                 }
             }
 
-            SpellMissInfo SpellHitResult(Unit* attacker, const SpellInfo* spell, Spell const* /*spellInstance*/) override
+            SpellMissInfo SpellHitResult(Unit* attacker, SpellInfo const* spell, Spell const* /*spellInstance*/) override
             {
                 if (spell->Id == SPELL_SQUALL_LINE_VEHICLE ||
                     spell->Id == SPELL_SQUALL_LINE_PREPARATION ||

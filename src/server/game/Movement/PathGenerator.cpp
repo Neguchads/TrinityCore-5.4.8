@@ -551,7 +551,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
     BuildPointPath(startPoint, endPoint);
 }
 
-void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoint)
+void PathGenerator::BuildPointPath(float const*startPoint, float const*endPoint)
 {
     float pathPoints[MAX_POINT_PATH_LENGTH*VERTEX_SIZE];
     uint32 pointCount = 0;
@@ -817,14 +817,14 @@ uint32 PathGenerator::FixupShortcuts(dtPolyRef* path, int npath)
     dtPolyRef neis[maxNeis];
     int nneis = 0;
 
-    const dtMeshTile* tile = 0;
-    const dtPoly* poly = 0;
+    dtMeshTile const* tile = 0;
+    dtPoly const* poly = 0;
     if (dtStatusFailed(_navMeshQuery->getAttachedNavMesh()->getTileAndPolyByRef(path[0], &tile, &poly)))
         return npath;
 
     for (unsigned int k = poly->firstLink; k != DT_NULL_LINK; k = tile->links[k].next)
     {
-        const dtLink* link = &tile->links[k];
+        dtLink const* link = &tile->links[k];
         if (link->ref != 0)
         {
             if (nneis < maxNeis)
@@ -1029,7 +1029,7 @@ dtStatus PathGenerator::FindSmoothPath(float const* startPos, float const* endPo
     return nsmoothPath < MAX_POINT_PATH_LENGTH ? DT_SUCCESS : DT_FAILURE;
 }
 
-bool PathGenerator::InRangeYZX(const float* v1, const float* v2, float r, float h) const
+bool PathGenerator::InRangeYZX(float const* v1, float const* v2, float r, float h) const
 {
     const float dx = v2[0] - v1[0];
     const float dy = v2[1] - v1[1]; // elevation

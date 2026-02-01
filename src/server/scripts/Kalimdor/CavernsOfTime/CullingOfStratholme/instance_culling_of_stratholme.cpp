@@ -36,7 +36,7 @@ enum Texts
     SAY_CRATES_COMPLETED    = 0,
 };
 
-const char* zombiefestWarnings[12] =
+char const* zombiefestWarnings[12] =
 {
     "|cFFFFFC00 [Zombiefest!] |cFF00FFFF started.",
     "|cFFFFFC00 [Zombiefest!] |cFFFE6C00 progress: 10/100.",
@@ -440,7 +440,7 @@ class instance_culling_of_stratholme : public InstanceMapScript
                 return saveStream.str();
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

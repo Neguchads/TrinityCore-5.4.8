@@ -374,7 +374,7 @@ struct boss_conclave_of_wind : public BossAI
             heal = 0;
     }
 
-    void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+    void SpellHitTarget(Unit* target, SpellInfo const* spell) override
     {
         if (spell->Id == SPELL_WIND_DISTANCE_CHECKER)
         {
@@ -788,7 +788,7 @@ class boss_rohash : public CreatureScript
                     events.ScheduleEvent(EVENT_STORM_SHIELD,    30000);
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 boss_conclave_of_wind::SpellHitTarget(target, spell);
                 if (spell->Id == SPELL_HURRICANE_DUMMY_ENEMY)

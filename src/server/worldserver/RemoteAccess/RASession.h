@@ -48,7 +48,7 @@ private:
     bool CheckPassword(const std::string& user, const std::string& pass);
     bool ProcessCommand(std::string& command);
 
-    static void zprint(void* callbackArg, const char* szText);
+    static void zprint(void* callbackArg, char const* szText);
     static void CommandPrint(void* callbackArg, std::string_view text);
     static void CommandFinished(void* callbackArg, bool);
 

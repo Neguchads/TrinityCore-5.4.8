@@ -785,7 +785,7 @@ class spell_warr_unshackled_fury : public SpellScriptLoader
         {
             PrepareAuraScript(spell_warr_unshackled_fury_AuraScript);
 
-            void CalculateAmount(const AuraEffect* /*aurEff*/, float& amount, bool& /*canBeRecalculated*/)
+            void CalculateAmount(AuraEffect const* /*aurEff*/, float& amount, bool& /*canBeRecalculated*/)
             {
                 if (Unit* caster = GetCaster())
                     if (!caster->HasAuraState(AURA_STATE_ENRAGE))

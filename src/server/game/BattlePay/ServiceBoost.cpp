@@ -130,7 +130,7 @@ void CharacterBooster::_GetCharBoostItems(PreparedItemsMap& itemsToMail, Prepare
             break;
     }  
 
-    if(m_charBoostInfo.allianceFaction)
+    if (m_charBoostInfo.allianceFaction)
         itemsToMail.emplace(1, 25472);
     else
         itemsToMail.emplace(1, 25474);

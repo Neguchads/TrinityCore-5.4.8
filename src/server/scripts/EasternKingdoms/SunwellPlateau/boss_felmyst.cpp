@@ -275,7 +275,7 @@ class boss_felmyst : public CreatureScript
                     instance->SetData(DATA_FELMYST_EVENT, DONE);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (me->IsInCombat() && spell->Id == SPELL_FOG_OF_CORRUPTION_SCRIPT)
                     DoCast(caster, SPELL_FOG_OF_CORRUPTION_CHARM, true);

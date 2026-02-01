@@ -84,7 +84,7 @@ struct npc_draenei_survivor : public ScriptedAI
         }
     }
 
-    void SpellHit(Unit* Caster, const SpellInfo* spell) override
+    void SpellHit(Unit* Caster, SpellInfo const* spell) override
     {
         if (spell->SpellFamilyFlags[2] & 0x080000000)
         {

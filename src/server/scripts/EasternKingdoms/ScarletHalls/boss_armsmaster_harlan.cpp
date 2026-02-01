@@ -351,7 +351,7 @@ class spell_harlan_light_blades_proc : public SpellScript
                     // Vehicle Aura
                     if (!target->HasAura(SPELL_LIGHT_BLADES_AURA) && seat < 8)
                     {
-                        if (const SpellInfo* m_spell = sSpellMgr->GetSpellInfo(VEHICLE_SPELL_RIDE_HARDCODED))
+                        if (SpellInfo const* m_spell = sSpellMgr->GetSpellInfo(VEHICLE_SPELL_RIDE_HARDCODED))
                         {
                             int32 m_bp = m_spell->Effects[EFFECT_0].BasePoints + (int32)seat;
                             target->CastSpell(caster, SPELL_LIGHT_BLADES_AURA, true);

@@ -600,7 +600,7 @@ public:
         return true;
     }
 
-    static bool HandleListAggroCommand(ChatHandler* handler, const char * /*args*/)
+    static bool HandleListAggroCommand(ChatHandler* handler, char const* /*args*/)
     {
         try
         {
@@ -653,7 +653,7 @@ public:
         return true;
     }
 
-    static bool HandleListHostilesCommand(ChatHandler* handler, const char * /*args*/)
+    static bool HandleListHostilesCommand(ChatHandler* handler, char const* /*args*/)
     {
         try
         {
@@ -703,7 +703,7 @@ public:
         return true;
     }
 
-    static bool HandleListThreatCommand(ChatHandler* handler, const char * /*args*/)
+    static bool HandleListThreatCommand(ChatHandler* handler, char const* /*args*/)
     {
         try
         {

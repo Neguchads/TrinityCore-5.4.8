@@ -992,7 +992,7 @@ bool SpellMgr::IsArenaAllowedEnchancment(uint32 ench_id) const
     return mEnchantCustomAttr[ench_id];
 }
 
-const std::vector<int32>* SpellMgr::GetSpellLinked(int32 spell_id) const
+std::vector<int32> const* SpellMgr::GetSpellLinked(int32 spell_id) const
 {
     SpellLinkedMap::const_iterator itr = mSpellLinkedMap.find(spell_id);
     return itr != mSpellLinkedMap.end() ? &(itr->second) : NULL;
@@ -6305,7 +6305,7 @@ void SpellMgr::LoadSpellInfoCorrections()
                 //
                 case 106112: // Release Doubt
                 {
-                    const SpellRadiusEntry* radius = sSpellRadiusStore.LookupEntry(22);
+                    SpellRadiusEntry const* radius = sSpellRadiusStore.LookupEntry(22);
                     if (!radius)
                         break;
                     spellInfo->Effects[0].RadiusEntry = radius; //200yards.

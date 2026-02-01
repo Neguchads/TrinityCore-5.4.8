@@ -1082,7 +1082,7 @@ class npc_fanlyr_silverhorn : public CreatureScript
     public:
         npc_fanlyr_silverhorn() : CreatureScript("npc_fanlyr_silverhorn") { }
 
-        bool OnQuestReward(Player* player, Creature* creature, const Quest *_Quest, uint32 /*slot*/) override
+        bool OnQuestReward(Player* player, Creature* creature, Quest const*_Quest, uint32 /*slot*/) override
         {
             if (_Quest->GetQuestId() == QUEST_VOICE_OF_THE_GODS)
                 creature->AI()->Talk(0, player);

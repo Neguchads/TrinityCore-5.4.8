@@ -48,7 +48,7 @@ public:
         return commandTable;
     }
 
-    static bool HandleBattlefieldStart(ChatHandler* handler, const char* args)
+    static bool HandleBattlefieldStart(ChatHandler* handler, char const* args)
     {
         uint32 battleid = 0;
         char* battleid_str = strtok((char*)args, " ");
@@ -70,7 +70,7 @@ public:
         return true;
     }
 
-    static bool HandleBattlefieldEnd(ChatHandler* handler, const char* args)
+    static bool HandleBattlefieldEnd(ChatHandler* handler, char const* args)
     {
         uint32 battleid = 0;
         char* battleid_str = strtok((char*)args, " ");
@@ -92,7 +92,7 @@ public:
         return true;
     }
 
-    static bool HandleBattlefieldEnable(ChatHandler* handler, const char* args)
+    static bool HandleBattlefieldEnable(ChatHandler* handler, char const* args)
     {
         uint32 battleid = 0;
         char* battleid_str = strtok((char*)args, " ");
@@ -122,7 +122,7 @@ public:
         return true;
     }
 
-    static bool HandleBattlefieldSwitch(ChatHandler* handler, const char* args)
+    static bool HandleBattlefieldSwitch(ChatHandler* handler, char const* args)
     {
         uint32 battleid = 0;
         char* battleid_str = strtok((char*)args, " ");
@@ -143,7 +143,7 @@ public:
         return true;
     }
 
-    static bool HandleBattlefieldTimer(ChatHandler* handler, const char* args)
+    static bool HandleBattlefieldTimer(ChatHandler* handler, char const* args)
     {
         uint32 battleid = 0;
         uint32 time = 0;

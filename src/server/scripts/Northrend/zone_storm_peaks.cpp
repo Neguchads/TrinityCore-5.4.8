@@ -203,7 +203,7 @@ public:
                 me->DespawnOrUnsummon();
         }
 
-        void SpellHit(Unit* caster, const SpellInfo* spell) override
+        void SpellHit(Unit* caster, SpellInfo const* spell) override
         {
             if (spell->Id != SPELL_ICE_LANCE)
                 return;
@@ -425,7 +425,7 @@ struct npc_dead_irongiant : public ScriptedAI
 {
     npc_dead_irongiant(Creature *pCreature) : ScriptedAI(pCreature) {}
 
-    void SpellHit(Unit* caster, const SpellInfo* spell) override
+    void SpellHit(Unit* caster, SpellInfo const* spell) override
     {
         if (spell->Id == SPELL_SALVAGE_CORPSE)
         {

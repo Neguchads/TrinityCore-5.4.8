@@ -462,7 +462,7 @@ class instance_black_temple : public InstanceMapScript
                 return true;
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

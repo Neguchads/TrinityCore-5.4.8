@@ -14,26 +14,26 @@
 #include <sys/stat.h>
 #endif
 
-template<typename T> const char* GetTName() { return NULL; }
-template<> const char* GetTName<Object>() { return "Object"; }
-template<> const char* GetTName<WorldObject>() { return "WorldObject"; }
-template<> const char* GetTName<Unit>() { return "Unit"; }
-template<> const char* GetTName<Player>() { return "Player"; }
-template<> const char* GetTName<Creature>() { return "Creature"; }
-template<> const char* GetTName<GameObject>() { return "GameObject"; }
-template<> const char* GetTName<Vehicle>() { return "Vehicle"; }
-template<> const char* GetTName<Group>() { return "Group"; }
-template<> const char* GetTName<Guild>() { return "Guild"; }
-template<> const char* GetTName<QueryResult>() { return "QueryResult"; }
-template<> const char* GetTName<Aura>() { return "Aura"; }
-template<> const char* GetTName<WorldPacket>() { return "WorldPacket"; }
-template<> const char* GetTName<Item>() { return "Item"; }
-template<> const char* GetTName<Spell>() { return "Spell"; }
-template<> const char* GetTName<Quest>() { return "Quest"; }
-template<> const char* GetTName<Map>() { return "Map"; }
-template<> const char* GetTName<Corpse>() { return "Corpse"; }
-template<> const char* GetTName<Weather>() { return "Weather"; }
-template<> const char* GetTName<AuctionHouseObject>() { return "AuctionHouse"; }
+template<typename T> char const* GetTName() { return NULL; }
+template<> char const* GetTName<Object>() { return "Object"; }
+template<> char const* GetTName<WorldObject>() { return "WorldObject"; }
+template<> char const* GetTName<Unit>() { return "Unit"; }
+template<> char const* GetTName<Player>() { return "Player"; }
+template<> char const* GetTName<Creature>() { return "Creature"; }
+template<> char const* GetTName<GameObject>() { return "GameObject"; }
+template<> char const* GetTName<Vehicle>() { return "Vehicle"; }
+template<> char const* GetTName<Group>() { return "Group"; }
+template<> char const* GetTName<Guild>() { return "Guild"; }
+template<> char const* GetTName<QueryResult>() { return "QueryResult"; }
+template<> char const* GetTName<Aura>() { return "Aura"; }
+template<> char const* GetTName<WorldPacket>() { return "WorldPacket"; }
+template<> char const* GetTName<Item>() { return "Item"; }
+template<> char const* GetTName<Spell>() { return "Spell"; }
+template<> char const* GetTName<Quest>() { return "Quest"; }
+template<> char const* GetTName<Map>() { return "Map"; }
+template<> char const* GetTName<Corpse>() { return "Corpse"; }
+template<> char const* GetTName<Weather>() { return "Weather"; }
+template<> char const* GetTName<AuctionHouseObject>() { return "AuctionHouse"; }
 
 void StartEluna(bool restart)
 {
@@ -140,14 +140,14 @@ void StartEluna(bool restart)
             for (auto itr : map->GetCreatureBySpawnIdStore())
             {
                 if (itr.second->IsInWorld())
-                    if(sEluna->CreatureEventBindings->GetBindMap(itr.second->GetEntry())) // update all AI or just Eluna?
+                    if (sEluna->CreatureEventBindings->GetBindMap(itr.second->GetEntry())) // update all AI or just Eluna?
                         itr.second->AIM_Initialize();
             }
 
             for (auto itr : map->GetGameObjectBySpawnIdStore())
             {
                 if (itr.second->IsInWorld())
-                    if(sEluna->GameObjectEventBindings->GetBindMap(itr.second->GetEntry())) // update all AI or just Eluna?
+                    if (sEluna->GameObjectEventBindings->GetBindMap(itr.second->GetEntry())) // update all AI or just Eluna?
                         itr.second->AIM_Initialize();
             }
         });
@@ -164,7 +164,7 @@ Eluna* Eluna::instance()
 }
 
 // Loads lua scripts from given directory
-void Eluna::LoadDirectory(const char* Dirname, LoadedScripts* lscr)
+void Eluna::LoadDirectory(char const* Dirname, LoadedScripts* lscr)
 {
 #ifdef WIN32
     HANDLE hFile;
@@ -217,7 +217,7 @@ void Eluna::LoadDirectory(const char* Dirname, LoadedScripts* lscr)
     }
     FindClose(hFile);
 #else
-    const char* dir = strrchr(Dirname, '/');
+    char const* dir = strrchr(Dirname, '/');
     if (strcmp(Dirname, "..") == 0 || strcmp(Dirname, ".") == 0)
         return;
 
@@ -270,7 +270,7 @@ void Eluna::Initialize()
 
 void Eluna::report(lua_State* L)
 {
-    const char* msg = lua_tostring(L, -1);
+    char const* msg = lua_tostring(L, -1);
     while (msg)
     {
         lua_pop(L, -1);
@@ -375,7 +375,7 @@ void Eluna::Push(lua_State* L, std::string str)
     lua_pushstring(L, str.c_str());
 }
 
-void Eluna::Push(lua_State* L, const char* str)
+void Eluna::Push(lua_State* L, char const* str)
 {
     lua_pushstring(L, str);
 }
@@ -452,13 +452,13 @@ Spell* Eluna::CHECK_SPELL(lua_State* L, int narg)
 
 uint64 Eluna::CHECK_ULONG(lua_State* L, int narg)
 {
-    const char* c_str = luaL_optstring(L, narg, "0x0");
+    char const* c_str = luaL_optstring(L, narg, "0x0");
     return strtoul(c_str, NULL, 0);
 }
 
 int64 Eluna::CHECK_LONG(lua_State* L, int narg)
 {
-    const char* c_str = luaL_optstring(L, narg, "0x0");
+    char const* c_str = luaL_optstring(L, narg, "0x0");
     return strtol(c_str, NULL, 0);
 }
 

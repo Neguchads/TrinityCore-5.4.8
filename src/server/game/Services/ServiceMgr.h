@@ -139,7 +139,7 @@ public:
     typedef std::list<ReclassInfo> ReclassData;
 
     std::set<uint32> const* GetClassSpells(uint8 classID, uint32 team);
-    const ProfSkill* LookupProfession(uint32 entry);
+    ProfSkill const* LookupProfession(uint32 entry);
 
     Creature* GetPremiumAuc(Player* player);
     uint32 GetSpellFamilyByClass(uint32 classID);

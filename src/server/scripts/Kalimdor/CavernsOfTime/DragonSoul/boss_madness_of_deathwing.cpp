@@ -369,7 +369,7 @@ enum Misc
     WORLDSTATE_DEATHWING_MADNESS = 9954, // for second achievement that allow enter to heroic mode
 };
 
-uint8 GetGround(const WorldObject* who)
+uint8 GetGround(WorldObject const* who)
 {
     if (who->GetPositionX() > -11979.311523f && who->GetPositionX() < -11938.857422f &&
         who->GetPositionY() > 12236.340820f && who->GetPositionY() < 12299.116211f)
@@ -569,7 +569,7 @@ class boss_madness_of_deathwing : public CreatureScript
                 return 0;
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_AGONIZING_PAIN)
                 {
@@ -1955,7 +1955,7 @@ class npc_madness_of_deathwing_elementium_bolt : public CreatureScript
                 events.Reset();
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (!platform)
                     return;
@@ -2504,7 +2504,7 @@ class npc_dragon_soul_alexstrasza_dragon : public CreatureScript
                 return;
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_TRIGGER_CONCENTRATION)
                 {
@@ -2586,7 +2586,7 @@ class npc_dragon_soul_nozdormu_dragon : public CreatureScript
                 return;
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_TRIGGER_CONCENTRATION)
                 {
@@ -2670,7 +2670,7 @@ class npc_dragon_soul_ysera_dragon : public CreatureScript
                 return;
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_TRIGGER_CONCENTRATION)
                 {
@@ -2718,7 +2718,7 @@ class npc_dragon_soul_kalecgos_dragon : public CreatureScript
                 return;
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_TRIGGER_CONCENTRATION)
                 {
@@ -3301,7 +3301,7 @@ class spell_madness_of_deathwing_impale_aspect : public SpellScriptLoader
 class spell_madness_of_deathwing_carrying_winds_script : public SpellScriptLoader
 {
     public:
-        spell_madness_of_deathwing_carrying_winds_script(const char* name, uint8 pos) : SpellScriptLoader(name), _pos(pos) { }
+        spell_madness_of_deathwing_carrying_winds_script(char const* name, uint8 pos) : SpellScriptLoader(name), _pos(pos) { }
 
         class spell_madness_of_deathwing_carrying_winds_script_SpellScript : public SpellScript
         {

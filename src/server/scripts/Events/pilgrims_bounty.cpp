@@ -179,7 +179,7 @@ class spell_gen_well_fed_pilgrims_bounty : public SpellScriptLoader
         uint32 _triggeredSpellId2;
 
     public:
-        spell_gen_well_fed_pilgrims_bounty(const char* name, uint32 triggeredSpellId1, uint32 triggeredSpellId2) : SpellScriptLoader(name),
+        spell_gen_well_fed_pilgrims_bounty(char const* name, uint32 triggeredSpellId1, uint32 triggeredSpellId2) : SpellScriptLoader(name),
             _triggeredSpellId1(triggeredSpellId1), _triggeredSpellId2(triggeredSpellId2) { }
 
         class spell_gen_well_fed_pilgrims_bounty_SpellScript : public SpellScript
@@ -271,7 +271,7 @@ class spell_gen_on_plate_pilgrims_bounty : public SpellScriptLoader
         uint32 _triggeredSpellId2;
 
     public:
-        spell_gen_on_plate_pilgrims_bounty(const char* name, uint32 triggeredSpellId1, uint32 triggeredSpellId2) : SpellScriptLoader(name),
+        spell_gen_on_plate_pilgrims_bounty(char const* name, uint32 triggeredSpellId1, uint32 triggeredSpellId2) : SpellScriptLoader(name),
             _triggeredSpellId1(triggeredSpellId1), _triggeredSpellId2(triggeredSpellId2) { }
 
         class spell_gen_on_plate_pilgrims_bounty_SpellScript : public SpellScript
@@ -367,7 +367,7 @@ class spell_pilgrims_bounty_buff_food : public SpellScriptLoader
     private:
         uint32 _triggeredSpellId;
     public:
-        spell_pilgrims_bounty_buff_food(const char* name, uint32 triggeredSpellId = 0) : SpellScriptLoader(name), _triggeredSpellId(triggeredSpellId) { }
+        spell_pilgrims_bounty_buff_food(char const* name, uint32 triggeredSpellId = 0) : SpellScriptLoader(name), _triggeredSpellId(triggeredSpellId) { }
 
         class spell_pilgrims_bounty_buff_food_AuraScript : public AuraScript
         {

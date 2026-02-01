@@ -89,7 +89,7 @@ class at_tott_lady_nazjar_event : public AreaTriggerScript
     public:
         at_tott_lady_nazjar_event() : AreaTriggerScript("at_tott_lady_nazjar_event") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
             {

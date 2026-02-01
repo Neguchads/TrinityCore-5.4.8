@@ -419,7 +419,7 @@ void AnticheatMgr::BuildReport(Player* player, AnticheatData& data, uint8 report
         else
             return;
 
-        const char* reportTypeName;
+        char const* reportTypeName;
         switch (reportType)
         {
             case SPEED_HACK_REPORT:             reportTypeName = "SpeedHack";           break;

@@ -19,12 +19,12 @@ extern "C"
 
 typedef std::set<std::string> LoadedScripts;
 
-template<typename T> const char* GetTName();
+template<typename T> char const* GetTName();
 
 template<class T>
 struct ElunaRegister
 {
-    const char* name;
+    char const* name;
     int(*mfunc)(lua_State*, T*);
 };
 
@@ -161,7 +161,7 @@ class ElunaTemplate
         static int index(lua_State* L)
         {
             lua_getglobal(L, GetTName<T>());
-            const char* key = lua_tostring(L, 2);
+            char const* key = lua_tostring(L, 2);
             if (lua_istable(L, - 1))
             {
                 lua_pushvalue(L, 2);
@@ -403,7 +403,7 @@ class Eluna
         void BeginCall(int fReference);
         bool ExecuteCall(uint8 params, uint8 res);
         void EndCall(uint8 res);
-        void LoadDirectory(const char* directory, LoadedScripts* scr);
+        void LoadDirectory(char const* directory, LoadedScripts* scr);
         // Pushes
         void Push(lua_State*); // nil
         void Push(lua_State*, uint64);
@@ -413,7 +413,7 @@ class Eluna
         void Push(lua_State*, bool);
         void Push(lua_State*, float);
         void Push(lua_State*, double);
-        void Push(lua_State*, const char*);
+        void Push(lua_State*, char const*);
         void Push(lua_State*, std::string);
         template<typename T> void Push(lua_State* L, T const* ptr)
         {

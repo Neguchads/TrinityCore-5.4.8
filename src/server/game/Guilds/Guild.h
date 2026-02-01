@@ -1002,7 +1002,7 @@ private:
     uint8 GetLowestRankId() const { ASSERT(!m_ranks.empty()); return m_ranks.back().GetId(); }
 
     inline BankTab* GetBankTab(uint8 tabId) { return tabId < m_bankTabs.size() ? m_bankTabs[tabId] : NULL; }
-    inline const BankTab* GetBankTab(uint8 tabId) const { return tabId < m_bankTabs.size() ? m_bankTabs[tabId] : NULL; }
+    inline BankTab const* GetBankTab(uint8 tabId) const { return tabId < m_bankTabs.size() ? m_bankTabs[tabId] : NULL; }
 
     inline Member const* GetMember(ObjectGuid guid) const
     {

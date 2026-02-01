@@ -65,7 +65,7 @@ struct npc_felwood_honey_bunny : public ScriptedAI
 {
     npc_felwood_honey_bunny(Creature* creature) : ScriptedAI(creature) { }
 
-    void SpellHit(Unit* caster, const SpellInfo* spell) override
+    void SpellHit(Unit* caster, SpellInfo const* spell) override
     {
         if (spell->Id == SPELL_SWIPE_HONEY)
         {

@@ -234,7 +234,7 @@ void World::SetMotd(const std::string& motd)
     sScriptMgr->OnMotdChange(m_motd);
 }
 
-const char* World::GetMotd() const
+char const* World::GetMotd() const
 {
     return m_motd.c_str();
 }
@@ -1291,7 +1291,7 @@ void World::LoadConfigSettings(bool reload)
 #if PLATFORM == PLATFORM_UNIX || PLATFORM == PLATFORM_APPLE
     if (dataPath[0] == '~')
     {
-        const char* home = getenv("HOME");
+        char const* home = getenv("HOME");
         if (home)
             dataPath.replace(0, 1, home);
     }
@@ -2518,7 +2518,7 @@ void World::SetInitialWorldSettings()
         sLog->SetRealmId(realmId);
 }
 
-void World::RecordTimeDiff(const char *text, ...)
+void World::RecordTimeDiff(char const*text, ...)
 {
     if (!text)
     {
@@ -3012,7 +3012,7 @@ void World::SendGMText(int32 string_id, ...)
 }
 
 /// DEPRECATED, only for debug purpose. Send a System Message to all players (except self if mentioned)
-void World::SendGlobalText(const char* text, WorldSession* self)
+void World::SendGlobalText(char const* text, WorldSession* self)
 {
     WorldPacket data;
 
@@ -3053,7 +3053,7 @@ bool World::SendZoneMessage(uint32 zone, WorldPacket const* packet, WorldSession
 }
 
 /// Send a System Message to all players in the zone (except self if mentioned)
-void World::SendZoneText(uint32 zone, const char* text, WorldSession* self, uint32 team)
+void World::SendZoneText(uint32 zone, char const* text, WorldSession* self, uint32 team)
 {
     WorldPacket data;
     ChatHandler::BuildChatPacket(data, CHAT_MSG_SYSTEM, LANG_UNIVERSAL, NULL, NULL, text);
@@ -3383,7 +3383,7 @@ void World::ShutdownCancel()
 }
 
 /// Send a server message to the user(s)
-void World::SendServerMessage(ServerMessageType type, const char *text, Player* player)
+void World::SendServerMessage(ServerMessageType type, char const*text, Player* player)
 {
     WorldPacket data(SMSG_SERVER_MESSAGE, 50);              // guess size
     data << uint32(type);

@@ -1001,7 +1001,7 @@ public:
         return true;
     }
 
-    static bool HandleLookupTaxiNodeCommand(ChatHandler* handler, const char * args)
+    static bool HandleLookupTaxiNodeCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;

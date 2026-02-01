@@ -87,7 +87,7 @@ namespace VMAP
         uint32 RootWMOID;
         std::vector<GroupModel_Raw> groupsArray;
 
-        bool Read(const char * path);
+        bool Read(char const* path);
     };
 
     class TC_COMMON_API TileAssembler

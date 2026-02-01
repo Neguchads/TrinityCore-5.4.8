@@ -324,7 +324,7 @@ class boss_arcanotron : public CreatureScript
                 DoCast(me, SPELL_ZERO_POWER, true); 
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL))
                     if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL)->m_spellInfo->Id == SPELL_ARCANE_ANNIHILATOR)
@@ -1115,7 +1115,7 @@ class npc_power_generator : public CreatureScript
                 DoCast(me, SPELL_POWER_GENERATOR_10);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_OVERCHARGE)
                     events.ScheduleEvent(EVENT_OVERCHARGED, 2000);                

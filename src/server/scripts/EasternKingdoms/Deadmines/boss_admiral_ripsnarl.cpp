@@ -349,7 +349,7 @@ class npc_admiral_ripsnarl_vapor : public CreatureScript
                     DoCast(me, SPELL_CONDENSATION_1, true);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_CONDENSE_1_1)
                     events.ScheduleEvent(EVENT_SWIRLING_VAPOR, urand(3000, 7000));

@@ -43,7 +43,7 @@ template<int64 Coins>
 class battle_pay_token : public ItemScript
 {
 public:
-    battle_pay_token(const char *ScriptName) : ItemScript(ScriptName) { }
+    battle_pay_token(char const*ScriptName) : ItemScript(ScriptName) { }
 
     bool OnUse(Player *player, Item *item, const SpellCastTargets &)
     {

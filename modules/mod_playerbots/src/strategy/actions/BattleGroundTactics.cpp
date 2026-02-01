@@ -1965,11 +1965,11 @@ bool BGTactics::selectObjective(bool reset)
                 {
                     uint32 bossEntry = (teamId == TEAM_HORDE) ? AV_CPLACE_MINE_S_3 : AV_CPLACE_MINE_N_3;
                     Creature* mBossNeutral = bg->GetBGCreature(bossEntry);
-                    const Position* minePositions[] = {(teamId == TEAM_HORDE) ? &AV_MINE_SOUTH_1 : &AV_MINE_NORTH_1,
+                    Position const* minePositions[] = {(teamId == TEAM_HORDE) ? &AV_MINE_SOUTH_1 : &AV_MINE_NORTH_1,
                                                        (teamId == TEAM_HORDE) ? &AV_MINE_SOUTH_2 : &AV_MINE_NORTH_2,
                                                        (teamId == TEAM_HORDE) ? &AV_MINE_SOUTH_3 : &AV_MINE_NORTH_3};
 
-                    const Position* chosen = minePositions[urand(0, 2)];
+                    Position const* chosen = minePositions[urand(0, 2)];
                     pos.Set(chosen->GetPositionX(), chosen->GetPositionY(), chosen->GetPositionZ(), bot->GetMapId());
                     posMap["bg objective"] = pos;
                     BgObjective = mBossNeutral;

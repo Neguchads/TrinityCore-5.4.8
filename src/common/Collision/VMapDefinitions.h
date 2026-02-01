@@ -29,7 +29,7 @@ namespace VMAP
     const char GAMEOBJECT_MODELS[] = "GameObjectModels.dtree";
 
     // defined in TileAssembler.cpp currently...
-    bool readChunk(FILE* rf, char *dest, const char *compare, uint32 len);
+    bool readChunk(FILE* rf, char *dest, char const*compare, uint32 len);
 }
 
 // Set of helper macros for extractors (VMAP and MMAP)

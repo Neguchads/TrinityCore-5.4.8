@@ -176,7 +176,7 @@ class boss_sacrolash : public CreatureScript
                 }
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 switch (spell->Id)
                 {
@@ -478,7 +478,7 @@ class boss_alythess : public CreatureScript
                 }
             }
 
-            void SpellHitTarget(Unit* target,const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target,SpellInfo const* spell) override
             {
                 switch(spell->Id)
                 {
@@ -700,7 +700,7 @@ class npc_shadow_image : public CreatureScript
 
             void JustEngagedWith(Unit* /*who*/) override { }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 switch(spell->Id)
                 {

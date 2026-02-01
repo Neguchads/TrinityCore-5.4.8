@@ -1801,7 +1801,7 @@ void WorldSession::SendPlayerChoice(uint32 choiceId)
     {
         pve = i == 0;
 
-        const Quest* quest = sObjectMgr->GetQuestTemplate(pve ? (horde ? QUEST_PVE_HORDE : QUEST_PVE_ALLIANCE) : (horde ? QUEST_PVP_HORDE : QUEST_PVP_ALLIANCE));
+        Quest const* quest = sObjectMgr->GetQuestTemplate(pve ? (horde ? QUEST_PVE_HORDE : QUEST_PVE_ALLIANCE) : (horde ? QUEST_PVP_HORDE : QUEST_PVP_ALLIANCE));
 
         data.WriteBit(quest ? true : false);
         if (!quest)
@@ -1855,7 +1855,7 @@ void WorldSession::SendPlayerChoice(uint32 choiceId)
     {
         pve = i == 0;
 
-        const Quest* quest = sObjectMgr->GetQuestTemplate(pve ? (horde ? QUEST_PVE_HORDE : QUEST_PVE_ALLIANCE) : (horde ? QUEST_PVP_HORDE : QUEST_PVP_ALLIANCE));
+        Quest const* quest = sObjectMgr->GetQuestTemplate(pve ? (horde ? QUEST_PVE_HORDE : QUEST_PVE_ALLIANCE) : (horde ? QUEST_PVP_HORDE : QUEST_PVP_ALLIANCE));
         if (!quest)
             continue;
 

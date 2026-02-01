@@ -361,7 +361,7 @@ class npc_sap_puddle : public CreatureScript
                     Aura * growAura = me->GetAura(SPELL_GROW);
                     if (!growAura)
                     {
-                        const SpellInfo* spell = sSpellMgr->GetSpellInfo(SPELL_GROW);
+                        SpellInfo const* spell = sSpellMgr->GetSpellInfo(SPELL_GROW);
                         int32 tempSolution = 1;
                         growAura = Aura::TryCreate(spell, MAX_EFFECT_MASK, me, me, &tempSolution/*spell->spellPower*/); // TODO: port spell power changes
                     }
@@ -418,7 +418,7 @@ class spell_sap_residue : public SpellScriptLoader
                     float dist = 4.0f * caster->GetObjectScale();
 
                     if (!targets.empty())
-                        targets.remove_if ([&caster, &dist](const WorldObject * unit) { return unit->GetExactDist2d(caster) > dist; });
+                        targets.remove_if ([&caster, &dist](WorldObject const* unit) { return unit->GetExactDist2d(caster) > dist; });
                 }
             }
 

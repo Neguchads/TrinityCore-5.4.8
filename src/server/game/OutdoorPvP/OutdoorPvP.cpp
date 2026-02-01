@@ -70,7 +70,7 @@ void OPvPCapturePoint::AddGO(uint32 type, uint32 guid, uint32 entry)
 {
     if (!entry)
     {
-        const GameObjectData* data = sObjectMgr->GetGOData(guid);
+        GameObjectData const* data = sObjectMgr->GetGOData(guid);
         if (!data)
             return;
         entry = data->id;
@@ -83,7 +83,7 @@ void OPvPCapturePoint::AddCre(uint32 type, uint32 guid, uint32 entry)
 {
     if (!entry)
     {
-        const CreatureData* data = sObjectMgr->GetCreatureData(guid);
+        CreatureData const* data = sObjectMgr->GetCreatureData(guid);
         if (!data)
             return;
         entry = data->id;

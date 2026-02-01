@@ -1,4 +1,4 @@
-﻿/*
+/*
 * This file is part of the Pandaria 5.4.8 Project. See THANKS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
@@ -53,7 +53,7 @@ public:
 
             for (uint8 slot = EQUIPMENT_SLOT_START; slot < EQUIPMENT_SLOT_END; ++slot)
             {
-                if (const char* slotName = sT->GetSlotName(slot, session))
+                if (char const* slotName = sT->GetSlotName(slot, session))
                 {
                     Item* newItem = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot);
                     uint32 entry = newItem ? sT->GetFakeEntry(newItem->GetGUID()) : 0;
@@ -204,7 +204,7 @@ public:
                         uint32 entry = sT->GetFakeEntry(newItem->GetGUID());
                         if (!entry)
                             continue;
-                        const ItemTemplate* temp = sObjectMgr->GetItemTemplate(entry);
+                        ItemTemplate const* temp = sObjectMgr->GetItemTemplate(entry);
                         if (!temp)
                             continue;
                         if (!sT->SuitableForTransmogrification(player, temp)) // no need to check?
@@ -253,7 +253,7 @@ public:
     }
 
 #ifdef PRESETS
-    bool OnGossipSelectCode(Player* player, Creature* creature, uint32 sender, uint32 action, const char* code)
+    bool OnGossipSelectCode(Player* player, Creature* creature, uint32 sender, uint32 action, char const* code)
     {
         player->PlayerTalkClass->ClearMenus();
         if (sender || action)
@@ -284,7 +284,7 @@ public:
                         uint32 entry = sT->GetFakeEntry(newItem->GetGUID());
                         if (!entry)
                             continue;
-                        const ItemTemplate* temp = sObjectMgr->GetItemTemplate(entry);
+                        ItemTemplate const* temp = sObjectMgr->GetItemTemplate(entry);
                         if (!temp)
                             continue;
                         if (!sT->SuitableForTransmogrification(player, temp))
@@ -369,7 +369,7 @@ public:
                     if (sT->GetFakeEntry(oldItem->GetGUID()) == newItem->GetEntry())
                         continue;
                     ++limit;
-                    player->ADD_GOSSIP_ITEM_EXTENDED(GOSSIP_ICON_MONEY_BAG, sT->GetItemIcon(newItem->GetEntry(), 30, 30, -18, 0) + sT->GetItemLink(newItem, session), slot, newItem->GetGUID().GetCounter(), "是否幻化成这个造型，这会使这个物品变成绑定状态并不享受售卖退还服务。下面将显示物品和需要的金币数量！\n\n是否仍然继续？\n\n" + sT->GetItemIcon(newItem->GetEntry(), 40, 40, -15, -10) + sT->GetItemLink(newItem, session) + ss.str(), price, false);
+                    player->ADD_GOSSIP_ITEM_EXTENDED(GOSSIP_ICON_MONEY_BAG, sT->GetItemIcon(newItem->GetEntry(), 30, 30, -18, 0) + sT->GetItemLink(newItem, session), slot, newItem->GetGUID().GetCounter(), "?????????,???????????????????????????????????????!\n\n???????\n\n" + sT->GetItemIcon(newItem->GetEntry(), 40, 40, -15, -10) + sT->GetItemLink(newItem, session) + ss.str(), price, false);
                 }
             }
         }
@@ -494,7 +494,7 @@ class global_transmog_script : public GlobalScript {
             sT->DeleteFakeFromDB(itemGuid, trans);
         }
         
-        void OnMirrorImageDisplayItem(const Item *item, uint32 &display) {
+        void OnMirrorImageDisplayItem(Item const*item, uint32 &display) {
             if (uint32 entry = sTransmogrification->GetFakeEntry(item->GetGUID()))
                 display=uint32(sObjectMgr->GetItemTemplate(entry)->DisplayInfoID);
         }

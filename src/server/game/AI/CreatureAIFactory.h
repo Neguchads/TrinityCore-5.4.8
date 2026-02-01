@@ -25,17 +25,17 @@
 
 struct SelectableAI : public FactoryHolder<CreatureAI>, public Permissible<Creature>
 {
-    SelectableAI(const char* id) : FactoryHolder<CreatureAI>(id) { }
+    SelectableAI(char const* id) : FactoryHolder<CreatureAI>(id) { }
 };
 
 template<class REAL_AI>
 struct CreatureAIFactory : public SelectableAI
 {
-    CreatureAIFactory(const char* name) : SelectableAI(name) { }
+    CreatureAIFactory(char const* name) : SelectableAI(name) { }
 
     CreatureAI* Create(void*) const;
 
-    int Permit(const Creature* c) const { return REAL_AI::Permissible(c); }
+    int Permit(Creature const* c) const { return REAL_AI::Permissible(c); }
 };
 
 template<class REAL_AI>
@@ -53,17 +53,17 @@ typedef FactoryHolder<CreatureAI>::FactoryHolderRepository CreatureAIRepository;
 //GO
 struct SelectableGameObjectAI : public FactoryHolder<GameObjectAI>, public Permissible<GameObject>
 {
-    SelectableGameObjectAI(const char* id) : FactoryHolder<GameObjectAI>(id) { }
+    SelectableGameObjectAI(char const* id) : FactoryHolder<GameObjectAI>(id) { }
 };
 
 template<class REAL_GO_AI>
 struct GameObjectAIFactory : public SelectableGameObjectAI
 {
-    GameObjectAIFactory(const char* name) : SelectableGameObjectAI(name) { }
+    GameObjectAIFactory(char const* name) : SelectableGameObjectAI(name) { }
 
     GameObjectAI* Create(void*) const;
 
-    int Permit(const GameObject* g) const { return REAL_GO_AI::Permissible(g); }
+    int Permit(GameObject const* g) const { return REAL_GO_AI::Permissible(g); }
 };
 
 template<class REAL_GO_AI>

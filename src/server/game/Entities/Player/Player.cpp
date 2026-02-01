@@ -2695,7 +2695,7 @@ void Player::SetInWater(bool apply)
     getHostileRefManager().updateThreatTables();
 }
 
-bool Player::IsInAreaTrigger(const AreaTriggerEntry *areaTrigger) const
+bool Player::IsInAreaTrigger(AreaTriggerEntry const*areaTrigger) const
 {
     if (!areaTrigger)
         return false;
@@ -2850,7 +2850,7 @@ void Player::UninviteFromGroup()
     }
 }
 
-void Player::RemoveFromGroup(Group* group, ObjectGuid guid, RemoveMethod method /* = GROUP_REMOVEMETHOD_DEFAULT*/, ObjectGuid kicker /* = 0 */, const char* reason /* = NULL */)
+void Player::RemoveFromGroup(Group* group, ObjectGuid guid, RemoveMethod method /* = GROUP_REMOVEMETHOD_DEFAULT*/, ObjectGuid kicker /* = 0 */, char const* reason /* = NULL */)
 {
     if (group)
     {
@@ -13392,7 +13392,7 @@ void Player::DestroyItem(uint8 bag, uint8 slot, bool update)
         pItem->SetNotRefundable(this);
         pItem->ClearSoulboundTradeable(this);
 
-        const ItemTemplate* proto = pItem->GetTemplate();
+        ItemTemplate const* proto = pItem->GetTemplate();
         for (uint8 i = 0; i < MAX_ITEM_PROTO_SPELLS; ++i)
             if (proto->Spells[i].SpellTrigger == ITEM_SPELLTRIGGER_ON_NO_DELAY_USE && proto->Spells[i].SpellId > 0) // On obtain trigger
                 RemoveAurasDueToSpell(proto->Spells[i].SpellId);
@@ -18210,7 +18210,7 @@ void Player::SendCanTakeQuestResponse(QuestFailedReason msg) const
     TC_LOG_DEBUG("network", "WORLD: Sent SMSG_QUESTGIVER_QUEST_INVALID");
 }
 
-void Player::SendQuestConfirmAccept(const Quest* quest, Player* pReceiver)
+void Player::SendQuestConfirmAccept(Quest const* quest, Player* pReceiver)
 {
     if (pReceiver)
     {
@@ -18218,7 +18218,7 @@ void Player::SendQuestConfirmAccept(const Quest* quest, Player* pReceiver)
 
         LocaleConstant localeConstant = pReceiver->GetSession()->GetSessionDbLocaleIndex();
         if (localeConstant != LOCALE_enUS)
-            if (const QuestTemplateLocale* pLocale = sObjectMgr->GetQuestLocale(quest->GetQuestId()))
+            if (QuestTemplateLocale const* pLocale = sObjectMgr->GetQuestLocale(quest->GetQuestId()))
                 ObjectMgr::GetLocaleString(pLocale->LogTitle, localeConstant, strTitle);
 
         ObjectGuid guid = GetGUID();
@@ -19381,7 +19381,7 @@ bool Player::IsAllowedToLoot(Creature const* creature)
     if (HasPendingBind())
         return false;
 
-    const Loot* loot = &creature->loot;
+    Loot const* loot = &creature->loot;
     if (loot->isLooted()) // nothing to loot or everything looted.
         return false;
 
@@ -20146,7 +20146,7 @@ void Player::_LoadQuestObjectiveStatus(PreparedQueryResult result)
             uint32 objectiveId = fields[0].GetUInt32();
             uint32 amount      = fields[1].GetUInt32();
 
-            const QuestObjective* objective = sObjectMgr->GetQuestObjective(objectiveId);
+            QuestObjective const* objective = sObjectMgr->GetQuestObjective(objectiveId);
             if (!objective)
             {
                 TC_LOG_ERROR("entities.player", "Player %s (%u) has invalid Quest Objective ID %u in Quest Objective status data! Skipping.", GetName().c_str(), GetGUID().GetCounter(), objectiveId);
@@ -22160,7 +22160,7 @@ void Player::ResetInstances(uint8 method, bool isRaid)
     for (BoundInstancesMap::iterator itr = m_boundInstances[diff].begin(); itr != m_boundInstances[diff].end();)
     {
         InstanceSave* p = itr->second.save;
-        const MapEntry* entry = sMapStore.LookupEntry(itr->first);
+        MapEntry const* entry = sMapStore.LookupEntry(itr->first);
         if (!entry || entry->IsRaid() != isRaid || !p->CanReset())
         {
             ++itr;
@@ -24622,7 +24622,7 @@ void Player::SetBattlegroundEntryPoint()
         // If map is dungeon find linked graveyard
         if (GetMap()->IsDungeon())
         {
-            if (const WorldSafeLocsEntry* entry = sObjectMgr->GetClosestGraveYard(*this, GetTeam(), this))
+            if (WorldSafeLocsEntry const* entry = sObjectMgr->GetClosestGraveYard(*this, GetTeam(), this))
                 m_bgData.joinPos = WorldLocation(entry->map_id, entry->x, entry->y, entry->z, 0.0f);
             else
                 TC_LOG_ERROR("entities.player", "SetBattlegroundEntryPoint: Dungeon map %u has no linked graveyard, setting home location as entry point.", GetMapId());
@@ -24779,7 +24779,7 @@ bool Player::IsAlwaysDetectableFor(WorldObject const* seer) const
     if (Unit::IsAlwaysDetectableFor(seer))
         return true;
 
-    if (const Player* seerPlayer = seer->ToPlayer())
+    if (Player const* seerPlayer = seer->ToPlayer())
         if (IsGroupVisibleFor(seerPlayer))
             return !(seerPlayer->duel && seerPlayer->duel->startTime != 0 && seerPlayer->duel->opponent == this);
 
@@ -26730,7 +26730,7 @@ bool Player::IsAtGroupRewardDistance(WorldObject const* pRewardSource) const
 {
     if (!pRewardSource)
         return false;
-    const WorldObject* player = GetCorpse();
+    WorldObject const* player = GetCorpse();
     if (!player || IsAlive())
         player = this;
 
@@ -26748,7 +26748,7 @@ bool Player::IsAtRecruitAFriendDistance(WorldObject const* pOther) const
 {
     if (!pOther)
         return false;
-    const WorldObject* player = GetCorpse();
+    WorldObject const* player = GetCorpse();
     if (!player || IsAlive())
         player = this;
 
@@ -31669,7 +31669,7 @@ void Player::ChangeClass(uint32 oldClass, uint32 newClass)
         if (!spell)
             continue;
 
-        const SpellInfo* spellInfo = sSpellMgr->GetSpellInfo(spell);
+        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spell);
         if (!spellInfo || spellInfo->SpellLevel > GetLevel())
             continue;
 
@@ -31701,7 +31701,7 @@ void Player::ChangeClass(uint32 oldClass, uint32 newClass)
             continue;
         if (iter.flag & RECLASS_SKILL)
         {
-            const SkillLineEntry* pSkill = sSkillLineStore.LookupEntry(iter.data);
+            SkillLineEntry const* pSkill = sSkillLineStore.LookupEntry(iter.data);
             if (!pSkill)
                 continue;
             if (GetSkillRangeType(pSkill, false) == SKILL_RANGE_MONO)

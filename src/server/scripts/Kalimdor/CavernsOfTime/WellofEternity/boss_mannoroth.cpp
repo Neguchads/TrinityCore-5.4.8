@@ -540,7 +540,7 @@ class npc_mannoroth_varothen : public CreatureScript
                     Talk(SAY_VAROTHEN_KILL);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_ARCHIVED_VAROTHEN_1)
                     DoCast(caster, SPELL_ARCHIVED_VAROTHEN_2, true);

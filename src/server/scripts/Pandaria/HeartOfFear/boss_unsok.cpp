@@ -575,7 +575,7 @@ class npc_amber_monstrosity : public CreatureScript
                     unsok->AI()->DoAction(ACTION_UNLEASHED);
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (target && spell->Id == SPELL_GRAB)
                 {

@@ -134,7 +134,7 @@ class boss_halazzi : public CreatureScript
                 instance->SetBossState(DATA_HALAZZI, IN_PROGRESS);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_TRANSFORM_LYNX)
                     EnterPhase(PHASE_LYNX);

@@ -175,7 +175,7 @@ class instance_the_stonecore : public InstanceMapScript
                 return str_data;
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

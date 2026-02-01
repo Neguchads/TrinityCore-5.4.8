@@ -46,7 +46,7 @@ class TC_GAME_API SmartAI : public CreatureAI
         explicit SmartAI(Creature* c);
 
         //core related
-        static int32 Permissible(const Creature*);
+        static int32 Permissible(Creature const*);
 
         // Start moving to the desired MovePoint
         void StartPath(bool run = false, uint32 pathId = 0, bool repeat = false, Unit* invoker = nullptr, uint32 nodeId = 1);
@@ -101,10 +101,10 @@ class TC_GAME_API SmartAI : public CreatureAI
         void MoveInLineOfSight(Unit* who) override;
 
         // Called when hit by a spell
-        void SpellHit(Unit* unit, const SpellInfo* spellInfo) override;
+        void SpellHit(Unit* unit, SpellInfo const* spellInfo) override;
 
         // Called when spell hits a target
-        void SpellHitTarget(Unit* target, const SpellInfo* spellInfo) override;
+        void SpellHitTarget(Unit* target, SpellInfo const* spellInfo) override;
 
         // Called at any Damage from any attacker (before damage apply)
         void DamageTaken(Unit* doneBy, uint32& damage) override;
@@ -146,7 +146,7 @@ class TC_GAME_API SmartAI : public CreatureAI
         void OnCharmed(bool apply) override;
 
         // Called when victim is in line of sight
-        bool CanAIAttack(const Unit* who) const override;
+        bool CanAIAttack(Unit const* who) const override;
 
         // Used in scripts to share variables
         void DoAction(int32 param = 0) override;
@@ -272,12 +272,12 @@ class TC_GAME_API SmartGameObjectAI : public GameObjectAI
         void InitializeAI() override;
         void Reset() override;
         SmartScript* GetScript() { return &mScript; }
-        static int Permissible(const GameObject* g);
+        static int Permissible(GameObject const* g);
 
         bool OnGossipHello(Player* player, bool isUse) override;
         bool OnReportUse(Player* player) override;
         bool OnGossipSelect(Player* player, uint32 sender, uint32 action) override;
-        bool OnGossipSelectCode(Player* /*player*/, uint32 /*sender*/, uint32 /*action*/, const char* /*code*/) override;
+        bool OnGossipSelectCode(Player* /*player*/, uint32 /*sender*/, uint32 /*action*/, char const* /*code*/) override;
         bool OnQuestAccept(Player* player, Quest const* quest) override;
         bool OnQuestReward(Player* player, Quest const* quest, uint32 opt) override;
         Optional<QuestGiverStatus> GetDialogStatus(Player* /*player*/) override;

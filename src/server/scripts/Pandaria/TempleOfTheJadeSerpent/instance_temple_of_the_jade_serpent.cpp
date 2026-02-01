@@ -708,7 +708,7 @@ class instance_temple_of_jade_serpent : public InstanceMapScript
                 return saveStream.str();
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

@@ -1022,7 +1022,7 @@ public:
 
     static bool HandleDebugSendLargePacketCommand(ChatHandler* handler, char const* /*args*/)
     {
-        const char* stuffingString = "This is a dummy string to push the packet's size beyond 128000 bytes. ";
+        char const* stuffingString = "This is a dummy string to push the packet's size beyond 128000 bytes. ";
         std::ostringstream ss;
         while (ss.str().size() < 128000)
             ss << stuffingString;

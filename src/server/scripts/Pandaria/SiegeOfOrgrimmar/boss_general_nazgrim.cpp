@@ -1341,14 +1341,14 @@ class spell_nazgrim_bonecracker : public SpellScript
 class AftershockDistanceOrderPred
 {
     public:
-        AftershockDistanceOrderPred(const WorldObject* object, bool ascending = true) : m_object(object), m_ascending(ascending) {}
-        bool operator() (const WorldObject* a, const WorldObject* b) const
+        AftershockDistanceOrderPred(WorldObject const* object, bool ascending = true) : m_object(object), m_ascending(ascending) {}
+        bool operator() (WorldObject const* a, WorldObject const* b) const
         {
             return m_ascending ? a->GetDistance(m_object) < b->GetDistance(m_object) :
                 a->GetDistance(m_object) > b->GetDistance(m_object);
         }
     private:
-        const WorldObject* m_object;
+        WorldObject const* m_object;
         const bool m_ascending;
 };
 

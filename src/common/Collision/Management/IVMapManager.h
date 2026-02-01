@@ -83,7 +83,7 @@ namespace VMAP
 
             virtual ~IVMapManager(void) { }
 
-            virtual int loadMap(const char* pBasePath, unsigned int pMapId, int x, int y) = 0;
+            virtual int loadMap(char const* pBasePath, unsigned int pMapId, int x, int y) = 0;
 
             virtual LoadResult existsMap(char const* pBasePath, unsigned int pMapId, int x, int y) = 0;
 

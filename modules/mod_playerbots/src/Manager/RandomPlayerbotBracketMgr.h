@@ -22,7 +22,7 @@ private:
 public:
     RandomBotBacketManager();
 
-    void AdjustBotToRange(Player* bot, int targetRangeIndex, const LevelRangeConfig* factionRanges);
+    void AdjustBotToRange(Player* bot, int targetRangeIndex, LevelRangeConfig const* factionRanges);
     int GetLevelRangeIndex(uint8 level);
     uint8 GetRandomLevelInRange(const LevelRangeConfig& range);
     void Update(uint32 diff);

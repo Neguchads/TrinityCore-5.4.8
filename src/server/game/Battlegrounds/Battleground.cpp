@@ -1137,7 +1137,7 @@ void Battleground::EndBattleground(uint32 winner)
                 GetArenaTeam(team)->MemberLost(player->GetGUID(), winnerMatchmakerRating, loserMatchmakerChange);
             }
         }
-        if(IsBattleground())
+        if (IsBattleground())
         {
             if (team == winner)
             {

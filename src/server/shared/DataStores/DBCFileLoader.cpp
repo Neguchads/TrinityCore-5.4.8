@@ -25,7 +25,7 @@
 
 DBCFileLoader::DBCFileLoader() : fieldsOffset(NULL), data(NULL), stringTable(NULL) { }
 
-bool DBCFileLoader::Load(const char* filename, const char* fmt)
+bool DBCFileLoader::Load(char const* filename, char const* fmt)
 {
     uint32 header;
     if (data)
@@ -125,7 +125,7 @@ DBCFileLoader::Record DBCFileLoader::getRecord(size_t id)
     return Record(*this, data + id * recordSize);
 }
 
-uint32 DBCFileLoader::GetFormatRecordSize(const char* format, int32* index_pos)
+uint32 DBCFileLoader::GetFormatRecordSize(char const* format, int32* index_pos)
 {
     uint32 recordsize = 0;
     int32 i = -1;
@@ -170,7 +170,7 @@ uint32 DBCFileLoader::GetFormatRecordSize(const char* format, int32* index_pos)
     return recordsize;
 }
 
-char* DBCFileLoader::AutoProduceData(const char* format, uint32& records, char**& indexTable, uint32 sqlRecordCount, uint32 sqlHighestIndex, char*& sqlDataTable)
+char* DBCFileLoader::AutoProduceData(char const* format, uint32& records, char**& indexTable, uint32 sqlRecordCount, uint32 sqlHighestIndex, char*& sqlDataTable)
 {
     /*
     format STRING, NA, FLOAT, NA, INT <=>
@@ -300,7 +300,7 @@ char* DBCFileLoader::AutoProduceStrings(char const* format, char* dataTable, Loc
                 {
                     DbcStr* strings = (DbcStr*)(&dataTable[offset]);
                     char const* st = getRecord(y).getString(x);
-                    strings->m_impl[locale] = stringPool+(st-(const char*)stringTable);
+                    strings->m_impl[locale] = stringPool+(st-(char const*)stringTable);
                     offset += sizeof(DbcStr);
                     break;
                  }

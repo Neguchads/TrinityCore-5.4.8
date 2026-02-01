@@ -235,7 +235,7 @@ void UnitAI::FillAISpellInfo()
     AISpellInfo = new AISpellInfoType[sSpellMgr->GetSpellInfoStoreSize()];
 
     AISpellInfoType* AIInfo = AISpellInfo;
-    const SpellInfo* spellInfo;
+    SpellInfo const* spellInfo;
 
     for (uint32 i = 0; i < sSpellMgr->GetSpellInfoStoreSize(); ++i, ++AIInfo)
     {

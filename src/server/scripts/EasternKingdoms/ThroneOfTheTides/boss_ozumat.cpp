@@ -303,7 +303,7 @@ class npc_neptulon : public CreatureScript
                 }
             }
 
-            void SpellHitTarget(Unit* /*target*/, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* /*target*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_TIDAL_SURGE && !bTidalSurgeSaid)
                 {
@@ -741,7 +741,7 @@ class at_tott_ozumat : public AreaTriggerScript
     public:
         at_tott_ozumat() : AreaTriggerScript("at_tott_ozumat") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
             {

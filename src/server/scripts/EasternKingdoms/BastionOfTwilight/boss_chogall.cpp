@@ -785,7 +785,7 @@ class npc_chogall_darkened_creation : public CreatureScript
 
             void Reset() override { }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL))
                     if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL)->m_spellInfo->Id == SPELL_DEBILITATING_BEAM)
@@ -943,7 +943,7 @@ class npc_chogall_corrupting_adherent : public CreatureScript
                 events.Reset();
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL))
                 if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL)->m_spellInfo->Id == SPELL_DEPRAVITY)

@@ -2406,22 +2406,22 @@ class spell_q30050_resuscitate: public SpellScriptLoader
 
             void HandleDummy(SpellEffIndex /*effIndex*/)
             {
-                if(Unit* caster = GetCaster())
+                if (Unit* caster = GetCaster())
                 {
                     if (AuraEffect const* aurEff = caster->GetAuraEffect(108123, EFFECT_0))
                     {
                         int32 step = uint32(aurEff->GetTickNumber() / 15);
-                        if(step > 36)
+                        if (step > 36)
                             step -= 36;
-                        else if(step > 30)
+                        else if (step > 30)
                             step -= 30;
-                        else if(step > 24)
+                        else if (step > 24)
                             step -= 24;
-                        else if(step > 18)
+                        else if (step > 18)
                             step =- 18;
-                        else if(step > 12)
+                        else if (step > 12)
                             step =- 12;
-                        else if(step > 6)
+                        else if (step > 6)
                             step =- 6;
 
                         switch (step)

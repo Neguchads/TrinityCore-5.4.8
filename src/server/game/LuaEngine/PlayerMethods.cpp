@@ -55,7 +55,7 @@ namespace LuaPlayer
     int Mute(lua_State* L, Player* player)
     {
         uint32 muteseconds = luaL_checkunsigned(L, 1);
-        /*const char* reason = luaL_checkstring(L, 2);*/ // Mangos does not have a reason field in database.
+        /*char const* reason = luaL_checkstring(L, 2);*/ // Mangos does not have a reason field in database.
 
         //PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_MUTE_TIME);
         //int64 muteTime = time(NULL) + muteseconds;
@@ -1928,7 +1928,7 @@ namespace LuaPlayer
 
     int SendBroadcastMessage(lua_State* L, Player* player)
     {
-        const char* message = luaL_checkstring(L, 1);
+        char const* message = luaL_checkstring(L, 1);
         if (std::string(message).length() > 0)
             ChatHandler(player->GetSession()).SendSysMessage(message);
         return 0;
@@ -1937,7 +1937,7 @@ namespace LuaPlayer
     int SendAreaTriggerMessage(lua_State* L, Player* player)
     {
         // @TODO
-        //const char* msg = luaL_checkstring(L, 1);
+        //char const* msg = luaL_checkstring(L, 1);
         //if (std::string(msg).length() > 0)
         //    player->GetSession()->SendAreaTriggerMessage(msg);
         return 0;
@@ -1945,7 +1945,7 @@ namespace LuaPlayer
 
     int SendNotification(lua_State* L, Player* player)
     {
-        const char* msg = luaL_checkstring(L, 1);
+        char const* msg = luaL_checkstring(L, 1);
         if (std::string(msg).length() > 0)
             player->GetSession()->SendNotification(msg);
         return 0;
@@ -2057,11 +2057,11 @@ namespace LuaPlayer
     int GossipMenuAddItem(lua_State* L, Player* player)
     {
         uint32 _icon = luaL_checkunsigned(L, 1);
-        const char* msg = luaL_checkstring(L, 2);
+        char const* msg = luaL_checkstring(L, 2);
         uint32 _sender = luaL_checkunsigned(L, 3);
         uint32 _intid = luaL_checkunsigned(L, 4);
         bool _code = luaL_optbool(L, 5, false);
-        const char* _promptMsg = luaL_optstring(L, 6, "");
+        char const* _promptMsg = luaL_optstring(L, 6, "");
         uint32 _money = luaL_optunsigned(L, 7, 0);
         player->PlayerTalkClass->GetGossipMenu().AddMenuItem(-1, _icon, msg, _sender, _intid, _promptMsg, _money, _code);
         return 0;
@@ -2218,7 +2218,7 @@ namespace LuaPlayer
         else
         {
             uint32 entry = luaL_checkunsigned(L, 1);
-            const ItemTemplate* temp = sObjectMgr->GetItemTemplate(entry);
+            ItemTemplate const* temp = sObjectMgr->GetItemTemplate(entry);
             if (temp)
                 sEluna->Push(L, player->CanUseItem(temp));
             else

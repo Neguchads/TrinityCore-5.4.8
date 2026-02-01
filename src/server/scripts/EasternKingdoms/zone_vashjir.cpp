@@ -43,7 +43,7 @@ struct npc_drowning_soldier_and_warrior : public ScriptedAI
         move_timer = 0;
     }
 
-    void SpellHit(Unit* caster, const SpellInfo* spell) override
+    void SpellHit(Unit* caster, SpellInfo const* spell) override
     {
         if (Player* player = caster->ToPlayer())
         {

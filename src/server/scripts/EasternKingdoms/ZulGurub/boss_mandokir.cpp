@@ -531,7 +531,7 @@ class spell_mandokir_spirit_vengeance_cancel : public SpellScriptLoader
 class DevastatingSlamTargetSelector 
 {
     public:
-        DevastatingSlamTargetSelector(Creature* me, const Unit* victim) : _me(me), _victim(victim) { }
+        DevastatingSlamTargetSelector(Creature* me, Unit const* victim) : _me(me), _victim(victim) { }
 
         bool operator() (WorldObject* target)
         {

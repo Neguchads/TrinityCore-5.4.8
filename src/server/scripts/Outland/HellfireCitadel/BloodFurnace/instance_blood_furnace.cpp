@@ -262,12 +262,12 @@ class instance_blood_furnace : public InstanceMapScript
                 return 0;
             }
 
-            const char* Save()
+            char const* Save()
             {
                 return str_data.c_str();
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

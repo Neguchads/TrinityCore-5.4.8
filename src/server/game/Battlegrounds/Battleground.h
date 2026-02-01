@@ -589,7 +589,7 @@ class Battleground
         void DoorOpen(uint32 type);
         void DoorClose(uint32 type);
         //to be removed
-        const char* GetTrinityString(int32 entry);
+        char const* GetTrinityString(int32 entry);
 
         virtual bool HandlePlayerUnderMap(Player* /*player*/) { return false; }
 
@@ -633,10 +633,10 @@ class Battleground
         void EndNow();
         void PlayerAddedToBGCheckIfBGIsRunning(Player* player);
 
-        Player* _GetPlayer(ObjectGuid guid, bool offlineRemove, const char* context) const;
-        Player* _GetPlayer(BattlegroundPlayerMap::iterator itr, const char* context);
-        Player* _GetPlayer(BattlegroundPlayerMap::const_iterator itr, const char* context) const;
-        Player* _GetPlayerForTeam(uint32 teamId, BattlegroundPlayerMap::const_iterator itr, const char* context) const;
+        Player* _GetPlayer(ObjectGuid guid, bool offlineRemove, char const* context) const;
+        Player* _GetPlayer(BattlegroundPlayerMap::iterator itr, char const* context);
+        Player* _GetPlayer(BattlegroundPlayerMap::const_iterator itr, char const* context) const;
+        Player* _GetPlayerForTeam(uint32 teamId, BattlegroundPlayerMap::const_iterator itr, char const* context) const;
 
         void ProcessProgress(uint32 diff);
         void ProcessOfflineQueue();

@@ -635,7 +635,7 @@ class npc_sinestra_calen : public CreatureScript
                 }
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_TWILIGHT_BLAST_DUMMY)
                 {
@@ -794,7 +794,7 @@ class npc_sinestra_twilight_flames : public CreatureScript
                 SetCombatMovement(false);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_CALL_FLAMES)
                     DoCast(me, SPELL_TWILIGHT_FLAMES, true);

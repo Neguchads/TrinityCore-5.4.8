@@ -870,7 +870,7 @@ class boss_bd_onyxia : public CreatureScript
                 me->DespawnOrUnsummon(3000);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_ELECTROCUTE)
                     me->ModifyPower(POWER_ALTERNATE_POWER, 20);
@@ -1140,7 +1140,7 @@ class npc_animated_bone_warrior : public CreatureScript
                 DoCast(me, SPELL_EMPOWER);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_SHADOWBLAZE || spell->Id == SPELL_SHADOWFLAME_BREATH)
                 {

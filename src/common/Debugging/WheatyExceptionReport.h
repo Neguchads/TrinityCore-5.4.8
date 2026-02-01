@@ -60,7 +60,7 @@ enum BasicType                                              // Stolen from CVCON
     btHresult = 31
 };
 
-const char* const rgBaseType[] =
+char const* const rgBaseType[] =
 {
     " <user defined> ",                                     // btNoType = 0,
     " void ",                                               // btVoid = 1,
@@ -132,7 +132,7 @@ class WheatyExceptionReport
 
         static BasicType GetBasicType(DWORD typeIndex, DWORD64 modBase);
 
-        static int __cdecl _tprintf(const TCHAR * format, ...);
+        static int __cdecl _tprintf(TCHAR const* format, ...);
 
         // Variables used by the class
         static TCHAR m_szLogFileName[MAX_PATH];

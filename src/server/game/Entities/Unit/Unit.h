@@ -1144,10 +1144,10 @@ public:
     float GetCombatReach() const override { return m_floatValues [UNIT_FIELD_COMBAT_REACH]; }
     float GetMeleeRange(Unit const* target) const;
     float GetMeleeReach() const;
-    bool IsWithinCombatRange(const Unit* obj, float dist2compare) const;
-    bool IsWithinMeleeRange(const Unit* obj, float dist = NOMINAL_MELEE_RANGE) const;
+    bool IsWithinCombatRange(Unit const* obj, float dist2compare) const;
+    bool IsWithinMeleeRange(Unit const* obj, float dist = NOMINAL_MELEE_RANGE) const;
     bool IsWithinRangedMeleeRange(Unit const* obj, float dist) const;
-    void GetRandomContactPoint(const Unit* target, float &x, float &y, float &z, float distance2dMin, float distance2dMax) const;
+    void GetRandomContactPoint(Unit const* target, float &x, float &y, float &z, float distance2dMin, float distance2dMax) const;
     uint32 m_extraAttacks;
     bool m_canDualWield;
 
@@ -1500,7 +1500,7 @@ public:
     float GetParryChanceAgainst(Unit const* attacker, WeaponAttackType attType) const;
     float GetBlockChangeAgainst(Unit const* attacker, WeaponAttackType attType) const;
     float GetUnitMissChance(WeaponAttackType attType) const;
-    float GetUnitCriticalChance(WeaponAttackType attackType, const Unit* victim) const;
+    float GetUnitCriticalChance(WeaponAttackType attackType, Unit const* victim) const;
     int32 GetMechanicResistChance(SpellInfo const* spellInfo) const;
     bool CanUseAttackType(uint8 attacktype) const;
 
@@ -1510,9 +1510,9 @@ public:
 
     float GetWeaponProcChance() const;
     float GetRealPPMProcChance(SpellInfo const* spellProto, Item const* item, WeaponAttackType attackType) const;
-    float GetPPMProcChance(uint32 WeaponSpeed, float PPM, const SpellInfo* spellProto) const;
+    float GetPPMProcChance(uint32 WeaponSpeed, float PPM, SpellInfo const* spellProto) const;
 
-    MeleeHitOutcome RollMeleeOutcomeAgainst(const Unit* victim, WeaponAttackType attType) const;
+    MeleeHitOutcome RollMeleeOutcomeAgainst(Unit const* victim, WeaponAttackType attType) const;
 
     NPCFlags GetNpcFlags() const { return NPCFlags(GetUInt32Value(UNIT_FIELD_NPC_FLAGS)); }
     bool HasNpcFlag(NPCFlags flags) const { return HasFlag(UNIT_FIELD_NPC_FLAGS, flags) != 0; }
@@ -1968,7 +1968,7 @@ public:
 
     int32 GetTotalAuraModifierByMiscMask(AuraType auratype, uint32 misc_mask) const;
     float GetTotalAuraMultiplierByMiscMask(AuraType auratype, uint32 misc_mask) const;
-    int32 GetMaxPositiveAuraModifierByMiscMask(AuraType auratype, uint32 misc_mask, const AuraEffect* except = NULL) const;
+    int32 GetMaxPositiveAuraModifierByMiscMask(AuraType auratype, uint32 misc_mask, AuraEffect const* except = NULL) const;
     int32 GetMaxNegativeAuraModifierByMiscMask(AuraType auratype, uint32 misc_mask) const;
 
     int32 GetTotalAuraModifierByMiscValue(AuraType auratype, int32 misc_value) const;
@@ -2270,7 +2270,7 @@ public:
 
     void ApplyUberImmune(uint32 spellid, bool apply);
     void ApplySpellImmune(uint32 spellId, uint32 op, uint32 type, bool apply);
-    void ApplySpellDispelImmunity(const SpellInfo* spellProto, DispelType type, bool apply);
+    void ApplySpellDispelImmunity(SpellInfo const* spellProto, DispelType type, bool apply);
     virtual bool IsImmunedToSpell(SpellInfo const* spellInfo, uint32 effectMask) const; // redefined in Creature
 
     uint32 GetSchoolImmunityMask() const;
@@ -2316,7 +2316,7 @@ public:
     {
         return i_motionMaster;
     }
-    const MotionMaster* GetMotionMaster() const
+    MotionMaster const* GetMotionMaster() const
     {
         return i_motionMaster;
     }
@@ -2440,7 +2440,7 @@ public:
         m_vehicle = vehicle;
     }
     bool IsOnVehicle() const { return m_vehicle != NULL; }
-    bool IsOnVehicle(const Unit* vehicle) const;
+    bool IsOnVehicle(Unit const* vehicle) const;
     Unit* GetVehicleBase()  const;
     Creature* GetVehicleCreatureBase() const;
     ObjectGuid GetTransGUID() const override;
@@ -2753,7 +2753,7 @@ namespace Trinity
                 return m_ascending ? rA < rB : rA > rB;
             }
 
-            bool operator() (const Unit* a, const Unit* b) const
+            bool operator() (Unit const* a, Unit const* b) const
             {
                 float rA = a->GetMaxPower(m_power) ? float(a->GetPower(m_power)) / float(a->GetMaxPower(m_power)) : 0.0f;
                 float rB = b->GetMaxPower(m_power) ? float(b->GetPower(m_power)) / float(b->GetMaxPower(m_power)) : 0.0f;
@@ -2779,7 +2779,7 @@ namespace Trinity
                 return m_ascending ? rA < rB : rA > rB;
             }
 
-            bool operator() (const Unit* a, const Unit* b) const
+            bool operator() (Unit const* a, Unit const* b) const
             {
                 float rA = a->GetMaxHealth() ? float(a->GetHealth()) / float(a->GetMaxHealth()) : 0.0f;
                 float rB = b->GetMaxHealth() ? float(b->GetHealth()) / float(b->GetMaxHealth()) : 0.0f;
@@ -2816,14 +2816,14 @@ namespace Trinity
     class DistanceCompareOrderPred
     {
         public:
-            DistanceCompareOrderPred(const WorldObject* object, bool ascending = true) : m_object(object), m_ascending(ascending) {}
-            bool operator() (const WorldObject* a, const WorldObject* b) const
+            DistanceCompareOrderPred(WorldObject const* object, bool ascending = true) : m_object(object), m_ascending(ascending) {}
+            bool operator() (WorldObject const* a, WorldObject const* b) const
             {
                 return m_ascending ? a->GetExactDist(m_object) < b->GetExactDist(m_object) :
                     a->GetExactDist(m_object) > b->GetExactDist(m_object);
             }
         private:
-            const WorldObject* m_object;
+            WorldObject const* m_object;
             const bool m_ascending;
     };
 }

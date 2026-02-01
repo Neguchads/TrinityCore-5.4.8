@@ -691,7 +691,7 @@ class instance_trial_of_the_crusader : public InstanceMapScript
                 return SaveDataBuffer;
             }
 
-            void Load(const char* strIn) override
+            void Load(char const* strIn) override
             {
                 if (!strIn)
                 {

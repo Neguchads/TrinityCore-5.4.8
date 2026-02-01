@@ -224,13 +224,13 @@ class npc_voljin_ancient_enemy : public CreatureScript
 
         void DoAction(int32 /*action*/) override
         {
-            if(EventInProgress)
+            if (EventInProgress)
                 return;
             EventInProgress = true;
 
             for (int i=0; i<=2; ++i)
             {
-                if(Creature * creature = i == 2 ? me : me->FindNearestCreature(i ? NPC_ZUNI : NPC_VANIRA, 20.0f))
+                if (Creature * creature = i == 2 ? me : me->FindNearestCreature(i ? NPC_ZUNI : NPC_VANIRA, 20.0f))
                 {
                     creature->AddUnitMovementFlag(MOVEMENTFLAG_WALKING);
                     creature->SetReactState(REACT_PASSIVE);
@@ -249,12 +249,12 @@ class npc_voljin_ancient_enemy : public CreatureScript
 
         void UpdateAI(uint32 diff) override
         {
-            if(!EventInProgress)
+            if (!EventInProgress)
                 return;
 
             events.Update(diff);
             {
-                if(uint32 eventId = events.ExecuteEvent())
+                if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch(eventId)
                     {
@@ -286,7 +286,7 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature) override
     {
-        if(player->GetQuestStatus(QUEST_ANCIENT_ENEMY) == QUEST_STATUS_INCOMPLETE)
+        if (player->GetQuestStatus(QUEST_ANCIENT_ENEMY) == QUEST_STATUS_INCOMPLETE)
         {
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, VOLJIN_GOSSIP, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
             player->SEND_GOSSIP_MENU(GOSSIP_VOLJIN, creature->GetGUID());            
@@ -348,12 +348,12 @@ class npc_zarjira : public CreatureScript
 
         void DoAction(int32 action) override
         {
-            if(action == 1)
+            if (action == 1)
                 events.ScheduleEvent(EVENT_INTRO, 12000);
-            if(action == 2)
+            if (action == 2)
             {
                 Talk(SAY_FIRES);
-                if(Creature * voljin = me->FindNearestCreature(NPC_VOLJIN, 30.0f))
+                if (Creature * voljin = me->FindNearestCreature(NPC_VOLJIN, 30.0f))
                     voljin->RemoveAllAuras();
             }
         }
@@ -361,7 +361,7 @@ class npc_zarjira : public CreatureScript
         void JustDied(Unit* killer) override
         {
             for(int i=0;i<=2;++i)
-                if(Creature * creature = me->FindNearestCreature(npcId[i], 30.0f))
+                if (Creature * creature = me->FindNearestCreature(npcId[i], 30.0f))
                     creature->AI()->EnterEvadeMode();
 
             std::list<Player*> playerList;
@@ -380,7 +380,7 @@ class npc_zarjira : public CreatureScript
         void UpdateAI(uint32 diff) override
         {
             events.Update(diff);
-            if(uint32 eventId = events.ExecuteEvent())
+            if (uint32 eventId = events.ExecuteEvent())
             {
                 switch(eventId)
                 {
@@ -392,15 +392,15 @@ class npc_zarjira : public CreatureScript
                     {
                         me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                         me->SetReactState(REACT_AGGRESSIVE);
-                        if(Creature * creature = me->FindNearestCreature(NPC_VOLJIN, 30.0f))
+                        if (Creature * creature = me->FindNearestCreature(NPC_VOLJIN, 30.0f))
                             creature->CastSpell(me, SPELL_DELUGE_OF_SHADOW, true);
 
                         for(int i=0;i<=2;++i)
                         {
-                            if(Creature * creature = me->FindNearestCreature(npcId[i], 30.0f))
+                            if (Creature * creature = me->FindNearestCreature(npcId[i], 30.0f))
                             {
                                 me->SetInCombatWith(creature);
-                                if(i == 2)
+                                if (i == 2)
                                 {
                                     me->Attack(creature, false);
                                     creature->Attack(me, false);
@@ -417,13 +417,13 @@ class npc_zarjira : public CreatureScript
                     }
                     break;
                 case EVENT_FROSTBOLT:
-                    if(me->GetPower(POWER_MANA) <= me->GetMaxPower(POWER_MANA) / 4)
+                    if (me->GetPower(POWER_MANA) <= me->GetMaxPower(POWER_MANA) / 4)
                         me->SetPower(POWER_MANA, me->GetMaxPower(POWER_MANA));
                     DoCastVictim(SPELL_FROSTBOLT);
                     events.ScheduleEvent(EVENT_FROSTBOLT, urand(2500, 3000));
                     break;
                 case EVENT_MANIFESTATION:
-                    if(Unit * target = SelectTarget(SELECT_TARGET_RANDOM, 0, 0.0f, true))
+                    if (Unit * target = SelectTarget(SELECT_TARGET_RANDOM, 0, 0.0f, true))
                         target->CastSpell(target, SPELL_SUMMON_MANIFESTATION, true);
                     events.ScheduleEvent(EVENT_MANIFESTATION, urand(10000, 15000));
                     break;
@@ -476,14 +476,14 @@ class npc_fire_of_the_seas : public CreatureScript
             me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
         }
 
-        void SpellHit(Unit * /*caster*/, const SpellInfo * spell) override
+        void SpellHit(Unit * /*caster*/, SpellInfo const* spell) override
         {
-            if(spell->Id == SPELL_STAMP_OUT_FIRES)
+            if (spell->Id == SPELL_STAMP_OUT_FIRES)
             {
                 me->RemoveAllAuras();
                 me->InterruptNonMeleeSpells(true);
-                if(Creature * zarjira = me->FindNearestCreature(NPC_ZARJIRA, 30.0f))
-                    if(!zarjira->HasAura(SPELL_FIRES_BEAM))
+                if (Creature * zarjira = me->FindNearestCreature(NPC_ZARJIRA, 30.0f))
+                    if (!zarjira->HasAura(SPELL_FIRES_BEAM))
                         zarjira->AI()->DoAction(2);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
             }

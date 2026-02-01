@@ -245,8 +245,8 @@ public:
 
     static bool HandleMmapStatsCommand(ChatHandler* handler, char const* /*args*/)
     {
-        const char* textEnabled = "|cFF00FF00en";
-        const char* textDisabled = "|cFFFF0000dis";
+        char const* textEnabled = "|cFF00FF00en";
+        char const* textDisabled = "|cFFFF0000dis";
 
         Unit* target = handler->getSelectedUnit();
         if (!target)
@@ -356,7 +356,7 @@ public:
     struct MMAPDisableName
     {
         DisableType type;
-        const char* name;
+        char const* name;
     };
     static bool DisableHelper(ChatHandler* handler, char const* args, bool disable, DisableType type)
     {
@@ -417,7 +417,7 @@ public:
                 break;
         }
 
-        const char* name;
+        char const* name;
         for (uint8 i = 0; i < TABLE_ENTRIES_COUNT; ++i)
         {
             if (table[i].type == type)

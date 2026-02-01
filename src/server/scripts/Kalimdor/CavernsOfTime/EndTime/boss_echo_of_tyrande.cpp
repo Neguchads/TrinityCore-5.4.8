@@ -236,7 +236,7 @@ class boss_echo_of_tyrande : public CreatureScript
                 }
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->HasEffect(SPELL_EFFECT_INTERRUPT_CAST))
                     if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL))
@@ -754,7 +754,7 @@ class at_et_tyrande : public AreaTriggerScript
     public:
         at_et_tyrande() : AreaTriggerScript("at_et_tyrande") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (!player)
                 return true;

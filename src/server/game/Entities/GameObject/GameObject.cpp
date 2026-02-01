@@ -132,7 +132,7 @@ void GameObject::RemoveFromOwner()
         return;
     }
 
-    const char * ownerType = "creature";
+    char const* ownerType = "creature";
     if (ownerGUID.IsPlayer())
         ownerType = "player";
     else if (ownerGUID.IsPet())
@@ -825,7 +825,7 @@ void GameObject::SaveToDB()
 
 void GameObject::SaveToDB(uint32 mapid, uint16 spawnMask, uint32 phaseMask)
 {
-    const GameObjectTemplate* goI = GetGOInfo();
+    GameObjectTemplate const* goI = GetGOInfo();
 
     if (!goI)
         return;
@@ -1262,7 +1262,7 @@ void GameObject::SetGoArtKit(uint8 kit)
 
 void GameObject::SetGoArtKit(uint8 artkit, GameObject* go, uint32 lowguid)
 {
-    const GameObjectData* data = NULL;
+    GameObjectData const* data = NULL;
     if (go)
     {
         go->SetGoArtKit(artkit);

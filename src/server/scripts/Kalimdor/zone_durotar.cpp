@@ -205,7 +205,7 @@ class npc_lazy_peon : public CreatureScript
                     work = true;
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (spell->Id != SPELL_AWAKEN_PEON)
                     return;
@@ -672,7 +672,7 @@ class npc_watershed_patrol : public CreatureScript
     public:
         npc_watershed_patrol() : CreatureScript("npc_watershed_patrol") { }
 
-        bool OnQuestReward(Player* player, Creature* creature, const Quest *_Quest, uint32 /*slot*/) override
+        bool OnQuestReward(Player* player, Creature* creature, Quest const*_Quest, uint32 /*slot*/) override
         {
             if (player->GetQuestStatus(QUEST_WATERSHED_PATROL) != QUEST_STATUS_INCOMPLETE)
                 return false;

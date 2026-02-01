@@ -72,7 +72,7 @@ Channel::Channel(std::string const& name, uint32 channelId, uint32 team):
                 _announce = fields[0].GetBool();
                 _ownership = fields[1].GetBool();
                 _password  = fields[2].GetString();
-                const char* db_BannedList = fields[3].GetCString();
+                char const* db_BannedList = fields[3].GetCString();
 
                 if (db_BannedList)
                 {

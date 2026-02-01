@@ -1275,7 +1275,7 @@ class TC_GAME_API Player : public Unit, public GridObject<Player>
 
     void SetInWater(bool apply);
 
-    bool IsInAreaTrigger(const AreaTriggerEntry* areaTrigger) const;
+    bool IsInAreaTrigger(AreaTriggerEntry const* areaTrigger) const;
 
     void SendInitialPacketsBeforeAddToMap();
     void SendInitialPacketsAfterAddToMap();
@@ -2238,7 +2238,7 @@ public:
     bool IsInSameGroupWith(Player const* p) const;
     bool IsInSameRaidWith(Player const* p) const;
     void UninviteFromGroup();
-    static void RemoveFromGroup(Group* group, ObjectGuid guid, RemoveMethod method = GROUP_REMOVEMETHOD_DEFAULT, ObjectGuid kicker = ObjectGuid::Empty, const char* reason = NULL);
+    static void RemoveFromGroup(Group* group, ObjectGuid guid, RemoveMethod method = GROUP_REMOVEMETHOD_DEFAULT, ObjectGuid kicker = ObjectGuid::Empty, char const* reason = NULL);
     void RemoveFromGroup(RemoveMethod method = GROUP_REMOVEMETHOD_DEFAULT)
     {
         RemoveFromGroup(GetGroup(), GetGUID(), method);

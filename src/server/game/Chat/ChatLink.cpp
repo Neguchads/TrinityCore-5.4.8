@@ -71,7 +71,7 @@ inline std::string ReadSkip(std::istringstream& iss, char term)
     return res;
 }
 
-inline bool CheckDelimiter(std::istringstream& iss, char delimiter, const char* context)
+inline bool CheckDelimiter(std::istringstream& iss, char delimiter, char const* context)
 {
     char c = iss.peek();
     if (c != delimiter)
@@ -97,7 +97,7 @@ inline bool ReadHex(std::istringstream& iss, T& res, uint32 length)
 #define DELIMITER ':'
 #define PIPE_CHAR '|'
 
-bool ChatLink::ValidateName(char* buffer, const char* /*context*/)
+bool ChatLink::ValidateName(char* buffer, char const* /*context*/)
 {
     _name = buffer;
     return true;
@@ -184,7 +184,7 @@ inline std::string ItemChatLink::FormatName(uint8 index, ItemLocale const* local
     return ss.str();
 }
 
-bool ItemChatLink::ValidateName(char* buffer, const char* context)
+bool ItemChatLink::ValidateName(char* buffer, char const* context)
 {
     ChatLink::ValidateName(buffer, context);
 
@@ -244,7 +244,7 @@ bool QuestChatLink::Initialize(std::istringstream& iss)
     return true;
 }
 
-bool QuestChatLink::ValidateName(char* buffer, const char* context)
+bool QuestChatLink::ValidateName(char* buffer, char const* context)
 {
     ChatLink::ValidateName(buffer, context);
 
@@ -285,7 +285,7 @@ bool SpellChatLink::Initialize(std::istringstream& iss)
     return true;
 }
 
-bool SpellChatLink::ValidateName(char* buffer, const char* context)
+bool SpellChatLink::ValidateName(char* buffer, char const* context)
 {
     ChatLink::ValidateName(buffer, context);
 
@@ -378,7 +378,7 @@ bool AchievementChatLink::Initialize(std::istringstream& iss)
     return true;
 }
 
-bool AchievementChatLink::ValidateName(char* buffer, const char* context)
+bool AchievementChatLink::ValidateName(char* buffer, char const* context)
 {
     ChatLink::ValidateName(buffer, context);
 
@@ -654,7 +654,7 @@ bool JournalLink::ValidateName(char* buffer, char const* context)
     return true;
 }
 
-LinkExtractor::LinkExtractor(const char* msg) : _iss(msg) { }
+LinkExtractor::LinkExtractor(char const* msg) : _iss(msg) { }
 
 LinkExtractor::~LinkExtractor()
 {
@@ -666,7 +666,7 @@ LinkExtractor::~LinkExtractor()
 bool LinkExtractor::IsValidMessage()
 {
     const char validSequence[6] = "cHhhr";
-    const char* validSequenceIterator = validSequence;
+    char const* validSequenceIterator = validSequence;
 
     char buffer[256];
 

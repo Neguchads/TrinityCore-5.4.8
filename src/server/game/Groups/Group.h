@@ -269,7 +269,7 @@ class Group
         void   RemoveAllInvites();
         bool   AddLeaderInvite(Player* player);
         bool   AddMember(Player* player);
-        bool   RemoveMember(ObjectGuid guid, const RemoveMethod &method = GROUP_REMOVEMETHOD_DEFAULT, ObjectGuid kicker = ObjectGuid::Empty, const char* reason = NULL);
+        bool   RemoveMember(ObjectGuid guid, const RemoveMethod &method = GROUP_REMOVEMETHOD_DEFAULT, ObjectGuid kicker = ObjectGuid::Empty, char const* reason = NULL);
         void   ChangeLeader(ObjectGuid guid);
         void   FindNewLeader(ObjectGuid exceptGuid = ObjectGuid::Empty);
         void   SetLootMethod(LootMethod method);
@@ -292,7 +292,7 @@ class Group
         ObjectGuid GetLeaderGUID() const;
         ObjectGuid GetGUID() const;
         ObjectGuid::LowType GetLowGUID() const;
-        const char * GetLeaderName() const;
+        char const* GetLeaderName() const;
         LootMethod GetLootMethod() const;
         ObjectGuid GetLooterGuid() const;
         ItemQualities GetLootThreshold() const;

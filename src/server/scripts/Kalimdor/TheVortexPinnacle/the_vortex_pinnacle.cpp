@@ -1389,7 +1389,7 @@ class at_catch_fall_5 : public AreaTriggerScript
     public:
         at_catch_fall_5() : AreaTriggerScript("at_catch_fall_5") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (player->HasAura(SPELL_CATCH_FALL_SUMMON_AURA))
                 return true;

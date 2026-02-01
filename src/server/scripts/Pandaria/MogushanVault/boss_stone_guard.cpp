@@ -1215,7 +1215,7 @@ class spell_jasper_chains : public SpellScriptLoader
             {
                 Unit* caster = GetCaster();
                 Unit* target = GetTarget();
-                const SpellInfo* spell = GetSpellInfo();
+                SpellInfo const* spell = GetSpellInfo();
                 Player* linkedPlayer = ObjectAccessor::GetPlayer(*target, playerLinkedGuid);
 
                 if (!caster || !target || !spell || !linkedPlayer || !linkedPlayer->IsAlive() || !linkedPlayer->HasAura(spell->Id))

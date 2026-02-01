@@ -157,8 +157,8 @@ private:
     uint32 AddRandomBots();
     bool ProcessBot(uint32 bot);
     void ScheduleRandomize(uint32 bot, uint32 time);
-    const farm_spot* GetFarmZoneForPlayer(Player* player);
-    const city* GetCityForPlayer(Player* player);
+    farm_spot const* GetFarmZoneForPlayer(Player* player);
+    city const* GetCityForPlayer(Player* player);
     uint32 GetEventValue(uint32 bot, std::string const event);
     std::string const GetEventData(uint32 bot, std::string const event);
     uint32 SetEventValue(uint32 bot, std::string const event, uint32 value, uint32 validIn, std::string const data = "");

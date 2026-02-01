@@ -534,7 +534,7 @@ class instance_terrace_of_endless_spring : public InstanceMapScript
                 }
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

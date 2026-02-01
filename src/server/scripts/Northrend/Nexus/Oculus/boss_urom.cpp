@@ -356,7 +356,7 @@ class boss_urom : public CreatureScript
                 me->DeleteThreatList();
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spellInfo) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spellInfo) override
             {
                 Position home;
                 switch (spellInfo->Id)

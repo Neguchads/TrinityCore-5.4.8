@@ -918,7 +918,7 @@ void LoadDBCStores(const std::string& dataPath, uint32& availableDbcLocales)
     TC_LOG_INFO("server.loading", ">> Initialized %d DBC data stores in %u ms", DBCFileCount, GetMSTimeDiffToNow(oldMSTime));
 }
 
-const std::string* GetRandomCharacterName(uint8 race, uint8 gender)
+std::string const* GetRandomCharacterName(uint8 race, uint8 gender)
 {
     uint32 size = sGenNameVectoArraysMap[race].stringVectorArray[gender].size();
     uint32 randPos = urand(0, size-1);

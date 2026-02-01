@@ -601,7 +601,7 @@ class npc_echo_of_sylvanas_blighted_arrows : public CreatureScript
                 SetCombatMovement(false);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (spell->Id != SPELL_BLIGHTED_ARROWS)
                     return;

@@ -995,7 +995,7 @@ class npc_spine_of_deathwing_burning_tendons : public CreatureScript
                 SetCombatMovement(false);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_NUCLEAR_BLAST_SCRIPT && !isOpened)
                 {

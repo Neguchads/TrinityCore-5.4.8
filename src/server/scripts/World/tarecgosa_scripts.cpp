@@ -654,7 +654,7 @@ class npc_stalker_53422 : public CreatureScript
                 me->setActive(true);
             }
 
-            void OnQuestReward(Player* player, const Quest* quest, uint32 data) override
+            void OnQuestReward(Player* player, Quest const* quest, uint32 data) override
             {
                 me->DespawnOrUnsummon();
             }

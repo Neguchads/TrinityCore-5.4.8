@@ -541,7 +541,7 @@ void SmartAI::MoveInLineOfSight(Unit* who)
     CreatureAI::MoveInLineOfSight(who);
 }
 
-bool SmartAI::CanAIAttack(const Unit* /*who*/) const
+bool SmartAI::CanAIAttack(Unit const* /*who*/) const
 {
     if (me->GetReactState() == REACT_PASSIVE)
         return false;
@@ -604,7 +604,7 @@ void SmartAI::JustAppeared()
     mFollowCreditType = 0;
 }
 
-int32 SmartAI::Permissible(const Creature* creature)
+int32 SmartAI::Permissible(Creature const* creature)
 {
     if (creature->GetAIName() == "SmartAI")
         return PERMIT_BASE_SPECIAL;
@@ -671,12 +671,12 @@ void SmartAI::AttackStart(Unit* who)
     }
 }
 
-void SmartAI::SpellHit(Unit* unit, const SpellInfo* spellInfo)
+void SmartAI::SpellHit(Unit* unit, SpellInfo const* spellInfo)
 {
     GetScript()->ProcessEventsFor(SMART_EVENT_SPELLHIT, unit, 0, 0, false, spellInfo);
 }
 
-void SmartAI::SpellHitTarget(Unit* target, const SpellInfo* spellInfo)
+void SmartAI::SpellHitTarget(Unit* target, SpellInfo const* spellInfo)
 {
     GetScript()->ProcessEventsFor(SMART_EVENT_SPELLHIT_TARGET, target, 0, 0, false, spellInfo);
 }
@@ -976,7 +976,7 @@ void SmartVehicleAI::OnCharmed(bool apply)
     SmartAI::OnCharmed(apply);
 }
 
-int SmartGameObjectAI::Permissible(const GameObject* g)
+int SmartGameObjectAI::Permissible(GameObject const* g)
 {
     if (g->GetAIName() == "SmartGameObjectAI")
         return PERMIT_BASE_SPECIAL;
@@ -1025,7 +1025,7 @@ bool SmartGameObjectAI::OnGossipSelect(Player* player, uint32 sender, uint32 act
 }
 
 // Called when a player selects a gossip with a code in the gameobject's gossip menu.
-bool SmartGameObjectAI::OnGossipSelectCode(Player* /*player*/, uint32 /*sender*/, uint32 /*action*/, const char* /*code*/)
+bool SmartGameObjectAI::OnGossipSelectCode(Player* /*player*/, uint32 /*sender*/, uint32 /*action*/, char const* /*code*/)
 {
     return false;
 }

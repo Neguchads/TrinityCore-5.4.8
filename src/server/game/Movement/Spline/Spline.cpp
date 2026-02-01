@@ -70,7 +70,7 @@ static const Matrix4 s_Bezier3Coeffs(
     1.f,  0.f,  0.f, 0.f);
 
 /*  classic view:
-inline void C_Evaluate(const Vector3 *vertice, float t, const float (&matrix)[4][4], Vector3 &position)
+inline void C_Evaluate(Vector3 const*vertice, float t, const float (&matrix)[4][4], Vector3 &position)
 {
     Vector3 tvec(t*t*t, t*t, t);
     int i = 0;
@@ -93,7 +93,7 @@ inline void C_Evaluate(const Vector3 *vertice, float t, const float (&matrix)[4]
     position.z = z;
 }*/
 
-inline void C_Evaluate(const Vector3 *vertice, float t, const Matrix4& matr, Vector3 &result)
+inline void C_Evaluate(Vector3 const*vertice, float t, const Matrix4& matr, Vector3 &result)
 {
     Vector4 tvec(t*t*t, t*t, t, 1.f);
     Vector4 weights(tvec * matr);
@@ -102,7 +102,7 @@ inline void C_Evaluate(const Vector3 *vertice, float t, const Matrix4& matr, Vec
            + vertice[2] * weights[2] + vertice[3] * weights[3];
 }
 
-inline void C_Evaluate_Derivative(const Vector3 *vertice, float t, const Matrix4& matr, Vector3 &result)
+inline void C_Evaluate_Derivative(Vector3 const*vertice, float t, const Matrix4& matr, Vector3 &result)
 {
     Vector4 tvec(3.f*t*t, 2.f*t, 1.f, 0.f);
     Vector4 weights(tvec * matr);
@@ -160,7 +160,7 @@ float SplineBase::SegLengthCatmullRom( index_type index ) const
     ASSERT(index >= index_lo && index < index_hi);
 
     Vector3 curPos, nextPos;
-    const Vector3 * p = &points[index - 1];
+    Vector3 const* p = &points[index - 1];
     curPos = nextPos = p[1];
 
     index_type i = 1;
@@ -181,7 +181,7 @@ float SplineBase::SegLengthBezier3(index_type index) const
     ASSERT(index >= index_lo && index < index_hi);
 
     Vector3 curPos, nextPos;
-    const Vector3 * p = &points[index];
+    Vector3 const* p = &points[index];
 
     C_Evaluate(p, 0.f, s_Bezier3Coeffs, nextPos);
     curPos = nextPos;
@@ -290,7 +290,7 @@ void SplineBase::clear()
 std::string SplineBase::ToString() const
 {
     std::stringstream str;
-    const char * mode_str[ModesEnd] = {"Linear", "CatmullRom", "Bezier3", "Uninitialized"};
+    char const* mode_str[ModesEnd] = {"Linear", "CatmullRom", "Bezier3", "Uninitialized"};
 
     index_type count = this->points.size();
     str << "mode: " << mode_str[mode()] << std::endl;

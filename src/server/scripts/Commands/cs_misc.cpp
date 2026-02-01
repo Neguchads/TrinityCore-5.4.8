@@ -1270,7 +1270,7 @@ public:
         return true;
     }
 
-    static bool HandleNearAreaTriggerCommand(ChatHandler* handler, const char* args)
+    static bool HandleNearAreaTriggerCommand(ChatHandler* handler, char const* args)
     {
         float distance = (!*args) ? 10.0f : float((atof(args)));
         std::list<AreaTriggerEntry const*> areatriggers;
@@ -2361,7 +2361,7 @@ public:
         return true;
     }
 
-    static bool HandleMuteListAccountCommand(ChatHandler* handler, const char* args)
+    static bool HandleMuteListAccountCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -2423,7 +2423,7 @@ public:
         return true;
     }
 
-    static bool HandleMuteListCharacterCommand(ChatHandler* handler, const char* args)
+    static bool HandleMuteListCharacterCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -4221,7 +4221,7 @@ public:
         return true;
     }
 
-    static bool HandleRemoveItemCommand(ChatHandler* handler, const char *args)
+    static bool HandleRemoveItemCommand(ChatHandler* handler, char const*args)
     {
         if (!*args)
             return false;

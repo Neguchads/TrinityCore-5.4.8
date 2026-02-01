@@ -112,7 +112,7 @@ class boss_loken : public CreatureScript
                 }
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (spell->Id==SPELL_ARC_LIGHTNING && bHit)
                     if (rand() % 100 < DUNGEON_MODE(65, 80))

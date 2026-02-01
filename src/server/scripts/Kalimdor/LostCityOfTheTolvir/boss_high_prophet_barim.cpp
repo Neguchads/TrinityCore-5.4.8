@@ -446,7 +446,7 @@ class npc_blaze_of_the_heavens : public CreatureScript
                 lSummons.Summon(summon);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_BLAZE_OF_THE_HEAVENS_TRANSFORM)
                     me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);

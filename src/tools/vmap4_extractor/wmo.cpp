@@ -49,7 +49,7 @@ extern HANDLE WorldMpq;
 bool WMORoot::open()
 {
     MPQFile f(WorldMpq, filename.c_str());
-    if(f.isEof ())
+    if (f.isEof ())
     {
         printf("No such file.\n");
         return false;
@@ -178,7 +178,7 @@ WMOGroup::WMOGroup(const std::string &filename) :
 bool WMOGroup::open(WMORoot* rootWMO)
 {
     MPQFile f(WorldMpq, filename.c_str());
-    if(f.isEof ())
+    if (f.isEof ())
     {
         printf("No such file.\n");
         return false;
@@ -334,19 +334,19 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE *output, bool preciseVectorData)
             exit(0);
         }
         int wsize = sizeof(uint32) + sizeof(unsigned short) * nIdexes;
-        if(fwrite(&wsize, sizeof(int), 1, output) != 1)
+        if (fwrite(&wsize, sizeof(int), 1, output) != 1)
         {
             printf("Error while writing file wsize");
             // no need to exit?
         }
-        if(fwrite(&nIdexes, sizeof(uint32), 1, output) != 1)
+        if (fwrite(&nIdexes, sizeof(uint32), 1, output) != 1)
         {
             printf("Error while writing file nIndexes");
             exit(0);
         }
-        if(nIdexes >0)
+        if (nIdexes >0)
         {
-            if(fwrite(MOVI, sizeof(unsigned short), nIdexes, output) != nIdexes)
+            if (fwrite(MOVI, sizeof(unsigned short), nIdexes, output) != nIdexes)
             {
                 printf("Error while writing file indexarray");
                 exit(0);
@@ -359,19 +359,19 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE *output, bool preciseVectorData)
             exit(0);
         }
         wsize = sizeof(int) + sizeof(float) * 3 * nVertices;
-        if(fwrite(&wsize, sizeof(int), 1, output) != 1)
+        if (fwrite(&wsize, sizeof(int), 1, output) != 1)
         {
             printf("Error while writing file wsize");
             // no need to exit?
         }
-        if(fwrite(&nVertices, sizeof(int), 1, output) != 1)
+        if (fwrite(&nVertices, sizeof(int), 1, output) != 1)
         {
             printf("Error while writing file nVertices");
             exit(0);
         }
-        if(nVertices >0)
+        if (nVertices >0)
         {
-            if(fwrite(MOVT, sizeof(float)*3, nVertices, output) != nVertices)
+            if (fwrite(MOVT, sizeof(float)*3, nVertices, output) != nVertices)
             {
                 printf("Error while writing file vectors");
                 exit(0);

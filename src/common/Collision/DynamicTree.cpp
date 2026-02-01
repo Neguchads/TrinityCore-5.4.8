@@ -53,7 +53,7 @@ template<> struct PositionTrait< GameObjectModel> {
 
 template<> struct BoundsTrait< GameObjectModel> {
     static void getBounds(const GameObjectModel& g, G3D::AABox& out) { out = g.getBounds();}
-    static void getBounds2(const GameObjectModel* g, G3D::AABox& out) { out = g->getBounds();}
+    static void getBounds2(GameObjectModel const* g, G3D::AABox& out) { out = g->getBounds();}
 };
 
 /*

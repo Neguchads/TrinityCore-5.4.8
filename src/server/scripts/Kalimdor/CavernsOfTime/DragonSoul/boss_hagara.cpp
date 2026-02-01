@@ -1655,7 +1655,7 @@ class npc_hagara_the_stormbinder_crystal_conductor : public CreatureScript
                 SetCombatMovement(false);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if ((spell->Id == SPELL_OVERLOAD_2 || spell->Id == SPELL_LIGHTNING_CONDUIT_DUMMY_1) && !bOverloaded)
                 {

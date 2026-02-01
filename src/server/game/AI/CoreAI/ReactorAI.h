@@ -31,6 +31,6 @@ class ReactorAI : public CreatureAI
         void MoveInLineOfSight(Unit*) { }
         void UpdateAI(uint32 diff);
 
-        static int Permissible(const Creature*);
+        static int Permissible(Creature const*);
 };
 #endif

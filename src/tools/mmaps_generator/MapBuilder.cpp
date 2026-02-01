@@ -61,7 +61,7 @@ namespace MMAP
 
     MapBuilder::MapBuilder(Optional<float> maxWalkableAngle, Optional<float> maxWalkableAngleNotSteep, bool skipLiquid,
         bool skipContinents, bool skipJunkMaps, bool skipBattlegrounds, bool skipArenas, bool skipDungeons, bool skipTransports,
-        bool debugOutput, bool bigBaseUnit, int mapid, const char* offMeshFilePath, unsigned int threads) :
+        bool debugOutput, bool bigBaseUnit, int mapid, char const* offMeshFilePath, unsigned int threads) :
         m_terrainBuilder     (nullptr),
         m_debugOutput        (debugOutput),
         m_offMeshFilePath    (offMeshFilePath),
@@ -488,7 +488,7 @@ namespace MMAP
     /**************************************************************************/
     void TileBuilder::buildTile(uint32 mapID, uint32 tileX, uint32 tileY, dtNavMesh* navMesh)
     {
-        if(shouldSkipTile(mapID, tileX, tileY))
+        if (shouldSkipTile(mapID, tileX, tileY))
         {
             ++m_mapBuilder->m_totalTilesProcessed;
             return;

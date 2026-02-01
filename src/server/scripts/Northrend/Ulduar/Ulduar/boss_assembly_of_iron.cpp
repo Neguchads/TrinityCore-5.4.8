@@ -1302,7 +1302,7 @@ struct IsNoAssemblyMember
         if (!target->ToUnit())
             return false;
 
-        if (const Creature* creature = target->ToCreature())
+        if (Creature const* creature = target->ToCreature())
         {
             /* What happens here:
             State before:
@@ -1354,7 +1354,7 @@ class spell_supercharge : public SpellScriptLoader
 class achievement_i_choose_you : public AchievementCriteriaScript
 {
     public:
-        achievement_i_choose_you(const char* name) : AchievementCriteriaScript(name) { }
+        achievement_i_choose_you(char const* name) : AchievementCriteriaScript(name) { }
 
         bool OnCheck(Player* /*player*/, Unit* target)
         {
@@ -1372,7 +1372,7 @@ class achievement_i_choose_you : public AchievementCriteriaScript
 class achievement_but_i_am_on_your_side : public AchievementCriteriaScript
 {
     public:
-        achievement_but_i_am_on_your_side(const char* name) : AchievementCriteriaScript(name) { }
+        achievement_but_i_am_on_your_side(char const* name) : AchievementCriteriaScript(name) { }
 
         bool OnCheck(Player* player, Unit* target)
         {

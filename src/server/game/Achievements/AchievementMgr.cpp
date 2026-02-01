@@ -4371,7 +4371,7 @@ void AchievementGlobalMgr::LoadCompletedAchievements()
         Field* fields = result->Fetch();
 
         uint16 achievementId = fields[0].GetUInt16();
-        const AchievementEntry* achievement = sAchievementMgr->GetAchievement(achievementId);
+        AchievementEntry const* achievement = sAchievementMgr->GetAchievement(achievementId);
         if (!achievement)
         {
             // Remove non existent achievements from all characters
@@ -4412,7 +4412,7 @@ void AchievementGlobalMgr::LoadRewards()
     {
         Field* fields = result->Fetch();
         uint32 entry = fields[0].GetUInt32();
-        const AchievementEntry* achievement = GetAchievement(entry);
+        AchievementEntry const* achievement = GetAchievement(entry);
         if (!achievement)
         {
             TC_LOG_ERROR("sql.sql", "Table `achievement_reward` has wrong achievement (Entry: %u), ignored.", entry);

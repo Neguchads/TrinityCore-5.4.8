@@ -123,7 +123,7 @@ void ServiceMgr::HandleAntiError(Player *player, uint32, uint32, uint32, std::st
     }
 }
 
-const ServiceMgr::ProfSkill *ServiceMgr::LookupProfession(uint32 entry)
+ServiceMgr::ProfSkill const*ServiceMgr::LookupProfession(uint32 entry)
 {
     for (int i = 0; i < 11; i++)
     {

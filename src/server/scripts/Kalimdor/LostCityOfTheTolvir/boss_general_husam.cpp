@@ -307,7 +307,7 @@ class npc_land_mine : public CreatureScript
                 uiDespawnTimer = 5500;
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_DETONATE_TRAPS)
                     StartCountDown();
@@ -424,7 +424,7 @@ class npc_shockwave_stalker : public CreatureScript
                     lSummonedGUID.push_back(uiGUID);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_SHOCKWAVE || spell->Id == 91257)
                 {

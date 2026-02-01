@@ -1,4 +1,4 @@
-﻿
+
 
 #include "Helper.h"
 #include "RandomPlayerbotFactory.h"
@@ -310,7 +310,7 @@ Player* RandomPlayerbotFactory::CreateRandomBot(WorldSession* session, Classes c
 
     for (uint32 index = 0; index < sChrSectionStore.GetNumRows(); ++index)
     {
-        const CharSectionsEntry* charSection = sChrSectionStore.LookupEntry(index);
+        CharSectionsEntry const* charSection = sChrSectionStore.LookupEntry(index);
 
         if (!charSection) continue;
         if (charSection->Race != race || charSection->Gender != gender) continue;

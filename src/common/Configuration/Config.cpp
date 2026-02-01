@@ -80,7 +80,7 @@ namespace
     {
         std::string result;
 
-        const char *str = key.c_str();
+        char const*str = key.c_str();
         size_t n = key.length();
 
         char curr;

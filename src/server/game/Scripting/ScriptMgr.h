@@ -116,7 +116,7 @@ struct QuestObjective;
 
         protected:
 
-            MyScriptType(const char* name, uint32 someId)
+            MyScriptType(char const* name, uint32 someId)
                 : ScriptObject(name), _someId(someId)
             {
                 ScriptRegistry<MyScriptType>::AddScript(this);
@@ -202,7 +202,7 @@ class SpellScriptLoader : public ScriptObject
 {
 protected:
 
-        SpellScriptLoader(const char* name);
+        SpellScriptLoader(char const* name);
 
 public:
 
@@ -217,7 +217,7 @@ class ServerScript : public ScriptObject
 {
 protected:
 
-        ServerScript(const char* name);
+        ServerScript(char const* name);
 
 public:
 
@@ -251,7 +251,7 @@ class DatabaseScript : public ScriptObject
 {
 protected:
 
-        DatabaseScript(const char* name, std::vector<uint16> enabledHooks = std::vector<uint16>());
+        DatabaseScript(char const* name, std::vector<uint16> enabledHooks = std::vector<uint16>());
 
 public:
 
@@ -276,7 +276,7 @@ class WorldScript : public ScriptObject
 {
 protected:
 
-        WorldScript(const char* name);
+        WorldScript(char const* name);
 
 public:
 
@@ -315,7 +315,7 @@ class FormulaScript : public ScriptObject
 {
 protected:
 
-        FormulaScript(const char* name);
+        FormulaScript(char const* name);
 
 public:
 
@@ -382,14 +382,14 @@ class WorldMapScript : public ScriptObject, public MapScript<Map>
 {
 protected:
 
-    WorldMapScript(const char* name, uint32 mapId);
+    WorldMapScript(char const* name, uint32 mapId);
 };
 
 class InstanceMapScript : public ScriptObject, public MapScript<InstanceMap>
 {
 protected:
 
-    InstanceMapScript(const char* name, uint32 mapId);
+    InstanceMapScript(char const* name, uint32 mapId);
 
 public:
 
@@ -401,14 +401,14 @@ class BattlegroundMapScript : public ScriptObject, public MapScript<Battleground
 {
 protected:
 
-    BattlegroundMapScript(const char* name, uint32 mapId);
+    BattlegroundMapScript(char const* name, uint32 mapId);
 };
 
 class ItemScript : public ScriptObject
 {
 protected:
 
-        ItemScript(const char* name);
+        ItemScript(char const* name);
 
 public:
 
@@ -431,14 +431,14 @@ public:
     virtual void OnGossipSelect(Player* /*player*/, Item* /*item*/, uint32 /*sender*/, uint32 /*action*/) { }
 
     // Called when a player selects an option in an item gossip window
-    virtual void OnGossipSelectCode(Player* /*player*/, Item* /*item*/, uint32 /*sender*/, uint32 /*action*/, const char* /*code*/) { }
+    virtual void OnGossipSelectCode(Player* /*player*/, Item* /*item*/, uint32 /*sender*/, uint32 /*action*/, char const* /*code*/) { }
 };
 
 class UnitScript : public ScriptObject
 {
 protected:
 
-        UnitScript(const char* name, bool addToScripts = true);
+        UnitScript(char const* name, bool addToScripts = true);
 
 public:
     // Called when a unit deals healing to another unit
@@ -461,7 +461,7 @@ class CreatureScript : public ScriptObject
 {
 protected:
 
-        CreatureScript(const char* name);
+        CreatureScript(char const* name);
 
 public:
 
@@ -475,7 +475,7 @@ public:
     virtual bool OnGossipSelect(Player* /*player*/, Creature* /*creature*/, uint32 /*sender*/, uint32 /*action*/) { return false; }
 
     // Called when a player selects a gossip with a code in the creature's gossip menu.
-    virtual bool OnGossipSelectCode(Player* /*player*/, Creature* /*creature*/, uint32 /*sender*/, uint32 /*action*/, const char* /*code*/) { return false; }
+    virtual bool OnGossipSelectCode(Player* /*player*/, Creature* /*creature*/, uint32 /*sender*/, uint32 /*action*/, char const* /*code*/) { return false; }
 
     // Called when a player accepts a quest from the creature.
     virtual bool OnQuestAccept(Player* /*player*/, Creature* /*creature*/, Quest const* /*quest*/) { return false; }
@@ -500,7 +500,7 @@ class GameObjectScript : public ScriptObject, public UpdatableScript<GameObject>
 {
 protected:
 
-        GameObjectScript(const char* name);
+        GameObjectScript(char const* name);
 
 public:
 
@@ -517,7 +517,7 @@ public:
     virtual bool OnGossipSelect(Player* /*player*/, GameObject* /*go*/, uint32 /*sender*/, uint32 /*action*/) { return false; }
 
     // Called when a player selects a gossip with a code in the gameobject's gossip menu.
-    virtual bool OnGossipSelectCode(Player* /*player*/, GameObject* /*go*/, uint32 /*sender*/, uint32 /*action*/, const char* /*code*/) { return false; }
+    virtual bool OnGossipSelectCode(Player* /*player*/, GameObject* /*go*/, uint32 /*sender*/, uint32 /*action*/, char const* /*code*/) { return false; }
 
     // Called when a player accepts a quest from the gameobject.
     virtual bool OnQuestAccept(Player* /*player*/, GameObject* /*go*/, Quest const* /*quest*/) { return false; }
@@ -548,7 +548,7 @@ class AreaTriggerScript : public ScriptObject
 {
 protected:
 
-        AreaTriggerScript(const char* name);
+        AreaTriggerScript(char const* name);
 
 public:
 
@@ -563,7 +563,7 @@ class SpellAreaTriggerScript : public ScriptObject
 {
 protected:
 
-        SpellAreaTriggerScript(const char* name);
+        SpellAreaTriggerScript(char const* name);
 
 public:
 
@@ -575,7 +575,7 @@ class BattlegroundScript : public ScriptObject
 {
 protected:
 
-        BattlegroundScript(const char* name);
+        BattlegroundScript(char const* name);
 
 public:
 
@@ -587,7 +587,7 @@ class OutdoorPvPScript : public ScriptObject
 {
 protected:
 
-        OutdoorPvPScript(const char* name);
+        OutdoorPvPScript(char const* name);
 
 public:
 
@@ -599,7 +599,7 @@ class CommandScript : public ScriptObject
 {
 protected:
 
-        CommandScript(const char* name);
+        CommandScript(char const* name);
 
 public:
 
@@ -611,7 +611,7 @@ class WeatherScript : public ScriptObject, public UpdatableScript<Weather>
 {
 protected:
 
-        WeatherScript(const char* name);
+        WeatherScript(char const* name);
 
 public:
 
@@ -623,7 +623,7 @@ class AuctionHouseScript : public ScriptObject
 {
 protected:
 
-        AuctionHouseScript(const char* name);
+        AuctionHouseScript(char const* name);
 
 public:
 
@@ -644,19 +644,19 @@ class ConditionScript : public ScriptObject
 {
 protected:
 
-        ConditionScript(const char* name);
+        ConditionScript(char const* name);
 
 public:
 
     // Called when a single condition is checked for a player.
-    virtual bool OnConditionCheck(const Condition* /*condition*/, ConditionSourceInfo& /*sourceInfo*/) { return true; }
+    virtual bool OnConditionCheck(Condition const* /*condition*/, ConditionSourceInfo& /*sourceInfo*/) { return true; }
 };
 
 class VehicleScript : public ScriptObject
 {
 protected:
 
-        VehicleScript(const char* name);
+        VehicleScript(char const* name);
 
 public:
 
@@ -688,14 +688,14 @@ class DynamicObjectScript : public ScriptObject, public UpdatableScript<DynamicO
 {
 protected:
 
-        DynamicObjectScript(const char* name);
+        DynamicObjectScript(char const* name);
 };
 
 class TransportScript : public ScriptObject, public UpdatableScript<Transport>
 {
 protected:
 
-        TransportScript(const char* name);
+        TransportScript(char const* name);
 
 public:
 
@@ -719,7 +719,7 @@ class AchievementCriteriaScript : public ScriptObject
 {
 protected:
 
-        AchievementCriteriaScript(const char* name);
+        AchievementCriteriaScript(char const* name);
 
 public:
 
@@ -731,7 +731,7 @@ class PlayerScript : public UnitScript
 {
 protected:
 
-        PlayerScript(const char* name);
+        PlayerScript(char const* name);
 
 public:
 
@@ -766,19 +766,19 @@ public:
     virtual void OnReputationChange(Player* /*player*/, uint32 /*factionId*/, float& /*standing*/, bool /*incremental*/) { }
 
     // Called when a player accepts a new quest
-    virtual void OnQuestAdded(Player* /*player*/, const Quest* /*quest*/) { }
+    virtual void OnQuestAdded(Player* /*player*/, Quest const* /*quest*/) { }
 
     // Called when a player abandons a quest
-    virtual void OnQuestAbandoned(Player* /*player*/, const Quest* /*quest*/) { }
+    virtual void OnQuestAbandoned(Player* /*player*/, Quest const* /*quest*/) { }
 
     // Called when a player completes a quest
-    virtual void OnQuestCompleted(Player* /*player*/, const Quest* /*quest*/) { }
+    virtual void OnQuestCompleted(Player* /*player*/, Quest const* /*quest*/) { }
 
     // Called when a player fails a quest
-    virtual void OnQuestFailed(Player* /*player*/, const Quest* /*quest*/) { }
+    virtual void OnQuestFailed(Player* /*player*/, Quest const* /*quest*/) { }
 
     // Called when a player gets rewarded for a quest
-    virtual void OnQuestRewarded(Player* /*player*/, const Quest* /*quest*/) { }
+    virtual void OnQuestRewarded(Player* /*player*/, Quest const* /*quest*/) { }
 
     // Called when a duel is requested
     virtual void OnDuelRequest(Player* /*target*/, Player* /*challenger*/) { }
@@ -838,7 +838,7 @@ public:
     virtual void OnGossipSelect(Player* /*player*/, uint32 /*menu_id*/, uint32 /*sender*/, uint32 /*action*/) { }
 
     // Called when a player selects an option in a player gossip window
-    virtual void OnGossipSelectCode(Player* /*player*/, uint32 /*menu_id*/, uint32 /*sender*/, uint32 /*action*/, const char* /*code*/) { }
+    virtual void OnGossipSelectCode(Player* /*player*/, uint32 /*menu_id*/, uint32 /*sender*/, uint32 /*action*/, char const* /*code*/) { }
 
     // Called for player::update
     virtual void OnBeforeUpdate(Player* /*player*/, uint32 /*p_time*/) { }
@@ -848,7 +848,7 @@ public:
 class PlayerbotScript : public ScriptObject
 {
 protected:
-    PlayerbotScript(const char* name);
+    PlayerbotScript(char const* name);
 public:
     bool IsDatabaseBound() const { return false; }
     virtual void OnPlayerbotCheckKillTask(Player* /*player*/, Unit* /*victim*/) { }
@@ -865,7 +865,7 @@ class GuildScript : public ScriptObject
 {
 protected:
 
-        GuildScript(const char* name);
+        GuildScript(char const* name);
 
 public:
 
@@ -906,7 +906,7 @@ class GroupScript : public ScriptObject
 {
 protected:
 
-        GroupScript(const char* name);
+        GroupScript(char const* name);
 
 public:
 
@@ -917,7 +917,7 @@ public:
     virtual void OnInviteMember(Group* /*group*/, ObjectGuid /*guid*/) { }
 
     // Called when a member is removed from a group.
-    virtual void OnRemoveMember(Group* /*group*/, ObjectGuid /*guid*/, RemoveMethod /*method*/, ObjectGuid /*kicker*/, const char* /*reason*/) { }
+    virtual void OnRemoveMember(Group* /*group*/, ObjectGuid /*guid*/, RemoveMethod /*method*/, ObjectGuid /*kicker*/, char const* /*reason*/) { }
 
     // Called when the leader of a group is changed.
     virtual void OnChangeLeader(Group* /*group*/, ObjectGuid /*newLeaderGuid*/, ObjectGuid /*oldLeaderGuid*/) { }
@@ -930,7 +930,7 @@ class SceneScript : public ScriptObject
 {
 protected:
 
-        SceneScript(const char* name);
+        SceneScript(char const* name);
 
 public:
 
@@ -951,7 +951,7 @@ class QuestScript : public ScriptObject
 {
 protected:
 
-        QuestScript(const char* name);
+        QuestScript(char const* name);
 
 public:
 
@@ -965,7 +965,7 @@ public:
 class GameEventScript : public ScriptObject
 {
     protected:
-        GameEventScript(const char* name);
+        GameEventScript(char const* name);
 
 public:
 
@@ -1005,13 +1005,13 @@ class GlobalScript : public ScriptObject
 {
 protected:
 
-    GlobalScript(const char* name);
+    GlobalScript(char const* name);
 
 public:
 
     // items
     virtual void OnItemDelFromDB(CharacterDatabaseTransaction /*trans*/, ObjectGuid /*itemGuid*/) { }
-    virtual void OnMirrorImageDisplayItem(const Item* /*item*/, uint32& /*display*/) { }
+    virtual void OnMirrorImageDisplayItem(Item const* /*item*/, uint32& /*display*/) { }
 };
 
 // Placed here due to ScriptRegistry::AddScript dependency.
@@ -1044,7 +1044,7 @@ public: /* Initialization */
     void IncreaseScriptCount() { ++_scriptCount; }
     void DecreaseScriptCount() { --_scriptCount; }
 
-    const char* ScriptsVersion() const { return "Integrated Trinity Scripts"; }
+    char const* ScriptsVersion() const { return "Integrated Trinity Scripts"; }
 
     uint32 GetScriptCount() const { return _scriptCount; }
 
@@ -1123,14 +1123,14 @@ public: /* ItemScript */
     bool OnItemExpire(Player* player, ItemTemplate const* proto);
     bool OnItemPickup(Player* player, Item* item, ItemPickupSourceType sourceType, uint32 sourceId);
     void OnGossipSelect(Player* player, Item* item, uint32 sender, uint32 action);
-    void OnGossipSelectCode(Player* player, Item* item, uint32 sender, uint32 action, const char* code);
+    void OnGossipSelectCode(Player* player, Item* item, uint32 sender, uint32 action, char const* code);
 
 public: /* CreatureScript */
 
     bool OnDummyEffect(Unit* caster, uint32 spellId, SpellEffIndex effIndex, Creature* target);
     bool OnGossipHello(Player* player, Creature* creature);
     bool OnGossipSelect(Player* player, Creature* creature, uint32 sender, uint32 action);
-    bool OnGossipSelectCode(Player* player, Creature* creature, uint32 sender, uint32 action, const char* code);
+    bool OnGossipSelectCode(Player* player, Creature* creature, uint32 sender, uint32 action, char const* code);
     bool OnQuestAccept(Player* player, Creature* creature, Quest const* quest);
     bool OnQuestSelect(Player* player, Creature* creature, Quest const* quest);
     bool OnQuestComplete(Player* player, Creature* creature, Quest const* quest);
@@ -1144,7 +1144,7 @@ public: /* GameObjectScript */
     bool OnGossipHello(Player* player, GameObject* go);
     bool OnReportUse(Player* player, GameObject* go);
     bool OnGossipSelect(Player* player, GameObject* go, uint32 sender, uint32 action);
-    bool OnGossipSelectCode(Player* player, GameObject* go, uint32 sender, uint32 action, const char* code);
+    bool OnGossipSelectCode(Player* player, GameObject* go, uint32 sender, uint32 action, char const* code);
     bool OnQuestAccept(Player* player, GameObject* go, Quest const* quest);
     bool OnQuestReward(Player* player, GameObject* go, Quest const* quest, uint32 opt);
     Optional<QuestGiverStatus> GetDialogStatus(Player* player, GameObject* go);
@@ -1191,7 +1191,7 @@ public: /* AuctionHouseScript */
 
 public: /* ConditionScript */
 
-    bool OnConditionCheck(const Condition* condition, ConditionSourceInfo& sourceInfo);
+    bool OnConditionCheck(Condition const* condition, ConditionSourceInfo& sourceInfo);
 
 public: /* VehicleScript */
 
@@ -1231,11 +1231,11 @@ public: /* PlayerScript */
     void OnPlayerMoneyChanged(Player* player, int64& amount);
     void OnGivePlayerXP(Player* player, uint32& amount, Unit* victim);
     void OnPlayerReputationChange(Player* player, uint32 factionID, float& standing, bool incremental);
-    void OnPlayerQuestAdded(Player* player, const Quest* quest);
-    void OnPlayerQuestAbandoned(Player* player, const Quest* quest);
-    void OnPlayerQuestCompleted(Player* player, const Quest* quest);
-    void OnPlayerQuestFailed(Player* player, const Quest* quest);
-    void OnPlayerQuestRewarded(Player* player, const Quest* quest);
+    void OnPlayerQuestAdded(Player* player, Quest const* quest);
+    void OnPlayerQuestAbandoned(Player* player, Quest const* quest);
+    void OnPlayerQuestCompleted(Player* player, Quest const* quest);
+    void OnPlayerQuestFailed(Player* player, Quest const* quest);
+    void OnPlayerQuestRewarded(Player* player, Quest const* quest);
     void OnPlayerDuelRequest(Player* target, Player* challenger);
     void OnPlayerDuelStart(Player* player1, Player* player2);
     void OnPlayerDuelEnd(Player* winner, Player* loser, DuelCompleteType type);
@@ -1256,7 +1256,7 @@ public: /* PlayerScript */
     void OnPlayerUpdateZone(Player* player, uint32 newZone, uint32 newArea);
     void OnUpdate(Player* player, uint32 diff);
     void OnGossipSelect(Player* player, uint32 menu_id, uint32 sender, uint32 action);
-    void OnGossipSelectCode(Player* player, uint32 menu_id, uint32 sender, uint32 action, const char* code);
+    void OnGossipSelectCode(Player* player, uint32 menu_id, uint32 sender, uint32 action, char const* code);
 
     void OnPlayerBeforeUpdate(Player* player, uint32 p_time);
     void OnPlayerUpdate(Player* player, uint32 p_time);
@@ -1281,7 +1281,7 @@ public: /* GroupScript */
 
     void OnGroupAddMember(Group* group, ObjectGuid guid);
     void OnGroupInviteMember(Group* group, ObjectGuid guid);
-    void OnGroupRemoveMember(Group* group, ObjectGuid guid, RemoveMethod method, ObjectGuid kicker, const char* reason);
+    void OnGroupRemoveMember(Group* group, ObjectGuid guid, RemoveMethod method, ObjectGuid kicker, char const* reason);
     void OnGroupChangeLeader(Group* group, ObjectGuid newLeaderGuid, ObjectGuid oldLeaderGuid);
     void OnGroupDisband(Group* group);
 
@@ -1297,7 +1297,7 @@ public: /* GameEventScript */
 
 public: /* GlobalScript */
     void OnGlobalItemDelFromDB(CharacterDatabaseTransaction trans, ObjectGuid itemGuid);
-    void OnGlobalMirrorImageDisplayItem(const Item* item, uint32& display);
+    void OnGlobalMirrorImageDisplayItem(Item const* item, uint32& display);
 
 public: /* UnitScript */
 

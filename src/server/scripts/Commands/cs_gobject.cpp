@@ -123,7 +123,7 @@ public:
 
         char* spawntimeSecs = strtok(NULL, " ");
 
-        const GameObjectTemplate* objectInfo = sObjectMgr->GetGameObjectTemplate(objectId);
+        GameObjectTemplate const* objectInfo = sObjectMgr->GetGameObjectTemplate(objectId);
 
         if (!objectInfo)
         {

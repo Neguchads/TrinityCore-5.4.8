@@ -39,7 +39,7 @@ enum
     SPELL_VOID_SHIELD       = 115236,
 };
 
-int PetAI::Permissible(const Creature* creature)
+int PetAI::Permissible(Creature const* creature)
 {
     if (creature->IsPet())
         return PERMIT_BASE_SPECIAL;

@@ -78,7 +78,7 @@ struct TSpellSummary
     uint8 Effects;                                          // set of enum SelectEffect
 } *SpellSummary;
 
-PlayerbotScript::PlayerbotScript(const char* name) : ScriptObject(name)
+PlayerbotScript::PlayerbotScript(char const* name) : ScriptObject(name)
 {
     ScriptRegistry<PlayerbotScript>::AddScript(this);
 }
@@ -779,7 +779,7 @@ void ScriptMgr::OnGossipSelect(Player* player, Item* item, uint32 sender, uint32
     tmpscript->OnGossipSelect(player, item, sender, action);
 }
 
-void ScriptMgr::OnGossipSelectCode(Player* player, Item* item, uint32 sender, uint32 action, const char* code)
+void ScriptMgr::OnGossipSelectCode(Player* player, Item* item, uint32 sender, uint32 action, char const* code)
 {
     ASSERT(player);
     ASSERT(item);
@@ -797,7 +797,7 @@ void ScriptMgr::OnGossipSelect(Player* player, uint32 menu_id, uint32 sender, ui
     FOREACH_SCRIPT(PlayerScript)->OnGossipSelect(player, menu_id, sender, action);
 }
 
-void ScriptMgr::OnGossipSelectCode(Player* player, uint32 menu_id, uint32 sender, uint32 action, const char* code)
+void ScriptMgr::OnGossipSelectCode(Player* player, uint32 menu_id, uint32 sender, uint32 action, char const* code)
 {
 #ifdef ELUNA
     sHookMgr->HandleGossipSelectOption(player, menu_id, sender, action, code);
@@ -832,7 +832,7 @@ bool ScriptMgr::OnGossipSelect(Player* player, Creature* creature, uint32 sender
     return tmpscript->OnGossipSelect(player, creature, sender, action);
 }
 
-bool ScriptMgr::OnGossipSelectCode(Player* player, Creature* creature, uint32 sender, uint32 action, const char* code)
+bool ScriptMgr::OnGossipSelectCode(Player* player, Creature* creature, uint32 sender, uint32 action, char const* code)
 {
     ASSERT(player);
     ASSERT(creature);
@@ -1006,7 +1006,7 @@ bool ScriptMgr::OnGossipSelect(Player* player, GameObject* go, uint32 sender, ui
     return tmpscript->OnGossipSelect(player, go, sender, action);
 }
 
-bool ScriptMgr::OnGossipSelectCode(Player* player, GameObject* go, uint32 sender, uint32 action, const char* code)
+bool ScriptMgr::OnGossipSelectCode(Player* player, GameObject* go, uint32 sender, uint32 action, char const* code)
 {
     ASSERT(player);
     ASSERT(go);
@@ -1252,7 +1252,7 @@ void ScriptMgr::OnAuctionExpire(AuctionHouseObject* ah, AuctionEntry* entry)
     FOREACH_SCRIPT(AuctionHouseScript)->OnAuctionExpire(ah, entry);
 }
 
-bool ScriptMgr::OnConditionCheck(const Condition* condition, ConditionSourceInfo& sourceInfo)
+bool ScriptMgr::OnConditionCheck(Condition const* condition, ConditionSourceInfo& sourceInfo)
 {
     ASSERT(condition);
 #ifdef ELUNA
@@ -1518,7 +1518,7 @@ void ScriptMgr::OnPlayerReputationChange(Player* player, uint32 factionID, float
     FOREACH_SCRIPT(PlayerScript)->OnReputationChange(player, factionID, standing, incremental);
 }
 
-void ScriptMgr::OnPlayerQuestAdded(Player* player, const Quest* quest)
+void ScriptMgr::OnPlayerQuestAdded(Player* player, Quest const* quest)
 {
     //#ifdef ELUNA
     //    sHookMgr->OnQuestAdded(player, quest);
@@ -1526,7 +1526,7 @@ void ScriptMgr::OnPlayerQuestAdded(Player* player, const Quest* quest)
     FOREACH_SCRIPT(PlayerScript)->OnQuestAdded(player, quest);
 }
 
-void ScriptMgr::OnPlayerQuestAbandoned(Player* player, const Quest* quest)
+void ScriptMgr::OnPlayerQuestAbandoned(Player* player, Quest const* quest)
 {
     //#ifdef ELUNA
     //    sHookMgr->OnQuestAbandoned(player, quest);
@@ -1534,7 +1534,7 @@ void ScriptMgr::OnPlayerQuestAbandoned(Player* player, const Quest* quest)
     FOREACH_SCRIPT(PlayerScript)->OnQuestAbandoned(player, quest);
 }
 
-void ScriptMgr::OnPlayerQuestCompleted(Player* player, const Quest* quest)
+void ScriptMgr::OnPlayerQuestCompleted(Player* player, Quest const* quest)
 {
     //#ifdef ELUNA
     //    sHookMgr->OnQuestCompleted(player, quest);
@@ -1542,7 +1542,7 @@ void ScriptMgr::OnPlayerQuestCompleted(Player* player, const Quest* quest)
     FOREACH_SCRIPT(PlayerScript)->OnQuestCompleted(player, quest);
 }
 
-void ScriptMgr::OnPlayerQuestFailed(Player* player, const Quest* quest)
+void ScriptMgr::OnPlayerQuestFailed(Player* player, Quest const* quest)
 {
     //#ifdef ELUNA
     //    sHookMgr->OnQuestFailed(player, quest);
@@ -1550,7 +1550,7 @@ void ScriptMgr::OnPlayerQuestFailed(Player* player, const Quest* quest)
     FOREACH_SCRIPT(PlayerScript)->OnQuestFailed(player, quest);
 }
 
-void ScriptMgr::OnPlayerQuestRewarded(Player* player, const Quest* quest)
+void ScriptMgr::OnPlayerQuestRewarded(Player* player, Quest const* quest)
 {
     //#ifdef ELUNA
     //    sHookMgr->OnQuestRewarded(player, quest);
@@ -1817,7 +1817,7 @@ void ScriptMgr::OnGroupInviteMember(Group* group, ObjectGuid guid)
     FOREACH_SCRIPT(GroupScript)->OnInviteMember(group, guid);
 }
 
-void ScriptMgr::OnGroupRemoveMember(Group* group, ObjectGuid guid, RemoveMethod method, ObjectGuid kicker, const char* reason)
+void ScriptMgr::OnGroupRemoveMember(Group* group, ObjectGuid guid, RemoveMethod method, ObjectGuid kicker, char const* reason)
 {
     ASSERT(group);
 #ifdef ELUNA
@@ -1901,7 +1901,7 @@ void ScriptMgr::OnGlobalItemDelFromDB(CharacterDatabaseTransaction trans, Object
     FOREACH_SCRIPT(GlobalScript)->OnItemDelFromDB(trans, itemGuid);
 }
 
-void ScriptMgr::OnGlobalMirrorImageDisplayItem(const Item* item, uint32& display)
+void ScriptMgr::OnGlobalMirrorImageDisplayItem(Item const* item, uint32& display)
 {
     FOREACH_SCRIPT(GlobalScript)->OnMirrorImageDisplayItem(item, display);
 }
@@ -1992,45 +1992,45 @@ bool ScriptMgr::CanHavePetAI(Creature* creature)
     return creature->GetCharmInfo() != nullptr;
 }
 
-SpellScriptLoader::SpellScriptLoader(const char* name)
+SpellScriptLoader::SpellScriptLoader(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<SpellScriptLoader>::Instance()->AddScript(this);
 }
 
-ServerScript::ServerScript(const char* name)
+ServerScript::ServerScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<ServerScript>::Instance()->AddScript(this);
 }
 
-DatabaseScript::DatabaseScript(const char* name, std::vector<uint16> enabledHooks)
+DatabaseScript::DatabaseScript(char const* name, std::vector<uint16> enabledHooks)
     : ScriptObject(name)
 {
     (void)enabledHooks;
     ScriptRegistry<DatabaseScript>::Instance()->AddScript(this);
 }
 
-WorldScript::WorldScript(const char* name)
+WorldScript::WorldScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<WorldScript>::Instance()->AddScript(this);
 }
 
-FormulaScript::FormulaScript(const char* name)
+FormulaScript::FormulaScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<FormulaScript>::Instance()->AddScript(this);
 }
 
-UnitScript::UnitScript(const char* name, bool addToScripts)
+UnitScript::UnitScript(char const* name, bool addToScripts)
     : ScriptObject(name)
 {
     if (addToScripts)
         ScriptRegistry<UnitScript>::Instance()->AddScript(this);
 }
 
-WorldMapScript::WorldMapScript(const char* name, uint32 mapId)
+WorldMapScript::WorldMapScript(char const* name, uint32 mapId)
     : ScriptObject(name), MapScript<Map>(mapId)
 {
     if (GetEntry() && !GetEntry()->IsWorldMap())
@@ -2039,7 +2039,7 @@ WorldMapScript::WorldMapScript(const char* name, uint32 mapId)
     ScriptRegistry<WorldMapScript>::Instance()->AddScript(this);
 }
 
-InstanceMapScript::InstanceMapScript(const char* name, uint32 mapId)
+InstanceMapScript::InstanceMapScript(char const* name, uint32 mapId)
     : ScriptObject(name), MapScript<InstanceMap>(mapId)
 {
     if (GetEntry() && !GetEntry()->IsDungeon() && !GetEntry()->IsScenario())
@@ -2048,7 +2048,7 @@ InstanceMapScript::InstanceMapScript(const char* name, uint32 mapId)
     ScriptRegistry<InstanceMapScript>::Instance()->AddScript(this);
 }
 
-BattlegroundMapScript::BattlegroundMapScript(const char* name, uint32 mapId)
+BattlegroundMapScript::BattlegroundMapScript(char const* name, uint32 mapId)
     : ScriptObject(name), MapScript<BattlegroundMap>(mapId)
 {
     if (GetEntry() && !GetEntry()->IsBattleground())
@@ -2057,133 +2057,133 @@ BattlegroundMapScript::BattlegroundMapScript(const char* name, uint32 mapId)
     ScriptRegistry<BattlegroundMapScript>::Instance()->AddScript(this);
 }
 
-ItemScript::ItemScript(const char* name)
+ItemScript::ItemScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<ItemScript>::Instance()->AddScript(this);
 }
 
-CreatureScript::CreatureScript(const char* name)
+CreatureScript::CreatureScript(char const* name)
     : ScriptObject(name)
     //: UnitScript(name, false)
 {
     ScriptRegistry<CreatureScript>::Instance()->AddScript(this);
 }
 
-GameObjectScript::GameObjectScript(const char* name)
+GameObjectScript::GameObjectScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<GameObjectScript>::Instance()->AddScript(this);
 }
 
-AreaTriggerScript::AreaTriggerScript(const char* name)
+AreaTriggerScript::AreaTriggerScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<AreaTriggerScript>::Instance()->AddScript(this);
 }
 
-SpellAreaTriggerScript::SpellAreaTriggerScript(const char* name)
+SpellAreaTriggerScript::SpellAreaTriggerScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<SpellAreaTriggerScript>::Instance()->AddScript(this);
 }
 
-BattlegroundScript::BattlegroundScript(const char* name)
+BattlegroundScript::BattlegroundScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<BattlegroundScript>::Instance()->AddScript(this);
 }
 
-OutdoorPvPScript::OutdoorPvPScript(const char* name)
+OutdoorPvPScript::OutdoorPvPScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<OutdoorPvPScript>::Instance()->AddScript(this);
 }
 
-CommandScript::CommandScript(const char* name)
+CommandScript::CommandScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<CommandScript>::Instance()->AddScript(this);
 }
 
-WeatherScript::WeatherScript(const char* name)
+WeatherScript::WeatherScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<WeatherScript>::Instance()->AddScript(this);
 }
 
-AuctionHouseScript::AuctionHouseScript(const char* name)
+AuctionHouseScript::AuctionHouseScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<AuctionHouseScript>::Instance()->AddScript(this);
 }
 
-ConditionScript::ConditionScript(const char* name)
+ConditionScript::ConditionScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<ConditionScript>::Instance()->AddScript(this);
 }
 
-VehicleScript::VehicleScript(const char* name)
+VehicleScript::VehicleScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<VehicleScript>::Instance()->AddScript(this);
 }
-DynamicObjectScript::DynamicObjectScript(const char* name)
+DynamicObjectScript::DynamicObjectScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<DynamicObjectScript>::Instance()->AddScript(this);
 }
 
-TransportScript::TransportScript(const char* name)
+TransportScript::TransportScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<TransportScript>::Instance()->AddScript(this);
 }
 
-AchievementCriteriaScript::AchievementCriteriaScript(const char* name)
+AchievementCriteriaScript::AchievementCriteriaScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<AchievementCriteriaScript>::Instance()->AddScript(this);
 }
 
-PlayerScript::PlayerScript(const char* name)
+PlayerScript::PlayerScript(char const* name)
     : UnitScript(name, false)
 {
     ScriptRegistry<PlayerScript>::Instance()->AddScript(this);
 }
 
-GuildScript::GuildScript(const char* name)
+GuildScript::GuildScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<GuildScript>::Instance()->AddScript(this);
 }
 
-GroupScript::GroupScript(const char* name)
+GroupScript::GroupScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<GroupScript>::Instance()->AddScript(this);
 }
 
-SceneScript::SceneScript(const char* name)
+SceneScript::SceneScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<SceneScript>::Instance()->AddScript(this);
 }
 
-QuestScript::QuestScript(const char* name)
+QuestScript::QuestScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<QuestScript>::Instance()->AddScript(this);
 }
 
-GameEventScript::GameEventScript(const char* name)
+GameEventScript::GameEventScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<GameEventScript>::Instance()->AddScript(this);
 }
 
-GlobalScript::GlobalScript(const char* name)
+GlobalScript::GlobalScript(char const* name)
     : ScriptObject(name)
 {
     ScriptRegistry<GlobalScript>::Instance()->AddScript(this);

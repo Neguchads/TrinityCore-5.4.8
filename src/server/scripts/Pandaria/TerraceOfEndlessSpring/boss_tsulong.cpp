@@ -1696,7 +1696,7 @@ class spell_tsulong_unstable_bolt_sacrifice : public SpellScript
     {
         if (Unit* caster = GetCaster())
         {
-            if (const SpellInfo* sInfo = GetSpellInfo())
+            if (SpellInfo const* sInfo = GetSpellInfo())
             {
                 int32 bp = sInfo->Effects[EFFECT_0].BasePoints;
                 SetHitDamage((caster->GetMaxHealth() * bp) / 100);

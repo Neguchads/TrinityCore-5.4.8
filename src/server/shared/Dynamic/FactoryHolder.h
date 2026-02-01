@@ -53,7 +53,7 @@ class Permissible
 {
     public:
         virtual ~Permissible() { }
-        virtual int Permit(const T *) const = 0;
+        virtual int Permit(T const*) const = 0;
 };
 #endif
 

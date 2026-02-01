@@ -55,7 +55,7 @@ class TC_GAME_API TempSummon : public Creature
         TempSummonType const& GetSummonType() { return m_type; }
         uint32 GetTimer() { return m_timer; }
 
-        const SummonPropertiesEntry* const m_Properties;
+        SummonPropertiesEntry const* const m_Properties;
 
         bool IsMinorGuardian() const;
         bool IsWarBanner() const { return m_Properties && m_Properties->Type == SUMMON_TYPE_WARBANNER; }

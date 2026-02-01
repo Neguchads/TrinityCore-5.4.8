@@ -28,7 +28,7 @@ namespace LuaItem
             return 0;
         }
 
-        const ItemTemplate* temp = item->GetTemplate();
+        ItemTemplate const* temp = item->GetTemplate();
 
         std::string name = temp->Name1;
         if (ItemLocale const* il = sObjectMgr->GetItemLocale(temp->ItemId))
@@ -39,13 +39,13 @@ namespace LuaItem
             char* const* suffix = NULL;
             if (itemRandPropId < 0)
             {
-                const ItemRandomSuffixEntry* itemRandEntry = sItemRandomSuffixStore.LookupEntry(-item->GetItemRandomPropertyId());
+                ItemRandomSuffixEntry const* itemRandEntry = sItemRandomSuffixStore.LookupEntry(-item->GetItemRandomPropertyId());
                 if (itemRandEntry)
                     suffix = (char* const*)itemRandEntry->nameSuffix[loc_idx];
             }
             else
             {
-                const ItemRandomPropertiesEntry* itemRandEntry = sItemRandomPropertiesStore.LookupEntry(item->GetItemRandomPropertyId());
+                ItemRandomPropertiesEntry const* itemRandEntry = sItemRandomPropertiesStore.LookupEntry(item->GetItemRandomPropertyId());
                 if (itemRandEntry)
                     suffix = (char* const*)itemRandEntry->nameSuffix[loc_idx];
             }

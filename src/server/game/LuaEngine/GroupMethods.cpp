@@ -65,7 +65,7 @@ namespace LuaGroup
     {
         Player* player = sEluna->CHECK_PLAYER(L, 1);
         if (!player)
-            if (const char* name = luaL_checkstring(L, 1))
+            if (char const* name = luaL_checkstring(L, 1))
                 player = ObjectAccessor::FindPlayerByName(name);
         if (!player)
             return 0;
@@ -181,7 +181,7 @@ namespace LuaGroup
 
     int GetMemberGUID(lua_State* L, Group* group)
     {
-        const char* name = luaL_checkstring(L, 1);
+        char const* name = luaL_checkstring(L, 1);
         sEluna->Push(L, group->GetMemberGUID(name));
         return 1;
     }

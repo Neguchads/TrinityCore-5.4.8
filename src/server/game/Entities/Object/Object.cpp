@@ -1561,7 +1561,7 @@ InstanceScript* WorldObject::GetInstanceScript()
     return map->IsDungeon() || map->IsScenario() ? ((InstanceMap*)map)->GetInstanceScript() : NULL;
 }
 
-float WorldObject::GetDistanceZ(const WorldObject* obj) const
+float WorldObject::GetDistanceZ(WorldObject const* obj) const
 {
     float dz = fabs(GetPositionZ() - obj->GetPositionZ());
     float sizefactor = GetObjectSize() + obj->GetObjectSize();
@@ -1599,7 +1599,7 @@ bool WorldObject::_IsWithinDist(WorldObject const* obj, float dist2compare, bool
     return distsq < maxdist * maxdist;
 }
 
-float WorldObject::GetDistance(const WorldObject* obj) const
+float WorldObject::GetDistance(WorldObject const* obj) const
 {
     float d = GetExactDist(obj) - GetObjectSize() - obj->GetObjectSize();
     return d > 0.0f ? d : 0.0f;
@@ -1617,7 +1617,7 @@ float WorldObject::GetDistance(float x, float y, float z) const
     return d > 0.0f ? d : 0.0f;
 }
 
-float WorldObject::GetDistance2d(const WorldObject* obj) const
+float WorldObject::GetDistance2d(WorldObject const* obj) const
 {
     float d = GetExactDist2d(obj) - GetObjectSize() - obj->GetObjectSize();
     return d > 0.0f ? d : 0.0f;
@@ -1629,14 +1629,14 @@ float WorldObject::GetDistance2d(float x, float y) const
     return d > 0.0f ? d : 0.0f;
 }
 
-bool WorldObject::IsSelfOrInSameMap(const WorldObject* obj) const
+bool WorldObject::IsSelfOrInSameMap(WorldObject const* obj) const
 {
     if (this == obj)
         return true;
     return IsInMap(obj);
 }
 
-bool WorldObject::IsInMap(const WorldObject* obj) const
+bool WorldObject::IsInMap(WorldObject const* obj) const
 {
     if (obj)
         return IsInWorld() && obj->IsInWorld() && (GetMap() == obj->GetMap());
@@ -1648,7 +1648,7 @@ bool WorldObject::IsWithinDist3d(float x, float y, float z, float dist) const
     return IsInDist(x, y, z, dist + GetObjectSize());
 }
 
-bool WorldObject::IsWithinDist3d(const Position* pos, float dist) const
+bool WorldObject::IsWithinDist3d(Position const* pos, float dist) const
 {
     return IsInDist(pos, dist + GetObjectSize());
 }
@@ -1658,7 +1658,7 @@ bool WorldObject::IsWithinDist2d(float x, float y, float dist) const
     return IsInDist2d(x, y, dist + GetObjectSize());
 }
 
-bool WorldObject::IsWithinDist2d(const Position* pos, float dist) const
+bool WorldObject::IsWithinDist2d(Position const* pos, float dist) const
 {
     return IsInDist2d(pos, dist + GetObjectSize());
 }
@@ -1702,7 +1702,7 @@ bool WorldObject::IsWithinLOS(float ox, float oy, float oz, VMAP::ModelIgnoreFla
     return true;
 }
 
-bool WorldObject::IsWithinLOSInMap(const WorldObject* obj, VMAP::ModelIgnoreFlags ignoreFlags) const
+bool WorldObject::IsWithinLOSInMap(WorldObject const* obj, VMAP::ModelIgnoreFlags ignoreFlags) const
 {
     if (!IsInMap(obj))
         return false;
@@ -1902,7 +1902,7 @@ void Position::GetPositionOffsetTo(const Position & endPos, Position & retOffset
     retOffset.SetOrientation(endPos.GetOrientation() - GetOrientation());
 }
 
-float Position::GetAngle(const Position* obj) const
+float Position::GetAngle(Position const* obj) const
 {
     if (!obj)
         return 0;
@@ -1940,7 +1940,7 @@ void Position::GetSinCos(const float x, const float y, float &vsin, float &vcos)
     }
 }
 
-bool Position::HasInArc(float arc, const Position* obj, float border) const
+bool Position::HasInArc(float arc, Position const* obj, float border) const
 {
     // always have self in arc
     if (obj == this)
@@ -1962,7 +1962,7 @@ bool Position::HasInArc(float arc, const Position* obj, float border) const
     return ((angle >= lborder) && (angle <= rborder));
 }
 
-bool WorldObject::IsInBetween(const Position* obj1, const Position* obj2, float size) const
+bool WorldObject::IsInBetween(Position const* obj1, Position const* obj2, float size) const
 {
     if (!obj1 || !obj2)
         return false;
@@ -1982,7 +1982,7 @@ bool WorldObject::IsInBetween(const Position* obj1, const Position* obj2, float 
     return (size * size) >= GetExactDist2dSq(obj1->GetPositionX() + std::cos(angle) * dist, obj1->GetPositionY() + std::sin(angle) * dist);
 }
 
-bool WorldObject::IsInAxe(const WorldObject* obj1, const WorldObject* obj2, float size) const
+bool WorldObject::IsInAxe(WorldObject const* obj1, WorldObject const* obj2, float size) const
 {
     if (!obj1 || !obj2)
         return false;
@@ -2185,7 +2185,7 @@ float WorldObject::GetVisibilityRange() const
         return GetMap()->GetVisibilityRange();
 }
 
-float WorldObject::GetSightRange(const WorldObject* target) const
+float WorldObject::GetSightRange(WorldObject const* target) const
 {
     if (ToUnit())
     {
@@ -2369,7 +2369,7 @@ bool WorldObject::CanNeverSee(WorldObject const* obj) const
 
 bool WorldObject::CanDetect(WorldObject const* obj, bool ignoreStealth) const
 {
-    const WorldObject* seer = this;
+    WorldObject const* seer = this;
 
     // Pets don't have detection, they use the detection of their masters
     if (Unit const* thisUnit = ToUnit())
@@ -2520,7 +2520,7 @@ namespace Trinity
     class MonsterCustomChatBuilder
     {
         public:
-            MonsterCustomChatBuilder(WorldObject const* obj, ChatMsg msgtype, const char* text, uint32 language, WorldObject const* target)
+            MonsterCustomChatBuilder(WorldObject const* obj, ChatMsg msgtype, char const* text, uint32 language, WorldObject const* target)
                 : i_object(obj), i_msgtype(msgtype), i_text(text), i_language(Language(language)), i_target(target) { }
 
             void operator()(WorldPacket& data, LocaleConstant loc_idx)
@@ -2532,7 +2532,7 @@ namespace Trinity
         private:
             WorldObject const* i_object;
             ChatMsg i_msgtype;
-            const char* i_text;
+            char const* i_text;
             Language i_language;
             WorldObject const* i_target;
     };
@@ -3184,7 +3184,7 @@ Position WorldObject::GetRandomNearPosition(float radius)
     return pos;
 }
 
-void WorldObject::GetContactPoint(const WorldObject* obj, float &x, float &y, float &z, float distance2d /*= CONTACT_DISTANCE*/) const
+void WorldObject::GetContactPoint(WorldObject const* obj, float &x, float &y, float &z, float distance2d /*= CONTACT_DISTANCE*/) const
 {
     // angle to face `obj` to `this` using distance includes size of `obj`
     GetNearPoint(obj, x, y, z, obj->GetObjectSize(), distance2d, GetAngle(obj));
@@ -3952,7 +3952,7 @@ WMOAreaTableEntry const* WorldObject::GetWMOArea() const
 
     if (map->GetAreaInfo(m_phaseMask, GetPositionX(), GetPositionY(), GetPositionZ(), mogpFlags, adtId, rootId, groupId))
     {
-        const WMOAreaTableEntry * wmoEntry = GetWMOAreaTableEntryByTripple(rootId, adtId, groupId);
+        WMOAreaTableEntry const* wmoEntry = GetWMOAreaTableEntryByTripple(rootId, adtId, groupId);
         if (wmoEntry)
             return wmoEntry;
     }

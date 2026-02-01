@@ -473,7 +473,7 @@ class boss_shade_of_aran : public CreatureScript
                     DrinkInturrupted = true;
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 // We only care about interrupt effects and only if they are durring a spell currently being casted
                 if ((spell->Effects[0].Effect != SPELL_EFFECT_INTERRUPT_CAST &&

@@ -4147,7 +4147,7 @@ class spell_monk_restless_pursuit : public SpellScript
 
     void HandleCast()
     {
-        if  (GetCaster()->HasAura(SPELL_MONK_RESTLESS_PURSUIT))
+        if (GetCaster()->HasAura(SPELL_MONK_RESTLESS_PURSUIT))
             GetCaster()->RemoveAurasWithMechanic(1 << MECHANIC_SNARE);
     }
 

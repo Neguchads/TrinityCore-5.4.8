@@ -33,12 +33,12 @@ using std::pair;
 
 template<> struct BoundsTrait<VMAP::ModelSpawn*>
 {
-    static void getBounds(const VMAP::ModelSpawn* const &obj, G3D::AABox& out) { out = obj->getBounds(); }
+    static void getBounds(VMAP::ModelSpawn const* const &obj, G3D::AABox& out) { out = obj->getBounds(); }
 };
 
 namespace VMAP
 {
-    bool readChunk(FILE* rf, char *dest, const char *compare, uint32 len)
+    bool readChunk(FILE* rf, char *dest, char const*compare, uint32 len)
     {
         if (fread(dest, sizeof(char), len, rf) != len) return false;
         return memcmp(dest, compare, len) == 0;
@@ -540,7 +540,7 @@ namespace VMAP
         delete liquid;
     }
 
-    bool WorldModel_Raw::Read(const char * path)
+    bool WorldModel_Raw::Read(char const* path)
     {
         FILE* rf = fopen(path, "rb");
         if (!rf)

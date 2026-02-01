@@ -131,7 +131,7 @@ class instance_ramparts : public InstanceMapScript
                 return saveStream.str();
             }
 
-            void Load(const char* strIn) override
+            void Load(char const* strIn) override
             {
                 if (!strIn)
                 {

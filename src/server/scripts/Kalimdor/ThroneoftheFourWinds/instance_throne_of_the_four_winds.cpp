@@ -169,7 +169,7 @@ class instance_throne_of_the_four_winds : public InstanceMapScript
                 return saveStream.str();
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

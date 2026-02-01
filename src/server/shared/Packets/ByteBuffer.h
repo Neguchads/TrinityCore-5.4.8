@@ -593,15 +593,15 @@ public:
         _storage.shrink_to_fit();
     }
 
-    void append(const char *src, size_t cnt)
+    void append(char const*src, size_t cnt)
     {
-        return append((const uint8 *)src, cnt);
+        return append((uint8 const*)src, cnt);
     }
 
     template<class T>
-    void append(const T *src, size_t cnt)
+    void append(T const*src, size_t cnt)
     {
-        return append((const uint8 *)src, cnt * sizeof(T));
+        return append((uint8 const*)src, cnt * sizeof(T));
     }
 
     void append(uint8 const* src, size_t cnt);

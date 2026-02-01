@@ -1,4 +1,4 @@
-﻿/*
+/*
 * This file is part of the Pandaria 5.4.8 Project. See THANKS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
@@ -141,7 +141,7 @@ void Transmogrification::UnloadPlayerSets(ObjectGuid pGUID)
 }
 #endif
 
-const char* Transmogrification::GetSlotName(uint8 slot, WorldSession* /*session*/) const
+char const* Transmogrification::GetSlotName(uint8 slot, WorldSession* /*session*/) const
 {
     TC_LOG_DEBUG("Transmogrification.log", "Transmogrification::GetSlotName");
 
@@ -171,8 +171,8 @@ std::string Transmogrification::GetItemIcon(uint32 entry, uint32 width, uint32 h
 
     std::ostringstream ss;
     ss << "|TInterface";
-    const ItemTemplate* temp = sObjectMgr->GetItemTemplate(entry);
-    const ItemDisplayInfoEntry* dispInfo = NULL;
+    ItemTemplate const* temp = sObjectMgr->GetItemTemplate(entry);
+    ItemDisplayInfoEntry const* dispInfo = NULL;
     if (temp)
     {
         dispInfo = sItemDisplayInfoStore.LookupEntry(temp->DisplayInfoID);
@@ -219,7 +219,7 @@ std::string Transmogrification::GetItemLink(Item* item, WorldSession* session) c
 
     LocaleConstant localeConstant = session->GetSessionDbLocaleIndex();
     int loc_idx = session->GetSessionDbLocaleIndex(); // TODO
-    const ItemTemplate* temp = item->GetTemplate();
+    ItemTemplate const* temp = item->GetTemplate();
     std::string name = temp->Name1;
     if (localeConstant != LOCALE_enUS)
         if (ItemLocale const* il = sObjectMgr->GetItemLocale(temp->ItemId))
@@ -230,13 +230,13 @@ std::string Transmogrification::GetItemLink(Item* item, WorldSession* session) c
         char const* suffix = NULL;
         if (itemRandPropId < 0)
         {
-            const ItemRandomSuffixEntry* itemRandEntry = sItemRandomSuffixStore.LookupEntry(-item->GetItemRandomPropertyId());
+            ItemRandomSuffixEntry const* itemRandEntry = sItemRandomSuffixStore.LookupEntry(-item->GetItemRandomPropertyId());
             if (itemRandEntry)
                 suffix = itemRandEntry->nameSuffix[loc_idx];
         }
         else
         {
-            const ItemRandomPropertiesEntry* itemRandEntry = sItemRandomPropertiesStore.LookupEntry(item->GetItemRandomPropertyId());
+            ItemRandomPropertiesEntry const* itemRandEntry = sItemRandomPropertiesStore.LookupEntry(item->GetItemRandomPropertyId());
             if (itemRandEntry)
                 suffix = itemRandEntry->nameSuffix[loc_idx];
         }
@@ -269,7 +269,7 @@ std::string Transmogrification::GetItemLink(uint32 entry, WorldSession* session)
 {
     TC_LOG_DEBUG("Transmogrification.log", "Transmogrification::GetItemLink");
 
-    const ItemTemplate* temp = sObjectMgr->GetItemTemplate(entry);
+    ItemTemplate const* temp = sObjectMgr->GetItemTemplate(entry);
     LocaleConstant localeConstant = session->GetSessionDbLocaleIndex();
     std::string name = temp->Name1;
     if (localeConstant != LOCALE_enUS)

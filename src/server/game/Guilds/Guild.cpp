@@ -3570,7 +3570,7 @@ bool Guild::IsLeader(Player* player) const
 {
     if (player->GetGUID() == m_leaderGuid)
         return true;
-    if (const Member* member = GetMember(player->GetGUID()))
+    if (Member const* member = GetMember(player->GetGUID()))
         return member->IsRank(GR_GUILDMASTER);
     return false;
 }
@@ -3718,7 +3718,7 @@ inline void Guild::UpdateMemberWithdrawSlots(CharacterDatabaseTransaction trans,
 
 inline bool Guild::MemberHasTabRights(ObjectGuid guid, uint8 tabId, uint32 rights) const
 {
-    if (const Member* member = GetMember(guid))
+    if (Member const* member = GetMember(guid))
     {
         // Leader always has full rights
         if (member->IsRank(GR_GUILDMASTER) || m_leaderGuid == guid)
@@ -3762,7 +3762,7 @@ void Guild::LogBankEvent(CharacterDatabaseTransaction trans, GuildBankEventLogTy
 
 inline Item* Guild::GetItem(uint8 tabId, uint8 slotId) const
 {
-    if (const BankTab* tab = GetBankTab(tabId))
+    if (BankTab const* tab = GetBankTab(tabId))
         return tab->GetItem(slotId);
     return NULL;
 }

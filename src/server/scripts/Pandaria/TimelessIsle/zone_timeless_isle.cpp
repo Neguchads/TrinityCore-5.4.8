@@ -2588,7 +2588,7 @@ struct npc_nice_sprite : public ScriptedAI
         events.Reset();
     }
 
-    void SpellHit(Unit* caster, const SpellInfo* spell) override
+    void SpellHit(Unit* caster, SpellInfo const* spell) override
     {
         if (spell->Id == SPELL_ASCENDANCE)
         {
@@ -4857,7 +4857,7 @@ class at_path_to_ordos : public AreaTriggerScript
     public:
         at_path_to_ordos() : AreaTriggerScript("at_path_to_ordos") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*at*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*at*/) override
         {
             bool hasLegendaryCloack = player->HasItemCount(102245) || player->HasItemCount(102246) || player->HasItemCount(102247) || player->HasItemCount(102248) || player->HasItemCount(102249) || player->HasItemCount(102250);
             if (player->HasAchieved(7536) || hasLegendaryCloack)

@@ -293,7 +293,7 @@ public:
             return saveStream.str();
         }
 
-        void Load(const char* str) override
+        void Load(char const* str) override
         {
             if (!str)
             {

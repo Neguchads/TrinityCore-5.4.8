@@ -49,19 +49,19 @@ InstanceScript::InstanceScript(Map* map) : instance(map), completedEncounters(0)
     switch (map->GetId())
     {
         case 1008:
-            if(sConfigMgr->GetIntDefault("FirstOfTheKingdom.MogushanVaults", 1))
+            if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.MogushanVaults", 1))
                 dampeningSpellId = SPELL_DAMPENING_FIELD_R;
             break;
         case 1009:
-            if(sConfigMgr->GetIntDefault("FirstOfTheKingdom.HeartOfFear", 1))
+            if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.HeartOfFear", 1))
                 dampeningSpellId = SPELL_KLAXXI_RESONANCE_R;
             break;
         case 996:
-            if(sConfigMgr->GetIntDefault("FirstOfTheKingdom.TerraceSpring", 1))
+            if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.TerraceSpring", 1))
                 dampeningSpellId = SPELL_RITUAL_OF_PURIFICATION_R;
             break;
         case 1098:
-            if(sConfigMgr->GetIntDefault("FirstOfTheKingdom.ThroneOfThunder", 1))
+            if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.ThroneOfThunder", 1))
                 dampeningSpellId = SPELL_SHADO_PAN_ONSLAUGHT_R;
             break;
     }
@@ -363,7 +363,7 @@ bool InstanceScript::SetBossState(uint32 id, EncounterState state)
     return false;
 }
 
-std::string InstanceScript::LoadBossState(const char * data)
+std::string InstanceScript::LoadBossState(char const* data)
 {
     if (!data)
         return NULL;

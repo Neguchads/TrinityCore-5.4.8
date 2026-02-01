@@ -684,7 +684,7 @@ void MotionMaster::MovePath(uint32 path_id, bool repeatable)
         _owner->GetGUID().GetCounter(), path_id, repeatable ? "YES" : "NO");
 }
 
-void MotionMaster::MoveSplinePath(const Position* path, uint32 count, bool fly, bool walk, float speed, bool cyclic, bool catmullrom, bool uncompressed)
+void MotionMaster::MoveSplinePath(Position const* path, uint32 count, bool fly, bool walk, float speed, bool cyclic, bool catmullrom, bool uncompressed)
 {
     if (_owner->isMoving())
         _owner->StopMoving();

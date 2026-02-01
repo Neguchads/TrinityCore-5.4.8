@@ -968,7 +968,7 @@ class TC_GAME_API World
         /// Set a new Message of the Day
         void SetMotd(std::string const& motd);
         /// Get the current Message of the Day
-        const char* GetMotd() const;
+        char const* GetMotd() const;
 
         /// Set the string for new characters (first login)
         void SetNewCharString(std::string const& str) { m_newCharString = str; }
@@ -1009,14 +1009,14 @@ class TC_GAME_API World
         void LoadRates(bool loading = false);
 
         void SendWorldText(int32 string_id, ...);
-        void SendGlobalText(const char* text, WorldSession* self);
+        void SendGlobalText(char const* text, WorldSession* self);
         void SendGMText(int32 string_id, ...);
         void SendGlobalMessage(WorldPacket const* packet, WorldSession* self = 0, uint32 team = 0);
         void SendGlobalMessage(WorldPacket const* packet, AccountTypes security, WorldSession* self = 0, uint32 team = 0);
         void SendGlobalGMMessage(WorldPacket* packet, WorldSession* self = 0, uint32 team = 0);
         bool SendZoneMessage(uint32 zone, WorldPacket const* packet, WorldSession* self = nullptr, uint32 team = 0);
-        void SendZoneText(uint32 zone, const char *text, WorldSession* self = 0, uint32 team = 0);
-        void SendServerMessage(ServerMessageType type, const char *text = "", Player* player = NULL);
+        void SendZoneText(uint32 zone, char const*text, WorldSession* self = 0, uint32 team = 0);
+        void SendServerMessage(ServerMessageType type, char const*text = "", Player* player = NULL);
 
         /// Are we in the middle of a shutdown?
         bool IsShuttingDown() const { return m_ShutdownTimer > 0; }
@@ -1122,7 +1122,7 @@ class TC_GAME_API World
         void LoadDBVersion();
         char const* GetDBVersion() const { return m_DBVersion.c_str(); }
 
-        void RecordTimeDiff(const char * text, ...);
+        void RecordTimeDiff(char const* text, ...);
         void RecordTimeDiff(uint32 diff, char const* text, ...);
         void RecordTimeDiffLocal(TimeValue const& start, char const* msg, ...);
 

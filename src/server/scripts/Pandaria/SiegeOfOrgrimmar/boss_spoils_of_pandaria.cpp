@@ -2447,7 +2447,7 @@ struct npc_spoils_unstable_spark : public ScriptedAI
         });
     }
 
-    void SpellHit(Unit* caster, const SpellInfo* spell) override
+    void SpellHit(Unit* caster, SpellInfo const* spell) override
     {
         if (spell->Id == SPELL_BLADE_OF_THE_HUNDRED_STEPS_EFF)
         {

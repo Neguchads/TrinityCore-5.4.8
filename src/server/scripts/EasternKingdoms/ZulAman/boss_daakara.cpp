@@ -180,7 +180,7 @@ class boss_daakara : public CreatureScript
                 Talk(SAY_DEATH);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->HasEffect(SPELL_EFFECT_ATTACK_ME) ||
                     spell->HasAura(SPELL_AURA_MOD_TAUNT))

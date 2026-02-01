@@ -111,7 +111,7 @@ void HookMgr::OnEquip(Player* pPlayer, Item* pItem, uint8 bag, uint8 slot)
     }
 }
 
-InventoryResult HookMgr::OnCanUseItem(const Player* pPlayer, uint32 itemEntry)
+InventoryResult HookMgr::OnCanUseItem(Player const* pPlayer, uint32 itemEntry)
 {
     InventoryResult result = EQUIP_ERR_OK;
     for (std::vector<int>::const_iterator itr = sEluna->PlayerEventBindings[PLAYER_EVENT_ON_CAN_USE_ITEM].begin();
@@ -307,7 +307,7 @@ bool HookMgr::OnGossipSelect(Player* pPlayer, Creature* pCreature, uint32 sender
     return true;
 }
 
-bool HookMgr::OnGossipSelectCode(Player* pPlayer, Creature* pCreature, uint32 sender, uint32 action, const char* code)
+bool HookMgr::OnGossipSelectCode(Player* pPlayer, Creature* pCreature, uint32 sender, uint32 action, char const* code)
 {
     int bind = sEluna->CreatureGossipBindings->GetBind(pCreature->GetEntry(), GOSSIP_EVENT_ON_SELECT);
     if (!bind)
@@ -438,7 +438,7 @@ bool HookMgr::OnGossipSelect(Player* pPlayer, GameObject* pGameObject, uint32 se
     return true;
 }
 
-bool HookMgr::OnGossipSelectCode(Player* pPlayer, GameObject* pGameObject, uint32 sender, uint32 action, const char* code)
+bool HookMgr::OnGossipSelectCode(Player* pPlayer, GameObject* pGameObject, uint32 sender, uint32 action, char const* code)
 {
     int bind = sEluna->GameObjectGossipBindings->GetBind(pGameObject->GetEntry(), GOSSIP_EVENT_ON_SELECT);
     if (!bind)
@@ -1925,7 +1925,7 @@ void HookMgr::OnInviteMember(Group* group, uint64 guid)
     }
 }
 
-void HookMgr::OnRemoveMember(Group* group, uint64 guid, uint8 method, uint64 kicker, const char* reason) // Kicker and Reason not a part of Mangos, implement?
+void HookMgr::OnRemoveMember(Group* group, uint64 guid, uint8 method, uint64 kicker, char const* reason) // Kicker and Reason not a part of Mangos, implement?
 {
     for (std::vector<int>::const_iterator itr = sEluna->GroupEventBindings[GROUP_EVENT_ON_MEMBER_REMOVE].begin();
         itr != sEluna->GroupEventBindings[GROUP_EVENT_ON_MEMBER_REMOVE].end(); ++itr)
