@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "DB2FileLoader.h"
+#include "Errors.h"
 
 DB2FileLoader::DB2FileLoader()
 {
