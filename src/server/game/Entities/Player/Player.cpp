@@ -16072,7 +16072,7 @@ bool Player::CanCompleteQuest(uint32 questId)
             if (qInfo->HasSpecialFlag(QUEST_SPECIAL_FLAGS_EXPLORATION_OR_EVENT) && !questStatus.Explored)
                 return false;
 
-            for (const auto& questObjective : qInfo->Objectives)
+            for (auto const& questObjective : qInfo->Objectives)
             {
                 if (!IsQuestObjectiveComplete(qInfo, questObjective))
                     return false;
@@ -16128,7 +16128,7 @@ bool Player::CanCompleteRepeatableQuest(Quest const* quest)
     if (!CanTakeQuest(quest, false))
         return false;
 
-    for (const auto& objective : quest->Objectives)
+    for (auto const& objective : quest->Objectives)
     {
         if (objective.Type == QUEST_OBJECTIVE_ITEM)
             if (!HasItemCount(objective.ObjectID, objective.Amount))
@@ -16159,7 +16159,7 @@ bool Player::CanRewardQuest(Quest const* quest, bool msg)
     if (GetQuestRewardStatus(quest->GetQuestId()))
         return false;
 
-    for (const auto& questObjective : quest->Objectives)
+    for (auto const& questObjective : quest->Objectives)
     {
         switch (questObjective.Type)
         {
@@ -16334,7 +16334,7 @@ void Player::AddQuest(Quest const* quest, Object* questGiver)
     questStatusData.Status = QUEST_STATUS_INCOMPLETE;
     questStatusData.Explored = false;
 
-    for (const auto& questObjective : quest->Objectives)
+    for (auto const& questObjective : quest->Objectives)
     {
         if (questObjective.Type == QUEST_OBJECTIVE_MIN_REPUTATION || questObjective.Type == QUEST_OBJECTIVE_MAX_REPUTATION)
             if (FactionEntry const* factionEntry = sFactionStore.LookupEntry(questObjective.ObjectID))
@@ -16422,7 +16422,7 @@ void Player::CompleteQuest(uint32 quest_id, bool completely, bool fromCommand)
         if (!quest)
             return;
 
-        for (const auto& questObjective : quest->Objectives)
+        for (auto const& questObjective : quest->Objectives)
         {
             switch (questObjective.Type)
             {
@@ -20165,7 +20165,7 @@ void Player::_LoadQuestObjectiveStatus(PreparedQueryResult result)
 
                 // Quest existence is checked on Quest Objective load, no issue should arise
                 Quest const* qInfo = sObjectMgr->GetQuestTemplate(objectiveQuestId);
-                for (const auto& objective : qInfo->Objectives)
+                for (auto const& objective : qInfo->Objectives)
                 {
                     if (objective.ID == objectiveId)
                     {

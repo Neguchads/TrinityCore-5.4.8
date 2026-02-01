@@ -488,7 +488,7 @@ void PlayerMenu::SendQuestGiverQuestDetails(Quest const* quest, ObjectGuid npcGU
         AddQuestLevelToTitle(logTitle, quest->GetQuestLevel());
 
     ByteBuffer objData;
-    for (const auto& objective : quest->Objectives)
+    for (auto const& objective : quest->Objectives)
     {
         objData << uint8(objective.Type);
         objData << uint32(objective.ID);
@@ -718,7 +718,7 @@ void PlayerMenu::SendQuestQueryResponse(Quest const* quest) const
     data.WriteBits(logDescription.size(), 12);
 
     ByteBuffer objData;
-    for (const auto& questObjective : quest->Objectives)
+    for (auto const& questObjective : quest->Objectives)
     {
         std::string descriptionText = questObjective.Description;
         if (localeConstant != LOCALE_enUS)
@@ -1049,7 +1049,7 @@ void PlayerMenu::SendQuestGiverRequestItems(Quest const* quest, ObjectGuid npcGu
 
     uint32 currencyCounter = 0;
     uint32 itemCounter = 0;
-    for (const auto& questObjective : quest->Objectives)
+    for (auto const& questObjective : quest->Objectives)
     {
         switch (questObjective.Type)
         {

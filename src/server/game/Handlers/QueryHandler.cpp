@@ -715,7 +715,7 @@ void WorldSession::HandleQuestNPCQuery(WorldPacket& recvData)
     for (auto it = quests.begin(); it != quests.end(); ++it)
     {
         data << uint32(it->first);
-        for (const auto& entry : it->second)
+        for (auto const& entry : it->second)
             data << uint32(entry);
     }
 
@@ -763,7 +763,7 @@ void WorldSession::HandleQuestPOIQuery(WorldPacket& recvData)
             {
                 data.WriteBits(POI->Blobs.size(), 18);          // POI count bits
 
-                for (const auto&blob : POI->Blobs)
+                for (auto const&blob : POI->Blobs)
                 {
                     data.WriteBits(blob.Points.size(), 21);     // POI points count bits
 
