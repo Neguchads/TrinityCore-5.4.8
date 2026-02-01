@@ -391,7 +391,7 @@ struct HookMgr
 class ElunaCreatureScript : public CreatureScript
 {
 public:
-    ElunaCreatureScript() : CreatureScript("Smart_ElunaCreatureScript") { } // Smart suppressing error @startup 
+    ElunaCreatureScript() : CreatureScript("Smart_ElunaCreatureScript") { } // Smart suppressing error @startup
     ~ElunaCreatureScript() { }
     CreatureAI* GetAI(Creature* creature) const override
     {

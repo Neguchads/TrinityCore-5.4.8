@@ -609,7 +609,6 @@ void WorldSession::HandleMountSpecialAnimOpcode(WorldPacket& /*recvData*/)
     GetPlayer()->SendMessageToSet(&data, false);
 }
 
-
 void WorldSession::HandleMoveKnockBackAck(WorldPacket& recvData)
 {
     TC_LOG_DEBUG("network", "CMSG_MOVE_KNOCK_BACK_ACK");

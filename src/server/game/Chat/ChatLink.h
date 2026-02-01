@@ -184,5 +184,4 @@ private:
     std::istringstream _iss;
 };
 
-
 #endif // TRINITYCORE_CHATLINK_H

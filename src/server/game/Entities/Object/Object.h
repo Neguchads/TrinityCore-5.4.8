@@ -183,7 +183,7 @@ class TC_GAME_API Object
 
         inline bool IsPlayer() const { return GetTypeId() == TYPEID_PLAYER; }
         static Player* ToPlayer(Object* o) { return o ? o->ToPlayer() : nullptr; }
-        static Player const* ToPlayer(Object const* o) { return o ? o->ToPlayer() : nullptr; }        
+        static Player const* ToPlayer(Object const* o) { return o ? o->ToPlayer() : nullptr; }
         Player* ToPlayer() { if (IsPlayer()) return reinterpret_cast<Player*>(this); else return nullptr; }
         Player const* ToPlayer() const { if (IsPlayer()) return reinterpret_cast<Player const*>(this); else return nullptr;  }
 
@@ -653,7 +653,6 @@ class TC_GAME_API WorldObject : public Object, public WorldLocation
         Player* FindNearestPlayer(float range) const;
         std::list<Player*>  GetNearestPlayersList(float range, bool alive = true);
 
-
         void GetGameObjectListWithEntryInGrid(std::list<GameObject*>& lList, uint32 uiEntry, float fMaxSearchRange) const;
         void GetCreatureListWithEntryInGrid(std::list<Creature*>& lList, uint32 uiEntry, float fMaxSearchRange) const;
         void GetPlayerListInGrid(std::list<Player*>& lList, float fMaxSearchRange) const;
@@ -666,7 +665,7 @@ class TC_GAME_API WorldObject : public Object, public WorldLocation
         virtual void UpdateObjectVisibility(bool forced = true);
         void UpdateStealthVisibility(uint32 diff);
         void UpdatePositionData();
-        
+
         void BuildUpdate(UpdateDataMapType&) override;
 
         bool isActiveObject() const { return m_isActive; }
@@ -675,7 +674,7 @@ class TC_GAME_API WorldObject : public Object, public WorldLocation
         bool IsFarVisible() const { return m_isFarVisible; }
         void SetFarVisible(bool on);
         bool IsVisibilityOverridden() const { return m_visibilityDistanceOverride.has_value(); }
-        void SetVisibilityDistanceOverride(VisibilityDistanceType type);        
+        void SetVisibilityDistanceOverride(VisibilityDistanceType type);
         void SetWorldObject(bool apply);
         bool IsPermanentWorldObject() const { return m_isWorldObject; }
         bool IsWorldObject() const;
@@ -755,7 +754,7 @@ class TC_GAME_API WorldObject : public Object, public WorldLocation
         bool m_isActive;
         ActiveFlags m_activeFlags = ActiveFlags::None;
         bool m_isFarVisible;
-        Optional<float> m_visibilityDistanceOverride;        
+        Optional<float> m_visibilityDistanceOverride;
         const bool m_isWorldObject;
         ZoneScript* m_zoneScript;
 

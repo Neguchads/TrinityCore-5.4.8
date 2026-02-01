@@ -24,7 +24,7 @@
 #include "Config.h"
 #include "Guild.h"
 
-ServiceMgr::ServiceHandler ServiceMgr::_serviceMethods[ISERVICE_END] = 
+ServiceMgr::ServiceHandler ServiceMgr::_serviceMethods[ISERVICE_END] =
 {
     nullptr,
     &ServiceMgr::HandleAntiError,

@@ -90,4 +90,3 @@ namespace LuaAura
         return 1;
     }
 };
-

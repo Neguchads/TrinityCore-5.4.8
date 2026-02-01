@@ -464,7 +464,7 @@ void WorldSession::DoLootRelease(ObjectGuid guid)
         else
         {
             // not fully looted object
-            // If GO contains just quest item 
+            // If GO contains just quest item
             if (loot->quest_items.size() && !loot->items.size())
                 go->SetLootState(GO_READY); // Reset for next looter
             else

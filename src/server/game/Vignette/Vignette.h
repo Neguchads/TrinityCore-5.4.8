@@ -50,9 +50,9 @@ namespace Vignette
     {
         uint32 vignetteId = 0;
 
-        if (target->GetTypeId() == TYPEID_UNIT)
+        if (target->IsCreature())
             vignetteId = target->ToCreature()->GetCreatureTemplate()->VignetteID;
-        if (target->GetTypeId() == TYPEID_GAMEOBJECT)
+        if (target->IsGameObject())
             vignetteId = target->ToGameObject()->GetGOInfo()->GetVignetteId();
 
         if (vignetteId == 0)
@@ -70,9 +70,9 @@ namespace Vignette
     {
         uint32 trackingQuest = 0;
 
-        if (target->GetTypeId() == TYPEID_UNIT)
+        if (target->IsCreature())
             trackingQuest = target->ToCreature()->GetCreatureTemplate()->TrackingQuestID;
-        if (target->GetTypeId() == TYPEID_GAMEOBJECT)
+        if (target->IsGameObject())
             trackingQuest = target->ToGameObject()->GetGOInfo()->GetTrackingQuestId();
 
         return trackingQuest;

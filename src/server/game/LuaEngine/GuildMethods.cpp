@@ -35,7 +35,7 @@ namespace LuaGuild
     }
 
     int GetMemberCount(lua_State* L, Guild* guild)
-    { 
+    {
         // @TODO
         //sEluna->Push(L, guild->GetMemberSize());
         return 1;
@@ -184,4 +184,3 @@ namespace LuaGuild
         return 0;
     }*/
 };
-

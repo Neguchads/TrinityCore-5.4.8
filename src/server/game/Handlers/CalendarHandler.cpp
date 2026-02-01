@@ -587,7 +587,6 @@ void WorldSession::HandleCalendarUpdateEvent(WorldPacket& recvData)
     uint16 titleLength = recvData.ReadBits(8);
     eventId[3] = recvData.ReadBit();
 
-
     recvData.ReadByteSeq(inviteId[6]);
     recvData.ReadByteSeq(eventId[0]);
     recvData.ReadByteSeq(inviteId[7]);

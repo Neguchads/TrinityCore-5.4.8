@@ -41,8 +41,6 @@ class WorldSession;
 
 #define MAX_EQUIPMENT_ITEMS 3
 
-
-
 // Benchmarked: Faster than std::map (insert/find)
 typedef std::unordered_map<uint32, CreatureTemplate> CreatureTemplateContainer;
 
@@ -52,8 +50,6 @@ typedef std::unordered_map<uint32, CreatureTemplate> CreatureTemplateContainer;
 #else
 #pragma pack(push, 1)
 #endif
-
-
 
 typedef std::unordered_map<uint16, CreatureBaseStats> CreatureBaseStatsContainer;
 
@@ -105,8 +101,6 @@ struct CreatureData
     bool dbData;
     uint32 gameEventId = 0;
 };
-
-
 
 // Benchmarked: Faster than std::map (insert/find)
 typedef std::unordered_map<uint16, CreatureModelInfo> CreatureModelContainer;
@@ -277,13 +271,13 @@ class TC_GAME_API Creature : public Unit, public GridObject<Creature>, public Ma
         bool IsCivilian() const { return GetCreatureTemplate()->flags_extra & CREATURE_FLAG_EXTRA_CIVILIAN; }
         bool IsTrigger() const { return GetCreatureTemplate()->flags_extra & CREATURE_FLAG_EXTRA_TRIGGER; }
         bool IsGuard() const { return GetCreatureTemplate()->flags_extra & CREATURE_FLAG_EXTRA_GUARD; }
-        
+
         CreatureMovementData const& GetMovementTemplate() const;
         bool CanWalk() const { return GetMovementTemplate().IsGroundAllowed(); }
         bool CanSwim() const override;
         bool CanEnterWater() const override;
         bool CanFly()  const override { return GetMovementTemplate().IsFlightAllowed() || IsFlying(); }
-        bool CanHover() const { return GetMovementTemplate().Ground == CreatureGroundMovementType::Hover || IsHovering(); } 
+        bool CanHover() const { return GetMovementTemplate().Ground == CreatureGroundMovementType::Hover || IsHovering(); }
         [[nodiscard]] bool HasSwimmingFlagOutOfCombat() const
         {
             return !_isMissingSwimmingFlagOutOfCombat;
@@ -291,7 +285,7 @@ class TC_GAME_API Creature : public Unit, public GridObject<Creature>, public Ma
         void RefreshSwimmingFlag(bool recheck = false);
         // Used to dynamically change allowed path generator and movement flags behavior during scripts.
         // Can be used to allow ground-only creatures to temporarily fly, restrict flying creatures to the ground etc.
-        void OverrideInhabitType(InhabitTypeValues inhabitType) {  } // todo remove in future 
+        void OverrideInhabitType(InhabitTypeValues inhabitType) {  } // todo remove in future
         void ResetInhabitTypeOverride() { } // todo remove in future
 
         void SetReactState(ReactStates st) { m_reactState = st; }
@@ -589,7 +583,7 @@ class TC_GAME_API Creature : public Unit, public GridObject<Creature>, public Ma
         float m_wanderDistance;
         uint32 m_boundaryCheckTime;                         // (msecs) remaining time for next evade boundary check
         uint32 m_combatPulseTime;                           // (msecs) remaining time for next zone-in-combat pulse
-        uint32 m_combatPulseDelay;                          // (secs) how often the creature puts the entire zone in combat (only works in dungeons)        
+        uint32 m_combatPulseDelay;                          // (secs) how often the creature puts the entire zone in combat (only works in dungeons)
         float m_WalkMode;
 
         ReactStates m_reactState;                           // for AI, not charmInfo
@@ -603,7 +597,7 @@ class TC_GAME_API Creature : public Unit, public GridObject<Creature>, public Ma
         bool m_AlreadySearchedAssistance;
         bool m_cannotReachTarget;
         uint32 m_cannotReachTimer;
-        
+
         bool m_regenHealth;
         bool m_regenMana = true;
         bool m_AI_locked;

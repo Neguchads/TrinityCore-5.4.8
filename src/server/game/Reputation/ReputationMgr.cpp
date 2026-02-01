@@ -521,8 +521,6 @@ void ReputationMgr::SetAtWar(FactionState* faction, bool atWar) const
     faction->needSave = true;
 }
 
-
-
 void ReputationMgr::SetInactive(RepListID FactionIndex, bool Status)
 {
     FactionStateList::iterator itr = _factions.find(FactionIndex);

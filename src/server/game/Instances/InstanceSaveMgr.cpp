@@ -412,7 +412,7 @@ void InstanceSaveManager::LoadResetTimes()
                     std::vector<uint64> stoneGuards = { 59915, 60043, 60047, 60051 };
                     std::random_device rd;
                     std::mt19937 g(rd());
-                    std::shuffle(stoneGuards.begin(), stoneGuards.end(), g);                    
+                    std::shuffle(stoneGuards.begin(), stoneGuards.end(), g);
                     uint64 const guardExcluded = stoneGuards.back();
 
                     WorldDatabase.DirectPExecute("INSERT INTO `instance_mogushan_system` (`creature_id`, `resettime`) VALUES (%u, %u);", guardExcluded, (uint32)newresettime);
@@ -731,13 +731,13 @@ void InstanceSaveManager::_ResetOrWarnAll(uint32 mapid, Difficulty difficulty, b
                 std::vector<uint64> stoneGuards = { 59915, 60043, 60047, 60051 };
                 std::random_device rd;
                 std::mt19937 g(rd());
-                std::shuffle(stoneGuards.begin(), stoneGuards.end(), g);                
+                std::shuffle(stoneGuards.begin(), stoneGuards.end(), g);
                 uint64 const guardExcluded = stoneGuards.back();
 
                 WorldDatabase.DirectPExecute("INSERT INTO `instance_mogushan_system` (`creature_id`, `resettime`) VALUES (%u, %u);", guardExcluded, (uint32)next_reset);
             }
         }
-        
+
     }
 
     // note: this isn't fast but it's meant to be executed very rarely

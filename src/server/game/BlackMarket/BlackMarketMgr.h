@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License along
 * with this program. If not, see <http://www.gnu.org/licenses/>.
 */
- 
+
 #ifndef BLACK_MARKET_H
 #define BLACK_MARKET_H
 

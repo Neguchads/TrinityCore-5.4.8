@@ -129,7 +129,6 @@ enum BG_TP_CreatureTypes
     TP_SPIRIT_ALLIANCE    = 0,
     TP_SPIRIT_HORDE       = 1,
 
-
     BG_CREATURES_MAX_TP   = 2
 };
 

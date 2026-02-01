@@ -110,7 +110,7 @@ class TC_GAME_API MotionMaster //: private std::stack<MovementGenerator *>
             Impl[_top] = _Val;
         }
 
-        bool needInitTop() const 
+        bool needInitTop() const
         {
             if (empty())
                 return false;
@@ -136,7 +136,6 @@ class TC_GAME_API MotionMaster //: private std::stack<MovementGenerator *>
         int size() const { return _top + 1; }
 
         //MovementGeneratorType GetCurrentMovementGeneratorType() const; // hack
-
 
         _Ty top() const { ASSERT(_top < MAX_MOTION_SLOT && _top >= 0);  return Impl[_top]; }
         _Ty GetMotionSlot(int slot) const { ASSERT(_top < MAX_MOTION_SLOT && _top >= 0); return Impl[slot]; }

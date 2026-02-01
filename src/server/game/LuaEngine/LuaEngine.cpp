@@ -101,7 +101,7 @@ void StartEluna(bool restart)
     TC_LOG_INFO("server.loading", "[Eluna]: Lua Engine loaded.");
     TC_LOG_INFO("server.loading", "");
 
-	std::string lua_folderpath = sConfigMgr->GetStringDefault("Eluna.ScriptPath", "lua_scripts");
+    std::string lua_folderpath = sConfigMgr->GetStringDefault("Eluna.ScriptPath", "lua_scripts");
 
     LoadedScripts loadedScripts;
     sEluna->LoadDirectory(lua_folderpath.c_str(), &loadedScripts);
@@ -131,7 +131,6 @@ void StartEluna(bool restart)
         ++count;
     }
 
-    
     if (restart)
     {
         //! Iterate over every supported source type (creature and gameobject)
@@ -153,8 +152,7 @@ void StartEluna(bool restart)
             }
         });
     }
-    
-    
+
     TC_LOG_INFO("server.loading", "[Eluna]: Loaded %u Lua scripts..", count);
     TC_LOG_INFO("server.loading", "");
 }

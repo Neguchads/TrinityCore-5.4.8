@@ -209,7 +209,6 @@ bool BattlegroundRV::SetupBattleground()
     return true;
 }
 
-
 void BattlegroundRV::TogglePillarCollision()
 {
     bool apply = GetPillarCollision();

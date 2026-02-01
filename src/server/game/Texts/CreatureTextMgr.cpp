@@ -66,7 +66,7 @@ class PlayerTextBuilder
 
             return ChatHandler::BuildChatPacket(*data, _msgType, Language(_language), _talker, _target, text, 0, "", locale);
         }
-        
+
     private:
         WorldObject const* _source;
         WorldObject const* _talker;
@@ -208,7 +208,7 @@ void CreatureTextMgr::LoadCreatureTextLocales()
         LocaleConstant locale    = GetLocaleByName(localeName);
         if (!sWorld->getBoolConfig(CONFIG_LOAD_LOCALES) || locale == LOCALE_enUS)
             continue;
-        
+
         CreatureTextLocale& data = mLocaleTextMap[CreatureTextId(creatureId, groupId, id)];
         ObjectMgr::AddLocaleString(text, locale, data.Text);
     } while (result->NextRow());
@@ -282,7 +282,7 @@ uint32 CreatureTextMgr::SendChat(Creature* source, uint8 textGroup, WorldObject 
         CreatureTextBuilder builder(finalSource, finalSource->GetGender(), finalType, iter->groupId, iter->id, finalLang, whisperTarget);
         SendChatPacket(finalSource, builder, finalType, whisperTarget, range, team, gmOnly);
     }
-    
+
     source->SetTextRepeatId(textGroup, iter->id);
     return iter->duration;
 }
@@ -337,7 +337,7 @@ void CreatureTextMgr::SendNonChatPacket(WorldObject* source, WorldPacket const* 
         {
             if (range == TEXT_RANGE_NORMAL)//ignores team and gmOnly
             {
-                 if (!whisperTarget || whisperTarget->GetTypeId() != TYPEID_PLAYER)
+                 if (!whisperTarget || !whisperTarget->IsPlayer())
                     return;
 
                 whisperTarget->ToPlayer()->GetSession()->SendPacket(data);

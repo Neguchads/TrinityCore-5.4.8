@@ -449,7 +449,6 @@ class BossAI : public ScriptedAI
         void JustDied(Unit* /*killer*/) override { _JustDied(); }
         void JustReachedHome() override { _JustReachedHome(); }
 
-
     protected:
         void _Reset();
         bool _JustEngagedWith();
@@ -642,11 +641,11 @@ struct customCreatureAI : public ScriptedAI
             case PRIORITY_CHANNELED:
                 if (Unit* target = me->GetVictim())
                     targetGUID = target->GetGUID();
-            
+
                 if (SpellInfo const* sInfo = sSpellMgr->GetSpellInfo(spell_id))
                 {
                     me->PrepareChanneledCast(me->GetOrientation(), spell_id);
-            
+
                     // Some cone spells working like cast + aura
                     uint32 delay = sInfo->GetMaxDuration() ? sInfo->GetMaxDuration() + sInfo->CastTimeEntry->CastTime + 500 : sInfo->CastTimeEntry->CastTime + 500;
 

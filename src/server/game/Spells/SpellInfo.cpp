@@ -1734,9 +1734,9 @@ SpellCastResult SpellInfo::CheckLocation(uint32 map_id, uint32 zone_id, uint32 a
         case 106108:
         case 105925:
         case 110070:
-        case 110069: 
-        case 110068: 
-        case 109075: 
+        case 110069:
+        case 110068:
+        case 109075:
         case 110080:
         case 110079:
         case 110078:
@@ -1754,7 +1754,7 @@ SpellCastResult SpellInfo::CheckLocation(uint32 map_id, uint32 zone_id, uint32 a
             if (player)
                 if (InstanceScript* pInstance = player->GetInstanceScript())
                     return (pInstance->GetBossState(0) == IN_PROGRESS) ? SPELL_CAST_OK : SPELL_FAILED_DONT_REPORT;
-            
+
             return (area_id == 5926 || area_id == 5923) ? SPELL_CAST_OK : SPELL_FAILED_REQUIRES_AREA;
         }
         case 105009: // Gift of Sargeras, Well of Eternity
@@ -1907,7 +1907,7 @@ SpellCastResult SpellInfo::CheckTarget(Unit const* caster, WorldObject const* ta
 
         if (caster != unitTarget)
         {
-            if (caster->GetTypeId() == TYPEID_PLAYER)
+            if (caster->IsPlayer())
             {
                 // Do not allow these spells to target creatures not tapped by us (Banish, Polymorph, many quest spells)
                 if (AttributesEx2 & SPELL_ATTR2_CANT_TARGET_TAPPED)
@@ -1924,7 +1924,7 @@ SpellCastResult SpellInfo::CheckTarget(Unit const* caster, WorldObject const* ta
 
                 if (AttributesCu & SPELL_ATTR0_CU_PICKPOCKET)
                 {
-                     if (unitTarget->GetTypeId() == TYPEID_PLAYER)
+                     if (unitTarget->IsPlayer())
                          return SPELL_FAILED_BAD_TARGETS;
                      else if ((unitTarget->GetCreatureTypeMask() & CREATURE_TYPEMASK_HUMANOID_OR_UNDEAD) == 0)
                          return SPELL_FAILED_TARGET_NO_POCKETS;
@@ -1945,7 +1945,7 @@ SpellCastResult SpellInfo::CheckTarget(Unit const* caster, WorldObject const* ta
                 // Not allow disarm unarmed player
                 if (Mechanic == MECHANIC_DISARM && IsDisarmSpell())
                 {
-                    if (unitTarget->GetTypeId() == TYPEID_PLAYER)
+                    if (unitTarget->IsPlayer())
                     {
                         Player const* player = unitTarget->ToPlayer();
                         if (!player->GetWeaponForAttack(BASE_ATTACK) || !player->IsUseEquipedWeapon(true))
@@ -1992,14 +1992,14 @@ SpellCastResult SpellInfo::CheckTarget(Unit const* caster, WorldObject const* ta
 
     if (!CheckTargetCreatureType(unitTarget))
     {
-        if (target->GetTypeId() == TYPEID_PLAYER)
+        if (target->IsPlayer())
             return SPELL_FAILED_TARGET_IS_PLAYER;
         else
             return SPELL_FAILED_BAD_TARGETS;
     }
 
     // check GM mode and GM invisibility - only for player casts (npc casts are controlled by AI) and negative spells
-    if (unitTarget != caster && (caster->IsControlledByPlayer() || !IsPositive()) && unitTarget->GetTypeId() == TYPEID_PLAYER)
+    if (unitTarget != caster && (caster->IsControlledByPlayer() || !IsPositive()) && unitTarget->IsPlayer())
     {
         if (!unitTarget->ToPlayer()->IsVisible())
             return SPELL_FAILED_BM_OR_INVISGOD;
@@ -2082,7 +2082,7 @@ SpellCastResult SpellInfo::CheckExplicitTarget(Unit const* caster, WorldObject c
 SpellCastResult SpellInfo::CheckVehicle(Unit const* caster) const
 {
     // All creatures should be able to cast as passengers freely, restriction and attribute are only for players
-    if (caster->GetTypeId() != TYPEID_PLAYER)
+    if (!caster->IsPlayer())
         return SPELL_CAST_OK;
 
     Vehicle* vehicle = caster->GetVehicle();
@@ -2168,7 +2168,7 @@ bool SpellInfo::CheckTargetCreatureType(Unit const* target) const
     if (SpellFamilyName == SPELLFAMILY_WARLOCK && GetCategory() == 1179)
     {
         // not allow cast at player
-        if (target->GetTypeId() == TYPEID_PLAYER)
+        if (target->IsPlayer())
             return false;
         else
             return true;
@@ -3379,7 +3379,7 @@ float SpellInfo::CalcRppmRate(Player const* caster, Item const* item) const
                             case 1: // Confirmed
                                 haste = 1.0f / caster->GetFloatValue(UNIT_FIELD_MOD_HASTE);
                                 break;
-                            case 2: // Probably. Not used 
+                            case 2: // Probably. Not used
                                 haste = 1.0f / caster->GetFloatValue(UNIT_FIELD_MOD_RANGED_HASTE);
                                 break;
                             case 3: // Confirmed

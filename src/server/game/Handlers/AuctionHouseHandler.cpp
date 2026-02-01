@@ -217,7 +217,7 @@ void WorldSession::SendAuctionOwnerNotification(AuctionEntry* auction)
 // not in 5.4.8
 // void WorldSession::SendAuctionRemovedNotification(uint32 auctionId, uint32 itemEntry, int32 randomPropertyId)
 // {
-//     WorldPacket data(SMSG_AUCTION_REMOVED_NOTIFICATION, (4+4+4)); 
+//     WorldPacket data(SMSG_AUCTION_REMOVED_NOTIFICATION, (4+4+4));
 //     data << uint32(auctionId);
 //     data << uint32(itemEntry);
 //     data << uint32(randomPropertyId);

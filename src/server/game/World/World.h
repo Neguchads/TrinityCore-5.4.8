@@ -250,11 +250,11 @@ enum WorldBoolConfigs
     CONFIG_BOOST_PROMOTION,
     CONFIG_WORD_FILTER_ENABLE,
     CONFIG_WOW_TOKEN,
-    CONFIG_BONUS_TIME_REWARD, 
-    CONFIG_DISABLE_RESTART,   
+    CONFIG_BONUS_TIME_REWARD,
+    CONFIG_DISABLE_RESTART,
 #ifdef ELUNA
-	CONFIG_BOOL_ELUNA_ENABLED,
-#endif 
+    CONFIG_BOOL_ELUNA_ENABLED,
+#endif
     CONFIG_LOAD_LOCALES,
     BOOL_CONFIG_VALUE_COUNT
 };
@@ -895,7 +895,6 @@ public:
     {
         return _storage[enumVal];
     }
-
 
 private:
     UnderlyingType _storage[Size];

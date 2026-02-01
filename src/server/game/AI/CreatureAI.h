@@ -104,7 +104,7 @@ class TC_GAME_API CreatureAI : public UnitAI
 
         bool CanSeeEvenInPassiveMode() { return m_canSeeEvenInPassiveMode; }
         void SetCanSeeEvenInPassiveMode(bool canSeeEvenInPassiveMode) { m_canSeeEvenInPassiveMode = canSeeEvenInPassiveMode; }
-        
+
         // Called in Creature::Update when deathstate = DEAD. Inherited classes may maniuplate the ability to respawn based on scripted events.
         virtual bool CanRespawn() { return true; }
 

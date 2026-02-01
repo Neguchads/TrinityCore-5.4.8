@@ -147,4 +147,3 @@ bool BattlegroundTV::SetupBattleground()
 
     return true;
 }
-

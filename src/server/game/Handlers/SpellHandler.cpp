@@ -686,7 +686,7 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
 {
     // ignore for remote control state (for player case)
     Unit* mover = _player->m_mover;
-    if (mover != _player && mover->GetTypeId() == TYPEID_PLAYER)
+    if (mover != _player && mover->IsPlayer())
     {
         recvPacket.rfinish(); // prevent spam at ignore packet
         return;
@@ -1039,7 +1039,7 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
         return;
     }
 
-    if (caster->GetTypeId() == TYPEID_PLAYER &&  caster->GetMap()->IsDungeon() && caster->GetMap()->IsChallengeDungeon() &&
+    if (caster->IsPlayer() &&  caster->GetMap()->IsDungeon() && caster->GetMap()->IsChallengeDungeon() &&
         caster->GetInstanceScript() && caster->GetInstanceScript()->IsChallengeModeStarted() &&
         (spellInfo->Id == 63645 || spellInfo->Id == 63644 || spellInfo->Targets & TARGET_FLAG_GLYPH_SLOT))
     {
@@ -1048,7 +1048,7 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
         return;
     }
 
-    if (caster->GetTypeId() == TYPEID_UNIT && !caster->ToCreature()->HasSpell(spellId))
+    if (caster->IsCreature() && !caster->ToCreature()->HasSpell(spellId))
     {
         // If the vehicle creature does not have the spell but it allows the passenger to cast own spells
         // change caster to player and let him cast
@@ -1065,7 +1065,7 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
     SpellCastTargets targets(caster, targetMask, targetGuid, itemTargetGuid, srcTransportGuid, destTransportGuid, srcPos, destPos, elevation, missileSpeed, targetString);
 
     // not have spell in spellbook
-    if (caster->GetTypeId() == TYPEID_PLAYER && !caster->ToPlayer()->HasActiveSpell(spellId) && !spellInfo->IsRaidMarker() &&
+    if (caster->IsPlayer() && !caster->ToPlayer()->HasActiveSpell(spellId) && !spellInfo->IsRaidMarker() &&
         spellId != 101603 && // Hack for Throw Totem, Echo of Baine
         spellId != 119393 && // Hack for Siege Explosive, General Pa'valak
         spellId != 123039 && // Hack for Player Throw Barrel, Commander Vo'jak
@@ -1360,7 +1360,7 @@ void WorldSession::HandleCancelChanneling(WorldPacket& recvData)
 
     // ignore for remote control state (for player case)
     Unit* mover = _player->m_mover;
-    if (mover != _player && mover->GetTypeId() == TYPEID_PLAYER)
+    if (mover != _player && mover->IsPlayer())
         return;
 
     mover->InterruptSpell(CURRENT_CHANNELED_SPELL);
@@ -1640,7 +1640,7 @@ void WorldSession::HandleMissileTrajectoryCollision(WorldPacket& recvPacket)
     uint8 castCount = recvPacket.read<uint8>();
     float y = recvPacket.read<float>();
     float x = recvPacket.read<float>();
-    uint32 spellId = recvPacket.read<uint32>();;
+    uint32 spellId = recvPacket.read<uint32>();
     casterGuid[5] = recvPacket.ReadBit();
     casterGuid[0] = recvPacket.ReadBit();
     casterGuid[2] = recvPacket.ReadBit();

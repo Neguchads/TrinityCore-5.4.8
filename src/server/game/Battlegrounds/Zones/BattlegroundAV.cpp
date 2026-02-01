@@ -1280,7 +1280,7 @@ bool BattlegroundAV::SetupBattleground()
             }
             else
             {
-                if (!AddObject(BG_AV_OBJECT_BURN_BUILDING_ALLIANCE+(i*10)+j, BG_AV_OBJECTID_FIRE, pos, 0, 0, 
+                if (!AddObject(BG_AV_OBJECT_BURN_BUILDING_ALLIANCE+(i*10)+j, BG_AV_OBJECTID_FIRE, pos, 0, 0,
                     std::sin(pos.GetOrientation() / 2), std::cos(pos.GetOrientation() / 2), RESPAWN_ONE_DAY))
                 {
                     TC_LOG_ERROR("bg.battleground", "BatteGroundAV: Failed to spawn some object Battleground not created!7.%i", i);

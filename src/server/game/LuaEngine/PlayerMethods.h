@@ -319,7 +319,7 @@ namespace LuaPlayer
     int GiveLevel(lua_State* L, Player* player);
 
     int GiveXP(lua_State* L, Player* player);
- 
+
     int IsGMVisible(lua_State* L, Player* player);
 
     int IsTaxiCheater(lua_State* L, Player* player);

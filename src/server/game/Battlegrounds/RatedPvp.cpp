@@ -986,5 +986,5 @@ void RatedPvpMgr::RewardSeason()
     // {
     //     if (!res)
     //         TC_LOG_ERROR("server", "RatedPvpMgr::RewardSeason - transaction failed!");
-    // });;
+    // });
 }

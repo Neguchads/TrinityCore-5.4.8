@@ -217,7 +217,6 @@ bool WaypointMovementGenerator<Creature>::GetResetPos(Creature*, float& x, float
     return true;
 }
 
-
 //----------------------------------------------------//
 
 uint32 FlightPathMovementGenerator::GetPathAtMapEnd() const

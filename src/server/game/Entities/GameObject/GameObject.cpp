@@ -433,7 +433,7 @@ void GameObject::Update(uint32 diff)
                     {
                         // splash bobber (bobber ready now)
                         Unit* caster = GetOwner();
-                        if (caster && caster->GetTypeId() == TYPEID_PLAYER)
+                        if (caster && caster->IsPlayer())
                         {
                             SetGoState(GO_STATE_ACTIVE);
                             SetUInt32Value(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_NODESPAWN);
@@ -486,7 +486,7 @@ void GameObject::Update(uint32 diff)
                         case GAMEOBJECT_TYPE_FISHINGNODE:   //  can't fish now
                         {
                             Unit* caster = GetOwner();
-                            if (caster && caster->GetTypeId() == TYPEID_PLAYER)
+                            if (caster && caster->IsPlayer())
                             {
                                 caster->ToPlayer()->RemoveGameObject(this, false);
 
@@ -616,7 +616,7 @@ void GameObject::Update(uint32 diff)
                         if (goInfo->trap.type == 1)
                             SetLootState(GO_JUST_DEACTIVATED);
 
-                        if (IsBattlegroundTrap && ok->GetTypeId() == TYPEID_PLAYER)
+                        if (IsBattlegroundTrap && ok->IsPlayer())
                         {
                             //Battleground gameobjects case
                             if (ok->ToPlayer()->InBattleground())
@@ -1322,7 +1322,7 @@ void GameObject::Use(Unit* user)
             return;
         case GAMEOBJECT_TYPE_QUESTGIVER:                    //2
         {
-            if (user->GetTypeId() != TYPEID_PLAYER)
+            if (!user->IsPlayer())
                 return;
 
             Player* player = user->ToPlayer();
@@ -1351,7 +1351,7 @@ void GameObject::Use(Unit* user)
             if (!info)
                 return;
 
-            if (user->GetTypeId() != TYPEID_PLAYER)
+            if (!user->IsPlayer())
                 return;
 
             if (ChairListSlots.empty())        // this is called once at first chair use to make list of available slots
@@ -1432,7 +1432,7 @@ void GameObject::Use(Unit* user)
         {
             GameObjectTemplate const* info = GetGOInfo();
 
-            if (user->GetTypeId() == TYPEID_PLAYER || user->IsVehicle())
+            if (user->IsPlayer() || user->IsVehicle())
             {
                 if (Player* player = user->GetCharmerOrOwnerPlayerOrPlayerItself())
                 {
@@ -1512,7 +1512,7 @@ void GameObject::Use(Unit* user)
             if (!info)
                 return;
 
-            if (user->GetTypeId() != TYPEID_PLAYER)
+            if (!user->IsPlayer())
                 return;
 
             Player* player = user->ToPlayer();
@@ -1610,7 +1610,7 @@ void GameObject::Use(Unit* user)
 
         case GAMEOBJECT_TYPE_SUMMONING_RITUAL:              //18
         {
-            if (user->GetTypeId() != TYPEID_PLAYER)
+            if (!user->IsPlayer())
                 return;
 
             Player* player = user->ToPlayer();
@@ -1625,7 +1625,7 @@ void GameObject::Use(Unit* user)
 
             if (owner)
             {
-                if (owner->GetTypeId() != TYPEID_PLAYER)
+                if (!owner->IsPlayer())
                     return;
 
                 // accept only use by player from same group as owner, excluding owner itself (unique use already added in spell effect)
@@ -1712,10 +1712,10 @@ void GameObject::Use(Unit* user)
             if (info->spellcaster.partyOnly)
             {
                 Unit* caster = GetOwner();
-                if (!caster || caster->GetTypeId() != TYPEID_PLAYER)
+                if (!caster || !caster->IsPlayer())
                     return;
 
-                if (user->GetTypeId() != TYPEID_PLAYER || !user->ToPlayer()->IsInSameRaidWith(caster->ToPlayer()))
+                if (!user->IsPlayer() || !user->ToPlayer()->IsInSameRaidWith(caster->ToPlayer()))
                     return;
             }
 
@@ -1733,7 +1733,7 @@ void GameObject::Use(Unit* user)
         {
             GameObjectTemplate const* info = GetGOInfo();
 
-            if (user->GetTypeId() != TYPEID_PLAYER)
+            if (!user->IsPlayer())
                 return;
 
             Player* player = user->ToPlayer();
@@ -1763,7 +1763,7 @@ void GameObject::Use(Unit* user)
         case GAMEOBJECT_TYPE_FLAGSTAND:                     // 24
         case GAMEOBJECT_TYPE_FLAGSTAND_2:                   // 36
         {
-            if (user->GetTypeId() != TYPEID_PLAYER)
+            if (!user->IsPlayer())
                 return;
 
             Player* player = user->ToPlayer();
@@ -1795,7 +1795,7 @@ void GameObject::Use(Unit* user)
 
         case GAMEOBJECT_TYPE_FISHINGHOLE:                   // 25
         {
-            if (user->GetTypeId() != TYPEID_PLAYER)
+            if (!user->IsPlayer())
                 return;
 
             Player* player = user->ToPlayer();
@@ -1809,7 +1809,7 @@ void GameObject::Use(Unit* user)
 
         case GAMEOBJECT_TYPE_FLAGDROP:                      // 26
         {
-            if (user->GetTypeId() != TYPEID_PLAYER)
+            if (!user->IsPlayer())
                 return;
 
             Player* player = user->ToPlayer();
@@ -1864,7 +1864,7 @@ void GameObject::Use(Unit* user)
             if (!info)
                 return;
 
-            if (user->GetTypeId() != TYPEID_PLAYER)
+            if (!user->IsPlayer())
                 return;
 
             Player* player = user->ToPlayer();
@@ -1891,7 +1891,7 @@ void GameObject::Use(Unit* user)
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
     if (!spellInfo)
     {
-        if (user->GetTypeId() != TYPEID_PLAYER || !sOutdoorPvPMgr->HandleCustomSpell(user->ToPlayer(), spellId, this))
+        if (!user->IsPlayer() || !sOutdoorPvPMgr->HandleCustomSpell(user->ToPlayer(), spellId, this))
             TC_LOG_ERROR("misc", "WORLD: unknown spell id %u at use action for gameobject (Entry: %u GoType: %u)", spellId, GetEntry(), GetGoType());
         else
             TC_LOG_DEBUG("outdoorpvp", "WORLD: %u non-dbc spell was handled by OutdoorPvP", spellId);
@@ -2592,7 +2592,7 @@ void GameObject::SetLootRecipient(Unit* unit)
         return;
     }
 
-    if (unit->GetTypeId() != TYPEID_PLAYER && !unit->IsVehicle())
+    if (!unit->IsPlayer() && !unit->IsVehicle())
         return;
 
     Player* player = unit->GetCharmerOrOwnerPlayerOrPlayerItself();

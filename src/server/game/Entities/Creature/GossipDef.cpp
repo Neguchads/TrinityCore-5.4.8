@@ -26,7 +26,7 @@
 GossipMenu::GossipMenu()
 {
     _menuId = 0;
-    _senderGUID.Clear(); 
+    _senderGUID.Clear();
 }
 
 GossipMenu::~GossipMenu()
@@ -1041,7 +1041,7 @@ void PlayerMenu::SendQuestGiverRequestItems(Quest const* quest, ObjectGuid npcGu
             ObjectMgr::GetLocaleString(questTemplateLocale->LogTitle, localeConstant, questTitle);
 
         if (QuestRequestItemsLocale const* questRequestItemsLocale = sObjectMgr->GetQuestRequestItemsLocale(quest->GetQuestId()))
-            ObjectMgr::GetLocaleString(questRequestItemsLocale->CompletionText, localeConstant, requestItemsText);        
+            ObjectMgr::GetLocaleString(questRequestItemsLocale->CompletionText, localeConstant, requestItemsText);
     }
 
     uint32 requiredMoney = 0;
@@ -1133,7 +1133,6 @@ void PlayerMenu::SendQuestGiverRequestItems(Quest const* quest, ObjectGuid npcGu
     data.WriteByteSeq(guid[5]);
     data.WriteByteSeq(guid[7]);
     data.WriteByteSeq(guid[6]);
-
 
     _session->SendPacket(&data);
 

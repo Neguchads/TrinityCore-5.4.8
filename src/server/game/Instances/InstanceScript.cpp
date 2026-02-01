@@ -396,7 +396,7 @@ uint32 InstanceScript::GetEncountersDoneCount(uint32 encounters)
     {
         // we need get id of last encounter that was done
         if (GetBossState(encounters) == DONE)
-            return encounters; 
+            return encounters;
 
         encounters--;
     }
@@ -714,7 +714,7 @@ void InstanceScript::DoStartMovie(uint32 movieId)
 void InstanceScript::DoKilledMonsterKredit(uint32 questId, uint32 entry, ObjectGuid guid/* =0*/)
 {
     Map::PlayerList const &plrList = instance->GetPlayers();
-    
+
     if (!plrList.isEmpty())
         for (Map::PlayerList::const_iterator i = plrList.begin(); i != plrList.end(); ++i)
             if (Player* player = i->GetSource())
@@ -817,7 +817,6 @@ void InstanceScript::UpdateEncounterState(EncounterCreditType type, uint32 credi
             }
         }
     }
-
 
     // Raid challenge is be rewarded for any raid boss, unlike dungeon/scenario
     if (dungeonId || instance->IsRaid())

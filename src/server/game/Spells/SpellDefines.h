@@ -178,7 +178,7 @@ enum TriggerCastFlags : uint32
     TRIGGERED_IGNORE_TARGET_CHECK                   = 0x00100000,   //!< Will ignore most target checks (mostly DBC target checks)
     TRIGGERED_IGNORE_CASTER_DEATH_STATE             = 0x00200000,
     TRIGGERED_FULL_DEBUG_MASK                       = 0xFFFFFFFF,
-    TRIGGERED_WITH_SPELL_START                      = (TRIGGERED_FULL_MASK & ~TRIGGERED_CAST_DIRECTLY)    
+    TRIGGERED_WITH_SPELL_START                      = (TRIGGERED_FULL_MASK & ~TRIGGERED_CAST_DIRECTLY)
 };
 
 enum SpellCastTargetFlags : uint32

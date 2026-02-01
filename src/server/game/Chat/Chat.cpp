@@ -822,7 +822,7 @@ size_t ChatHandler::BuildChatPacket(WorldPacket& data, ChatMsg chatType, Languag
     data.WriteByteSeq(groupGUID[5]);
     data.WriteByteSeq(groupGUID[7]);
 
-    // receiverGUIDPos = data.bitwpos(); 
+    // receiverGUIDPos = data.bitwpos();
 
     data.WriteByteSeq(receiverGUID[2]);
     data.WriteByteSeq(receiverGUID[5]);
@@ -876,7 +876,6 @@ size_t ChatHandler::BuildChatPacket(WorldPacket& data, ChatMsg chatType, Languag
 
     return BuildChatPacket(data, chatType, language, senderGUID, receiverGUID, message, chatTag, senderName, receiverName, achievementId, gmMessage, channelName, addonPrefix);
 }
-
 
 Player* ChatHandler::getSelectedPlayer()
 {

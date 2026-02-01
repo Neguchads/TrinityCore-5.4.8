@@ -159,7 +159,6 @@ bool Group::Create(Player* leader)
 
         CharacterDatabase.Execute(stmt);
 
-
         ASSERT(AddMember(leader)); // If the leader can't be added to a new group because it appears full, something is clearly wrong.
 
         if (!isLFGGroup())
@@ -939,7 +938,7 @@ void Group::SendLootRoll(ObjectGuid targetGuid, int32 rollNumber, uint8 rollType
     data.WriteBit(0);                   // 0x3C
     data.WriteBits(3, 2);               // 0x34
     data.WriteBit(lootedGuid[3]);
-    data.WriteBit(0);                   // 0x64 
+    data.WriteBit(0);                   // 0x64
     data.WriteBit(targetGuid[5]);
     data.WriteBits(3, 3);               // 0x38
     data.WriteBit(targetGuid[4]);
@@ -1229,7 +1228,7 @@ void Group::SendLooter(Creature* creature, Player* pLooter)
     data.WriteByteSeq(creatureGuid[0]);
     data.WriteByteSeq(creatureGuid[7]);
     data.WriteByteSeq(creatureGuid[4]);
-    
+
     BroadcastPacket(&data, false);
 }
 
@@ -2639,7 +2638,7 @@ bool Group::InCombatToInstance(uint32 instanceId)
         Player* player = itr->GetSource();
         if (player && !player->getAttackers().empty() && player->GetInstanceId() == instanceId && (player->GetMap()->IsRaidOrHeroicDungeon()))
             for (std::set<Unit*>::const_iterator i = player->getAttackers().begin(); i != player->getAttackers().end(); ++i)
-                if ((*i) && (*i)->GetTypeId() == TYPEID_UNIT && (*i)->ToCreature()->GetCreatureTemplate()->flags_extra & CREATURE_FLAG_EXTRA_INSTANCE_BIND)
+                if ((*i) && (*i)->IsCreature() && (*i)->ToCreature()->GetCreatureTemplate()->flags_extra & CREATURE_FLAG_EXTRA_INSTANCE_BIND)
                     return true;
     }
     return false;
@@ -2719,7 +2718,6 @@ void Group::ResetInstances(uint8 method, bool isRaid, Player* SendMsgTo)
 
                 CharacterDatabase.Execute(stmt);
             }
-
 
             // i don't know for sure if hash_map iterators
             m_boundInstances[diff].erase(itr);

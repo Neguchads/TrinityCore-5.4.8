@@ -79,7 +79,7 @@ bool PointMovementGenerator<T>::DoUpdate(T* unit, uint32 /*diff*/)
     }
 
     bool done = unit->movespline->Finalized();
-    if (unit->GetTypeId() == TYPEID_UNIT && done)
+    if (unit->IsCreature() && done)
         MovementInform(unit);
 
     return !done;
@@ -129,7 +129,7 @@ bool EffectMovementGenerator::Update(Unit* unit, uint32)
 {
     bool done = unit->movespline->Finalized();
 
-    if (unit->GetTypeId() == TYPEID_UNIT && done)
+    if (unit->IsCreature() && done)
         if (unit->ToCreature()->AI())
             unit->ToCreature()->AI()->MovementInform(EFFECT_MOTION_TYPE, m_Id);
 
@@ -144,7 +144,7 @@ void EffectMovementGenerator::Initialize(Unit* unit)
 
 void EffectMovementGenerator::Finalize(Unit* unit)
 {
-    if (unit->GetTypeId() != TYPEID_UNIT)
+    if (!unit->IsCreature())
         return;
 
     // Need restore previous movement since we have no proper states system

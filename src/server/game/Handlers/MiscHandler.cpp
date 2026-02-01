@@ -168,7 +168,7 @@ void WorldSession::HandleGossipSelectOptionOpcode(WorldPacket& recvData)
         {
             TC_LOG_DEBUG("network", "WORLD: HandleGossipSelectOptionOpcode - %u not found.", guid.GetCounter());
             return;
-        }      
+        }
     }
     else
     {
@@ -200,7 +200,7 @@ void WorldSession::HandleGossipSelectOptionOpcode(WorldPacket& recvData)
             }
             // if (!unit->AI()->OnGossipSelectCode(_player, menuId, gossipListId, code.c_str())) // hack, add to support ScriptAI
             // {
-            //     _player->OnGossipSelect(unit, gossipListId, menuId);  
+            //     _player->OnGossipSelect(unit, gossipListId, menuId);
             // }
         }
         else if (go)
@@ -223,7 +223,7 @@ void WorldSession::HandleGossipSelectOptionOpcode(WorldPacket& recvData)
         {
             if (!sScriptMgr->OnGossipSelect(_player, unit, _player->PlayerTalkClass->GetGossipOptionSender(gossipListId), _player->PlayerTalkClass->GetGossipOptionAction(gossipListId)) && !unit->AI()->OnGossipSelect(_player, menuId, gossipListId))
             {
-                 _player->OnGossipSelect(unit, gossipListId, menuId);   
+                 _player->OnGossipSelect(unit, gossipListId, menuId);
             }
         }
         else if (go)
@@ -659,7 +659,7 @@ void WorldSession::HandleTogglePvP(WorldPackets::Misc::TogglePvP& togglePvP)
     {
         GetPlayer()->ToggleFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_IN_PVP);
     }
-    
+
     GetPlayer()->UpdatePvP(GetPlayer()->HasFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_IN_PVP));
 }
 
@@ -694,7 +694,7 @@ void WorldSession::HandleRequestCemeteryList(WorldPacket& /*recvPacket*/)
     GraveYardContainer::const_iterator it;
     std::pair<GraveYardContainer::const_iterator, GraveYardContainer::const_iterator> range;
     range = sObjectMgr->GraveYardStore.equal_range(zoneId);
-        
+
     for (it = range.first; it != range.second && GraveyardIds.size() < 16; ++it) // client max
     {
         if (it->second.team == 0 || it->second.team == team)
@@ -850,8 +850,6 @@ void WorldSession::HandleAddFriendOpcode(WorldPacket& recvData)
         TC_LOG_DEBUG("network", "WORLD: Sent (SMSG_FRIEND_STATUS)");
 
     }));
-
-
 
 }
 
@@ -1393,7 +1391,7 @@ void WorldSession::HandleRequestAccountData(WorldPacket& recvData)
     data.WriteByteSeq(guid[6]);
     data.WriteByteSeq(guid[2]);
     data << uint32(adata->Time); // unix time
-    
+
     SendPacket(&data);
 }
 
@@ -1443,7 +1441,7 @@ void WorldSession::HandleSetActionButtonOpcode(WorldPacket& recvData)
 void WorldSession::HandleCompleteCinematic(WorldPackets::Misc::CompleteCinematic& /*packet*/)
 {
     // If player has sight bound to visual waypoint NPC we should remove it
-    GetPlayer()->GetCinematicMgr()->EndCinematic();    
+    GetPlayer()->GetCinematicMgr()->EndCinematic();
 }
 
 void WorldSession::HandleNextCinematicCamera(WorldPackets::Misc::NextCinematicCamera& /*packet*/)
@@ -2444,11 +2442,11 @@ void WorldSession::SendBroadcastTextDb2Reply(uint32 entry, ByteBuffer& buffer)
     buffer << uint32(!bct ? 0 : bct->LanguageID);
     buffer << uint16(Text_0.length());
     if (Text_0.length())
-        buffer << std::string(Text_0);    
+        buffer << std::string(Text_0);
     buffer << uint16(Text_1.length());
     if (Text_1.length())
-        buffer << std::string(Text_1); 
-    buffer << uint32(!bct ? 0 : bct->EmoteId1);  
+        buffer << std::string(Text_1);
+    buffer << uint32(!bct ? 0 : bct->EmoteId1);
     buffer << uint32(!bct ? 0 : bct->EmoteId2);
     buffer << uint32(!bct ? 0 : bct->EmoteId3);
     buffer << uint32(!bct ? 0 : bct->EmoteDelay1);
@@ -2456,7 +2454,7 @@ void WorldSession::SendBroadcastTextDb2Reply(uint32 entry, ByteBuffer& buffer)
     buffer << uint32(!bct ? 0 : bct->EmoteDelay3);
     buffer << uint32(!bct ? 0 : bct->SoundEntriesID); // Sound Id
     buffer << uint32(0); // UnkMoP1
-    buffer << uint32(0); // UnkMoP2    
+    buffer << uint32(0); // UnkMoP2
 }
 
 void WorldSession::HandleUpdateMissileTrajectory(WorldPacket& recvPacket)
@@ -2739,7 +2737,7 @@ void WorldSession::HandleLogStreamingError(WorldPacket& recvData)
 
     uint32 lenght = recvData.ReadBits(9);
     std::string missingData = recvData.ReadString(lenght);
-    
+
     TC_LOG_DEBUG("network", "CMSG_LOG_STREAMING_ERROR: cant't download data: %s", missingData.c_str());
 }
 

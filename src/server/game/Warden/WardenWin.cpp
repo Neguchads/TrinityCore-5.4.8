@@ -188,7 +188,7 @@ void WardenWin::RequestData(WardenRequestContext* context)
 
         wd = sWardenCheckMgr->GetWardenDataById(id);
         ws = sWardenCheckMgr->GetWardenResultById(id);
- 
+
         if (!wd)
             continue;
 
@@ -238,7 +238,7 @@ void WardenWin::RequestData(WardenRequestContext* context)
 
         if (!wd)
             continue;
- 
+
         // Add the id to the list sent in this cycle
         _currentChecks.push_back(std::make_pair(*wd, ws ? *ws : WardenCheckResult()));
 
@@ -307,7 +307,7 @@ void WardenWin::RequestData(WardenRequestContext* context)
                 std::array<uint8, 4> seed = Trinity::Crypto::GetRandomBytes<4>();
                 buff.append(seed);
                 buff.append(Trinity::Crypto::HMAC_SHA1::GetDigestOf(seed, wd->Str));
-                break;                
+                break;
             }
             /*case PROC_CHECK:
             {
@@ -372,7 +372,6 @@ void WardenWin::HandleData(ByteBuffer &buff)
         buff.rpos(buff.wpos());
         return;
     }
-
 
     if (!IsValidCheckSum(checksum, buff.contents() + buff.rpos(), length))
     {
@@ -631,7 +630,7 @@ void WardenWin::HandleData(ByteBuffer &buff)
 
     // Now report about the check the penalty is given for
     if (WardenCheck* check = checkFailed ? sWardenCheckMgr->GetWardenDataById(checkFailed) : nullptr)
-    {       
+    {
         std::string penalty = Penalty(check);
         TC_LOG_WARN("warden", "I-Core GUARD: Player %s (guid: %u, account: %u, map: %d) failed Guard check %u. Action: %s",
             _session->GetPlayerInfo().c_str(), _session->GetGuidLow(), _session->GetAccountId(), _session->GetPlayer() ? _session->GetPlayer()->GetMapId() : -1, checkFailed, penalty.c_str());

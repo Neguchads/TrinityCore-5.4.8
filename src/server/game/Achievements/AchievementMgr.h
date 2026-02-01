@@ -57,7 +57,6 @@ typedef std::vector<AchievementEntry const*>    AchievementEntryList;
 typedef std::vector<CriteriaTreeNode const*>    CriteriaTreeList;
 typedef std::vector<ModifierTreeNode const*>    ModifierTreeList;
 
-
 typedef std::unordered_map<uint32, AchievementEntryList>         AchievementListByReferencedId;
 typedef std::unordered_map<uint32, AchievementEntry const*>      AchievementEntryByCriteriaTree;
 typedef std::unordered_map<uint32, ModifierTreeList>             ModifierTreeEntryByTreeId;
@@ -496,7 +495,6 @@ class AchievementGlobalMgr
             auto it = m_criteriaTreeByCriteria.find(criteriaId);
             return it != m_criteriaTreeByCriteria.end() ? &it->second : nullptr;
         }
-
 
         AchievementEntryList const* GetAchievementByReferencedId(uint32 id) const
         {

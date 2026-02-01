@@ -21,7 +21,6 @@
 #include "Player.h"
 #include <sstream>
 
-
 PlayerTaxi::PlayerTaxi()
 {
     memset(m_taximask, 0, sizeof(m_taximask));

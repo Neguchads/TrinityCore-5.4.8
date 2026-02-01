@@ -51,7 +51,7 @@ enum PathType
     PATHFIND_SHORT             = 0x20,   // path is longer or equal to its limited path length
     PATHFIND_FARFROMPOLY_START = 0x40,   // start position is far from the mmap poligon
     PATHFIND_FARFROMPOLY_END   = 0x80,   // end positions is far from the mmap poligon
-    PATHFIND_FARFROMPOLY       = PATHFIND_FARFROMPOLY_START | PATHFIND_FARFROMPOLY_END, // start or end positions are far from the mmap poligon  
+    PATHFIND_FARFROMPOLY       = PATHFIND_FARFROMPOLY_START | PATHFIND_FARFROMPOLY_END, // start or end positions are far from the mmap poligon
 };
 
 class TC_GAME_API PathGenerator

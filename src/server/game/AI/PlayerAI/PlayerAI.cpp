@@ -718,7 +718,7 @@ PlayerAI::TargetedSpell SimpleCharmedPlayerAI::SelectAppropriateCastForSpec()
             VerifyAndPushSpellCast(spells, SPELL_HAND_OF_PROTECTION, TARGET_SELF, 1);
             if (Unit* charmer = ObjectAccessor::GetUnit(*me, me->GetCharmerGUID()))
             {
-                if (charmer->GetTypeId() == TYPEID_UNIT && (charmer->ToCreature()->IsDungeonBoss() || charmer->ToCreature()->isWorldBoss()))
+                if (charmer->IsCreature() && (charmer->ToCreature()->IsDungeonBoss() || charmer->ToCreature()->isWorldBoss()))
                     VerifyAndPushSpellCast(spells, SPELL_HAND_OF_SACRIFICE, charmer, 10);
                 else
                     VerifyAndPushSpellCast(spells, SPELL_HAND_OF_PROTECTION, charmer, 3);
@@ -1163,7 +1163,7 @@ void SimpleCharmedPlayerAI::UpdateAI(uint32 const diff)
     if (!charmer || !charmer->IsAlive())
         return;
 
-    if (charmer->GetTypeId() == TYPEID_PLAYER)
+    if (charmer->IsPlayer())
     {
         // Remove outdated movement generators
         MovementGeneratorType mgType = me->GetMotionMaster()->GetMotionSlotType(MOTION_SLOT_ACTIVE);
@@ -1182,7 +1182,7 @@ void SimpleCharmedPlayerAI::UpdateAI(uint32 const diff)
     }
 
     //kill self if charm aura has infinite duration
-    if (charmer->GetTypeId() == TYPEID_UNIT && charmer->ToCreature()->IsInEvadeMode())
+    if (charmer->IsCreature() && charmer->ToCreature()->IsInEvadeMode())
     {
         Player::AuraEffectList const& auras = me->GetAuraEffectsByType(SPELL_AURA_MOD_CHARM);
         for (Player::AuraEffectList::const_iterator iter = auras.begin(); iter != auras.end(); ++iter)
@@ -1196,7 +1196,7 @@ void SimpleCharmedPlayerAI::UpdateAI(uint32 const diff)
     if (me->HasUnitState(UNIT_STATE_LOST_CONTROL))
         return;
 
-    if (charmer->GetTypeId() == TYPEID_UNIT && !charmer->IsInCombat())
+    if (charmer->IsCreature() && !charmer->IsInCombat())
     {
         // If the player is charmed by a creature which is now out of combat - here is where we return to charmer and resume following them.
         HandleReturn();

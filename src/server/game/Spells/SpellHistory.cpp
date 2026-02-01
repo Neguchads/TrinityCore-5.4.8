@@ -45,7 +45,7 @@ void SpellHistory::LoadFromDB(PreparedQueryResult&& result, PreparedQueryResult&
             if (!spellInfo)
             {
                 TC_LOG_ERROR("entities.player.loading", "%s %u has unknown spell %u in `character_spell_cooldown`, skipping.",
-                    _owner->GetTypeId() == TYPEID_PLAYER ? "Player" : "Pet", _owner->GetGUID().GetCounter(), spellId);
+                    _owner->IsPlayer() ? "Player" : "Pet", _owner->GetGUID().GetCounter(), spellId);
                 continue;
             }
 
@@ -78,7 +78,7 @@ void SpellHistory::LoadFromDB(PreparedQueryResult&& result, PreparedQueryResult&
             auto& chargeData = _spellCharges[category];
             chargeData.BaseRegenTime = Milliseconds(catergoryEntry->ChargeRegenTime);
             chargeData.ConsumedCharges = fields[2].GetUInt32();
-            chargeData.CurrentResetTime = Milliseconds(fields[1].GetUInt64());;
+            chargeData.CurrentResetTime = Milliseconds(fields[1].GetUInt64());
 
         } while (chargesResult->NextRow());
 
@@ -187,7 +187,6 @@ bool SpellHistory::IsReady(SpellInfo const* spellInfo, uint32 itemId, bool ignor
     if (categories && categories->ChargesCategory && !HasCharge(categories->ChargesCategory))
         return false;
 
-
     if (!ignoreCategoryCooldown)
     {
         auto cooldown = GetCooldownInfo(spellInfo, itemId);
@@ -279,7 +278,7 @@ void SpellHistory::StartCooldown(SpellInfo const* spellInfo, uint32 itemId, Spel
     auto cooldown = GetCooldownInfo(spellInfo, itemId);
 
     auto curTime = TimeValue::Now();
-    
+
     auto categories = spellInfo->GetSpellCategories();
     if (categories && categories->ChargesCategory != 0)
     {
@@ -448,7 +447,7 @@ void SpellHistory::RemoveCooldown(uint32 spellId, bool send)
 
 void SpellHistory::RemoveArenaSpellCooldowns(bool removeActivePetCooldowns)
 {
-    ASSERT(_owner->GetTypeId() == TYPEID_PLAYER);
+    ASSERT(_owner->IsPlayer());
 
     // remove cooldowns on spells that have <= 10 min CD
     auto it = _cooldowns.begin();
@@ -796,7 +795,7 @@ void SpellHistory::UpdateCharges()
 
 void SpellHistory::SendSpellHistory() const
 {
-    ASSERT(_owner->GetTypeId() == TYPEID_PLAYER);
+    ASSERT(_owner->IsPlayer());
 
     auto now = TimeValue::Now();
 
@@ -844,7 +843,7 @@ void SpellHistory::OnEncounterStart()
 
 Player* SpellHistory::GetPlayer() const
 {
-    if (_owner->GetTypeId() == TYPEID_PLAYER)
+    if (_owner->IsPlayer())
         return _owner->ToPlayer();
 
     if (_owner->HasUnitTypeMask(UNIT_MASK_CONTROLABLE_GUARDIAN))
@@ -942,7 +941,7 @@ SpellHistory::CooldownInfo SpellHistory::GetCooldownInfo(SpellInfo const* spellI
             }
         }
     }
-    
+
     return { spellInfo->RecoveryTime, spellInfo->GetCategory(), spellInfo->CategoryRecoveryTime };
 }
 

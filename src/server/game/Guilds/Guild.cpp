@@ -821,7 +821,7 @@ bool Guild::Member::LoadFromDB(Field* fields)
 
     m_totalActivity = 0;
     m_weekActivity = 0;
-    
+
     if (!CheckStats())
         return false;
 
@@ -2420,7 +2420,7 @@ void Guild::HandleSwitchRank(WorldSession* session, uint32 targetIndex, bool up)
             return;
         destIndex = targetIndex - 1;
     }
-    else 
+    else
     {
         if (targetIndex + 1 == m_ranks.size())
             return;

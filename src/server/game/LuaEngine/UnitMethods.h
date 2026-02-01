@@ -361,7 +361,7 @@ namespace LuaUnit
         uint32 sheathed = luaL_checkunsigned(L, 1);
         if (sheathed >= MAX_SHEATH_STATE)
             return 0;
-        
+
         unit->SetSheath((SheathState)sheathed);
         return 0;
     }
@@ -1096,7 +1096,7 @@ namespace LuaUnit
             {
             case HighGuid::Unit:
             case HighGuid::Vehicle:
-                target = unit->GetMap()->GetCreature(receiver);;
+                target = unit->GetMap()->GetCreature(receiver);
                 break;
             case HighGuid::Pet:
                 target = unit->GetMap()->GetPet(receiver);
@@ -1134,7 +1134,6 @@ namespace LuaUnit
         const char* msg = luaL_checkstring(L, 1);
         ObjectGuid receiver(uint64(luaL_checknumber(L, 2)));
         bool bossEmote = luaL_optbool(L, 3, false);
-
 
         WorldObject* target = nullptr;
         if (receiver)
@@ -1265,7 +1264,6 @@ namespace LuaUnit
             }
         }
 
-
         if (std::string(msg).length() > 0)
             unit->Yell(msg, Language(language), target);
         return 0;
@@ -1293,7 +1291,7 @@ namespace LuaUnit
             targets.SetUnitTarget(unitTarget);
         else if (GameObject* goTarget = obj->ToGameObject())
             targets.SetGOTarget(goTarget);
-        else if (obj->GetTypeId() == TYPEID_ITEM)
+        else if (obj->IsItem())
         {
             if (Item* itemTarget = (Item*)obj)
                 targets.SetItemTarget(itemTarget);

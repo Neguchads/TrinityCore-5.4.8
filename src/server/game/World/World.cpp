@@ -319,7 +319,7 @@ void World::AddSession_(WorldSession* s)
             // prevent decrease sessions count if session queued
             if (RemoveQueuedPlayer(old->second))
                 decrease_session = false;
-            
+
             // there should be no offline session if current one is logged onto a character
             if (oldSession->HandleSocketClosed())
             {
@@ -1397,13 +1397,13 @@ void World::LoadConfigSettings(bool reload)
 
     // Max instances per hour
     m_int_configs[CONFIG_MAX_INSTANCES_PER_HOUR] = sConfigMgr->GetIntDefault("AccountInstancesPerHour", 5);
-	
+
    //Server restart in hour
-	m_int_configs[CONFIG_AUTO_SERVER_RESTART_HOUR] = sConfigMgr->GetIntDefault("Server.Auto.RestartHour", 4);
-	if (m_int_configs[CONFIG_AUTO_SERVER_RESTART_HOUR] > 23)
-	{
-		m_int_configs[CONFIG_AUTO_SERVER_RESTART_HOUR] = 4;
-	}
+    m_int_configs[CONFIG_AUTO_SERVER_RESTART_HOUR] = sConfigMgr->GetIntDefault("Server.Auto.RestartHour", 4);
+    if (m_int_configs[CONFIG_AUTO_SERVER_RESTART_HOUR] > 23)
+    {
+        m_int_configs[CONFIG_AUTO_SERVER_RESTART_HOUR] = 4;
+    }
 
     // Anounce reset of instance to whole party
     m_bool_configs[CONFIG_INSTANCES_RESET_ANNOUNCE] = sConfigMgr->GetBoolDefault("InstancesResetAnnounce", false);
@@ -1450,9 +1450,9 @@ void World::LoadConfigSettings(bool reload)
     m_float_configs[CONFIG_STATS_LIMITS_PARRY] = sConfigMgr->GetFloatDefault("Stats.Limits.Parry", 95.0f);
     m_float_configs[CONFIG_STATS_LIMITS_BLOCK] = sConfigMgr->GetFloatDefault("Stats.Limits.Block", 95.0f);
     m_float_configs[CONFIG_STATS_LIMITS_CRIT] = sConfigMgr->GetFloatDefault("Stats.Limits.Crit", 95.0f);
-	
-    //Restart 
-	m_bool_configs[CONFIG_DISABLE_RESTART] = sConfigMgr->GetBoolDefault("DisableRestart", false);
+
+    //Restart
+    m_bool_configs[CONFIG_DISABLE_RESTART] = sConfigMgr->GetBoolDefault("DisableRestart", false);
 
     // Wow Token
     m_bool_configs[CONFIG_WOW_TOKEN] = sConfigMgr->GetBoolDefault("Wow.Token", false);
@@ -1487,7 +1487,6 @@ void World::LoadConfigSettings(bool reload)
     m_bool_configs[CONFIG_ALLOW_TWO_SIDE_INTERACTION_CHAT]  = sConfigMgr->GetBoolDefault("AllowTwoSide.Interaction.Chat", false);
     m_bool_configs[CONFIG_ALLOW_TWO_SIDE_INTERACTION_LFG]   = sConfigMgr->GetBoolDefault("AllowTwoSide.Interaction.DungeonFinder", false);
 
-
     m_bool_configs[CONFIG_TRANSPORT_DISABLE_MAPOBJ_PRESPAWN] = sConfigMgr->GetBoolDefault("Transport.DisableMapObjPrespawn", false);
     m_bool_configs[CONFIG_TRANSPORT_DISABLE_LOCAL_PRESPAWN] = sConfigMgr->GetBoolDefault("Transport.DisableLocalPrespawn", false);
     m_bool_configs[CONFIG_TRANSPORT_PREFER_SERVER_WORLD_POSITION] = sConfigMgr->GetBoolDefault("Transport.PreferServerWorldPosition", true);
@@ -1512,7 +1511,6 @@ void World::LoadConfigSettings(bool reload)
 
     m_int_configs[CONFIG_XP_KILL_LEVEL_DIFFERENCE] = sConfigMgr->GetIntDefault("XP.Kill.Difference", 10);
     m_int_configs[CONFIG_XP_GATHER_LEVEL_DIFFERENCE] = sConfigMgr->GetIntDefault("XP.Gather.Difference", 10);
-
 
     m_float_configs[CONFIG_PVP_RESILIENCE_90] = sConfigMgr->GetFloatDefault("PvP.Resilience.Value", 44.0f);
     m_float_configs[CONFIG_PVP_RESILIENCE_BELOW_90] = 40.0f;
@@ -1568,9 +1566,9 @@ void World::LoadConfigSettings(bool reload)
 
     m_bool_configs[CONFIG_BOOST_PROMOTION] = sConfigMgr->GetBoolDefault("BoostPromotion.Enabled", false);
 #ifdef ELUNA
-	//eluna
-	m_bool_configs[CONFIG_BOOL_ELUNA_ENABLED] = sConfigMgr->GetBoolDefault("Eluna.Enabled", true);
-#endif    
+    //eluna
+    m_bool_configs[CONFIG_BOOL_ELUNA_ENABLED] = sConfigMgr->GetBoolDefault("Eluna.Enabled", true);
+#endif
     // Loading of Locales
     m_bool_configs[CONFIG_LOAD_LOCALES] = sConfigMgr->GetBoolDefault("Load.Locales", true);
     // call ScriptMgr if we're reloading the configuration
@@ -1831,7 +1829,7 @@ void World::SetInitialWorldSettings()
     vmmgr2->InitializeThreadUnsafe(mapIds);
 
     MMAP::MMapManager* mmmgr = MMAP::MMapFactory::createOrGetMMapManager();
-    mmmgr->InitializeThreadUnsafe(mapIds);    
+    mmmgr->InitializeThreadUnsafe(mapIds);
 
     TC_LOG_INFO("server.loading", "Loading SpellInfo store...");
     sSpellMgr->LoadSpellInfoStore();
@@ -2505,12 +2503,12 @@ void World::SetInitialWorldSettings()
     uint32 startupDuration = GetMSTimeDiffToNow(startupBegin);
 
 #ifdef ELUNA
-	if (sWorld->getBoolConfig(CONFIG_BOOL_ELUNA_ENABLED))
-	{
-		///- Initialize Lua Engine
-		TC_LOG_INFO("server.loading", ">> Initialize Eluna Lua Engine...");
-		StartEluna(false);
-	}
+    if (sWorld->getBoolConfig(CONFIG_BOOL_ELUNA_ENABLED))
+    {
+        ///- Initialize Lua Engine
+        TC_LOG_INFO("server.loading", ">> Initialize Eluna Lua Engine...");
+        StartEluna(false);
+    }
 
 #endif
 
@@ -4228,7 +4226,6 @@ void World::UpdatePhaseDefinitions()
 #define timezone _timezone
 #endif
 
-
 // New AutoBroadcast scheduling system
 void AutoBroadcastEntry::ScheduleData::Part::Set(std::string dbData)
 {
@@ -4526,33 +4523,33 @@ float World::getRate(Rates rate, WorldSession* session) const
 
 void World::InitServerAutoRestartTime()
 {
-	time_t serverRestartTime = uint64(sWorld->getWorldState(WS_AUTO_SERVER_RESTART_TIME));
-	if (!serverRestartTime)
-		m_NextServerRestart = time_t(time(nullptr));         // game time not yet init
+    time_t serverRestartTime = uint64(sWorld->getWorldState(WS_AUTO_SERVER_RESTART_TIME));
+    if (!serverRestartTime)
+        m_NextServerRestart = time_t(time(nullptr));         // game time not yet init
 
-	// generate time by config
-	time_t curTime = time(nullptr);
-	tm localTm;
-	localtime_r(&curTime, &localTm);
-	localTm.tm_hour = getIntConfig(CONFIG_AUTO_SERVER_RESTART_HOUR);
-	localTm.tm_min = 0;
-	localTm.tm_sec = 0;
+    // generate time by config
+    time_t curTime = time(nullptr);
+    tm localTm;
+    localtime_r(&curTime, &localTm);
+    localTm.tm_hour = getIntConfig(CONFIG_AUTO_SERVER_RESTART_HOUR);
+    localTm.tm_min = 0;
+    localTm.tm_sec = 0;
 
-	// current day reset time
-	time_t nextDayRestartTime = mktime(&localTm);
+    // current day reset time
+    time_t nextDayRestartTime = mktime(&localTm);
 
-	// next reset time before current moment
-	if (curTime >= nextDayRestartTime)
-		nextDayRestartTime += DAY;
+    // next reset time before current moment
+    if (curTime >= nextDayRestartTime)
+        nextDayRestartTime += DAY;
 
-	// normalize reset time
-	m_NextServerRestart = serverRestartTime < curTime ? nextDayRestartTime - DAY : nextDayRestartTime;
+    // normalize reset time
+    m_NextServerRestart = serverRestartTime < curTime ? nextDayRestartTime - DAY : nextDayRestartTime;
 
-	if (sWorld->getBoolConfig(CONFIG_DISABLE_RESTART))
-		m_NextServerRestart = time_t(m_NextServerRestart + DAY);
+    if (sWorld->getBoolConfig(CONFIG_DISABLE_RESTART))
+        m_NextServerRestart = time_t(m_NextServerRestart + DAY);
 
-	if (!serverRestartTime)
-		sWorld->setWorldState(WS_AUTO_SERVER_RESTART_TIME, uint64(m_NextServerRestart));
+    if (!serverRestartTime)
+        sWorld->setWorldState(WS_AUTO_SERVER_RESTART_TIME, uint64(m_NextServerRestart));
 }
 
 void World::RemoveOldCorpses()
@@ -4561,4 +4558,3 @@ void World::RemoveOldCorpses()
 }
 
 Realm realm;
-

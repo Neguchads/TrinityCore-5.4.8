@@ -86,7 +86,7 @@ void BattlePetSpawnMgr::Initialise()
             if (m_battlePetMapPools[mapId][zoneId].m_spawnTemplates[i].Entry == npcEntry)
             {
                 duplicate = true;
-                break;;
+                break;
             }
         }
 

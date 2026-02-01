@@ -327,7 +327,7 @@ void WorldSession::HandleCreatureQueryOpcode(WorldPacket& recvData)
         data.WriteBits(0, 11);
 
         for (int i = 0; i < 4; i++)
-        {            
+        {
             data.WriteBits(i == 0 ? Name.length() + 1 : 0, 11);
             data.WriteBits(0, 11);
         }
@@ -552,9 +552,9 @@ void WorldSession::HandleNpcTextQueryOpcode(WorldPacket& recvData)
             data << float(0);
 
         data << uint32(1);
-                            
+
         for (int i = 0; i < MAX_GOSSIP_TEXT_OPTIONS - 1; i++)
-            data << uint32(0); 
+            data << uint32(0);
     }
     else
     {
@@ -562,7 +562,7 @@ void WorldSession::HandleNpcTextQueryOpcode(WorldPacket& recvData)
         for (int i = 0; i < MAX_GOSSIP_TEXT_OPTIONS - 1; i++)
             data << float(0);
 
-        //data << textID;    // should be a broadcast id   
+        //data << textID;    // should be a broadcast id
         if (pGossip->Options[0].BroadcastTextID > 0)
         {
             data << pGossip->Options[0].BroadcastTextID;
@@ -571,9 +571,9 @@ void WorldSession::HandleNpcTextQueryOpcode(WorldPacket& recvData)
         {
             data << uint32(1);
         }
-                            
+
         for (int i = 0; i < MAX_GOSSIP_TEXT_OPTIONS - 1; i++)
-            data << uint32(0); 
+            data << uint32(0);
 
     }
 

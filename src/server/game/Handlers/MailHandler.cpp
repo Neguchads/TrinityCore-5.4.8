@@ -749,7 +749,6 @@ void WorldSession::HandleMailTakeMoney(WorldPacket& recvData)
         }
     }
 
-
     m->money = 0;
     m->state = MAIL_STATE_CHANGED;
     player->m_mailsUpdated = true;
@@ -1040,7 +1039,7 @@ void WorldSession::HandleQueryNextMailTime(WorldPacket& /*recvData*/)
 
     if (_player->unReadMails > 0)
     {
-        ByteBuffer dataBuffer; 
+        ByteBuffer dataBuffer;
         uint8 count = 0;
         time_t now = time(NULL);
         bool hasVirtualRealmAddress = false, hasNativeRealmAddress = false;

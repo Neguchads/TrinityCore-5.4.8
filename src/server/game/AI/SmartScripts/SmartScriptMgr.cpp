@@ -1281,7 +1281,7 @@ bool SmartAIMgr::IsEventValid(SmartScriptHolder& e)
 //     return true;
 // }
 
-bool SmartAIMgr::IsTextValid(SmartScriptHolder const& e, uint32 id) 
+bool SmartAIMgr::IsTextValid(SmartScriptHolder const& e, uint32 id)
 {
     if (e.GetScriptType() != SMART_SCRIPT_TYPE_CREATURE)
         return true;

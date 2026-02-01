@@ -1715,7 +1715,7 @@ struct HookMgr::ElunaGameObjectAI : public GameObjectAI
     }
 
     // executed when a timed event fires
-    void OnScriptEvent(int funcRef, uint32 delay, uint32 calls) 
+    void OnScriptEvent(int funcRef, uint32 delay, uint32 calls)
     {
         sEluna->BeginCall(funcRef);
         sEluna->Push(sEluna->L, funcRef);

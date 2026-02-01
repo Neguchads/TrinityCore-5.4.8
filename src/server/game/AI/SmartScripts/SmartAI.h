@@ -46,7 +46,7 @@ class TC_GAME_API SmartAI : public CreatureAI
         explicit SmartAI(Creature* c);
 
         //core related
-        static int32 Permissible(const Creature*);        
+        static int32 Permissible(const Creature*);
 
         // Start moving to the desired MovePoint
         void StartPath(bool run = false, uint32 pathId = 0, bool repeat = false, Unit* invoker = nullptr, uint32 nodeId = 1);
@@ -163,8 +163,6 @@ class TC_GAME_API SmartAI : public CreatureAI
         // Used in scripts to share variables
         ObjectGuid GetGUID(int32 id = 0) const override;
 
-
-
         // Called at movepoint reached
         void MovepointReached(uint32 id);
 
@@ -181,9 +179,9 @@ class TC_GAME_API SmartAI : public CreatureAI
 
         bool OnGossipHello(Player* player) override;
         bool OnGossipSelect(Player* player, uint32 menuId, uint32 gossipListId) override;
-        bool OnGossipSelectCode(Player* player, uint32 menuId, uint32 gossipListId, char const* code) override;  
-        void OnQuestAccept(Player* player, Quest const* quest) override;  
-        void OnQuestReward(Player* player, Quest const* quest, uint32 opt) override;   
+        bool OnGossipSelectCode(Player* player, uint32 menuId, uint32 gossipListId, char const* code) override;
+        void OnQuestAccept(Player* player, Quest const* quest) override;
+        void OnQuestReward(Player* player, Quest const* quest, uint32 opt) override;
         bool sOnDummyEffect(Unit* caster, uint32 spellId, SpellEffIndex effIndex) override;
         void sOnGameEvent(bool start, uint16 eventId) override;
 
@@ -207,7 +205,7 @@ class TC_GAME_API SmartAI : public CreatureAI
         void SetGossipReturn(bool val)
         {
             _gossipReturn = val;
-        }        
+        }
 
     protected:
         bool mSmartVehicle = false;

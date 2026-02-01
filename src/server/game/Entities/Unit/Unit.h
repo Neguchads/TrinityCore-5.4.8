@@ -69,7 +69,6 @@ private:
     float m_multiplier = 1.0f;
 };
 
-
 // high byte (3 from 0..3) of UNIT_FIELD_BYTES_2
 enum ShapeshiftForm
 {
@@ -107,10 +106,6 @@ enum ShapeshiftForm
     FORM_MOONKIN = 0x1F,
     FORM_SPIRITOFREDEMPTION = 0x20
 };
-
-
-
-
 
 #define CREATURE_MAX_SPELLS     8
 #define MAX_SPELL_CHARM         4
@@ -438,15 +433,11 @@ enum DamageEffectType
     SELF_DAMAGE = 5
 };
 
-
 enum NPCFlags2
 {
     UNIT_NPC_FLAG2_NONE              = 0x00000000,
     UNIT_NPC_FLAG2_ITEM_UPGRADE      = 0x00000001,    // Item Upgrade
 };
-
-
-
 
 enum UnitTypeMask
 {
@@ -1160,10 +1151,9 @@ public:
     uint32 m_extraAttacks;
     bool m_canDualWield;
 
-    uint32 RecaculateDamage(uint32 damage); 
+    uint32 RecaculateDamage(uint32 damage);
 
     uint32 RecaculateHealing(uint32 healamount);
-
 
     void _addAttacker(Unit* pAttacker);                  // must be called only from Unit::Attack(Unit*)
     void _removeAttacker(Unit* pAttacker);               // must be called only from Unit::AttackStop()
@@ -1200,7 +1190,7 @@ public:
     uint32 HasUnitTypeMask(uint32 mask) const { return mask & m_unitTypeMask; }
     void AddUnitTypeMask(uint32 mask) { m_unitTypeMask |= mask; }
     bool IsSummon() const   { return (m_unitTypeMask & UNIT_MASK_SUMMON) != 0; }
-    bool IsGuardian() const { return (m_unitTypeMask & UNIT_MASK_GUARDIAN) != 0; }  
+    bool IsGuardian() const { return (m_unitTypeMask & UNIT_MASK_GUARDIAN) != 0; }
     bool IsPet() const      { return (m_unitTypeMask & UNIT_MASK_PET) != 0; }
     bool IsHunterPet() const{ return (m_unitTypeMask & UNIT_MASK_HUNTER_PET) != 0; }
     bool IsTotem() const    { return (m_unitTypeMask & UNIT_MASK_TOTEM) != 0; }
@@ -1238,7 +1228,6 @@ public:
     {
         SetStatInt32Value(UNIT_FIELD_RESISTANCES + school, val);
     }
-
 
     uint32 GetHealth()    const { return GetUInt32Value(UNIT_FIELD_HEALTH); }
     uint32 GetMaxHealth() const
@@ -1415,7 +1404,7 @@ public:
     void SetPvpFlag(UnitPVPStateFlags flags) { SetByteFlag(UNIT_FIELD_BYTES_2, UNIT_BYTES_2_OFFSET_PVP_FLAG, flags); }
     void RemovePvpFlag(UnitPVPStateFlags flags) { RemoveByteFlag(UNIT_FIELD_BYTES_2, UNIT_BYTES_2_OFFSET_PVP_FLAG, flags); }
     void ReplaceAllPvpFlags(UnitPVPStateFlags flags) { SetByteValue(UNIT_FIELD_BYTES_2, UNIT_BYTES_2_OFFSET_PVP_FLAG, flags); }
-    
+
     bool IsPvP() const { return HasPvpFlag(UNIT_BYTE2_FLAG_PVP); }
     void SetPvP(bool state);
     [[nodiscard]] bool IsFFAPvP() const { return HasByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_FFA_PVP); }
@@ -1950,7 +1939,7 @@ public:
     {
         auto it = m_boundAuras.find(id);
         if (it == m_boundAuras.end() || it->second.empty())
-            return nullptr;            
+            return nullptr;
         return &it->second;
     }
 
@@ -2197,7 +2186,7 @@ public:
     }
     virtual void SetDisplayId(uint32 modelId, float displayScale = 1.f);
     uint32 GetNativeDisplayId() const { return GetUInt32Value(UNIT_FIELD_NATIVE_DISPLAY_ID); }
-    float GetNativeDisplayScale() const { return 1.0f /**GetFloatValue(UNIT_FIELD_NATIVE_X_DISPLAY_SCALE)**/; }    
+    float GetNativeDisplayScale() const { return 1.0f /**GetFloatValue(UNIT_FIELD_NATIVE_X_DISPLAY_SCALE)**/; }
     void RestoreDisplayId();
     void SetNativeDisplayId(uint32 displayId, float displayScale = 1.f) { SetUInt32Value(UNIT_FIELD_NATIVE_DISPLAY_ID, displayId); /**SetFloatValue(UNIT_FIELD_NATIVE_X_DISPLAY_SCALE, displayScale);**/ }
 
@@ -2264,7 +2253,6 @@ public:
 
     uint32 MeleeDamageBonusDone(Unit* pVictim, uint32 damage, WeaponAttackType attType, SpellInfo const* spellProto = NULL);
     uint32 MeleeDamageBonusTaken(Unit* attacker, uint32 pdamage, WeaponAttackType attType, SpellInfo const* spellProto = NULL);
-
 
     bool   isSpellBlocked(Unit* victim, SpellInfo const* spellProto, WeaponAttackType attackType = BASE_ATTACK);
     bool   isBlockCritical();
@@ -2422,7 +2410,7 @@ public:
     void SetRedirectThreat(ObjectGuid guid, uint32 pct)
     {
         _redirectThreatInfo.TargetGUID = guid;
-        _redirectThreatInfo.ThreatPct = pct; 
+        _redirectThreatInfo.ThreatPct = pct;
     }
     void ResetRedirectThreat()
     {
@@ -2478,7 +2466,7 @@ public:
     bool IsFlying() const { return m_movementInfo.HasMovementFlag(MOVEMENTFLAG_FLYING | MOVEMENTFLAG_DISABLE_GRAVITY); }
     bool IsFalling() const;
     virtual bool CanEnterWater() const = 0;
-    virtual bool CanSwim() const;    
+    virtual bool CanSwim() const;
 
     float GetHoverOffset() const
     {
@@ -2852,7 +2840,7 @@ inline bool IsNoFlyZone(uint32 zoneId)
         case 4080: // Isle of Quel'Danas
         case 6757: // Timeless Isle
         case 6661: // Isle of Giants
-            return true;;
+            return true;
         default:
             break;
     }

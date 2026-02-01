@@ -395,7 +395,7 @@ PetBattle::PetBattle(uint32 battleId, PetBattleRequest const& request)
     }
     else
         opponentTeam->AddPlayer(request.Opponent->ToPlayer());
-    
+
     m_teams[PET_BATTLE_TEAM_OPPONENT] = opponentTeam;
 
     SendFinalizeLocation(request);

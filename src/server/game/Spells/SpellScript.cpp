@@ -863,7 +863,6 @@ void AuraScript::InitEffectsHandler::Call(AuraScript* auraScript, uint32 &effect
     return (auraScript->*pHandlerScript)(effectMask);
 }
 
-
 AuraScript::CheckAreaTargetHandler::CheckAreaTargetHandler(AuraCheckAreaTargetFnType _pHandlerScript)
 {
     pHandlerScript = _pHandlerScript;

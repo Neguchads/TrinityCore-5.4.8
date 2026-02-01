@@ -40,7 +40,7 @@ namespace LuaQuery
         }
         return 1;
     }
-    
+
     int IsNull(lua_State* L, QueryResult* result)
     {
         uint32 col = luaL_checkunsigned(L, 1);

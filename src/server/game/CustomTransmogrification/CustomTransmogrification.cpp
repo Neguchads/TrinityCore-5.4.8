@@ -18,7 +18,6 @@
 #include "CustomTransmogrification.h"
 #pragma execution_character_set("UTF-8")
 
-
 Transmogrification::Transmogrification()
 {
 
@@ -26,7 +25,7 @@ Transmogrification::Transmogrification()
 
 Transmogrification::~Transmogrification()
 {
-    
+
 }
 
 Transmogrification* Transmogrification::instance()
@@ -54,7 +53,6 @@ void Transmogrification::PresetTransmog(Player* player, Item* itemTransmogrified
         DeleteFakeEntry(player, slot, itemTransmogrified);
 
     SetFakeEntry(player, fakeEntry, slot, itemTransmogrified); // newEntry
-
 
     itemTransmogrified->UpdatePlayedTime(player);
 
@@ -444,7 +442,7 @@ bool Transmogrification::CanTransmogrifyItemWithItem(Player* player, ItemTemplat
 
     if (source->Class == ITEM_CLASS_WEAPON && target->InventoryType == INVTYPE_HOLDABLE)
         return true;
-    
+
     if (source->Class == ITEM_CLASS_WEAPON && target->InventoryType == INVTYPE_SHIELD)
         return true;
 

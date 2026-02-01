@@ -315,7 +315,6 @@ private:
     uint8  m_stackDepth = 0;
 };
 
-
 // Client states for pet battle
 //
 // LE_PET_BATTLE_STATE_CREATED                  1

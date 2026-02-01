@@ -48,7 +48,7 @@ void WorldSession::HandleTaxiNodeStatusQueryOpcode(WorldPacket& recvData)
     recvData.ReadByteSeq(guid[0]);
     recvData.ReadByteSeq(guid[6]);
     recvData.ReadByteSeq(guid[3]);
-    
+
     SendTaxiStatus(guid);
 }
 
@@ -78,7 +78,7 @@ void WorldSession::SendTaxiStatus(ObjectGuid guid)
     data.WriteBit(Guid[7]);
     data.WriteBit(Guid[5]);
     data.WriteBit(Guid[4]);
-    data.WriteBit(Guid[1]); 
+    data.WriteBit(Guid[1]);
     data.WriteBits(GetPlayer()->m_taxi.IsTaximaskNodeKnown(curloc) ? 1 : 3, 2);
     data.WriteBit(Guid[3]);
     data.WriteBit(Guid[0]);

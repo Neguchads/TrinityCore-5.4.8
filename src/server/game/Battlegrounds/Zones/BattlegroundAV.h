@@ -1029,7 +1029,6 @@ enum BG_AV_CreatureIds
     AV_NPC_INFO_MAX        = 48
 };
 
-
 struct BGAVCreauterInfo
 {
     uint32 Entry;

@@ -150,7 +150,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
 
             if (!talkTarget)
                 talkTarget = GetLastInvoker();
-            
+
             if (!talker)
                 break;
 
@@ -3174,7 +3174,7 @@ void SmartScript::ProcessEvent(SmartScriptHolder& e, Unit* unit, uint32 var0, ui
                     break;
             }
 
-            ProcessAction(e, unit, var0, var1, bvar, spell, gob);       
+            ProcessAction(e, unit, var0, var1, bvar, spell, gob);
         case SMART_EVENT_FOLLOW_COMPLETED:
         case SMART_EVENT_ON_SPELLCLICK:
         case SMART_EVENT_ON_GO_REPORT_USE:
@@ -3203,7 +3203,7 @@ void SmartScript::ProcessEvent(SmartScriptHolder& e, Unit* unit, uint32 var0, ui
         {
             if (!me || !unit)
                 return;
-            if (e.event.kill.playerOnly && unit->GetTypeId() != TYPEID_PLAYER)
+            if (e.event.kill.playerOnly && !unit->IsPlayer())
                 return;
             if (e.event.kill.creature && unit->GetEntry() != e.event.kill.creature)
                 return;
@@ -3335,7 +3335,7 @@ void SmartScript::ProcessEvent(SmartScriptHolder& e, Unit* unit, uint32 var0, ui
                 return;
             RecalcTimer(e, e.event.summoned.cooldownMin, e.event.summoned.cooldownMax);
             ProcessAction(e, unit, var0);
-            break;            
+            break;
         }
         case SMART_EVENT_INSTANCE_PLAYER_ENTER:
         {

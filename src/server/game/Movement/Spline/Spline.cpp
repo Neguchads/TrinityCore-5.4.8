@@ -234,7 +234,6 @@ void SplineBase::InitLinear(Vector3 const* controls, index_type count, float ini
     index_hi = cyclic ? count : (count - 1);
 }
 
-
 void SplineBase::InitCatmullRom(Vector3 const* controls, index_type count, float initialOrientation, bool cyclic, index_type cyclic_point)
 {
     const int real_size = count + (cyclic ? (1 + 2) : (1 + 1));

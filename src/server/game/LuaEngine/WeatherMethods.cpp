@@ -52,4 +52,3 @@ namespace LuaWeather
         return 1;
     }
 };
-

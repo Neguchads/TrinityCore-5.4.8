@@ -201,9 +201,9 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
     {
         TC_LOG_DEBUG("maps.mmaps", "++ BuildPolyPath :: (startPoly == 0 || endPoly == 0)\n");
         BuildShortcut();
-        bool path = _source->GetTypeId() == TYPEID_UNIT && _source->ToCreature()->CanFly();
+        bool path = _source->IsCreature() && _source->ToCreature()->CanFly();
 
-        bool waterPath = _source->GetTypeId() == TYPEID_UNIT && _source->ToCreature()->CanSwim() && !_source->GetTransport();
+        bool waterPath = _source->IsCreature() && _source->ToCreature()->CanSwim() && !_source->GetTransport();
         if (waterPath)
         {
             // Check both start and end points, if they're both in water, then we can *safely* let the creature move
@@ -235,7 +235,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
 
     // we may need a better number here
     bool startFarFromPoly = distToStartPoly > 7.0f;
-    bool endFarFromPoly = distToEndPoly > 7.0f;    
+    bool endFarFromPoly = distToEndPoly > 7.0f;
     if (startFarFromPoly || endFarFromPoly)
     {
         TC_LOG_DEBUG("maps.mmaps", "++ BuildPolyPath :: farFromPoly distToStartPoly=%.3f distToEndPoly=%.3f\n", distToStartPoly, distToEndPoly);
@@ -259,8 +259,8 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
                     buildShotrcut = true;
                 // Allow to build a shortcut if the unit is falling and it's trying to move downwards towards a target (i.e. charging)
                 else if (_sourceUnit->IsFalling() && endPos.z < startPos.z)
-                    buildShotrcut = true;  
-            }              
+                    buildShotrcut = true;
+            }
         }
 
         if (buildShotrcut)
@@ -514,7 +514,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
                 else
                     _type = PATHFIND_NORMAL;
                 return;
-            }            
+            }
         }
         else
         {
@@ -674,7 +674,7 @@ void PathGenerator::CreateFilter()
     uint16 includeFlags = 0;
     uint16 excludeFlags = 0;
 
-    if (_source->GetTypeId() == TYPEID_UNIT)
+    if (_source->IsCreature())
     {
         Creature* creature = (Creature*)_source;
         if (creature->CanWalk())
@@ -701,7 +701,7 @@ void PathGenerator::UpdateFilter()
     // allow creatures to cheat and use different movement types if they are moved
     // forcefully into terrain they can't normally move in
     if (Unit const* _sourceUnit = _source->ToUnit())
-    {    
+    {
         if (_sourceUnit->IsInWater() || _sourceUnit->IsUnderWater()) // InWater already accounts for Underwater
         {
             uint16 includedFlags = _filter.getIncludeFlags();
@@ -801,7 +801,7 @@ uint32 PathGenerator::FixupCorridor(dtPolyRef* path, uint32 npath, uint32 maxPat
 // in the path. If that happens, a shortcut is taken.
 // This can happen if the target (T) location is at tile boundary,
 // and we're (S) approaching it parallel to the tile edge.
-// The choice at the vertex can be arbitrary, 
+// The choice at the vertex can be arbitrary,
 //  +---+---+
 //  |:::|:::|
 //  +-S-+-T-+

@@ -63,7 +63,7 @@ public:
     void Relocate(float x, float y, float z, float orientation) { m_positionX = x; m_positionY = y; m_positionZ = z; SetOrientation(orientation); }
     void Relocate(Position const &pos) { m_positionX = pos.m_positionX; m_positionY = pos.m_positionY; m_positionZ = pos.m_positionZ; SetOrientation(pos.m_orientation); }
     void Relocate(Position const* pos) { m_positionX = pos->m_positionX; m_positionY = pos->m_positionY; m_positionZ = pos->m_positionZ; SetOrientation(pos->m_orientation); }
-    
+
     void RelocateOffset(Position const &offset);
     void RelocateOffset(float angle, float distance, float offsetZ = 0.0f);
 
@@ -82,7 +82,6 @@ public:
         { x = m_positionX; y = m_positionY; z = m_positionZ; o = m_orientation; }
 
     Position GetPosition() const { return *this; }
-
 
     Position::PositionXYZStreamer PositionXYZStream()
     {

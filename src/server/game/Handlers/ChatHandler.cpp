@@ -370,7 +370,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 #endif
             sender->Say(msg, Language(lang));
             break;
-        }            
+        }
         case CHAT_MSG_EMOTE:
         {
             // Prevent cheating
@@ -388,7 +388,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 #endif
             sender->TextEmote(msg);
             break;
-        }            
+        }
         case CHAT_MSG_YELL:
         {
             // Prevent cheating
@@ -951,7 +951,7 @@ void WorldSession::HandleTextEmoteOpcode(WorldPacket& recvData)
     GetPlayer()->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_DO_EMOTE, text_emote, 0, 0, unit ? unit : GetPlayer());
 
     //Send scripted event call
-    if (unit && unit->GetTypeId() == TYPEID_UNIT && ((Creature*)unit)->AI())
+    if (unit && unit->IsCreature() && ((Creature*)unit)->AI())
         ((Creature*)unit)->AI()->ReceiveEmote(GetPlayer(), text_emote);
 }
 

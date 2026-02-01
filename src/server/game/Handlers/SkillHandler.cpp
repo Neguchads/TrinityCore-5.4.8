@@ -106,7 +106,7 @@ void WorldSession::HandleRespecWipeConfirmOpcode(WorldPacket& recvPacket)
     recvPacket.ReadByteSeq(guid[5]);
     recvPacket.ReadByteSeq(guid[7]);
     recvPacket.ReadByteSeq(guid[6]);
-    
+
     // remove fake death
     if (GetPlayer()->HasUnitState(UNIT_STATE_DIED))
         GetPlayer()->RemoveAurasByType(SPELL_AURA_FEIGN_DEATH);

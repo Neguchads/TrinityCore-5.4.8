@@ -178,7 +178,6 @@ void WorldSession::SendShowMailBox(ObjectGuid guid)
     SendPacket(&data);
 }
 
-
 void WorldSession::HandleTrainerListOpcode(WorldPacket& recvData)
 {
     ObjectGuid guid;
@@ -509,7 +508,7 @@ void WorldSession::HandleGossipHelloOpcode(WorldPacket& recvData)
 // //        _player->TalkedToCreature(unit->GetEntry(), unit->GetGUID());
 //         _player->PrepareGossipMenu(unit, unit->GetCreatureTemplate()->GossipMenuId, true);
 //         _player->SendPreparedGossip(unit);
-//     }    
+//     }
 }
 
 /*void WorldSession::HandleGossipSelectOptionOpcode(WorldPacket& recvData)
@@ -674,7 +673,7 @@ void WorldSession::SendBindPoint(Creature* npc)
 
     // send spell for homebinding (3286)
     npc->CastSpell(_player, bindspell, true);
-    
+
     _player->PlayerTalkClass->SendCloseGossip();
 }
 

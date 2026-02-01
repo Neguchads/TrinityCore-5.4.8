@@ -1280,7 +1280,7 @@ namespace LuaPlayer
             return 0;
         if (player->HasFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_NO_XP_GAIN))
             return 0;
-        if (victim && victim->GetTypeId() == TYPEID_UNIT && !victim->ToCreature()->HasLootRecipient())
+        if (victim && victim->IsCreature() && !victim->ToCreature()->HasLootRecipient())
             return 0;
 
         uint8 level = player->GetLevel();
@@ -2079,7 +2079,7 @@ namespace LuaPlayer
         WorldObject* sender = sEluna->CHECK_WORLDOBJECT(L, 2);
         if (sender)
         {
-            if (sender->GetTypeId() == TYPEID_PLAYER)
+            if (sender->IsPlayer())
             {
                 uint32 menu_id = luaL_checkunsigned(L, 3);
                 player->PlayerTalkClass->GetGossipMenu().SetMenuId(menu_id);
@@ -2157,12 +2157,12 @@ namespace LuaPlayer
         if (!source)
             return 0;
 
-        if (source->GetTypeId() == TYPEID_UNIT)
+        if (source->IsCreature())
         {
             if (source->GetUInt32Value(UNIT_FIELD_NPC_FLAGS) & UNIT_NPC_FLAG_QUESTGIVER)
                 player->PrepareQuestMenu(source->GetGUID());
         }
-        else if (source->GetTypeId() == TYPEID_GAMEOBJECT)
+        else if (source->IsGameObject())
         {
             if (source->ToGameObject()->GetGoType() == GAMEOBJECT_TYPE_QUESTGIVER)
                 player->PrepareQuestMenu(source->GetGUID());

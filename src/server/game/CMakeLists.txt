@@ -278,7 +278,7 @@ target_include_directories(game
     ${CMAKE_CURRENT_SOURCE_DIR}/Warden
     ${CMAKE_CURRENT_SOURCE_DIR}/Warden/Modules
     ${CMAKE_CURRENT_SOURCE_DIR}/Weather
-    ${CMAKE_CURRENT_SOURCE_DIR}/World    
+    ${CMAKE_CURRENT_SOURCE_DIR}/World
     boost
     common
   PRIVATE
@@ -334,12 +334,12 @@ if (ELUNA)
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/LuaEngine/extensions" "${CMAKE_BINARY_DIR}/bin/lua_scripts/extensions/"
       )
     endif()
-  endif()      
+  endif()
 endif()
 
 add_dependencies(game revision_data.h)
 
 # Generate precompiled header
 if (USE_COREPCH)
-  target_precompile_headers(game PRIVATE ${game_STAT_PCH_HDR}) 
+  target_precompile_headers(game PRIVATE ${game_STAT_PCH_HDR})
 endif ()

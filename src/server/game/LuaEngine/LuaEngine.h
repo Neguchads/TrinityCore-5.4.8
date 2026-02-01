@@ -290,7 +290,7 @@ struct EventMgr
             KillAllEvents(it->first);
         LuaEvents.clear(); // remove pointer sets
     }
-    
+
     // Remove timed events from processor
     void RemoveEvents(EventProcessor* events)
     {

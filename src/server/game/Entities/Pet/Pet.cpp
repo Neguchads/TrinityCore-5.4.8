@@ -43,7 +43,7 @@ Pet::Pet(Player* owner, PetType type) :
     m_petType(type), m_duration(0), m_auraRaidUpdateMask(0), m_loading(false),
     m_declinedname(NULL)
 {
-    ASSERT(m_owner->GetTypeId() == TYPEID_PLAYER);
+    ASSERT(m_owner->IsPlayer());
 
     m_unitTypeMask |= UNIT_MASK_PET;
     if (type == HUNTER_PET)
@@ -365,7 +365,7 @@ bool Pet::LoadPetFromDB(PetLoadMode mode, uint32 param, Position const* pos)
     {
         owner->SetCurrentPetId(GetCharmInfo()->GetPetNumber());
         //set last used pet number (for use in BG's)
-        if (owner->GetTypeId() == TYPEID_PLAYER && isControlled() && !isTemporarySummoned() && (getPetType() == SUMMON_PET || getPetType() == HUNTER_PET))
+        if (owner->IsPlayer() && isControlled() && !isTemporarySummoned() && (getPetType() == SUMMON_PET || getPetType() == HUNTER_PET))
             owner->ToPlayer()->SetLastPetNumber(petId);
     }
 
@@ -383,7 +383,6 @@ bool Pet::LoadPetFromDB(PetLoadMode mode, uint32 param, Position const* pos)
         for (auto&& it : { 63090, 146662, 147353 })
             if (Aura* aura = owner->GetOwnedAura(it))
                 aura->UpdateTargetMap(owner);
-
 
     // Pet Summon, works as trigger
     m_owner->CastSpell(m_owner, 6962, true);
@@ -696,7 +695,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 
     //Determine pet type
     PetType petType = MAX_PET_TYPE;
-    if (IsPet() && GetOwner()->GetTypeId() == TYPEID_PLAYER)
+    if (IsPet() && GetOwner()->IsPlayer())
     {
         switch (GetOwner()->GetClass())
         {
@@ -817,7 +816,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
         case HUNTER_PET:
         {
             SetUInt32Value(UNIT_FIELD_PET_NEXT_LEVEL_EXPERIENCE, uint32(sObjectMgr->GetXPForLevel(petlevel)*PET_XP_FACTOR));
-            if (GetOwner()->HasSpell(53253) && !HasAura(53397)) // 53397 
+            if (GetOwner()->HasSpell(53253) && !HasAura(53397)) // 53397
                 CastSpell(this, 53397, true);
             break;
         }
@@ -1335,7 +1334,7 @@ bool Pet::RemoveSpell(uint32 spellId, bool learnPrev, bool clearActionBar)
         {
             // need update action bar for last removed rank
             if (Unit* owner = GetOwner())
-                if (owner->GetTypeId() == TYPEID_PLAYER)
+                if (owner->IsPlayer())
                     owner->ToPlayer()->PetSpellInitialize();
         }
     }
@@ -1448,7 +1447,7 @@ void Pet::InitTalentForLevel()
     uint32 talentPointsForLevel = GetMaxTalentPointsForLevel(level);
 
     Unit* owner = GetOwner();
-    if (!owner || owner->GetTypeId() != TYPEID_PLAYER)
+    if (!owner || !owner->IsPlayer())
         return;
 }
 
@@ -1562,7 +1561,7 @@ bool Pet::HasSpell(uint32 spell) const
 void Pet::CastPetAuras(bool current)
 {
     Unit* owner = GetOwner();
-    if (!owner || owner->GetTypeId() != TYPEID_PLAYER)
+    if (!owner || !owner->IsPlayer())
         return;
 
     if (!IsPermanentPetFor(owner->ToPlayer()))
@@ -1602,7 +1601,7 @@ bool Pet::IsPetAura(Aura const* aura)
 {
     Unit* owner = GetOwner();
 
-    if (!owner || owner->GetTypeId() != TYPEID_PLAYER)
+    if (!owner || !owner->IsPlayer())
         return false;
 
     // if the owner has that pet aura, return true
@@ -1625,7 +1624,7 @@ void Pet::learnSpellHighRank(uint32 spellid)
 void Pet::SynchronizeLevelWithOwner()
 {
     Unit* owner = GetOwner();
-    if (!owner || owner->GetTypeId() != TYPEID_PLAYER)
+    if (!owner || !owner->IsPlayer())
         return;
 
     switch (getPetType())

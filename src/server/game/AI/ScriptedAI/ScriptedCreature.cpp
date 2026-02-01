@@ -644,7 +644,7 @@ void BossAI::TeleportCheaters()
     ThreatContainer::StorageType threatList = me->GetThreatManager().getThreatList();
     for (ThreatContainer::StorageType::const_iterator itr = threatList.begin(); itr != threatList.end(); ++itr)
         if (Unit* target = (*itr)->getTarget())
-            if (target->GetTypeId() == TYPEID_PLAYER && !CheckBoundary(target))
+            if (target->IsPlayer() && !CheckBoundary(target))
                 target->NearTeleportTo(x, y, z, 0);
 }
 
@@ -905,7 +905,7 @@ void AssistBehavior::Update(uint32 diff)
         m_assistTimer = 0;
 
         Unit* owner = me->GetOwner();
-        if (!owner || owner->GetTypeId() != TYPEID_PLAYER)
+        if (!owner || !owner->IsPlayer())
             return;
 
         Unit* victim = nullptr;

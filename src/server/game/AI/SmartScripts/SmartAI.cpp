@@ -130,12 +130,12 @@ void SmartAI::StartPath(bool run/* = false*/, uint32 pathId/* = 0*/, bool repeat
 
     if (HasEscortState(SMART_ESCORT_ESCORTING))
         StopPath();
- 
+
     if (pathId){
         if (!LoadPath(pathId))
             return;
     }
- 
+
     if (!mWayPoints || mWayPoints->empty())
         return;
 
@@ -817,7 +817,6 @@ void SmartAI::OnQuestReward(Player* player, Quest const* quest, uint32 opt)
     GetScript()->ProcessEventsFor(SMART_EVENT_REWARD_QUEST, player, quest->GetQuestId(), opt);
 }
 
-
 bool SmartAI::sOnDummyEffect(Unit* caster, uint32 spellId, SpellEffIndex effIndex)
 {
     GetScript()->ProcessEventsFor(SMART_EVENT_DUMMY_EFFECT, caster, spellId, (uint32)effIndex);
@@ -878,7 +877,7 @@ void SmartAI::StopFollow(bool complete)
     mFollowAngle = 0;
     mFollowArrivedTimer = 1000;
     mFollowCredit = 0;
-    mFollowArrivedEntry = 0;    
+    mFollowArrivedEntry = 0;
     me->GetMotionMaster()->Clear();
     me->GetMotionMaster()->MoveIdle();
 
@@ -1006,7 +1005,7 @@ bool SmartGameObjectAI::OnGossipHello(Player* player, bool /*isUse*/)
 {
     _gossipReturn = false;
     GetScript()->ProcessEventsFor(SMART_EVENT_GOSSIP_HELLO, player, 0, 0, false, nullptr, me);
-    return _gossipReturn;    
+    return _gossipReturn;
 }
 
 bool SmartGameObjectAI::OnReportUse(Player* player)

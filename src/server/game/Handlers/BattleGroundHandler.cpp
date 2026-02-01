@@ -1038,7 +1038,7 @@ void WorldSession::EnterSoloQueue(bool asGroup)
             auto stat = sRatedPvpMgr->GetOrCreateInfo(PVP_SLOT_ARENA_5v5, GetPlayer()->GetGUID());
             g.push_back(GetPlayer()->GetGUID());
             arenaRating = stat->Rating;
-            matchmakerRating = stat->MatchmakerRating;;
+            matchmakerRating = stat->MatchmakerRating;
 
             err = ERR_BATTLEGROUND_NONE;
             arr[0] = queue.GetRole(GetPlayer()->GetSpecialization());
@@ -1103,4 +1103,3 @@ void WorldSession::EnterSoloQueue(bool asGroup)
     if (ginfo)
         queue.DoMatchmaking(ginfo, 0, true);
 }
-

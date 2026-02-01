@@ -34,7 +34,7 @@ void UnitAI::AttackStart(Unit* victim)
         {
             me->ClearUnitState(UNIT_STATE_DISTRACTED);
             me->GetMotionMaster()->Clear();
-        }        
+        }
         me->GetMotionMaster()->MoveChase(victim);
     }
 }
@@ -110,7 +110,7 @@ void UnitAI::DoAddAuraToAllHostilePlayers(uint32 spellid)
         for (ThreatContainer::StorageType::const_iterator itr = threatlist.begin(); itr != threatlist.end(); ++itr)
         {
             if (Unit* unit = Unit::GetUnit(*me, (*itr)->getUnitGuid()))
-                if (unit->GetTypeId() == TYPEID_PLAYER)
+                if (unit->IsPlayer())
                     me->AddAura(spellid, unit);
         }
     }
@@ -124,7 +124,7 @@ void UnitAI::DoCastToAllHostilePlayers(uint32 spellid, bool triggered)
         for (ThreatContainer::StorageType::const_iterator itr = threatlist.begin(); itr != threatlist.end(); ++itr)
         {
             if (Unit* unit = Unit::GetUnit(*me, (*itr)->getUnitGuid()))
-                if (unit->GetTypeId() == TYPEID_PLAYER)
+                if (unit->IsPlayer())
                     me->CastSpell(unit, spellid, triggered);
         }
     }
@@ -300,7 +300,6 @@ bool SpellTargetSelector::operator()(Unit const* target) const
     float max_range = _caster->GetSpellMaxRangeForTarget(target, _spellInfo);
     float min_range = _caster->GetSpellMinRangeForTarget(target, _spellInfo);
 
-
     if (target && target != _caster)
     {
         if (range_type == SPELL_RANGE_MELEE)
@@ -329,12 +328,11 @@ bool NonTankTargetSelector::operator()(Unit const* target) const
     if (!target)
         return false;
 
-    if (_playerOnly && target->GetTypeId() != TYPEID_PLAYER)
+    if (_playerOnly && !target->IsPlayer())
         return false;
 
     return target != _source->GetVictim();
 }
-
 
 // Range Group (meele in range group shouldn`ve execute)
 bool CasterSpecTargetSelector::operator()(WorldObject* target) const

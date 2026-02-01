@@ -76,7 +76,7 @@ void WorldSession::HandleChangeSeatsOnControlledVehicle(WorldPacket& recvData)
         {
             static MovementStatusElements const accessoryGuid[] =
             {
-                MSEExtraInt8, 
+                MSEExtraInt8,
                 MSEHasGuidByte2,
                 MSEHasGuidByte1,
                 MSEHasGuidByte7,
@@ -105,7 +105,7 @@ void WorldSession::HandleChangeSeatsOnControlledVehicle(WorldPacket& recvData)
 
             if (vehicle_base->GetGUID() != movementInfo.guid)
                 return;
-            
+
             if (!accessory)
                 GetPlayer()->ChangeSeat(-1, seatId > 0); // prev/next
             else if (Unit* vehUnit = Unit::GetUnit(*GetPlayer(), accessory))

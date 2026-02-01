@@ -16,5 +16,3 @@ add_subdirectory(common)
 if(TOOLS)
     add_subdirectory(tools)
 endif(TOOLS)
-
-

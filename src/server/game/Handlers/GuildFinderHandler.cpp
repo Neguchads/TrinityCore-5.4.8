@@ -210,8 +210,7 @@ void WorldSession::HandleGuildFinderGetApplications(WorldPacket& /*recvPacket*/)
             if (!guild) return;
             LFGuildSettings guildSettings = sGuildFinderMgr->GetGuildSettings(itr->GetGuildId());
             MembershipRequest request = *itr;
-            
-            
+
             ObjectGuid guildGuid = ObjectGuid(guild->GetGUID());
 
             data.WriteBit(guildGuid[0]);

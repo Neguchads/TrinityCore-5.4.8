@@ -414,7 +414,6 @@ void Transport::Update(uint32 diff)
         return;
     }
 
-
     if (GetKeyFrames().size() <= 1)
         return;
 
@@ -747,7 +746,7 @@ TempSummon* Transport::SummonPassenger(uint32 entry, Position const& pos, TempSu
     if (summoner)
     {
         phase = summoner->GetPhaseMask();
-        if (summoner->GetTypeId() == TYPEID_PLAYER)
+        if (summoner->IsPlayer())
             team = summoner->ToPlayer()->GetTeam();
     }
 
@@ -955,7 +954,7 @@ bool Transport::TeleportTransport(uint32 newMapid, float x, float y, float z, fl
         // Teleport players, they need to know it
         for (PassengerSet::iterator itr = _passengers.begin(); itr != _passengers.end(); ++itr)
         {
-            if ((*itr)->GetTypeId() == TYPEID_PLAYER)
+            if ((*itr)->IsPlayer())
             {
                 // will be relocated in UpdatePosition of the vehicle
                 if (Unit* veh = (*itr)->ToUnit()->GetVehicleBase())
@@ -1035,7 +1034,7 @@ void Transport::DelayedTeleportTransport()
     GetMap()->AddToMap<Transport>(this);
 }
 
-void Transport::UpdatePassengerPositions(PassengerSet& passengers) 
+void Transport::UpdatePassengerPositions(PassengerSet& passengers)
 {
     for (std::set<WorldObject*>::iterator itr = passengers.begin(); itr != passengers.end(); ++itr)
     {

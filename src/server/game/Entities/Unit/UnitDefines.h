@@ -112,7 +112,6 @@ enum SheathState : uint8
     MAX_SHEATH_STATE
 };
 
-
 // byte (1 from 0..3) of UNIT_FIELD_BYTES_2
 enum UnitPVPStateFlags : uint8
 {
@@ -212,7 +211,7 @@ enum UnitFlags2 : uint32
     UNIT_FLAG2_UNUSED_3                   = 0x00200000,
     UNIT_FLAG2_UNUSED_4                   = 0x00400000,
     UNIT_FLAG2_UNUSED_5                   = 0x00800000,
-    UNIT_FLAG2_UNUSED_6                   = 0x01000000    
+    UNIT_FLAG2_UNUSED_6                   = 0x01000000
 };
 
 DEFINE_ENUM_FLAG(UnitFlags2);

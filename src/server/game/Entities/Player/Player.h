@@ -1036,8 +1036,6 @@ struct CompletedChallenge
 
 typedef std::map<uint32 /*MapId*/, CompletedChallenge> CompletedChallengesMap;
 
-
-
 class Player;
 
 /// Holder for Battleground data
@@ -1115,8 +1113,6 @@ struct ResurrectionData
     uint32 Mana;
     uint32 Aura;
 };
-
-
 
 struct PlayerTalentInfo
 {
@@ -1231,7 +1227,7 @@ enum class GroupSlot : uint8
 
 enum class LootLockoutType
 {
-    PersonalLoot        = 0,    // World bosses + Lfr + flex 
+    PersonalLoot        = 0,    // World bosses + Lfr + flex
     BonusLoot           = 1,    // Per boss per week per difficult. Actually normal/heroic 10/25 must be one, but since we have all 4 difficulties as separate lockouts for normal loot...
     MoguSeals           = 2,    // Per boss per week. First quest for legendary cloak
     SecretOfTheEmpire   = 3,    // Per boss per week. Second quest for legendary cloak
@@ -3019,7 +3015,7 @@ public:
     {
         return m_group[uint32(GroupSlot::Original)].getTarget();
     }
-    Group const* GetOriginalGroup() const 
+    Group const* GetOriginalGroup() const
     {
         return m_group[uint32(GroupSlot::Original)].getTarget();
     }
@@ -3267,7 +3263,7 @@ public:
         overrideTexts.emplace(id, text);
     };
     std::string GetOverrideText(uint32 id)
-    { 
+    {
         auto itr = overrideTexts.find(id);
         return itr != overrideTexts.end() ? itr->second : "";
     };
@@ -3683,7 +3679,6 @@ protected:
     uint32 m_timeSyncTimer;
     uint32 m_timeSyncClient;
     uint32 m_timeSyncServer;
-
 
     InstanceTimeMap _instanceResetTimes;
     uint32 _pendingBindId;
