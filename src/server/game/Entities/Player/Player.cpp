@@ -23081,22 +23081,47 @@ void Player::RestoreAllSpellMods(uint32 ownerAuraId, Aura* aura)
 void Player::ApplyCostSpellMod(uint32 spellId, int32& basevalue)
 {
     m_spellMods[SPELLMOD_COST].sort([](SpellModifier const* lhs, SpellModifier const* rhs)
-    {
-        if (rhs->type == SPELLMOD_PCT)
         {
-            if (lhs->value > 0 && rhs->value < 0)
-                return true;
-            if (rhs->value > 0 && lhs->value < 0)
+            // Null safety
+            if (!lhs || !rhs)
                 return false;
-            if (lhs->spellId == 135700) // Clearcasting (feral)
-                    return false;
-            if (rhs->spellId == 69369)  // Predatory Swiftness
+
+            // Both must be PCT type for special ordering
+            if (lhs->type != SPELLMOD_PCT || rhs->type != SPELLMOD_PCT)
+                return false;
+
+            // Priority 1: -100% (free cast) comes first
+            bool lhsIsFree = (lhs->value <= -100);
+            bool rhsIsFree = (rhs->value <= -100);
+            if (lhsIsFree != rhsIsFree)
+                return lhsIsFree; // true if lhs is free and rhs is not
+
+            // Priority 2: Positive cost increases before negative cost reductions
+            bool lhsIsPositive = (lhs->value > 0);
+            bool rhsIsPositive = (rhs->value > 0);
+            bool lhsIsNegative = (lhs->value < 0);
+            bool rhsIsNegative = (rhs->value < 0);
+
+            if (lhsIsPositive && rhsIsNegative)
                 return true;
-            if (int32(lhs->value) == -100)
-                return true;
-        }
-        return false;
-    });
+            if (lhsIsNegative && rhsIsPositive)
+                return false;
+
+            // Priority 3: Clearcasting (feral) comes last among negatives
+            bool lhsIsClearcasting = (lhs->spellId == 135700);
+            bool rhsIsClearcasting = (rhs->spellId == 135700);
+            if (lhsIsClearcasting != rhsIsClearcasting)
+                return !lhsIsClearcasting; // Clearcasting goes after (returns false if lhs is Clearcasting)
+
+            // Priority 4: Predatory Swiftness comes before other spells
+            bool lhsIsPredatory = (lhs->spellId == 69369);
+            bool rhsIsPredatory = (rhs->spellId == 69369);
+            if (lhsIsPredatory != rhsIsPredatory)
+                return lhsIsPredatory;
+
+            // Equal priority - maintain stable order
+            return false;
+        });
 
     Spell* spell = m_spellModTakingSpell;
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
@@ -23112,20 +23137,16 @@ void Player::ApplyCostSpellMod(uint32 spellId, int32& basevalue)
         // Charges can be set only for mods with auras
         if (!mod->ownerAura)
             ASSERT(mod->charges == 0);
-
         if (!IsAffectedBySpellmod(spellInfo, mod, spell))
             continue;
-
         if (mod->type == SPELLMOD_FLAT)
             totalflat += mod->value;
         else if (mod->type == SPELLMOD_PCT)
         {
             if (basevalue == 0)
                 continue;
-
             AddPct(totalmul, mod->value);
         }
-
         DropModCharge(mod, spell);
         if (totalmul <= 0.0f)
             break;

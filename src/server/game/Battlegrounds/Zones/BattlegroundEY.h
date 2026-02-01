@@ -327,11 +327,40 @@ struct BattlegroundEYScore : public BattlegroundScore
     uint32 FlagCaptures;
 };
 
+struct BG_EY_CapturePointInfo
+{
+    uint8 _state = EY_POINT_STATE_UNCONTROLLED;
+    TeamId _ownerTeamId = TEAM_NEUTRAL;
+};
+
 class BattlegroundEY : public Battleground
 {
     public:
         BattlegroundEY();
         ~BattlegroundEY();
+
+        BG_EY_CapturePointInfo GetCapturePointInfo(uint8 point) const
+        {
+            BG_EY_CapturePointInfo info;
+            if (point >= EY_POINTS_MAX)
+                return info;
+
+            info._state = m_PointState[point];
+            switch (m_PointOwnedByTeam[point])
+            {
+                case ALLIANCE:
+                    info._ownerTeamId = TEAM_ALLIANCE;
+                    break;
+                case HORDE:
+                    info._ownerTeamId = TEAM_HORDE;
+                    break;
+                default:
+                    info._ownerTeamId = TEAM_NEUTRAL;
+                    break;
+            }
+
+            return info;
+        }
 
         /* inherited from BattlegroundClass */
         void AddPlayer(Player* player) override;

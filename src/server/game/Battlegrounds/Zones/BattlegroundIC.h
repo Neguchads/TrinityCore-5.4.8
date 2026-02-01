@@ -949,6 +949,11 @@ class BattlegroundIC : public Battleground
 
         uint32 GetNodeState(uint8 nodeType) const { return (uint8)nodePoint[nodeType].nodeState; }
 
+        ICNodePoint const& GetICNodePoint(uint8 nodeType) const
+        {
+            return nodePoint[nodeType];
+        }
+
         bool IsAllNodesControlledByTeam(uint32 team) const override;
 
         bool IsSpellAllowed(uint32 spellId, Player const* player) const override;

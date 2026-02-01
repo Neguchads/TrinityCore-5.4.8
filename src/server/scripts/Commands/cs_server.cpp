@@ -28,10 +28,10 @@ EndScriptData */
 #include "ObjectAccessor.h"
 #include "Player.h"
 #include "ScriptMgr.h"
-#include "SystemConfig.h"
 #include "MapManager.h"
 #include "MapInstanced.h"
 #include "Group.h"
+#include "GitRevision.h"
 
 class server_commandscript : public CommandScript
 {
@@ -108,42 +108,65 @@ public:
         return true;
     }
 
+    //static bool HandleServerInfoCommand(ChatHandler* handler, char const* /*args*/)
+    //{
+    //    uint32 playersNum           = sWorld->GetPlayerCount();
+    //    uint32 maxPlayersNum        = sWorld->GetMaxPlayerCount();
+    //    uint32 activeClientsNum     = sWorld->GetActiveSessionCount();
+    //    uint32 queuedClientsNum     = sWorld->GetQueuedSessionCount();
+    //    uint32 maxActiveClientsNum  = sWorld->GetMaxActiveSessionCount();
+    //    uint32 maxQueuedClientsNum  = sWorld->GetMaxQueuedSessionCount();
+    //    std::string uptime          = secsToTimeString(sWorld->GetUptime());
+    //    uint32 updateTime           = sWorld->GetUpdateTime();
+
+    //    if (playersNum > sWorld->getIntConfig(CONFIG_MAX_ICORE))
+    //        playersNum = (playersNum * sWorld->getRate(RATE_MAX_MODW));
+    //    if (maxActiveClientsNum > sWorld->getIntConfig(CONFIG_MAX_ICORE))
+    //        maxActiveClientsNum = (maxActiveClientsNum * sWorld->getRate(RATE_MAX_MODW));
+
+    //    handler->PSendSysMessage("-=Project=- " REV_DATE " |cffff0000 Update Pack 3 (11.06.2019)");
+    //    handler->PSendSysMessage(LANG_CONNECTED_USERS, playersNum, maxActiveClientsNum, queuedClientsNum, maxQueuedClientsNum);
+    //    handler->PSendSysMessage(LANG_UPTIME, uptime.c_str());
+
+    //    // Can't use sWorld->ShutdownMsg here in case of console command
+    //    if (sWorld->IsShuttingDown())
+    //        handler->PSendSysMessage(LANG_SHUTDOWN_TIMELEFT, secsToTimeString(sWorld->GetShutDownTimeLeft()).c_str());
+
+    //    if (updateTime > 500)
+    //        handler->PSendSysMessage(LANG_DIFF_POOR, updateTime);
+    //    else if (updateTime > 200)
+    //        handler->PSendSysMessage(LANG_DIFF_NORMAL, updateTime);
+    //    else
+    //        handler->PSendSysMessage(LANG_DIFF_GOOD, updateTime);
+
+    //    if (handler->GetSession())
+    //        for (auto&& bonusRate : sWorld->GetBonusRates())
+    //            if (bonusRate.second.IsActive())
+    //                if (!bonusRate.second.GetActiveAnnouncement().empty())
+    //                    handler->SendSysMessage(bonusRate.second.GetActiveAnnouncement().c_str());
+
+    //    return true;
+    //}
+
     static bool HandleServerInfoCommand(ChatHandler* handler, char const* /*args*/)
     {
-        uint32 playersNum           = sWorld->GetPlayerCount();
-        //uint32 maxPlayersNum        = sWorld->GetMaxPlayerCount();
-        //uint32 activeClientsNum     = sWorld->GetActiveSessionCount();
-        uint32 queuedClientsNum     = sWorld->GetQueuedSessionCount();
-        uint32 maxActiveClientsNum  = sWorld->GetMaxActiveSessionCount();
-        uint32 maxQueuedClientsNum  = sWorld->GetMaxQueuedSessionCount();
-        std::string uptime          = secsToTimeString(sWorld->GetUptime());
-        uint32 updateTime           = sWorld->GetUpdateTime();
+        uint32 playersNum = sWorld->GetPlayerCount();
+        uint32 maxPlayersNum = sWorld->GetMaxPlayerCount();
+        uint32 activeClientsNum = sWorld->GetActiveSessionCount();
+        uint32 queuedClientsNum = sWorld->GetQueuedSessionCount();
+        uint32 maxActiveClientsNum = sWorld->GetMaxActiveSessionCount();
+        uint32 maxQueuedClientsNum = sWorld->GetMaxQueuedSessionCount();
+        std::string uptime = secsToTimeString(sWorld->GetUptime());
+        uint32 updateTime = sWorld->GetUpdateTime();
 
-        if (playersNum > sWorld->getIntConfig(CONFIG_MAX_ICORE))
-            playersNum = (playersNum * sWorld->getRate(RATE_MAX_MODW));
-        if (maxActiveClientsNum > sWorld->getIntConfig(CONFIG_MAX_ICORE))
-            maxActiveClientsNum = (maxActiveClientsNum * sWorld->getRate(RATE_MAX_MODW));
-
-        handler->PSendSysMessage("-=Project=- " REV_DATE " |cffff0000 Update Pack 3 (11.06.2019)");
-        handler->PSendSysMessage(LANG_CONNECTED_USERS, playersNum, maxActiveClientsNum, queuedClientsNum, maxQueuedClientsNum);
+        handler->PSendSysMessage("%s", GitRevision::GetFullVersion());
+        handler->PSendSysMessage(LANG_CONNECTED_PLAYERS, playersNum, maxPlayersNum);
+        handler->PSendSysMessage(LANG_CONNECTED_USERS, activeClientsNum, maxActiveClientsNum, queuedClientsNum, maxQueuedClientsNum);
         handler->PSendSysMessage(LANG_UPTIME, uptime.c_str());
-
+        handler->PSendSysMessage(LANG_UPDATE_DIFF, updateTime);
         // Can't use sWorld->ShutdownMsg here in case of console command
         if (sWorld->IsShuttingDown())
             handler->PSendSysMessage(LANG_SHUTDOWN_TIMELEFT, secsToTimeString(sWorld->GetShutDownTimeLeft()).c_str());
-
-        if (updateTime > 500)
-            handler->PSendSysMessage(LANG_DIFF_POOR, updateTime);
-        else if (updateTime > 200)
-            handler->PSendSysMessage(LANG_DIFF_NORMAL, updateTime);
-        else
-            handler->PSendSysMessage(LANG_DIFF_GOOD, updateTime);
-
-        if (handler->GetSession())
-            for (auto&& bonusRate : sWorld->GetBonusRates())
-                if (bonusRate.second.IsActive())
-                    if (!bonusRate.second.GetActiveAnnouncement().empty())
-                        handler->SendSysMessage(bonusRate.second.GetActiveAnnouncement().c_str());
 
         return true;
     }

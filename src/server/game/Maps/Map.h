@@ -21,6 +21,7 @@
 #include "Define.h"
 #include <mutex>
 #include <shared_mutex>
+#include <unordered_set>
 
 #include "DBCStructure.h"
 #include "GridDefines.h"
@@ -625,8 +626,14 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         }
 
         uint32 GetUpdateTime() const { return m_updateTime; }
-        void AddUpdateObject(Object* object) { m_updatable.insert(object); }
-        void RemoveUpdateObject(Object* object) { m_updatable.erase(object); }
+        void AddUpdateObject(Object* object)
+        {
+            _updateObjects.insert(object);
+        }
+        void RemoveUpdateObject(Object* object)
+        {
+            _updateObjects.erase(object);
+        }
 
         Group* GetInstanceGroup() const;
         Player* GetFirstPlayerInInstance() const;
@@ -713,6 +720,7 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
 
         void setNGrid(NGridType* grid, uint32 x, uint32 y);
         void ScriptsProcess();
+        void SendObjectUpdates();
 
         void UpdateActiveCells(const float &x, const float &y, const uint32 t_diff);
 
@@ -830,7 +838,7 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         std::unordered_map<uint32 /*dbGUID*/, time_t> _goRespawnTimes;
 
         bool m_mmapErrorReportEnabled = true;
-        std::set<Object*> m_updatable;
+        std::unordered_set<Object*> _updateObjects;
         std::map<uint32, uint64> m_worldStates;
 
         uint32 debugFlexPlayersCount;

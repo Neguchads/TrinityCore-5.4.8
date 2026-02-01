@@ -1575,6 +1575,22 @@ class BattlegroundAV : public Battleground
 
         uint32 GetPrematureWinner() override;
 
+        BG_AV_NodeInfo const& GetAVNodeInfo(BG_AV_Nodes node) const { return m_Nodes[node]; }
+
+        uint32 GetMineOwner(uint8 mine) const
+        {
+            if (mine >= 2)
+                return AV_NEUTRAL_TEAM;
+            return m_Mine_Owner[mine];
+        }
+
+        bool IsCaptainAlive(TeamId teamId) const
+        {
+            if (teamId != TEAM_ALLIANCE && teamId != TEAM_HORDE)
+                return false;
+            return m_CaptainAlive[teamId];
+        }
+
     private:
         void PostUpdateImpl(uint32 diff) override;
 

@@ -779,23 +779,7 @@ void Map::Update(const uint32 t_diff)
 
     sScriptMgr->OnMapUpdate(this, t_diff);
 
-    UpdateDataMapType updatePlayers;
-
-    for (auto&& obj : m_updatable)
-        obj->BuildUpdate(updatePlayers);
-
-    m_updatable.clear();
-
-    if (updatePlayers.size() > 0)   // I think this is useless, but don't allocate memory if no need
-    {
-        WorldPacket packet(SMSG_UPDATE_OBJECT, 4096);
-        for (auto&& it : updatePlayers)
-        {
-            it.second.BuildPacket(&packet);
-            it.first->GetSession()->SendPacket(&packet);
-            packet.clear();
-        }
-    }
+    SendObjectUpdates();
 
     if (!Instanceable())
     {
@@ -1686,6 +1670,8 @@ void Map::UnloadAll()
     // clear all delayed moves, useless anyway do this moves before map unload.
     _creaturesToMove.clear();
     _gameObjectsToMove.clear();
+    _dynamicObjectsToMove.clear();
+    _areaTriggersToMove.clear();
 
     for (GridRefManager<NGridType>::iterator i = GridRefManager<NGridType>::begin(); i != GridRefManager<NGridType>::end();)
     {
@@ -3039,6 +3025,35 @@ void Map::SendRemoveTransports(Player* player)
     WorldPacket packet;
     transData.BuildPacket(&packet);
     player->GetSession()->SendPacket(&packet);
+}
+
+void Map::SendObjectUpdates()
+{
+    UpdateDataMapType updatePlayers;
+
+    while (!_updateObjects.empty())
+    {
+        Object* obj = *_updateObjects.begin();
+        if (!obj->IsInWorld())
+        {
+            _updateObjects.erase(_updateObjects.begin());
+            continue;
+        }
+
+        _updateObjects.erase(_updateObjects.begin());
+        obj->BuildUpdate(updatePlayers);
+    }
+
+    if (!updatePlayers.empty())
+    {
+        WorldPacket packet(SMSG_UPDATE_OBJECT, 4096);
+        for (auto&& it : updatePlayers)
+        {
+            it.second.BuildPacket(&packet);
+            it.first->GetSession()->SendPacket(&packet);
+            packet.clear();
+        }
+    }
 }
 
 inline void Map::setNGrid(NGridType *grid, uint32 x, uint32 y)

@@ -18,9 +18,15 @@
 #ifndef RATED_PVP_H
 #define RATED_PVP_H
 
+#include "DBCStructure.h"
+#include "DatabaseEnv.h"
 #include "Common.h"
+#include "ObjectGuid.h"
+
+#include <memory>
 
 enum ArenaType : uint32;
+struct ItemTemplate;
 
 struct RatedPvpInfo
 {

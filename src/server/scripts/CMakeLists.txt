@@ -136,7 +136,7 @@ if (ELUNA)
   )
 endif()
 
-add_dependencies(scripts revision.h)
+add_dependencies(scripts revision_data.h)
 
 # Generate precompiled header
 if (USE_SCRIPTPCH)

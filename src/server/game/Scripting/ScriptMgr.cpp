@@ -143,6 +143,7 @@ void ScriptMgr::Unload()
     // Clear scripts for every script type.
     SCR_CLEAR(SpellScriptLoader);
     SCR_CLEAR(ServerScript);
+    SCR_CLEAR(DatabaseScript);
     SCR_CLEAR(WorldScript);
     SCR_CLEAR(FormulaScript);
     SCR_CLEAR(WorldMapScript);
@@ -385,14 +386,82 @@ void ScriptMgr::OnUnknownPacketReceive(WorldSocket* socket, WorldPacket packet)
     FOREACH_SCRIPT(ServerScript)->OnUnknownPacketReceive(socket, packet);
 }
 
+void ScriptMgr::OnAfterDatabasesLoaded(uint32 updateFlags)
+{
+    if (SCR_REG_LST(DatabaseScript).empty())
+        return;
+
+    for (SCR_REG_ITR(DatabaseScript) itr = SCR_REG_LST(DatabaseScript).begin(); itr != SCR_REG_LST(DatabaseScript).end(); ++itr)
+        itr->second->OnAfterDatabasesLoaded(updateFlags);
+}
+
+void ScriptMgr::OnAfterDatabaseLoadCreatureTemplates(std::vector<CreatureTemplate*> creatureTemplates)
+{
+    if (SCR_REG_LST(DatabaseScript).empty())
+        return;
+
+    for (SCR_REG_ITR(DatabaseScript) itr = SCR_REG_LST(DatabaseScript).begin(); itr != SCR_REG_LST(DatabaseScript).end(); ++itr)
+        itr->second->OnAfterDatabaseLoadCreatureTemplates(creatureTemplates);
+}
+
+bool ScriptMgr::OnDatabasesLoading()
+{
+    if (SCR_REG_LST(DatabaseScript).empty())
+        return true;
+
+    bool ok = true;
+    for (SCR_REG_ITR(DatabaseScript) itr = SCR_REG_LST(DatabaseScript).begin(); itr != SCR_REG_LST(DatabaseScript).end(); ++itr)
+        if (!itr->second->OnDatabasesLoading())
+            ok = false;
+
+    return ok;
+}
+
+void ScriptMgr::OnDatabasesKeepAlive()
+{
+    if (SCR_REG_LST(DatabaseScript).empty())
+        return;
+
+    for (SCR_REG_ITR(DatabaseScript) itr = SCR_REG_LST(DatabaseScript).begin(); itr != SCR_REG_LST(DatabaseScript).end(); ++itr)
+        itr->second->OnDatabasesKeepAlive();
+}
+
+void ScriptMgr::OnDatabasesClosing()
+{
+    if (SCR_REG_LST(DatabaseScript).empty())
+        return;
+
+    for (SCR_REG_ITR(DatabaseScript) itr = SCR_REG_LST(DatabaseScript).begin(); itr != SCR_REG_LST(DatabaseScript).end(); ++itr)
+        itr->second->OnDatabasesClosing();
+}
+
+void ScriptMgr::OnDatabaseWarnAboutSyncQueries(bool apply)
+{
+    if (SCR_REG_LST(DatabaseScript).empty())
+        return;
+
+    for (SCR_REG_ITR(DatabaseScript) itr = SCR_REG_LST(DatabaseScript).begin(); itr != SCR_REG_LST(DatabaseScript).end(); ++itr)
+        itr->second->OnDatabaseWarnAboutSyncQueries(apply);
+}
+
 void ScriptMgr::OnOpenStateChange(bool open)
 {
     FOREACH_SCRIPT(WorldScript)->OnOpenStateChange(open);
 }
 
+void ScriptMgr::OnBeforeConfigLoad(bool reload)
+{
+    FOREACH_SCRIPT(WorldScript)->OnBeforeConfigLoad(reload);
+}
+
 void ScriptMgr::OnConfigLoad(bool reload)
 {
     FOREACH_SCRIPT(WorldScript)->OnConfigLoad(reload);
+}
+
+void ScriptMgr::OnAfterConfigLoad(bool reload)
+{
+    FOREACH_SCRIPT(WorldScript)->OnAfterConfigLoad(reload);
 }
 
 void ScriptMgr::OnMotdChange(std::string& newMotd)
@@ -1933,6 +2002,13 @@ ServerScript::ServerScript(const char* name)
     : ScriptObject(name)
 {
     ScriptRegistry<ServerScript>::Instance()->AddScript(this);
+}
+
+DatabaseScript::DatabaseScript(const char* name, std::vector<uint16> enabledHooks)
+    : ScriptObject(name)
+{
+    (void)enabledHooks;
+    ScriptRegistry<DatabaseScript>::Instance()->AddScript(this);
 }
 
 WorldScript::WorldScript(const char* name)

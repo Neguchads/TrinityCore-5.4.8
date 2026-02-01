@@ -777,6 +777,46 @@ void LFGMgr::JoinLfg(Player* player, LfgRoles roles, LfgDungeonSet& dungeons, co
         player->GetSession()->SendLfgUpdateStatus(LFG_UPDATETYPE_ADDED_TO_QUEUE, queueData);
         SetState(gguid, queueId, LFG_STATE_QUEUED);
 
+        if (sWorld->getBoolConfig(CONFIG_LFG_QUEUE_ANNOUNCER_ENABLE))
+        {
+            std::string dungeonNames;
+            for (uint32 dungeonId : dungeons)
+            {
+                if (lfg::LFGDungeonData const* dungeon = GetLFGDungeon(dungeonId))
+                {
+                    if (!dungeonNames.empty())
+                        dungeonNames.append(", ");
+                    dungeonNames.append(dungeon->name);
+                }
+                else
+                {
+                    if (!dungeonNames.empty())
+                        dungeonNames.append(", ");
+                    dungeonNames.append(std::to_string(dungeonId));
+                }
+            }
+
+            if (dungeonNames.empty())
+                dungeonNames = ConcatenateDungeons(dungeons);
+
+            char const* queueType = (category == LFG_CATEGORY_LFR) ? "Raid Finder" : "Dungeon Finder";
+            char const* className = GetClassName(player->GetClass(), LOCALE_enUS);
+            char const* specName = "No Spec";
+            if (uint32 specId = player->GetTalentSpecialization())
+            {
+                if (ChrSpecializationEntry const* specEntry = sChrSpecializationStore.LookupEntry(specId))
+                    if (specEntry->Name[LOCALE_enUS][0] != '\0')
+                        specName = specEntry->Name[LOCALE_enUS];
+            }
+
+            std::string rolesString = lfg::GetRolesString(roles);
+
+            if (sWorld->getBoolConfig(CONFIG_LFG_QUEUE_ANNOUNCER_PLAYERONLY))
+                ChatHandler(player->GetSession()).PSendSysMessage(LANG_LFG_QUEUE_ANNOUNCE_SELF, player->GetName().c_str(), player->GetLevel(), className, specName, rolesString.c_str(), dungeonNames.c_str(), queueType);
+            else
+                sWorld->SendWorldText(LANG_LFG_QUEUE_ANNOUNCE_WORLD, player->GetName().c_str(), player->GetLevel(), className, specName, rolesString.c_str(), dungeonNames.c_str(), queueType);
+        }
+
         if (!isContinue && category != LFG_CATEGORY_SCENARIO)
         {
             uint32 dungeon = isRaid ? *dungeons.begin() : rDungeonId;
@@ -1636,7 +1676,15 @@ void LFGMgr::UpdateProposal(uint32 proposalId, ObjectGuid guid, bool accept)
     if (!allAnswered)
         return;
 
-    bool flex = GetLFGDungeon(proposal.dungeonId)->difficulty == RAID_DIFFICULTY_1025MAN_FLEX;
+    LFGDungeonData const* dungeonEntry = GetLFGDungeon(proposal.dungeonId);
+    if (!dungeonEntry)
+    {
+        TC_LOG_ERROR("lfg", "LFGMgr::UpdateProposal: Invalid dungeonId %u for proposal %u", proposal.dungeonId, proposalId);
+        RemoveProposal(itProposal, LFG_UPDATETYPE_PROPOSAL_FAILED);
+        return;
+    }
+
+    bool flex = dungeonEntry->difficulty == RAID_DIFFICULTY_1025MAN_FLEX;
     bool sendUpdate = proposal.state != LFG_PROPOSAL_SUCCESS;
     proposal.state = LFG_PROPOSAL_SUCCESS;
     time_t joinTime = time(NULL);
@@ -2405,6 +2453,11 @@ uint8 LFGMgr::GetRoles(ObjectGuid guid, uint32 queueId)
 LfgDungeonSet const& LFGMgr::GetSelectedDungeons(ObjectGuid guid, uint32 queueId)
 {
     TC_LOG_TRACE("lfg", "LFGMgr::GetSelectedDungeons: [" UI64FMTD "]", GetGuidForLog(guid));
+    if (!HasQueueId(guid, queueId))
+    {
+        static LfgDungeonSet empty;
+        return empty;
+    }
     return PlayersStore[guid].GetSelectedDungeons(queueId);
 }
 

@@ -25,7 +25,6 @@
 #include "QueryHolder.h"
 #include "Transaction.h"
 #include "Config.h"
-#include "SystemConfig.h"
 #include "Log.h"
 #include "Opcodes.h"
 #include "WorldSession.h"
@@ -73,6 +72,7 @@
 #include "CreatureGroups.h"
 #include "Transport.h"
 #include "ScriptMgr.h"
+#include "DatabaseLoader.h"
 #include "AddonMgr.h"
 #include "LFGMgr.h"
 #include "ConditionMgr.h"
@@ -496,7 +496,10 @@ void World::LoadConfigSettings(bool reload)
     }
 
     if (reload)
+    {
         sLog->LoadFromConfig();
+        sScriptMgr->OnBeforeConfigLoad(reload);
+    }
 
     m_defaultDbcLocale = LocaleConstant(sConfigMgr->GetIntDefault("DBC.Locale", 0));
 
@@ -1368,6 +1371,8 @@ void World::LoadConfigSettings(bool reload)
     // Dungeon finder
     m_int_configs[CONFIG_LFG_OPTIONSMASK]               = sConfigMgr->GetIntDefault("DungeonFinder.OptionsMask", 1);
     m_bool_configs[CONFIG_LFG_SOLO]                     = sConfigMgr->GetBoolDefault("LFGSolo.Enabled", false);
+    m_bool_configs[CONFIG_LFG_QUEUE_ANNOUNCER_ENABLE]   = sConfigMgr->GetBoolDefault("LFG.QueueAnnouncer.Enable", false);
+    m_bool_configs[CONFIG_LFG_QUEUE_ANNOUNCER_PLAYERONLY] = sConfigMgr->GetBoolDefault("LFG.QueueAnnouncer.PlayerOnly", false);
     m_bool_configs[CONFIG_LFG_CASTDESERTER]             = sConfigMgr->GetBoolDefault("DungeonFinder.CastDeserter", false);
     m_bool_configs[CONFIG_LFG_OVERRIDE_ROLES_REQUIRED]  = sConfigMgr->GetBoolDefault("DungeonFinder.OverrideRolesRequired", false);
     m_bool_configs[CONFIG_LFG_MULTIQUEUE_ENABLED]       = sConfigMgr->GetBoolDefault("DungeonFinder.MultiqueueEnabled", false);
@@ -1572,6 +1577,7 @@ void World::LoadConfigSettings(bool reload)
     if (reload)
     {
         sScriptMgr->OnConfigLoad(reload);
+        sScriptMgr->OnAfterConfigLoad(reload);
         sRatedPvpMgr->OnConfigLoad();
     }
 }
@@ -1961,6 +1967,14 @@ void World::SetInitialWorldSettings()
 
     TC_LOG_INFO("server.loading", "Loading Creature templates...");
     sObjectMgr->LoadCreatureTemplates();
+    {
+        CreatureTemplateContainer const* creatures = sObjectMgr->GetCreatureTemplates();
+        std::vector<CreatureTemplate*> creatureTemplates;
+        creatureTemplates.reserve(creatures->size());
+        for (CreatureTemplateContainer::const_iterator itr = creatures->begin(); itr != creatures->end(); ++itr)
+            creatureTemplates.push_back(const_cast<CreatureTemplate*>(&itr->second));
+        sScriptMgr->OnAfterDatabaseLoadCreatureTemplates(std::move(creatureTemplates));
+    }
 
     TC_LOG_INFO("server.loading", "Loading Equipment templates...");           // must be after LoadCreatureTemplates
     sObjectMgr->LoadEquipmentTemplates();
@@ -2284,7 +2298,19 @@ void World::SetInitialWorldSettings()
 
     TC_LOG_INFO("server.loading", "Initializing Scripts...");
     sScriptMgr->Initialize();
-    sScriptMgr->OnConfigLoad(false);                                // must be done after the ScriptMgr has been properly initialized
+    {
+        uint32 updateFlags = sConfigMgr->GetIntDefault("Updates.EnableDatabases", DatabaseLoader::DATABASE_NONE);
+        sScriptMgr->OnAfterDatabasesLoaded(updateFlags);
+    }
+    if (!sScriptMgr->OnDatabasesLoading())
+    {
+        TC_LOG_ERROR("server.loading", "Failed to load module databases. Shutting down.");
+        World::StopNow(ERROR_EXIT_CODE);
+        return;
+    }
+    sScriptMgr->OnBeforeConfigLoad(false);                          // must be done after the ScriptMgr has been properly initialized
+    sScriptMgr->OnConfigLoad(false);
+    sScriptMgr->OnAfterConfigLoad(false);
 
     TC_LOG_INFO("server.loading", "Validating spell scripts...");
     sObjectMgr->ValidateSpellScripts();
@@ -2774,6 +2800,7 @@ void World::Update(uint32 diff)
         CharacterDatabase.KeepAlive();
         LoginDatabase.KeepAlive();
         WorldDatabase.KeepAlive();
+        sScriptMgr->OnDatabasesKeepAlive();
     }
 
     if (m_timers[WUPDATE_GUILDSAVE].Passed())

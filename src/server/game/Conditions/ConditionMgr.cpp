@@ -864,8 +864,15 @@ std::string Condition::ToString(bool ext /*= false*/) const
     std::ostringstream ss;
     ss << "[Condition ";
     ss << "SourceType: " << SourceType;
-    if (SourceType < CONDITION_SOURCE_TYPE_MAX)
-        ss << " (" << ConditionMgr::StaticSourceTypeData[SourceType] << ")";
+    if (SourceType < CONDITION_SOURCE_TYPE_MAX_DB_ALLOWED)
+    {
+        if (ConditionMgr::StaticSourceTypeData[SourceType])
+            ss << " (" << ConditionMgr::StaticSourceTypeData[SourceType] << ")";
+        else
+            ss << " (UNNAMED)";
+    }
+    else if (SourceType == CONDITION_SOURCE_TYPE_REFERENCE_CONDITION)
+        ss << " (Reference)";
     else
         ss << " (Unknown)";
     if (ConditionMgr::CanHaveSourceGroupSet(SourceType))

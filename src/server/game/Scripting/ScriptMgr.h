@@ -21,6 +21,7 @@
 #include "Common.h"
 #include "ObjectGuid.h"
 #include <atomic>
+#include <vector>
 
 #include "DBCStores.h"
 #include "ObjectMgr.h"
@@ -39,6 +40,7 @@ class Channel;
 class ChatCommand;
 class Creature;
 class CreatureAI;
+struct CreatureTemplate;
 class DynamicObject;
 class GameObject;
 class GameObjectAI;
@@ -68,6 +70,14 @@ class WorldSession;
 
 enum class QuestGiverStatus : uint32;
 enum QuestStatus : uint8;
+
+// AzerothCore-compatible DatabaseScript hooks (currently unused by core).
+enum DatabaseHook
+{
+    DATABASEHOOK_ON_AFTER_DATABASES_LOADED,
+    DATABASEHOOK_ON_AFTER_DATABASE_LOAD_CREATURETEMPLATES,
+    DATABASEHOOK_END
+};
 
 struct AuctionEntry;
 struct ConditionSourceInfo;
@@ -235,6 +245,31 @@ public:
     // Called when an invalid (unknown opcode) packet is received by a client. The packet is a reference to the orignal
     // packet; not a copy. This allows you to actually handle unknown packets (for whatever purpose).
     virtual void OnUnknownPacketReceive(WorldSocket* /*socket*/, WorldPacket& /*packet*/) { }
+};
+
+class DatabaseScript : public ScriptObject
+{
+protected:
+
+        DatabaseScript(const char* name, std::vector<uint16> enabledHooks = std::vector<uint16>());
+
+public:
+
+    // AzerothCore-style hooks for module database lifecycle.
+    virtual void OnAfterDatabasesLoaded(uint32 /*updateFlags*/) { }
+    virtual void OnAfterDatabaseLoadCreatureTemplates(std::vector<CreatureTemplate*> /*creatureTemplates*/) { }
+
+    // Called when script databases should be opened/updated/prepared. Return false to stop startup.
+    virtual bool OnDatabasesLoading() { return true; }
+
+    // Called during periodic DB keepalive.
+    virtual void OnDatabasesKeepAlive() { }
+
+    // Called when script databases should be closed.
+    virtual void OnDatabasesClosing() { }
+
+    // Called when the core toggles sync query warning.
+    virtual void OnDatabaseWarnAboutSyncQueries(bool /*apply*/) { }
 };
 
 class WorldScript : public ScriptObject
@@ -1034,16 +1069,27 @@ public: /* ServerScript */
     void OnPacketSend(WorldSession* session, WorldPacket packet);
     void OnUnknownPacketReceive(WorldSocket* socket, WorldPacket packet);
 
-public: /* WorldScript */
-
-    void OnOpenStateChange(bool open);
-    void OnConfigLoad(bool reload);
-    void OnMotdChange(std::string& newMotd);
+  public: /* WorldScript */
+  
+      void OnOpenStateChange(bool open);
+      void OnBeforeConfigLoad(bool reload);
+      void OnConfigLoad(bool reload);
+      void OnAfterConfigLoad(bool reload);
+      void OnMotdChange(std::string& newMotd);
     void OnShutdownInitiate(ShutdownExitCode code, ShutdownMask mask);
     void OnShutdownCancel();
     void OnWorldUpdate(uint32 diff);
     void OnStartup();
     void OnShutdown();
+
+public: /* DatabaseScript */
+
+    void OnAfterDatabasesLoaded(uint32 updateFlags);
+    void OnAfterDatabaseLoadCreatureTemplates(std::vector<CreatureTemplate*> creatureTemplates);
+    bool OnDatabasesLoading();
+    void OnDatabasesKeepAlive();
+    void OnDatabasesClosing();
+    void OnDatabaseWarnAboutSyncQueries(bool apply);
 
 public: /* FormulaScript */
 

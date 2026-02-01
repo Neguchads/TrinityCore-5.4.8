@@ -242,11 +242,42 @@ struct BattlegroundABScore : public BattlegroundScore
     uint32 BasesDefended;
 };
 
+struct BG_AB_CapturePointInfo
+{
+    uint8 _state = BG_AB_NODE_TYPE_NEUTRAL;
+    TeamId _ownerTeamId = TEAM_NEUTRAL;
+};
+
 class BattlegroundAB : public Battleground
 {
     public:
         BattlegroundAB();
         ~BattlegroundAB();
+
+        BG_AB_CapturePointInfo GetCapturePointInfo(uint8 nodeId) const
+        {
+            BG_AB_CapturePointInfo info;
+            if (nodeId >= BG_AB_DYNAMIC_NODES_COUNT)
+                return info;
+
+            info._state = m_Nodes[nodeId];
+            switch (info._state)
+            {
+                case BG_AB_NODE_STATUS_ALLY_CONTESTED:
+                case BG_AB_NODE_STATUS_ALLY_OCCUPIED:
+                    info._ownerTeamId = TEAM_ALLIANCE;
+                    break;
+                case BG_AB_NODE_STATUS_HORDE_CONTESTED:
+                case BG_AB_NODE_STATUS_HORDE_OCCUPIED:
+                    info._ownerTeamId = TEAM_HORDE;
+                    break;
+                default:
+                    info._ownerTeamId = TEAM_NEUTRAL;
+                    break;
+            }
+
+            return info;
+        }
 
         void AddPlayer(Player* player) override;
         void StartingEventCloseDoors() override;

@@ -28,7 +28,6 @@
 #include "ScriptedCreature.h"
 #include "SharedDefines.h"
 #include "Spell.h"
-#include "SystemConfig.h"
 #include "Vehicle.h"
 #include "WeatherMgr.h"
 #include "ReputationMgr.h"

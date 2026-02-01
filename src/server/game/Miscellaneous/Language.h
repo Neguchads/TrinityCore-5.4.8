@@ -752,7 +752,10 @@ enum TrinityStrings
 //  LANG_BG_AB_START_TWO_MINUTES        = 754, - defined above
 //  LANG_BG_EY_START_TWO_MINUTES        = 755, - defined above
 
-    // Room for BG/ARENA                = 773-784, 788-799 not used
+    LANG_LFG_QUEUE_ANNOUNCE_SELF        = 40000,
+    LANG_LFG_QUEUE_ANNOUNCE_WORLD       = 40001,
+
+    // Room for BG/ARENA                = 775-784, 788-799 not used
     LANG_ARENA_TESTING                  = 785,
     LANG_AUTO_ANN                       = 786,
     LANG_ANNOUNCE_COLOR                 = 787,

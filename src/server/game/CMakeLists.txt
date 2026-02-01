@@ -337,7 +337,7 @@ if (ELUNA)
   endif()      
 endif()
 
-add_dependencies(game revision.h)
+add_dependencies(game revision_data.h)
 
 # Generate precompiled header
 if (USE_COREPCH)

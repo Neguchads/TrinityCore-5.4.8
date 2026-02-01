@@ -42,7 +42,6 @@
 #include "ScriptMgr.h"
 #include "SharedDefines.h"
 #include "SocialMgr.h"
-#include "SystemConfig.h"
 #include "UpdateMask.h"
 #include "Util.h"
 #include "World.h"
