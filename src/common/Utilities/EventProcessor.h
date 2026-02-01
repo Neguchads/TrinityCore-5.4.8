@@ -22,6 +22,7 @@
 
 #include <map>
 #include <functional>
+#include <algorithm>
 
 // Note. All times are in milliseconds here.
 
