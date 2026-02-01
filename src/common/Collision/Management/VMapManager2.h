@@ -20,6 +20,7 @@
 
 #include "IVMapManager.h"
 #include "Define.h"
+#include <vector>
 #include <mutex>
 #include <unordered_map>
 
