@@ -33,3 +33,8 @@ jobs:
       run: |
         cd bin
         make -j 4 -k && make install
+    - name: Check executables
+      run: |
+        cd bin/check_install/bin
+        ./authserver --version
+        ./worldserver --version
