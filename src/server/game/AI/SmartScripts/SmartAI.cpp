@@ -131,7 +131,8 @@ void SmartAI::StartPath(bool run/* = false*/, uint32 pathId/* = 0*/, bool repeat
     if (HasEscortState(SMART_ESCORT_ESCORTING))
         StopPath();
 
-    if (pathId){
+    if (pathId)
+    {
         if (!LoadPath(pathId))
             return;
     }

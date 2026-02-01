@@ -28,7 +28,8 @@
 
 void UnitAI::AttackStart(Unit* victim)
 {
-    if (victim && me->Attack(victim, true)){
+    if (victim && me->Attack(victim, true))
+    {
         // Clear distracted state on attacking
         if (me->HasUnitState(UNIT_STATE_DISTRACTED))
         {

@@ -839,7 +839,8 @@ uint32 PathGenerator::FixupShortcuts(dtPolyRef* path, int npath)
     for (int i = dtMin(maxLookAhead, npath) - 1; i > 1 && cut == 0; i--) {
         for (int j = 0; j < nneis; j++)
         {
-            if (path[i] == neis[j]) {
+            if (path[i] == neis[j])
+            {
                 cut = i;
                 break;
             }

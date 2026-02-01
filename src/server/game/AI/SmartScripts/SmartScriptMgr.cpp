@@ -1289,7 +1289,8 @@ bool SmartAIMgr::IsTextValid(SmartScriptHolder const& e, uint32 id)
     uint32 entry = 0;
     if (e.entryOrGuid >= 0)
         entry = uint32(e.entryOrGuid);
-    else {
+    else
+    {
         entry = uint32(abs(e.entryOrGuid));
         CreatureData const* data = sObjectMgr->GetCreatureData(entry);
         if (!data)
