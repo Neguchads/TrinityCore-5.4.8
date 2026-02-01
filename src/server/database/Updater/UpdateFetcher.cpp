@@ -22,6 +22,7 @@
 #include "CryptoHash.h"
 #include "Log.h"
 #include "QueryResult.h"
+#include "Util.h"
 #include <algorithm>
 #include <boost/filesystem/directory.hpp>
 #include <boost/filesystem/operations.hpp>
