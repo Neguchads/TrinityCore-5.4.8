@@ -2,7 +2,7 @@
 
 Discord link: https://discord.gg/byBCHbwJEg
 
-Client exe files" https://mega.nz/file/xUJDkIDA#I3TMdPymMw8ISNwIUgSaXLl5oHJHYFxAKyPNMXUQjgY
+Client exe files: https://github.com/brian8544/WoWRegeneration/blob/main/Binary/WoWRegeneration.exe
 
 ## Requirements
 + Platform: Linux, Windows or Mac
@@ -21,12 +21,8 @@ Its HIGHLY recommanded to disable ELUNA with bot enable.
 
 Few thing to get it working beside importing databases:
 + copy playerbots.conf into your build dir directory or where your executables are
-+ you MUST have enUS dbc in order to make bots functionnal
-+ add to your worldconf the following settings
-	-> PlayerbotsDatabaseInfo = "127.0.0.1;3306;root;root;mop_playerbots"
-	-> PlayerbotsDatabase.WorkerThreads     = 1
-	-> PlayerbotsDatabase.SynchThreads     = 1
-	-> Logger.playerbots=3,Console Server
++ you MUST have enUS dbc in order to make bots functional
++ modify playerbots.conf
 + the first start may take times, be patient let everything load and randomize
 
 
