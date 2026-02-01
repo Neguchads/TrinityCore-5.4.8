@@ -16,6 +16,7 @@
 */
 #include "DatabaseEnvFwd.h" 
 #include "WorldSocket.h"        // must be first to make ACE happy with ACE includes in it
+#include "RASession.h"
 
 #include "Common.h"
 #include "World.h"

@@ -20,16 +20,19 @@
 #include "Common.h"
 #include "Config.h"
 #include "Define.h"
+#include "Duration.h"
 #include "Errors.h"
 #include "Log.h"
 #include "LogMessage.h"
 #include "Util.h"
+#include "WorldModel.h"
+#include <boost/filesystem/directory.hpp>
+#include <G3D/Vector4.h>
+#include <openssl/evp.h>
 #include <algorithm>
-#include <cstring>
 #include <memory>
-#include <mutex>
-#include <set>
-#include <sstream>
-#include <string>
-#include <unordered_map>
 #include <vector>
+
+#if TRINITY_PLATFORM == TRINITY_PLATFORM_WINDOWS
+#include <Windows.h>
+#endif
