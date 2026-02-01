@@ -20,6 +20,3 @@
 DatabaseWorkerPool<WorldDatabaseConnection> WorldDatabase;
 DatabaseWorkerPool<CharacterDatabaseConnection> CharacterDatabase;
 DatabaseWorkerPool<LoginDatabaseConnection> LoginDatabase;
-#ifdef PLAYERBOTS
-DatabaseWorkerPool<PlayerbotsDatabaseConnection> PlayerbotsDatabase;
-#endif

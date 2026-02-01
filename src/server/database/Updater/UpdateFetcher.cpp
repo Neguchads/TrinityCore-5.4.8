@@ -22,10 +22,12 @@
 #include "CryptoHash.h"
 #include "Log.h"
 #include "QueryResult.h"
-#include "Util.h"
+#include <algorithm>
 #include <boost/filesystem/directory.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <cctype>
 #include <fstream>
+#include <set>
 #include <sstream>
 
 using namespace boost::filesystem;
@@ -41,9 +43,10 @@ struct UpdateFetcher::DirectoryEntry
 UpdateFetcher::UpdateFetcher(Path const& sourceDirectory,
     std::function<void(std::string const&)> const& apply,
     std::function<void(Path const& path)> const& applyFile,
-    std::function<QueryResult(std::string const&)> const& retrieve) :
+    std::function<QueryResult(std::string const&)> const& retrieve,
+    std::string const& dbModuleName) :
         _sourceDirectory(std::make_unique<Path>(sourceDirectory)), _apply(apply), _applyFile(applyFile),
-        _retrieve(retrieve)
+        _retrieve(retrieve), _dbModuleName(dbModuleName)
 {
 }
 
@@ -97,6 +100,7 @@ void UpdateFetcher::FillFileListRecursively(Path const& path, LocaleFileStorage&
 UpdateFetcher::DirectoryStorage UpdateFetcher::ReceiveIncludedDirectories() const
 {
     DirectoryStorage directories;
+    std::set<std::string> includedPaths;
 
     QueryResult const result = _retrieve("SELECT `path`, `state` FROM `updates_include`");
     if (!result)
@@ -120,6 +124,13 @@ UpdateFetcher::DirectoryStorage UpdateFetcher::ReceiveIncludedDirectories() cons
 
         DirectoryEntry const entry = { p, AppliedFileEntry::StateConvert(fields[1].GetString()) };
         directories.push_back(entry);
+        {
+            std::string norm = p.lexically_normal().generic_string();
+#ifdef _WIN32
+            std::transform(norm.begin(), norm.end(), norm.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+#endif
+            includedPaths.insert(norm);
+        }
 
         TC_LOG_TRACE("sql.updates", "Added applied file \"%s\" from remote.", p.filename().generic_string().c_str());
 

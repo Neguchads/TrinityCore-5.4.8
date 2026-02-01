@@ -42,6 +42,9 @@ public:
     // Load all databases
     bool Load();
 
+    uint32 GetUpdateFlags() const { return _updateFlags; }
+    void SetUpdateFlags(uint32 updateFlags) { _updateFlags = updateFlags; }
+
     enum DatabaseTypeFlags
     {
         DATABASE_NONE       = 0,
@@ -49,9 +52,8 @@ public:
         DATABASE_LOGIN      = 1,
         DATABASE_CHARACTER  = 2,
         DATABASE_WORLD      = 4,
-        DATABASE_PLAYERBOTS = 8,
 
-        DATABASE_MASK_ALL   = DATABASE_LOGIN | DATABASE_CHARACTER | DATABASE_WORLD | DATABASE_PLAYERBOTS
+        DATABASE_MASK_ALL   = DATABASE_LOGIN | DATABASE_CHARACTER | DATABASE_WORLD
     };
 
 private:
@@ -69,7 +71,7 @@ private:
 
     std::string const _logger;
     bool const _autoSetup;
-    uint32 const _updateFlags;
+    uint32 _updateFlags;
 
     std::queue<Predicate> _open, _populate, _update, _prepare;
     std::stack<Closer> _close;

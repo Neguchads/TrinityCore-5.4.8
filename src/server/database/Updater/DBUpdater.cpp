@@ -25,7 +25,10 @@
 #include "QueryResult.h"
 #include "StartProcess.h"
 #include "UpdateFetcher.h"
+#include <boost/filesystem/directory.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 
@@ -85,6 +88,12 @@ std::string DBUpdater<LoginDatabaseConnection>::GetBaseFile()
 }
 
 template<>
+std::string DBUpdater<LoginDatabaseConnection>::GetModuleDBFolder()
+{
+    return "auth";
+}
+
+template<>
 bool DBUpdater<LoginDatabaseConnection>::IsEnabled(uint32 const updateMask)
 {
     // This way silences warnings under msvc
@@ -108,6 +117,12 @@ template<>
 std::string DBUpdater<WorldDatabaseConnection>::GetBaseFile()
 {
     return GitRevision::GetFullDatabase();
+}
+
+template<>
+std::string DBUpdater<WorldDatabaseConnection>::GetModuleDBFolder()
+{
+    return "world";
 }
 
 template<>
@@ -144,49 +159,30 @@ std::string DBUpdater<CharacterDatabaseConnection>::GetBaseFile()
 }
 
 template<>
+std::string DBUpdater<CharacterDatabaseConnection>::GetModuleDBFolder()
+{
+    return "characters";
+}
+
+template<>
 bool DBUpdater<CharacterDatabaseConnection>::IsEnabled(uint32 const updateMask)
 {
     // This way silences warnings under msvc
     return (updateMask & DatabaseLoader::DATABASE_CHARACTER) ? true : false;
 }
 
-// Playerbots Database
-template<>
-std::string DBUpdater<PlayerbotsDatabaseConnection>::GetConfigEntry()
-{
-    return "Updates.Playerbots";
-}
-
-template<>
-std::string DBUpdater<PlayerbotsDatabaseConnection>::GetTableName()
-{
-    return "Playerbots";
-}
-
-template<>
-std::string DBUpdater<PlayerbotsDatabaseConnection>::GetBaseFile()
-{
-    return GitRevision::GetFullDatabase();
-}
-
-template<>
-bool DBUpdater<PlayerbotsDatabaseConnection>::IsEnabled(uint32 const updateMask)
-{
-    // This way silences warnings under msvc
-    return (updateMask & DatabaseLoader::DATABASE_PLAYERBOTS) ? true : false;
-}
-
-template<>
-BaseLocation DBUpdater<PlayerbotsDatabaseConnection>::GetBaseLocationType()
-{
-    return LOCATION_DOWNLOAD;
-}
 
 // All
 template<class T>
 BaseLocation DBUpdater<T>::GetBaseLocationType()
 {
     return LOCATION_REPOSITORY;
+}
+
+template<class T>
+std::string DBUpdater<T>::GetModuleDBFolder()
+{
+    return "";
 }
 
 template<class T>
@@ -252,7 +248,8 @@ bool DBUpdater<T>::Update(DatabaseWorkerPool<T>& pool)
 
     UpdateFetcher updateFetcher(sourceDirectory, [&](std::string const& query) { DBUpdater<T>::Apply(pool, query); },
         [&](Path const& file) { DBUpdater<T>::ApplyFile(pool, file); },
-            [&](std::string const& query) -> QueryResult { return DBUpdater<T>::Retrieve(pool, query); });
+            [&](std::string const& query) -> QueryResult { return DBUpdater<T>::Retrieve(pool, query); },
+            DBUpdater<T>::GetModuleDBFolder());
 
     UpdateResult result;
     try
@@ -443,5 +440,4 @@ template class TC_DATABASE_API DBUpdater<LoginDatabaseConnection>;
 template class TC_DATABASE_API DBUpdater<WorldDatabaseConnection>;
 template class TC_DATABASE_API DBUpdater<CharacterDatabaseConnection>;
 #ifdef PLAYERBOTS
-template class TC_DATABASE_API DBUpdater<PlayerbotsDatabaseConnection>;
 #endif
