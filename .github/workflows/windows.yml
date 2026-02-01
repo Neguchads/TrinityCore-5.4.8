@@ -11,7 +11,6 @@ concurrency:
 
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   REPO_DIR : ${{github.workspace}}
   BUILD_DIR: ${{github.workspace}}/bin/builddir
@@ -23,7 +22,6 @@ jobs:
     runs-on: windows-2022
     
     steps:
-    #git checkout
     - uses: actions/checkout@v4
 
     - uses: FranzDiebold/github-env-vars-action@v2.8.0
@@ -50,14 +48,13 @@ jobs:
           # this build step will fail          
     - name: windows dependencies
       run: |
-        # MySQL - install without version to get latest
-        choco install -y mysql
-        # OpenSSL
-        choco install -y openssl --version=3.1.1
-        # CMake
-        choco install -y cmake
-        # Make
+        #make
         choco install -y make
+        #cmake
+        choco install -y cmake
+        #openssl
+        choco install -y openssl --version=3.1.1
+      #git bash shell
       shell: bash
 
     #build and install
@@ -68,7 +65,7 @@ jobs:
         cd $GITHUB_WORKSPACE
         
         mkdir -p build && cd build
-        cmake .. -DTOOLS=ON -DELUNA=1 -A x64
+        cmake .. -A x64
         cmake --build . --config RelWithDebInfo --parallel 4
       #git bash shell
       shell: bash
@@ -77,20 +74,13 @@ jobs:
         cd ${{github.workspace}}/build/bin/RelWithDebInfo
         
         dir
-        # Find MySQL installation directory dynamically
-        $mysqlPath = Get-ChildItem "C:\Program Files\MySQL" -Directory | Select-Object -First 1 -ExpandProperty FullName
-        if ($mysqlPath) {
-          Copy-Item "$mysqlPath\lib\libmysql.dll" -Destination "${{github.workspace}}/build/bin/RelWithDebInfo/libmysql.dll" -ErrorAction SilentlyContinue
-        }
-        Copy-Item "C:\Program Files\OpenSSL\bin\libcrypto-3-x64.dll" -Destination "${{github.workspace}}/build/bin/RelWithDebInfo/libcrypto-3-x64.dll" -ErrorAction SilentlyContinue
-        Copy-Item "C:\Program Files\OpenSSL\bin\libssl-3-x64.dll" -Destination "${{github.workspace}}/build/bin/RelWithDebInfo/libssl-3-x64.dll" -ErrorAction SilentlyContinue
-        if (Test-Path "${{github.workspace}}/contrib/lua_scripts") {
-          Move-Item "${{github.workspace}}/contrib/lua_scripts" -Destination "${{github.workspace}}/build/bin/RelWithDebInfo/lua_scripts" -Force
-        }
+          copy "C:/Program Files/MySQL/MySQL Server 8.0/lib/libmysql.dll" ${{github.workspace}}/build/bin/RelWithDebInfo/libmysql.dll
+          copy "C:/Program Files/OpenSSL/bin/libcrypto-3-x64.dll" ${{github.workspace}}/build/bin/RelWithDebInfo/libcrypto-3-x64.dll
+          copy "C:/Program Files/OpenSSL/bin/libssl-3-x64.dll" ${{github.workspace}}/build/bin/RelWithDebInfo/libssl-3-x64.dll
+          move ${{github.workspace}}/contrib/lua_scripts ${{github.workspace}}/build/bin/RelWithDebInfo/lua_scripts
         
-        .\authserver --version
-        .\worldserver --version
-      shell: pwsh
+        ./authserver --version
+        ./worldserver --version
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
