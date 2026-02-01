@@ -17,7 +17,7 @@ set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 # Set projectname (must be done AFTER setting configurationtypes)
-project(Pandaria_5.4.8)
+project(TrinityCore_5.4.8)
 
 # CMake policies (can not be handled elsewhere)
 cmake_policy(SET CMP0005 NEW)
@@ -61,6 +61,11 @@ include(CheckIncludeFiles)
 # set default buildoptions and print them
 include(cmake/options.cmake)
 
+# Build info used by GitRevision/GetFullVersion and resource files
+add_compile_definitions(
+  TRINITY_BUILD_TYPE="$<CONFIG>"
+  TRINITY_BUILD_HAS_DEBUG_INFO=$<CONFIG:Debug,RelWithDebInfo>)
+
 # turn off PCH totally if enabled (hidden setting, mainly for devs)
 if( NOPCH )
   set(USE_COREPCH 0)
@@ -77,6 +82,11 @@ set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "${CMAKE_COMMAND} -E time")
 
 # find mysql client binary (needed by genrev)
 find_package(MySQL OPTIONAL_COMPONENTS binary)
+
+# Find Git for revision detection
+if(NOT WITHOUT_GIT)
+  find_package(Git)
+endif()
 
 # Find revision ID and hash of the sourcetree
 include(cmake/genrev.cmake)

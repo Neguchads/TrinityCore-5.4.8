@@ -17,7 +17,4 @@ if(TOOLS)
     add_subdirectory(tools)
 endif(TOOLS)
 
-if (UPDATER)
-  add_subdirectory(updater)
-endif()
 

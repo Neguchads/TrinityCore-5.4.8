@@ -47,7 +47,7 @@ else()
 endif()
 
 if( ELUNA )
-  message("* Build Eluna LuaEngine   : Yes (default)")
+  message("* Build Eluna LuaEngine   : Yes")
   add_definitions(-DELUNA)
 else()
   message("* Build Eluna LuaEngine   : No")
