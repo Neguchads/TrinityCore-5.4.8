@@ -23,6 +23,8 @@
 #include "DetourNavMeshQuery.h"
 #include "MapDefines.h"
 #include "MoveSplineInitArgs.h"
+#include "ObjectGuid.h"
+#include "Object.h"
 
 class Unit;
 

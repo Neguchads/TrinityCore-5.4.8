@@ -19,6 +19,11 @@
 #define SF_LFG_H
 
 #include "Common.h"
+#include "ObjectGuid.h"
+#include <list>
+#include <map>
+#include <set>
+#include <string>
 
 enum
 {

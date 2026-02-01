@@ -19,7 +19,13 @@
 #define SERVICEMGR_H
 
 #include "Common.h"
+#include "DatabaseEnvFwd.h"
+#include "ObjectGuid.h"
 #include <atomic>
+
+class Creature;
+class Item;
+class Player;
 
 enum RidingSpells
 {

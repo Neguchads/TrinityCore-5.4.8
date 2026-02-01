@@ -16,6 +16,7 @@
 */
 
 #include "Common.h"
+#include "Errors.h"
 #include "ByteBuffer.h"
 #include "WorldPacket.h"
 #include "UpdateData.h"

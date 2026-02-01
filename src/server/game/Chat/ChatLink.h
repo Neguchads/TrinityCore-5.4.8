@@ -18,6 +18,7 @@
 #ifndef TRINITYCORE_CHATLINK_H
 #define TRINITYCORE_CHATLINK_H
 
+#include "Common.h"
 #include "SharedDefines.h"
 #include <sstream>
 #include <list>
@@ -29,6 +30,7 @@ struct ItemRandomPropertiesEntry;
 class SpellInfo;
 struct AchievementEntry;
 struct GlyphPropertiesEntry;
+struct CurrencyTypesEntry;
 class Quest;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

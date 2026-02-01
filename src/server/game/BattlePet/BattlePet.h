@@ -19,8 +19,14 @@
 #define BATTLE_PET_H
 
 #include "Common.h"
+#include "ObjectGuid.h"
 #include "BattlePetAbilityEffect.h"
 #include "BattlePetAura.h"
+#include <array>
+#include <list>
+#include <memory>
+#include <string>
+#include <vector>
 
 class Player;
 

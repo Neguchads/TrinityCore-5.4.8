@@ -19,7 +19,10 @@
 #define SC_ACMGR_H
 
 #include "Common.h"
+#include "Object.h"
+#include "ObjectGuid.h"
 #include "SharedDefines.h"
+#include <unordered_map>
 
 class Player;
 class ChatHandler;

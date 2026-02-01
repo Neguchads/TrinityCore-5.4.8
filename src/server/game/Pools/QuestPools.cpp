@@ -17,6 +17,12 @@
 
 #include "QuestPools.h"
 
+#include "DatabaseEnv.h"
+#include "Errors.h"
+#include "Log.h"
+#include "ObjectMgr.h"
+#include "Util.h"
+
 /*static*/ QuestPoolMgr* QuestPoolMgr::instance()
 {
     static QuestPoolMgr instance;

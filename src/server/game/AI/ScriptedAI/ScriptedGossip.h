@@ -19,6 +19,7 @@
 #define SC_GOSSIP_H
 
 #include "GossipDef.h"
+#include "ObjectGuid.h"
 #include "QuestDef.h"
 
 // Gossip Item Text

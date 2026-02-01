@@ -19,6 +19,16 @@
 #define PET_BATTLE_H
 
 #include "BattlePet.h"
+#include "Define.h"
+#include "ObjectGuid.h"
+#include <map>
+#include <set>
+#include <vector>
+#include <G3D/Vector3.h>
+
+class Creature;
+class Player;
+class Unit;
 
 enum PetBattleMisc
 {

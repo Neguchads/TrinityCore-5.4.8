@@ -17,6 +17,12 @@
 
 #include "WordFilterMgr.h"
 
+#include "DatabaseEnv.h"
+#include "Log.h"
+#include "Util.h"
+
+#include <algorithm>
+
 bool NormalizeWord(std::string& utf8String)
 {
     // remove spaces

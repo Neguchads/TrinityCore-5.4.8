@@ -17,7 +17,12 @@
 
 #include "Threading.h"
 #include "Errors.h"
+#include <system_error>
 #include <vector>
+
+#if defined(WIN32)
+#include <Windows.h>
+#endif
 
 using namespace MopCore;
 

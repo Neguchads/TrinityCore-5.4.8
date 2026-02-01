@@ -20,6 +20,12 @@
 
 #include "BattlePet.h"
 #include "Common.h"
+#include <map>
+#include <set>
+#include <vector>
+
+class Creature;
+class Map;
 
 #define BATTLE_PET_SPAWN_MGR_UPDATE 2000
 

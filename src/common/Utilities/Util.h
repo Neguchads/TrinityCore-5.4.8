@@ -18,6 +18,7 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
+#include "Define.h"
 #include "Duration.h"
 #include "Errors.h"
 #include "Optional.h"

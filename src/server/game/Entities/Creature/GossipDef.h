@@ -19,7 +19,12 @@
 #define TRINITYCORE_GOSSIP_H
 
 #include "Common.h"
+#include "ObjectGuid.h"
 #include "NPCHandler.h"
+#include "QuestDef.h"
+#include <map>
+#include <string>
+#include <vector>
 
 class WorldSession;
 

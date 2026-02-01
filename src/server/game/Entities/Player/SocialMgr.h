@@ -20,6 +20,7 @@
 
 #include "DatabaseEnv.h"
 #include "Common.h"
+#include "ObjectGuid.h"
 
 class SocialMgr;
 class PlayerSocial;

@@ -31,6 +31,7 @@
 class Player;
 
 class ObjectMgr;
+class Field;
 
 #define MAX_QUEST_LOG_SIZE 25
 

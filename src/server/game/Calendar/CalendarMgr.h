@@ -19,6 +19,7 @@
 #define TRINITY_CALENDARMGR_H
 
 #include "Common.h"
+#include "ObjectGuid.h"
 #include "WorldPacket.h"
 
 enum CalendarMailAnswers

@@ -19,9 +19,15 @@
 #define SF_LFGQUEUE_H
 
 #include "LFG.h"
+#include "Timer.h"
 #include "Util.h"
+#include <algorithm>
+#include <list>
 #include <random>
+#include <set>
+#include <sstream>
 #include <numeric>
+#include <vector>
 
 #define LFG_QUEUE_PROFILING
 

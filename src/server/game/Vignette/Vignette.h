@@ -20,6 +20,7 @@
 
 #include "Common.h"
 #include "Object.h"
+#include "Creature.h"
 #include "DB2Stores.h"
 #include "GameObject.h"
 
