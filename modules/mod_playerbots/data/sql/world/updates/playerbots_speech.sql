@@ -7,7 +7,6 @@ CREATE TABLE `playerbots_speech` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 INSERT INTO `playerbots_speech` VALUES
 (NULL, 'taunt', 'I have puppies under my armor!', 'say'),
 (NULL, 'taunt', 'Bite me, <target>!', 'say'),
@@ -123,7 +122,6 @@ INSERT INTO `playerbots_speech` VALUES
 (NULL, 'taunt', 'The beast with me is nothing compared to the beast within...', 'say'),
 (NULL, 'taunt', 'Witness the firepower of this fully armed huntsman!', 'say');
 
-
 INSERT INTO `playerbots_speech` VALUES
 (NULL, 'critical health', 'Heal me! Quick!', 'yell'),
 (NULL, 'critical health', 'Almost dead! Heal me!', 'yell'),
@@ -135,7 +133,6 @@ INSERT INTO `playerbots_speech` VALUES
 (NULL, 'critical health', 'I will die. I will die. I will die. Heal!', 'yell'),
 (NULL, 'critical health', 'Healers, where are you? I am dying!', 'yell'),
 (NULL, 'critical health', 'Oh the pain. Heal me quick!', 'yell');
-
 
 INSERT INTO `playerbots_speech` VALUES
 (NULL, 'low health', 'Need heal', 'say'),
@@ -149,7 +146,6 @@ INSERT INTO `playerbots_speech` VALUES
 (NULL, 'low health', 'Are there any healers?', 'say'),
 (NULL, 'low health', 'Why do they always punch me in the face? Need heal', 'say'),
 (NULL, 'low health', 'Can anybody heal me a bit?', 'say');
-
 
 INSERT INTO `playerbots_speech` VALUES
 (NULL, 'low mana', 'OOM', 'say'),
@@ -233,4 +229,3 @@ INSERT INTO `playerbots_speech` VALUES
 (NULL, 'no ammo', 'That\'s it! No <ammo>!', 'say'),
 (NULL, 'no ammo', 'And you have my bow... Oops, no <ammo>!', 'say'),
 (NULL, 'no ammo', 'Need ammo!', 'yell');
-

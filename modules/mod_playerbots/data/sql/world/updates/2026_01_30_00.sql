@@ -26,7 +26,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('string_unknown_area', 'somewhere', 0, 0, '', 'Quelque part.', '', '', '', '', '', ''),
 ('string_empty_link', 'something', 0, 0, '', 'quelque chose', '', '', '', '', '', ''),
 
-
 -- looting item events
 -- usable placeholders:
 -- %item_link
@@ -140,8 +139,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_looting_item_uncommon', 'At least %item_link has some use. Not the worst loot.', 0, 0, '', 'Au moins %item_link a une certaine utilité. Ce n’est pas le pire butin.', '', '', '', '', '', ''),
 ('broadcast_looting_item_uncommon', '%item_link might just be the one thing I need for the day.', 0, 0, '', 'Hmm, le lien %item_link pourrait bien être exactement ce dont j’ai besoin pour la journée.', '', '', '', '', '', ''),
 
-
-
 -- quest events
 -- usable placeholders:
 -- %quest_link
@@ -190,7 +187,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_accepted_generic', 'Took %quest_link, now to see what it’s all about.', 0, 0, '', 'J’ai pris %quest_link, maintenant je vais voir de quoi il s’agit.', '', '', '', '', '', ''),
 ('broadcast_quest_accepted_generic', 'Just accepted %quest_link, let’s get moving!', 0, 0, '', 'Je viens d’accepter la %quest_link, allons-y !', '', '', '', '', '', ''),
 
-
 -- usable placeholders:
 -- %quest_link
 -- %zone_name
@@ -230,8 +226,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_update_add_kill_objective_completed', 'Another objective completed! %quest_obj_full_formatted for %quest_link', 0, 0, '', 'Encore un objectif accompli! %quest_obj_full_formatted pour %quest_link', '', '', '', '', '', ''),
 ('broadcast_quest_update_add_kill_objective_progress', 'Still grinding on %quest_obj_name for %quest_link, almost there with %quest_obj_available/%quest_obj_required.', 0, 0, '', 'Je continue de travailler sur %quest_obj_name pour %quest_link, j’y suis presque avec %quest_obj_available/%quest_obj_required.', '', '', '', '', '', ''),
 ('broadcast_quest_update_add_kill_objective_completed', 'Objective done! %quest_obj_full_formatted for %quest_link. On to the next one!', 0, 0, '', 'Objectif accompli ! J’ai rempli l’objectif pour la quête « %quest_link ». Passons à la suivante !', '', '', '', '', '', ''),
-
-
 
 -- usable placeholders:
 -- %quest_link
@@ -275,7 +269,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_update_add_item_objective_progress', 'Still grinding on %item_link for %quest_link, got %quest_obj_available/%quest_obj_required done.', 0, 0, '', 'Je continue à travailler sur %item_link pour la quête %quest_link, j’ai accompli %quest_obj_available/%quest_obj_required objectifs jusqu’à présent.', '', '', '', '', '', ''),
 ('broadcast_quest_update_add_item_objective_progress', 'Getting there! Need %quest_obj_missing more %item_link for %quest_link.', 0, 0, '', 'On y est presque! Il me manque %quest_obj_missing %item_link pour %quest_link.', '', '', '', '', '', ''),
 
-
 -- usable placeholders:
 -- %quest_link
 -- %zone_name
@@ -285,7 +278,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 -- %my_level
 ('broadcast_quest_update_failed_timer', 'Failed to finish %quest_link in time...', 0, 0, '', 'J’ai échoué à terminer %quest_link à temps...', '', '', '', '', '', ''),
 ('broadcast_quest_update_failed_timer', 'Ran out of time for %quest_link :(', 0, 0, '', 'J’ai manqué de temps pour %quest_link :(', '', '', '', '', '', ''),
-
 
 -- usable placeholders:
 -- %quest_link
@@ -297,7 +289,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_update_complete', 'I have completed all objectives for %quest_link', 0, 0, '', 'J’ai terminé tous les objectifs pour %quest_link.', '', '', '', '', '', ''),
 ('broadcast_quest_update_complete', 'Completed all objectives for %quest_link', 0, 0, '', 'J’ai rempli tous les objectifs pour %quest_link.', '', '', '', '', '', ''),
 ('broadcast_quest_update_complete', 'Gonna turn in the %quest_link soon, just finished all objectives', 0, 0, '', 'Je vais bientôt remettre la %quest_link, je viens de finir tous les objectifs.', '', '', '', '', '', ''),
-
 
 -- usable placeholders:
 -- %quest_link
@@ -334,8 +325,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_turned_in', 'Successfully turned in %quest_link. Feels like progress!', 0, 0, '', 'J’ai réussi à rendre %quest_link. On dirait que j’avance!', '', '', '', '', '', ''),
 ('broadcast_quest_turned_in', 'Mission complete! %quest_link is turned in!', 0, 0, '', 'Mission accomplie! %quest_link a été rendue!', '', '', '', '', '', ''),
 ('broadcast_quest_turned_in', 'I just finished %quest_link and turned it in, on to the next one!', 0, 0, '', 'Je viens de terminer %quest_link et de le remettre, passons à la suite!', '', '', '', '', '', ''),
-
-
 
 -- kill mob events
 -- usable placeholders:
@@ -412,8 +401,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_killed_pet', 'Just took down the pet %victim_name. That was unexpected', 0, 0, '', 'Je viens de m’occuper de l’animal de compagnie %victim_name. Ça c’était inattendu.', '', '', '', '', '', ''),
 ('broadcast_killed_pet', 'Down goes %victim_name. Better luck next time, pet', 0, 0, '', '%victim_name mord la poussière. Meilleure chance la prochaine fois, mon pote.', '', '', '', '', '', ''),
 
-
-
 -- levelup events
 -- usable placeholders:
 -- %zone_name
@@ -481,7 +468,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_levelup_max_level', 'Level %my_level, I’m feeling unstoppable!', 0, 0, '', 'Niveau %my_level, je me sens imbattable!', '', '', '', '', '', ''),
 ('broadcast_levelup_max_level', 'Just reached level %my_level, can’t wait to dive into the endgame!', 0, 0, '', 'Je viens d’atteindre le niveau %my_level, j’ai hâte de me plonger dans le contenu de fin de jeu!', '', '', '', '', '', ''),
 
-
 -- guild
 -- usable placeholders:
 -- %other_name
@@ -517,11 +503,8 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_guild_recruitment', 'Want to join a great guild? We’re looking for new members! Come on in!', 0, 0, '', 'Envie de rejoindre une super guilde ? Nous cherchons de nouveaux membres ! Viens nous rejoindre !', '', '', '', '', '', ''),
 ('broadcast_guild_recruitment', 'The guild is growing! Join us for exciting adventures and rewards!', 0, 0, '', 'La guilde grandit! Rejoignez-nous pour vivre des aventures palpitantes et obtenir des récompenses!', '', '', '', '', '', ''),
 
-
-
 -- /////////////////////////////
 -- suggestions
-
 
 -- random instance
 -- usable placeholders:
@@ -624,7 +607,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_instance', 'Anyone looking to farm materials from %instance_name?', 0, 0, '', 'Qui veut farmer des matériaux dans %instance_name ?', '', '', '', '¿Alguien quiere farmear materiales de %instance_name?', '', ''),
 ('suggest_instance', 'Let’s get a group for %instance_name', 0, 0, '', 'Formons un groupe pour %instance_name.', '', '', '', 'Formemos un grupo para %instance_name', '', ''),
 
-
 -- random quest
 -- usable placeholders:
 -- %my_role
@@ -687,7 +669,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_quest', 'Need help with %quest_link please.', 0, 0, '', 'Besoin d’aide avec %quest_link s’il vous plaît.', '', '', '', 'Necesito ayuda con %quest_link, por favor.', '', ''),
 ('suggest_quest', 'Who can help me with %quest_link?', 0, 0, '', 'Qui peut m’aider avec %quest_link?', '', '', '', '¿Quién puede ayudarme con %quest_link?', '', ''),
 ('suggest_quest', 'Looking to group for %quest_link.', 0, 0, '', 'Je cherche des compagnons pour %quest_link.', '', '', '', 'Buscando un grupo para %quest_link.', '', ''),
-
 
 -- random trade?
 -- usable placeholders:
@@ -783,8 +764,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_trade', 'Looking to trade %category for something else.', 0, 0, '', 'Je cherche à échanger %category contre autre chose.', '', '', '', 'Busco intercambiar %category por algo más.', '', ''),
 ('suggest_trade', 'Got %category, willing to trade it for %category.', 0, 0, '', 'J’ai %category, je serais prêt à l’échanger contre %category.', '', '', '', 'Tengo %category, dispuesto a intercambiarlo por %category.', '', ''),
 ('suggest_trade', 'WTB %category, anyone has extras?', 0, 0, '', 'Je recherche %category, est-ce que quelqu’un en a en plus ?', '', '', '', 'Busco comprar %category, ¿alguien tiene extras?', '', ''),
-
-
 
 -- random faction rep grind
 -- usable placeholders:
@@ -911,8 +890,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_faction', 'Come farm %faction rep with me!', 0, 0, '', 'Viens faire du farm de réputation %faction avec moi!', '', '', '', '¡Ven a farmear %faction conmigo!', '', ''),
 ('suggest_faction', 'I’m almost there with %faction rep!', 0, 0, '', 'Je suis presque arrivé à la réputation de %faction !', '', '', '', '¡Casi llego con %faction!', '', ''),
 ('suggest_faction', 'Grinding %faction rep with my friends!', 0, 0, '', 'En train de monter la réputation de %faction avec mes potes !', '', '', '', '¡Estoy farmeando %faction con mis amigos!', '', ''),
-
-
 
 -- random generic
 -- usable placeholders:
@@ -1057,7 +1034,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_something', 'Is it just me or is %zone_name getting weirder?', 0, 0, '', 'Est-ce que c’est moi ou %zone_name devient de plus en plus étrange ?', '', '', '', '¿Soy solo yo o %zone_name se está volviendo más raro?', '', 'Только мне кажется, что %zone_name становится все страннее?'),
 ('suggest_something', 'I’m convinced %zone_name is secretly an amusement park.', 0, 0, '', 'Je suis convaincu que %zone_name est secrètement un parc d’attractions.', '', '', '', 'Estoy convencido de que %zone_name es secretamente un parque de atracciones.', '', 'Я убежден, что %zone_name — это тайный парк аттракционов.'),
 
-
 -- random generic toxic phrases
 -- usable placeholders:
 -- %random_inventory_item_link
@@ -1170,7 +1146,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_something_toxic', 'You really think you’re a pro, huh?', 0, 0, '', 'Tu te prends vraiment pour un pro, hein ?', '', '', '', '', '', ''),
 ('suggest_something_toxic', 'Maybe it’s time to just quit and save us all the trouble', 0, 0, '', 'Il serait temps de déco et nous épargner tes problèmes.', '', '', '', '', '', ''),
 
-
 -- random generic toxic item links
 -- usable placeholders:
 -- %prefix
@@ -1184,7 +1159,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 -- %my_level
 ('suggest_toxic_links', '%prefix %random_taken_quest_or_item_link', 0, 0, '', '.', '', '', '', '', '', ''),
 ('suggest_toxic_links', '%prefix %random_inventory_item_link', 0, 0, '', '', '', '', '', '', '', ''),
-
 
 -- thunderfury spam
 -- usable placeholders:
@@ -1225,7 +1199,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('thunderfury_spam', 'That was definitely the sound of %thunderfury_link! I can feel the epicness.', 0, 0, '', 'C’était certainement le son de %thunderfury_link ! Je peux sentir toute son épopée.', '', '', '', '', '', ''),
 ('thunderfury_spam', 'Is it just me, or does %thunderfury_link have a tendency to make everyone else *look* weak?', 0, 0, '', 'C’est moi ou bien %thunderfury_link a tendance à faire paraître les autres faibles?', '', '', '', '', '', ''),
 ('thunderfury_spam', 'You know what they say... the louder the %thunderfury_link, the bigger the bragging rights!', 0, 0, '', 'Tu sais ce qu’on dit... plus le %thunderfury_link rugit, plus grand sont les droits de vantardise!', '', '', '', '', '', ''),
-
 
 -- random WTS
 -- usable placeholders:
@@ -1316,7 +1289,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_sell', 'Want %item_formatted_link? %cost_gold gets you one!', 0, 0, '', 'Tu veux %item_formatted_link? Ça te coûte %cost_gold pour en obtenir un !', '', '', '', '¿Quieres %item_formatted_link? ¡%cost_gold te consigue uno!', '', ''),
 ('suggest_sell', '%item_formatted_link for %cost_gold, quick sale!', 0, 0, '', '%item_formatted_link en vente à %cost_gold, une super affaire à saisir rapidement !', '', '', '', '%item_formatted_link por %cost_gold, ¡venta rápida!', '', ''),
 
-
 -- response LFG/LFM channel
 -- usable placeholders:
 -- %quest_links
@@ -1394,7 +1366,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('response_lfg_quests_channel', 'I need help with %quest_links in %zone_name, who’s up for it?', 0, 0, '', 'J’ai besoin d’aide avec les %quest_links dans la zone %zone_name, qui est partant pour m’accompagner?', '', '', '', '', '', ''),
 ('response_lfg_quests_channel', 'Looking for more to finish %quest_links, %zone_name.', 0, 0, '', 'Recherche compagnions pour %quest_links dans la zone %zone_name.', '', '', '', '', '', ''),
 
-
 -- response LFG/LFM whisper
 -- usable placeholders:
 -- %quest_links
@@ -1465,7 +1436,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('response_lfg_quests_whisper', 'Who else is doing %quest_links? I’m in', 0, 0, '', 'Qui d’autre fait les %quest_links ? J’y participe également!', '', '', '', '', '', ''),
 ('response_lfg_quests_whisper', 'I’ve got %quest_links in %zone_name, need help?', 0, 0, '', 'J’ai %quest_links dans %zone_name, besoin d’aide ?', '', '', '', '', '', ''),
 
-
 -- response WTB channel
 -- usable placeholders:
 -- %formatted_item_links
@@ -1481,9 +1451,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('response_wtb_items_channel', 'Think I could sell %formatted_item_links', 0, 0, '', 'Penses-tu que je pourrais vendre les %formatted_item_links ?', '', '', '', '', '', ''),
 ('response_wtb_items_channel', '%other_name, I could potentially sell %formatted_item_links', 0, 0, '', 'Hé toi, je pourrais potentiellement te vendre %formatted_item_links', '', '', '', '', '', ''),
 ('response_wtb_items_channel', '%other_name, Think I could sell %formatted_item_links', 0, 0, '', '%other_name, tu crois que je pourrais vendre %formatted_item_links?', '', '', '', '', '', ''),
-
-
-
 
 -- response WTB channel
 -- usable placeholders:
@@ -1559,8 +1526,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('response_wtb_items_whisper', 'I’ve got %formatted_item_links for sale, let’s talk business', 0, 0, '', 'J’ai des %formatted_item_links à vendre, parlons affaires.', '', '', '', '', '', ''),
 ('response_wtb_items_whisper', 'I have %formatted_item_links, let me know if you want them', 0, 0, '', 'J’ai des %formatted_item_links, tu veux que je te les envoie ?', '', '', '', '', '', ''),
 
-
-
 -- /////////////////////////////
 -- generic events
 
@@ -1583,7 +1548,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('quest_status_complete_single_reward', 'I have completed the quest %quest and received %item', 0, 0, '', 'J’ai terminé la quête %quest et j’ai reçu %item.', '', '', '', 'He completado la mision %quest y he recibido %item', '', ''),
 ('quest_status_complete_pick_reward', 'Which reward should I pick for completing the quest %quest?%rewards', 0, 0, '', 'Quelle récompense devrais-je choisir pour avoir complété la quête %quest? %rewards', '', '', '', '¿Que recompensa deberia escoger por completar la mision %quest?%rewards', '', ''),
 ('quest_choose_reward', 'Okay, I will pick %item as a reward', 0, 0, '', 'D’accord, je vais choisir %item comme récompense.', '', '', '', 'De acuerdo, voy a escoger %item de recompensa', '', ''),
-
 
 -- stuff
 ('hello', 'Hello', 0, 0, '', 'Salut!', '', '', '', 'Hola', '', 'Привет'),
@@ -1691,7 +1655,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('reply', '%s i’ll vomit into your fkin mouth', 0, 1, '', '%s je vais te gerber dans la bouche', '', '', '', '', '', ''),
 ('reply', 'dont fucking judge me', 0, 1, '', 'Ne me juge pas putain.', '', '', '', '', '', ''),
 ('reply', 'Yo momma so fat, she can’t even fit through the Dark Portal', 0, 1, '', 'Ta mère est tellement grosse qu’elle ne peut même pas passer à travers le Portail des Ténèbres.', '', '', '', '', '', ''),
-
 
 -- replies 2
 ('reply', 'wtf', 0, 2, '', 'wtf', '', '', '', 'wtf', '', ''),
@@ -2032,4 +1995,440 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('cast_spell_command_error_failed', 'Failed to cast %spell', 0, 0, '', 'J’ai échoué à lancer %spell.', '', '', '', 'Fallo al lanzar %spell', '', ''),
 ('cast_spell_command_amount', ' |cffffff00(x%amount left)|r', 0, 0, '', ' |cffffff00(x%amount restant)|r.', '', '', '', ' |cffffff00(x%amount restante)|r', '', ''),
 
-('dummy_end', 'dummy', 0, 0, '', 'dummy', '', '', '', '', '', '');
+('dummy_end', 'dummy', 0, 0, '', 'dummy', '', '', '', '', '', '');DROP TABLE IF EXISTS `ai_playerbot_texts_chance`;
+CREATE TABLE IF NOT EXISTS `ai_playerbot_texts_chance` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `probability` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=UTF8;
+
+/*!40000 ALTER TABLE `ai_playerbot_texts_chance` DISABLE KEYS */;
+INSERT INTO `ai_playerbot_texts_chance` (`id`, `name`, `probability`) VALUES
+	(1, 'taunt', 30),
+	(2, 'aoe', 75),
+	(3, 'loot', 20);
+/*!40000 ALTER TABLE `ai_playerbot_texts_chance` ENABLE KEYS */;
+DROP TABLE IF EXISTS `playerbots_dungeon_suggestion_abbrevation`;
+CREATE TABLE `playerbots_dungeon_suggestion_abbrevation` (
+    `id`              TINYINT(3)   NOT NULL AUTO_INCREMENT UNIQUE,
+    `definition_slug` VARCHAR(255) NOT NULL,
+    `abbrevation`     VARCHAR(16)  NOT NULL,
+
+    PRIMARY KEY (`id`),
+    KEY `definition_slug` (`definition_slug`)
+)
+ENGINE=MyISAM
+DEFAULT CHARSET=utf8
+ROW_FORMAT=FIXED
+COMMENT='Playerbot dungeon suggestion abbrevations';
+
+-- = Example =
+
+-- INSERT INTO `playerbots_dungeon_suggestion_abbrevation` VALUES
+
+-- (NULL, 'rfc', 'Ragefire'),
+-- (NULL, 'rfc', 'RFC'),
+-- (NULL, 'st', 'Sunken Temple'),
+-- (NULL, 'st', 'ST'),
+-- (NULL, 'stocks', 'Stockades');
+-- (NULL, 'stocks', 'Stockade');
+DROP TABLE IF EXISTS `playerbots_dungeon_suggestion_definition`;
+CREATE TABLE `playerbots_dungeon_suggestion_definition` (
+    `id`         TINYINT(3)   NOT NULL AUTO_INCREMENT UNIQUE,
+    `slug`       VARCHAR(255) NOT NULL,
+    `name`       VARCHAR(255) NOT NULL,
+    `expansion`  TINYINT(1)   NOT NULL,
+    `difficulty` TINYINT(1)   NOT NULL,
+    `min_level`  TINYINT(3),
+    `max_level`  TINYINT(3),
+    `comment`    VARCHAR(255),
+
+    PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM
+DEFAULT CHARSET=utf8
+ROW_FORMAT=FIXED
+COMMENT='Playerbot dungeon suggestion definitions';
+
+INSERT INTO `playerbots_dungeon_suggestion_definition` VALUES
+
+-- == Vanilla ==
+
+(NULL, 'rfc'          , 'Ragefire Chasm'              , 0, 0, 15, 21, NULL),
+(NULL, 'dm'           , 'Deadmines'                   , 0, 0, 15, 23, NULL),
+(NULL, 'wc'           , 'Wailing Caverns'             , 0, 0, 17, 27, NULL),
+(NULL, 'sfk'          , 'Shadowfang Keep'             , 0, 0, 18, 24, NULL),
+(NULL, 'bfd'          , 'Blackfathom Deeps'           , 0, 0, 20, 27, NULL),
+(NULL, 'stocks'       , 'Stormwind Stockade'          , 0, 0, 22, 30, NULL),
+(NULL, 'gnomer'       , 'Gnomeregan'                  , 0, 0, 26, 36, NULL),
+(NULL, 'sm-gy'        , 'Scarlet Monastery: Graveyard', 0, 0, 26, 36, NULL),
+(NULL, 'sm-lib'       , 'Scarlet Monastery: Library'  , 0, 0, 29, 39, NULL),
+(NULL, 'rfk'          , 'Razorfen Kraul'              , 0, 0, 32, 35, NULL),
+(NULL, 'sm-armory'    , 'Scarlet Monastery: Armory'   , 0, 0, 32, 42, NULL),
+(NULL, 'sm-cath'      , 'Scarlet Monastery: Cathedral', 0, 0, 35, 45, NULL),
+(NULL, 'rfd'          , 'Razorfen Downs'              , 0, 0, 42, 45, NULL),
+(NULL, 'ulda'         , 'Uldaman'                     , 0, 0, 42, 52, NULL),
+(NULL, 'mara'         , 'Maraudon'                    , 0, 0, 42, 52, NULL),
+(NULL, 'zf'           , 'Zul''Farrak'                 , 0, 0, 46, 56, NULL),
+(NULL, 'st'           , 'Temple of Atal''Hakkar'      , 0, 0, 50, 60, NULL),
+(NULL, 'brd'          , 'Blackrock Depths'            , 0, 0, 52, 60, NULL),
+(NULL, 'dm-w'         , 'Dire Maul: West'             , 0, 0, 55, 60, NULL),
+(NULL, 'dm-e'         , 'Dire Maul: East'             , 0, 0, 55, 60, NULL),
+(NULL, 'dm-n'         , 'Dire Maul: North'            , 0, 0, 55, 60, NULL),
+(NULL, 'lbrs'         , 'Lower Blackrock Spire'       , 0, 0, 55, 60, NULL),
+(NULL, 'scholo'       , 'Scholomance'                 , 0, 0, 58, 60, NULL),
+(NULL, 'strat'        , 'Stratholme'                  , 0, 0, 58, 60, NULL),
+
+-- == The Burning Crusade ==
+
+(NULL, 'hfr' , 'Hellfire Ramparts'      , 1, 0, 59, 67, NULL),
+(NULL, 'bf'  , 'The Blood Furnace'      , 1, 0, 60, 68, NULL),
+(NULL, 'sp'  , 'The Slave Pens'         , 1, 0, 61, 69, NULL),
+(NULL, 'ub'  , 'The Underbog'           , 1, 0, 62, 70, NULL),
+(NULL, 'mt'  , 'Mana-Tombs'             , 1, 0, 63, 70, NULL),
+(NULL, 'ac'  , 'Auchenai Crypts'        , 1, 0, 64, 70, NULL),
+(NULL, 'seth', 'Sethekk Halls'		    , 1, 0, 66, 70, NULL),
+(NULL, 'oh'  , 'Old Hillsbrad Foothills', 1, 0, 66, 70, NULL),
+(NULL, 'bm'  , 'The Black Morass'		, 1, 0, 68, 70, NULL),
+(NULL, 'mech', 'The Mechanar'			, 1, 0, 68, 70, NULL),
+(NULL, 'bot' , 'The Botanica'			, 1, 0, 69, 70, NULL),
+(NULL, 'arc' , 'The Arcatraz'			, 1, 0, 69, 70, NULL),
+(NULL, 'sh'  , 'The Shattered Halls'	, 1, 0, 69, 70, NULL),
+(NULL, 'sv'  , 'The Steamvault'		    , 1, 0, 69, 70, NULL),
+(NULL, 'sl'  , 'Shadow Labyrinth'		, 1, 0, 69, 70, NULL),
+(NULL, 'mgt' , 'Magister''s Terrace'	, 1, 0, 70, 70, NULL),
+
+-- == The Burning Crusade (Heroic) ==
+
+(NULL, 'hfr' , 'Hellfire Ramparts'      , 1, 1, 70, 70, NULL),
+(NULL, 'bf'  , 'The Blood Furnace'      , 1, 1, 70, 70, NULL),
+(NULL, 'sp'  , 'The Slave Pens'         , 1, 1, 70, 70, NULL),
+(NULL, 'ub'  , 'The Underbog'           , 1, 1, 70, 70, NULL),
+(NULL, 'mt'  , 'Mana-Tombs'             , 1, 1, 70, 70, NULL),
+(NULL, 'ac'  , 'Auchenai Crypts'        , 1, 1, 70, 70, NULL),
+(NULL, 'seth', 'Sethekk Halls'		    , 1, 1, 70, 70, NULL),
+(NULL, 'oh'  , 'Old Hillsbrad Foothills', 1, 1, 70, 70, NULL),
+(NULL, 'bm'  , 'The Black Morass'	    , 1, 1, 70, 70, NULL),
+(NULL, 'mech', 'The Mechanar'		    , 1, 1, 70, 70, NULL),
+(NULL, 'bot' , 'The Botanica'		    , 1, 1, 70, 70, NULL),
+(NULL, 'arc' , 'The Arcatraz'		    , 1, 1, 70, 70, NULL),
+(NULL, 'sh'  , 'The Shattered Halls'    , 1, 1, 70, 70, NULL),
+(NULL, 'sv'  , 'The Steamvault'		    , 1, 1, 70, 70, NULL),
+(NULL, 'sl'  , 'Shadow Labyrinth'	    , 1, 1, 70, 70, NULL),
+(NULL, 'mgt' , 'Magister''s Terrace'    , 1, 1, 70, 70, NULL),
+
+-- == Wrath of the Lich King ==
+
+(NULL, 'uk'    , 'Utgarde Keep'			      , 2, 0, 70, 72, NULL),
+(NULL, 'nexus' , 'The Nexus'			      , 2, 0, 71, 73, NULL),
+(NULL, 'an'    , 'Azjol-Nerub'			      , 2, 0, 72, 74, NULL),
+(NULL, 'ak'    , 'Ahn''kahet: The Old Kingdom', 2, 0, 73, 75, NULL),
+(NULL, 'dtk'   , 'Drak''Tharon Keep'		  , 2, 0, 74, 76, NULL),
+(NULL, 'vh'    , 'Violet Hold'			      , 2, 0, 75, 77, NULL),
+(NULL, 'gd'    , 'Gundrak'			          , 2, 0, 76, 78, NULL),
+(NULL, 'hos'   , 'Halls of Stone'			  , 2, 0, 77, 79, NULL),
+(NULL, 'hol'   , 'Halls of Lightning'		  , 2, 0, 80, 80, NULL),
+(NULL, 'cos'   , 'The Culling of Stratholme'  , 2, 0, 80, 80, NULL),
+(NULL, 'oculus', 'The Oculus'			      , 2, 0, 80, 80, NULL),
+(NULL, 'up'    , 'Utgarde Pinnacle'		      , 2, 0, 80, 80, NULL),
+(NULL, 'toc'   , 'Trial of the Champion'	  , 2, 0, 80, 80, NULL),
+(NULL, 'fos'   , 'Forge of Souls'			  , 2, 0, 80, 80, NULL),
+(NULL, 'pos'   , 'Pit of Saron'			      , 2, 0, 80, 80, NULL),
+(NULL, 'hor'   , 'Halls of Reflection'	      , 2, 0, 80, 80, NULL),
+
+-- == Wrath of the Lich King (Heroic) ==
+
+(NULL, 'uk'    , 'Utgarde Keep'			      , 2, 1, 80, 80, NULL),
+(NULL, 'nexus' , 'The Nexus'			      , 2, 1, 80, 80, NULL),
+(NULL, 'an'    , 'Azjol-Nerub'			      , 2, 1, 80, 80, NULL),
+(NULL, 'ak'    , 'Ahn''kahet: The Old Kingdom', 2, 1, 80, 80, NULL),
+(NULL, 'dtk'   , 'Drak''Tharon Keep'		  , 2, 1, 80, 80, NULL),
+(NULL, 'vh'    , 'Violet Hold'			      , 2, 1, 80, 80, NULL),
+(NULL, 'gd'    , 'Gundrak'			          , 2, 1, 80, 80, NULL),
+(NULL, 'hos'   , 'Halls of Stone'			  , 2, 1, 80, 80, NULL),
+(NULL, 'hol'   , 'Halls of Lightning'		  , 2, 1, 80, 80, NULL),
+(NULL, 'cos'   , 'The Culling of Stratholme'  , 2, 1, 80, 80, NULL),
+(NULL, 'oculus', 'The Oculus'			      , 2, 1, 80, 80, NULL),
+(NULL, 'up'    , 'Utgarde Pinnacle'		      , 2, 1, 80, 80, NULL),
+(NULL, 'toc'   , 'Trial of the Champion'	  , 2, 1, 80, 80, NULL),
+(NULL, 'fos'   , 'Forge of Souls'			  , 2, 1, 80, 80, NULL),
+(NULL, 'pos'   , 'Pit of Saron'			      , 2, 1, 80, 80, NULL),
+(NULL, 'hor'   , 'Halls of Reflection'	      , 2, 1, 80, 80, NULL);
+DROP TABLE IF EXISTS `playerbots_dungeon_suggestion_strategy`;
+CREATE TABLE `playerbots_dungeon_suggestion_strategy` (
+    `id`              TINYINT(3)   NOT NULL AUTO_INCREMENT UNIQUE,
+    `definition_slug` VARCHAR(255) NOT NULL,
+    `strategy`        VARCHAR(255) NOT NULL,
+    `difficulty`      TINYINT(1)   NOT NULL,
+
+    PRIMARY KEY (`id`),
+    KEY `definition_slug` (`definition_slug`)
+)
+ENGINE=MyISAM
+DEFAULT CHARSET=utf8
+ROW_FORMAT=FIXED
+COMMENT='Playerbot dungeon suggestion strategies';
+
+-- = Example =
+
+-- INSERT INTO `playerbots_dungeon_suggestion_strategy` VALUES
+
+-- (NULL, 'mara-scepter', 'Scepter run', 0),
+-- (NULL, 'mara-princess', 'Princess run', 0),
+-- (NULL, 'zf', 'Mallet run', 0),
+-- (NULL, 'brd', 'Arena run', 0),
+-- (NULL, 'brd', 'Attunement run', 0),
+-- (NULL, 'brd', 'Lava run', 0),
+-- (NULL, 'brd', 'Full run', 0),
+-- (NULL, 'strat', 'Undead', 0),
+-- (NULL, 'strat', 'UD', 0),
+-- (NULL, 'strat', 'Living', 0),
+-- (NULL, 'strat', 'Live', 0),
+-- (NULL, 'seth', 'Anzu run', 1),
+-- (NULL, 'cos', 'Timed run', 1);
+DROP TABLE IF EXISTS `playerbots_speech`;
+CREATE TABLE `playerbots_speech` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `text` varchar(1024) NOT NULL,
+  `type` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `playerbots_speech` VALUES
+(NULL, 'taunt', 'I have puppies under my armor!', 'say'),
+(NULL, 'taunt', 'Bite me, <target>!', 'say'),
+(NULL, 'taunt', 'Hey <target>! Guess what your mom said last night!', 'say'),
+(NULL, 'taunt', '<target>, you''re so ugly you couldn''t score in a monkey whorehouse with a bag of bananas!', 'say'),
+(NULL, 'taunt', 'Shut up <target>, you''ll never be the man your mother is!!', 'say'),
+(NULL, 'taunt', 'Your mother was a hampster and your father smelt of elderberries!!!!', 'say'),
+(NULL, 'taunt', 'I don''t want to talk to you no more, you empty headed animal food trough wiper!!!', 'say'),
+(NULL, 'taunt', 'I fart in your general direction!!!', 'say'),
+(NULL, 'taunt', 'Go and boil your bottom, you son of a silly person!!!', 'say'),
+(NULL, 'taunt', 'What are you going to do <target>, bleed on me? HAVE AT YOU!', 'say'),
+(NULL, 'taunt', 'M-O-O-N! That spells aggro!', 'say'),
+(NULL, 'taunt', 'You''re about as useful as a one-legged man in an ass kicking contest.', 'say'),
+(NULL, 'taunt', 'Hey <target>! Stop hitting on them, they''re not your type. They aren''t inflatable.', 'say'),
+(NULL, 'taunt', '<target> you''re so far outta your league, you''re playing a different sport.', 'say'),
+(NULL, 'taunt', 'You made a big mistake today <target>, you got out of bed.', 'say'),
+(NULL, 'taunt', 'I wanna try turning into a horse, but I need help. I''ll be the front, you be yourself.', 'say'),
+(NULL, 'taunt', 'Can I borrow your face for a few days? My ass is going on holiday....', 'say'),
+(NULL, 'taunt', 'I''d like to give you a going away present... First you do your part.', 'say'),
+(NULL, 'taunt', 'Before you came along we were hungry, Now we''re just fed up.', 'say'),
+(NULL, 'taunt', 'I like you. People say I have no taste, but I like you.', 'say'),
+(NULL, 'taunt', 'I think you have an inferiority complex, but that''s okay, it''s justified.', 'say'),
+(NULL, 'taunt', 'Hence rotten thing! Or I shall shake thy bones out of thy garments.', 'say'),
+(NULL, 'taunt', 'I can''t believe I''m wasting my time with you!', 'say'),
+(NULL, 'taunt', 'I love it when someone insults me, it means I don''t have to be nice anymore.', 'say'),
+(NULL, 'taunt', 'Thou leathern-jerkin, crystal-button, knot-pated, agatering, puke-stocking, caddis-garter, smooth-tongue, Spanish pouch!', 'say'),
+(NULL, 'taunt', 'Thou qualling bat-fowling malt-worm!', 'say'),
+(NULL, 'taunt', 'Thou art truely an idol of idiot-worshippers!', 'say'),
+(NULL, 'taunt', 'Thou misbegotten knotty-pated wagtail!', 'say'),
+(NULL, 'taunt', 'Thou whoreson mandrake, thou art fitter to be worn in my cap than to wait at my heels!', 'say'),
+(NULL, 'taunt', 'You! You scullion! You rampallian! You fustilarian! I''ll tickle your catastrophe!', 'say'),
+(NULL, 'taunt', 'Oh <target>! Thou infectious ill-nurtured flax-wench!', 'say'),
+(NULL, 'taunt', 'We leak in your chimney, <target>!', 'say'),
+(NULL, 'taunt', 'Oh thou bootless fen-sucked canker-blossom!', 'say'),
+(NULL, 'taunt', 'Were I like thee I''d throw away myself!', 'say'),
+(NULL, 'taunt', 'O teach me <target>, how I should forget to think!', 'say'),
+(NULL, 'taunt', 'Truly thou art damned, like an ill-roasted egg, all on one side!', 'say'),
+(NULL, 'taunt', 'You starvelling, you eel-skin, you dried neat''s-tongue, you bull''s-pizzle, you stock-fish- O for breath to utter what is like thee!! -you tailor''s-yard, you sheath, you bow-case, you vile standing tuck!', 'say'),
+(NULL, 'taunt', 'Fie! Drop thee into the rotten mouth of Death!', 'say'),
+(NULL, 'taunt', '<target>, you are a fishmonger!', 'say'),
+(NULL, 'taunt', 'I shall live to knock thy brains out!', 'say'),
+(NULL, 'taunt', 'Most shallow are you, <target>!! Thou art worms-meat in respect of a good piece of flesh, indeed!!', 'say'),
+(NULL, 'taunt', 'Vile wretch! O <target>, thou odiferous hell-hated pignut!', 'say'),
+(NULL, 'taunt', '<target>! Thy kiss is as comfortless as frozen water to a starved snake!', 'say'),
+(NULL, 'taunt', 'I scorn you, scurvy companion. What, you poor, base, rascally, cheating, lack-linen mate! Away, you moldy rogue, away!', 'say'),
+(NULL, 'taunt', 'Out of my sight! Thou dost infect my eyes <target>!', 'say'),
+(NULL, 'taunt', 'PLAY TIME!!!!', 'say'),
+(NULL, 'taunt', 'None shall pass!', 'say'),
+(NULL, 'taunt', 'We''re under attack! A vast, ye swabs! Repel the invaders!', 'say'),
+(NULL, 'taunt', 'None may challenge the Brotherhood!', 'say'),
+(NULL, 'taunt', 'Foolsss...Kill the one in the dress!', 'say'),
+(NULL, 'taunt', 'I''ll feed your soul to Hakkar himself! ', 'say'),
+(NULL, 'taunt', 'Pride heralds the end of your world! Come, mortals! Face the wrath of the <randomfaction>!', 'say'),
+(NULL, 'taunt', 'All my plans have led to this!', 'say'),
+(NULL, 'taunt', 'Ahh! More lambs to the slaughter!', 'say'),
+(NULL, 'taunt', 'Another day, another glorious battle!', 'say'),
+(NULL, 'taunt', 'So, business... or pleasure?', 'say'),
+(NULL, 'taunt', 'You are not prepared!', 'say'),
+(NULL, 'taunt', 'The <randomfaction>''s final conquest has begun! Once again the subjugation of this world is within our grasp. Let none survive! ', 'say'),
+(NULL, 'taunt', 'Your death will be a painful one. ', 'say'),
+(NULL, 'taunt', 'Cry for mercy! Your meaningless lives will soon be forfeit. ', 'say'),
+(NULL, 'taunt', 'Abandon all hope! The <randomfaction> has returned to finish what was begun so many years ago. This time there will be no escape! ', 'say'),
+(NULL, 'taunt', 'Alert! You are marked for Extermination! ', 'say'),
+(NULL, 'taunt', 'The <subzone> is for guests only...', 'say'),
+(NULL, 'taunt', 'Ha ha ha! You are hopelessly outmatched!', 'say'),
+(NULL, 'taunt', 'I will crush your delusions of grandeur! ', 'say'),
+(NULL, 'taunt', 'Forgive me, for you are about to lose the game.', 'say'),
+(NULL, 'taunt', 'Struggling only makes it worse.', 'say'),
+(NULL, 'taunt', 'Vermin! Leeches! Take my blood and choke on it!', 'say'),
+(NULL, 'taunt', 'Not again... NOT AGAIN!', 'say'),
+(NULL, 'taunt', 'My blood will be the end of you!', 'say'),
+(NULL, 'taunt', 'Good, now you fight me!', 'say'),
+(NULL, 'taunt', 'Get da move on, guards! It be killin'' time!', 'say'),
+(NULL, 'taunt', 'Don''t be delayin'' your fate. Come to me now. I make your sacrifice quick.', 'say'),
+(NULL, 'taunt', 'You be dead soon enough!', 'say'),
+(NULL, 'taunt', 'Mua-ha-ha!', 'say'),
+(NULL, 'taunt', 'I be da predator! You da prey...', 'say'),
+(NULL, 'taunt', 'You gonna leave in pieces!', 'say'),
+(NULL, 'taunt', 'Death comes. Will your conscience be clear? ', 'say'),
+(NULL, 'taunt', 'Your behavior will not be tolerated.', 'say'),
+(NULL, 'taunt', 'The Menagerie is for guests only.', 'say'),
+(NULL, 'taunt', 'Hmm, unannounced visitors, Preparations must be made... ', 'say'),
+(NULL, 'taunt', 'Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus thirty seconds to re-evaluation.', 'say'),
+(NULL, 'taunt', 'New toys? For me? I promise I won''t break them this time!', 'say'),
+(NULL, 'taunt', 'I''m ready to play!', 'say'),
+(NULL, 'taunt', 'Shhh... it will all be over soon.', 'say'),
+(NULL, 'taunt', 'Aaaaaughibbrgubugbugrguburgle!', 'say'),
+(NULL, 'taunt', 'RwlRwlRwlRwl!', 'say'),
+(NULL, 'taunt', 'You too, shall serve!', 'say'),
+(NULL, 'taunt', 'Tell me... tell me everything!  Naughty secrets! I''ll rip the secrets from your flesh!', 'say'),
+(NULL, 'taunt', 'Prepare yourselves, the bells have tolled! Shelter your weak, your young and your old! Each of you shall pay the final sum! Cry for mercy; the reckoning has come!', 'say'),
+(NULL, 'taunt', 'Where in Bonzo''s brass buttons am I?', 'say'),
+(NULL, 'taunt', 'I can bear it no longer! Goblin King! Goblin King! Wherever you may be! Take this <target> far away from me!', 'say'),
+(NULL, 'taunt', 'You have thirteen hours in which to solve the labyrinth, before your baby brother becomes one of us... forever.', 'say'),
+(NULL, 'taunt', 'So, the <subzone> is a piece of cake, is it? Well, let''s see how you deal with this little slice... ', 'say'),
+(NULL, 'taunt', 'Back off, I''ll take you on, headstrong to take on anyone, I know that you are wrong, and this is not where you belong', 'say'),
+(NULL, 'taunt', 'Show me whatcha got!', 'say'),
+(NULL, 'taunt', 'To the death!', 'say'),
+(NULL, 'taunt', 'Twin blade action, for a clean close shave every time.', 'say'),
+(NULL, 'taunt', 'Bring it on!', 'say'),
+(NULL, 'taunt', 'You''re goin'' down!', 'say'),
+(NULL, 'taunt', 'Stabby stab stab!', 'say'),
+(NULL, 'taunt', 'Let''s get this over quick; time is mana.', 'say'),
+(NULL, 'taunt', 'I do not think you realise the gravity of your situation.', 'say'),
+(NULL, 'taunt', 'I will bring honor to my family and my kingdom!', 'say'),
+(NULL, 'taunt', 'Light, give me strength!', 'say'),
+(NULL, 'taunt', 'My church is the field of battle - time to worship...', 'say'),
+(NULL, 'taunt', 'I hold you in contempt...', 'say'),
+(NULL, 'taunt', 'Face the hammer of justice!', 'say'),
+(NULL, 'taunt', 'Prove your worth in the test of arms under the Light!', 'say'),
+(NULL, 'taunt', 'All must fall before the might and right of my cause, you shall be next!', 'say'),
+(NULL, 'taunt', 'Prepare to die!', 'say'),
+(NULL, 'taunt', 'The beast with me is nothing compared to the beast within...', 'say'),
+(NULL, 'taunt', 'Witness the firepower of this fully armed huntsman!', 'say');
+
+INSERT INTO `playerbots_speech` VALUES
+(NULL, 'critical health', 'Heal me! Quick!', 'yell'),
+(NULL, 'critical health', 'Almost dead! Heal me!', 'yell'),
+(NULL, 'critical health', 'Help! Heal me!', 'yell'),
+(NULL, 'critical health', 'Somebody! Heal me!', 'yell'),
+(NULL, 'critical health', 'Heal! Heal! Heal!', 'yell'),
+(NULL, 'critical health', 'I am dying! Heal! Aaaaarhg!', 'yell'),
+(NULL, 'critical health', 'Heal me!', 'yell'),
+(NULL, 'critical health', 'I will die. I will die. I will die. Heal!', 'yell'),
+(NULL, 'critical health', 'Healers, where are you? I am dying!', 'yell'),
+(NULL, 'critical health', 'Oh the pain. Heal me quick!', 'yell');
+
+INSERT INTO `playerbots_speech` VALUES
+(NULL, 'low health', 'Need heal', 'say'),
+(NULL, 'low health', 'Low health', 'say'),
+(NULL, 'low health', 'Drop a heal. Please.', 'say'),
+(NULL, 'low health', 'Could somebody drop a heal on me?', 'say'),
+(NULL, 'low health', 'Hey! Better heal me now than rez later', 'say'),
+(NULL, 'low health', 'I am sorry. Need another heal', 'say'),
+(NULL, 'low health', 'Damn mobs. Heal me please', 'say'),
+(NULL, 'low health', 'One more hit and I am done for. Heal please', 'say'),
+(NULL, 'low health', 'Are there any healers?', 'say'),
+(NULL, 'low health', 'Why do they always punch me in the face? Need heal', 'say'),
+(NULL, 'low health', 'Can anybody heal me a bit?', 'say');
+
+INSERT INTO `playerbots_speech` VALUES
+(NULL, 'low mana', 'OOM', 'say'),
+(NULL, 'low mana', 'I am out of mana', 'say'),
+(NULL, 'low mana', 'Damn I wasted all my mana on this', 'say'),
+(NULL, 'low mana', 'You should wait until I drink or regenerate my mana', 'say'),
+(NULL, 'low mana', 'Low mana', 'say'),
+(NULL, 'low mana', 'No mana. Again?', 'say'),
+(NULL, 'low mana', 'Low mana. Wanna drink', 'say'),
+(NULL, 'low mana', 'Do we have a vending machine? Out of mana again', 'say'),
+(NULL, 'low mana', 'My mana is history', 'say'),
+(NULL, 'low mana', 'I''d get some drinks next time. Out of mana', 'say'),
+(NULL, 'low mana', 'Where is my mana?', 'say');
+
+INSERT INTO `playerbots_speech` VALUES
+(NULL, 'aoe', 'Oh god!', 'say'),
+(NULL, 'aoe', 'I am scared', 'say'),
+(NULL, 'aoe', 'We are done for', 'say'),
+(NULL, 'aoe', 'This is over', 'say'),
+(NULL, 'aoe', 'This ends now', 'say'),
+(NULL, 'aoe', 'Could somebody cast blizzard or something?', 'say'),
+(NULL, 'aoe', 'Damn. The tank aggroed all the mobs around', 'say'),
+(NULL, 'aoe', 'We gonna die. We gonna die. We gonna die.', 'say'),
+(NULL, 'aoe', 'Whoa! So many toys to play with', 'say'),
+(NULL, 'aoe', 'I gonna kill them all!', 'say'),
+(NULL, 'aoe', 'If the tank dies we are history', 'say'),
+(NULL, 'aoe', 'Aaaaaargh!', 'yell'),
+(NULL, 'aoe', 'LEEEEERROOOYYYYYYYYYYYY JENNKINNNSSSSSS!!!!!!!', 'yell'),
+(NULL, 'aoe', 'Right. What do we have in AOE?', 'say'),
+(NULL, 'aoe', 'This gets interesting', 'say'),
+(NULL, 'aoe', 'Cool. Get them in one place for a good flamestrike', 'say'),
+(NULL, 'aoe', 'Kill! Kill! Kill!', 'say'),
+(NULL, 'aoe', 'I think my pants are wet', 'say'),
+(NULL, 'aoe', 'We are history', 'say'),
+(NULL, 'aoe', 'I hope healers are ready. Leeeeroy!', 'say'),
+(NULL, 'aoe', 'I hope they won''t come for me', 'say'),
+(NULL, 'aoe', 'Oh no. I can''t see at this slaugther', 'say');
+
+INSERT INTO `playerbots_speech` VALUES
+(NULL, 'loot', 'I hope there will be some money', 'say'),
+(NULL, 'loot', 'Loot! Loot!', 'say'),
+(NULL, 'loot', 'My precious', 'say'),
+(NULL, 'loot', 'I hope there is a shiny epic item waiting for me there', 'say'),
+(NULL, 'loot', 'I have deep pockets and bags', 'say'),
+(NULL, 'loot', 'All is mine!', 'say'),
+(NULL, 'loot', 'Hope no gray shit today', 'say'),
+(NULL, 'loot', 'This loot is MINE!', 'say'),
+(NULL, 'loot', 'Looting is disgusting but I need money', 'say'),
+(NULL, 'loot', 'Gold!', 'say'),
+(NULL, 'loot', 'OK. Let''s see what they''ve got', 'say'),
+(NULL, 'loot', 'Do not worry. I will loot eveything', 'say'),
+(NULL, 'loot', 'I am loot ninja', 'say'),
+(NULL, 'loot', 'Do I neeed to roll?', 'say'),
+(NULL, 'loot', 'Somebody explain me, where they did put all this stuff?', 'say'),
+(NULL, 'loot', 'No, I won''t loot gray shit', 'say'),
+(NULL, 'loot', 'I''m first. I''m first. I''m first.', 'say'),
+(NULL, 'loot', 'Give me your money!', 'say'),
+(NULL, 'loot', 'My pockets are empty, I need to fill them', 'say'),
+(NULL, 'loot', 'I''ve got a new bag for this', 'say'),
+(NULL, 'loot', 'I hope I won''t aggro anybody while looting', 'say'),
+(NULL, 'loot', 'Please don''t watch. I am looting', 'say'),
+(NULL, 'loot', 'Ha! You won''t get any piece of it!', 'say'),
+(NULL, 'loot', 'Looting is cool', 'say'),
+(NULL, 'loot', 'I like new gear', 'say'),
+(NULL, 'loot', 'I''l quit if there is nothing valuable again', 'say'),
+(NULL, 'loot', 'I hope it is be a pretty ring', 'say'),
+(NULL, 'loot', 'I''l rip the loot from you', 'say'),
+(NULL, 'loot', 'Everybody stay off. I''m going to loot', 'say'),
+(NULL, 'loot', 'Sweet loot', 'say'),
+(NULL, 'loot', 'The Roll God! Give me an epic today', 'say'),
+(NULL, 'loot', 'Please give me new toys', 'say'),
+(NULL, 'loot', 'I hope they carry tasties', 'say'),
+(NULL, 'loot', 'The gold is mine. I''l leave everyting, I promise', 'say'),
+(NULL, 'loot', 'No, I can''t resist', 'say'),
+(NULL, 'loot', 'I want more!', 'say');
+
+INSERT INTO `playerbots_speech` VALUES
+(NULL, 'low ammo', 'I have few <ammo> left!', 'say'),
+(NULL, 'low ammo', 'I need more <ammo>!', 'say'),
+(NULL, 'low ammo', '100 <ammo> left!', 'say'),
+(NULL, 'no ammo', 'That\'s it! No <ammo>!', 'say'),
+(NULL, 'no ammo', 'And you have my bow... Oops, no <ammo>!', 'say'),
+(NULL, 'no ammo', 'Need ammo!', 'yell');
+
+DROP TABLE IF EXISTS `playerbots_speech_probability`;
+CREATE TABLE `playerbots_speech_probability` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `probability` INT(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `playerbots_speech_probability` VALUES
+(NULL, 'taunt', 30),
+(NULL, 'aoe', 75),
+(NULL, 'loot', 20);
+

@@ -6,7 +6,6 @@ CREATE TABLE `playerbots_arena_team_names` (
                                                PRIMARY KEY (`name_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Playerbot arena team names';
 
-
 DELETE FROM `playerbots_arena_team_names`;
 INSERT INTO `playerbots_arena_team_names` (`name_id`,`name`, `type`) VALUES
 (NULL, 'Out of Coverage',2),

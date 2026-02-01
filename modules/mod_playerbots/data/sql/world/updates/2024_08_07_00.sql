@@ -25,7 +25,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 
 ('string_empty_link', 'something', 0, 0, '', '', '', '', '', '', '', ''),
 
-
 -- looting item events
 -- usable placeholders:
 -- %item_link
@@ -41,15 +40,11 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_looting_item_poor', 'well, it\'s better than nothing I guess %item_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_poor', 'not sure what to do with %item_link', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_looting_item_normal', 'wonder what %item_link tastes like', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_normal', 'well, I can keep looting %item_link all day', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_normal', 'another day, another %item_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_normal', 'looted some %item_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_normal', 'some %item_link is alright', 0, 0, '', '', '', '', '', '', '', ''),
-
-
 
 ('broadcast_looting_item_uncommon', 'not bad, I just got %item_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_uncommon', 'just looted %item_link in %zone_name', 0, 0, '', '', '', '', '', '', '', ''),
@@ -57,15 +52,11 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_looting_item_uncommon', 'money money money %item_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_uncommon', 'got %item_link', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_looting_item_rare', '%item_link is hunter bis', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_rare', '%item_link is %my_class bis', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_rare', 'RNG is not bad today %item_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_rare', 'sweet %item_link, freshly looted', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_rare', 'wow, I just got %item_link', 0, 0, '', '', '', '', '', '', '', ''),
-
-
 
 ('broadcast_looting_item_rare', '%item_link is hunter bis', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_rare', '%item_link is %my_class bis', 0, 0, '', '', '', '', '', '', '', ''),
@@ -73,16 +64,9 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_looting_item_rare', 'sweet %item_link, freshly looted', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_looting_item_epic', 'OMG, look at what I just got %item_link!!!', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_looting_item_legendary', 'No @#$@% way! This can not be, I got %item_link, this is insane', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_looting_item_artifact', 'No @#$@% way! This can not be, I got %item_link, this is insane', 0, 0, '', '', '', '', '', '', '', ''),
-
-
-
 
 -- quest events
 -- usable placeholders:
@@ -96,8 +80,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_accepted_generic', 'just accepted %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_accepted_generic', '%quest_link gonna try to complete this one', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_accepted_generic', 'took %quest_link in %zone_name', 0, 0, '', '', '', '', '', '', '', ''),
-
-
 
 -- usable placeholders:
 -- %quest_link
@@ -115,13 +97,9 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_update_add_kill_objective_completed', 'finally got %quest_obj_available/%quest_obj_required of %quest_obj_name for the %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_update_add_kill_objective_completed', '%quest_obj_full_formatted for the %quest_link, at last', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_quest_update_add_kill_objective_progress', 'Oof, got %quest_obj_available/%quest_obj_required %quest_obj_name for %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_update_add_kill_objective_progress', 'still need %quest_obj_missing more of %quest_obj_name for %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_update_add_kill_objective_progress', '%quest_obj_full_formatted, still working on %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
-
-
 
 -- usable placeholders:
 -- %quest_link
@@ -139,12 +117,9 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_update_add_item_objective_completed', 'finally got %quest_obj_available/%quest_obj_required of %item_link for the %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_update_add_item_objective_completed', '%quest_obj_full_formatted for the %quest_link, at last', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_quest_update_add_item_objective_progress', 'Oof, got %quest_obj_available/%quest_obj_required %item_link for %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_update_add_item_objective_progress', 'still need %quest_obj_missing more of %item_link for %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_update_add_item_objective_progress', '%quest_obj_full_formatted, still working on %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
-
 
 -- usable placeholders:
 -- %quest_link
@@ -156,7 +131,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_update_failed_timer', 'Failed to finish %quest_link in time...', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_update_failed_timer', 'Ran out of time for %quest_link :(', 0, 0, '', '', '', '', '', '', '', ''),
 
-
 -- usable placeholders:
 -- %quest_link
 -- %zone_name
@@ -167,7 +141,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_update_complete', 'I have completed all objectives for %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_update_complete', 'Completed all objectives for %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_update_complete', 'Gonna turn in the %quest_link soon, just finished all objectives', 0, 0, '', '', '', '', '', '', '', ''),
-
 
 -- usable placeholders:
 -- %quest_link
@@ -181,8 +154,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_quest_turned_in', 'managed to finish %quest_link, just turned in', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_turned_in', 'just turned in %quest_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_quest_turned_in', 'just turned in %quest_link in %zone_name', 0, 0, '', '', '', '', '', '', '', ''),
-
-
 
 -- kill mob events
 -- usable placeholders:
@@ -198,38 +169,23 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_killed_normal', 'another %victim_name bites the dust', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_killed_normal', 'one less %victim_name in %zone_name', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_killed_elite', 'Took down this elite bastard %victim_name!', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_killed_player', 'killed elite %victim_name in %zone_name', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_killed_rareelite', 'Fooof, managed to take down %victim_name!', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_killed_worldboss', 'That was sick! Just killed %victim_name! Can tell tales now', 0, 0, '', '', '', '', '', '', '', ''),
-
-
 
 ('broadcast_killed_rare', 'Yoo, I just killed %victim_name!', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_killed_player', 'killed rare %victim_name in %zone_name', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_killed_unknown', 'WTF did I just kill? %victim_name', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_killed_pet', 'Just killed that pet %victim_name', 0, 0, '', '', '', '', '', '', '', ''),
-
 
 -- for broadcast_killed_player additionally can use %victim_class
 ('broadcast_killed_player', 'Oh yeah, I just killed %victim_name', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_killed_player', 'killed %victim_name in %zone_name', 0, 0, '', '', '', '', '', '', '', ''),
-
-
 
 -- levelup events
 -- usable placeholders:
@@ -242,20 +198,14 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('broadcast_levelup_generic', 'Yess, I am level %my_level!', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_levelup_generic', 'I just leveled up', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_levelup_10x', 'I am level %my_level!!!', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_levelup_10x', 'getting stronger, already level %my_level!!!', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_levelup_10x', 'Just reached level %my_level!!!', 0, 0, '', '', '', '', '', '', '', ''),
-
-
 
 ('broadcast_levelup_max_level', 'OMG, finally level %my_level!!!', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_levelup_max_level', '%my_level!!! can do endgame content now', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_levelup_max_level', 'fresh new level %my_level %my_class!!!', 0, 0, '', '', '', '', '', '', '', ''),
 ('broadcast_levelup_max_level', 'one more level %my_level %my_race %my_class!', 0, 0, '', '', '', '', '', '', '', ''),
-
-
 
 -- guild
 -- usable placeholders:
@@ -265,16 +215,10 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 -- %other_level
 ('broadcast_guild_promotion', 'Good job %other_name. You deserved this.', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 ('broadcast_guild_demotion', 'That was awful %other_name. I hate to do this but...', 0, 0, '', '', '', '', '', '', '', ''),
-
-
-
 
 -- /////////////////////////////
 -- suggestions
-
 
 -- random instance
 -- usable placeholders:
@@ -331,8 +275,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_instance', 'LFG %instance_name, I am %my_role', 0, 0, '', '', '', '', '', '', '', ''),
 ('suggest_instance', '%my_role LFG %instance_name', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 -- random quest
 -- usable placeholders:
 -- %my_role
@@ -345,7 +287,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_quest', 'Anyone wants to share %quest_link?', 0, 0, '', 'Quelqu\'un veut partager %quest_link ?', '', '', '', '¿Alguien quiere hacer %quest_link?', '', ''),
 ('suggest_quest', 'Anyone doing %quest_link?', 0, 0, '', 'Quelqu\'un fait %quest_link ?', '', '', '', '¿Alguien está haciendo %quest_link?', '', ''),
 ('suggest_quest', 'Wanna do %quest_link.', 0, 0, '', 'Je veux faire %quest_link', '', '', '', '¿Una ayudita con %quest_link?', '', ''),
-
 
 -- random trade?
 -- usable placeholders:
@@ -396,8 +337,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_trade', 'I saw at least ten people farming for %category.', 0, 0, '', 'J\'ai vu au moins dix personnes farmer pour %category', '', '', '', 'Vi al menos diez personas farmeando para %category.', '', ''),
 ('suggest_trade', 'I sold all my %category yesterday. I am completely broke!', 0, 0, '', 'J\'ai vendu tout mon %category hier. Je suis complètement fauché!', '', '', '', 'Ayer vendí todo mi %category. ¡Estoy completamente arruinado!', '', ''),
 ('suggest_trade', 'Wanna join a guild farming for %category.', 0, 0, '', 'Je veux rejoindre une guilde farmant pour %category', '', '', '', 'Quiero unirme a una hermandad de farmeo para %category.', '', ''),
-
-
 
 -- random faction rep grind
 -- usable placeholders:
@@ -451,8 +390,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_faction', 'Damn. My guild did a good %faction grind yesterday without me.', 0, 0, '', 'Mince. Ma guilde a fait un bon travail de %faction hier sans moi.', '', '', '', 'Maldición. Mi hermandad hizo un buen farmeo de %faction ayer sin mí.', '', ''),
 ('suggest_faction', 'Nobody wants to help me because I am %rep_level with %faction.', 0, 0, '', 'Personne ne veut m\'aider parce que je suis %rep_level avec %faction', '', '', '', 'Nadie quiere ayudarme porque estoy %rep_level con %faction.', '', ''),
 ('suggest_faction', 'Please stay away from %faction.', 0, 0, '', 'Veuillez rester à l\'écart de %faction', '', '', '', 'Por favor manténgase alejado de %faction.', '', ''),
-
-
 
 -- random generic
 -- usable placeholders:
@@ -610,8 +547,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_toxic_links', '%prefix %random_taken_quest_or_item_link', 0, 0, '', '', '', '', '', '', '', ''),
 ('suggest_toxic_links', '%prefix %random_inventory_item_link', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 -- thunderfury spam
 -- usable placeholders:
 -- %thunderfury_link
@@ -629,8 +564,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('thunderfury_spam', '%thunderfury_link is coming out of the closet', 0, 0, '', '', '', '', '', '', '', ''),
 ('thunderfury_spam', 'could swear it was a %thunderfury_link, might have been %thunderfury_link tho', 0, 0, '', '', '', '', '', '', '', ''),
 ('thunderfury_spam', 'Why use %thunderfury_link when %thunderfury_link is clearly way more OP', 0, 0, '', '', '', '', '', '', '', ''),
-
-
 
 -- random WTS
 -- usable placeholders:
@@ -683,7 +616,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('suggest_sell', 'I am going to post %item_formatted_link on the AH but you can buy it now cheaper just for %cost_gold.', 0, 0, '', 'Je vais poster %item_formatted_link à l\'hôtel des ventes mais vous pouvez l\'acheter maintenant moins cher juste pour %cost_gold', '', '', '', 'Voy a poner %item_formatted_link en la casa de subastas pero puedes comprarlo ahora más barato solo por %cost_gold.', '', ''),
 ('suggest_sell', 'Why the #!@ have I bought %item_formatted_link? Anyone needs it for %cost_gold?', 0, 0, '', 'Pourquoi ai-je acheté le #!@ %item_formatted_link ? Quelqu\'un en a besoin pour %cost_gold ?', '', '', '', '¿Por qué #!@ he comprado %item_formatted_link? ¿Alguien lo necesita por %cost_gold?', '', ''),
 
-
 -- response LFG/LFM channel
 -- usable placeholders:
 -- %quest_links
@@ -703,7 +635,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('response_lfg_quests_channel', 'I am up for %quest_links, I am %my_role', 0, 0, '', '', '', '', '', '', '', ''),
 ('response_lfg_quests_channel', '%other_name, I am up for %quest_links, I am in %zone_name right now', 0, 0, '', '', '', '', '', '', '', ''),
 ('response_lfg_quests_channel', '%other_name, I am up for %quest_links, I am %my_role', 0, 0, '', '', '', '', '', '', '', ''),
-
 
 -- response LFG/LFM whisper
 -- usable placeholders:
@@ -725,8 +656,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('response_lfg_quests_whisper', 'I am up for %quest_links, I am in %zone_name right now', 0, 0, '', '', '', '', '', '', '', ''),
 ('response_lfg_quests_whisper', 'I am up for %quest_links, I am %my_role', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 -- response WTB channel
 -- usable placeholders:
 -- %formatted_item_links
@@ -743,9 +672,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('response_wtb_items_channel', '%other_name, I could potentially sell %formatted_item_links', 0, 0, '', '', '', '', '', '', '', ''),
 ('response_wtb_items_channel', '%other_name, Think I could sell %formatted_item_links', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
-
 -- response WTB channel
 -- usable placeholders:
 -- %formatted_item_links
@@ -760,85 +686,45 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('response_wtb_items_whisper', 'Hey, I got %formatted_item_links for sale', 0, 0, '', '', '', '', '', '', '', ''),
 ('response_wtb_items_whisper', 'Hey, I could potentially sell %formatted_item_links', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
 -- /////////////////////////////
 -- generic events
 
 -- quest
 ('quest_accept', 'Quest accepted', 0, 0, '', '', '', '', '', 'Misión aceptada', '', 'Квест взят'),
 
-
-
 ('quest_remove', 'Quest removed', 0, 0, '', '', '', '', '', 'Misión eliminada', '', 'Квест отменен'),
-
-
 
 ('quest_cant_take', 'I can\'t take this quest', 0, 0, '', '', '', '', '', 'No puedo tomar esta búsqueda', '', 'Я не могу взять этот квест'),
 
-
 ('quest_error_talk', 'I can\'t talk with the quest giver', 0, 0, '', '', '', '', '', 'No puedo hablar con el propietario de la mision', '', ''),
-
-
 
 ('quest_error_completed', 'I have already completed %quest', 0, 0, '', '', '', '', '', 'Ya he completado la mision %quest', '', ''),
 
-
-
 ('quest_error_have_quest', 'I already have %quest', 0, 0, '', '', '', '', '', 'Ya tengo la mision %quest', '', ''),
-
-
 
 ('quest_error_cant_take', 'I can\'t take %quest', 0, 0, '', '', '', '', '', 'No puedo aceptar la mision %quest', '', ''),
 
-
-
 ('quest_error_log_full', 'I can\'t take %quest because my quest log is full', 0, 0, '', '', '', '', '', 'No puedo aceptar la mision %quest porque mi registro de misiones esta completo', '', ''),
-
-
 
 ('quest_error_bag_full', 'I can\'t take %quest because my bag is full', 0, 0, '', '', '', '', '', 'No puedo aceptar la mision %quest porque mi inventario esta lleno', '', ''),
 
-
-
 ('quest_accepted', 'I have accepted %quest', 0, 0, '', '', '', '', '', 'He aceptado la mision %quest', '', ''),
-
-
 
 ('quest_status_incomplete', 'I have not completed the quest %quest', 0, 0, '', '', '', '', '', 'No he completado la mision %quest', '', ''),
 
-
-
 ('quest_status_available', 'Quest %quest available', 0, 0, '', '', '', '', '', 'Mision %quest disponible', '', ''),
-
-
 
 ('quest_status_failed', 'I have failed the quest %quest', 0, 0, '', '', '', '', '', 'He fallado la mision %quest', '', ''),
 
-
-
 ('quest_status_unable_to_complete', 'I am unable to turn in the quest %quest', 0, 0, '', '', '', '', '', 'No puedo entregar la mision %quest', '', ''),
-
-
 
 ('quest_status_completed', 'I have completed the quest %quest', 0, 0, '', '', '', '', '', 'He completado la mision %quest', '', ''),
 
-
-
 ('quest_status_complete_single_reward', 'I have completed the quest %quest and received %item', 0, 0, '', '', '', '', '', 'He completado la mision %quest y he recibido %item', '', ''),
-
-
 
 ('quest_status_complete_pick_reward', 'Which reward should I pick for completing the quest %quest?%rewards', 0, 0, '', '', '', '', '', '¿Que recompensa deberia escoger por completar la mision %quest?%rewards', '', ''),
 
-
-
 ('quest_choose_reward', 'Okay, I will pick %item as a reward', 0, 0, '', '', '', '', '', 'De acuerdo, voy a escoger %item de recompensa', '', ''),
-
-
-
-
-
 
 -- stuff
 ('hello', 'Hello', 0, 0, '', '', '', '', '', 'Hola', '', 'Привет'),
@@ -847,39 +733,24 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('hello', 'Hi!', 0, 0, '', '', '', '', '', '¡Hola!', '', 'Прив!'),
 ('hello', 'Hello there!', 0, 0, '', '', '', '', '', '¡Hola!', '', 'Здарова!'),
 
-
-
 ('hello_follow', 'Hello, I follow you!', 0, 0, '', '', '', '', '', '¡Hola, te sigo!', '', 'Привет, иду за тобой!'),
 ('hello_follow', 'Hello, lead the way!', 0, 0, '', '', '', '', '', '¡Hola, guía el camino!', '', 'Привет, веди!'),
 ('hello_follow', 'Hi, lead the way!', 0, 0, '', '', '', '', '', '¡Hola, guía el camino!', '', 'Прив, веди!'),
 
-
-
 ('join_group', 'Hey %player, do you want join my group?', 0, 0, '', '', '', '', '', 'Oye %player, ¿Quieres unirte a mi grupo?', '', ''),
-
-
 
 ('join_raid', 'Hey %player, do you want join my group?', 0, 0, '', '', '', '', '', 'Oye %player, ¿Quieres unirte a mi banda?', '', ''),
 
-
-
 ('logout_cancel', 'Logout cancelled!', 0, 0, '', '', '', '', '', 'Cerrar sesión cancelado!', '', 'Логаут отменен!'),
 
-
-
 ('logout_start', 'I\'m logging out!', 0, 0, '', '', '', '', '', '¡Me estoy desconectando!', '', 'Я выхожу из игры!'),
-
-
 
 ('goodbye', 'Goodbye!', 0, 0, '', '', '', '', '', '¡Adiós!', '', 'Пока!'),
 ('goodbye', 'Bye bye!', 0, 0, '', '', '', '', '', '¡Adiós!', '', 'Пока пока!'),
 ('goodbye', 'See you later!', 0, 0, '', '', '', '', '', '¡Hasta luego!', '', 'Увидимся позже!'),
 
-
-
 -- /////////////////////////////
 -- replies
-
 
 -- replies 0
 ('reply', 'what was that %s?', 0, 0, '', 'c\'était quoi ce %s?', '', '', '', '¿qué has dicho %s?', '', ''),
@@ -948,12 +819,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('reply', 'oh yeah maybe', 0, 0, '', '', '', '', '', '', '', ''),
 ('reply', 'yeah so what', 0, 0, '', '', '', '', '', '', '', ''),
 
-
-
-
-
-
-
 -- replies 1
 ('reply', 'hey %s i havent forgotten you', 0, 1, '', 'salut %s je ne t\'ai pas oublié', '', '', '', 'hey %s no te he olvidado', '', ''),
 ('reply', 'you piss me off %s', 0, 1, '', 'tu me fais chier %s', '', '', '', 'me cabreas %s', '', ''),
@@ -970,8 +835,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('reply', 'dont fucking judge me', 0, 1, '', '', '', '', '', '', '', ''),
 ('reply', 'Yo momma so fat, she can\'t even fit through the Dark Portal', 0, 1, '', '', '', '', '', '', '', ''),
 
-
-
 -- replies 2
 ('reply', 'wtf', 0, 2, '', 'wtf', '', '', '', 'wtf', '', ''),
 ('reply', 'wtf??', 0, 2, '', 'wtf??', '', '', '', 'wtf??', '', ''),
@@ -981,8 +844,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('reply', 'REMATCH!!! im taking him down', 0, 2, '', 'REMATCH!!! je le descends', '', '', '', '¡¡REVANCHA!!! lo estoy derribando', '', ''),
 ('reply', 'pathetic, i got killed by %s', 0, 2, '', 'pathétique, j\'ai été tué par %s', '', '', '', 'patético, me mató %s', '', ''),
 ('reply', 'ok i\'m done', 0, 2, '', '', '', '', '', '', '', ''),
-
-
 
 -- replies 3
 ('reply', 'hehe, i nailed %s?', 0, 3, '', 'hehe, j\'ai cloué %s?', '', '', '', 'jeje, ¿acerté a %s?', '', ''),
@@ -1009,8 +870,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('reply', '%s, what are you laying around for??? hehe', 0, 3, '', '%s, pourquoi traînes-tu??? hé hé', '', '', '', '%s, ¿para qué estás tirado? jeje', '', ''),
 ('reply', 'laughed real hard', 0, 3, '', '', '', '', '', '', '', ''),
 
-
-
 -- replies 4
 ('reply', 'hi %s', 0, 4, '', 'salut %s', '', '', '', 'hola %s', '', ''),
 ('reply', 'oh, hi %s', 0, 4, '', 'oh, salut %s', '', '', '', 'oh, hola %s', '', ''),
@@ -1032,10 +891,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('reply', 'yes???', 0, 5, '', 'Oui???', '', '', '', 'sí???', '', ''),
 ('reply', 'uh... what', 0, 5, '', 'euh ...quoi', '', '', '', 'uh... qué', '', ''),
 ('reply', 'you talkin to me %s?', 0, 5, '', 'tu me parles %s ?', '', '', '', '¿Me hablas a mí %s?', '', ''),
-
-
-
-
 
 -- taunts
 ('taunt', 'I have puppies under my armor!', 0, 0, '', 'J\'ai des chiots sous mon armure !', '', '', '', '¡Tengo cachorros bajo mi armadura!', '', ''),
@@ -1152,8 +1007,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('taunt', 'The beast with me is nothing compared to the beast within...', 0, 0, '', 'La bête avec moi n\'est rien comparée à la bête à l\'intérieur...', '', '', '', 'La bestia conmigo no es nada comparada con la bestia interior...', '', ''),
 ('taunt', 'Witness the firepower of this fully armed huntsman!', 0, 0, '', 'Soyez témoin de la puissance de feu de ce chasseur entièrement armé!', '', '', '', '¡Sea testigo de la potencia de fuego de este cazador completamente armado!', '', ''),
 
-
-
 -- combat events
 ('critical health', 'Heal me! Quick!', 0, 0, '', 'Soigne moi! Vite!', '', '', '', '¡Cúrame! ¡Rápido!', '', ''),
 ('critical health', 'Almost dead! Heal me!', 0, 0, '', 'Presque mort! Soigne moi!', '', '', '', '¡Estoy casi muerto! ¡Cúrame!', '', ''),
@@ -1165,8 +1018,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('critical health', 'I will die. I will die. I will die. Heal!', 0, 0, '', 'Je vais mourir. Je vais mourir. Je vais mourir. Soigner!', '', '', '', 'Voy a morir. Voy a morir. Voy a morir. ¡Saname!', '', ''),
 ('critical health', 'Healers, where are you? I am dying!', 0, 0, '', 'Guérisseurs, où êtes-vous ? Je meurs!', '', '', '', 'Sanadores, ¿dónde estais? ¡Me estoy muriendo!', '', ''),
 ('critical health', 'Oh the pain. Heal me quick!', 0, 0, '', 'Ah la douleur. Guéris-moi vite!', '', '', '', 'Ouch, qué dolor. ¡Cúrame rápido!', '', ''),
-
-
 
 ('low health', 'Need heal', 0, 0, '', 'Besoin de guérir', '', '', '', 'Necesito una cura', '', ''),
 ('low health', 'Low health', 0, 0, '', 'Santé faible', '', '', '', 'Salud baja', '', ''),
@@ -1180,8 +1031,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('low health', 'Why do they always punch me in the face? Need heal', 0, 0, '', 'Pourquoi me frappent-ils toujours au visage? Besoin de soins', '', '', '', '¿Por qué siempre me golpean en la cara? Necesito sanacion', '', ''),
 ('low health', 'Can anybody heal me a bit?', 0, 0, '', 'Quelqu\'un peut-il me guérir un peu?', '', '', '', '¿Alguien puede curarme un poco?', '', ''),
 
-
-
 ('low mana', 'OOM', 0, 0, '', 'MOO', '', '', '', 'No tengo mana!', '', ''),
 ('low mana', 'I am out of mana', 0, 0, '', 'je n\'ai plus de mana', '', '', '', 'No tengo maná', '', ''),
 ('low mana', 'Damn I wasted all my mana on this', 0, 0, '', 'Putain j\'ai gaspillé tout mon mana sur ça', '', '', '', 'Me cago en todo! Malgasté todo mi maná enseguida', '', ''),
@@ -1194,19 +1043,13 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('low mana', 'I\'d get some drinks next time. Out of mana', 0, 0, '', 'Je prendrais quelques verres la prochaine fois. Manque de mana', '', '', '', '¡No tengo maná! Tengo que comprar bebidas la próxima vez...', '', ''),
 ('low mana', 'Where is my mana?', 0, 0, '', 'Où est mon mana?', '', '', '', '¿Dónde está mi maná?', '', ''),
 
-
-
 ('low ammo', 'I have few <ammo> left!', 0, 0, '', 'Il me reste peu de <ammo>!', '', '', '', '¡Me quedan pocas <ammo>!', '', ''),
 ('low ammo', 'I need more <ammo>!', 0, 0, '', 'J\'ai besoin de plus de <ammo>!', '', '', '', '¡Necesito más <ammo>!', '', ''),
 ('low ammo', '100 <ammo> left!', 0, 0, '', 'Il reste 100 <ammo>!', '', '', '', '¡Quedan 100 <ammo>!', '', ''),
 
-
-
 ('no ammo', 'That\'s it! No <ammo>!', 0, 0, '', 'C\'est ça! Pas de <ammo>!', '', '', '', '¡Eso es todo! ¡Sin <ammo>!', '', ''),
 ('no ammo', 'And you have my bow... Oops, no <ammo>!', 0, 0, '', 'Et vous avez mon arc... Oups, pas de <ammo>!', '', '', '', 'Y tú tienes mi arco... ¡Uy, sin <ammo>!', '', ''),
 ('no ammo', 'Need ammo!', 0, 0, '', 'Besoin de munitions!', '', '', '', '¡Necesito munición!', '', ''),
-
-
 
 ('aoe', 'Oh god!', 0, 0, '', 'Oh mon Dieu!', '', '', '', '¡Oh, Dios!', '', ''),
 ('aoe', 'I am scared', 0, 0, '', 'j\'ai peur', '', '', '', 'Tengo miedo', '', ''),
@@ -1230,8 +1073,6 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('aoe', 'I hope healers are ready. Leeeeroy!', 0, 0, '', 'J\'espère que les guérisseurs sont prêts. Leeeeeroy!', '', '', '', 'Espero que los sanadores estén listos. ¡Leeeroy!', '', ''),
 ('aoe', 'I hope they won\'t come for me', 0, 0, '', 'j\'espère qu\'ils ont gagné, qu\'ils ne viendront pas pour moi', '', '', '', 'Espero que no vengan por mí', '', ''),
 ('aoe', 'Oh no. I can\'t see at this slaugther', 0, 0, '', 'Oh non. Je ne peux pas voir à ce massacre', '', '', '', 'Oh, no. No puedo ver esta matanza', '', ''),
-
-
 
 -- on looting
 ('loot', 'I hope there will be some money', 0, 0, '', 'j\'espère qu\'il y aura de l\'argent', '', '', '', 'Espero que haya algo de dinero...', '', ''),
@@ -1271,190 +1112,100 @@ INSERT INTO `ai_playerbot_texts` (`name`, `text`, `say_type`, `reply_type`, `tex
 ('loot', 'No, I can\'t resist', 0, 0, '', 'Non, je ne peux pas résister', '', '', '', 'No, no puedo resistir', '', ''),
 ('loot', 'I want more!', 0, 0, '', 'Je veux plus!', '', '', '', '¡Quiero más!', '', ''),
 
-
-
 -- wait signals
 ('wait_travel_close', 'I am close, wait for me!', 0, 0, '', '', '', '', '', '¡Estoy cerca, espérame!', '', 'Я тут рядом, подожди!'),
 ('wait_travel_close', 'I\'m not far, please wait!', 0, 0, '', '', '', '', '', 'No estoy lejos, ¡esperame por favor!', '', 'Я недалеко, погодите!'),
 
-
-
 ('wait_travel_medium', 'I\'m heading to your location', 0, 0, '', '', '', '', '', 'Me dirijo a tu ubicación', '', 'Двигаюсь к тебе'),
 ('wait_travel_medium', 'I\'m coming to you', 0, 0, '', '', '', '', '', 'Voy hacia ti', '', 'Иду к тебе'),
-
-
 
 ('wait_travel_far', 'I\'m traveling to your location', 0, 0, '', '', '', '', '', 'Voy a viajar a tu ubicación', '', 'Направляюсь к тебе'),
 ('wait_travel_far', 'I\'m trying to get to you', 0, 0, '', '', '', '', '', 'Estoy tratando de llegar a ti', '', 'Пытаюсь до тебя добраться'),
 
-
-
-
 -- commands
 ('equip_command', 'Equipping %item', 0, 0, '', '', '', '', '', 'Me he equipado %item', '', ''),
 
-
-
 ('unequip_command', '%item unequipped', 0, 0, '', '', '', '', '', 'Me he quitado %item', '', ''),
-
-
 
 ('auto_learn_spell', 'I have learned the spells: %spells', 0, 0, '', '', '', '', '', 'He aprendido los hechizos: %spells', '', ''),
 
-
-
 ('use_command_item_cooldown', '%item is in cooldown', 0, 0, '', '', '', '', '', '%item esta recargandose', '', ''),
-
-
 
 ('use_command_item_not_owned', 'I don''t have %item in my inventory', 0, 0, '', '', '', '', '', 'No tengo %item en mi inventario', '', ''),
 
-
-
 ('use_command_invalid_item', 'The item with the id %item does not exist', 0, 0, '', '', '', '', '', 'El objeto con el id %item no existe', '', ''),
-
-
 
 ('use_command_socket', 'Socketing %gem into %item', 0, 0, '', '', '', '', '', 'Insertando %gem en %item', '', ''),
 
-
-
 ('use_command_item_error', 'I can''t use %item', 0, 0, '', '', '', '', '', 'No puedo usar %item', '', ''),
-
-
 
 ('following', 'Following', 0, 0, '', '', '', '', '', 'Te sigo', '', 'Следую'),
 
-
-
 ('staying', 'Staying', 0, 0, '', '', '', '', '', 'Me quedo aqui', '', 'Стою'),
-
-
 
 ('fleeing', 'Fleeing', 0, 0, '', '', '', '', '', 'Huyendo', '', 'Убегаю'),
 
-
-
 ('fleeing_far', 'I won\'t flee with you, you are too far away', 0, 0, '', '', '', '', '', 'No huiré contigo, estás demasiado lejos', '', 'Я с тобой не побегу, ты слишком далеко'),
-
-
 
 ('grinding', 'Grinding', 0, 0, '', '', '', '', '', 'Farmeando', '', 'Гриндю'),
 
-
-
 ('attacking', 'Attacking', 0, 0, '', '', '', '', '', 'Atacando', '', 'Атакую'),
-
-
 
 ('error_far', 'It is too far away', 0, 0, '', '', '', '', '', 'Estas demasiado lejos', '', 'Слишком далеко'),
 
-
-
 ('error_water', 'It is under water', 0, 0, '', '', '', '', '', 'Estas debajo del agua', '', 'Это под водой'),
-
-
 
 ('error_cant_go', 'I can\'t go there', 0, 0, '', '', '', '', '', 'No puedo ir allí', '', 'Я не могу туда пройти'),
 
-
-
 ('error_guild', 'I\'m not in your guild!', 0, 0, '', '', '', '', '', '¡No estoy en tu hermandad!', '', 'Я не в твоей гильдии'),
-
-
 
 ('error_gbank_found', 'Can not find a guild bank nearby', 0, 0, '', '', '', '', '', 'No se puede encontrar un banco de hermandad cercano', '', 'Не могу найти гильд банк рядом'),
 
-
-
 ('error_cant_put', 'I can\'t put ', 0, 0, '', '', '', '', '', 'No puedo depositar ', '', 'Я не могу положить'),
-
-
 
 ('error_gbank_rights', 'I have no rights to put items in the first guild bank tab', 0, 0, '', '', '', '', '', 'No tengo derechos para depositar objetos en la primera pestaña del banco de hermandad', '', 'Нет прав чтобы класть вещи в первую вкладку гильд банка'),
 
-
-
 ('gbank_put', ' put to guild bank', 0, 0, '', '', '', '', '', ' depositado en el banco de hermandad', '', ' теперь в гильд банке'),
-
-
 
 ('free_moving', 'Free moving', 0, 0, '', '', '', '', '', 'Moviendome libremente', '', ''),
 
-
-
 ('guarding', 'Guarding', 0, 0, '', '', '', '', '', 'Protegiendo la posición', '', ''),
-
-
 
 ('use_command', 'Using %target', 0, 0, '', '', '', '', '', 'Usando %target', '', ''),
 
-
-
 ('command_target_unit', 'on %unit', 0, 0, '', '', '', '', '', 'en %unit', '', ''),
-
-
 
 ('use_command_remaining', '(%amount available)', 0, 0, '', '', '', '', '', '(%amount restante)', '', ''),
 
-
-
 ('use_command_last', '(the last one)', 0, 0, '', '', '', '', '', '(el último)', '', ''),
-
-
 
 ('use_command_socket_error', 'The socket does not fit', 0, 0, '', '', '', '', '', 'La ranura no sirve', '', ''),
 
-
-
 ('command_target_trade', 'on trade item', 0, 0, '', '', '', '', '', 'en objeto comerciado', '', ''),
-
-
 
 ('command_target_self', 'on myself', 0, 0, '', '', '', '', '', 'en mi', '', ''),
 
-
-
 ('command_target_item', 'on %item', 0, 0, '', '', '', '', '', 'en %item', '', ''),
-
-
 
 ('command_target_go', 'on %gameobject', 0, 0, '', '', '', '', '', 'en %gameobject', '', ''),
 
-
-
 ('loot_command', 'Looting %item', 0, 0, '', '', '', '', '', 'Despojando %item', '', ''),
-
-
 
 ('cast_spell_command_summon', 'Summoning %target', 0, 0, '', '', '', '', '', 'Invocando a %target', '', ''),
 ('cast_spell_command_summon_error_members', 'I don\'t have enough party members around to cast a summon', 0, 0, '', '', '', '', '', 'No tengo suficientes miembros de grupo alrededor para invocar', '', ''),
 ('cast_spell_command_summon_error_target', 'Failed to find the summon target', 0, 0, '', '', '', '', '', 'No he podido encontrar al objetivo de la invocación', '', ''),
 ('cast_spell_command_summon_error_combat', 'I can\'t summon while I\'m in combat', 0, 0, '', '', '', '', '', 'No puedo invocar durante un combate', '', ''),
 
-
-
 ('cast_spell_command_error_unknown_spell', 'I don\'t know the spell %spell', 0, 0, '', '', '', '', '', 'No conozco el hechizo %spell', '', ''),
-
-
 
 ('cast_spell_command_spell', 'Casting %spell', 0, 0, '', '', '', '', '', 'Lanzando %spell', '', ''),
 
-
-
 ('cast_spell_command_craft', 'Crafting %spell', 0, 0, '', '', '', '', '', 'Creando %spell', '', ''),
-
-
 
 ('cast_spell_command_error', 'Cannot cast %spell', 0, 0, '', '', '', '', '', 'No puedo lanzar %spell', '', ''),
 ('cast_spell_command_error_failed', 'Failed to cast %spell', 0, 0, '', '', '', '', '', 'Fallo al lanzar %spell', '', ''),
 
-
-
 ('cast_spell_command_amount', ' |cffffff00(x%amount left)|r', 0, 0, '', '', '', '', '', ' |cffffff00(x%amount restante)|r', '', ''),
-
-
-
 
 ('dummy_end', 'dummy', 0, 0, '', '', '', '', '', '', '', '');
 
