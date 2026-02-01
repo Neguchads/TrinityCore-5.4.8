@@ -16,7 +16,7 @@
 */
 
 #include "resource.h"
-#include "revision.h"
+#include "revision_data.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -52,19 +52,18 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_SYS_DEFAULT
 //
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION     FILEVER
-PRODUCTVERSION  PRODUCTVER
+FILEVERSION     TRINITY_FILEVERSION
+PRODUCTVERSION  TRINITY_PRODUCTVERSION
 
 FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
 
-#ifndef _DEBUG
- FILEFLAGS      0
+#if TRINITY_BUILD_HAS_DEBUG_INFO == 1
+  #define TRINITY_DEBUG VS_FF_DEBUG
 #else
- #define VER_PRERELEASE VS_FF_PRERELEASE
- #define VER_PRIVATEBUILD VS_FF_PRIVATEBUILD
- #define VER_DEBUG 0
- FILEFLAGS      (VER_PRIVATEBUILD|VER_PRERELEASE|VER_DEBUG)
+  #define TRINITY_DEBUG 0
 #endif
+
+FILEFLAGS      (TRINITY_DEBUG)
 
 FILEOS          VOS_NT_WINDOWS32
 FILETYPE        VFT_APP
@@ -75,12 +74,12 @@ BEGIN
         BLOCK "080004b0"
         BEGIN
             VALUE "FileDescription",    "authserver"
-            VALUE "FileVersion",        STRFILEVER
+            VALUE "FileVersion",        TRINITY_FILEVERSION_STR
             VALUE "InternalName",       "authserver"
-            VALUE "LegalCopyright",     "Copyright (C) 2008-2016"
+            VALUE "LegalCopyright",     TRINITY_LEGALCOPYRIGHT_STR
             VALUE "OriginalFilename",   "authserver.exe"
             VALUE "ProductName",        "authserver"
-            VALUE "ProductVersion",     STRPRODUCTVER
+            VALUE "ProductVersion",     TRINITY_PRODUCTVERSION_STR
         END
     END
 

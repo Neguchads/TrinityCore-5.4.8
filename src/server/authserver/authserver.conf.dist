@@ -1,5 +1,5 @@
 ##############################################################
-# Legends of Azeroth Pandaria Auth Server configuration file #
+# Trinity Core Auth Server configuration file #
 ##############################################################
 [authserver]
 
@@ -38,7 +38,7 @@
 #                     Logs directory must exists, or log file creation will be disabled.
 #        Default:     "" - (Log files will be stored in the current path)
 
-LogsDir = "Logs"
+LogsDir = ""
 
 #
 #    MaxPingTime
@@ -54,7 +54,6 @@ MaxPingTime = 30
 
 RealmServerPort = 3724
 
-#
 #
 #    BindIP
 #        Description: Bind auth server to IP/hostname
@@ -123,6 +122,22 @@ WrongPass.BanTime = 600
 WrongPass.BanType = 0
 
 #
+#    WrongPass.Logging
+#        Description: Additionally log attempted wrong password logging
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+WrongPass.Logging = 0
+
+#
+#    StrictVersionCheck
+#        Description: Prevent connection from clients with different build versions.
+#        Default:     0 - (Disabled, Allow all client versions)
+#                     1 - (Enabled, Only allow exact client version match)
+
+StrictVersionCheck = 0
+
+#
 #    BanExpiryCheckInterval
 #        Description: Time (in seconds) between checks for expired bans
 #        Default:     60
@@ -172,14 +187,15 @@ IPLocationFile = ""
 #                                                                 section my.ini)
 #                     ".;/path/to/unix_socket;username;password;database" - (use Unix sockets on
 #                                                                           Unix/Linux)
-#        Default:     "127.0.0.1;3306;skyfire;skyfire;auth"
+#        Default:     "127.0.0.1;3306;trinity;trinity;auth"
 
-LoginDatabaseInfo = "127.0.0.1;3306;root;root;auth"
+LoginDatabaseInfo = "127.0.0.1;3306;trinity;trinity;auth"
 
 #
 #    LoginDatabase.WorkerThreads
 #        Description: The amount of worker threads spawned to handle asynchronous (delayed) MySQL
 #                     statements. Each worker thread is mirrored with its own connection to the
+#                     MySQL server and their own thread on the MySQL server.
 #        Default:     1
 
 LoginDatabase.WorkerThreads = 1
@@ -187,7 +203,7 @@ LoginDatabase.WorkerThreads = 1
 #
 #    LoginDatabase.SynchThreads
 #        Description: The amount of MySQL connections spawned to handle.
-#        Default:     1 - (LoginDatabase.WorkerThreads)
+#        Default:     1 - (LoginDatabase.SynchThreads)
 
 LoginDatabase.SynchThreads  = 1
 
@@ -244,10 +260,12 @@ Updates.AllowRehash = 1
 
 #
 #    Updates.CleanDeadRefMaxCount
-#        Description: Cleans dead/ orphaned references that occur if an update was removed or renamed and edited in one step.
-#                     It only starts the clean up if the count of the missing updates is below or equal the Updates.CleanDeadRefMaxCount value.
-#                     This way prevents erasing of the update history due to wrong source directory state (maybe wrong branch or bad revision).
-#                     Disable this if you want to know if the database is in a possible "dirty state".
+#        Description: Cleans dead/ orphaned references that occur if an update was removed or 
+#                     renamed and edited in one step. It only starts the clean up if the count of 
+#                     the missing updates is below or equal the Updates.CleanDeadRefMaxCount value.
+#                     This way prevents erasing of the update history due to wrong source directory 
+#                     state (maybe wrong branch or bad revision). Disable this if you want to know 
+#                     if the database is in a possible "dirty state".
 #        Default:     3 - (Enabled)
 #                     0 - (Disabled)
 #                    -1 - (Enabled - unlimited)
@@ -258,7 +276,6 @@ Updates.CleanDeadRefMaxCount = 3
 ###################################################################################################
 
 ###################################################################################################
-#
 #  LOGGING SYSTEM SETTINGS
 #
 #  Appender config values: Given a appender "name"
@@ -286,8 +303,10 @@ Updates.CleanDeadRefMaxCount = 3
 #                         1 - Prefix Timestamp to the text
 #                         2 - Prefix Log Level to the text
 #                         4 - Prefix Log Filter type to the text
-#                         8 - Append timestamp to the log file name. Format: YYYY-MM-DD_HH-MM-SS (Only used with Type = 2)
-#                        16 - Make a backup of existing file before overwrite (Only used with Mode = w)
+#                         8 - Append timestamp to the log file name. Format: YYYY-MM-DD_HH-MM-SS
+#                             (Only used with Type = 2)
+#                        16 - Make a backup of existing file before overwrite
+#                             (Only used with Mode = w)
 #
 #                     Colors (read as optional1 if Type = Console)
 #                         Format: "fatal error warn info debug trace"
@@ -323,7 +342,7 @@ Updates.CleanDeadRefMaxCount = 3
 #                         Example:  536870912 (512 mb)
 #
 
-Appender.Console=1,2,0,13 11 9 5 3 1
+Appender.Console=1,2,0
 Appender.Auth=2,2,0,Auth.log,w
 
 #  Logger config values: Given a logger "name"
@@ -345,6 +364,14 @@ Appender.Auth=2,2,0,Auth.log,w
 #
 
 Logger.root=3,Console Auth
+
+#
+#    Log.Async.Enable
+#        Description: Enables asyncronous message logging.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Log.Async.Enable = 0
 
 #
 ###################################################################################################

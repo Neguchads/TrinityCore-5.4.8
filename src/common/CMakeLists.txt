@@ -107,7 +107,7 @@ target_link_libraries(common
     jemalloc    
 )
 
-add_dependencies(common revision.h)
+add_dependencies(common revision_data.h)
 
 # Generate precompiled header
 if (USE_COREPCH)

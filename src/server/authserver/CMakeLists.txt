@@ -73,7 +73,7 @@ target_include_directories(authserver
     ${CMAKE_SOURCE_DIR}/dep/fmt/include
 )
 
-add_dependencies(authserver revision.h)
+add_dependencies(authserver revision_data.h)
 
 if( NOT WIN32 )
   set_target_properties(authserver PROPERTIES

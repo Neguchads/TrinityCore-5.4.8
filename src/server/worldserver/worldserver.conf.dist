@@ -1,5 +1,5 @@
 ################################################
-#   Pandaria World Server configuration file   #
+# Trinity Core World Server configuration file #
 ################################################
 [worldserver]
 
@@ -39,38 +39,7 @@
 #    LOAD SETTINGS
 #
 ###################################################################################################
-Respawn.GuidWarnLevel = 12000000
-Respawn.GuidAlertLevel = 16000000
-mmap.AllowReuseOfPreviousPathSegments = 1
-AuthServer.Process =
-AuthServer.Command =
-DEBUG_LFG_QUEUE_SAVE_PREV_STATE = 0
-Arena.BonusReward.GamesCount.2v2 = 0
-Arena.BonusReward.Item.2v2 = 0
-Arena.BonusReward.MailTitle.2v2 = 
-Arena.BonusReward.MailText.2v2 =
-Arena.BonusReward.GamesCount.3v3 = 0
-Arena.BonusReward.Item.3v3 = 0
-Arena.BonusReward.MailTitle.3v3 = 
-Arena.BonusReward.MailText.3v3 =
-Arena.BonusReward.GamesCount.5v5 = 0
-Arena.BonusReward.Item.5v5 = 0
-Arena.BonusReward.MailTitle.5v5 = 
-Arena.BonusReward.MailText.5v5 = 
-Arena.BonusReward.GamesCount.RBG = 0
-Arena.BonusReward.Item.RBG = 0 
-Arena.BonusReward.MailTitle.RBG = 
-Arena.BonusReward.MailText.RBG = 
-Arena.SeasonReward.Cleanup.KeepWithAchievements = 2091
-Arena.SeasonReward.Cleanup.Achievements = 2093 2092 2090
-Arena.SeasonReward.Cleanup.Titles = 44 43 45
-Arena.SeasonReward.RatingThreshold.3x3 = -1
-Arena.SeasonReward.RatingThreshold.5x5 = -1
-Arena.SeasonReward.RatingThreshold.2x2 = -1
-Updates.CleanDeadRefMaxCount = 3
-Updates.ArchivedRedundancy = 0
-Updates.AllowRehash = 1
-Updates.Redundancy = 1
+
 ###################################################################################################
 # EXAMPLE CONFIG
 #
@@ -100,10 +69,10 @@ RealmID = 1
 #    DataDir
 #        Description: Data directory setting.
 #        Important:   DataDir needs to be quoted, as the string might contain space characters.
-#        Example:     "@prefix@/share/skyfire"
+#        Example:     "@prefix@/share/trinitycore"
 #        Default:     "."
 
-DataDir = "Data"
+DataDir = "."
 
 #
 #    LogsDir
@@ -112,7 +81,7 @@ DataDir = "Data"
 #                     Logs directory must exists, or log file creation will be disabled.
 #        Default:     "" - (Log files will be stored in the current path)
 
-LogsDir = "Logs"
+LogsDir = ""
 
 #
 #    LoginDatabaseInfo
@@ -125,13 +94,19 @@ LogsDir = "Logs"
 #                                                                 section my.ini)
 #                     ".;/path/to/unix_socket;username;password;database" - (use Unix sockets on
 #                                                                           Unix/Linux)
-#        Default:     "127.0.0.1;3306;skyfire;skyfire;auth"       - (LoginDatabaseInfo)
-#                     "127.0.0.1;3306;skyfire;skyfire;world"      - (WorldDatabaseInfo)
-#                     "127.0.0.1;3306;skyfire;skyfire;characters" - (CharacterDatabaseInfo)
+#        Default:     "127.0.0.1;3306;trinity;trinity;auth"       - (LoginDatabaseInfo)
+#                     "127.0.0.1;3306;trinity;trinity;world"      - (WorldDatabaseInfo)
+#                     "127.0.0.1;3306;trinity;trinity;characters" - (CharacterDatabaseInfo)
+#
+#    Don't change hostname unless you are hosting mysql on a different machine, if you need help
+#    with configuration allowing to connect from diferent machine than the one running server
+#    search for TCE00016 on forum.
+#    Don't open port on firewall to external connections (it belongs to mysql, not to wow server).
+#    The username you choose must have permisions to create/alter/rename tables.
 
-LoginDatabaseInfo     = "127.0.0.1;3306;root;root;auth"
-WorldDatabaseInfo     = "127.0.0.1;3306;root;root;world"
-CharacterDatabaseInfo = "127.0.0.1;3306;root;root;characters"
+LoginDatabaseInfo       = "127.0.0.1;3306;trinity;trinity;auth"
+WorldDatabaseInfo       = "127.0.0.1;3306;trinity;trinity;world"
+CharacterDatabaseInfo   = "127.0.0.1;3306;trinity;trinity;characters"
 
 #
 #    LoginDatabase.WorkerThreads
@@ -142,11 +117,11 @@ CharacterDatabaseInfo = "127.0.0.1;3306;root;root;characters"
 #                     MySQL server and their own thread on the MySQL server.
 #        Default:     1 - (LoginDatabase.WorkerThreads)
 #                     1 - (WorldDatabase.WorkerThreads)
-#                     1 - (CharacterDatabase.WorkerThreads)
+#                     1 - (CharacterDatabase.WorkerThreads)            
 
-LoginDatabase.WorkerThreads     = 1
-WorldDatabase.WorkerThreads     = 1
-CharacterDatabase.WorkerThreads = 1
+LoginDatabase.WorkerThreads         = 1
+WorldDatabase.WorkerThreads         = 1
+CharacterDatabase.WorkerThreads     = 1
 
 #
 #    LoginDatabase.SynchThreads
@@ -157,9 +132,9 @@ CharacterDatabase.WorkerThreads = 1
 #                     1 - (WorldDatabase.WorkerThreads)
 #                     2 - (CharacterDatabase.WorkerThreads)
 
-LoginDatabase.SynchThreads     = 1
-WorldDatabase.SynchThreads     = 1
-CharacterDatabase.SynchThreads = 2
+LoginDatabase.SynchThreads      = 1
+WorldDatabase.SynchThreads      = 1
+CharacterDatabase.SynchThreads  = 2
 
 #
 #    MaxPingTime
@@ -285,7 +260,7 @@ Compression = 1
 #                     1+  - (Enabled)
 #                     0   - (Disabled, No limit)
 
-PlayerLimit = 1000
+PlayerLimit = 0
 
 #
 #    SaveRespawnTimeImmediately
@@ -391,9 +366,9 @@ PlayerSave.Stats.SaveOnlyOnLogout = 1
 
 #
 #    mmap.enablePathFinding
-#        Description: Enable/Disable pathfinding using mmaps - experimental
-#        Default:     0 - (Disabled)
-#                     1 - (Enabled)
+#        Description: Enable/Disable pathfinding using mmaps - recommended.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
 
 mmap.enablePathFinding = 1
 
@@ -825,7 +800,7 @@ CharacterCreating.Disabled.RaceMask = 0
 #                     2    - (Disabled, Paladin)
 #                     4    - (Disabled, Hunter)
 #                     8    - (Disabled, Rogue)
-#                     16   - (Disabled, Undead)
+#                     16   - (Disabled, Priest)
 #                     32   - (Disabled, Death Knight)
 #                     64   - (Disabled, Shaman)
 #                     128  - (Disabled, Mage)
@@ -1235,7 +1210,7 @@ FlashAtStart = 1
 #        Example:     "Welcome to John\'s Server@This server runs on SkyFire Core."
 #        Default:     "Welcome to a Pandaria server."
 
-Motd = "Welcome to a Pandaria server."
+Motd = "Welcome to a Trinity Core server."
 
 #
 #    Server.LoginInfo
@@ -1277,13 +1252,31 @@ TicketSystem.FeedBackTickets = 1
 #        Default:     1
 
 DungeonFinder.OptionsMask = 1
+
 #
 #    LFGSolo.Enabled
 #        Description: Looking for Group Solo Option to queue solo thru LFG\RFD
 #        Default:     1  - (Enabled)
 #                     0  - (Disabled)
 
-LFGSolo.Enabled = 1
+LFGSolo.Enabled = 0
+
+#
+#    LFG.QueueAnnouncer.Enable
+#        Description: Enable queue announcements when players join LFG/LFR queues.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+#
+LFG.QueueAnnouncer.Enable = 0
+
+#
+#    LFG.QueueAnnouncer.PlayerOnly
+#        Description: Send LFG queue announcements only to the joining player.
+#        Default:     0 - (World message)
+#                     1 - (Player only)
+#
+LFG.QueueAnnouncer.PlayerOnly = 0
+
 #
 #   DBC.EnforceItemAttributes
 #        Description: Disallow overriding item attributes stored in DBC files with values from the
@@ -1348,7 +1341,7 @@ Updates.AutoSetup   = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-Warden.Enabled = 1
+Warden.Enabled = 0
 
 #
 #    Warden.NumMemChecks
@@ -1415,7 +1408,7 @@ Warden.BanDuration = 86400
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Interaction.Calendar = 1
+AllowTwoSide.Interaction.Calendar = 0
 
 #
 #    AllowTwoSide.Interaction.Channel
@@ -1423,7 +1416,7 @@ AllowTwoSide.Interaction.Calendar = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Interaction.Channel = 1
+AllowTwoSide.Interaction.Channel = 0
 
 #
 #    AllowTwoSide.Interaction.Group
@@ -1431,7 +1424,7 @@ AllowTwoSide.Interaction.Channel = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Interaction.Group = 1
+AllowTwoSide.Interaction.Group = 0
 
 #
 #    AllowTwoSide.Interaction.Guild
@@ -1439,7 +1432,7 @@ AllowTwoSide.Interaction.Group = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Interaction.Guild = 1
+AllowTwoSide.Interaction.Guild = 0
 
 #
 #    AllowTwoSide.Interaction.Auction
@@ -1447,7 +1440,7 @@ AllowTwoSide.Interaction.Guild = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Interaction.Auction = 1
+AllowTwoSide.Interaction.Auction = 0
 
 #
 #    AllowTwoSide.Trade
@@ -1455,7 +1448,7 @@ AllowTwoSide.Interaction.Auction = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-AllowTwoSide.Trade = 1
+AllowTwoSide.Trade = 0
 
 #
 #    TalentsInspecting
@@ -1487,7 +1480,7 @@ ThreatRadius = 60
 #                     1.5 - (Enabled, 150%)
 #                     0   - (Disabled, 0%)
 
-Rate.Creature.Aggro = 0.5
+Rate.Creature.Aggro = 1
 
 #
 #    CreatureFamilyFleeAssistanceRadius
@@ -1662,10 +1655,10 @@ MonsterSight = 50.000000
 #        Description: Chat protection from creating fake messages using a lot spaces or other
 #                     invisible symbols. Not applied to the addon language, but may break old
 #                     addons that use normal languages for sending data to other clients.
-#        Default:     0 - (Disabled)
-#                     1 - (Enabled)
+#        Default:     1 - (Enabled, Blizzlike)
+#                     0 - (Disabled)
 
-ChatFakeMessagePreventing = 0
+ChatFakeMessagePreventing = 1
 
 #
 #    ChatStrictLinkChecking.Severity
@@ -2224,7 +2217,7 @@ Die.Command.Mode = 1
 # STATS LIMITS
 #
 #    Stats.Limits.Enable
-#        Description: Enable or disable stats system
+#        Description: Enable or disable stats system.
 #        Default:     0 - Disabled
 
 Stats.Limits.Enable = 0
@@ -2264,9 +2257,9 @@ AutoBroadcast.Center = 0
 #
 #    AutoBroadcast.Timer
 #        Description: Timer (in milliseconds) for auto broadcasts.
-#        Default:     60000 - (60 seconds)
+#        Default:     600000 - (10 minutes)
 
-AutoBroadcast.Timer = 60000
+AutoBroadcast.Timer = 600000
 
 #
 ###################################################################################################
@@ -2348,7 +2341,7 @@ Battleground.Random.ResetHour = 6
 #     Battleground.RewardWinnerConquestLast
 #     Battleground.RewardLoserHonorFirst
 #     Battleground.RewardLoserHonorLast
-#        Description: Random Battlegrounds / call to the arms rewards
+#        Description: Random Battlegrounds / call to the arms rewards.
 #        Default:     30 - Battleground.RewardWinnerHonorFirst
 #                     25 - Battleground.RewardWinnerArenaFirst
 #                     15 - Battleground.RewardWinnerHonorLast
@@ -2486,7 +2479,7 @@ Arena.QueueAnnouncer.PlayerOnly = 0
 #        Description: Current arena season id shown in clients.
 #        Default:     15
 
-Arena.ArenaSeason.ID = 15
+Arena.ArenaSeason.ID = 12
 
 #
 #    Arena.ArenaSeason.InProgress
@@ -2606,15 +2599,15 @@ Ra.MinLevel = 3
 
 #
 #    SOAP.Enable
-#        Description: Enable soap service
+#        Description: Enable soap service.
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-SOAP.Enabled = 1
+SOAP.Enabled = 0
 
 #
 #    SOAP.IP
-#        Description: Bind SOAP service to IP/hostname
+#        Description: Bind SOAP service to IP/hostname.
 #        Default:     "127.0.0.1" - (Bind to localhost)
 
 SOAP.IP = "127.0.0.1"
@@ -2723,7 +2716,7 @@ AlwaysMaxWeaponSkill = 0
 #                     72.0 - Patch 5.4
 #                     77.0 - Patch 5.4.7
 
-PvP.Resilience.Value = 44.0
+PvP.Resilience.Value = 63.0
 
 #
 #    PvPToken.Enable
@@ -2765,7 +2758,7 @@ PvPToken.ItemCount = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-NoResetTalentsCost = 0
+NoResetTalentsCost = 1
 
 #
 #     Guild.AllowMultipleGuildMaster
@@ -2779,7 +2772,7 @@ Guild.AllowMultipleGuildMaster = 0
 #
 #     ShowKickInWorld
 #        Description: Determines whether a message is broadcasted to the entire server when a
-#                     player gets kicked
+#                     player gets kicked.
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
@@ -2794,6 +2787,7 @@ ShowKickInWorld = 0
 #                     0     - (Disabled)
 
 RecordUpdateTimeDiffInterval = 60000
+
 #
 #     MinRecordUpdateTimeDiff
 #        Description: Only record update time diff which is greater than this value.
@@ -2877,7 +2871,7 @@ Calculate.Gameoject.Zone.Area.Data = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-Wow.Token = 1
+Wow.Token = 0
 
 #    AUTOMATIC EQUIPMENT LEVEL SCALE LEVEL 90
 #
@@ -2897,9 +2891,9 @@ Wow.Token = 1
 #        Description: End value of item level
 #        Default: 463
 
-Ilvl.Scaling.PvE.Enable = true
+Ilvl.Scaling.PvE.Enable = false
 Ilvl.Scaling.PvE = 463
-Ilvl.Scaling.PvP.Enable = true
+Ilvl.Scaling.PvP.Enable = false
 Ilvl.Scaling.PvP = 463
 
 #    PlayedTimeReward.Enabled
@@ -2907,7 +2901,7 @@ Ilvl.Scaling.PvP = 463
 #        Default:   0 - (Disabled)
 #                   1 - (Enabled)
 
-PlayedTimeReward.Enabled = 1
+PlayedTimeReward.Enabled = 0
 
 #    PlayedTimeReward.Interval
 #        Description: Interval of bonus for time played
@@ -2915,8 +2909,8 @@ PlayedTimeReward.Enabled = 1
 #
 #        PlayedTimeReward.vp = 1 --> 1 voting point
 
-PlayedTimeReward.Interval = 1200
-PlayedTimeReward.vp = 1
+PlayedTimeReward.Interval = 0
+PlayedTimeReward.vp = 0
 
 #   FirstOfTheKingdom
 #        Description: grants a facility to complete the pandaria bands (need restart)
@@ -2956,7 +2950,7 @@ AuctionHouseBot.Update.Interval = 20
 #       Default:     0 - (Disabled)
 #                    1 - (Enabled)
 
-AuctionHouseBot.Seller.Enabled = 0
+AuctionHouseBot.Seller.Enabled = 1
 
 #
 #    AuctionHouseBot.Alliance.Items.Amount.Ratio
@@ -3427,7 +3421,7 @@ AuctionHouseBot.Buyer.Recheck.Interval = 20
 #
 #  Appender config values: Given a appender "name"
 #    Appender.name
-#        Description: Defines 'where to log'
+#        Description: Defines 'where to log'.
 #        Format:      Type,LogLevel,Flags,optional1,optional2,optional3
 #
 #                     Type
@@ -3487,7 +3481,7 @@ AuctionHouseBot.Buyer.Recheck.Interval = 20
 #                         Example:  536870912 (512 mb)
 #
 
-Appender.Console=1,3,0,13 11 9 5 3 1
+Appender.Console=1,3,0
 Appender.Server=2,2,0,Server.log,w
 Appender.GM=2,2,15,gm/gm_%s.log
 Appender.DBErrors=2,2,0,DBErrors.log
@@ -3753,7 +3747,7 @@ BattlePet.InitialLevel = 1
 #                     1 - (Enabled)
 #
 
-BattlePay.StoreEnabled = 1
+BattlePay.StoreEnabled = 0
 
 #
 #    BattlePay.Currency
@@ -3767,7 +3761,7 @@ BattlePay.StoreEnabled = 1
 #                     16 - (Test)
 #
 
-BattlePay.Currency = 5
+BattlePay.Currency = 4
 
 #
 ###################################################################################################
@@ -3817,11 +3811,11 @@ BlackMarket.AuctionDelayMod = 60
 #
 #    PacketSpoof.Policy
 #        Description: Determines the course of action when packet spoofing is detected.
-#        Default:    1 - Log + kick
-#                    0 - Log only ("network")
-#                    2 - Log + kick + ban
+#        Default:     1 - (Log + kick)
+#                     0 - (Log only 'network')
+#                     2 - (Log + kick + ban)
 
-PacketSpoof.Policy = 0
+PacketSpoof.Policy = 1
 
 #
 #    PacketSpoof.BanMode
@@ -3852,7 +3846,7 @@ PacketSpoof.BanDuration = 86400
 #    Default:     1 - (Enabled)
 #                 0 - (Disabled)
 
-WordFilter.Enable = 1
+WordFilter.Enable = 0
 
 #   .wordfilter mod on/off 开启或者关闭检测
 #   .wordfilter badword add #word 添加某个关键字检测   .wordfilter badword remove #word 移除某个检测关键字检测  
@@ -3891,7 +3885,7 @@ WordFilter.MuteDuration = 10000
 #                     Example: "25 35674 5623"
 #        Default:    ""
 
-Transmogrification.EnableTransmogInfo = true
+Transmogrification.EnableTransmogInfo = false
 Transmogrification.TransmogNpcText = 601083
 Transmogrification.Allowed = ""
 Transmogrification.NotAllowed = ""
@@ -4070,7 +4064,7 @@ Transmogrification.SetCopperCost = 0
 # SOLOCRAFT
 
 Solocraft.Enable = 0
-Solocraft.Announce = 1
+Solocraft.Announce = 0
 
 SoloCraft.Debuff.Enable = 1
 SoloCraft.Spellpower.Mult = 2.5
@@ -4088,8 +4082,8 @@ SoloCraft.Warlock = 100
 SoloCraft.Warrior = 100
 SoloCraft.Monk = 100
 
-Solocraft.XP.Enabled = 1
-Solocraft.XP.Balancing.Enabled = 1
+Solocraft.XP.Enabled = 0
+Solocraft.XP.Balancing.Enabled = 0
 
 Solocraft.Dungeon = 5.0
 Solocraft.Heroic = 10.0
@@ -4484,7 +4478,7 @@ IsleofThunder.Progression.Alliance = 0
 # OTHER
 #
 
-BonusRates.Enabled = 1
+BonusRates.Enabled = 0
 
 DisconnectToleranceInterval = 1
 
@@ -4492,7 +4486,7 @@ GuarderSight = 50
 
 Channel.ConstantLocale = 0
 
-Battleground.IgnoreFaction = 1
+Battleground.IgnoreFaction = 0
 Battleground.HugeBgStartTime = 20
 Battleground.HugeBgEndTime = 22
 Battleground.DtBgEnabled = 1
@@ -4642,3 +4636,36 @@ Load.Locales = 1
 
 #
 ###################################################################################################
+
+Respawn.GuidWarnLevel = 12000000
+Respawn.GuidAlertLevel = 16000000
+mmap.AllowReuseOfPreviousPathSegments = 1
+AuthServer.Process =
+AuthServer.Command =
+DEBUG_LFG_QUEUE_SAVE_PREV_STATE = 0
+Arena.BonusReward.GamesCount.2v2 = 0
+Arena.BonusReward.Item.2v2 = 0
+Arena.BonusReward.MailTitle.2v2 = 
+Arena.BonusReward.MailText.2v2 =
+Arena.BonusReward.GamesCount.3v3 = 0
+Arena.BonusReward.Item.3v3 = 0
+Arena.BonusReward.MailTitle.3v3 = 
+Arena.BonusReward.MailText.3v3 =
+Arena.BonusReward.GamesCount.5v5 = 0
+Arena.BonusReward.Item.5v5 = 0
+Arena.BonusReward.MailTitle.5v5 = 
+Arena.BonusReward.MailText.5v5 = 
+Arena.BonusReward.GamesCount.RBG = 0
+Arena.BonusReward.Item.RBG = 0 
+Arena.BonusReward.MailTitle.RBG = 
+Arena.BonusReward.MailText.RBG = 
+Arena.SeasonReward.Cleanup.KeepWithAchievements = 2091
+Arena.SeasonReward.Cleanup.Achievements = 2093 2092 2090
+Arena.SeasonReward.Cleanup.Titles = 44 43 45
+Arena.SeasonReward.RatingThreshold.3x3 = -1
+Arena.SeasonReward.RatingThreshold.5x5 = -1
+Arena.SeasonReward.RatingThreshold.2x2 = -1
+Updates.CleanDeadRefMaxCount = 3
+Updates.ArchivedRedundancy = 0
+Updates.AllowRehash = 1
+Updates.Redundancy = 1

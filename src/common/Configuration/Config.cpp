@@ -20,20 +20,32 @@
 #include "StringConvert.h"
 #include "Util.h"
 #include <boost/property_tree/ini_parser.hpp>
+#include <boost/filesystem.hpp>
 #include <algorithm>
 #include <cstdlib>
 #include <memory>
 #include <mutex>
+#include <unordered_set>
 
 namespace bpt = boost::property_tree;
 
 namespace
 {
+    namespace fs = boost::filesystem;
     std::string _filename;
     std::vector<std::string> _additonalFiles;
+    std::vector<std::string> _moduleConfigFiles;
     std::vector<std::string> _args;
     bpt::ptree _config;
     std::mutex _configLock;
+
+    std::string ConfigDir()
+    {
+        fs::path cfgPath(_filename);
+        if (cfgPath.has_parent_path())
+            return cfgPath.parent_path().string();
+        return ".";
+    }
 
     bool LoadFile(std::string const& file, bpt::ptree& fullTree, std::string& error)
     {
@@ -168,6 +180,61 @@ bool ConfigMgr::LoadAdditionalFile(std::string file, bool keepOnReload, std::str
     return true;
 }
 
+bool ConfigMgr::LoadModulesConfigs()
+{
+    std::string error;
+    std::vector<std::string> moduleFiles;
+    std::unordered_set<std::string> seen;
+
+    fs::path cfgDir = fs::path(ConfigDir());
+    if (cfgDir.empty())
+        cfgDir = ".";
+
+    // Load only from a "modules" subfolder (AzerothCore-style).
+    fs::path modulesDir = cfgDir / "modules";
+    if (fs::exists(modulesDir) && fs::is_directory(modulesDir))
+    {
+        for (fs::directory_iterator itr(modulesDir); itr != fs::directory_iterator(); ++itr)
+        {
+            if (!fs::is_regular_file(itr->path()))
+                continue;
+
+            if (itr->path().extension().string() != ".conf")
+                continue;
+
+            std::string file = itr->path().string();
+            if (seen.insert(file).second)
+                moduleFiles.push_back(file);
+        }
+    }
+
+    for (std::string const& file : moduleFiles)
+    {
+        if (!LoadAdditionalFile(file, true, error))
+        {
+            TC_LOG_ERROR("server.loading", "Error in config file: %s", error.c_str());
+            return false;
+        }
+
+        _moduleConfigFiles.push_back(file);
+    }
+
+    TC_LOG_INFO("server.loading", " ");
+    TC_LOG_INFO("server.loading", "Loading Modules Configuration...");
+    if (_moduleConfigFiles.empty())
+    {
+        TC_LOG_INFO("server.loading", "> Not found modules config files");
+        return true;
+    }
+
+    TC_LOG_INFO("server.loading", " ");
+    TC_LOG_INFO("server.loading", "Using modules configuration:");
+    for (std::string const& file : _moduleConfigFiles)
+        TC_LOG_INFO("server.loading", "> %s", file.c_str());
+
+    return true;
+}
+
 std::vector<std::string> ConfigMgr::OverrideWithEnvVariablesIfAny()
 {
     std::lock_guard<std::mutex> lock(_configLock);
@@ -238,8 +305,12 @@ T ConfigMgr::GetValueDefault(std::string const& name, T def, bool quiet) const
         }
         else if (!quiet)
         {
+            std::string configs = _filename;
+            if (!_moduleConfigFiles.empty())
+                configs += " or module config";
+
             TC_LOG_WARN("server.loading", "Missing name %s in config file %s, add \"%s = %s\" to this file",
-                name.c_str(), _filename.c_str(), name.c_str(), std::to_string(def).c_str());
+                name.c_str(), configs.c_str(), name.c_str(), std::to_string(def).c_str());
         }
     }
     catch (bpt::ptree_bad_data const&)
@@ -249,6 +320,12 @@ T ConfigMgr::GetValueDefault(std::string const& name, T def, bool quiet) const
     }
 
     return def;
+}
+
+template<class T>
+T ConfigMgr::GetOption(std::string const& name, T const& def, bool showLogs) const
+{
+    return GetValueDefault(name, def, !showLogs);
 }
 
 template<>
@@ -270,8 +347,12 @@ std::string ConfigMgr::GetValueDefault<std::string>(std::string const& name, std
         }
         else if (!quiet)
         {
+            std::string configs = _filename;
+            if (!_moduleConfigFiles.empty())
+                configs += " or module config";
+
             TC_LOG_WARN("server.loading", "Missing name %s in config file %s, add \"%s = %s\" to this file",
-                name.c_str(), _filename.c_str(), name.c_str(), def.c_str());
+                name.c_str(), configs.c_str(), name.c_str(), def.c_str());
         }
     }
     catch (bpt::ptree_bad_data const&)
@@ -338,3 +419,16 @@ std::vector<std::string> ConfigMgr::GetKeysByString(std::string const& name)
 
     return keys;
 }
+
+template bool ConfigMgr::GetOption<bool>(std::string const& name, bool const& def, bool showLogs) const;
+template int ConfigMgr::GetOption<int>(std::string const& name, int const& def, bool showLogs) const;
+template float ConfigMgr::GetOption<float>(std::string const& name, float const& def, bool showLogs) const;
+template std::string ConfigMgr::GetOption<std::string>(std::string const& name, std::string const& def, bool showLogs) const;
+template uint8 ConfigMgr::GetOption<uint8>(std::string const& name, uint8 const& def, bool showLogs) const;
+template int8 ConfigMgr::GetOption<int8>(std::string const& name, int8 const& def, bool showLogs) const;
+template uint16 ConfigMgr::GetOption<uint16>(std::string const& name, uint16 const& def, bool showLogs) const;
+template int16 ConfigMgr::GetOption<int16>(std::string const& name, int16 const& def, bool showLogs) const;
+template uint32 ConfigMgr::GetOption<uint32>(std::string const& name, uint32 const& def, bool showLogs) const;
+template int32 ConfigMgr::GetOption<int32>(std::string const& name, int32 const& def, bool showLogs) const;
+template uint64 ConfigMgr::GetOption<uint64>(std::string const& name, uint64 const& def, bool showLogs) const;
+template int64 ConfigMgr::GetOption<int64>(std::string const& name, int64 const& def, bool showLogs) const;

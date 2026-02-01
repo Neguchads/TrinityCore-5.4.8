@@ -33,6 +33,7 @@ public:
     /// Method used only for loading main configuration files (authserver.conf and worldserver.conf)
     bool LoadInitial(std::string file, std::vector<std::string> args, std::string& error);
     bool LoadAdditionalFile(std::string file, bool keepOnReload, std::string& error);
+    bool LoadModulesConfigs();
 
     /// Overrides configuration with environment variables and returns overridden keys
     std::vector<std::string> OverrideWithEnvVariablesIfAny();
@@ -45,6 +46,9 @@ public:
     bool GetBoolDefault(std::string const& name, bool def, bool quiet = false) const;
     int GetIntDefault(std::string const& name, int def, bool quiet = false) const;
     float GetFloatDefault(std::string const& name, float def, bool quiet = false) const;
+    
+    template<class T>
+    T GetOption(std::string const& name, T const& def, bool showLogs = true) const;
 
     std::string const& GetFilename();
     std::vector<std::string> const& GetArguments() const;

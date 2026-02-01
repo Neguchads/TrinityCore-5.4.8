@@ -555,18 +555,21 @@ void utf8printf(FILE* out, const char *str, ...)
     va_end(ap);
 }
 
-void vutf8printf(FILE* out, const char *str, va_list* ap)
+void vutf8printf(FILE* out, const char* str, va_list* ap)
 {
-#if PLATFORM == PLATFORM_WINDOWS
-    char temp_buf[32*1024];
-    wchar_t wtemp_buf[32*1024];
+#if TRINITY_PLATFORM == TRINITY_PLATFORM_WINDOWS
+    char temp_buf[32 * 1024];
+    wchar_t wtemp_buf[32 * 1024];
 
-    size_t temp_len = vsnprintf(temp_buf, 32*1024, str, *ap);
+    size_t temp_len = vsnprintf(temp_buf, 32 * 1024, str, *ap);
+    //vsnprintf returns -1 if the buffer is too small
+    if (temp_len == size_t(-1))
+        temp_len = 32 * 1024 - 1;
 
-    size_t wtemp_len = 32*1024-1;
+    size_t wtemp_len = 32 * 1024 - 1;
     Utf8toWStr(temp_buf, temp_len, wtemp_buf, wtemp_len);
 
-    CharToOemBuffW(&wtemp_buf[0], &temp_buf[0], wtemp_len+1);
+    CharToOemBuffW(&wtemp_buf[0], &temp_buf[0], uint32(wtemp_len + 1));
     fprintf(out, "%s", temp_buf);
 #else
     vfprintf(out, str, *ap);

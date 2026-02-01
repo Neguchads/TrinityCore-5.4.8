@@ -30,9 +30,6 @@
 #include "Implementation/LoginDatabase.h"
 #include "Implementation/CharacterDatabase.h"
 #include "Implementation/WorldDatabase.h"
-#ifdef PLAYERBOTS
-#include "Implementation/PlayerbotsDatabase.h"
-#endif
 #include "AppenderDB.h"
 #include "AsyncAcceptor.h"
 #include "Banner.h"
@@ -73,6 +70,7 @@ namespace fs = boost::filesystem;
 #ifndef _TRINITY_CORE_CONFIG
 # define _TRINITY_CORE_CONFIG  "worldserver.conf"
 #endif
+
 
 #ifdef _WIN32
 #include "ServiceWin32.h"
@@ -149,7 +147,13 @@ extern int main(int argc, char** argv)
         printf("Error in config file: %s\n", configError.c_str());
         return 1;
     }
-    
+
+    if (!sConfigMgr->LoadModulesConfigs())
+    {
+        printf("Error in module config files.\n");
+        return 1;
+    }
+
     std::vector<std::string> overriddenKeys = sConfigMgr->OverrideWithEnvVariablesIfAny();
 
     std::shared_ptr<Trinity::Asio::IoContext> ioContext = std::make_shared<Trinity::Asio::IoContext>();
@@ -327,6 +331,7 @@ extern int main(int argc, char** argv)
     sLog->SetSynchronous();
 
     sScriptMgr->OnShutdown();
+    sScriptMgr->OnDatabasesClosing();
 
     // set server offline
     LoginDatabase.DirectPExecute("UPDATE realmlist SET flag = flag | %u WHERE id = '%d'", REALM_FLAG_OFFLINE, realm.Id.Realm);
@@ -417,9 +422,7 @@ void WorldUpdateLoop()
     LoginDatabase.WarnAboutSyncQueries(true);
     CharacterDatabase.WarnAboutSyncQueries(true);
     WorldDatabase.WarnAboutSyncQueries(true);
-#ifdef PLAYERBOTS    
-    PlayerbotsDatabase.WarnAboutSyncQueries(true);
-#endif
+    sScriptMgr->OnDatabaseWarnAboutSyncQueries(true);
     sWorld->OnStartup();
 
     ///- While we have not World::m_stopEvent, update the world
@@ -454,9 +457,7 @@ void WorldUpdateLoop()
     LoginDatabase.WarnAboutSyncQueries(false);
     CharacterDatabase.WarnAboutSyncQueries(false);
     WorldDatabase.WarnAboutSyncQueries(false);
-#ifdef PLAYERBOTS    
-    PlayerbotsDatabase.WarnAboutSyncQueries(false);
-#endif    
+    sScriptMgr->OnDatabaseWarnAboutSyncQueries(false);
 }
 
 void SignalHandler(boost::system::error_code const& error, int /*signalNumber*/)
@@ -574,10 +575,9 @@ bool StartDB()
         .AddDatabase(LoginDatabase, "Login")
         .AddDatabase(CharacterDatabase, "Character")
         .AddDatabase(WorldDatabase, "World");
-#ifdef PLAYERBOTS        
-    loader.AddDatabase(PlayerbotsDatabase, "Playerbots");
-#endif
     if (!loader.Load())
+        return false;
+    if (!sScriptMgr->OnDatabasesLoading())
         return false;
 
     ///- Get the realm Id from the configuration file
@@ -612,6 +612,7 @@ bool StartDB()
     sWorld->LoadDBVersion();
 
     TC_LOG_INFO("server.worldserver", "Using World DB: %s", sWorld->GetDBVersion());
+    sScriptMgr->OnAfterDatabasesLoaded(loader.GetUpdateFlags());
     return true;
 }
 
@@ -620,9 +621,6 @@ void StopDB()
     CharacterDatabase.Close();
     WorldDatabase.Close();
     LoginDatabase.Close();
-#ifdef PLAYERBOTS    
-    PlayerbotsDatabase.Close();
-#endif
 
     MySQL::Library_End();
 }
