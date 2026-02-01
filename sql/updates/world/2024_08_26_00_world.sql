@@ -18,7 +18,7 @@ UPDATE `gossip_menu_option` gmo
 DROP TABLE `gossip_menu_option_action`;
 DROP TABLE `gossip_menu_option_box`;
 
-ALTER TABLE `gossip_menu` 
+ALTER TABLE `gossip_menu`
 MODIFY COLUMN `VerifiedBuild` int NOT NULL DEFAULT 0 AFTER `TextID`;
-ALTER TABLE `gossip_menu_option` 
+ALTER TABLE `gossip_menu_option`
 MODIFY COLUMN `VerifiedBuild` int NOT NULL DEFAULT 0 AFTER `BoxBroadcastTextID`;

@@ -80,7 +80,6 @@ INSERT INTO `smart_scripts`(`entryorguid`, `source_type`, `id`, `link`, `event_t
 (17936, 0, 4, 0, 6, 0, 100, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Horde Shaman - In Combat - Say Death');
 UPDATE `creature_template` SET `AIName`='SmartAI' WHERE `entry` IN (17919,17934,17932,17933,17936);
 
-
 SET @GURGTHOCK      := 30007;
 SET @STINKBEARD     := 30017;
 SET @YGGDRAS        := 30014;
@@ -481,4 +480,3 @@ DELETE FROM `creature_equip_template` WHERE `CreatureID` IN(@VLADOF,@STINKBEARD)
 INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`) VALUES
 (@VLADOF, 1, 41764, 41764, 0),
 (@STINKBEARD, 1, 41691, 41691, 0);
-

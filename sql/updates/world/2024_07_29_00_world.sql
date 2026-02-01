@@ -9,6 +9,6 @@ CHANGE COLUMN `movement_type` `MovementType` tinyint UNSIGNED NOT NULL DEFAULT 0
 ADD COLUMN `VerifiedBuild` int NOT NULL DEFAULT 0 AFTER `walk_mode`;
 
 -- Rename creature_template table baseattacktime and rangeattacktime
-ALTER TABLE `creature_template` 
+ALTER TABLE `creature_template`
 CHANGE COLUMN `baseattacktime` `BaseAttackTime` int UNSIGNED NOT NULL DEFAULT 0 AFTER `dmg_multiplier`,
 CHANGE COLUMN `rangeattacktime` `RangeAttackTime` int UNSIGNED NOT NULL DEFAULT 0 AFTER `BaseAttackTime`;

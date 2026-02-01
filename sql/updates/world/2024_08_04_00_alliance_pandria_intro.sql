@@ -1,9 +1,9 @@
--- Alliance Pandria intro quest 
--- The Mission (29548) 
+-- Alliance Pandria intro quest
+-- The Mission (29548)
 -- Phase 1686
 -- Remove old creature 570539 - 570611
 DELETE FROM `creature` WHERE `guid` BETWEEN 570539 AND 570611;
- 
+
 SET @CGUID:=4000000;
 DELETE FROM `creature` WHERE `guid` BETWEEN @CGUID+0 AND @CGUID+77;
 INSERT INTO `creature` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `PhaseId`, `PhaseGroup`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `wander_distance`, `currentwaypoint`, `curhealth`, `curmana`, `MovementType`, `npcflag`, `unit_flags`, `unit_flags2`, `dynamicflags`, `VerifiedBuild`) VALUES
@@ -151,7 +151,6 @@ INSERT INTO `creature_addon` (`guid`, `Path_Id`, `mount`, `StandState`, `AnimTie
 (@CGUID+76, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, '132221'), -- Generic Controller Bunny (CSA) - 132221 - FX_Uni_Zeppelin_Propeller_Blades_Loop
 (@CGUID+77, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, '132221'); -- Generic Controller Bunny (CSA) - 132221 - FX_Uni_Zeppelin_Propeller_Blades_Loop
 
-
 -- Sky Captain Callanan entry 64859
 SET @PATH := (@CGUID+70) * 10;
 DELETE FROM `waypoint_data` WHERE `id`= @PATH;
@@ -252,7 +251,7 @@ DELETE FROM `creature_addon` WHERE `guid`= (@CGUID+2);
 INSERT INTO `creature_addon` (`guid`, `path_id`) VALUES
 (@CGUID+2, @PATH);
 
--- 0 2 6 9 41 
+-- 0 2 6 9 41
 -- 2
 SET @PATH := (@CGUID+73) * 10;
 DELETE FROM `waypoint_data` WHERE `id`= @PATH;
@@ -429,7 +428,6 @@ INSERT INTO `waypoint_data` (`id`, `point`, `position_x`, `position_y`, `positio
 UPDATE `creature` SET `position_x`= -7918.184, `position_y`= 1278.201, `position_z`= 343.419, `orientation`= 0, `wander_distance`= 0, `MovementType`= 2 WHERE `guid`= @CGUID+13;
 UPDATE `creature_addon` SET `Path_Id`=@PATH WHERE `guid`= @CGUID+13;
 
-
 SET @PATH := (@CGUID+24) * 10;
 DELETE FROM `waypoint_data` WHERE `id`= @PATH;
 INSERT INTO `waypoint_data` (`id`, `point`, `position_x`, `position_y`, `position_z`, `orientation`, `delay`) VALUES
@@ -522,13 +520,13 @@ INSERT INTO `creature_text` (`CreatureID`, `GroupID`, `ID`, `Text`, `Type`, `Lan
 (55832, 0, 1, 'Hmm. Only 2 tons of explosives for this mission? Seems a bit light to me. This seems like the kind of mission we are going to need way more explosives for. Like... goblin pyromaniac explosives.', 12, 0, 100, 0, 0, 0, 67698, 0, 'Nodd Codejack <SI:7>'),
 (55832, 0, 2, 'Only thirty gyrocopters? We are going to need way more than that before this is over.', 12, 0, 100, 0, 0, 0, 67699, 0, 'Nodd Codejack <SI:7>');
 
--- SAI 
+-- SAI
 -- Sully "The Pickle" McLeary 55819
 -- Mishka 55823
 -- Nimm Codejack 55830
 -- Nodd Codejack <SI:7> 55832 , text timeline maybe wrong
 DELETE FROM `smart_scripts` WHERE `entryorguid` IN (55819,55823,55830,55832);
-INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_type`, `event_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `event_param5`, `action_type`, `action_param1`, `action_param2`, `action_param3`, `action_param4`, `action_param5`, `action_param6`, `target_type`, `target_param1`, `target_param2`, `target_param3`, `target_param4`, `target_x`, `target_y`, `target_z`, `target_o`, `comment`) VALUES 
+INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_type`, `event_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `event_param5`, `action_type`, `action_param1`, `action_param2`, `action_param3`, `action_param4`, `action_param5`, `action_param6`, `target_type`, `target_param1`, `target_param2`, `target_param3`, `target_param4`, `target_x`, `target_y`, `target_z`, `target_o`, `comment`) VALUES
 (55819, 0, 0, 0, 1, 0, 100, 0, 4000, 8000, 4000, 8000, 0, 5, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '\"The Pickle\" McLeary - Out of Combat - Play Emote 1'),
 (55823, 0, 0, 0, 1, 0, 100, 0, 4000, 8000, 4000, 8000, 0, 5, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Mishka - Out of Combat - Play Emote 1'),
 (55830, 0, 0, 0, 1, 0, 100, 0, 4000, 8000, 4000, 8000, 0, 5, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Nimm Codejack - Out of Combat - Play Emote 1'),

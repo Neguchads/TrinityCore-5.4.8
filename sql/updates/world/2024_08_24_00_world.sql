@@ -17,7 +17,7 @@ DELETE FROM `creature_text` WHERE `CreatureID`=59200 AND `GroupID`=12;
 INSERT INTO `creature_text` (`CreatureID`, `GroupID`, `ID`, `Text`, `Type`, `Language`, `Probability`, `Emote`, `Duration`, `Sound`, `BroadcastTextId`, `TextRange`, `comment`) VALUES
 (59200, 12, 0, 'Lilian\'s Soul fades into the spirit realm! It can no longer be harmed!', 16, 0, 100.0, 0, 0, 0, 66157, 0, 'LILIAN_TALK_13');
 
--- Creature text for Dark Haze (entry 54628) 
+-- Creature text for Dark Haze (entry 54628)
 DELETE FROM `creature_text` WHERE `CreatureID`=54628;
 INSERT INTO `creature_text` (`CreatureID`, `GroupID`, `ID`, `Text`, `Type`, `Language`, `Probability`, `Emote`, `Duration`, `Sound`, `BroadcastTextId`, `TextRange`, `comment`) VALUES
 (54628, 0, 0, 'Spawn of the Old Gods materialize nearby!', 16, 0, 100.0, 0, 0, 0, 66157, 0, 'Dark Haze EMOTE');

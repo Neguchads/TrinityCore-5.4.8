@@ -1,5 +1,5 @@
--- 
-ALTER TABLE `creature_template_addon`   
+--
+ALTER TABLE `creature_template_addon`
 	ADD COLUMN `StandState` TINYINT UNSIGNED DEFAULT 0 NOT NULL AFTER `MountCreatureID`,
 	ADD COLUMN `AnimTier` TINYINT UNSIGNED DEFAULT 0 NOT NULL AFTER `StandState`,
 	ADD COLUMN `VisFlags` TINYINT UNSIGNED DEFAULT 0 NOT NULL AFTER `AnimTier`,
@@ -12,7 +12,7 @@ UPDATE `creature_template_addon` SET `VisFlags`=(`bytes1` >> 16) & 0xFF;
 UPDATE `creature_template_addon` SET `SheathState`=`bytes2` & 0xFF;
 UPDATE `creature_template_addon` SET `PvPFlags`=(`bytes2` >> 8) & 0xFF;
 
-ALTER TABLE `creature_addon`   
+ALTER TABLE `creature_addon`
 	ADD COLUMN `StandState` TINYINT UNSIGNED DEFAULT 0 NOT NULL AFTER `MountCreatureID`,
 	ADD COLUMN `AnimTier` TINYINT UNSIGNED DEFAULT 0 NOT NULL AFTER `StandState`,
 	ADD COLUMN `VisFlags` TINYINT UNSIGNED DEFAULT 0 NOT NULL AFTER `AnimTier`,
@@ -26,12 +26,12 @@ UPDATE `creature_addon` SET `SheathState`=`bytes2` & 0xFF;
 UPDATE `creature_addon` SET `PvPFlags`=(`bytes2` >> 8) & 0xFF;
 
 -- Conversion done, drop old columns
-ALTER TABLE `creature_template_addon`  
-	DROP COLUMN `bytes1`, 
+ALTER TABLE `creature_template_addon`
+	DROP COLUMN `bytes1`,
 	DROP COLUMN `bytes2`;
 
-ALTER TABLE `creature_addon`  
-	DROP COLUMN `bytes1`, 
+ALTER TABLE `creature_addon`
+	DROP COLUMN `bytes1`,
 	DROP COLUMN `bytes2`;
 
 -- Add visibilityDistanceType
@@ -4454,7 +4454,7 @@ UPDATE `creature_template_movement` SET `Rooted`=1 WHERE `CreatureId` IN (SELECT
 ALTER TABLE `creature_template` DROP `InhabitType`;
 
 DELETE FROM `trinity_string` WHERE `entry`=11008;
-INSERT INTO `trinity_string` (`entry`, `content_default`, `content_loc1`, `content_loc2`, `content_loc3`, `content_loc4`, `content_loc5`, `content_loc6`, `content_loc7`, `content_loc8`, `content_loc9`, `content_loc10`, `content_loc11`, `content_female`, `content_female_loc1`, `content_female_loc2`, `content_female_loc3`, `content_female_loc4`, `content_female_loc5`, `content_female_loc6`, `content_female_loc7`, `content_female_loc8`, `content_female_loc9`, `content_female_loc10`, `content_female_loc11`) 
+INSERT INTO `trinity_string` (`entry`, `content_default`, `content_loc1`, `content_loc2`, `content_loc3`, `content_loc4`, `content_loc5`, `content_loc6`, `content_loc7`, `content_loc8`, `content_loc9`, `content_loc10`, `content_loc11`, `content_female`, `content_female_loc1`, `content_female_loc2`, `content_female_loc3`, `content_female_loc4`, `content_female_loc5`, `content_female_loc6`, `content_female_loc7`, `content_female_loc8`, `content_female_loc9`, `content_female_loc10`, `content_female_loc11`)
 VALUES (11008, 'Movement type: %s', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 DELETE FROM `command` WHERE `name`='reload creature_movement_override';
@@ -4462,8 +4462,8 @@ INSERT INTO `command` (`name`,`security`,`help`) VALUES
 ('reload creature_movement_override',5,'Syntax: .reload creature_movement_override\nReload creature_movement_override table.');
 
 -- More data for creature_template_movement
-INSERT IGNORE INTO `creature_template_movement` (`CreatureId`, `Ground`, `Swim`, `Flight`, `Rooted`, `Chase`, `Random`, `InteractionPauseTimer`) 
-VALUES 
+INSERT IGNORE INTO `creature_template_movement` (`CreatureId`, `Ground`, `Swim`, `Flight`, `Rooted`, `Chase`, `Random`, `InteractionPauseTimer`)
+VALUES
 (1, 0, 0, 1, 0, 0, 0, NULL),
 (30, 1, 0, 0, 0, 0, 0, NULL),
 (43, 1, 0, 0, 0, 0, 0, NULL),

@@ -1,4 +1,4 @@
--- 
+--
 DROP TABLE IF EXISTS `creature_template_model`;
 CREATE TABLE `creature_template_model`(
   `CreatureID` int(10) unsigned NOT NULL,

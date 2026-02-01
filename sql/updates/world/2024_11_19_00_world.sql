@@ -3,7 +3,7 @@
 -- https://www.wowhead.com/spell=221237/ancient-portal-dalaran (legion)
 -- https://www.wowhead.com/spell=121848/ancient-portal-dalaran (pandria)
 DELETE FROM `spell_target_position` WHERE (`id`,`effIndex`) IN ((120145,0),(121848,0));
-INSERT INTO `spell_target_position` (`id`, `effIndex`, `target_map`, `target_position_x`, `target_position_y`, `target_position_z`, `target_orientation`) VALUES 
+INSERT INTO `spell_target_position` (`id`, `effIndex`, `target_map`, `target_position_x`, `target_position_y`, `target_position_z`, `target_orientation`) VALUES
 (120145, 0, 0, 303.22, 347.21, 125.53, 1.721941947937011718),
 (121848, 0, 0, 303.22, 347.21, 125.53, 1.721941947937011718);
 
@@ -21,4 +21,3 @@ INSERT INTO `gameobject_template_locale` (`entry`, `locale`, `name`, `castBarCap
 (211835, 'ruRU', 'Портал в Даларан', '', 18019),
 (211835, 'zhCN', '通往达拉然的传送门', '', 18019),
 (211835, 'zhTW', '達拉然傳送門', '', 18019);
-
