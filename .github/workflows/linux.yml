@@ -80,6 +80,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=RelWithDebInfo
           -DCMAKE_INSTALL_PREFIX=check_install
           -DWITH_WARNINGS=0
+          -DCMAKE_C_FLAGS="-w" -DCMAKE_CXX_FLAGS="-w"
           -DUSE_COREPCH=${{ matrix.pch }} -DUSE_SCRIPTPCH=${{ matrix.pch }}
           -DTOOLS=1 -DSCRIPTS=static -DSERVERS=1
       - name: Build
