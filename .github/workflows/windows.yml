@@ -24,41 +24,6 @@ jobs:
     steps:
     - uses: actions/checkout@v5
 
-    - name: Get current OpenSSL version
-      id: openssl-info
-      run: |
-        $VersionsUrl = "https://api.github.com/repos/slproweb/opensslhashes/contents/win32_openssl_hashes.json"
-        $Headers = @{
-          Accept="application/vnd.github.raw+json"
-          Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}"
-        }
-        $openSSL = (Invoke-RestMethod $VersionsUrl -Headers $Headers).files.PSObject.Properties |
-          Select-Object -ExpandProperty Value |
-          Where-Object { $_.arch -eq 'INTEL' } |
-          Where-Object { $_.bits -eq '64' } |
-          Where-Object { $_.light -eq $false } |
-          Where-Object { $_.installer  -eq 'exe' } |
-          Sort-Object -Descending @{ Expression = { [version]$_.basever } } |
-          Select-Object -First 1
-        [System.String]::Format("cache-key=openssl-{0}-win-{1}-{2}", $openSSL.basever, $openSSL.arch, $openSSL.bits) >> $env:GITHUB_OUTPUT
-        [System.String]::Format("url={0}", $openSSL.url) >> $env:GITHUB_OUTPUT
-
-    - name: Cache OpenSSL
-      id: cache-openssl
-      uses: actions/cache@v4
-      with:
-        path: C:/libs/openssl
-        key: ${{ steps.openssl-info.outputs.cache-key }}
-
-    - name: Download and install Openssl 3.x
-      if: ${{ steps.cache-openssl.outputs.cache-hit != 'true' }}
-      run: |
-        (New-Object System.Net.WebClient).DownloadFile("${{ steps.openssl-info.outputs.url }}", "${{ env.TEMP }}\openssl.exe")
-        Start-Process -Wait -FilePath "${{ env.TEMP }}\openssl.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES",/DIR=C:/libs/openssl
-
-        # Quick Openssl install test
-        & C:/libs/openssl/bin/openssl.exe version
-
     - name: Install boost
       uses: MarkusJx/install-boost@v2.5.1
       id: install-boost
@@ -81,6 +46,8 @@ jobs:
         choco install -y make
         #cmake
         choco install -y cmake
+        #openssl
+        choco install -y openssl --version=3.1.1
       #git bash shell
       shell: bash
 
@@ -92,7 +59,7 @@ jobs:
     - name: windows build
       env:
           BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-          OPENSSL_ROOT_DIR: C:/libs/openssl
+          OPENSSL_ROOT_DIR: C:/Program Files/OpenSSL
       run: |
         cd $GITHUB_WORKSPACE
 
@@ -106,8 +73,8 @@ jobs:
         
         dir
           copy "C:/Program Files/MySQL/MySQL Server 8.0/lib/libmysql.dll" ${{ env.BUILD_DIR }}/bin/RelWithDebInfo/libmysql.dll
-          copy "C:/libs/openssl/bin/libcrypto-3-x64.dll" ${{ env.BUILD_DIR }}/bin/RelWithDebInfo/libcrypto-3-x64.dll
-          copy "C:/libs/openssl/bin/libssl-3-x64.dll" ${{ env.BUILD_DIR }}/bin/RelWithDebInfo/libssl-3-x64.dll
+          copy "C:/Program Files/OpenSSL/bin/libcrypto-3-x64.dll" ${{ env.BUILD_DIR }}/bin/RelWithDebInfo/libcrypto-3-x64.dll
+          copy "C:/Program Files/OpenSSL/bin/libssl-3-x64.dll" ${{ env.BUILD_DIR }}/bin/RelWithDebInfo/libssl-3-x64.dll
           move ${{github.workspace}}/contrib/lua_scripts ${{ env.BUILD_DIR }}/bin/RelWithDebInfo/lua_scripts
         
         ./authserver --version
