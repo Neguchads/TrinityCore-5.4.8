@@ -31,12 +31,12 @@
 #include "InstanceScript.h"
 
 CreatureAI::CreatureAI(Creature* creature) : UnitAI(creature), me(creature), m_MoveInLineOfSight_locked(false), m_canSeeEvenInPassiveMode(false)
-{ 
+{
 
 }
 
-CreatureAI::~CreatureAI() 
-{ 
+CreatureAI::~CreatureAI()
+{
 
 }
 
@@ -72,7 +72,7 @@ void CreatureAI::DoZoneInCombat(Creature* creature /*= NULL*/, float maxRangeToN
     Map* map = creature->GetMap();
     if (!map->IsDungeon())                                  //use IsDungeon instead of Instanceable, in case battlegrounds will be instantiated
     {
-        TC_LOG_ERROR("misc", "DoZoneInCombat call for map that isn't an instance (creature entry = %d)", creature->GetTypeId() == TYPEID_UNIT ? creature->ToCreature()->GetEntry() : 0);
+        TC_LOG_ERROR("misc", "DoZoneInCombat call for map that isn't an instance (creature entry = %d)", creature->IsCreature() ? creature->ToCreature()->GetEntry() : 0);
         return;
     }
 

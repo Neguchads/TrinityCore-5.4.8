@@ -69,7 +69,7 @@ std::vector<ChatCommand> const& ChatHandler::getCommandTable()
 
 std::string ChatHandler::PGetParseString(int32 entry, ...) const
 {
-    const char *format = GetTrinityString(entry);
+    char const*format = GetTrinityString(entry);
     char str[1024];
     va_list ap;
     va_start(ap, entry);
@@ -78,7 +78,7 @@ std::string ChatHandler::PGetParseString(int32 entry, ...) const
     return std::string(str);
 }
 
-const char *ChatHandler::GetTrinityString(int32 entry) const
+char const*ChatHandler::GetTrinityString(int32 entry) const
 {
     return m_session->GetTrinityString(entry);
 }
@@ -138,7 +138,7 @@ bool ChatHandler::HasLowerSecurityAccount(WorldSession* target, uint32 target_ac
     return false;
 }
 
-bool ChatHandler::hasStringAbbr(const char* name, const char* part)
+bool ChatHandler::hasStringAbbr(char const* name, char const* part)
 {
     // non "" command
     if (*name)
@@ -163,7 +163,7 @@ bool ChatHandler::hasStringAbbr(const char* name, const char* part)
     return true;
 }
 
-void ChatHandler::SendSysMessage(const char *str)
+void ChatHandler::SendSysMessage(char const*str)
 {
     WorldPacket data;
 
@@ -180,7 +180,7 @@ void ChatHandler::SendSysMessage(const char *str)
     free(buf);
 }
 
-void ChatHandler::SendGlobalSysMessage(const char *str)
+void ChatHandler::SendGlobalSysMessage(char const*str)
 {
     // Chat output
     WorldPacket data;
@@ -198,7 +198,7 @@ void ChatHandler::SendGlobalSysMessage(const char *str)
     free(buf);
 }
 
-void ChatHandler::SendGlobalGMSysMessage(const char *str)
+void ChatHandler::SendGlobalGMSysMessage(char const*str)
 {
     // Chat output
     WorldPacket data;
@@ -222,7 +222,7 @@ void ChatHandler::SendSysMessage(int32 entry)
 
 void ChatHandler::PSendSysMessage(int32 entry, ...)
 {
-    const char *format = GetTrinityString(entry);
+    char const*format = GetTrinityString(entry);
     va_list ap;
     char str [2048];
     va_start(ap, entry);
@@ -231,7 +231,7 @@ void ChatHandler::PSendSysMessage(int32 entry, ...)
     SendSysMessage(str);
 }
 
-void ChatHandler::PSendSysMessage(const char *format, ...)
+void ChatHandler::PSendSysMessage(char const*format, ...)
 {
     va_list ap;
     char str [2048];
@@ -272,7 +272,7 @@ bool ChatHandler::SendError(char const* format, ...)
     return false;
 }
 
-bool ChatHandler::ExecuteCommandInTable(std::vector<ChatCommand> const& table, const char* text, std::string const& fullcmd)
+bool ChatHandler::ExecuteCommandInTable(std::vector<ChatCommand> const& table, char const* text, std::string const& fullcmd)
 {
     char const* oldtext = text;
     std::string cmd = "";
@@ -489,7 +489,7 @@ Valid examples:
     if (sWorld->getIntConfig(CONFIG_CHAT_STRICT_LINK_CHECKING_SEVERITY) < 3)
     {
         const char validSequence[6] = "cHhhr";
-        const char* validSequenceIterator = validSequence;
+        char const* validSequenceIterator = validSequence;
         const std::string validCommands = "cHhr|";
 
         while (*message)
@@ -564,7 +564,7 @@ bool ChatHandler::ShowHelpForSubCommands(std::vector<ChatCommand> const& table, 
     return true;
 }
 
-bool ChatHandler::ShowHelpForCommand(std::vector<ChatCommand> const& table, const char* cmd)
+bool ChatHandler::ShowHelpForCommand(std::vector<ChatCommand> const& table, char const* cmd)
 {
     if (*cmd)
     {
@@ -822,7 +822,7 @@ size_t ChatHandler::BuildChatPacket(WorldPacket& data, ChatMsg chatType, Languag
     data.WriteByteSeq(groupGUID[5]);
     data.WriteByteSeq(groupGUID[7]);
 
-    // receiverGUIDPos = data.bitwpos(); 
+    // receiverGUIDPos = data.bitwpos();
 
     data.WriteByteSeq(receiverGUID[2]);
     data.WriteByteSeq(receiverGUID[5]);
@@ -876,7 +876,6 @@ size_t ChatHandler::BuildChatPacket(WorldPacket& data, ChatMsg chatType, Languag
 
     return BuildChatPacket(data, chatType, language, senderGUID, receiverGUID, message, chatTag, senderName, receiverName, achievementId, gmMessage, channelName, addonPrefix);
 }
-
 
 Player* ChatHandler::getSelectedPlayer()
 {
@@ -1379,7 +1378,7 @@ void CliCommandHolder::FinishCommand(bool success)
         m_commandFinished(m_callbackArg, success);
 }
 
-const char *CliHandler::GetTrinityString(int32 entry) const
+char const*CliHandler::GetTrinityString(int32 entry) const
 {
     return sObjectMgr->GetTrinityStringForDBCLocale(entry);
 }
@@ -1390,7 +1389,7 @@ bool CliHandler::isAvailable(ChatCommand const& cmd) const
     return cmd.AllowConsole;
 }
 
-void CliHandler::SendSysMessage(const char *str)
+void CliHandler::SendSysMessage(char const*str)
 {
     m_print(m_callbackArg, str);
     m_print(m_callbackArg, "\r\n");
@@ -1406,7 +1405,7 @@ bool CliHandler::needReportToTarget(Player* /*chr*/) const
     return true;
 }
 
-bool ChatHandler::GetPlayerGroupAndGUIDByName(const char* cname, Player* &player, Group* &group, ObjectGuid &guid, bool offline)
+bool ChatHandler::GetPlayerGroupAndGUIDByName(char const* cname, Player* &player, Group* &group, ObjectGuid &guid, bool offline)
 {
     player  = NULL;
     guid = ObjectGuid::Empty;
@@ -1450,7 +1449,7 @@ bool ChatHandler::GetPlayerGroupAndGUIDByName(const char* cname, Player* &player
     return true;
 }
 
-void ChatHandler::SecureLevelAnnounce(AccountTypes sec, const char* args)
+void ChatHandler::SecureLevelAnnounce(AccountTypes sec, char const* args)
 {
     if (!*args)
         return;

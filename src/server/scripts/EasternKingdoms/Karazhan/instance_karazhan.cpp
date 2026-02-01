@@ -684,7 +684,7 @@ class instance_karazhan : public InstanceMapScript
                 return saveStream.str();
             }
 
-            void Load(const char* chrIn) override
+            void Load(char const* chrIn) override
             {
                 if (!chrIn)
                 {

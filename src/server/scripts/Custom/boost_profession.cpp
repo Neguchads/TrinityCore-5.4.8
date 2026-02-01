@@ -50,35 +50,35 @@ public:
         player->PlayerTalkClass->ClearMenus();        
         player->SaveToDB();
         
-        if(player->HasSkill(FIRST_AID))
+        if (player->HasSkill(FIRST_AID))
             player->ADD_GOSSIP_ITEM_DB(51002, 0, GOSSIP_SENDER_MAIN, FIRST_AID);
-        if(player->HasSkill(BLACKSMITHING))
+        if (player->HasSkill(BLACKSMITHING))
             player->ADD_GOSSIP_ITEM_DB(51002, 1, GOSSIP_SENDER_MAIN, BLACKSMITHING);
-        if(player->HasSkill(LEATHERWORKING))
+        if (player->HasSkill(LEATHERWORKING))
             player->ADD_GOSSIP_ITEM_DB(51002, 2, GOSSIP_SENDER_MAIN, LEATHERWORKING);
-        if(player->HasSkill(ALCHEMY))
+        if (player->HasSkill(ALCHEMY))
             player->ADD_GOSSIP_ITEM_DB(51002, 3, GOSSIP_SENDER_MAIN, ALCHEMY);
-        if(player->HasSkill(HERBALISM))
+        if (player->HasSkill(HERBALISM))
             player->ADD_GOSSIP_ITEM_DB(51002, 4, GOSSIP_SENDER_MAIN, HERBALISM);
-        if(player->HasSkill(COOKING))
+        if (player->HasSkill(COOKING))
             player->ADD_GOSSIP_ITEM_DB(51002, 5, GOSSIP_SENDER_MAIN, COOKING);
-        if(player->HasSkill(MINING))
+        if (player->HasSkill(MINING))
             player->ADD_GOSSIP_ITEM_DB(51002, 6, GOSSIP_SENDER_MAIN, MINING);
-        if(player->HasSkill(TAILORING))
+        if (player->HasSkill(TAILORING))
             player->ADD_GOSSIP_ITEM_DB(51002, 7, GOSSIP_SENDER_MAIN, TAILORING);
-        if(player->HasSkill(ENGINEERING))
+        if (player->HasSkill(ENGINEERING))
             player->ADD_GOSSIP_ITEM_DB(51002, 8, GOSSIP_SENDER_MAIN, ENGINEERING);
-        if(player->HasSkill(ENCHANTING))
+        if (player->HasSkill(ENCHANTING))
             player->ADD_GOSSIP_ITEM_DB(51002, 9, GOSSIP_SENDER_MAIN, ENCHANTING);
-        if(player->HasSkill(FISHING))
+        if (player->HasSkill(FISHING))
             player->ADD_GOSSIP_ITEM_DB(51002, 10, GOSSIP_SENDER_MAIN, FISHING);
-        if(player->HasSkill(SKINNING))
+        if (player->HasSkill(SKINNING))
             player->ADD_GOSSIP_ITEM_DB(51002, 11, GOSSIP_SENDER_MAIN, SKINNING);
-        if(player->HasSkill(JEWELCRAFTING))
+        if (player->HasSkill(JEWELCRAFTING))
             player->ADD_GOSSIP_ITEM_DB(51002, 12, GOSSIP_SENDER_MAIN, JEWELCRAFTING);
-        if(player->HasSkill(INSCRIPTION))
+        if (player->HasSkill(INSCRIPTION))
             player->ADD_GOSSIP_ITEM_DB(51002, 13, GOSSIP_SENDER_MAIN, INSCRIPTION);
-        if(player->HasSkill(ARCHAEOLOGY))
+        if (player->HasSkill(ARCHAEOLOGY))
             player->ADD_GOSSIP_ITEM_DB(51002, 14, GOSSIP_SENDER_MAIN, ARCHAEOLOGY);
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Bye", GOSSIP_SENDER_MAIN, 1);
 
@@ -203,10 +203,10 @@ public:
             break;
         }
 
-        if(confirm == 1)
+        if (confirm == 1)
         {
             int32 maxvalueprof = player->GetMaxSkillValue(action);
-            if(player->HasSkill(action) && player->GetSkillValue(action) < maxvalueprof)
+            if (player->HasSkill(action) && player->GetSkillValue(action) < maxvalueprof)
                 player->SetSkill(action, player->GetSkillStep(action), maxvalueprof, maxvalueprof);
             
             ChatHandler(player->GetSession()).PSendSysMessage("Thanks for supporting the project!");
@@ -217,7 +217,7 @@ public:
             sServiceMgr->ExecutedServices(player->GetGUID(), SERVICE_TYPE_BOOST_PROFESSION, std::string("Boosted name: ") + player->GetName(), infoSkill.str());
             player->CLOSE_GOSSIP_MENU();
         }
-        else if(confirm == 2)
+        else if (confirm == 2)
         {
             player->SetSkill(action, player->GetSkillStep(action), 600, 600);
             
@@ -247,35 +247,35 @@ public:
         player->PlayerTalkClass->ClearMenus();        
         player->SaveToDB();
         
-        if(player->HasSkill(FIRST_AID))
+        if (player->HasSkill(FIRST_AID))
             player->ADD_GOSSIP_ITEM_DB(51002, 0, GOSSIP_SENDER_MAIN, FIRST_AID);
-        if(player->HasSkill(BLACKSMITHING))
+        if (player->HasSkill(BLACKSMITHING))
             player->ADD_GOSSIP_ITEM_DB(51002, 1, GOSSIP_SENDER_MAIN, BLACKSMITHING);
-        if(player->HasSkill(LEATHERWORKING))
+        if (player->HasSkill(LEATHERWORKING))
             player->ADD_GOSSIP_ITEM_DB(51002, 2, GOSSIP_SENDER_MAIN, LEATHERWORKING);
-        if(player->HasSkill(ALCHEMY))
+        if (player->HasSkill(ALCHEMY))
             player->ADD_GOSSIP_ITEM_DB(51002, 3, GOSSIP_SENDER_MAIN, ALCHEMY);
-        if(player->HasSkill(HERBALISM))
+        if (player->HasSkill(HERBALISM))
             player->ADD_GOSSIP_ITEM_DB(51002, 4, GOSSIP_SENDER_MAIN, HERBALISM);
-        if(player->HasSkill(COOKING))
+        if (player->HasSkill(COOKING))
             player->ADD_GOSSIP_ITEM_DB(51002, 5, GOSSIP_SENDER_MAIN, COOKING);
-        if(player->HasSkill(MINING))
+        if (player->HasSkill(MINING))
             player->ADD_GOSSIP_ITEM_DB(51002, 6, GOSSIP_SENDER_MAIN, MINING);
-        if(player->HasSkill(TAILORING))
+        if (player->HasSkill(TAILORING))
             player->ADD_GOSSIP_ITEM_DB(51002, 7, GOSSIP_SENDER_MAIN, TAILORING);
-        if(player->HasSkill(ENGINEERING))
+        if (player->HasSkill(ENGINEERING))
             player->ADD_GOSSIP_ITEM_DB(51002, 8, GOSSIP_SENDER_MAIN, ENGINEERING);
-        if(player->HasSkill(ENCHANTING))
+        if (player->HasSkill(ENCHANTING))
             player->ADD_GOSSIP_ITEM_DB(51002, 9, GOSSIP_SENDER_MAIN, ENCHANTING);
-        if(player->HasSkill(FISHING))
+        if (player->HasSkill(FISHING))
             player->ADD_GOSSIP_ITEM_DB(51002, 10, GOSSIP_SENDER_MAIN, FISHING);
-        if(player->HasSkill(SKINNING))
+        if (player->HasSkill(SKINNING))
             player->ADD_GOSSIP_ITEM_DB(51002, 11, GOSSIP_SENDER_MAIN, SKINNING);
-        if(player->HasSkill(JEWELCRAFTING))
+        if (player->HasSkill(JEWELCRAFTING))
             player->ADD_GOSSIP_ITEM_DB(51002, 12, GOSSIP_SENDER_MAIN, JEWELCRAFTING);
-        if(player->HasSkill(INSCRIPTION))
+        if (player->HasSkill(INSCRIPTION))
             player->ADD_GOSSIP_ITEM_DB(51002, 13, GOSSIP_SENDER_MAIN, INSCRIPTION);
-        if(player->HasSkill(ARCHAEOLOGY))
+        if (player->HasSkill(ARCHAEOLOGY))
             player->ADD_GOSSIP_ITEM_DB(51002, 14, GOSSIP_SENDER_MAIN, ARCHAEOLOGY);
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Bye", GOSSIP_SENDER_MAIN, 1);
 
@@ -287,11 +287,11 @@ public:
     {
         player->PlayerTalkClass->ClearMenus();
         
-        if(player->HasSkill(action))
+        if (player->HasSkill(action))
         {
             int32 maxvalueprof = player->GetMaxSkillValue(action);
 
-            if(player->HasSkill(action) && player->GetSkillValue(action) < maxvalueprof)
+            if (player->HasSkill(action) && player->GetSkillValue(action) < maxvalueprof)
                 player->SetSkill(action, player->GetSkillStep(action), maxvalueprof, maxvalueprof);
             
             ChatHandler(player->GetSession()).PSendSysMessage("Thanks for supporting the project!");

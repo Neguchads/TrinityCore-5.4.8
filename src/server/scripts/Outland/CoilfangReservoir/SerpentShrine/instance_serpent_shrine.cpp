@@ -403,7 +403,7 @@ class instance_serpent_shrine : public InstanceMapScript
                 return stream.str();
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

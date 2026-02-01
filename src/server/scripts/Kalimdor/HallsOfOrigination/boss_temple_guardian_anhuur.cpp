@@ -193,7 +193,7 @@ class boss_temple_guardian_anhuur : public CreatureScript
                 }
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (me->HasAura(SPELL_SHIELD_OF_LIGHT))
                     return;

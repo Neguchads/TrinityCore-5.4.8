@@ -62,7 +62,7 @@ void WorldSession::SendPartyResult(PartyOperation operation, const std::string& 
 void WorldSession::SendGroupInviteNotification(const std::string& inviterName, bool inGroup)
 {
     TC_LOG_DEBUG("network", "WORLD: sending SMSG_GROUP_INVITE");
-    
+
     ObjectGuid invitedGuid = GetPlayer()->GetGUID();
 
     WorldPacket data(SMSG_GROUP_INVITE, 6 + 1 + 8 + 8 + 4 + 4 + 4 + inviterName.size());

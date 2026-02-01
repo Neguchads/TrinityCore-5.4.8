@@ -73,7 +73,6 @@ BattlegroundTP::BattlegroundTP()
     _flagDebuffState = 0;
 }
 
-
 BattlegroundTP::~BattlegroundTP()
 {
 }
@@ -107,11 +106,9 @@ void BattlegroundTP::PostUpdateImpl(uint32 diff)
             UpdateWorldState(BG_TP_STATE_TIMER, 25 - _minutesElapsed);
         }
 
-
         if (_flagState[TEAM_ALLIANCE] == BG_TP_FLAG_STATE_WAIT_RESPAWN)
         {
             _flagsTimer[TEAM_ALLIANCE] -= diff;
-
 
             if (_flagsTimer[TEAM_ALLIANCE] < 0)
             {
@@ -120,11 +117,9 @@ void BattlegroundTP::PostUpdateImpl(uint32 diff)
             }
         }
 
-
         if (_flagState[TEAM_ALLIANCE] == BG_TP_FLAG_STATE_ON_GROUND)
         {
             _flagsDropTimer[TEAM_ALLIANCE] -= diff;
-
 
             if (_flagsDropTimer[TEAM_ALLIANCE] < 0)
             {
@@ -134,11 +129,9 @@ void BattlegroundTP::PostUpdateImpl(uint32 diff)
             }
         }
 
-
         if (_flagState[TEAM_HORDE] == BG_TP_FLAG_STATE_WAIT_RESPAWN)
         {
             _flagsTimer[TEAM_HORDE] -= diff;
-
 
             if (_flagsTimer[TEAM_HORDE] < 0)
             {
@@ -147,11 +140,9 @@ void BattlegroundTP::PostUpdateImpl(uint32 diff)
             }
         }
 
-
         if (_flagState[TEAM_HORDE] == BG_TP_FLAG_STATE_ON_GROUND)
         {
             _flagsDropTimer[TEAM_HORDE] -= diff;
-
 
             if (_flagsDropTimer[TEAM_HORDE] < 0)
             {
@@ -160,7 +151,6 @@ void BattlegroundTP::PostUpdateImpl(uint32 diff)
                 _bothFlagsKept = false;
             }
         }
-
 
         if (_bothFlagsKept)
         {
@@ -207,13 +197,11 @@ void BattlegroundTP::PostUpdateImpl(uint32 diff)
                 player->RemoveAurasDueToSpell(TP_SPELL_BRUTAL_ASSAULT);
             }
 
-
             _flagSpellForceTimer = 0; //reset timer.
             _flagDebuffState = 0;
         }
     }
 }
-
 
 void BattlegroundTP::StartingEventCloseDoors()
 {
@@ -225,11 +213,9 @@ void BattlegroundTP::StartingEventCloseDoors()
     for (uint32 i = BG_TP_OBJECT_A_FLAG; i <= BG_TP_OBJECT_BERSERKBUFF_2; ++i)
         SpawnBGObject(i, RESPAWN_ONE_DAY);
 
-
     UpdateWorldState(BG_TP_STATE_TIMER_ACTIVE, 1);
     UpdateWorldState(BG_TP_STATE_TIMER, 25);
 }
-
 
 void BattlegroundTP::StartingEventOpenDoors()
 {
@@ -241,7 +227,6 @@ void BattlegroundTP::StartingEventOpenDoors()
     DoorOpen(BG_TP_OBJECT_DOOR_H_2);
     DoorOpen(BG_TP_OBJECT_DOOR_H_3);
     DoorOpen(BG_TP_OBJECT_DOOR_H_4);
-
 
     for (uint32 i = BG_TP_OBJECT_A_FLAG; i <= BG_TP_OBJECT_BERSERKBUFF_2; ++i)
         SpawnBGObject(i, RESPAWN_IMMEDIATELY);
@@ -490,7 +475,6 @@ void BattlegroundTP::EventPlayerDroppedFlag(Player *player)
         player->CastSpell(player, SPELL_RECENTLY_DROPPED_FLAG, true);
         UpdateFlagState(player->GetBGTeam(), 1);
 
-
         if (player->GetBGTeam() == ALLIANCE)
         {
             SendMessageToAll(LANG_BG_TP_DROPPED_HF, CHAT_MSG_BG_SYSTEM_HORDE, player);
@@ -501,7 +485,6 @@ void BattlegroundTP::EventPlayerDroppedFlag(Player *player)
             SendMessageToAll(LANG_BG_TP_DROPPED_AF, CHAT_MSG_BG_SYSTEM_ALLIANCE, player);
             UpdateWorldState(BG_TP_FLAG_UNK_ALLIANCE, uint32(-1));
         }
-
 
         _flagsDropTimer[GetTeamIndexByTeamId(player->GetBGTeam()) ? 0 : 1] = BG_TP_FLAG_DROP_TIME;
     }
@@ -680,7 +663,6 @@ void BattlegroundTP::HandleAreaTrigger(Player* player, uint32 trigger, bool ente
 {
     if (GetStatus() != STATUS_IN_PROGRESS)
         return;
-
 
     //uint32 SpellId = 0;
     //uint64 buff_guid = 0;

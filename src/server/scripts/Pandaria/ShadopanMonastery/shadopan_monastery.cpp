@@ -240,7 +240,7 @@ class npc_shadopan_stormbringer : public CreatureScript
                         energy->AI()->DoAction(0); // ACTION_STORMBRINGER_KILLED
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_FOCUSING_COMBAT)
                 {

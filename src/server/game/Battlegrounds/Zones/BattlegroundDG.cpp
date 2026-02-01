@@ -1095,4 +1095,3 @@ void BattlegroundDG::RemovePlayer(Player* player, ObjectGuid guid, uint32 team)
             EventPlayerDroppedFlag(player);
     }
 }
-

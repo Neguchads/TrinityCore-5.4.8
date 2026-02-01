@@ -212,11 +212,10 @@ bool WaypointMovementGenerator<Creature>::GetResetPos(Creature*, float& x, float
     if (!i_path || i_path->empty())
         return false;
 
-    const WaypointData* node = i_path->at(i_currentNode);
+    WaypointData const* node = i_path->at(i_currentNode);
     x = node->x; y = node->y; z = node->z;
     return true;
 }
-
 
 //----------------------------------------------------//
 

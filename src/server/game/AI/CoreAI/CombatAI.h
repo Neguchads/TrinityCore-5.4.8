@@ -30,7 +30,7 @@ class AggressorAI : public CreatureAI
         explicit AggressorAI(Creature* c) : CreatureAI(c) { }
 
         void UpdateAI(uint32);
-        static int Permissible(const Creature*);
+        static int Permissible(Creature const*);
 };
 
 typedef std::vector<uint32> SpellVct;
@@ -46,7 +46,7 @@ class CombatAI : public CreatureAI
         void JustDied(Unit* killer);
         void UpdateAI(uint32 diff);
         void SpellInterrupted(uint32 spellId, uint32 unTimeMs);
-        static int Permissible(const Creature*);
+        static int Permissible(Creature const*);
     protected:
         EventMap events;
         SpellVct spells;
@@ -71,7 +71,7 @@ struct ArcherAI : public CreatureAI
         void AttackStart(Unit* who);
         void UpdateAI(uint32 diff);
 
-        static int Permissible(const Creature*);
+        static int Permissible(Creature const*);
     protected:
         float m_minRange;
 };
@@ -80,11 +80,11 @@ struct TurretAI : public CreatureAI
 {
     public:
         explicit TurretAI(Creature* c);
-        bool CanAIAttack(const Unit* who) const;
+        bool CanAIAttack(Unit const* who) const;
         void AttackStart(Unit* who);
         void UpdateAI(uint32 diff);
 
-        static int Permissible(const Creature*);
+        static int Permissible(Creature const*);
     protected:
         float m_minRange;
 };
@@ -95,7 +95,7 @@ struct VehicleAI : public CreatureAI, private VehicleAIBase
         explicit VehicleAI(Creature* c) : CreatureAI(c), VehicleAIBase(c) { }
 
         void UpdateAI(uint32 diff) { VehicleAIBase::UpdateAI(diff); }
-        static int Permissible(const Creature*);
+        static int Permissible(Creature const*);
         void Reset() { VehicleAIBase::Reset(); }
         void MoveInLineOfSight(Unit* who) { VehicleAIBase::MoveInLineOfSight(who); }
         void AttackStart(Unit* who) { VehicleAIBase::AttackStart(who); }

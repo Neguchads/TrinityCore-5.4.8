@@ -167,7 +167,7 @@ class BattlegroundMgr
         BattlegroundSelectionWeightMap m_RatedBGSelectionWeights;
         std::vector<uint64> m_QueueUpdateScheduler;
         uint32 m_NextRatedArenaUpdate;
-        bool   m_arenaTesting = false;;
+        bool   m_arenaTesting = false;
         bool   m_testing = false;
         bool   m_ratedBgTetsing = false;
         BattleMastersMap mBattleMastersMap;

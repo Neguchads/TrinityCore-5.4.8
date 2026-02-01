@@ -275,7 +275,7 @@ class instance_scholomance : public InstanceMapScript
                 return true;
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

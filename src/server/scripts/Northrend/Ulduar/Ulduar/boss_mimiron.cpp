@@ -2645,7 +2645,7 @@ class spell_p3wx2_laser_barrage : public SpellScriptLoader
 class achievement_set_up_us_the_bomb__proximity_mines : public AchievementCriteriaScript
 {
     public:
-        achievement_set_up_us_the_bomb__proximity_mines(const char* name) : AchievementCriteriaScript(name) { }
+        achievement_set_up_us_the_bomb__proximity_mines(char const* name) : AchievementCriteriaScript(name) { }
 
         bool OnCheck(Player* player, Unit* /*target*/)
         {
@@ -2660,7 +2660,7 @@ class achievement_set_up_us_the_bomb__proximity_mines : public AchievementCriter
 class achievement_set_up_us_the_bomb__rocket_strikes : public AchievementCriteriaScript
 {
     public:
-        achievement_set_up_us_the_bomb__rocket_strikes(const char* name) : AchievementCriteriaScript(name) { }
+        achievement_set_up_us_the_bomb__rocket_strikes(char const* name) : AchievementCriteriaScript(name) { }
 
         bool OnCheck(Player* player, Unit* /*target*/)
         {
@@ -2675,7 +2675,7 @@ class achievement_set_up_us_the_bomb__rocket_strikes : public AchievementCriteri
 class achievement_set_up_us_the_bomb__boombot_explosion : public AchievementCriteriaScript
 {
     public:
-        achievement_set_up_us_the_bomb__boombot_explosion(const char* name) : AchievementCriteriaScript(name) { }
+        achievement_set_up_us_the_bomb__boombot_explosion(char const* name) : AchievementCriteriaScript(name) { }
 
         bool OnCheck(Player* player, Unit* /*target*/)
         {

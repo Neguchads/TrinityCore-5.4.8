@@ -279,7 +279,7 @@ struct HookMgr
     void OnEquip(Player* pPlayer, Item* pItem, uint8 bag, uint8 slot);
     void OnRepop(Player* pPlayer);
     void OnResurrect(Player* pPlayer);
-    InventoryResult OnCanUseItem(const Player* pPlayer, uint32 itemEntry);
+    InventoryResult OnCanUseItem(Player const* pPlayer, uint32 itemEntry);
     void OnEngineRestart();
     /* Item */
     bool OnDummyEffect(Unit* pCaster, uint32 spellId, SpellEffIndex effIndex, Item* pTarget);
@@ -291,7 +291,7 @@ struct HookMgr
     bool OnDummyEffect(Unit* pCaster, uint32 spellId, SpellEffIndex effIndex, Creature* pTarget);
     bool OnGossipHello(Player* pPlayer, Creature* pCreature);
     bool OnGossipSelect(Player* pPlayer, Creature* pCreature, uint32 sender, uint32 action);
-    bool OnGossipSelectCode(Player* pPlayer, Creature* pCreature, uint32 sender, uint32 action, const char* code);
+    bool OnGossipSelectCode(Player* pPlayer, Creature* pCreature, uint32 sender, uint32 action, char const* code);
     bool OnQuestAccept(Player* pPlayer, Creature* pCreature, Quest const* pQuest);
     bool OnQuestSelect(Player* pPlayer, Creature* pCreature, Quest const* pQuest);
     bool OnQuestComplete(Player* pPlayer, Creature* pCreature, Quest const* pQuest);
@@ -301,7 +301,7 @@ struct HookMgr
     bool OnDummyEffect(Unit* pCaster, uint32 spellId, SpellEffIndex effIndex, GameObject* pTarget);
     bool OnGossipHello(Player* pPlayer, GameObject* pGameObject);
     bool OnGossipSelect(Player* pPlayer, GameObject* pGameObject, uint32 sender, uint32 action);
-    bool OnGossipSelectCode(Player* pPlayer, GameObject* pGameObject, uint32 sender, uint32 action, const char* code);
+    bool OnGossipSelectCode(Player* pPlayer, GameObject* pGameObject, uint32 sender, uint32 action, char const* code);
     bool OnQuestAccept(Player* pPlayer, GameObject* pGameObject, Quest const* pQuest);
     bool OnQuestComplete(Player* pPlayer, GameObject* pGameObject, Quest const* pQuest);
     bool OnQuestReward(Player* pPlayer, GameObject* pGameObject, Quest const* pQuest);
@@ -360,7 +360,7 @@ struct HookMgr
     void OnSuccessful(AuctionHouseObject* ah);
     void OnExpire(AuctionHouseObject* ah);
     /* Condition */
-    bool OnConditionCheck(const Condition* condition, ConditionSourceInfo& sourceInfo) { return false; }; // TODO ?
+    bool OnConditionCheck(Condition const* condition, ConditionSourceInfo& sourceInfo) { return false; }; // TODO ?
     /* Transport */
     void OnAddPassenger(Transport* transport, Player* player);
     void OnAddCreaturePassenger(Transport* transport, Creature* creature);
@@ -381,7 +381,7 @@ struct HookMgr
     /* Group */
     void OnAddMember(Group* group, uint64 guid);
     void OnInviteMember(Group* group, uint64 guid);
-    void OnRemoveMember(Group* group, uint64 guid, uint8 method, uint64 kicker, const char* reason);
+    void OnRemoveMember(Group* group, uint64 guid, uint8 method, uint64 kicker, char const* reason);
     void OnChangeLeader(Group* group, uint64 newLeaderGuid, uint64 oldLeaderGuid);
     void OnDisband(Group* group);
     void OnCreate(Group* group, uint64 leaderGuid, GroupType groupType);
@@ -391,7 +391,7 @@ struct HookMgr
 class ElunaCreatureScript : public CreatureScript
 {
 public:
-    ElunaCreatureScript() : CreatureScript("Smart_ElunaCreatureScript") { } // Smart suppressing error @startup 
+    ElunaCreatureScript() : CreatureScript("Smart_ElunaCreatureScript") { } // Smart suppressing error @startup
     ~ElunaCreatureScript() { }
     CreatureAI* GetAI(Creature* creature) const override
     {

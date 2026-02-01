@@ -175,7 +175,7 @@ public:
         auto it = logFiles.find(fileName);
         return it != logFiles.end() && it->second.second;
     }
-    void log(std::string const fileName, const char* str, ...);
+    void log(std::string const fileName, char const* str, ...);
 };
 
 #define sPlayerbotAIConfig PlayerbotAIConfig::instance()

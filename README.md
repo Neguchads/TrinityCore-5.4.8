@@ -1,48 +1,38 @@
-**Mists of Pandaria 5.4.8 Build 18414**
+# TrinityCore (5.4.8.18414)
 
-Discord link: https://discord.gg/byBCHbwJEg
+[![linux-build](https://github.com/brian8544/TrinityCore-5.4.8/actions/workflows/linux-build.yml/badge.svg?branch=master)](https://github.com/brian8544/TrinityCore-5.4.8/actions/workflows/linux-build.yml?query=branch%3Amaster)
+[![win-x64-build](https://github.com/brian8544/TrinityCore-5.4.8/actions/workflows/win-x64-build.yml/badge.svg?branch=master)](https://github.com/brian8544/TrinityCore-5.4.8/actions/workflows/win-x64-build.yml?query=branch%3Amaster)
 
-Client exe files: https://github.com/brian8544/WoWRegeneration/blob/main/Binary/WoWRegeneration.exe
+## Introduction
+
+TrinityCore is an open-source game server framework for Mists of Pandaria (Build 18414). It aims to recreate the gameplay experience of World of Warcraft in a stable, blizzlike, and customizable way.
+
+The original code is based on MaNGOS, CMaNGOS, TrinityCore, SunwellCore, SkyFire, and Pandaria, and has since then had extensive development to improve stability, in-game mechanics, and modularity. It is written in C++ and provides a solid foundation for creating private servers that mimic the mechanics and behavior of the official WoW servers.
+
+## Modules
+
+We support modules. You can add, remove, or update modules to extend core functionality or customize gameplay without modifying the core source.
 
 ## Requirements
-+ Platform: Linux, Windows or Mac
-+ AMD64 or AArch64 CPU architecture
-+ MySQL = 5.7 / 8.0-8.1
-+ CMake ≥ 3.27.2 
-+ OpenSSL = 1.1.1 / 3.0-3.1.1 (3.2.0 not supported) (MySQL >= 8.0.33)
-+ Boost ≥ 1.85.0_msvc 14.3 x64 / 1.81 above Linux
-+ Windows SDK version 10.0.22621
-+ MS Visual Studio (Community) ≥ 16.4 (2019) (Desktop) (Not previews) 
-+ GCC >= 13.0, Clang >= 12.0 
 
-## Player bots
-Playerbots is in a early stage of developpement, you may encounter bug crash and other unexpected issues.
-Its HIGHLY recommanded to disable ELUNA with bot enable.
+- Platform: Linux, Windows, or macOS
+- CPU: AMD64 or AArch64
+- MySQL: 5.7 or 8.0-8.1
+- CMake: 3.27.2 or newer
+- OpenSSL: 1.1.1 or 3.0-3.1.1 (3.2.0 not supported with MySQL 8.0.33+)
+- Boost: 1.85.0 (MSVC 14.3 x64) or 1.81+ on Linux
+- Windows SDK: 10.0.22621
+- Visual Studio: 2019 Community 16.4+ (Desktop, non-preview)
+- GCC 13+ or Clang 12+
 
-Few thing to get it working beside importing databases:
-+ copy playerbots.conf into your build dir directory or where your executables are
-+ you MUST have enUS dbc in order to make bots functional
-+ modify playerbots.conf
-+ the first start may take times, be patient let everything load and randomize
+## Contributing
 
+If you want to contribute, please read `.github/CONTRIBUTING.md` and open a pull request.
 
-## Copyright
-License: GPL 2.0
+## Authors & Contributors
 
-Read file [COPYING](COPYING.md)
+Read the file `.github/THANKS.md`.
 
-## Authors &amp; Contributors
-Read file [THANKS](THANKS.md)
+## License
 
-## Build Status
-[![windows-build](https://github.com/Legends-of-Azeroth/Legends-of-Azeroth-Pandaria-5.4.8/actions/workflows/windows-build-release.yml/badge.svg?branch=master)](https://github.com/Legends-of-Azeroth/Legends-of-Azeroth-Pandaria-5.4.8/actions/workflows/windows-build-release.yml)
-[![linux-gcc-build](https://github.com/Legends-of-Azeroth/Legends-of-Azeroth-Pandaria-5.4.8/actions/workflows/linux_gcc.yml/badge.svg?branch=master)](https://github.com/Legends-of-Azeroth/Legends-of-Azeroth-Pandaria-5.4.8/actions/workflows/linux_gcc.yml)
-
-<a href="https://scan.coverity.com/projects/legends-of-azeroth-mop">
-  <img alt="Coverity Scan Build Status"
-       src="https://scan.coverity.com/projects/26941/badge.svg"/>
-</a>
-<a href="https://scan.coverity.com/projects/legends-of-azeroth-mop">
-  <img alt="Coverity Scan Build Status"
-       src="https://img.shields.io/coverity/scan/26941.svg"/>
-</a>
+The source code is released under GPL-2.0. See `.github/COPYING.md`.

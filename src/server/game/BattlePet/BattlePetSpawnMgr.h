@@ -20,10 +20,16 @@
 
 #include "BattlePet.h"
 #include "Common.h"
+#include <map>
+#include <set>
+#include <vector>
+
+class Creature;
+class Map;
 
 #define BATTLE_PET_SPAWN_MGR_UPDATE 2000
 
-//          replacement  
+//          replacement
 typedef std::map<ObjectGuid, BattlePet*> BattlePetInfoStore;
 //             replaced  replacement
 typedef std::map<ObjectGuid, ObjectGuid> CreatureReplacedRelationStore;

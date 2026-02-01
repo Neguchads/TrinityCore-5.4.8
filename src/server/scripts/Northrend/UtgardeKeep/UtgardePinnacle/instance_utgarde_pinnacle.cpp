@@ -261,7 +261,7 @@ class instance_utgarde_pinnacle : public InstanceMapScript
                return str_data;
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

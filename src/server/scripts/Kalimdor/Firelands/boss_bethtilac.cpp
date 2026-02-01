@@ -583,7 +583,7 @@ class npc_bethtilac_cinderweb_spinner : public CreatureScript
                     }*/
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (bTaunted)
                     return;

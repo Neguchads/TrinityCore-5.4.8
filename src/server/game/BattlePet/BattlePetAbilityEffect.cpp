@@ -19,6 +19,7 @@
 #include "DBCStores.h"
 #include "BattlePet.h"
 #include "PetBattle.h"
+#include "Util.h"
 
 struct BattlePetAbilityEffectHandler
 {

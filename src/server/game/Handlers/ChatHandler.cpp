@@ -321,7 +321,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
     }
 
     /// filtering of bad words
-    if(sWorld->getBoolConfig(CONFIG_WORD_FILTER_ENABLE))
+    if (sWorld->getBoolConfig(CONFIG_WORD_FILTER_ENABLE))
     {
         sender->m_sentMsgCache.append(msg);
 
@@ -329,14 +329,14 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
         std::string badWord = sWordFilterMgr->FindBadWord(msg);
 
         // vertically
-        if(badWord.empty())
+        if (badWord.empty())
             badWord = sWordFilterMgr->FindBadWord(sender->m_sentMsgCache);
 
         if (!badWord.empty())
         {
             sender->m_sentMsgCache.erase();
 
-            if(!sender->CanSpeak())
+            if (!sender->CanSpeak())
                 return;
 
             time_t muteTime = time(NULL) + (int64)(sWorld->getIntConfig(CONFIG_WORD_FILTER_MUTE_DURATION) / 1000);
@@ -347,7 +347,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 
         const uint8 maxSentMsgCacheSize = 64;
 
-        if(sender->m_sentMsgCache.size() >= maxSentMsgCacheSize)
+        if (sender->m_sentMsgCache.size() >= maxSentMsgCacheSize)
             sender->m_sentMsgCache.erase();
     }
 
@@ -370,7 +370,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 #endif
             sender->Say(msg, Language(lang));
             break;
-        }            
+        }
         case CHAT_MSG_EMOTE:
         {
             // Prevent cheating
@@ -388,7 +388,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 #endif
             sender->TextEmote(msg);
             break;
-        }            
+        }
         case CHAT_MSG_YELL:
         {
             // Prevent cheating
@@ -951,7 +951,7 @@ void WorldSession::HandleTextEmoteOpcode(WorldPacket& recvData)
     GetPlayer()->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_DO_EMOTE, text_emote, 0, 0, unit ? unit : GetPlayer());
 
     //Send scripted event call
-    if (unit && unit->GetTypeId() == TYPEID_UNIT && ((Creature*)unit)->AI())
+    if (unit && unit->IsCreature() && ((Creature*)unit)->AI())
         ((Creature*)unit)->AI()->ReceiveEmote(GetPlayer(), text_emote);
 }
 

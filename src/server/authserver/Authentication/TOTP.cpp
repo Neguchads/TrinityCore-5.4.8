@@ -18,7 +18,7 @@
 #include "TOTP.h"
 #include <cstring>
 
-int base32_decode(const char* encoded, char* result, int bufSize)
+int base32_decode(char const* encoded, char* result, int bufSize)
 {
     // Base32 implementation
     // Copyright 2010 Google Inc.
@@ -27,7 +27,7 @@ int base32_decode(const char* encoded, char* result, int bufSize)
     int buffer = 0;
     int bitsLeft = 0;
     int count = 0;
-    for (const char *ptr = encoded; count < bufSize && *ptr; ++ptr)
+    for (char const*ptr = encoded; count < bufSize && *ptr; ++ptr)
     {
         char ch = *ptr;
         if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n' || ch == '-')
@@ -68,7 +68,7 @@ int base32_decode(const char* encoded, char* result, int bufSize)
 
 namespace TOTP
 {
-    unsigned int GenerateToken(const char* b32key)
+    unsigned int GenerateToken(char const* b32key)
     {
         size_t keySize = strlen(b32key);
         int bufsize = (keySize + 7)/8*5;

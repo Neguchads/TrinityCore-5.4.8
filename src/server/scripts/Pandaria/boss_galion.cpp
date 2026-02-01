@@ -132,7 +132,7 @@ class boss_galion : public CreatureScript
                     if (eventId == EVENT_INIT_VEHICLE)
                     {
                         // Init vehicles, only cosmetic or passive
-                        if (const SpellInfo* m_spell = sSpellMgr->GetSpellInfo(VEHICLE_SPELL_RIDE_HARDCODED))
+                        if (SpellInfo const* m_spell = sSpellMgr->GetSpellInfo(VEHICLE_SPELL_RIDE_HARDCODED))
                         {
                             for (uint32 i = 1; i < 3; i++)
                             {

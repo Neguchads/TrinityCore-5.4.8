@@ -52,7 +52,7 @@ enum SelectAggroTarget
 // default predicate function to select target based on distance, player and/or aura criteria
 struct DefaultTargetSelector
 {
-    const Unit* me;
+    Unit const* me;
     float m_dist;
     bool m_playerOnly;
     int32 m_aura;
@@ -71,7 +71,7 @@ struct DefaultTargetSelector
         if (!target)
             return false;
 
-        if (m_playerOnly && (target->GetTypeId() != TYPEID_PLAYER))
+        if (m_playerOnly && !(target->IsPlayer()))
             return false;
 
         if (m_dist > 0.0f && !me->IsWithinCombatRange(target, m_dist))
@@ -140,9 +140,9 @@ struct MeeleSpecTargetSelector
 {
     public:
         MeeleSpecTargetSelector(uint32 spellId = 0) : _spellId(spellId) { }
-    
+
         bool operator ()(WorldObject* target) const;
-    
+
     private:
         uint32 _spellId;
 };
@@ -151,9 +151,9 @@ struct DpsSpecTargetSelector
 {
     public:
         DpsSpecTargetSelector(uint32 spellId = 0) : _spellId(spellId) { }
-    
+
         bool operator ()(WorldObject* target) const;
-    
+
     private:
         uint32 _spellId;
 };
@@ -162,9 +162,9 @@ struct TankSpecTargetSelector
 {
     public:
         TankSpecTargetSelector(uint32 spellId = 0) : _spellId(spellId) { }
-    
+
         bool operator ()(WorldObject* target) const;
-    
+
     private:
         uint32 _spellId;
 };
@@ -173,9 +173,9 @@ struct HealerSpecTargetSelector
 {
     public:
         HealerSpecTargetSelector(uint32 spellId = 0) : _spellId(spellId) { }
-    
+
         bool operator ()(WorldObject* target) const;
-    
+
     private:
         uint32 _spellId;
 };
@@ -184,9 +184,9 @@ struct NonTankSpecTargetSelector
 {
     public:
         NonTankSpecTargetSelector(uint32 spellId = 0) : _spellId(spellId) { }
-    
+
         bool operator ()(WorldObject* target) const;
-    
+
     private:
         uint32 _spellId;
 };
@@ -368,7 +368,7 @@ class TC_GAME_API UnitAI
         UnitAI(UnitAI const& right) = delete;
         UnitAI& operator=(UnitAI const& right) = delete;
         ThreatManager& GetThreatManager();
-        void SortByDistance(std::list<Unit*>& list, bool ascending = true);        
+        void SortByDistance(std::list<Unit*>& list, bool ascending = true);
 };
 
 #endif

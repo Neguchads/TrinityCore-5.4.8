@@ -182,7 +182,6 @@ bool Battlefield::Update(uint32 diff)
                 objective_changed = true;
     }
 
-
     if (m_LastResurectTimer <= diff)
     {
         for (uint8 i = 0; i < m_GraveyardList.size(); i++)
@@ -792,7 +791,7 @@ void BfGraveyard::SetSpirit(Creature* spirit, TeamId team)
 
 float BfGraveyard::GetDistance(Player* player)
 {
-    const WorldSafeLocsEntry* safeLoc = sWorldSafeLocsStore.LookupEntry(m_GraveyardId);
+    WorldSafeLocsEntry const* safeLoc = sWorldSafeLocsStore.LookupEntry(m_GraveyardId);
     return player->GetDistance2d(safeLoc->x, safeLoc->y);
 }
 

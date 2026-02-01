@@ -164,7 +164,7 @@ public:
             }
         }
 
-        void SpellHit(Unit* caster, const SpellInfo* spell) override
+        void SpellHit(Unit* caster, SpellInfo const* spell) override
         {
             if (spell->Id == SPELL_T_PHASE_MODULATOR && caster->GetTypeId() == TYPEID_PLAYER)
             {
@@ -1049,7 +1049,7 @@ class npc_simon_bunny : public CreatureScript
                 }
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 // Cast SPELL_BAD_PRESS_DAMAGE with scaled basepoints when the visual hits the target.
                 // Need Fix: When SPELL_BAD_PRESS_TRIGGER hits target it triggers spell SPELL_BAD_PRESS_DAMAGE by itself

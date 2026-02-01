@@ -1037,7 +1037,7 @@ class spell_carrot_breath : public SpellScriptLoader
         {
             PrepareAuraScript(spell_carrot_breath_AuraScript);
 
-            void HandleOnRemove(const AuraEffect* aurEff, AuraEffectHandleModes mode)
+            void HandleOnRemove(AuraEffect const* aurEff, AuraEffectHandleModes mode)
             {
                 if (Creature* creature = GetOwner()->ToCreature())
                 {
@@ -1049,7 +1049,7 @@ class spell_carrot_breath : public SpellScriptLoader
                 }
             }
 
-            void HandleOnApply(const AuraEffect* aurEff, AuraEffectHandleModes mode)
+            void HandleOnApply(AuraEffect const* aurEff, AuraEffectHandleModes mode)
             {
                 if (Creature* creature = GetOwner()->ToCreature())
                 {
@@ -1081,7 +1081,7 @@ class spell_furlwind : public SpellScriptLoader
         {
             PrepareAuraScript(spell_furlwind_AuraScript);
 
-            void HandleOnApply(const AuraEffect* aurEff, AuraEffectHandleModes mode)
+            void HandleOnApply(AuraEffect const* aurEff, AuraEffectHandleModes mode)
             {
                 if (Creature* creature = GetOwner()->ToCreature())
                     creature->ClearUnitState(UNIT_STATE_CASTING);

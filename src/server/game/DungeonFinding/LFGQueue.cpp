@@ -81,7 +81,7 @@ Queuer::Compatibility Queuer::CheckCompatibilityWith(Queuer const& other, Dungeo
 
     return Compatibility::OK;
 }
-  
+
 void Queuer::OutDebug(std::ostringstream& ss, QueueManager const* manager, Queuer const group) const
 {
     if (IsGroup())
@@ -173,23 +173,23 @@ void Bucket::Add(Queuer const& queuer)
     {
         switch (m_queuerPlayerRoles[playerGUID] = (LfgRoles)(assignedRoles[playerGUID] & ~PLAYER_ROLE_LEADER))
         {
-            case PLAYER_ROLE_TANK:   
+            case PLAYER_ROLE_TANK:
                 if (sWorld->getBoolConfig(CONFIG_LFG_SOLO))
-                    m_damage.push_back(queuer); 
+                    m_damage.push_back(queuer);
                 else
-                    m_tanks.push_back(queuer); 
+                    m_tanks.push_back(queuer);
                 break;
-            case PLAYER_ROLE_HEALER: 
+            case PLAYER_ROLE_HEALER:
                 if (sWorld->getBoolConfig(CONFIG_LFG_SOLO))
-                    m_damage.push_back(queuer); 
-                else                
-                    m_healers.push_back(queuer); 
+                    m_damage.push_back(queuer);
+                else
+                    m_healers.push_back(queuer);
                 break;
-            case PLAYER_ROLE_DAMAGE: 
-                m_damage.push_back(queuer); 
+            case PLAYER_ROLE_DAMAGE:
+                m_damage.push_back(queuer);
                 break;
             default: ASSERT(false);
-                
+
         }
     };
 
@@ -209,7 +209,6 @@ void Bucket::Add(Queuer const& queuer)
     for (auto&& role : m_queue->GetManager()->GetQueuerData(queuer).Roles)
         Add((LfgRoles)(assignedRoles[role.first] & ~PLAYER_ROLE_LEADER), queuer, role.first);
 }
-
 
 void Bucket::OutDebug(std::ostringstream& ss, bool client) const
 {
@@ -343,7 +342,6 @@ DungeonQueue::WaitTime const& DungeonQueue::GetWaitTime(LfgRoles roles) const
         default: ASSERT(false); return m_averageWait;
     }
 }
-
 
 void DungeonQueue::UpdateWaitTime(LfgRoles role, time_t waitTime)
 {

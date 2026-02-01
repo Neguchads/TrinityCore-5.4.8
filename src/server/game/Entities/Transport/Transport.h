@@ -42,7 +42,7 @@ class Transport : public GameObject, public TransportBase
 
         void Update(uint32 diff) override;
         void DelayedUpdate(uint32 diff);
-        
+
         void BuildUpdate(UpdateDataMapType& data_map) override;
 
         void AddPassenger(WorldObject* passenger);
@@ -70,7 +70,6 @@ class Transport : public GameObject, public TransportBase
          * @return Summoned creature.
          */
         TempSummon* SummonPassenger(uint32 entry, Position const& pos, TempSummonType summonType, SummonPropertiesEntry const* properties = nullptr, uint32 duration = 0, Unit* summoner = nullptr, uint32 spellId = 0, uint32 vehId = 0);
-
 
         /// This method transforms supplied transport offsets into global coordinates
         void CalculatePassengerPosition(float& x, float& y, float& z, float* o = nullptr) const override

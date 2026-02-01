@@ -904,7 +904,7 @@ class spell_drain_the_weak : public AuraScript
                     owner->CastSpell(target, SPELL_DRAIN_THE_WEAK_DMG, true);
                     
                     // Heal
-                    if (const SpellInfo* sInfo = sSpellMgr->GetSpellInfo(SPELL_DRAIN_THE_WEAK_HEAL, target->GetMap()->GetDifficulty()))
+                    if (SpellInfo const* sInfo = sSpellMgr->GetSpellInfo(SPELL_DRAIN_THE_WEAK_HEAL, target->GetMap()->GetDifficulty()))
                     {
                         int32 bp = sInfo->Effects[EFFECT_0].BasePoints * (int32)procInfo.GetDamageInfo()->GetDamage();
                         owner->CastCustomSpell(owner, SPELL_DRAIN_THE_WEAK_HEAL, &bp, 0, 0, true);

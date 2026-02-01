@@ -88,7 +88,6 @@ enum SpellFamilyFlag
     SPELLFAMILYFLAG_SHAMAN_TOTEM_EFFECTS        = 0x04000000  // Seems to be linked to most totems and some totem effects
 };
 
-
 #define SPELL_LINKED_MAX_SPELLS  200000
 
 enum SpellLinkedType
@@ -98,7 +97,6 @@ enum SpellLinkedType
     SPELL_LINK_AURA     = 2 * 200000,   // +: aura; -: immune
     SPELL_LINK_REMOVE   = 0
 };
-
 
 // Spell proc event related declarations (accessed using SpellMgr functions)
 enum ProcFlags
@@ -628,7 +626,7 @@ class SpellMgr
 
     // Accessors (const or static functions)
     public:
-        
+
         static SpellMgr* instance();
 
         // Spell correctness for client using
@@ -695,7 +693,7 @@ class SpellMgr
         SpellEnchantProcEntry const* GetSpellEnchantProcEvent(uint32 enchId) const;
         bool IsArenaAllowedEnchancment(uint32 ench_id) const;
 
-        const std::vector<int32> *GetSpellLinked(int32 spell_id) const;
+        std::vector<int32> const*GetSpellLinked(int32 spell_id) const;
 
         PetLevelupSpellSet const* GetPetSpellList(uint32 petFamily) const;
 

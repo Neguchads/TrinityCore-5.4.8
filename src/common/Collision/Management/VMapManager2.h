@@ -20,6 +20,7 @@
 
 #include "IVMapManager.h"
 #include "Define.h"
+#include <vector>
 #include <mutex>
 #include <unordered_map>
 
@@ -100,7 +101,7 @@ namespace VMAP
             ~VMapManager2(void);
 
             void InitializeThreadUnsafe(const std::vector<uint32>& mapIds);
-            int loadMap(const char* pBasePath, unsigned int mapId, int x, int y) override;
+            int loadMap(char const* pBasePath, unsigned int mapId, int x, int y) override;
 
             void unloadMap(unsigned int mapId, int x, int y) override;
             void unloadMap(unsigned int mapId) override;

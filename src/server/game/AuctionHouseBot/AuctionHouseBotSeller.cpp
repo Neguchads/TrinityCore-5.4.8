@@ -75,7 +75,7 @@ bool AuctionBotSeller::Initialize()
     TC_LOG_DEBUG("ahbot", "Npc vendor filter has %u items", (uint32)npcItems.size());
 
     TC_LOG_DEBUG("ahbot", "Loading loot items for filter..");
-    // lack TC Reference attr  // WHERE `Reference` = 0 
+    // lack TC Reference attr  // WHERE `Reference` = 0
     QueryResult result = WorldDatabase.PQuery(
         "SELECT `item` FROM `creature_loot_template` UNION "
         "SELECT `item` FROM `disenchant_loot_template` UNION "

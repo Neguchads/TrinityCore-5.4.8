@@ -19,7 +19,12 @@
 #define TRINITYCORE_GOSSIP_H
 
 #include "Common.h"
+#include "ObjectGuid.h"
 #include "NPCHandler.h"
+#include "QuestDef.h"
+#include <map>
+#include <string>
+#include <vector>
 
 class WorldSession;
 
@@ -229,7 +234,7 @@ class TC_GAME_API GossipMenu
         void SetMenuId(uint32 menu_id) { _menuId = menu_id; }
         uint32 GetMenuId() const { return _menuId; }
         void SetSenderGUID(ObjectGuid guid) { _senderGUID = guid; }
-        ObjectGuid GetSenderGUID() const { return _senderGUID; }        
+        ObjectGuid GetSenderGUID() const { return _senderGUID; }
         void SetLocale(LocaleConstant locale) { _locale = locale; }
         LocaleConstant GetLocale() const { return _locale; }
 

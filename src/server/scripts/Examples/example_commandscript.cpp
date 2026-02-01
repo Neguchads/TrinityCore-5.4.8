@@ -36,7 +36,7 @@ class example_commandscript : public CommandScript
     public:
         example_commandscript() : CommandScript("example_commandscript") { }
 
-        static bool HandleHelloWorldCommand(ChatHandler* handler, const char* /*args*/)
+        static bool HandleHelloWorldCommand(ChatHandler* handler, char const* /*args*/)
         {
             handler->PSendSysMessage("Hello World");
             return true;

@@ -299,7 +299,7 @@ void AuraApplication::ClientUpdate(bool remove)
 
     _target->SendMessageToSet(&data, true);
 
-    if (_target->GetTypeId() != TYPEID_PLAYER)
+    if (!_target->IsPlayer())
         return;
 
     if (aura->GetSpellInfo()->HasAttribute(SPELL_ATTR0_HIDDEN_CLIENTSIDE) || aura->GetSpellInfo()->HasAttribute(SPELL_ATTR1_DONT_DISPLAY_IN_AURA_BAR))
@@ -723,7 +723,7 @@ void Aura::_ApplyForTarget(Unit* target, Unit* caster, AuraApplication * auraApp
     m_applications[target->GetGUID()] = auraApp;
 
     // set infinity cooldown state for spells
-    if (caster && caster->GetTypeId() == TYPEID_PLAYER)
+    if (caster && caster->IsPlayer())
     {
         if (m_spellInfo->IsCooldownStartedOnEvent())
         {
@@ -1076,9 +1076,9 @@ int32 Aura::CalcMaxDuration(Unit* caster) const
         Unit const* target = tarGetOwner ? tarGetOwner : GetUnitOwner();
         Unit const* source = casterOwner ? casterOwner : caster;
 
-        if ((target->GetTypeId() == TYPEID_PLAYER
+        if ((target->IsPlayer()
             || ((Creature*)target)->GetCreatureTemplate()->flags_extra & CREATURE_FLAG_EXTRA_ALL_DIMINISH)
-            && source->GetTypeId() == TYPEID_PLAYER)
+            && source->IsPlayer())
         {
             limited = limitduration > 0;
 
@@ -1664,11 +1664,11 @@ void Aura::HandleAuraSpecificMods(AuraApplication const* aurApp, Unit* caster, b
                 switch (GetId())
                 {
                     case 42292: // PvP Trinket
-                        if (target && target->GetTypeId() == TYPEID_PLAYER)
+                        if (target && target->IsPlayer())
                             target->CastSpell(target, (target->ToPlayer()->GetTeam() == ALLIANCE ? 97403 : 97404), true);
                         break;
                     case 101619: // Magma, Echo of Baine
-                        if (target && target->GetTypeId() == TYPEID_PLAYER && !target->HasAura(101866))
+                        if (target && target->IsPlayer() && !target->HasAura(101866))
                             target->CastSpell(target, 101866, true);
                         break;
                     case 99461: // Blazing Power, Alysrazor
@@ -1685,7 +1685,7 @@ void Aura::HandleAuraSpecificMods(AuraApplication const* aurApp, Unit* caster, b
                         target->RemoveAurasDueToSpell(83500);
                         break;
                     case 32474: // Buffeting Winds of Susurrus
-                        if (target->GetTypeId() == TYPEID_PLAYER)
+                        if (target->IsPlayer())
                             target->ToPlayer()->ActivateTaxiPathTo(506, GetId());
                         break;
                     case 33572: // Gronn Lord's Grasp, becomes stoned
@@ -1697,11 +1697,11 @@ void Aura::HandleAuraSpecificMods(AuraApplication const* aurApp, Unit* caster, b
                             target->CastSpell(target, 50812, true);
                         break;
                     case 60970: // Heroic Fury (remove Intercept cooldown)
-                        if (target->GetTypeId() == TYPEID_PLAYER)
+                        if (target->IsPlayer())
                             target->ToPlayer()->RemoveSpellCooldown(20252, true);
                         break;
                     case 66296: // Shadow Veil
-                        if (target->GetTypeId() == TYPEID_UNIT)
+                        if (target->IsCreature())
                         {
                             target->ToCreature()->_AddCreatureSpellCooldown(GetId(), time(NULL) + 40000 / IN_MILLISECONDS);
                             if (Vehicle* vehicle = target->GetVehicleKit())
@@ -2155,7 +2155,7 @@ bool Aura::IsProcTriggeredOnEvent(AuraApplication* aurApp, ProcEventInfo& eventI
         return false;
 
     // do checks using conditions table
-    if (!sConditionMgr->IsObjectMeetingNotGroupedConditions(CONDITION_SOURCE_TYPE_SPELL_PROC, GetId(), eventInfo.GetActor(), eventInfo.GetActionTarget()))    
+    if (!sConditionMgr->IsObjectMeetingNotGroupedConditions(CONDITION_SOURCE_TYPE_SPELL_PROC, GetId(), eventInfo.GetActor(), eventInfo.GetActionTarget()))
         return false;
 
     // AuraScript Hook
@@ -2172,7 +2172,7 @@ bool Aura::IsProcTriggeredOnEvent(AuraApplication* aurApp, ProcEventInfo& eventI
     // do that only for passive spells
     /// @todo this needs to be unified for all kinds of auras
     Unit* target = aurApp->GetTarget();
-    if (IsPassive() && target->GetTypeId() == TYPEID_PLAYER)
+    if (IsPassive() && target->IsPlayer())
     {
         if (GetSpellInfo()->EquippedItemClass == ITEM_CLASS_WEAPON)
         {
@@ -2818,7 +2818,7 @@ void UnitAura::FillTargetMap(std::map<Unit*, uint32> & targets, Unit* caster)
                         if (Unit* owner = GetUnitOwner()->GetCharmerOrOwner())
                             if (GetUnitOwner()->IsWithinDistInMap(owner, radius))
                                 targetList.push_back(owner);
-                        if (targetList.empty() && GetUnitOwner()->GetTypeId() == TYPEID_PLAYER) // For Grimoire of Sacrifice (108503)
+                        if (targetList.empty() && GetUnitOwner()->IsPlayer()) // For Grimoire of Sacrifice (108503)
                             targetList.push_back(GetUnitOwner());
                         break;
                     }
@@ -2852,7 +2852,7 @@ void UnitAura::FillTargetMap(std::map<Unit*, uint32> & targets, Unit* caster)
                 if (GetSpellInfo()->HasAttribute(SPELL_ATTR1_CANT_TARGET_SELF) && itr == GetOwner())
                     continue;
 
-                if (GetSpellInfo()->HasAttribute(SPELL_ATTR3_ONLY_TARGET_PLAYERS) && itr->GetTypeId() != TYPEID_PLAYER)
+                if (GetSpellInfo()->HasAttribute(SPELL_ATTR3_ONLY_TARGET_PLAYERS) && !itr->IsPlayer())
                     continue;
             }
 
@@ -2929,7 +2929,7 @@ void DynObjAura::FillTargetMap(std::map<Unit*, uint32> & targets, Unit* /*caster
             if (GetSpellInfo()->HasAttribute(SPELL_ATTR1_CANT_TARGET_SELF) && itr == GetOwner())
                 continue;
 
-            if (GetSpellInfo()->HasAttribute(SPELL_ATTR3_ONLY_TARGET_PLAYERS) && itr->GetTypeId() != TYPEID_PLAYER)
+            if (GetSpellInfo()->HasAttribute(SPELL_ATTR3_ONLY_TARGET_PLAYERS) && !itr->IsPlayer())
                 continue;
 
             std::map<Unit*, uint32>::iterator existing = targets.find(itr);

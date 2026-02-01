@@ -533,7 +533,7 @@ class EventMap
         * @param maxTime The maximum time until the event occurs as std::chrono type.
         */
         void Repeat(Milliseconds minTime, Milliseconds maxTime){
-            RepeatEvent(randtime(minTime, maxTime));            
+            RepeatEvent(randtime(minTime, maxTime));
         }
 
         /**

@@ -382,7 +382,7 @@ void WorldSession::HandleReadItem(WorldPacket& recvData)
 {
     uint8 bag, slot;
     recvData >> bag >> slot;
-    
+
     Item* pItem = _player->GetItemByPos(bag, slot);
 
     if (pItem && pItem->GetTemplate()->PageText)
@@ -1674,7 +1674,7 @@ void WorldSession::HandleItemRefundInfoRequest(WorldPacket& recvData)
     TC_LOG_DEBUG("network", "WORLD: CMSG_ITEM_REFUND_INFO");
 
     ObjectGuid guid;
-    
+
     guid[1] = recvData.ReadBit();
     guid[0] = recvData.ReadBit();
     guid[3] = recvData.ReadBit();
@@ -1683,7 +1683,7 @@ void WorldSession::HandleItemRefundInfoRequest(WorldPacket& recvData)
     guid[4] = recvData.ReadBit();
     guid[5] = recvData.ReadBit();
     guid[6] = recvData.ReadBit();
-    
+
     recvData.ReadByteSeq(guid[3]);
     recvData.ReadByteSeq(guid[7]);
     recvData.ReadByteSeq(guid[5]);

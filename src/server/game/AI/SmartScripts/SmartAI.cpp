@@ -130,12 +130,13 @@ void SmartAI::StartPath(bool run/* = false*/, uint32 pathId/* = 0*/, bool repeat
 
     if (HasEscortState(SMART_ESCORT_ESCORTING))
         StopPath();
- 
-    if (pathId){
+
+    if (pathId)
+    {
         if (!LoadPath(pathId))
             return;
     }
- 
+
     if (!mWayPoints || mWayPoints->empty())
         return;
 
@@ -541,7 +542,7 @@ void SmartAI::MoveInLineOfSight(Unit* who)
     CreatureAI::MoveInLineOfSight(who);
 }
 
-bool SmartAI::CanAIAttack(const Unit* /*who*/) const
+bool SmartAI::CanAIAttack(Unit const* /*who*/) const
 {
     if (me->GetReactState() == REACT_PASSIVE)
         return false;
@@ -604,7 +605,7 @@ void SmartAI::JustAppeared()
     mFollowCreditType = 0;
 }
 
-int32 SmartAI::Permissible(const Creature* creature)
+int32 SmartAI::Permissible(Creature const* creature)
 {
     if (creature->GetAIName() == "SmartAI")
         return PERMIT_BASE_SPECIAL;
@@ -671,12 +672,12 @@ void SmartAI::AttackStart(Unit* who)
     }
 }
 
-void SmartAI::SpellHit(Unit* unit, const SpellInfo* spellInfo)
+void SmartAI::SpellHit(Unit* unit, SpellInfo const* spellInfo)
 {
     GetScript()->ProcessEventsFor(SMART_EVENT_SPELLHIT, unit, 0, 0, false, spellInfo);
 }
 
-void SmartAI::SpellHitTarget(Unit* target, const SpellInfo* spellInfo)
+void SmartAI::SpellHitTarget(Unit* target, SpellInfo const* spellInfo)
 {
     GetScript()->ProcessEventsFor(SMART_EVENT_SPELLHIT_TARGET, target, 0, 0, false, spellInfo);
 }
@@ -817,7 +818,6 @@ void SmartAI::OnQuestReward(Player* player, Quest const* quest, uint32 opt)
     GetScript()->ProcessEventsFor(SMART_EVENT_REWARD_QUEST, player, quest->GetQuestId(), opt);
 }
 
-
 bool SmartAI::sOnDummyEffect(Unit* caster, uint32 spellId, SpellEffIndex effIndex)
 {
     GetScript()->ProcessEventsFor(SMART_EVENT_DUMMY_EFFECT, caster, spellId, (uint32)effIndex);
@@ -878,7 +878,7 @@ void SmartAI::StopFollow(bool complete)
     mFollowAngle = 0;
     mFollowArrivedTimer = 1000;
     mFollowCredit = 0;
-    mFollowArrivedEntry = 0;    
+    mFollowArrivedEntry = 0;
     me->GetMotionMaster()->Clear();
     me->GetMotionMaster()->MoveIdle();
 
@@ -977,7 +977,7 @@ void SmartVehicleAI::OnCharmed(bool apply)
     SmartAI::OnCharmed(apply);
 }
 
-int SmartGameObjectAI::Permissible(const GameObject* g)
+int SmartGameObjectAI::Permissible(GameObject const* g)
 {
     if (g->GetAIName() == "SmartGameObjectAI")
         return PERMIT_BASE_SPECIAL;
@@ -1006,7 +1006,7 @@ bool SmartGameObjectAI::OnGossipHello(Player* player, bool /*isUse*/)
 {
     _gossipReturn = false;
     GetScript()->ProcessEventsFor(SMART_EVENT_GOSSIP_HELLO, player, 0, 0, false, nullptr, me);
-    return _gossipReturn;    
+    return _gossipReturn;
 }
 
 bool SmartGameObjectAI::OnReportUse(Player* player)
@@ -1026,7 +1026,7 @@ bool SmartGameObjectAI::OnGossipSelect(Player* player, uint32 sender, uint32 act
 }
 
 // Called when a player selects a gossip with a code in the gameobject's gossip menu.
-bool SmartGameObjectAI::OnGossipSelectCode(Player* /*player*/, uint32 /*sender*/, uint32 /*action*/, const char* /*code*/)
+bool SmartGameObjectAI::OnGossipSelectCode(Player* /*player*/, uint32 /*sender*/, uint32 /*action*/, char const* /*code*/)
 {
     return false;
 }

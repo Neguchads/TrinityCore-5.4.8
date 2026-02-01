@@ -192,13 +192,13 @@ InstanceMap* MapInstanced::CreateInstance(uint32 InstanceId, InstanceSave* save,
     std::lock_guard<std::mutex> guard(Lock);
 
     // make sure we have a valid map id
-    const MapEntry* entry = sMapStore.LookupEntry(GetId());
+    MapEntry const* entry = sMapStore.LookupEntry(GetId());
     if (!entry)
     {
         TC_LOG_ERROR("maps", "CreateInstance: no entry for map %d", GetId());
         ASSERT(false);
     }
-    const InstanceTemplate* iTemplate = sObjectMgr->GetInstanceTemplate(GetId());
+    InstanceTemplate const* iTemplate = sObjectMgr->GetInstanceTemplate(GetId());
     if (!iTemplate)
     {
         TC_LOG_ERROR("maps", "CreateInstance: no instance template for map %d", GetId());

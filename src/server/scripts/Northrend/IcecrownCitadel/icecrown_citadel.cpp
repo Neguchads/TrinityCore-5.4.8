@@ -2962,17 +2962,17 @@ namespace
             AfterEffectRemove += AuraEffectApplyFn(strength_of_wrynn_aura::removed, EFFECT_FIRST_FOUND, SPELL_AURA_MOD_DAMAGE_PERCENT_DONE, AURA_EFFECT_HANDLE_REAL);
         }
 
-        void applied(const AuraEffect *, AuraEffectHandleModes)
+        void applied(AuraEffect const*, AuraEffectHandleModes)
         {
             GetTarget()->AddPetAura(pet_aura);
         }
 
-        void removed(const AuraEffect *, AuraEffectHandleModes)
+        void removed(AuraEffect const*, AuraEffectHandleModes)
         {
             GetTarget()->RemovePetAura(pet_aura);
         }
 
-        const PetAura *pet_aura;
+        PetAura const*pet_aura;
     };
 
     struct strength_of_wrynn : SpellScriptLoader
@@ -3030,17 +3030,17 @@ namespace
             AfterEffectRemove += AuraEffectApplyFn(hellscreams_warsong_aura::removed, EFFECT_FIRST_FOUND, SPELL_AURA_MOD_DAMAGE_PERCENT_DONE, AURA_EFFECT_HANDLE_REAL);
         }
 
-        void applied(const AuraEffect *, AuraEffectHandleModes)
+        void applied(AuraEffect const*, AuraEffectHandleModes)
         {
             GetTarget()->AddPetAura(pet_aura);
         }
 
-        void removed(const AuraEffect *, AuraEffectHandleModes)
+        void removed(AuraEffect const*, AuraEffectHandleModes)
         {
             GetTarget()->RemovePetAura(pet_aura);
         }
 
-        const PetAura *pet_aura;
+        PetAura const*pet_aura;
     };
 
     struct hellscreams_warsong : SpellScriptLoader
@@ -3976,7 +3976,7 @@ class cond_icc_ashen_verdict_ring_retrieve : public ConditionScript
     public:
         cond_icc_ashen_verdict_ring_retrieve() : ConditionScript("cond_icc_ashen_verdict_ring_retrieve") { }
 
-        bool OnConditionCheck(const Condition* /*condition*/, ConditionSourceInfo& sourceInfo) override
+        bool OnConditionCheck(Condition const* /*condition*/, ConditionSourceInfo& sourceInfo) override
         {
             if (!sourceInfo.mConditionTargets[0])
                 return false;

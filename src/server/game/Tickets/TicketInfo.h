@@ -117,7 +117,7 @@ public:
     virtual void DeleteFromDB() = 0;
 
     virtual std::string FormatMessageString(ChatHandler& handler, bool detailed = false) const = 0;
-    virtual std::string FormatMessageString(ChatHandler& handler, const char* szClosedName, const char* szAssignedToName, const char* szUnassignedName, const char* szDeletedName) const;
+    virtual std::string FormatMessageString(ChatHandler& handler, char const* szClosedName, char const* szAssignedToName, char const* szUnassignedName, char const* szDeletedName) const;
 
 protected:
     uint32 _ticketId;
@@ -155,7 +155,7 @@ public:
     void  DeleteFromDB() override;
 
     std::string FormatMessageString(ChatHandler& handler, bool detailed = false) const;
-    std::string FormatMessageString(ChatHandler& handler, const char* szClosedName, const char* szAssignedToName, const char* szUnassignedName, const char* szDeletedName) const;
+    std::string FormatMessageString(ChatHandler& handler, char const* szClosedName, char const* szAssignedToName, char const* szUnassignedName, char const* szDeletedName) const;
 
     std::string const& GetMessage() const { return _message; }
     std::string const& GetChatLog() const { return _chatLog; }

@@ -30,29 +30,29 @@ class WordFilterMgr
     public:
         static WordFilterMgr* instance();
         /// Note for 0.6v : Will used std::map instead of std::unordered_map, because of problems with cross-platform compilation.
-        // [letter][analogs] 
-        typedef std::map<char, std::string> LetterAnalogMap; 
+        // [letter][analogs]
+        typedef std::map<char, std::string> LetterAnalogMap;
         // [converted][original]
         typedef std::map<std::string, std::string> BadWordMap;
         typedef std::map<std::string, std::string> BadWordMapMail;
 
         void LoadLetterAnalogs();
-        void LoadBadWords();    
-        
+        void LoadBadWords();
+
         inline void ConvertLettersToAnalogs(std::string& text);
         std::string FindBadWord(const std::string& text, bool mail = false);
-        
-        // manipulations with container 
+
+        // manipulations with container
         bool AddBadWord(const std::string& badWord, bool toDB = false);
         bool AddBadWordMail(const std::string& badWord, bool toDB = false);
         bool RemoveBadWord(const std::string& badWord, bool fromDB = false);
 
-        // element (const) accessor 
+        // element (const) accessor
         BadWordMap GetBadWords() const { return m_badWords; }
 
     private:
         LetterAnalogMap m_letterAnalogs;
-        BadWordMap m_badWords; 
+        BadWordMap m_badWords;
         BadWordMapMail m_badWordsMail;
 };
 

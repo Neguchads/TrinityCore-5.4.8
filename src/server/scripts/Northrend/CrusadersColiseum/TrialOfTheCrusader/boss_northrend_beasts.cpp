@@ -838,7 +838,7 @@ class spell_gormok_fire_bomb : public SpellScriptLoader
 
             void TriggerFireBomb(SpellEffIndex /*effIndex*/)
             {
-                if (const WorldLocation* pos = GetExplTargetDest())
+                if (WorldLocation const* pos = GetExplTargetDest())
                 {
                     if (Unit* caster = GetCaster())
                         caster->SummonCreature(NPC_FIRE_BOMB, pos->GetPositionX(), pos->GetPositionY(), pos->GetPositionZ(), 0, TEMPSUMMON_TIMED_DESPAWN, 30*IN_MILLISECONDS);

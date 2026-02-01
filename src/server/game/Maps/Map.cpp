@@ -4402,7 +4402,7 @@ bool Map::HasEnoughWater(WorldObject const* searcher, float x, float y, float z)
     return (status & LIQUID_MAP_UNDER_WATER) != 0 && HasEnoughWater(searcher, liquidData);
 }
 
-bool Map::HasEnoughWater(WorldObject const* searcher, const LiquidData* liquidData) const
+bool Map::HasEnoughWater(WorldObject const* searcher, LiquidData const* liquidData) const
 {
     float minHeightInWater = searcher->GetMinHeightInWater();
     return liquidData->level > INVALID_HEIGHT && liquidData->level > liquidData->depth_level && liquidData->level - liquidData->depth_level >= minHeightInWater;

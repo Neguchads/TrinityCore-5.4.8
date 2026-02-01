@@ -82,7 +82,7 @@ InstanceSave* InstanceSaveManager::AddInstanceSave(uint32 mapId, uint32 instance
     if (InstanceSave* old_save = GetInstanceSave(instanceId))
         return old_save;
 
-    const MapEntry* entry = sMapStore.LookupEntry(mapId);
+    MapEntry const* entry = sMapStore.LookupEntry(mapId);
     if (!entry)
     {
         TC_LOG_ERROR("misc", "InstanceSaveManager::AddInstanceSave: wrong mapid = %d, instanceid = %d!", mapId, instanceId);
@@ -224,7 +224,7 @@ void InstanceSave::SaveToDB()
 time_t InstanceSave::GetResetTimeForDB()
 {
     // only save the reset time for normal instances
-    const MapEntry* entry = sMapStore.LookupEntry(GetMapId());
+    MapEntry const* entry = sMapStore.LookupEntry(GetMapId());
     if (!entry || entry->IsRaid() || GetDifficulty() > DUNGEON_DIFFICULTY_NORMAL && GetDifficulty() != DUNGEON_DIFFICULTY_CHALLENGE && GetDifficulty() != SCENARIO_DIFFICULTY_NORMAL)
         return 0;
     else
@@ -412,7 +412,7 @@ void InstanceSaveManager::LoadResetTimes()
                     std::vector<uint64> stoneGuards = { 59915, 60043, 60047, 60051 };
                     std::random_device rd;
                     std::mt19937 g(rd());
-                    std::shuffle(stoneGuards.begin(), stoneGuards.end(), g);                    
+                    std::shuffle(stoneGuards.begin(), stoneGuards.end(), g);
                     uint64 const guardExcluded = stoneGuards.back();
 
                     WorldDatabase.DirectPExecute("INSERT INTO `instance_mogushan_system` (`creature_id`, `resettime`) VALUES (%u, %u);", guardExcluded, (uint32)newresettime);
@@ -731,13 +731,13 @@ void InstanceSaveManager::_ResetOrWarnAll(uint32 mapid, Difficulty difficulty, b
                 std::vector<uint64> stoneGuards = { 59915, 60043, 60047, 60051 };
                 std::random_device rd;
                 std::mt19937 g(rd());
-                std::shuffle(stoneGuards.begin(), stoneGuards.end(), g);                
+                std::shuffle(stoneGuards.begin(), stoneGuards.end(), g);
                 uint64 const guardExcluded = stoneGuards.back();
 
                 WorldDatabase.DirectPExecute("INSERT INTO `instance_mogushan_system` (`creature_id`, `resettime`) VALUES (%u, %u);", guardExcluded, (uint32)next_reset);
             }
         }
-        
+
     }
 
     // note: this isn't fast but it's meant to be executed very rarely

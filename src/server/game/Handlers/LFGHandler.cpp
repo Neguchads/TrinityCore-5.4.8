@@ -610,7 +610,7 @@ void WorldSession::SendLfgUpdateStatus(lfg::LfgUpdateType updateType, lfg::Playe
 {
     bool join = false;
     bool queued = false;
-  
+
     ObjectGuid guid = queueData.OriginalGroup ? queueData.OriginalGroup : GetPlayer()->GetGUID();
 
     std::string comment;    // useless, just placeholder
@@ -850,7 +850,6 @@ void WorldSession::SendLfgJoinResult(uint32 queueId, lfg::LfgJoinResultData cons
     TC_LOG_DEBUG("network", "SMSG_LFG_JOIN_RESULT %s checkResult: %u checkValue: %u",
         GetPlayerInfo().c_str(), joinData.result, joinData.state);
 
-
     WorldPacket data(SMSG_LFG_JOIN_RESULT, 4 + 4 + size);
 
     data.WriteBit(guid[7]);
@@ -1069,7 +1068,7 @@ void WorldSession::SendLfgBootProposalUpdate(lfg::LfgPlayerBoot const& boot)
         GetPlayerInfo().c_str(), uint8(boot.inProgress), uint8(playerVote != lfg::LFG_ANSWER_PENDING),
         uint8(playerVote == lfg::LFG_ANSWER_AGREE), boot.victim.GetCounter(), votesNum, agreeNum,
         secsleft, lfg::LFG_GROUP_KICK_VOTES_NEEDED, boot.reason.c_str());
-    
+
     ObjectGuid pguid = boot.victim;
     WorldPacket data(SMSG_LFG_BOOT_PROPOSAL_UPDATE);
     data.WriteBit(boot.reason.empty());
@@ -1089,7 +1088,7 @@ void WorldSession::SendLfgBootProposalUpdate(lfg::LfgPlayerBoot const& boot)
     data.WriteBit(pguid[4]);
 
     data.FlushBits();
-    
+
     data.WriteByteSeq(pguid[2]);
     data.WriteByteSeq(pguid[4]);
     data.WriteByteSeq(pguid[3]);
@@ -1230,7 +1229,7 @@ void WorldSession::SendLfgTeleportError(uint8 err)
 void WorldSession::HandleSetLfgBonusFactionId(WorldPacket& recvData)
 {
     TC_LOG_DEBUG("network", "CMSG_SET_LFG_BONUS_FACTION_ID %s", GetPlayerInfo().c_str());
-    
+
     uint32 bonusFactionId = recvData.read<uint32>();
     GetPlayer()->SetUInt32Value(PLAYER_FIELD_LFG_BONUS_FACTION_ID, bonusFactionId);
 }

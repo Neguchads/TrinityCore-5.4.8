@@ -194,7 +194,7 @@ class at_tott_commander_ulthok : public AreaTriggerScript
     public:
         at_tott_commander_ulthok() : AreaTriggerScript("at_tott_commander_ulthok") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
             {

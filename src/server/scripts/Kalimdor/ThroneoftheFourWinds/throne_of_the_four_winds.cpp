@@ -245,7 +245,7 @@ class at_slipstream : public AreaTriggerScript
     public:
         at_slipstream() : AreaTriggerScript("at_slipstream") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (!player->HasAura(SPELL_SLIPSTREAM_BUFF) && !player->HasAura(SPELL_CATCH_FALL_SUMMON_AURA))
                 if (Creature* slipstream = player->FindNearestCreature(NPC_SLIPSTREAM, 100))
@@ -259,7 +259,7 @@ class at_catch_fall : public AreaTriggerScript
     public:
         at_catch_fall() : AreaTriggerScript("at_catch_fall") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (player->HasAura(SPELL_CATCH_FALL_SUMMON_AURA) || player->HasAura(SPELL_EYE_OF_THE_STORM))
                 return true;

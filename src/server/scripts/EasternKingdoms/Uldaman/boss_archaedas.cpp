@@ -113,7 +113,7 @@ class boss_archaedas : public CreatureScript
                 me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 // Being woken up from the altar, start the awaken sequence
                 if (spell == sSpellMgr->GetSpellInfo(SPELL_ARCHAEDAS_AWAKEN))
@@ -262,7 +262,7 @@ class npc_archaedas_minions : public CreatureScript
                 bAmIAwake = true;
             }
 
-            void SpellHit(Unit * /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit * /*caster*/, SpellInfo const* spell) override
             {
                 // time to wake up, start animation
                 if (spell == sSpellMgr->GetSpellInfo(SPELL_ARCHAEDAS_AWAKEN))

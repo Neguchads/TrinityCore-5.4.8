@@ -1272,7 +1272,7 @@ class npc_suna_silentstrike : public CreatureScript
             EventMap events;
             bool sayOnHit;
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_INNER_PEACE && !sayOnHit)
                 {
@@ -1487,7 +1487,7 @@ class cond_burn_mantid_corpse : public ConditionScript
     public:
         cond_burn_mantid_corpse() : ConditionScript("cond_burn_mantid_corpse") { }
 
-        bool OnConditionCheck(const Condition* cond, ConditionSourceInfo& source) override
+        bool OnConditionCheck(Condition const* cond, ConditionSourceInfo& source) override
         {
             Player* player = source.mConditionTargets[0]->ToPlayer();
             if (!player)

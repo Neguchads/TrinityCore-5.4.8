@@ -368,7 +368,7 @@ class boss_jinrokh : public CreatureScript
                 }
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (target && spell->Id == SPELL_THUNDERING_THROW_FORCED_PLAYER)
                 {
@@ -851,7 +851,7 @@ class spell_static_wound : public AuraScript
     {
         uint32 m_stacks = GetAura()->GetStackAmount();
 
-        if (const SpellInfo* spellInfo = sSpellMgr->GetSpellInfo(SPELL_STATIC_WOUND/*, GetOwner()->GetMap()->GetDifficulty()*/))
+        if (SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(SPELL_STATIC_WOUND/*, GetOwner()->GetMap()->GetDifficulty()*/))
         {
             int32 m_bp = spellInfo->Effects[0].BasePoints;
             int32 final_dmg = (m_bp * m_stacks); /// 3;

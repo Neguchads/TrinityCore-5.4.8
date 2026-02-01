@@ -81,7 +81,7 @@ public:
     }
 
     //Edit Player HP
-    static bool HandleModifyHPCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyHPCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -124,7 +124,7 @@ public:
     }
 
     //Edit Player Mana
-    static bool HandleModifyManaCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyManaCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -162,7 +162,7 @@ public:
     }
 
     //Edit Player Energy
-    static bool HandleModifyEnergyCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyEnergyCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -213,7 +213,7 @@ public:
     }
 
     //Edit Player Rage
-    static bool HandleModifyRageCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyRageCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -262,7 +262,7 @@ public:
     }
 
     // Edit Player Runic Power
-    static bool HandleModifyRunicPowerCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyRunicPowerCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -296,7 +296,7 @@ public:
     }
 
     //Edit Player Faction
-    static bool HandleModifyFactionCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyFactionCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -364,7 +364,7 @@ public:
     }
 
     //Edit Player Spell
-    static bool HandleModifySpellCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifySpellCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -420,7 +420,7 @@ public:
     }
 
     //Edit Player Aspeed
-    static bool HandleModifyASpeedCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyASpeedCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -468,7 +468,7 @@ public:
     }
 
     //Edit Player Speed
-    static bool HandleModifySpeedCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifySpeedCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -513,7 +513,7 @@ public:
     }
 
     //Edit Player Swim Speed
-    static bool HandleModifySwimCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifySwimCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -558,7 +558,7 @@ public:
     }
 
     //Edit Player Walk Speed
-    static bool HandleModifyBWalkCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyBWalkCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -603,7 +603,7 @@ public:
     }
 
     //Edit Player Fly
-    static bool HandleModifyFlyCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyFlyCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -639,7 +639,7 @@ public:
     }
 
     //Edit Player or Creature Scale
-    static bool HandleModifyScaleCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyScaleCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -677,7 +677,7 @@ public:
     }
 
     //Enable Player mount
-    static bool HandleModifyMountCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyMountCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -968,7 +968,7 @@ data.WriteByteSeq(guid[4]);
     }
 
     //Edit Player money
-    static bool HandleModifyMoneyCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyMoneyCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1039,7 +1039,7 @@ data.WriteByteSeq(guid[4]);
     }
 
     //Edit Unit field
-    static bool HandleModifyBitCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyBitCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1093,7 +1093,7 @@ data.WriteByteSeq(guid[4]);
         return true;
     }
 
-    static bool HandleModifyHonorCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyHonorCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1119,7 +1119,7 @@ data.WriteByteSeq(guid[4]);
         return true;
     }
 
-    static bool HandleModifyDrunkCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyDrunkCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1134,7 +1134,7 @@ data.WriteByteSeq(guid[4]);
         return true;
     }
 
-    static bool HandleModifyRepCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyRepCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1235,7 +1235,7 @@ data.WriteByteSeq(guid[4]);
     }
 
     //morph creature or player
-    static bool HandleModifyMorphCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyMorphCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1256,7 +1256,7 @@ data.WriteByteSeq(guid[4]);
     }
 
     //set temporary phase mask for player
-    static bool HandleModifyPhaseCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyPhaseCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1278,7 +1278,7 @@ data.WriteByteSeq(guid[4]);
     }
 
     //set temporary phaseid for player
-    static bool HandleModifyPhaseIDCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyPhaseIDCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1295,7 +1295,7 @@ data.WriteByteSeq(guid[4]);
     }
 
     //change standstate
-    static bool HandleModifyStandStateCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyStandStateCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1306,7 +1306,7 @@ data.WriteByteSeq(guid[4]);
         return true;
     }
 
-    static bool HandleModifyGenderCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyGenderCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1367,7 +1367,7 @@ data.WriteByteSeq(guid[4]);
         return true;
     }
 //demorph player or unit
-    static bool HandleDeMorphCommand(ChatHandler* handler, const char* /*args*/)
+    static bool HandleDeMorphCommand(ChatHandler* handler, char const* /*args*/)
     {
         Unit* target = handler->getSelectedUnit();
         if (!target)
@@ -1382,7 +1382,7 @@ data.WriteByteSeq(guid[4]);
         return true;
     }
 
-    static bool HandleModifyCurrencyCommand(ChatHandler* handler, const char* args)
+    static bool HandleModifyCurrencyCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -1396,7 +1396,7 @@ data.WriteByteSeq(guid[4]);
             return false;
 
         uint32 currencyId = atol(toks[0]);
-        const CurrencyTypesEntry* currencyType =  sCurrencyTypesStore.LookupEntry(currencyId);
+        CurrencyTypesEntry const* currencyType =  sCurrencyTypesStore.LookupEntry(currencyId);
         if (!currencyType)
             return false;
 

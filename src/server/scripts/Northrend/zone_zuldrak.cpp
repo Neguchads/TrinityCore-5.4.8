@@ -87,7 +87,7 @@ public:
             me->setDeathState(DEAD);
         }
 
-        void SpellHit(Unit* caster, const SpellInfo* spell) override
+        void SpellHit(Unit* caster, SpellInfo const* spell) override
         {
             if (spell->Id == SPELL_UNLOCK_SHACKLE)
             {
@@ -144,7 +144,7 @@ public:
         void MoveInLineOfSight(Unit* /*who*/)override { }
 
 
-        void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+        void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
         {
             if (spell->Id == SPELL_FREE_RAGECLAW)
             {
@@ -869,7 +869,7 @@ public:
             Reset();
         }
 
-        void SpellHit(Unit* caster, const SpellInfo* spell) override
+        void SpellHit(Unit* caster, SpellInfo const* spell) override
         {
             if (spell->Id != GYMERS_GRAB)
                 return;

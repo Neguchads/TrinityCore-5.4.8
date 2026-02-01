@@ -6432,7 +6432,7 @@ MovementStatusElements const MovementGravityEnable[] =  // 5.4.8 18414
     MSEGuidByte4,
     MSECount,
     MSEGuidByte5,
-    MSEEnd, 
+    MSEEnd,
 };
 
 MovementStatusElements const SetVehicleRecIdAck[] =  // 5.4.8 18414
@@ -6618,7 +6618,7 @@ bool Movement::PrintInvalidSequenceElement(MovementStatusElements const element,
 Movement::PacketSender::PacketSender(Unit* unit, uint16 serverControl, uint16 playerControl, uint16 broadcast /*= SMSG_PLAYER_MOVE*/, ExtraMovementStatusElement* extras /*= NULL*/)
     : _extraElements(extras), _unit(unit)
 {
-    if (unit->GetTypeId() == TYPEID_PLAYER && unit->ToPlayer()->m_mover->GetTypeId() == TYPEID_PLAYER)
+    if (unit->IsPlayer() && unit->ToPlayer()->m_mover->IsPlayer())
     {
         _selfOpcode = playerControl;
         _broadcast = unit->IsSplineEnabled() ? serverControl : broadcast;
@@ -6635,7 +6635,7 @@ void Movement::PacketSender::Send() const
     bool isPlayerMovement = false;
     if (Player* player = _unit->ToPlayer())
     {
-        isPlayerMovement = player->m_mover->GetTypeId() == TYPEID_PLAYER;
+        isPlayerMovement = player->m_mover->IsPlayer();
         if (isPlayerMovement && _selfOpcode != NULL_OPCODE)
         {
             WorldPacket data(_selfOpcode);

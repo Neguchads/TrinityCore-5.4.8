@@ -392,7 +392,7 @@ void WorldSession::HandleQuestgiverQueryQuestOpcode(WorldPacket& recvData)
 
     if (Quest const* quest = sObjectMgr->GetQuestTemplate(questId))
     {
-        if (object->GetTypeId() == TYPEID_UNIT && sScriptMgr->OnQuestSelect(_player, object->ToCreature(), quest))
+        if (object->IsCreature() && sScriptMgr->OnQuestSelect(_player, object->ToCreature(), quest))
             return;
 
         if (!object->hasQuest(questId) && !object->hasInvolvedQuest(questId))
@@ -402,7 +402,7 @@ void WorldSession::HandleQuestgiverQueryQuestOpcode(WorldPacket& recvData)
         }
 
         // not sure here what should happen to quests with QUEST_FLAGS_AUTO_COMPLETE
-        // if this breaks them, add && object->GetTypeId() == TYPEID_ITEM to this check
+        // if this breaks them, add && object->IsItem() to this check
         // item-started quests never have that flag
         if (!_player->CanTakeQuest(quest, true))
             return;
@@ -636,7 +636,7 @@ void WorldSession::HandleQuestConfirmAccept(WorldPacket& recvData)
 
     TC_LOG_DEBUG("network", "WORLD: Received CMSG_QUEST_CONFIRM_ACCEPT questId = %u", questId);
 
-    if (const Quest* quest = sObjectMgr->GetQuestTemplate(questId))
+    if (Quest const* quest = sObjectMgr->GetQuestTemplate(questId))
     {
         if (!quest->HasFlag(QUEST_FLAGS_PARTY_ACCEPT))
             return;

@@ -249,7 +249,7 @@ void RASession::CommandFinished(void* callbackArg, bool /*success*/)
     session->_commandExecuting->set_value();
 }
 
-void RASession::zprint(void* callbackArg, const char * szText)
+void RASession::zprint(void* callbackArg, char const* szText)
 {
     if (!szText || !callbackArg)
         return;

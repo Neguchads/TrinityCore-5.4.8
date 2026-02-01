@@ -18,6 +18,7 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
+#include "Define.h"
 #include "Duration.h"
 #include "Errors.h"
 #include "Optional.h"
@@ -333,8 +334,8 @@ std::wstring GetMainPartOfName(std::wstring wname, uint32 declension);
 bool utf8ToConsole(const std::string& utf8str, std::string& conStr);
 bool consoleToUtf8(const std::string& conStr, std::string& utf8str);
 bool Utf8FitTo(const std::string& str, std::wstring search);
-void utf8printf(FILE* out, const char *str, ...);
-void vutf8printf(FILE* out, const char *str, va_list* ap);
+void utf8printf(FILE* out, char const*str, ...);
+void vutf8printf(FILE* out, char const*str, va_list* ap);
 TC_COMMON_API bool Utf8ToUpperOnlyLatin(std::string& utf8String);
 
 #if TRINITY_PLATFORM == TRINITY_PLATFORM_WINDOWS

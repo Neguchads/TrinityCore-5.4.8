@@ -951,7 +951,7 @@ class boss_horridon : public CreatureScript
                 {
                     public:
                         TribesZOrderPred(bool ascending = true) : m_ascending(ascending) {}
-                        bool operator() (const WorldObject* a, const WorldObject* b) const
+                        bool operator() (WorldObject const* a, WorldObject const* b) const
                         {
                             return m_ascending ? a->GetPositionZ() < b->GetPositionZ() :
                                 a->GetPositionZ() > b->GetPositionZ();

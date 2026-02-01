@@ -406,7 +406,7 @@ class npc_kor_thik_slicer : public CreatureScript
                         case EVENT_ARTERIAL_SPIRIT:
                             if (Unit* target = me->GetVictim())
                             {
-                                if (const SpellInfo* sInfo = sSpellMgr->GetSpellInfo(SPELL_ARTERIAL_SPIRIT))
+                                if (SpellInfo const* sInfo = sSpellMgr->GetSpellInfo(SPELL_ARTERIAL_SPIRIT))
                                 {
                                     int32 m_bp = sInfo->Effects[EFFECT_0].BasePoints * me->GetInt32Value(UNIT_FIELD_ATTACK_POWER) / 3;
                                     me->CastCustomSpell(target, SPELL_ARTERIAL_SPIRIT, &m_bp, 0, 0, true);
@@ -1730,7 +1730,7 @@ class npc_heart_of_fear_kazrik : public CreatureScript
             if (creature->IsQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
 
-            if(sConfigMgr->GetIntDefault("FirstOfTheKingdom.HeartOfFear", 1))
+            if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.HeartOfFear", 1))
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Turn off dampening?", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
     
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());

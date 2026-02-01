@@ -52,7 +52,7 @@ uint8 RandomBotBacketManager::GetRandomLevelInRange(const LevelRangeConfig& rang
     return urand(range.lower, range.upper);
 }
 
-void RandomBotBacketManager::AdjustBotToRange(Player* bot, int targetRangeIndex, const LevelRangeConfig* factionRanges)
+void RandomBotBacketManager::AdjustBotToRange(Player* bot, int targetRangeIndex, LevelRangeConfig const* factionRanges)
 {
     if (!bot || targetRangeIndex < 0 || targetRangeIndex >= NUM_RANGES)
         return;

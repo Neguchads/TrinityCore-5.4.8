@@ -231,7 +231,7 @@ class instance_halls_of_origination : public InstanceMapScript
                 return saveStream.str();
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

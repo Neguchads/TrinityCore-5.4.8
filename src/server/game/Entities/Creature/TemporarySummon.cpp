@@ -59,7 +59,7 @@ void TempSummon::Update(uint32 diff)
     switch (m_type)
     {
         case TEMPSUMMON_MANUAL_DESPAWN:
-        case TEMPSUMMON_DEAD_DESPAWN:    
+        case TEMPSUMMON_DEAD_DESPAWN:
             break;
         case TEMPSUMMON_TIMED_DESPAWN:
         {
@@ -174,13 +174,12 @@ bool TempSummon::Create(uint32 guidlow, Map* map, uint32 phaseMask, uint32 entry
     if (!Creature::Create(guidlow, map, phaseMask, entry, vehId, team, x, y, z, ang, data))
         return false;
 
-
     if (m_Properties)
     {
         m_slot = m_Properties->Type != SUMMON_TYPE_STATUE ? m_Properties->Slot : 1;
         if (GetEntry() == 59190)
             m_slot = 1;
-        
+
         if (Unit* owner = GetSummoner())
         {
             uint8 maxslot = 0;
@@ -258,11 +257,11 @@ void TempSummon::InitStats(uint32 duration)
     {
         SetFaction(owner->GetFaction());
         SetLevel(owner->GetLevel());
-        if (owner->GetTypeId() == TYPEID_PLAYER)
+        if (owner->IsPlayer())
             m_ControlledByPlayer = true;
     }
 
-    if (owner && owner->GetTypeId() == TYPEID_PLAYER && m_slot >= SUMMON_SLOT_TOTEM && m_slot < SUMMON_SLOT_MAX_TOTEM)
+    if (owner && owner->IsPlayer() && m_slot >= SUMMON_SLOT_TOTEM && m_slot < SUMMON_SLOT_MAX_TOTEM)
         owner->ToPlayer()->GetSession()->SendTotemCreated(GetGUID(), duration, GetUInt32Value(UNIT_FIELD_CREATED_BY_SPELL), m_slot - 1);
 
     if (!m_Properties)
@@ -300,7 +299,7 @@ void TempSummon::InitSummon()
     Unit* owner = GetSummoner();
     if (owner)
     {
-        if (owner->GetTypeId() == TYPEID_UNIT && owner->ToCreature()->IsAIEnabled)
+        if (owner->IsCreature() && owner->ToCreature()->IsAIEnabled)
             owner->ToCreature()->AI()->JustSummoned(this);
         if (IsAIEnabled)
             AI()->IsSummonedBy(owner);
@@ -331,7 +330,7 @@ void TempSummon::UnSummon(uint32 msTime)
     }
 
     Unit* owner = GetSummoner();
-    if (owner && owner->GetTypeId() == TYPEID_UNIT && owner->ToCreature()->IsAIEnabled)
+    if (owner && owner->IsCreature() && owner->ToCreature()->IsAIEnabled)
         owner->ToCreature()->AI()->SummonedCreatureDespawn(this);
 
     if (IsAIEnabled)
@@ -456,7 +455,7 @@ void Guardian::InitStats(uint32 duration)
 
     InitStatsForLevel(GetOwner()->GetLevel());
 
-    if (GetOwner()->GetTypeId() == TYPEID_PLAYER && HasUnitTypeMask(UNIT_MASK_CONTROLABLE_GUARDIAN))
+    if (GetOwner()->IsPlayer() && HasUnitTypeMask(UNIT_MASK_CONTROLABLE_GUARDIAN))
     {
         SetReactState(REACT_ASSIST);
         m_charmInfo->InitCharmCreateSpells();
@@ -469,7 +468,7 @@ void Guardian::InitSummon()
 {
     TempSummon::InitSummon();
 
-    if (GetOwner()->GetTypeId() == TYPEID_PLAYER
+    if (GetOwner()->IsPlayer()
             && GetOwner()->GetMinionGUID() == GetGUID()
             && !GetOwner()->GetCharmGUID())
     {
@@ -480,7 +479,7 @@ void Guardian::InitSummon()
 Puppet::Puppet(SummonPropertiesEntry const* properties, Unit* owner)
     : Minion(properties, owner, false) //maybe true?
 {
-    ASSERT(m_owner->GetTypeId() == TYPEID_PLAYER);
+    ASSERT(m_owner->IsPlayer());
     m_unitTypeMask |= UNIT_MASK_PUPPET;
 }
 

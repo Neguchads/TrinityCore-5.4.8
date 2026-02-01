@@ -216,7 +216,7 @@ class boss_kilnara : public CreatureScript
                     Talk(bTwoPhase? SAY_KILL_FERAL: SAY_KILL);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spellInfo) override
+            void SpellHit(Unit* caster, SpellInfo const* spellInfo) override
             {
                 if (spellInfo->HasEffect(SPELL_EFFECT_INTERRUPT_CAST))
                 {

@@ -22,7 +22,7 @@
 #include "ObjectAccessor.h"
 #include "Player.h"
 
-int AggressorAI::Permissible(const Creature* creature)
+int AggressorAI::Permissible(Creature const* creature)
 {
     // have some hostile factions, it will be selected by IsHostileTo check at MoveInLineOfSight
     if (!creature->IsCivilian() && !creature->IsNeutralToAll())
@@ -40,22 +40,22 @@ void AggressorAI::UpdateAI(uint32 /*diff*/)
 }
 
 // some day we will delete these useless things
-int CombatAI::Permissible(const Creature* /*creature*/)
+int CombatAI::Permissible(Creature const* /*creature*/)
 {
     return PERMIT_BASE_NO;
 }
 
-int ArcherAI::Permissible(const Creature* /*creature*/)
+int ArcherAI::Permissible(Creature const* /*creature*/)
 {
     return PERMIT_BASE_NO;
 }
 
-int TurretAI::Permissible(const Creature* /*creature*/)
+int TurretAI::Permissible(Creature const* /*creature*/)
 {
     return PERMIT_BASE_NO;
 }
 
-int VehicleAI::Permissible(const Creature* /*creature*/)
+int VehicleAI::Permissible(Creature const* /*creature*/)
 {
     return PERMIT_BASE_NO;
 }
@@ -244,7 +244,7 @@ TurretAI::TurretAI(Creature* c) : CreatureAI(c)
     me->m_SightDistance = me->m_CombatDistance;
 }
 
-bool TurretAI::CanAIAttack(const Unit* /*who*/) const
+bool TurretAI::CanAIAttack(Unit const* /*who*/) const
 {
     /// @todo use one function to replace it
     if (!me->IsWithinCombatRange(me->GetVictim(), me->m_CombatDistance)

@@ -126,7 +126,7 @@ class instance_sunken_temple : public InstanceMapScript
                 return ObjectGuid::Empty;
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

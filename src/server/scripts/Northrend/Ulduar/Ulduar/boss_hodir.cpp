@@ -1076,7 +1076,7 @@ class npc_toasty_fire : public CreatureScript
                 DoCast(me, SPELL_TOASTY_FIRE, true);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_BLOCK_OF_ICE)
                 {
@@ -1254,7 +1254,7 @@ class spell_achievement_related_staying_buffed_all_winter : public SpellScriptLo
 class achievement_staying_buffed_all_winter : public AchievementCriteriaScript
 {
     public:
-        achievement_staying_buffed_all_winter(const char* name) : AchievementCriteriaScript(name)  {}
+        achievement_staying_buffed_all_winter(char const* name) : AchievementCriteriaScript(name)  {}
 
         bool OnCheck(Player* player, Unit* /*target*/)
         {
@@ -1271,7 +1271,7 @@ class achievement_staying_buffed_all_winter : public AchievementCriteriaScript
 class achievement_i_could_say_that_this_cache_was_rare : public AchievementCriteriaScript
 {
     public:
-        achievement_i_could_say_that_this_cache_was_rare(const char* name) : AchievementCriteriaScript(name) { }
+        achievement_i_could_say_that_this_cache_was_rare(char const* name) : AchievementCriteriaScript(name) { }
 
         bool OnCheck(Player* player, Unit* /*target*/)
         {

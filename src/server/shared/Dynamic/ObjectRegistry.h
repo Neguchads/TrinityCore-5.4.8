@@ -39,7 +39,7 @@ class ObjectRegistry
         typedef std::map<Key, T *> RegistryMapType;
 
         /// Returns a registry item
-        const T* GetRegistryItem(Key key) const
+        T const* GetRegistryItem(Key key) const
         {
             typename RegistryMapType::const_iterator iter = i_registeredObjects.find(key);
             return( iter == i_registeredObjects.end() ? NULL : iter->second );

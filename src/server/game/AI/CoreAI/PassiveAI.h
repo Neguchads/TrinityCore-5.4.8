@@ -29,7 +29,7 @@ class PassiveAI : public CreatureAI
         void AttackStart(Unit*) { }
         void UpdateAI(uint32);
 
-        static int Permissible(const Creature*) { return PERMIT_BASE_IDLE;  }
+        static int Permissible(Creature const*) { return PERMIT_BASE_IDLE;  }
 };
 
 class PossessedAI : public CreatureAI
@@ -45,7 +45,7 @@ class PossessedAI : public CreatureAI
         void JustDied(Unit*);
         void KilledUnit(Unit* victim);
 
-        static int Permissible(const Creature*) { return PERMIT_BASE_IDLE;  }
+        static int Permissible(Creature const*) { return PERMIT_BASE_IDLE;  }
 };
 
 class NullCreatureAI : public CreatureAI
@@ -59,7 +59,7 @@ class NullCreatureAI : public CreatureAI
         void EnterEvadeMode() { }
         void OnCharmed(bool /*apply*/) { }
 
-        static int Permissible(const Creature*) { return PERMIT_BASE_IDLE;  }
+        static int Permissible(Creature const*) { return PERMIT_BASE_IDLE;  }
 };
 
 class CritterAI : public PassiveAI

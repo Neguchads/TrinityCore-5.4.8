@@ -535,7 +535,7 @@ class npc_despondent_warden_of_zhu : public CreatureScript
                     else auraRecastTimer -= diff;
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (auraRecastTimer)
                     return;
@@ -2124,7 +2124,7 @@ struct npc_stoneplow_envoy : public ScriptedAI
         script_timer = 0, player_guid = ObjectGuid::Empty;
     }
 
-    void SpellHit(Unit* caster, const SpellInfo* spell) override
+    void SpellHit(Unit* caster, SpellInfo const* spell) override
     {
         if (spell->Id == SPELL_REVIVE_STONEPLOW_ENVOY && me->HasAura(SPELL_PERMANENT_FEIGN_DEATH_STUN))
         {

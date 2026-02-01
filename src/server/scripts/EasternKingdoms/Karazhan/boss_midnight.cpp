@@ -97,7 +97,7 @@ class boss_attumen : public CreatureScript
 
             void UpdateAI(uint32 diff) override;
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Mechanic == MECHANIC_DISARM)
                     Talk(SAY_DISARMED);

@@ -63,7 +63,7 @@ enum BalindaWaterElementalEvents
 class npc_water_elemental : public CreatureScript
 {
     public:
-        npc_water_elemental(const char *ScriptName) : CreatureScript(ScriptName) { }
+        npc_water_elemental(char const*ScriptName) : CreatureScript(ScriptName) { }
 
     struct npc_water_elementalAI : public ScriptedAI
     {

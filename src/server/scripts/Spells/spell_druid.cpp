@@ -626,7 +626,7 @@ class AuraDurationCompareOrderPred
 {
     public:
         AuraDurationCompareOrderPred(uint64 caster, uint32 auraId, bool ascending = true) : m_caster(caster), m_aura(auraId), m_ascending(ascending) { }
-        bool operator() (const Unit* a, const Unit* b) const
+        bool operator() (Unit const* a, Unit const* b) const
         {
             return m_ascending ? a->GetAura(m_aura, m_caster)->GetDuration() < b->GetAura(m_aura, m_caster)->GetDuration() :
                                     a->GetAura(m_aura, m_caster)->GetDuration() > b->GetAura(m_aura, m_caster)->GetDuration();

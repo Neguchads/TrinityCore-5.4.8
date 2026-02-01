@@ -110,7 +110,7 @@ class TC_GAME_API MotionMaster //: private std::stack<MovementGenerator *>
             Impl[_top] = _Val;
         }
 
-        bool needInitTop() const 
+        bool needInitTop() const
         {
             if (empty())
                 return false;
@@ -136,7 +136,6 @@ class TC_GAME_API MotionMaster //: private std::stack<MovementGenerator *>
         int size() const { return _top + 1; }
 
         //MovementGeneratorType GetCurrentMovementGeneratorType() const; // hack
-
 
         _Ty top() const { ASSERT(_top < MAX_MOTION_SLOT && _top >= 0);  return Impl[_top]; }
         _Ty GetMotionSlot(int slot) const { ASSERT(_top < MAX_MOTION_SLOT && _top >= 0); return Impl[slot]; }
@@ -205,7 +204,7 @@ class TC_GAME_API MotionMaster //: private std::stack<MovementGenerator *>
         void MoveTaxiFlight(uint32 path, uint32 pathnode);
         void MoveDistract(uint32 time);
         void MovePath(uint32 path_id, bool repeatable);
-        void MoveSplinePath(const Position* path, uint32 count, bool fly = false, bool walk = false, float speed = 0.0f, bool cyclic = false, bool catmullrom = true, bool uncompressed = true);
+        void MoveSplinePath(Position const* path, uint32 count, bool fly = false, bool walk = false, float speed = 0.0f, bool cyclic = false, bool catmullrom = true, bool uncompressed = true);
         void MoveRotate(uint32 time, RotateDirection direction);
 
         void MoveKnockbackFromForPlayer(float srcX, float srcY, float speedXY, float speedZ);

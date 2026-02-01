@@ -300,7 +300,7 @@ bool WorldSession::HandleSocketClosed()
 }
 
 /// Logging helper for unexpected opcodes
-void WorldSession::LogUnexpectedOpcode(WorldPacket* packet, const char* status, const char *reason)
+void WorldSession::LogUnexpectedOpcode(WorldPacket* packet, char const* status, char const*reason)
 {
     TC_LOG_ERROR("network.opcode", "Received unexpected opcode %s Status: %s Reason: %s from %s",
          GetOpcodeNameForLogging(static_cast<OpcodeClient>(packet->GetOpcode())).c_str(), status, reason, GetPlayerInfo().c_str());
@@ -740,7 +740,7 @@ void WorldSession::KickPlayerOP(std::string const& reason)
     }
 }
 
-void WorldSession::SendNotification(const char *format, ...)
+void WorldSession::SendNotification(char const*format, ...)
 {
     if (format)
     {
@@ -781,7 +781,7 @@ void WorldSession::SendNotification(uint32 string_id, ...)
     }
 }
 
-const char *WorldSession::GetTrinityString(int32 entry) const
+char const*WorldSession::GetTrinityString(int32 entry) const
 {
     return sObjectMgr->GetTrinityString(entry, GetSessionDbLocaleIndex());
 }

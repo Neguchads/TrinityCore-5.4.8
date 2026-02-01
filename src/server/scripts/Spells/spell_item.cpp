@@ -40,7 +40,7 @@ class spell_item_trigger_spell : public SpellScriptLoader
         uint32 _triggeredSpellId;
 
     public:
-        spell_item_trigger_spell(const char* name, uint32 triggeredSpellId) : SpellScriptLoader(name), _triggeredSpellId(triggeredSpellId) { }
+        spell_item_trigger_spell(char const* name, uint32 triggeredSpellId) : SpellScriptLoader(name), _triggeredSpellId(triggeredSpellId) { }
 
         class spell_item_trigger_spell_SpellScript : public SpellScript
         {

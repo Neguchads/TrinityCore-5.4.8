@@ -164,8 +164,6 @@ enum SMART_EVENT
     SMART_EVENT_GOSSIP_HELLO             = 64,      // none
     SMART_EVENT_FOLLOW_COMPLETED         = 65,      // none
 
-
-
     SMART_EVENT_DUMMY_EFFECT             = 66,      // spellId, effectIndex
     SMART_EVENT_IS_BEHIND_TARGET         = 67,      // cooldownMin, CooldownMax
     SMART_EVENT_GAME_EVENT_START         = 68,      // game_event.Entry
@@ -613,7 +611,7 @@ struct SmartAction
             uint32 sound;
             SAIBool onlySelf;
             uint32 distance;
-            uint32 keyBroadcastTextId; // UNUSED: param reserved for compatibility with master branch            
+            uint32 keyBroadcastTextId; // UNUSED: param reserved for compatibility with master branch
         } sound;
 
         struct
@@ -1487,7 +1485,7 @@ typedef std::unordered_map<uint32, GuidList> GuidListMap;
 class SmartWaypointMgr
 {
     public:
-        static SmartWaypointMgr* instance();    
+        static SmartWaypointMgr* instance();
 
         void LoadFromDB();
 

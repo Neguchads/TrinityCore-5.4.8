@@ -675,7 +675,7 @@ class npc_well_of_eternity_legion_demon : public CreatureScript
                     DoCastAOE(SPELL_AGGRO_ILLIDAN, true);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE))
                     return;
@@ -1090,7 +1090,7 @@ class npc_well_of_eternity_illidan_1 : public CreatureScript
                 }
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_AGGRO_ILLIDAN)
                 {
@@ -1468,7 +1468,7 @@ class npc_well_of_eternity_legion_demon_preevent : CreatureScript
                 pos = FORMATION_LEGION_DEMON_NOT_SET;
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_SHADOWCLOAK_AGGRO)
                 {
@@ -1702,7 +1702,7 @@ class npc_well_of_eternity_guardian_demon : CreatureScript
                 Talk(RAND(2,3,4));
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_SHADOWCLOAK_AGGRO)
                 {
@@ -2151,7 +2151,7 @@ class npc_well_of_eternity_portal_trash : public CreatureScript
                     DoCastAOE(SPELL_AGGRO_ILLIDAN, true);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE))
                     return;
@@ -2508,7 +2508,7 @@ class at_well_of_eternity_intro : public AreaTriggerScript
     public:
         at_well_of_eternity_intro() : AreaTriggerScript("at_well_of_eternity_intro") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
             {
@@ -2528,7 +2528,7 @@ class at_well_of_eternity_skip_illidan_intro : public AreaTriggerScript
     public:
         at_well_of_eternity_skip_illidan_intro() : AreaTriggerScript("at_well_of_eternity_skip_illidan_intro") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if (instance->GetData(DATA_EVENT_ILLIDAN_1) == NOT_STARTED)
@@ -2543,7 +2543,7 @@ class at_well_of_eternity_perotharn_preevent_appear : public AreaTriggerScript
     public:
         at_well_of_eternity_perotharn_preevent_appear() : AreaTriggerScript("at_well_of_eternity_perotharn_preevent_appear") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if (instance->GetData(DATA_EVENT_ILLIDAN_1) == DONE && instance->GetBossState(DATA_PEROTHARN) == NOT_STARTED)
@@ -2559,7 +2559,7 @@ class at_well_of_eternity_illidan_outro_resume : public AreaTriggerScript
     public:
         at_well_of_eternity_illidan_outro_resume() : AreaTriggerScript("at_well_of_eternity_illidan_outro_resume") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*trigger*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if (instance->GetData(DATA_EVENT_ILLIDAN_1) == DONE && instance->GetBossState(DATA_PEROTHARN) == DONE)
@@ -2942,7 +2942,7 @@ class npc_well_of_eternity_royal_handmaiden : public CreatureScript
                 events.ScheduleEvent(EVENT_SWEET_LULLABY, urand(7000, 12000));
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_ARCHIVED_HANDMAIDEN_1)
                     DoCast(caster, SPELL_ARCHIVED_HANDMAIDEN_2, true);
@@ -3335,7 +3335,7 @@ class npc_well_of_eternity_tyrande : public CreatureScript
 
             void EnterEvadeMode() override { }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == 104678/*SPELL_DEBILITATING_FLAY*/)
                     if (!bDebilitating)

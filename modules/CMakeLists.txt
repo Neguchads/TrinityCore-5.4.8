@@ -96,12 +96,17 @@ add_library(modules STATIC ${MODULES_SOURCES})
 
 # Copy module configs to build output (AzerothCore-style)
 if (MODULE_CONF_DISTS)
+  if (WIN32)
+    set(TC_MODULES_BIN_DIR "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/modules")
+  else()
+    set(TC_MODULES_BIN_DIR "${CMAKE_BINARY_DIR}/bin/modules")
+  endif()
   foreach(MODULE_CONF_DIST ${MODULE_CONF_DISTS})
     get_filename_component(MODULE_CONF_NAME ${MODULE_CONF_DIST} NAME)
 
     add_custom_command(TARGET modules POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/modules"
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different "${MODULE_CONF_DIST}" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/modules/${MODULE_CONF_NAME}"
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${TC_MODULES_BIN_DIR}"
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different "${MODULE_CONF_DIST}" "${TC_MODULES_BIN_DIR}/${MODULE_CONF_NAME}"
       COMMENT "Copying module configs"
     )
   endforeach()

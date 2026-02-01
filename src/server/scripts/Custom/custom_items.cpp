@@ -13,7 +13,7 @@ public:
         {
             player->GetSession()->SendNotification("You may not use this token whilst you are in combat or present in an arena or battleground.");
         }
-        else if(player->HasItemCount(item->GetEntry(), 1, true)) //verify that the characters have the item
+        else if (player->HasItemCount(item->GetEntry(), 1, true)) //verify that the characters have the item
         {
             player->ModifyCurrency(392, 1000 * CURRENCY_PRECISION); // add 1000 honor points
             ChatHandler(player->GetSession()).SendSysMessage("Thanks for helping the WoW project, you just received 1000 honor points.");
@@ -43,7 +43,7 @@ public:
         {
             player->GetSession()->SendNotification("You may not use this token whilst you are in combat or present in an arena or battleground.");
         }
-        else if(player->HasItemCount(item->GetEntry(), 1, true)) //verify that the characters have the item
+        else if (player->HasItemCount(item->GetEntry(), 1, true)) //verify that the characters have the item
         {
             player->ModifyCurrency(CURRENCY_TYPE_JUSTICE_POINTS, 1000 * CURRENCY_PRECISION, true, true, true); // add 1000 justice points
             ChatHandler(player->GetSession()).SendSysMessage("Thanks for helping the WoW project, you just received 1000 justice points.");
@@ -73,7 +73,7 @@ public:
         {
             player->GetSession()->SendNotification("You may not use this token whilst you are in combat or present in an arena or battleground.");
         }
-        else if(player->HasItemCount(item->GetEntry(), 1, true)) //verify that the characters have the item
+        else if (player->HasItemCount(item->GetEntry(), 1, true)) //verify that the characters have the item
         {
             player->ModifyCurrency(CURRENCY_TYPE_VALOR_POINTS, 1000 * CURRENCY_PRECISION, true, true, true); // add 1000 valor points
             ChatHandler(player->GetSession()).SendSysMessage("Thanks for helping the WoW project, you just received 1000 valor points.");
@@ -103,7 +103,7 @@ public:
         {
             player->GetSession()->SendNotification("You may not use this token whilst you are in combat or present in an arena or battleground.");
         }
-        else if(player->HasItemCount(item->GetEntry(), 1, true)) //verify that the characters have the item
+        else if (player->HasItemCount(item->GetEntry(), 1, true)) //verify that the characters have the item
         {
             player->ModifyCurrency(390, 1000 * CURRENCY_PRECISION); // add 1000 conquest points
             ChatHandler(player->GetSession()).SendSysMessage("Thanks for helping the WoW project, you just received 1000 conquest points.");

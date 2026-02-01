@@ -22,7 +22,7 @@
 #include "ObjectAccessor.h"
 #include "CreatureAIImpl.h"
 
-int ReactorAI::Permissible(const Creature* creature)
+int ReactorAI::Permissible(Creature const* creature)
 {
     if (creature->IsCivilian() || creature->IsNeutralToAll())
         return PERMIT_BASE_REACTIVE;

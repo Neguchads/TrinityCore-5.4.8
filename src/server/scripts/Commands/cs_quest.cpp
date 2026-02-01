@@ -49,7 +49,7 @@ public:
         return commandTable;
     }
 
-    static bool HandleQuestAdd(ChatHandler* handler, const char* args)
+    static bool HandleQuestAdd(ChatHandler* handler, char const* args)
     {
         Player* player = handler->getSelectedPlayer();
         if (!player)
@@ -100,7 +100,7 @@ public:
         return true;
     }
 
-    static bool HandleQuestRemove(ChatHandler* handler, const char* args)
+    static bool HandleQuestRemove(ChatHandler* handler, char const* args)
     {
         Player* player = handler->getSelectedPlayer();
         if (!player)
@@ -162,7 +162,7 @@ public:
         return true;
     }
 
-    static bool HandleQuestComplete(ChatHandler* handler, const char* args)
+    static bool HandleQuestComplete(ChatHandler* handler, char const* args)
     {
         Player* player = handler->getSelectedPlayer();
         if (!player)

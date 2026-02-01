@@ -400,7 +400,7 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recvPacket)
     }
 
     uint32 mstime = getMSTime();
-    if(m_clientTimeDelay == 0)
+    if (m_clientTimeDelay == 0)
         m_clientTimeDelay = mstime - movementInfo.time;
 
     /* process position-change */
@@ -608,7 +608,6 @@ void WorldSession::HandleMountSpecialAnimOpcode(WorldPacket& /*recvData*/)
 
     GetPlayer()->SendMessageToSet(&data, false);
 }
-
 
 void WorldSession::HandleMoveKnockBackAck(WorldPacket& recvData)
 {

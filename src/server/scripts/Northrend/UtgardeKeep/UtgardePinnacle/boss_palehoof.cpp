@@ -385,7 +385,7 @@ class npc_ravenous_furbolg : public CreatureScript
                 me->GetMotionMaster()->MoveChase(who);
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_CRAZED_SCRIPT)
                     target->CastSpell(me, SPELL_CRAZED_TAUNT, true);

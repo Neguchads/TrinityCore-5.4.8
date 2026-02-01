@@ -941,7 +941,7 @@ public:
         if (qInfo)
         {
             /// @todo prisoner should help player for a short period of time
-            for (const auto& objective : qInfo->Objectives)
+            for (auto const& objective : qInfo->Objectives)
             {
                 if (objective.StorageIndex == 0)
                 {

@@ -110,7 +110,7 @@ class npc_gilthares : public CreatureScript
 public:
     npc_gilthares() : CreatureScript("npc_gilthares") { }
 
-    bool OnQuestAccept(Player* player, Creature* creature, const Quest* quest) override
+    bool OnQuestAccept(Player* player, Creature* creature, Quest const* quest) override
     {
         if (quest->GetQuestId() == QUEST_FREE_FROM_HOLD)
         {
@@ -237,7 +237,7 @@ public:
             me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
         }
 
-        void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+        void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
         {
             if (spell->Id == SPELL_FLARE || spell->Id == SPELL_FOLLY)
             {

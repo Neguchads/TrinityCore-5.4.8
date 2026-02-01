@@ -517,9 +517,9 @@ void npc_escortAI::SetEscortPaused(bool on)
         RemoveEscortState(STATE_ESCORT_PAUSED);
 }
 
-Player* npc_escortAI::GetPlayerForEscort() 
-{ 
-    return ObjectAccessor::GetPlayer(*me, m_uiPlayerGUID); 
+Player* npc_escortAI::GetPlayerForEscort()
+{
+    return ObjectAccessor::GetPlayer(*me, m_uiPlayerGUID);
 }
 
 bool npc_escortAI::SetNextWaypoint(uint32 pointId, float x, float y, float z, float orientation)

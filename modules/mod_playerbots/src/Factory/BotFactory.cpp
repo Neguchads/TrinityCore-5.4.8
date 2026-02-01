@@ -317,17 +317,17 @@ void BotFactory::InitPet()
 #include <fstream>
 void BotFactory::InitTalentsTree(bool reset)
 {
-    /*std::map<uint32, std::list<const TalentEntry*>> talents_dbc;
+    /*std::map<uint32, std::list<TalentEntry const*>> talents_dbc;
     for (auto entry = sTalentStore.begin(); entry != sTalentStore.end(); ++entry)
     {
         if (talents_dbc.find(entry->PlayerClass) == talents_dbc.end())
-            talents_dbc[entry->PlayerClass] = std::list<const TalentEntry*>();
+            talents_dbc[entry->PlayerClass] = std::list<TalentEntry const*>();
         talents_dbc[entry->PlayerClass].push_back(*entry);
     }
 
     for (auto& ref : talents_dbc)
     {
-        ref.second.sort([](const TalentEntry* a, const TalentEntry* b)
+        ref.second.sort([](TalentEntry const* a, TalentEntry const* b)
         {
             return (a->Row < b->Row) || (a->Row == b->Row && a->Col < b->Col);
         });

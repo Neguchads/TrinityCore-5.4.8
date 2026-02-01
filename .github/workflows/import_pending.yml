@@ -1,0 +1,49 @@
+name: import-pending
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  import-pending:
+    strategy:
+      fail-fast: false
+    runs-on: ubuntu-24.04
+    permissions: write-all
+    if: ${{ !github.event.pull_request.draft }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+
+      - name: Import pending sql (if available)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -x "apps/ci/ci-pending-sql.sh" ]]; then
+            bash apps/ci/ci-pending-sql.sh
+          elif [[ -x "bin/import-pending.sh" ]]; then
+            bash bin/import-pending.sh
+          else
+            echo "No pending-sql import script found. Skipping."
+            exit 0
+          fi
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git pull --rebase origin "${{ github.ref_name }}"
+          git add -A .
+          git commit -am "chore(DB): import pending files" -m "Referenced commit(s): ${GITHUB_SHA}" || true
+        env:
+          BRANCH: ${{ github.ref_name }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref_name }}

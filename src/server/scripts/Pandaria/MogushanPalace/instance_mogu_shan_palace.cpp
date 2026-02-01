@@ -730,7 +730,7 @@ class instance_mogu_shan_palace : public InstanceMapScript
                 ScheduleChallengeTimeUpdate(diff);
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

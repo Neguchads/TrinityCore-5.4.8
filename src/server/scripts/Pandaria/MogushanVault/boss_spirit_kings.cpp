@@ -815,7 +815,7 @@ class boss_spirit_kings : public CreatureScript
                     value = 0;
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 // Remove only on hit mass dispell or shattering throw
                 if ((me->HasAura(SPELL_IMPERVIOUS_SHIELD) || me->HasAura(SPELL_SHIELD_OF_DARKNESS)) && (spell->Id == 32375 || spell->Id == 64382))

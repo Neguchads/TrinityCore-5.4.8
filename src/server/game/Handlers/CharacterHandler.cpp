@@ -340,7 +340,6 @@ void WorldSession::HandleCharEnum(PreparedQueryResult result)
         GetBoost()->HandleCharacterBoost();
 }
 
-
 void WorldSession::HandleCharEnumOpcode(WorldPackets::Character::EnumCharacters& /*enumCharacters*/)
 {
     // remove expired bans
@@ -510,7 +509,7 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
     _queryProcessor.AddCallback(CharacterDatabase.AsyncQuery(stmt)
         .WithChainingPreparedCallback([this, createInfo](QueryCallback& queryCallback, PreparedQueryResult result)
     {
-        
+
         if (result)
         {
             WorldPacket data(SMSG_CHAR_CREATE, 1);
@@ -520,11 +519,10 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
             return;
         }
 
-
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_SUM_REALM_CHARACTERS);
         stmt->setUInt32(0, GetAccountId());
         queryCallback.SetNextQuery(LoginDatabase.AsyncQuery(stmt));
- 
+
     })
         .WithChainingPreparedCallback([this, createInfo](QueryCallback& queryCallback, PreparedQueryResult result)
     {
@@ -534,7 +532,7 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
         {
             Field* fields = result->Fetch();
             // SELECT SUM(x) is MYSQL_TYPE_NEWDECIMAL - needs to be read as string
-            const char* ch = fields[0].GetCString();
+            char const* ch = fields[0].GetCString();
             if (ch)
                 acctCharCount = atoi(ch);
         }
@@ -573,7 +571,6 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
 
         bool allowTwoSideAccounts = !sWorld->IsPvPRealm() || sWorld->getBoolConfig(CONFIG_ALLOW_TWO_SIDE_ACCOUNTS) || GetSecurity() > SEC_PLAYER;
         uint32 skipCinematics = sWorld->getIntConfig(CONFIG_SKIP_CINEMATICS);
-
 
         std::function<void(PreparedQueryResult)> finalizeCharacterCreation = [this, createInfo](PreparedQueryResult result)
         {
@@ -762,9 +759,7 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
 
     }));
 
-
 }
-
 
 void WorldSession::HandleCharDeleteOpcode(WorldPacket& recvData)
 {
@@ -880,7 +875,7 @@ void WorldSession::HandlePlayerLoginOpcode(WorldPackets::Character::PlayerLogin&
     AddQueryHolderCallback(CharacterDatabase.DelayQueryHolder(holder)).AfterComplete([this](SQLQueryHolderBase const& holder)
     {
         HandlePlayerLogin(static_cast<LoginQueryHolder const&>(holder));
-    });    
+    });
 }
 
 void WorldSession::HandleLoadScreenOpcode(WorldPacket& recvPacket)
@@ -991,7 +986,6 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder const& holder)
             stringBuffer.WriteString(string);
             ++linecount;
         }
-
 
         data.PutBits(0, linecount, 4);
         data.FlushBits();
@@ -1314,7 +1308,7 @@ void WorldSession::HandleShowingHelmOpcode(WorldPackets::Character::ShowingHelm&
     if (packet.ShowHelm)
         _player->RemoveFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_HIDE_HELM);
     else
-        _player->SetFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_HIDE_HELM);    
+        _player->SetFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_HIDE_HELM);
 }
 
 void WorldSession::HandleShowingCloakOpcode(WorldPackets::Character::ShowingCloak& packet)
@@ -1608,7 +1602,6 @@ void WorldSession::HandleSetPlayerDeclinedNames(WorldPacket& recvData)
     DeclinedName const* declinedName = new DeclinedName(declinedname);
     sWorld->UpdateCharacterNameData(guid, name, GENDER_NONE, RACE_NONE, declinedName);
 }
-
 
 void WorldSession::HandleAlterAppearance(WorldPacket& recvData)
 {

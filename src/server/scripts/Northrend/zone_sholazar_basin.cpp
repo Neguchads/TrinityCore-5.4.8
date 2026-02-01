@@ -443,7 +443,7 @@ public:
         return new npc_engineer_heliceAI(creature);
     }
 
-    bool OnQuestAccept(Player* player, Creature* creature, const Quest* quest) override
+    bool OnQuestAccept(Player* player, Creature* creature, Quest const* quest) override
     {
         if (quest->GetQuestId() == QUEST_DISASTER)
         {
@@ -616,7 +616,7 @@ public:
             if (player->GetQuestStatus(QUEST_TASTE_TEST) != QUEST_STATUS_INCOMPLETE)
                 return;
 
-            for (const auto& objective : quest->Objectives)
+            for (auto const& objective : quest->Objectives)
             {
                 if (objective.ObjectID != me->GetEntry())
                     continue;

@@ -875,7 +875,7 @@ class npc_lord_rhyolith_volcano : public CreatureScript
                 events.ScheduleEvent(EVENT_CHECK_RHYOLITH, 3000);       
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_HEATED_VOLCANO)
                 {

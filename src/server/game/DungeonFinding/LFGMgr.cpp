@@ -54,7 +54,6 @@ static void AlmostAssert(char const* filter, Args... args)
 namespace lfg
 {
 
-
 LFGMgr::LFGMgr(): m_QueueTimer(0), m_ShortageCheckTimer(0), m_lfgProposalId(1),
     m_options(sWorld->getIntConfig(CONFIG_LFG_OPTIONSMASK))
 {
@@ -610,7 +609,7 @@ void LFGMgr::JoinLfg(Player* player, LfgRoles roles, LfgDungeonSet& dungeons, co
                     partyOnCooldown = true; // Cooldown case is handled later, should not apply to LFR and specific dungeons
                 else if (member->InBattleground() || member->InArena())
                     joinData.result = LFG_JOIN_USING_BG_SYSTEM;
-                else 
+                else
                 {
                     if (auto queues = GetPlayerQueues(member->GetGUID()))
                     {
@@ -2196,7 +2195,6 @@ void LFGMgr::FinishDungeon(ObjectGuid gguid, uint32 dungeonId, Map* map)
                     player->RewardQuest(quest, 0, NULL, false);
             }
         }
-
 
         if (queueData.CTARoles != PLAYER_ROLE_NONE && player->GetGroup() && (player->GetGroup()->GetLfgRoles(guid) & ~PLAYER_ROLE_LEADER) == queueData.CTARoles)
         {

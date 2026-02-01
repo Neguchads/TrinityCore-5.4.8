@@ -125,7 +125,7 @@ class boss_zanzil : public CreatureScript
                 Talk(SAY_KILL);
             }
             
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL))
                     if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL)->m_spellInfo->Id == SPELL_VOODOO_BOLT)

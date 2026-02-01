@@ -248,7 +248,7 @@ class boss_siamat : public CreatureScript
 
                                 if (Spell* spell = me->GetCurrentSpell(CURRENT_CHANNELED_SPELL))
                                 {
-                                    if (const SpellInfo* spellInfo = spell->GetSpellInfo())
+                                    if (SpellInfo const* spellInfo = spell->GetSpellInfo())
                                         if (spellInfo->Id == SPELL_WAILING_WINDS_AURA)
                                             events.ScheduleEvent(EVENT_WAILING_WINDS, 1000, 0, PHASE_WAILING_WINDS);
                                 }
@@ -445,7 +445,7 @@ class npc_siamat_minion : public CreatureScript
                 }
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_TEMPEST_STORM_TRANSFORM)
                 {

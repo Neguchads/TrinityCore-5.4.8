@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "DB2FileLoader.h"
+#include "Errors.h"
 
 DB2FileLoader::DB2FileLoader()
 {
@@ -28,7 +29,7 @@ DB2FileLoader::DB2FileLoader()
     fieldsOffset = NULL;
 }
 
-bool DB2FileLoader::Load(const char *filename, const char *fmt)
+bool DB2FileLoader::Load(char const*filename, char const*fmt)
 {
     if (data)
     {
@@ -187,7 +188,7 @@ DB2FileLoader::Record DB2FileLoader::getRecord(size_t id)
     return Record(*this, data + id*recordSize);
 }
 
-uint32 DB2FileLoader::GetFormatRecordSize(const char * format, int32* index_pos)
+uint32 DB2FileLoader::GetFormatRecordSize(char const* format, int32* index_pos)
 {
     uint32 recordsize = 0;
     int32 i = -1;
@@ -221,7 +222,7 @@ uint32 DB2FileLoader::GetFormatRecordSize(const char * format, int32* index_pos)
     return recordsize;
 }
 
-uint32 DB2FileLoader::GetFormatStringsFields(const char * format)
+uint32 DB2FileLoader::GetFormatStringsFields(char const* format)
 {
     uint32 stringfields = 0;
     for (uint32 x=0; format[x]; ++x)
@@ -231,7 +232,7 @@ uint32 DB2FileLoader::GetFormatStringsFields(const char * format)
     return stringfields;
 }
 
-char* DB2FileLoader::AutoProduceData(const char* format, uint32& records, char**& indexTable)
+char* DB2FileLoader::AutoProduceData(char const* format, uint32& records, char**& indexTable)
 {
 
     typedef char * ptr;
@@ -313,7 +314,7 @@ char* DB2FileLoader::AutoProduceData(const char* format, uint32& records, char**
     return dataTable;
 }
 
-char* DB2FileLoader::AutoProduceStrings(const char* format, char* dataTable, uint32 locale)
+char* DB2FileLoader::AutoProduceStrings(char const* format, char* dataTable, uint32 locale)
 {
     if (strlen(format) != fieldCount)
         return NULL;
@@ -340,7 +341,7 @@ char* DB2FileLoader::AutoProduceStrings(const char* format, char* dataTable, uin
             {
                 DbcStr* strings = (DbcStr*)(&dataTable[offset]);
                 char const* st = getRecord(y).getString(x);
-                strings->m_impl[locale] = stringPool + (st - (const char*)stringTable);
+                strings->m_impl[locale] = stringPool + (st - (char const*)stringTable);
                 offset += sizeof(DbcStr);
                 break;
             }

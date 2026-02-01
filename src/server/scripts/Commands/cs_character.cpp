@@ -1257,7 +1257,7 @@ public:
         return true;
     }
 
-    static bool HandleCharacterChangeClassCommand(ChatHandler* handler, const char *args)
+    static bool HandleCharacterChangeClassCommand(ChatHandler* handler, char const*args)
     {
         // extract args
         char *temp = strtok((char*) args, " ");

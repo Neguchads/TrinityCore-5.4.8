@@ -33,7 +33,6 @@ void cleanStr(std::string &str) {
     str.erase(remove(str.begin(), str.end(), '|'), str.end());
 }
 
-
 void WorldSession::HandleGuildQueryOpcode(WorldPacket& recvPacket)
 {
     ObjectGuid guildGuid;
@@ -85,7 +84,6 @@ void WorldSession::HandleGuildInviteOpcode(WorldPacket& recvPacket)
 {
     uint32 nameLength = recvPacket.ReadBits(9);
     std::string invitedName = recvPacket.ReadString(nameLength);
-
 
     TC_LOG_DEBUG("guild", "CMSG_GUILD_INVITE [%s]: Invited: %s", GetPlayerInfo().c_str(), invitedName.c_str());
     if (normalizePlayerName(invitedName))

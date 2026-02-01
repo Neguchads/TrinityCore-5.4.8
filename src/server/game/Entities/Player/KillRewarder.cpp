@@ -73,7 +73,7 @@ KillRewarder::KillRewarder(Player* killer, Unit* victim, bool isBattleGround) :
     _isFullXP(false), _maxLevel(0), _isBattleGround(isBattleGround), _isPvP(false)
 {
     // mark the credit as pvp if victim is player
-    if (victim->GetTypeId() == TYPEID_PLAYER)
+    if (victim->IsPlayer())
         _isPvP = true;
     // or if its owned by player and its not a vehicle
     else if (victim->GetCharmerOrOwnerGUID().IsPlayer())
@@ -162,7 +162,7 @@ void KillRewarder::RewardXP(Player* player, float rate)
         xp *= diff > int32(sWorld->getIntConfig(CONFIG_XP_KILL_LEVEL_DIFFERENCE)) ? 0 : sWorld->getRate(RATE_XP_KILL, player);
 
         // 4.2.3. Calculate expansion penalty
-        if (_victim->GetTypeId() == TYPEID_UNIT && player->GetLevel() >= GetMaxLevelForExpansion(_victim->ToCreature()->GetCreatureTemplate()->expansion))
+        if (_victim->IsCreature() && player->GetLevel() >= GetMaxLevelForExpansion(_victim->ToCreature()->GetCreatureTemplate()->expansion))
             xp = CalculatePct(xp, 10); // Players get only 10% xp for killing creatures of lower expansion levels than himself
 
         // 4.2.4. Give XP to player.
@@ -208,7 +208,7 @@ void KillRewarder::RewardPlayer(Player* player, bool isDungeon)
         // 4.1. Give honor (player must be alive and not on BG).
         RewardHonor(player);
         // 4.1.1 Send player killcredit for quests with PlayerSlain
-        if (_victim->GetTypeId() == TYPEID_PLAYER)
+        if (_victim->IsPlayer())
             player->KilledPlayerCredit();
     }
     // Give XP only in PvE or in battlegrounds.

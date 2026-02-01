@@ -160,7 +160,7 @@ class boss_wushoolay : public CreatureScript
                     DoMeleeAttackIfReady();
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 switch (spell->Id)
                 {

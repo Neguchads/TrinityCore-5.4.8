@@ -1365,14 +1365,14 @@ class spell_sha_of_pride_mocking_blast : public SpellScript
 class LastWordDistanceOrderPred
 {
     public:
-        LastWordDistanceOrderPred(const WorldObject* object, bool ascending = true) : m_object(object), m_ascending(ascending) {}
-        bool operator() (const WorldObject* a, const WorldObject* b) const
+        LastWordDistanceOrderPred(WorldObject const* object, bool ascending = true) : m_object(object), m_ascending(ascending) {}
+        bool operator() (WorldObject const* a, WorldObject const* b) const
         {
             return m_ascending ? a->GetDistance(m_object) < b->GetDistance(m_object) :
                 a->GetDistance(m_object) > b->GetDistance(m_object);
         }
     private:
-        const WorldObject* m_object;
+        WorldObject const* m_object;
         const bool m_ascending;
 };
 
@@ -1435,7 +1435,7 @@ class SelfReflectionOrderPred
 {
     public:
         SelfReflectionOrderPred() {}
-        bool operator() (const Player* a, const Player* b) const
+        bool operator() (Player const* a, Player const* b) const
         {
             return a->GetPower(POWER_ALTERNATE_POWER) > b->GetPower(POWER_ALTERNATE_POWER);
         }
@@ -1699,7 +1699,7 @@ class spell_sha_of_pride_corrupted_prison : public AuraScript
     }
 
     private:
-        bool HasInRotatingArc(Unit* caster, float arc, float facing, const Position* obj, float border = 2.0f)
+        bool HasInRotatingArc(Unit* caster, float arc, float facing, Position const* obj, float border = 2.0f)
         {
             // move arc to range 0.. 2*pi
             arc = Position::NormalizeOrientation(arc);

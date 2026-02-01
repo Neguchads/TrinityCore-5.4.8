@@ -1046,7 +1046,7 @@ void Battleground::EndBattleground(uint32 winner)
     {
         uint32 team = it.second.Team;
         int32 ratingChanges = 0;
-            
+
         if (it.second.OfflineRemoveTime)
         {
             // If rated arena match - make member lost!
@@ -1103,7 +1103,7 @@ void Battleground::EndBattleground(uint32 winner)
                 // credit quest PVP-ARENA
                 if ((player->GetQuestStatus(40313) == QUEST_STATUS_INCOMPLETE))
                     player->KilledMonsterCredit(300001);
-                
+
                 GetArenaTeam(team)->MemberWon(player, loserMatchmakerRating, winnerMatchmakerChange);
             }
             else
@@ -1137,7 +1137,7 @@ void Battleground::EndBattleground(uint32 winner)
                 GetArenaTeam(team)->MemberLost(player->GetGUID(), winnerMatchmakerRating, loserMatchmakerChange);
             }
         }
-        if(IsBattleground())
+        if (IsBattleground())
         {
             if (team == winner)
             {

@@ -58,7 +58,7 @@ class npc_master_shang_xi : public CreatureScript
 
             uint32 resetTimer;
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_SNATCH_MASTERS_FLAME) // Snatch Master's Flame
                 {

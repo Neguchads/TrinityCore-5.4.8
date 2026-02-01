@@ -27,6 +27,7 @@
 #include <stdexcept>
 #include <vector>
 #include <algorithm>
+#include <cstring>
 #include <limits>
 #include <cmath>
 

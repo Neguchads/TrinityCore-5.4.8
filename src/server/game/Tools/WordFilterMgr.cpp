@@ -17,6 +17,12 @@
 
 #include "WordFilterMgr.h"
 
+#include "DatabaseEnv.h"
+#include "Log.h"
+#include "Util.h"
+
+#include <algorithm>
+
 bool NormalizeWord(std::string& utf8String)
 {
     // remove spaces
@@ -57,7 +63,7 @@ bool FindWordInSequence(const std::string& str, const std::string& word, const s
 
         if (distBethCharsCount > maxDistBethChars)
         {
-            i = lastI; 
+            i = lastI;
             charsCount = 0;
             distBethCharsCount = 0;
             lastCharIsExist = false;
@@ -71,7 +77,7 @@ bool FindWordInSequence(const std::string& str, const std::string& word, const s
 }
 */
 
-WordFilterMgr::WordFilterMgr() 
+WordFilterMgr::WordFilterMgr()
 {
 }
 
@@ -106,7 +112,7 @@ void WordFilterMgr::LoadLetterAnalogs()
         std::string analogs = fields[1].GetString();
 
         NormalizeWord(analogs);
-        m_letterAnalogs[letter] = analogs; 
+        m_letterAnalogs[letter] = analogs;
 
         ++count;
     }
@@ -114,7 +120,6 @@ void WordFilterMgr::LoadLetterAnalogs()
 
     TC_LOG_INFO("misc", ">> Loaded %u letter analogs in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
-
 
 void WordFilterMgr::LoadBadWords()
 {
@@ -178,7 +183,7 @@ inline void WordFilterMgr::ConvertLettersToAnalogs(std::string& text)
 std::string WordFilterMgr::FindBadWord(const std::string& text, bool mail)
 {
     std::string _text = text;
-    
+
     if (_text.empty() || m_badWords.empty())
         return "";
 
@@ -189,13 +194,13 @@ std::string WordFilterMgr::FindBadWord(const std::string& text, bool mail)
         if (_text.find(it->first) != std::string::npos)
             return it->second;
 
-    if(mail)
+    if (mail)
     {
         for (BadWordMapMail::const_iterator it = m_badWordsMail.begin(); it != m_badWordsMail.end(); ++it)
             if (_text.find(it->first) != std::string::npos)
                 return it->second;
     }
-    /* 
+    /*
     // At ~5 times slower.
     for (BadWordMap::const_iterator it = m_badWords.begin(); it != m_badWords.end(); ++it)
     {
@@ -206,12 +211,12 @@ std::string WordFilterMgr::FindBadWord(const std::string& text, bool mail)
         }
         else if (it->second.size() <= 7)
         {
-            if(FindWordInSequence(_text, it->first, 1))
+            if (FindWordInSequence(_text, it->first, 1))
                 return it->second;
         }
         else
         {
-            if(FindWordInSequence(_text, it->first, 2))
+            if (FindWordInSequence(_text, it->first, 2))
                 return it->second;
         }
     }
@@ -223,7 +228,7 @@ std::string WordFilterMgr::FindBadWord(const std::string& text, bool mail)
 bool WordFilterMgr::AddBadWord(const std::string& badWord, bool toDB)
 {
     std::string _badWord = badWord;
-  
+
     NormalizeWord(_badWord);
 
     std::string convertedBadWord = _badWord;
@@ -236,7 +241,7 @@ bool WordFilterMgr::AddBadWord(const std::string& badWord, bool toDB)
     m_badWords[convertedBadWord] = _badWord;
 
     if (toDB)
-        WorldDatabase.PQuery("REPLACE INTO bad_word VALUES ('%s')", _badWord.c_str()); 
+        WorldDatabase.PQuery("REPLACE INTO bad_word VALUES ('%s')", _badWord.c_str());
 
     return true;
 }
@@ -265,7 +270,7 @@ bool WordFilterMgr::AddBadWordMail(const std::string& badWord, bool toDB)
 bool WordFilterMgr::RemoveBadWord(const std::string& badWord, bool fromDB)
 {
     std::string _badWord = badWord;
-    
+
     NormalizeWord(_badWord);
 
     std::string convertedBadWord = _badWord;
@@ -279,7 +284,7 @@ bool WordFilterMgr::RemoveBadWord(const std::string& badWord, bool fromDB)
     m_badWords.erase(it);
 
     if (fromDB)
-        WorldDatabase.PExecute("DELETE FROM bad_word WHERE `bad_word` = '%s'", _badWord.c_str()); 
+        WorldDatabase.PExecute("DELETE FROM bad_word WHERE `bad_word` = '%s'", _badWord.c_str());
 
     return true;
 }

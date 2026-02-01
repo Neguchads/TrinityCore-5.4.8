@@ -457,7 +457,7 @@ class spell_ook_ook_barrel_ride : public SpellScriptLoader
         {
             PrepareAuraScript(spell_ook_ook_barrel_ride_AuraScript);
 
-            void OnApply(const AuraEffect*  /*aurEff*/, AuraEffectHandleModes /*mode*/)
+            void OnApply(AuraEffect const*  /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
                 if (Unit* barrelBase = GetTarget())
                 {
@@ -472,7 +472,7 @@ class spell_ook_ook_barrel_ride : public SpellScriptLoader
             }
 
             // unused atm
-            void OnRemove(const AuraEffect*  /*aurEff*/, AuraEffectHandleModes /*mode*/)
+            void OnRemove(AuraEffect const*  /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
                 Unit* caster = GetCaster();
                 Unit* target = GetTarget();
@@ -533,7 +533,7 @@ class spell_ground_pound : public SpellScriptLoader
         {
             PrepareAuraScript(spell_ground_pound_AuraScript);
 
-            void HandleOnApply(const AuraEffect* aurEff, AuraEffectHandleModes mode)
+            void HandleOnApply(AuraEffect const* aurEff, AuraEffectHandleModes mode)
             {
                 GetCaster()->AddUnitState(UNIT_STATE_CANNOT_TURN);
             }
@@ -547,7 +547,7 @@ class spell_ground_pound : public SpellScriptLoader
                 }
             }
 
-            void HandleOnRemove(const AuraEffect* aurEff, AuraEffectHandleModes mode)
+            void HandleOnRemove(AuraEffect const* aurEff, AuraEffectHandleModes mode)
             {
                 GetCaster()->ClearUnitState(UNIT_STATE_CANNOT_TURN);
             }

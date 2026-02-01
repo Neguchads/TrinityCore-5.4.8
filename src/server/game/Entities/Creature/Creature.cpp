@@ -275,7 +275,7 @@ void Creature::RemoveFromWorld()
     {
         if (GetZoneScript())
             GetZoneScript()->OnCreatureRemove(this);
-        
+
         if (m_formation)
             sFormationMgr->RemoveCreatureFromGroup(m_formation, this);
 
@@ -340,7 +340,7 @@ void Creature::RemoveCorpse(bool setSpawnTime)
 /**
  * change the entry of creature until respawn
  */
-bool Creature::InitEntry(uint32 entry, uint32 /*team*/, const CreatureData* data)
+bool Creature::InitEntry(uint32 entry, uint32 /*team*/, CreatureData const* data)
 {
     CreatureTemplate const* normalInfo = sObjectMgr->GetCreatureTemplate(entry);
     if (!normalInfo)
@@ -421,7 +421,7 @@ bool Creature::InitEntry(uint32 entry, uint32 /*team*/, const CreatureData* data
     return true;
 }
 
-bool Creature::UpdateEntry(uint32 Entry, uint32 team, const CreatureData* data)
+bool Creature::UpdateEntry(uint32 Entry, uint32 team, CreatureData const* data)
 {
     if (!InitEntry(Entry, team, data))
         return false;
@@ -519,7 +519,7 @@ bool Creature::UpdateEntry(uint32 Entry, uint32 team, const CreatureData* data)
 
     //We must update last scriptId or it looks like we reloaded a script, breaking some things such as gossip temporarily
     LastUsedScriptID = GetScriptId();
-        
+
     return true;
 }
 
@@ -613,7 +613,7 @@ void Creature::Update(uint32 diff)
                     ObjectGuid crguid = GetGUID();
                     if (Creature* creature = this->GetMap()->GetCreature(crguid))
                         if (Group* group = sGroupMgr->GetGroupByGUID(gguid))
-                            group->EndRoll(&creature->loot);                    
+                            group->EndRoll(&creature->loot);
                     // TaskMgr::Default()->ScheduleInvocation([=]
                     // {
                     //     if (Creature* creature = ObjectAccessor::FindCreature(crguid))
@@ -690,7 +690,7 @@ void Creature::Update(uint32 diff)
                     if (CreatureAI* ai = AI())
                         ai->EnterEvadeMode(); // TODO missing EVADE_REASON
                         // ai->EnterEvadeMode(CreatureAI::EVADE_REASON_NO_PATH);
-            }            
+            }
             break;
         }
         default:
@@ -807,7 +807,7 @@ void Creature::Motion_Initialize()
         GetMotionMaster()->Initialize();
 }
 
-bool Creature::Create(uint32 guidlow, Map* map, uint32 phaseMask, uint32 Entry, uint32 vehId, uint32 team, float x, float y, float z, float ang, const CreatureData* data)
+bool Creature::Create(uint32 guidlow, Map* map, uint32 phaseMask, uint32 Entry, uint32 vehId, uint32 team, float x, float y, float z, float ang, CreatureData const* data)
 {
     ASSERT(map);
     SetMap(map);
@@ -984,14 +984,13 @@ void Creature::SetLootRecipient(Unit* unit)
         return;
     }
 
-
     if (IsPet())
     {
         TC_LOG_ERROR("shitlog", "Creature::SetLootRecipient unit: %s guid: " UI64FMTD "\n%s\n", unit->GetName().c_str(), unit->GetGUID().GetRawValue());
         return;
     }
 
-    if (unit->GetTypeId() != TYPEID_PLAYER && !unit->IsVehicle())
+    if (!unit->IsPlayer() && !unit->IsVehicle())
         return;
 
     Player* player = unit->GetCharmerOrOwnerPlayerOrPlayerItself();
@@ -1173,7 +1172,7 @@ void Creature::SaveToDB(uint32 mapid, uint16 spawnMask, uint32 phaseMask)
     WorldDatabase.CommitTransaction(trans);
 }
 
-void Creature::SelectLevel(const CreatureTemplate* cinfo)
+void Creature::SelectLevel(CreatureTemplate const* cinfo)
 {
     uint8 dbminlevel = cinfo->minlevel;
     uint8 dbmaxlevel = cinfo->maxlevel;
@@ -1343,7 +1342,7 @@ float Creature::GetSpellDamageMod(int32 Rank) const
     }
 }
 
-bool Creature::CreateFromProto(uint32 guidlow, uint32 Entry, uint32 vehId, uint32 team, const CreatureData* data)
+bool Creature::CreateFromProto(uint32 guidlow, uint32 Entry, uint32 vehId, uint32 team, CreatureData const* data)
 {
     SetZoneScript();
     if (GetZoneScript() && data)
@@ -1586,7 +1585,7 @@ bool Creature::CanStartAttack(Unit const* who, bool force) const
         return false;
 
     // Do not attack non-combat pets
-    if (who->GetTypeId() == TYPEID_UNIT && who->GetCreatureType() == CREATURE_TYPE_NON_COMBAT_PET)
+    if (who->IsCreature() && who->GetCreatureType() == CREATURE_TYPE_NON_COMBAT_PET)
         return false;
 
     if (!CanFly() && (GetDistanceZ(who) > CREATURE_Z_ATTACK_RANGE + m_CombatDistance))
@@ -1752,7 +1751,6 @@ void Creature::Respawn(bool force)
         SelectLevel(cinfo);
 
         setDeathState(JUST_RESPAWNED);
-
 
         CreatureModel display(GetNativeDisplayId(), 0, 1.0f);
         if (sObjectMgr->GetCreatureModelRandomGender(&display, GetCreatureTemplate()))
@@ -2123,7 +2121,7 @@ void Creature::CallForHelp(float radius)
     cell.Visit(p, grid_creature_searcher, *GetMap(), *this, radius);
 }
 
-bool Creature::CanAssistTo(const Unit* u, const Unit* enemy, bool checkfaction /*= true*/) const
+bool Creature::CanAssistTo(Unit const* u, Unit const* enemy, bool checkfaction /*= true*/) const
 {
     if (IsInEvadeMode())
         return false;
@@ -2172,7 +2170,7 @@ bool Creature::CanAssistTo(const Unit* u, const Unit* enemy, bool checkfaction /
 
 // use this function to avoid having hostile creatures attack
 // friendlies and other mobs they shouldn't attack
-bool Creature::_IsTargetAcceptable(const Unit* target) const
+bool Creature::_IsTargetAcceptable(Unit const* target) const
 {
     ASSERT(target);
 
@@ -2191,8 +2189,8 @@ bool Creature::_IsTargetAcceptable(const Unit* target) const
             return false;
     }
 
-    const Unit* myVictim = getAttackerForHelper();
-    const Unit* targetVictim = target->getAttackerForHelper();
+    Unit const* myVictim = getAttackerForHelper();
+    Unit const* targetVictim = target->getAttackerForHelper();
 
     // if I'm already fighting target, or I'm hostile towards the target, the target is acceptable
     if (myVictim == target || targetVictim == this || IsHostileTo(target))
@@ -2588,7 +2586,7 @@ void Creature::RefreshSwimmingFlag(bool recheck)
         SetUnitFlag(UNIT_FLAG_CAN_SWIM);
 }
 
-bool Creature::CanEnterWater() const 
+bool Creature::CanEnterWater() const
 {
     if (CanSwim())
         return true;
@@ -2798,9 +2796,9 @@ float Creature::GetAggroRange(Unit const* target) const
     {
         uint32 targetLevel = 0;
 
-        if (target->GetTypeId() == TYPEID_PLAYER)
+        if (target->IsPlayer())
             targetLevel = target->GetLevelForTarget(this);
-        else if (target->GetTypeId() == TYPEID_UNIT)
+        else if (target->IsCreature())
             targetLevel = target->ToCreature()->GetLevelForTarget(this);
 
         uint32 myLevel = GetLevelForTarget(target);
@@ -2869,7 +2867,7 @@ void Creature::UpdateMovementFlags(bool force)
     if (GetMotionMaster()->GetCurrentMovementGeneratorType() == EFFECT_MOTION_TYPE && !force)
         return;
 
-    // Don't update flags if position hasn't changed 
+    // Don't update flags if position hasn't changed
     if (m_lastMovementFlagsUpdatePosition.m_positionX == m_positionX &&
         m_lastMovementFlagsUpdatePosition.m_positionY == m_positionY &&
         m_lastMovementFlagsUpdatePosition.m_positionZ == m_positionZ && !force)
@@ -3028,7 +3026,7 @@ void Creature::ApplyInstanceAuraIfNeeded()
         if (Pet* me = ToPet())
             if (Player* player = me->GetOwner())
                 return;
- 
+
         if (TempSummon* me = ToTempSummon())
             if (me->GetSummonerGUID().IsPlayer())
                 return;

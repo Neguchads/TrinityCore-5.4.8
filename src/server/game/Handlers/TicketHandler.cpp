@@ -45,7 +45,7 @@ void WorldSession::HandleGMTicketCreateOpcode(WorldPacket& recvData)
     GmTicket* ticket = sTicketMgr->GetGmTicketByPlayerGuid(GetPlayer()->GetGUID());
 
     if (ticket && ticket->IsCompleted())
-        sTicketMgr->CloseTicket<GmTicket>(ticket->GetTicketId(), GetPlayer()->GetGUID());;
+        sTicketMgr->CloseTicket<GmTicket>(ticket->GetTicketId(), GetPlayer()->GetGUID());
 
     // Player must not have ticket
     if (!ticket || ticket->IsClosed())

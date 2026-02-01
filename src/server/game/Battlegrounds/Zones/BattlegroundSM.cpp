@@ -333,7 +333,7 @@ void BattlegroundSM::StartingEventOpenDoors()
     // Open doors
     for (int doorType = BG_SM_OBJECT_DOOR_A_1; doorType <= BG_SM_OBJECT_DOOR_H_2; ++doorType)
         DoorOpen(doorType);
-    
+
     for (uint8 i = BG_SM_OBJECT_WATERFALL_DEPOT; i < BG_SM_OBJECT_MAX; ++i)
         SpawnBGObject(i, RESPAWN_IMMEDIATELY);
 }
@@ -392,7 +392,7 @@ void BattlegroundSM::CheckPlayerNearMineCart(uint32 diff)
                             m_mineCartsProgressBar[BG_SM_MINE_CART_1]++;
                             UpdateWorldStateForPlayer(SM_PROGRESS_BAR_STATUS, m_mineCartsProgressBar[BG_SM_MINE_CART_1], player);
                         }
-                        
+
                         if (m_mineCartsProgressBar[BG_SM_MINE_CART_1] > BG_SM_PROGRESS_BAR_NEUTRAL)
                         {
                             if (mineCart->HasAura(BG_SM_CONTROL_VISUAL_NEUTRAL))
@@ -593,7 +593,7 @@ void BattlegroundSM::CheckPlayerNearMineCart(uint32 diff)
                             m_mineCartsProgressBar[BG_SM_MINE_CART_3]--;
                             UpdateWorldStateForPlayer(SM_PROGRESS_BAR_STATUS, m_mineCartsProgressBar[BG_SM_MINE_CART_3], player);
                         }
-                        
+
                         if (m_mineCartsProgressBar[BG_SM_MINE_CART_3] < BG_SM_PROGRESS_BAR_NEUTRAL)
                         {
                             if (mineCart->HasAura(BG_SM_CONTROL_VISUAL_NEUTRAL))
@@ -927,7 +927,7 @@ void BattlegroundSM::EventReopenDepot(uint32 diff)
 
                         if (m_mineCartsProgressBar[BG_SM_MINE_CART_3] != BG_SM_PROGRESS_BAR_NEUTRAL)
                             AddPoints(GetMineCartTeamKeeper(BG_SM_MINE_CART_3), POINTS_PER_MINE_CART);
-                            
+
                         ResetDepotsAndMineCarts(SM_DIAMOND_DEPOT, BG_SM_MINE_CART_3);
                         depot->ResetDoorOrButton();
                         mineCart->DespawnOrUnsummon();
@@ -961,7 +961,7 @@ void BattlegroundSM::EventReopenDepot(uint32 diff)
 
                         if (m_mineCartsProgressBar[BG_SM_MINE_CART_3] != BG_SM_PROGRESS_BAR_NEUTRAL)
                             AddPoints(GetMineCartTeamKeeper(BG_SM_MINE_CART_3), POINTS_PER_MINE_CART);
-                            
+
                         ResetDepotsAndMineCarts(SM_TROLL_DEPOT, BG_SM_MINE_CART_3);
                         depot->ResetDoorOrButton();
                         mineCart->DespawnOrUnsummon();

@@ -1518,7 +1518,7 @@ class spell_halion_damage_aoe_summon : public SpellScriptLoader
 class spell_halion_twilight_realm_handlers : public SpellScriptLoader
 {
     public:
-        spell_halion_twilight_realm_handlers(const char* scriptName, uint32 beforeHitSpell, bool isApplyHandler) : SpellScriptLoader(scriptName),
+        spell_halion_twilight_realm_handlers(char const* scriptName, uint32 beforeHitSpell, bool isApplyHandler) : SpellScriptLoader(scriptName),
             _beforeHitSpell(beforeHitSpell), _isApplyHandler(isApplyHandler)
         { }
 

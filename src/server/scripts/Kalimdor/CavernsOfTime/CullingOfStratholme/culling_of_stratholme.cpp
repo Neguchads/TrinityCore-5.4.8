@@ -1363,7 +1363,7 @@ class npc_chromie : public CreatureScript
 
                 if (instance->GetData(DATA_CRATE_COUNT) < 5)
                 {
-                    if(!player->HasItemCount(ITEM_ARCANE_DISRUPTOR, 1))
+                    if (!player->HasItemCount(ITEM_ARCANE_DISRUPTOR, 1))
                         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_CHROMIE_0, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF);
                     player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
                 }

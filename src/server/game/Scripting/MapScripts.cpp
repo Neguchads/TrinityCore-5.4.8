@@ -98,7 +98,7 @@ void Map::ScriptCommandStart(ScriptInfo const& script, uint32 delay, Object* sou
 }
 
 // Helpers for ScriptProcess method.
-inline Player* Map::_GetScriptPlayerSourceOrTarget(Object* source, Object* target, const ScriptInfo* scriptInfo) const
+inline Player* Map::_GetScriptPlayerSourceOrTarget(Object* source, Object* target, ScriptInfo const* scriptInfo) const
 {
     Player* player = NULL;
     if (!source && !target)
@@ -120,7 +120,7 @@ inline Player* Map::_GetScriptPlayerSourceOrTarget(Object* source, Object* targe
     return player;
 }
 
-inline Creature* Map::_GetScriptCreatureSourceOrTarget(Object* source, Object* target, const ScriptInfo* scriptInfo, bool bReverse) const
+inline Creature* Map::_GetScriptCreatureSourceOrTarget(Object* source, Object* target, ScriptInfo const* scriptInfo, bool bReverse) const
 {
     Creature* creature = NULL;
     if (!source && !target)
@@ -153,7 +153,7 @@ inline Creature* Map::_GetScriptCreatureSourceOrTarget(Object* source, Object* t
     return creature;
 }
 
-inline Unit* Map::_GetScriptUnit(Object* obj, bool isSource, const ScriptInfo* scriptInfo) const
+inline Unit* Map::_GetScriptUnit(Object* obj, bool isSource, ScriptInfo const* scriptInfo) const
 {
     Unit* unit = NULL;
     if (!obj)
@@ -171,7 +171,7 @@ inline Unit* Map::_GetScriptUnit(Object* obj, bool isSource, const ScriptInfo* s
     return unit;
 }
 
-inline Player* Map::_GetScriptPlayer(Object* obj, bool isSource, const ScriptInfo* scriptInfo) const
+inline Player* Map::_GetScriptPlayer(Object* obj, bool isSource, ScriptInfo const* scriptInfo) const
 {
     Player* player = NULL;
     if (!obj)
@@ -186,7 +186,7 @@ inline Player* Map::_GetScriptPlayer(Object* obj, bool isSource, const ScriptInf
     return player;
 }
 
-inline Creature* Map::_GetScriptCreature(Object* obj, bool isSource, const ScriptInfo* scriptInfo) const
+inline Creature* Map::_GetScriptCreature(Object* obj, bool isSource, ScriptInfo const* scriptInfo) const
 {
     Creature* creature = NULL;
     if (!obj)
@@ -201,7 +201,7 @@ inline Creature* Map::_GetScriptCreature(Object* obj, bool isSource, const Scrip
     return creature;
 }
 
-inline WorldObject* Map::_GetScriptWorldObject(Object* obj, bool isSource, const ScriptInfo* scriptInfo) const
+inline WorldObject* Map::_GetScriptWorldObject(Object* obj, bool isSource, ScriptInfo const* scriptInfo) const
 {
     WorldObject* pWorldObject = NULL;
     if (!obj)
@@ -217,7 +217,7 @@ inline WorldObject* Map::_GetScriptWorldObject(Object* obj, bool isSource, const
     return pWorldObject;
 }
 
-inline void Map::_ScriptProcessDoor(Object* source, Object* target, const ScriptInfo* scriptInfo) const
+inline void Map::_ScriptProcessDoor(Object* source, Object* target, ScriptInfo const* scriptInfo) const
 {
     bool bOpen = false;
     uint32 guid = scriptInfo->ToggleDoor.GOGuid;

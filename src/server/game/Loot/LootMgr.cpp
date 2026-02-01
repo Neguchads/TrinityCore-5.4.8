@@ -431,7 +431,7 @@ LootItem::LootItem(LootStoreItem const& li)
         needs_quest = li.needs_quest;
         randomSuffix = GenerateEnchSuffixFactor(itemid);
         randomPropertyId = Item::GenerateItemRandomPropertyId(itemid);
-    } 
+    }
 }
 
 LootItem::LootItem(WorldDropLootItem const& item)
@@ -528,7 +528,7 @@ bool LootItem::AllowedForPlayer(Player const* player, Object* lootedObject) cons
     return true;
 }
 
-void LootItem::AddAllowedLooter(const Player* player)
+void LootItem::AddAllowedLooter(Player const* player)
 {
     allowedGUIDs.insert(player->GetGUID());
 }
@@ -675,17 +675,17 @@ bool Loot::FillLoot(Object* source, uint32 lootId, LootStore const& store, Playe
     {
         sourceTypeId = source->GetTypeId();
         sourceEntry = sourceTypeId == TYPEID_PLAYER ? source->GetGUID().GetCounter() : source->GetEntry();
-        if (source->GetTypeId() == TYPEID_UNIT)
+        if (source->IsCreature())
             m_normalLootMode = source->ToCreature()->HasNormalLootMode();
     }
 
     items.reserve(MAX_LOOT_ITEMS);
 
     uint32 lootmode = 1 << difficulty;
-    
+
     tab->Process(*this, store.IsRatesAllowed(), lootmode, 0, lootOwner);          // Processing is done there, callback via Loot::AddItem()
 
-    if (GetSource() && GetSource()->GetTypeId() == TYPEID_UNIT)
+    if (GetSource() && GetSource()->IsCreature())
     {
         Creature* creature = GetSource()->ToCreature();
         if (auto const* loot = sLootMgr->GetWorldDrop(creature))
@@ -801,7 +801,7 @@ bool Loot::CanItemBeLooted(Player* player, LootStoreItem const& item, uint32& mi
     if (gatheringCoefficient)       // Thrillium, Golden Lotus
     {
         if (item.itemid == 72238)   // Golden Lotus
-            if (m_source && m_source->GetTypeId() == TYPEID_GAMEOBJECT && m_source->GetEntry() != 209354 && m_source->GetEntry() != 221545)
+            if (m_source && m_source->IsGameObject() && m_source->GetEntry() != 209354 && m_source->GetEntry() != 221545)
                 return false;
         max = min;
     }
@@ -961,7 +961,7 @@ void Loot::FillFFALoot(Player* player)
         }
     }
 
-    if (GetSource() && GetSource()->GetTypeId() == TYPEID_UNIT)
+    if (GetSource() && GetSource()->IsCreature())
     {
         Creature* creature = GetSource()->ToCreature();
         if (auto const* worldDrop = sLootMgr->GetWorldDrop(creature))
@@ -1881,7 +1881,7 @@ LootStoreItem const* LootTemplate::LootGroup::Roll(Loot& loot, uint32 lootmode, 
 
             // Still error but at least we tried
             // e.g.: Someone wants 3 items to be rolled, and sets 33.3333 chance per item, but 333333 * 3 = 999999 and if we roll 1000000
-            // 1000000 - 333333 - 333333 - 333333 = 1 still > 0 (same with floats, 100.0f - 33.3333333 - 33.3333333 - 33.3333333 will be like something > 0 depends on how many '3' after point chance has id DB) 
+            // 1000000 - 333333 - 333333 - 333333 = 1 still > 0 (same with floats, 100.0f - 33.3333333 - 33.3333333 - 33.3333333 will be like something > 0 depends on how many '3' after point chance has id DB)
             // ceil, on the other hand, returns 333334 and even with 1000000 roll, it will be 1000000 - 333334 - 333334 - 333334 = -2
             roll -= int32(std::ceil(item->chance * precision));
             if (roll <= 0)
@@ -3096,7 +3096,7 @@ void LootMgr::LoadCreatureLootCurrency()
     uint32 oldMSTime = getMSTime();
     m_lootCurrncy.clear();
 
-    //                                                 0        1            2        3 
+    //                                                 0        1            2        3
     QueryResult result = WorldDatabase.Query("SELECT entry, lootmode + 0, currency, count FROM creature_loot_currency");
     if (!result)
     {

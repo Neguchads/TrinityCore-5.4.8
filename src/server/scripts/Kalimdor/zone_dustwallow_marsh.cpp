@@ -337,7 +337,7 @@ class npc_private_hendel : public CreatureScript
 public:
     npc_private_hendel() : CreatureScript("npc_private_hendel") { }
 
-    bool OnQuestAccept(Player* /*player*/, Creature* creature, const Quest* quest) override
+    bool OnQuestAccept(Player* /*player*/, Creature* creature, Quest const* quest) override
     {
         if (quest->GetQuestId() == QUEST_MISSING_DIPLO_PT16)
             creature->SetFaction(FACTION_HOSTILE);

@@ -576,7 +576,7 @@ class boss_essence_of_desire : public CreatureScript
                 }
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL))
                     for (uint8 i = 0; i < 3; ++i)

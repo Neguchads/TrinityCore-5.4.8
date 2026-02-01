@@ -54,7 +54,7 @@ void Totem::Update(uint32 time)
 void Totem::InitStats(uint32 duration)
 {
     // client requires SMSG_TOTEM_CREATED to be sent before adding to world and before removing old totem
-    if (GetOwner()->GetTypeId() == TYPEID_PLAYER && m_slot >= SUMMON_SLOT_TOTEM && m_slot < SUMMON_SLOT_MAX_TOTEM)
+    if (GetOwner()->IsPlayer() && m_slot >= SUMMON_SLOT_TOTEM && m_slot < SUMMON_SLOT_MAX_TOTEM)
     {
         // set display id depending on caster's race
         if (GetOwner()->GetClass() == CLASS_SHAMAN)

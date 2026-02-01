@@ -49,19 +49,19 @@ InstanceScript::InstanceScript(Map* map) : instance(map), completedEncounters(0)
     switch (map->GetId())
     {
         case 1008:
-            if(sConfigMgr->GetIntDefault("FirstOfTheKingdom.MogushanVaults", 1))
+            if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.MogushanVaults", 1))
                 dampeningSpellId = SPELL_DAMPENING_FIELD_R;
             break;
         case 1009:
-            if(sConfigMgr->GetIntDefault("FirstOfTheKingdom.HeartOfFear", 1))
+            if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.HeartOfFear", 1))
                 dampeningSpellId = SPELL_KLAXXI_RESONANCE_R;
             break;
         case 996:
-            if(sConfigMgr->GetIntDefault("FirstOfTheKingdom.TerraceSpring", 1))
+            if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.TerraceSpring", 1))
                 dampeningSpellId = SPELL_RITUAL_OF_PURIFICATION_R;
             break;
         case 1098:
-            if(sConfigMgr->GetIntDefault("FirstOfTheKingdom.ThroneOfThunder", 1))
+            if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.ThroneOfThunder", 1))
                 dampeningSpellId = SPELL_SHADO_PAN_ONSLAUGHT_R;
             break;
     }
@@ -363,7 +363,7 @@ bool InstanceScript::SetBossState(uint32 id, EncounterState state)
     return false;
 }
 
-std::string InstanceScript::LoadBossState(const char * data)
+std::string InstanceScript::LoadBossState(char const* data)
 {
     if (!data)
         return NULL;
@@ -396,7 +396,7 @@ uint32 InstanceScript::GetEncountersDoneCount(uint32 encounters)
     {
         // we need get id of last encounter that was done
         if (GetBossState(encounters) == DONE)
-            return encounters; 
+            return encounters;
 
         encounters--;
     }
@@ -714,7 +714,7 @@ void InstanceScript::DoStartMovie(uint32 movieId)
 void InstanceScript::DoKilledMonsterKredit(uint32 questId, uint32 entry, ObjectGuid guid/* =0*/)
 {
     Map::PlayerList const &plrList = instance->GetPlayers();
-    
+
     if (!plrList.isEmpty())
         for (Map::PlayerList::const_iterator i = plrList.begin(); i != plrList.end(); ++i)
             if (Player* player = i->GetSource())
@@ -817,7 +817,6 @@ void InstanceScript::UpdateEncounterState(EncounterCreditType type, uint32 credi
             }
         }
     }
-
 
     // Raid challenge is be rewarded for any raid boss, unlike dungeon/scenario
     if (dungeonId || instance->IsRaid())

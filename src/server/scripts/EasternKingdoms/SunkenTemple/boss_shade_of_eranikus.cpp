@@ -152,7 +152,7 @@ class at_sunket_temple_eranikus : public AreaTriggerScript
     public:
         at_sunket_temple_eranikus() : AreaTriggerScript("at_sunket_temple_eranikus") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*at*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*at*/) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
             {

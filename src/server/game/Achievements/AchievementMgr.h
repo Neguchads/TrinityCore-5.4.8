@@ -24,6 +24,7 @@
 #include "Common.h"
 #include "DBCEnums.h"
 #include "DBCStores.h"
+#include "ObjectGuid.h"
 
 class Unit;
 class Player;
@@ -55,7 +56,6 @@ typedef std::vector<Criteria const*>            CriteriaList;
 typedef std::vector<AchievementEntry const*>    AchievementEntryList;
 typedef std::vector<CriteriaTreeNode const*>    CriteriaTreeList;
 typedef std::vector<ModifierTreeNode const*>    ModifierTreeList;
-
 
 typedef std::unordered_map<uint32, AchievementEntryList>         AchievementListByReferencedId;
 typedef std::unordered_map<uint32, AchievementEntry const*>      AchievementEntryByCriteriaTree;
@@ -495,7 +495,6 @@ class AchievementGlobalMgr
             auto it = m_criteriaTreeByCriteria.find(criteriaId);
             return it != m_criteriaTreeByCriteria.end() ? &it->second : nullptr;
         }
-
 
         AchievementEntryList const* GetAchievementByReferencedId(uint32 id) const
         {

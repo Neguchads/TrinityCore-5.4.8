@@ -248,7 +248,7 @@ uint32 Quest::XPValue(Player const* player) const
     if (player)
     {
         int32 quest_level = (_questLevel == -1 ? player->GetLevel() : _questLevel);
-        const QuestXPEntry* xpentry = sQuestXPStore.LookupEntry(quest_level);
+        QuestXPEntry const* xpentry = sQuestXPStore.LookupEntry(quest_level);
         if (!xpentry)
             return 0;
 

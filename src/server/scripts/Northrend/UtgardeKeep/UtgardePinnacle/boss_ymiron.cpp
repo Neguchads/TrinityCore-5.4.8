@@ -163,7 +163,7 @@ class boss_ymiron : public CreatureScript
                 summons.Summon(summon);
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (target && target->GetTypeId() == TYPEID_PLAYER && spell->Id == SPELL_BANE_TRIGGERED)
                     me->GetMap()->SetWorldState(WORLDSTATE_KINGS_BANE, 0);

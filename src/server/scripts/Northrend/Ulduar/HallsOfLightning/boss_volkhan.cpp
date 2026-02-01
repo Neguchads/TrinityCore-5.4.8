@@ -450,7 +450,7 @@ class npc_molten_golem : public CreatureScript
                 }
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 // this is the dummy effect of the spells
                 if (spell->Id == SPELL_SHATTER || spell->Id == SPELL_SHATTER_H)

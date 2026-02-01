@@ -18,6 +18,7 @@
 #ifndef TRINITYCORE_CHATLINK_H
 #define TRINITYCORE_CHATLINK_H
 
+#include "Common.h"
 #include "SharedDefines.h"
 #include <sstream>
 #include <list>
@@ -29,6 +30,7 @@ struct ItemRandomPropertiesEntry;
 class SpellInfo;
 struct AchievementEntry;
 struct GlyphPropertiesEntry;
+struct CurrencyTypesEntry;
 class Quest;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +45,7 @@ public:
     void SetBounds(std::istringstream::pos_type startPos, std::istringstream::pos_type endPos) { _startPos = startPos; _endPos = endPos; }
 
     virtual bool Initialize(std::istringstream& iss) = 0;
-    virtual bool ValidateName(char* buffer, const char* context) = 0;
+    virtual bool ValidateName(char* buffer, char const* context) = 0;
 
 protected:
     uint32 _color;
@@ -58,7 +60,7 @@ class ItemChatLink : public ChatLink
 public:
     ItemChatLink() : ChatLink(), _item(NULL), _suffix(NULL), _property(NULL) { }
     virtual bool Initialize(std::istringstream& iss);
-    virtual bool ValidateName(char* buffer, const char* context);
+    virtual bool ValidateName(char* buffer, char const* context);
 
 protected:
     std::string FormatName(uint8 index, ItemLocale const* locale, DbcStr const* suffixStrings) const;
@@ -75,7 +77,7 @@ class QuestChatLink : public ChatLink
 public:
     QuestChatLink() : ChatLink(), _quest(NULL), _questLevel(0) { }
     virtual bool Initialize(std::istringstream& iss);
-    virtual bool ValidateName(char* buffer, const char* context);
+    virtual bool ValidateName(char* buffer, char const* context);
 
 protected:
     Quest const* _quest;
@@ -88,7 +90,7 @@ class SpellChatLink : public ChatLink
 public:
     SpellChatLink() : ChatLink(), _spell(NULL) { }
     virtual bool Initialize(std::istringstream& iss);
-    virtual bool ValidateName(char* buffer, const char* context);
+    virtual bool ValidateName(char* buffer, char const* context);
 
 protected:
     SpellInfo const* _spell;
@@ -100,7 +102,7 @@ class AchievementChatLink : public ChatLink
 public:
     AchievementChatLink() : ChatLink(), _guid(0), _achievement(NULL) { }
     virtual bool Initialize(std::istringstream& iss);
-    virtual bool ValidateName(char* buffer, const char* context);
+    virtual bool ValidateName(char* buffer, char const* context);
 
 protected:
     uint32 _guid;
@@ -171,7 +173,7 @@ public:
 class LinkExtractor
 {
 public:
-    explicit LinkExtractor(const char* msg);
+    explicit LinkExtractor(char const* msg);
     ~LinkExtractor();
 
     bool IsValidMessage();
@@ -181,6 +183,5 @@ private:
     Links _links;
     std::istringstream _iss;
 };
-
 
 #endif // TRINITYCORE_CHATLINK_H

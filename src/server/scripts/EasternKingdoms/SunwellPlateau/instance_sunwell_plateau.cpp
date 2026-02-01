@@ -316,7 +316,7 @@ class instance_sunwell_plateau : public InstanceMapScript
                 return nullptr;
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

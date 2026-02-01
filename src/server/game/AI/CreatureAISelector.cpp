@@ -29,7 +29,7 @@ namespace FactorySelector
 {
     CreatureAI* selectAI(Creature* creature)
     {
-        const CreatureAICreator* ai_factory = NULL;
+        CreatureAICreator const* ai_factory = NULL;
         CreatureAIRegistry& ai_registry(*CreatureAIRepository::instance());
 
         if (creature->IsPet())
@@ -50,7 +50,7 @@ namespace FactorySelector
         {
             if (creature->IsVehicle())
                 ai_factory = ai_registry.GetRegistryItem("VehicleAI");
-            else if (creature->HasUnitTypeMask(UNIT_MASK_CONTROLABLE_GUARDIAN) && ((Guardian*)creature)->GetOwner()->GetTypeId() == TYPEID_PLAYER)
+            else if (creature->HasUnitTypeMask(UNIT_MASK_CONTROLABLE_GUARDIAN) && ((Guardian*)creature)->GetOwner()->IsPlayer())
                 ai_factory = ai_registry.GetRegistryItem("PetAI");
             else if (creature->HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK))
                 ai_factory = ai_registry.GetRegistryItem("NullCreatureAI");
@@ -79,8 +79,8 @@ namespace FactorySelector
             RMT const& l = ai_registry.GetRegisteredItems();
             for (RMT::const_iterator iter = l.begin(); iter != l.end(); ++iter)
             {
-                const CreatureAICreator* factory = iter->second;
-                const SelectableAI* p = dynamic_cast<const SelectableAI*>(factory);
+                CreatureAICreator const* factory = iter->second;
+                SelectableAI const* p = dynamic_cast<SelectableAI const*>(factory);
                 ASSERT(p);
                 int val = p->Permit(creature);
                 if (val > best_val)
@@ -102,7 +102,7 @@ namespace FactorySelector
     {
         MovementGeneratorRegistry& mv_registry(*MovementGeneratorRepository::instance());
         ASSERT(creature->GetCreatureTemplate());
-        const MovementGeneratorCreator* mv_factory = mv_registry.GetRegistryItem(creature->GetDefaultMovementType());
+        MovementGeneratorCreator const* mv_factory = mv_registry.GetRegistryItem(creature->GetDefaultMovementType());
 
         /* if (mv_factory == NULL)
         {
@@ -111,8 +111,8 @@ namespace FactorySelector
             mv_registry.GetRegisteredItems(l);
             for (StringVector::iterator iter = l.begin(); iter != l.end(); ++iter)
             {
-            const MovementGeneratorCreator *factory = mv_registry.GetRegistryItem((*iter).c_str());
-            const SelectableMovement *p = dynamic_cast<const SelectableMovement *>(factory);
+            MovementGeneratorCreator const*factory = mv_registry.GetRegistryItem((*iter).c_str());
+            SelectableMovement const*p = dynamic_cast<SelectableMovement const*>(factory);
             ASSERT(p != NULL);
             int val = p->Permit(creature);
             if (val > best_val)
@@ -128,7 +128,7 @@ namespace FactorySelector
 
     GameObjectAI* SelectGameObjectAI(GameObject* go)
     {
-        const GameObjectAICreator* ai_factory = NULL;
+        GameObjectAICreator const* ai_factory = NULL;
         GameObjectAIRegistry& ai_registry(*GameObjectAIRepository::instance());
 
         // scriptname in db

@@ -325,7 +325,7 @@ ResultSet* MySQLConnection::Query(char const* sql)
     return new ResultSet(result, fields, rowCount, fieldCount);
 }
 
-bool MySQLConnection::_Query(const char* sql, MySQLResult** pResult, MySQLField** pFields, uint64* pRowCount, uint32* pFieldCount)
+bool MySQLConnection::_Query(char const* sql, MySQLResult** pResult, MySQLField** pFields, uint64* pRowCount, uint32* pFieldCount)
 {
     if (!m_Mysql)
         return false;
@@ -409,7 +409,7 @@ int MySQLConnection::ExecuteTransaction(std::shared_ptr<TransactionBase> transac
     return 0;
 }
 
-size_t MySQLConnection::EscapeString(char* to, const char* from, size_t length)
+size_t MySQLConnection::EscapeString(char* to, char const* from, size_t length)
 {
     return mysql_real_escape_string(m_Mysql, to, from, length);
 }

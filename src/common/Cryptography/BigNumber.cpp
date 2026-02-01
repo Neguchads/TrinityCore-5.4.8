@@ -20,6 +20,7 @@
 #include <openssl/bn.h>
 #include <openssl/crypto.h>
 #include <algorithm>
+#include "Errors.h"
 
 BigNumber::BigNumber()
     : _bn(BN_new())

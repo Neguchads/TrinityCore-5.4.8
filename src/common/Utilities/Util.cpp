@@ -547,7 +547,7 @@ bool Utf8FitTo(const std::string& str, std::wstring search)
     return true;
 }
 
-void utf8printf(FILE* out, const char *str, ...)
+void utf8printf(FILE* out, char const*str, ...)
 {
     va_list ap;
     va_start(ap, str);
@@ -555,7 +555,7 @@ void utf8printf(FILE* out, const char *str, ...)
     va_end(ap);
 }
 
-void vutf8printf(FILE* out, const char* str, va_list* ap)
+void vutf8printf(FILE* out, char const* str, va_list* ap)
 {
 #if TRINITY_PLATFORM == TRINITY_PLATFORM_WINDOWS
     char temp_buf[32 * 1024];

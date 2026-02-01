@@ -39,7 +39,7 @@ enum
     SPELL_VOID_SHIELD       = 115236,
 };
 
-int PetAI::Permissible(const Creature* creature)
+int PetAI::Permissible(Creature const* creature)
 {
     if (creature->IsPet())
         return PERMIT_BASE_SPECIAL;
@@ -52,7 +52,7 @@ PetAI::PetAI(Creature* c) : CreatureAI(c), i_tracker(TIME_INTERVAL_LOOK)
     UpdateAllies();
 
     if (Unit* owner = me->GetOwner())
-        if (owner->GetTypeId() == TYPEID_PLAYER && owner->GetClass() == CLASS_MAGE)
+        if (owner->IsPlayer() && owner->GetClass() == CLASS_MAGE)
             m_pureCaster = true;
     switch (me->GetEntry())
     {
@@ -354,10 +354,10 @@ void PetAI::UpdateAI(uint32 diff)
             if (!me->HasInArc(M_PI, target))
             {
                 me->SetInFront(target);
-                if (target && target->GetTypeId() == TYPEID_PLAYER)
+                if (target && target->IsPlayer())
                     me->SendUpdateToPlayer(target->ToPlayer());
 
-                if (owner && owner->GetTypeId() == TYPEID_PLAYER)
+                if (owner && owner->IsPlayer())
                     me->SendUpdateToPlayer(owner->ToPlayer());
             }
 

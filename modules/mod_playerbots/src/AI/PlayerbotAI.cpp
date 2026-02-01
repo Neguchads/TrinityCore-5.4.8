@@ -286,7 +286,7 @@ void PlayerbotAI::UpdateAI(uint32 elapsed, bool minimal)
 
     if (currentSpell)
     {
-        const SpellInfo* spellInfo = currentSpell->GetSpellInfo();
+        SpellInfo const* spellInfo = currentSpell->GetSpellInfo();
         if (spellInfo && currentSpell->getState() == SPELL_STATE_PREPARING)
         {
             Unit* spellTarget = currentSpell->m_targets.GetUnitTarget();
@@ -1923,8 +1923,8 @@ bool PlayerbotAI::HasAnyAuraOf(Unit* player, ...)
     va_list vl;
     va_start(vl, player);
 
-    const char* cur;
-    while ((cur = va_arg(vl, const char*)) != nullptr)
+    char const* cur;
+    while ((cur = va_arg(vl, char const*)) != nullptr)
     {
         if (HasAura(cur, player))
         {

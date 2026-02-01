@@ -551,7 +551,7 @@ struct npc_gilneas_crow : public ScriptedAI
         me->SetPosition(me->GetCreatureData()->posX, me->GetCreatureData()->posY, me->GetCreatureData()->posZ, me->GetCreatureData()->orientation);
     }
 
-    void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+    void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
     {
         if (spell->Id == SPELL_PING_GILNEAN_CROW)
         {
@@ -1017,7 +1017,7 @@ struct npc_josiah_avery_worgen_form : public PassiveAI
         }, 200);
     }
 
-    void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+    void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
     {
         if (spell->Id == SPELL_SHOOT_INSTAKILL)
             me->CastSpell(me, SPELL_GET_SHOT);
@@ -1100,7 +1100,7 @@ class spell_gilneas_pull_to : public SpellScript
 class npc_lorna_crowley_basement : public CreatureScript
 {
 public:
-    npc_lorna_crowley_basement(const char* ScriptName) : CreatureScript(ScriptName) { }
+    npc_lorna_crowley_basement(char const* ScriptName) : CreatureScript(ScriptName) { }
 
     bool OnQuestAccept(Player* player, Creature* creature, Quest const* quest) override
     {
@@ -1222,7 +1222,7 @@ struct npc_bloodfang_lurker : public ScriptedAI
             StartAttack(attacker);
     }
 
-    void SpellHit(Unit* caster, const SpellInfo* spell) override
+    void SpellHit(Unit* caster, SpellInfo const* spell) override
     {
         if (spell->Id == SPELL_ATTACK_LURKER)
             StartAttack(caster);
@@ -1570,7 +1570,7 @@ struct npc_saved_aranas : public ScriptedAI
 class npc_gilneas_children : public CreatureScript
 {
     public:
-        npc_gilneas_children(const char* scriptName, uint32 spellId, uint8 playerSayId) : CreatureScript(scriptName), _spellId(spellId), _playerSayId(playerSayId) { }
+        npc_gilneas_children(char const* scriptName, uint32 spellId, uint8 playerSayId) : CreatureScript(scriptName), _spellId(spellId), _playerSayId(playerSayId) { }
 
     private:
         uint32 _spellId;
@@ -1602,7 +1602,7 @@ class npc_gilneas_children : public CreatureScript
                     events.ScheduleEvent(EVENT_CRY, 1s);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (!activated && spell->Id == _spellId)
                 {
@@ -1691,7 +1691,7 @@ class npc_gilneas_children : public CreatureScript
 class npc_wahl : public CreatureScript
 {
 public:
-    npc_wahl(const char* ScriptName) : CreatureScript(ScriptName) { }
+    npc_wahl(char const* ScriptName) : CreatureScript(ScriptName) { }
 
     struct npc_wahlAI : public npc_escortAI
     {
@@ -1748,7 +1748,7 @@ public:
 class npc_lucius_the_cruel : public CreatureScript
 {
 public:
-    npc_lucius_the_cruel(const char* ScriptName) : CreatureScript(ScriptName) { }
+    npc_lucius_the_cruel(char const* ScriptName) : CreatureScript(ScriptName) { }
 
     struct npc_lucius_the_cruelAI : public ScriptedAI
     {
@@ -1902,7 +1902,7 @@ struct npc_chance_the_cat : public ScriptedAI
             Despawn = true;
     }
 
-    void SpellHit(Unit* caster, const SpellInfo* spell) override
+    void SpellHit(Unit* caster, SpellInfo const* spell) override
     {
         if (spell->Id == SPELL_CATCH_CAT && caster->GetTypeId() == TYPEID_PLAYER)
         {
@@ -1935,7 +1935,7 @@ struct npc_chance_the_cat : public ScriptedAI
 class npc_mountain_horse : public CreatureScript
 {
 public:
-    npc_mountain_horse(const char* ScriptName) : CreatureScript(ScriptName) { }
+    npc_mountain_horse(char const* ScriptName) : CreatureScript(ScriptName) { }
 
     bool OnGossipHello(Player* player, Creature* creature) override
     {
@@ -2083,7 +2083,7 @@ class spell_gilneas_test_telescope : public SpellScript
 class npc_stagecoach_carriage_exodus : public CreatureScript
 {
 public:
-    npc_stagecoach_carriage_exodus(const char* ScriptName) : CreatureScript(ScriptName) { }
+    npc_stagecoach_carriage_exodus(char const* ScriptName) : CreatureScript(ScriptName) { }
 
     bool OnGossipHello(Player* player, Creature* creature) override
     {
@@ -2151,7 +2151,7 @@ public:
 class npc_stagecoach_harness : public CreatureScript
 {
 public:
-    npc_stagecoach_harness(const char* ScriptName) : CreatureScript(ScriptName) { }
+    npc_stagecoach_harness(char const* ScriptName) : CreatureScript(ScriptName) { }
 
     struct npc_stagecoach_harnessAI : public npc_escortAI
     {
@@ -2281,7 +2281,7 @@ struct npc_koroth_the_hillbreaker : public ScriptedAI
 class go_koroth_banner : public GameObjectScript
 {
 public:
-    go_koroth_banner(const char* ScriptName) : GameObjectScript(ScriptName) { }
+    go_koroth_banner(char const* ScriptName) : GameObjectScript(ScriptName) { }
 
     struct go_koroth_bannerAI : public GameObjectAI
     {

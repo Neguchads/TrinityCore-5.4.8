@@ -19,6 +19,8 @@
 #define SF_AUCTION_HOUSE_MGR_H
 
 #include "Common.h"
+#include "ObjectGuid.h"
+#include "Server/Packets/AuctionHousePackets.h"
 #include "DBCStructure.h"
 #include "DatabaseEnv.h"
 #include "ProducerConsumerQueue.h"

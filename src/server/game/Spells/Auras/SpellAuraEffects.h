@@ -477,7 +477,7 @@ private:
     int32 _mask;
 };
 
-struct MiscMaskB 
+struct MiscMaskB
 {
     MiscMaskB(int32 mask) : _mask(mask) { }
     bool operator()(AuraEffect const* eff) const { return eff->GetMiscValueB() & _mask; }
@@ -545,6 +545,5 @@ int32 Unit::GetTotalAuraModifier(AuraType auraType, Cond cond) const
 
     return modifier;
 }
-
 
 #endif

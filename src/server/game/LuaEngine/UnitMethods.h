@@ -361,7 +361,7 @@ namespace LuaUnit
         uint32 sheathed = luaL_checkunsigned(L, 1);
         if (sheathed >= MAX_SHEATH_STATE)
             return 0;
-        
+
         unit->SetSheath((SheathState)sheathed);
         return 0;
     }
@@ -398,7 +398,7 @@ namespace LuaUnit
         //@TODO
         //uint8 type = luaL_checkunsigned(L, 1);
         //uint32 lang = luaL_checkunsigned(L, 2);
-        //const char* msg = luaL_checkstring(L, 3);
+        //char const* msg = luaL_checkstring(L, 3);
         //Player* target = sEluna->CHECK_PLAYER(L, 4);
         //if (!target || type == CHAT_MSG_CHANNEL)
         //    return 0;
@@ -565,7 +565,7 @@ namespace LuaUnit
 
     int SetName(lua_State* L, Unit* unit)
     {
-        const char* name = luaL_checkstring(L, 1);
+        char const* name = luaL_checkstring(L, 1);
         if (std::string(name).length() > 0)
             unit->SetName(name);
         return 0;
@@ -809,7 +809,7 @@ namespace LuaUnit
 
     int GetClassAsString(lua_State* L, Unit* unit)
     {
-        const char* str = NULL;
+        char const* str = NULL;
         switch (unit->GetClass())
         {
             case 1:
@@ -1084,7 +1084,7 @@ namespace LuaUnit
     int SendUnitWhisper(lua_State* L, Unit* unit)
     {
         //@TODO
-        const char* msg = luaL_checkstring(L, 1);
+        char const* msg = luaL_checkstring(L, 1);
         uint32 lang = luaL_checkunsigned(L, 2);
         ObjectGuid receiver(uint64(luaL_checknumber(L, 3)));
         bool bossWhisper = luaL_optbool(L, 4, false);
@@ -1096,7 +1096,7 @@ namespace LuaUnit
             {
             case HighGuid::Unit:
             case HighGuid::Vehicle:
-                target = unit->GetMap()->GetCreature(receiver);;
+                target = unit->GetMap()->GetCreature(receiver);
                 break;
             case HighGuid::Pet:
                 target = unit->GetMap()->GetPet(receiver);
@@ -1131,10 +1131,9 @@ namespace LuaUnit
     int SendUnitEmote(lua_State* L, Unit* unit)
     {
         //@TODO
-        const char* msg = luaL_checkstring(L, 1);
+        char const* msg = luaL_checkstring(L, 1);
         ObjectGuid receiver(uint64(luaL_checknumber(L, 2)));
         bool bossEmote = luaL_optbool(L, 3, false);
-
 
         WorldObject* target = nullptr;
         if (receiver)
@@ -1179,7 +1178,7 @@ namespace LuaUnit
     int SendUnitSay(lua_State* L, Unit* unit)
     {
         //@TODO
-        const char* msg = luaL_checkstring(L, 1);
+        char const* msg = luaL_checkstring(L, 1);
         uint32 language = luaL_checknumber(L, 2);
         ObjectGuid guid(uint64(luaL_checknumber(L, 3)));
 
@@ -1226,7 +1225,7 @@ namespace LuaUnit
     int SendUnitYell(lua_State* L, Unit* unit)
     {
         //@TODO
-        const char* msg = luaL_checkstring(L, 1);
+        char const* msg = luaL_checkstring(L, 1);
         uint32 language = luaL_checknumber(L, 2);
         ObjectGuid guid(uint64(luaL_checknumber(L, 3)));
 
@@ -1265,7 +1264,6 @@ namespace LuaUnit
             }
         }
 
-
         if (std::string(msg).length() > 0)
             unit->Yell(msg, Language(language), target);
         return 0;
@@ -1293,7 +1291,7 @@ namespace LuaUnit
             targets.SetUnitTarget(unitTarget);
         else if (GameObject* goTarget = obj->ToGameObject())
             targets.SetGOTarget(goTarget);
-        else if (obj->GetTypeId() == TYPEID_ITEM)
+        else if (obj->IsItem())
         {
             if (Item* itemTarget = (Item*)obj)
                 targets.SetItemTarget(itemTarget);

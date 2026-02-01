@@ -596,7 +596,7 @@ void BattlePetMgr::SendBattlePetJournal()
 
     size_t writePos = data.bitwpos();
     data.WriteBits(petCount, 19);               // placeholder
-    
+
     for (BattlePetSet::const_iterator citr = BattlePets.begin(); citr != BattlePets.end(); citr++)
     {
         BattlePet const* battlePet = *citr;

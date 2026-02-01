@@ -20,6 +20,10 @@
 
 #include "Common.h"
 #include "SharedDefines.h"
+#include <bitset>
+
+class Player;
+struct ChrSpecializationEntry;
 
 enum ItemModType
 {
@@ -827,7 +831,7 @@ struct ItemTemplate
     uint32 GetBaseItemLevel() const { return ItemLevel; }
     uint32 GetRequiredLevel() const { return RequiredLevel; }
     uint32 GetRequiredSkill() const { return RequiredSkill; }
-    uint32 GetRequiredSkillRank() const { return RequiredSkillRank; }    
+    uint32 GetRequiredSkillRank() const { return RequiredSkillRank; }
     ItemBondingType GetBonding() const { return ItemBondingType(Bonding); }
     uint32 GetLockID() const { return LockID; }
 

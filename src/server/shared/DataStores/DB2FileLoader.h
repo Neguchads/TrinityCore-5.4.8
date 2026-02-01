@@ -28,7 +28,7 @@ class DB2FileLoader
     DB2FileLoader();
     ~DB2FileLoader();
 
-    bool Load(const char *filename, const char *fmt);
+    bool Load(char const*filename, char const*fmt);
 
     class Record
     {
@@ -53,7 +53,7 @@ class DB2FileLoader
             return *reinterpret_cast<uint8*>(offset+file.GetOffset(field));
         }
 
-        const char *getString(size_t field) const
+        char const*getString(size_t field) const
         {
             assert(field < file.fieldCount);
             size_t stringOffset = getUInt(field);
@@ -78,10 +78,10 @@ class DB2FileLoader
     uint32 GetOffset(size_t id) const { return (fieldsOffset != NULL && id < fieldCount) ? fieldsOffset[id] : 0; }
     uint32 GetHash() const { return tableHash; }
     bool IsLoaded() const { return (data != NULL); }
-    char* AutoProduceData(const char* fmt, uint32& count, char**& indexTable);
-    char* AutoProduceStrings(const char* fmt, char* dataTable, uint32 locale);
-    static uint32 GetFormatRecordSize(const char * format, int32 * index_pos = NULL);
-    static uint32 GetFormatStringsFields(const char * format);
+    char* AutoProduceData(char const* fmt, uint32& count, char**& indexTable);
+    char* AutoProduceStrings(char const* fmt, char* dataTable, uint32 locale);
+    static uint32 GetFormatRecordSize(char const* format, int32 * index_pos = NULL);
+    static uint32 GetFormatStringsFields(char const* format);
 private:
 
     uint32 recordSize;

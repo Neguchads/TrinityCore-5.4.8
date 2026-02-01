@@ -1,4 +1,4 @@
-﻿/*
+/*
 * This file is part of the Legends of Azeroth Pandaria Project. See THANKS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
@@ -477,11 +477,11 @@ void BattlePayMgr::UpdatePointsBalance(WorldSession* session, uint64 points)
 
 bool BattlePayMgr::HasPointsBalance(WorldSession* session, uint64 points)
 {
-    if(Player* player = session->GetPlayer())
+    if (Player* player = session->GetPlayer())
     {
         uint64 balance = player->GetDonateTokens();
 
-        if(balance >= points)
+        if (balance >= points)
         {
             return true;
         }
@@ -503,7 +503,7 @@ bool BattlePayMgr::HasPointsBalance(WorldSession* session, uint64 points)
         Field* fields = result_don->Fetch();
         uint64 balans = fields[0].GetUInt32();
 
-        if(balans >= points)
+        if (balans >= points)
             return true;
 
         return false;
@@ -964,12 +964,12 @@ void BattlePayMgr::SendBattlePayPurchaseUpdate(PurchaseInfo* purchase)
 
         GetPurchaseInfo()->ServerToken = serverToken;
 
-        if(product->Flags == BATTLE_PAY_PRODUCT_DISABLES)
+        if (product->Flags == BATTLE_PAY_PRODUCT_DISABLES)
             validPurchase = false;
         else
         {
             bool confirmBalance = HasPointsBalance(purchase->GetSession(), (currentPrice));
-            if(!confirmBalance)
+            if (!confirmBalance)
                 validPurchase = false;
         }        
 

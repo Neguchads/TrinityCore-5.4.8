@@ -433,7 +433,7 @@ void Item::SaveToDB(CharacterDatabaseTransaction trans)
 
 bool Item::LoadFromDB(uint32 guid, ObjectGuid ownerGuid, Field* fields, uint32 entry, Player* owner)
 {
-    //                                                    0                1      2         3        4      5             6                 7  8          9                 10          11          12        13     14       15     16       17 
+    //                                                    0                1      2         3        4      5             6                 7  8          9                 10          11          12        13     14       15     16       17
     //result = CharacterDatabase.PQuery("SELECT creatorGuid, giftCreatorGuid, count, duration, charges, flags, enchantments, randomPropertyId, reforgeId, transmogrifyId, upgradeID, durability, playedTime, text, species, breed, quality, level FROM item_instance WHERE guid = '%u'", guid);
 
     // create item before any checks for store correct guid
@@ -491,7 +491,7 @@ bool Item::LoadFromDB(uint32 guid, ObjectGuid ownerGuid, Field* fields, uint32 e
         auto slot = EnchantmentSlot(SOCK_ENCHANTMENT_SLOT + i);
         if (uint32 enchantId = GetEnchantmentId(slot))
         {
-            if (!proto->Socket[i].Color)            // Gem in prismatic socket 
+            if (!proto->Socket[i].Color)            // Gem in prismatic socket
             {
                 if (!GetEnchantmentId(PRISMATIC_ENCHANTMENT_SLOT) || i != firstPrismatic) // Oy vey, gem isn't allowed in this socket!
                 {
@@ -865,7 +865,7 @@ bool Item::CanBeTraded(bool mail, bool trade) const
     return true;
 }
 
-bool Item::HasEnchantRequiredSkill(const Player* player) const
+bool Item::HasEnchantRequiredSkill(Player const* player) const
 {
     // Check all enchants for required skill
     for (uint32 enchant_slot = PERM_ENCHANTMENT_SLOT; enchant_slot < MAX_ENCHANTMENT_SLOT; ++enchant_slot)

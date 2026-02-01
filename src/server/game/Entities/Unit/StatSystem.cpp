@@ -98,7 +98,7 @@ void Unit::UpdateAttackSpeed(WeaponAttackType att)
     if (IsGuardian())
     {
         Unit* owner = GetOwner();
-        if (owner && owner->GetTypeId() == TYPEID_PLAYER)
+        if (owner && owner->IsPlayer())
         {
             auto positive = [](AuraEffect const* eff) { return eff->GetAmount() > 0; };
             mult *= owner->GetTotalAuraMultiplier(SPELL_AURA_MOD_HASTE, positive);
@@ -139,14 +139,14 @@ void Unit::UpdateAttackSpeed(WeaponAttackType att)
         mult *= GetTotalAuraEffectValue(SPELL_AURA_MOD_MELEE_HASTE_3);
     }
 
-    if (GetTypeId() == TYPEID_PLAYER)
+    if (IsPlayer())
         AddPct(mult, ToPlayer()->GetRatingBonusValue(att == RANGED_ATTACK ? CR_HASTE_RANGED : CR_HASTE_MELEE));
 
     float val = 1.0f / mult;
     m_modAttackSpeedPct[att] = val;
 
     float timer = BASE_ATTACK_TIME;
-    if (GetTypeId() == TYPEID_PLAYER)
+    if (IsPlayer())
     {
         SpellShapeshiftFormEntry const* entry = sSpellShapeshiftFormStore.LookupEntry(GetShapeshiftForm());
         if (entry && entry->attackSpeed)
@@ -157,7 +157,7 @@ void Unit::UpdateAttackSpeed(WeaponAttackType att)
         else if (Item* item = ToPlayer()->GetWeaponForAttack(att))
             timer = item->GetTemplate()->Delay;
     }
-    else if (GetTypeId() == TYPEID_UNIT)
+    else if (IsCreature())
     {
         if (IsSummon())
             timer = ToTempSummon()->GetBaseAttackTimer();
@@ -169,7 +169,7 @@ void Unit::UpdateAttackSpeed(WeaponAttackType att)
 
     SetFloatValue(UNIT_FIELD_ATTACK_ROUND_BASE_TIME + att, timer * val);
 
-    if (GetTypeId() == TYPEID_PLAYER)
+    if (IsPlayer())
     {
         if (att == BASE_ATTACK)
             SetFloatValue(UNIT_FIELD_MOD_HASTE, val);
@@ -207,7 +207,7 @@ void Unit::UpdateHasteRegen()
     float mult = 1.0f;
     if (Unit* owner = GetOwner())
     {
-        if (owner->GetTypeId() == TYPEID_PLAYER)
+        if (owner->IsPlayer())
         {
             mult = owner->GetHasteMultiplier();
             calculated = true;
@@ -735,7 +735,7 @@ void Player::UpdateCritPercentage(WeaponAttackType attType)
             break;
     }
 
-    int32 auraMod = GetTotalAuraModifier(SPELL_AURA_MOD_CRIT_PCT); 
+    int32 auraMod = GetTotalAuraModifier(SPELL_AURA_MOD_CRIT_PCT);
     Item* weapon = GetWeaponForAttack(attType);
     if (weapon)
         auraMod += GetTotalAuraModifier(SPELL_AURA_MOD_WEAPON_CRIT_PERCENT, [=](AuraEffect const* eff)
@@ -1471,7 +1471,7 @@ void Guardian::UpdateMaxHealth()
     float baseValue = stamina * 10.0f;
     float createHealth = GetModifierValue(UNIT_MOD_HEALTH, BASE_VALUE) + GetCreateHealth();
 
-    if (owner && owner->GetTypeId() == TYPEID_PLAYER)
+    if (owner && owner->IsPlayer())
     {
         float ownerPct = 0.0f;
         if (auto petScaling = sObjectMgr->GetPetScaling(GetEntry()))
@@ -1524,7 +1524,7 @@ void Guardian::UpdateAttackPowerAndDamage(bool ranged)
     float bonusAP = 2 * GetStat(STAT_STRENGTH) - 20.0f;
 
     Unit* owner = GetOwner();
-    if (owner && owner->GetTypeId() == TYPEID_PLAYER)
+    if (owner && owner->IsPlayer())
     {
         int32 spd = 0;
         for (int32 i = SPELL_SCHOOL_HOLY; i <= SPELL_SCHOOL_ARCANE; ++i)
@@ -1605,7 +1605,7 @@ void Guardian::UpdateDamagePhysical(WeaponAttackType attType)
 void Guardian::SetBonusDamage(int32 damage)
 {
     m_bonusSpellDamage = damage;
-    if (GetOwner()->GetTypeId() == TYPEID_PLAYER)
+    if (GetOwner()->IsPlayer())
         GetOwner()->SetUInt32Value(PLAYER_FIELD_PET_SPELL_POWER, damage);
 }
 

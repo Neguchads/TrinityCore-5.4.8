@@ -400,7 +400,7 @@ public:
                 unit->CastSpell(unit, unit->GetGUID() == kurzelCocoonGUID ? SPELL_SUMMON_KURZEL : SPELL_SUMMON_RANDOM_DRAKKARI, true);
         }
 
-        void Load(const char* in) override
+        void Load(char const* in) override
         {
             if (!in)
             {

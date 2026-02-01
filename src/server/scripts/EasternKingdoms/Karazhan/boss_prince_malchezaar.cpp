@@ -143,7 +143,7 @@ class netherspite_infernal : public CreatureScript
                          creature->AI()->KilledUnit(victim);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_INFERNAL_RELAY)
                 {
@@ -297,7 +297,7 @@ class boss_malchezaar : public CreatureScript
                 SetEquipmentSlots(false, EQUIP_UNEQUIP, EQUIP_UNEQUIP, EQUIP_NO_CHANGE);
 
                 // damage
-                const CreatureTemplate* cinfo = me->GetCreatureTemplate();
+                CreatureTemplate const* cinfo = me->GetCreatureTemplate();
                 me->SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, cinfo->mindmg);
                 me->SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, cinfo->maxdmg);
                 me->UpdateDamagePhysical(BASE_ATTACK);
@@ -305,7 +305,7 @@ class boss_malchezaar : public CreatureScript
 
             void EnfeebleHealthEffect()
             {
-                const SpellInfo* info = sSpellMgr->GetSpellInfo(SPELL_ENFEEBLE_EFFECT);
+                SpellInfo const* info = sSpellMgr->GetSpellInfo(SPELL_ENFEEBLE_EFFECT);
                 if (!info)
                     return;
 
@@ -415,7 +415,7 @@ class boss_malchezaar : public CreatureScript
                         SetEquipmentSlots(false, EQUIP_ID_AXE, EQUIP_ID_AXE, EQUIP_NO_CHANGE);
 
                         // damage
-                        const CreatureTemplate* cinfo = me->GetCreatureTemplate();
+                        CreatureTemplate const* cinfo = me->GetCreatureTemplate();
                         me->SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, 2 * cinfo->mindmg);
                         me->SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, 2 * cinfo->maxdmg);
                         me->UpdateDamagePhysical(BASE_ATTACK);

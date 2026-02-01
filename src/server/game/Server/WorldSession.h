@@ -293,7 +293,7 @@ class TC_GAME_API WorldSession
         bool IsAddonRegistered(const std::string& prefix) const;
 
         void SendPacket(WorldPacket const* packet, bool forced = false);
-        void SendNotification(const char *format, ...) ATTR_PRINTF(2, 3);
+        void SendNotification(char const*format, ...) ATTR_PRINTF(2, 3);
         void SendNotification(uint32 string_id, ...);
         void SendPetNameInvalid(uint32 error, std::string const& name, DeclinedName *declinedName);
         void SendPartyResult(PartyOperation operation, std::string const& member, PartyResult res, uint32 val = 0);
@@ -454,7 +454,7 @@ class TC_GAME_API WorldSession
         // Locales
         LocaleConstant GetSessionDbcLocale() const { return m_sessionDbcLocale; }
         LocaleConstant GetSessionDbLocaleIndex() const { return m_sessionDbLocaleIndex; }
-        const char *GetTrinityString(int32 entry) const;
+        char const*GetTrinityString(int32 entry) const;
 
         uint32 GetLatency() const { return m_latency; }
         void SetLatency(uint32 latency) { m_latency = latency; }
@@ -1243,7 +1243,7 @@ class TC_GAME_API WorldSession
         void moveItems(Item* myItems[], Item* hisItems[]);
 
         // logging helper
-        void LogUnexpectedOpcode(WorldPacket* packet, const char* status, const char *reason);
+        void LogUnexpectedOpcode(WorldPacket* packet, char const* status, char const*reason);
 
         // EnumData helpers
         bool IsLegitCharacterForAccount(ObjectGuid guid)

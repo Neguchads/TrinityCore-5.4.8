@@ -510,7 +510,7 @@ class AreaTrigger_at_cook_ghilm : public AreaTriggerScript
     public:
         AreaTrigger_at_cook_ghilm() : AreaTriggerScript("at_cook_ghilm") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*at*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*at*/) override
         {
             if (player->HasAura(SPELL_CRAYFISH_CATCH))
             {
@@ -531,7 +531,7 @@ class AreaTrigger_at_helms_bed_lake : public AreaTriggerScript
     public:
         AreaTrigger_at_helms_bed_lake() : AreaTriggerScript("at_helms_bed_lake") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*at*/) override
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*at*/) override
         {
             if (player->HasAura(SPELL_GRIMNURS_BAIT))
             {

@@ -105,7 +105,7 @@ bool DynamicObject::CreateDynamicObject(uint32 guidlow, Unit* caster, SpellInfo 
 
     if (type == DYNAMIC_OBJECT_RAID_MARKER) // The group is considered the caster.
     {
-        ASSERT(caster->GetTypeId() == TYPEID_PLAYER && caster->ToPlayer()->GetGroup() && "DYNAMIC_OBJECT_RAID_MARKER must only be casted by players which are in the group.");
+        ASSERT(caster->IsPlayer() && caster->ToPlayer()->GetGroup() && "DYNAMIC_OBJECT_RAID_MARKER must only be casted by players which are in the group.");
         SetUInt64Value(DYNAMICOBJECT_FIELD_CASTER, caster->ToPlayer()->GetGroup()->GetGUID());
     }
     else

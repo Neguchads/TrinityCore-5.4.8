@@ -485,7 +485,7 @@ enum BreakShieldSpells
 class spell_gen_break_shield: public SpellScriptLoader
 {
     public:
-        spell_gen_break_shield(const char* name) : SpellScriptLoader(name) { }
+        spell_gen_break_shield(char const* name) : SpellScriptLoader(name) { }
 
         class spell_gen_break_shield_SpellScript : public SpellScript
         {
@@ -957,7 +957,7 @@ enum DalaranDisguiseSpells
 class spell_gen_dalaran_disguise : public SpellScriptLoader
 {
     public:
-        spell_gen_dalaran_disguise(const char* name) : SpellScriptLoader(name) { }
+        spell_gen_dalaran_disguise(char const* name) : SpellScriptLoader(name) { }
 
         class spell_gen_dalaran_disguise_SpellScript : public SpellScript
         {
@@ -1510,7 +1510,7 @@ enum GenericLifebloom
 class spell_gen_lifebloom : public SpellScriptLoader
 {
     public:
-        spell_gen_lifebloom(const char* name, uint32 spellId) : SpellScriptLoader(name), _spellId(spellId) { }
+        spell_gen_lifebloom(char const* name, uint32 spellId) : SpellScriptLoader(name), _spellId(spellId) { }
 
         class spell_gen_lifebloom_AuraScript : public AuraScript
         {
@@ -2689,7 +2689,7 @@ enum SummonElemental
 class spell_gen_summon_elemental : public SpellScriptLoader
 {
     public:
-        spell_gen_summon_elemental(const char* name, uint32 spellId) : SpellScriptLoader(name), _spellId(spellId) { }
+        spell_gen_summon_elemental(char const* name, uint32 spellId) : SpellScriptLoader(name), _spellId(spellId) { }
 
         class spell_gen_summon_elemental_AuraScript : public AuraScript
         {

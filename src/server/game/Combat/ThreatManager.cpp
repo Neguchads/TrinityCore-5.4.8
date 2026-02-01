@@ -67,7 +67,7 @@ bool ThreatCalcHelper::isValidProcess(Unit* hatedUnit, Unit* hatingUnit, SpellIn
         return false;
 
     // not to GM
-    if (hatedUnit->GetTypeId() == TYPEID_PLAYER && hatedUnit->ToPlayer()->IsGameMaster())
+    if (hatedUnit->IsPlayer() && hatedUnit->ToPlayer()->IsGameMaster())
         return false;
 
     // not to dead and not for dead
@@ -82,7 +82,7 @@ bool ThreatCalcHelper::isValidProcess(Unit* hatedUnit, Unit* hatingUnit, SpellIn
     if (threatSpell && threatSpell->AttributesEx & SPELL_ATTR1_NO_THREAT)
         return false;
 
-    ASSERT(hatingUnit->GetTypeId() == TYPEID_UNIT);
+    ASSERT(hatingUnit->IsCreature());
 
     return true;
 }
@@ -179,7 +179,7 @@ void HostileReference::updateOnlineStatus()
     // target is no player or not gamemaster
     // target is not in flight
     if (isValid()
-        && (getTarget()->GetTypeId() != TYPEID_PLAYER || !getTarget()->ToPlayer()->IsGameMaster())
+        && !(getTarget()->IsPlayer() || !getTarget()->ToPlayer()->IsGameMaster())
         && !getTarget()->HasUnitState(UNIT_STATE_IN_FLIGHT)
         && getTarget()->IsInMap(GetSourceUnit())
         && getTarget()->InSamePhase(GetSourceUnit())
@@ -414,7 +414,7 @@ void ThreatManager::addThreat(Unit* victim, float threat, SpellSchoolMask school
 
 void ThreatManager::doAddThreat(Unit* victim, float threat)
 {
-    if (victim->GetTypeId() == TYPEID_PLAYER && GetOwner()->GetTypeId() == TYPEID_UNIT) // Is this needed?...
+    if (victim->IsPlayer() && GetOwner()->IsCreature()) // Is this needed?...
         if (!GetOwner()->ToCreature()->HasNormalLootMode())
             GetOwner()->ToCreature()->AddLootRecipient(victim->GetGUID());
 
@@ -472,7 +472,7 @@ void ThreatManager::_addThreat(Unit* victim, float threat)
         HostileReference* hostileRef = new HostileReference(victim, this, 0);
         iThreatContainer.addReference(hostileRef);
         hostileRef->addThreat(threat); // now we add the real threat
-        if (victim->GetTypeId() == TYPEID_PLAYER && victim->ToPlayer()->IsGameMaster())
+        if (victim->IsPlayer() && victim->ToPlayer()->IsGameMaster())
             hostileRef->setOnlineOfflineState(false); // GM is always offline
     }
 }

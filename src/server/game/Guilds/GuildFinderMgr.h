@@ -170,7 +170,6 @@ struct LFGuildSettings : public LFGuildPlayer
         LFGuildSettings(LFGuildSettings const& settings) :
             LFGuildPlayer(settings), _listed(settings.IsListed()), _team(settings.GetTeam()) {}
 
-
         bool IsListed() const      { return _listed; }
         void SetListed(bool state) { _listed = state; }
 

@@ -19,7 +19,13 @@
 #define SERVICEMGR_H
 
 #include "Common.h"
+#include "DatabaseEnvFwd.h"
+#include "ObjectGuid.h"
 #include <atomic>
+
+class Creature;
+class Item;
+class Player;
 
 enum RidingSpells
 {
@@ -68,7 +74,7 @@ enum ServiceTypes // only for ExecutedServices
     SERVICE_TYPE_MARKETPLACE, // unused
     SERVICE_TYPE_TRANSFER, // unused
     SERVICE_TYPE_BOOST,
-    SERVICE_TYPE_ITEM_RESTORE,    
+    SERVICE_TYPE_ITEM_RESTORE,
     SERVICE_TYPE_BOOST_PROFESSION,
     SERVICE_TYPE_BOOST_PROFESSION_SMALL,
 };
@@ -133,7 +139,7 @@ public:
     typedef std::list<ReclassInfo> ReclassData;
 
     std::set<uint32> const* GetClassSpells(uint8 classID, uint32 team);
-    const ProfSkill* LookupProfession(uint32 entry);
+    ProfSkill const* LookupProfession(uint32 entry);
 
     Creature* GetPremiumAuc(Player* player);
     uint32 GetSpellFamilyByClass(uint32 classID);

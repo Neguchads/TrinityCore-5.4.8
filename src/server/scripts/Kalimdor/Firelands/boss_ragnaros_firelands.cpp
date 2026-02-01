@@ -498,7 +498,7 @@ class boss_ragnaros_firelands : public CreatureScript
                     Talk(SAY_KILL);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_DRAW_OUT_FIRELORD_1)
                 {
@@ -1299,7 +1299,7 @@ class npc_ragnaros_firelands_son_of_flame : public CreatureScript
                 bDespawn = false;
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_INVOKE_SONS_AOE_2)
                 {
@@ -1360,7 +1360,7 @@ class npc_ragnaros_firelands_molten_seed_caster : public CreatureScript
                 SetCombatMovement(false);
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (caster && (spell->Id == SPELL_MOLTEN_SEED_AOE_2))
                     caster->CastSpell(caster, SPELL_MOLTEN_SEED_MISSILE, true);
@@ -1399,7 +1399,7 @@ class npc_ragnaros_firelands_molten_elemental : public CreatureScript
                 DoZoneInCombat();
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (bHit)
                     return;
@@ -1625,7 +1625,7 @@ class npc_ragnaros_firelands_living_meteor : public CreatureScript
                 bExplode = false;
             }
 
-            void SpellHit(Unit* caster, const SpellInfo* spell) override
+            void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 if (caster->GetEntry() == NPC_BREADTH_OF_FROST && spell->Id == SPELL_BREADTH_OF_FROST_DMG)
                 {

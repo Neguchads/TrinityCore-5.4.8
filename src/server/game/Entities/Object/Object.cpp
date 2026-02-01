@@ -228,7 +228,7 @@ void Object::BuildCreateUpdateBlockForPlayer(UpdateData* data, Player* target) c
         if (worldObject->GetAIAnimKitId() || worldObject->GetMovementAnimKitId() || worldObject->GetMeleeAnimKitId())
             flags |= UPDATEFLAG_ANIMKITS;
 
-        if (GetTypeId() == TYPEID_GAMEOBJECT || GetTypeId() == TYPEID_DYNAMICOBJECT)
+        if (IsGameObject() || IsDynObject())
             if (worldObject->GetTransGUID())
                 flags |= UPDATEFLAG_GO_TRANSPORT_POSITION;
     }
@@ -484,12 +484,12 @@ void Object::BuildMovementUpdate(ByteBuffer* data, uint16 flags) const
         hasFallData = hasFallDirection || self->m_movementInfo.jump.fallTime != 0;
         movementFlags = self->GetUnitMovementFlags();
         movementFlagsExtra = self->GetExtraUnitMovementFlags();
-        hasSpline = self->IsSplineEnabled() && self->GetTypeId() != TYPEID_PLAYER;
+        hasSpline = self->IsSplineEnabled() && !self->IsPlayer();
         hasPitch = self->HasUnitMovementFlag(MovementFlags(MOVEMENTFLAG_SWIMMING | MOVEMENTFLAG_FLYING)) || self->HasExtraUnitMovementFlag(MOVEMENTFLAG2_ALWAYS_ALLOW_PITCHING);
         hasSplineElevation = self->HasUnitMovementFlag(MOVEMENTFLAG_SPLINE_ELEVATION);
         hasUnitTransport = self->m_movementInfo.transport.guid;
 
-        if (GetTypeId() == TYPEID_UNIT)
+        if (IsCreature())
             movementFlags &= MOVEMENTFLAG_MASK_CREATURE_ALLOWED;
 
         //// Prevent client disconnect
@@ -767,7 +767,7 @@ void Object::BuildMovementUpdate(ByteBuffer* data, uint16 flags) const
     if (hasVehicle)
     {
         *data << uint32(ToUnit()->GetVehicleKit()->GetVehicleInfo()->m_ID);
-        *data << float(GetTypeId() == TYPEID_UNIT ? ToCreature()->GetOriginalOrientation() : ToUnit()->GetOrientation());
+        *data << float(IsCreature() ? ToCreature()->GetOriginalOrientation() : ToUnit()->GetOrientation());
     }
 
     if (hasStacionaryPostion)
@@ -1255,7 +1255,7 @@ void Object::ToggleFlag(uint16 index, uint32 flag)
 bool Object::HasFlag(uint16 index, uint32 flag) const
 {
     ASSERT(index < m_valuesCount || PrintIndexError(index, true));
-    return (m_uint32Values[index] & flag) != 0;    
+    return (m_uint32Values[index] & flag) != 0;
 }
 
 void Object::ApplyModFlag(uint16 index, uint32 flag, bool apply)
@@ -1423,10 +1423,9 @@ bool WorldObject::IsWorldObject() const
     return false;
 }
 
-
 void WorldObject::setActive(bool on, ActiveFlags flag)
 {
-    if (GetTypeId() == TYPEID_PLAYER)
+    if (IsPlayer())
         return;
 
     // Set or remove a flag indicating the reason why this object should be active
@@ -1455,18 +1454,18 @@ void WorldObject::setActive(bool on, ActiveFlags flag)
 
     if (on)
     {
-        if (GetTypeId() == TYPEID_UNIT)
+        if (IsCreature())
             map->AddToActive(this->ToCreature());
-        else if (GetTypeId() == TYPEID_GAMEOBJECT)
+        else if (IsGameObject())
             map->AddToActive((GameObject*)this);
         else if (GetTypeId() == TYPEID_DYNAMICOBJECT)
             map->AddToActive((DynamicObject*)this);
     }
     else
     {
-        if (GetTypeId() == TYPEID_UNIT)
+        if (IsCreature())
             map->RemoveFromActive(this->ToCreature());
-        else if (GetTypeId() == TYPEID_GAMEOBJECT)
+        else if (IsGameObject())
             map->RemoveFromActive((GameObject*)this);
         else if (GetTypeId() == TYPEID_DYNAMICOBJECT)
             map->RemoveFromActive((DynamicObject*)this);
@@ -1475,7 +1474,7 @@ void WorldObject::setActive(bool on, ActiveFlags flag)
 
 void WorldObject::SetFarVisible(bool on)
 {
-    if (GetTypeId() == TYPEID_PLAYER)
+    if (IsPlayer())
         return;
 
     m_isFarVisible = on;
@@ -1484,7 +1483,7 @@ void WorldObject::SetFarVisible(bool on)
 void WorldObject::SetVisibilityDistanceOverride(VisibilityDistanceType type)
 {
     ASSERT(type < VisibilityDistanceType::Max);
-    if (GetTypeId() == TYPEID_PLAYER)
+    if (IsPlayer())
         return;
 
     m_visibilityDistanceOverride = VisibilityDistances[AsUnderlyingType(type)];
@@ -1528,7 +1527,7 @@ void WorldObject::ProcessPositionDataChanged(PositionFullTerrainStatus const& da
 void WorldObject::AddToWorld()
 {
     Object::AddToWorld();
-    GetMap()->GetZoneAndAreaId(GetPhaseMask(), m_zoneId, m_areaId, GetPositionX(), GetPositionY(), GetPositionZ()); 
+    GetMap()->GetZoneAndAreaId(GetPhaseMask(), m_zoneId, m_areaId, GetPositionX(), GetPositionY(), GetPositionZ());
 }
 
 void WorldObject::RemoveFromWorld()
@@ -1562,7 +1561,7 @@ InstanceScript* WorldObject::GetInstanceScript()
     return map->IsDungeon() || map->IsScenario() ? ((InstanceMap*)map)->GetInstanceScript() : NULL;
 }
 
-float WorldObject::GetDistanceZ(const WorldObject* obj) const
+float WorldObject::GetDistanceZ(WorldObject const* obj) const
 {
     float dz = fabs(GetPositionZ() - obj->GetPositionZ());
     float sizefactor = GetObjectSize() + obj->GetObjectSize();
@@ -1600,7 +1599,7 @@ bool WorldObject::_IsWithinDist(WorldObject const* obj, float dist2compare, bool
     return distsq < maxdist * maxdist;
 }
 
-float WorldObject::GetDistance(const WorldObject* obj) const
+float WorldObject::GetDistance(WorldObject const* obj) const
 {
     float d = GetExactDist(obj) - GetObjectSize() - obj->GetObjectSize();
     return d > 0.0f ? d : 0.0f;
@@ -1618,7 +1617,7 @@ float WorldObject::GetDistance(float x, float y, float z) const
     return d > 0.0f ? d : 0.0f;
 }
 
-float WorldObject::GetDistance2d(const WorldObject* obj) const
+float WorldObject::GetDistance2d(WorldObject const* obj) const
 {
     float d = GetExactDist2d(obj) - GetObjectSize() - obj->GetObjectSize();
     return d > 0.0f ? d : 0.0f;
@@ -1630,14 +1629,14 @@ float WorldObject::GetDistance2d(float x, float y) const
     return d > 0.0f ? d : 0.0f;
 }
 
-bool WorldObject::IsSelfOrInSameMap(const WorldObject* obj) const
+bool WorldObject::IsSelfOrInSameMap(WorldObject const* obj) const
 {
     if (this == obj)
         return true;
     return IsInMap(obj);
 }
 
-bool WorldObject::IsInMap(const WorldObject* obj) const
+bool WorldObject::IsInMap(WorldObject const* obj) const
 {
     if (obj)
         return IsInWorld() && obj->IsInWorld() && (GetMap() == obj->GetMap());
@@ -1649,7 +1648,7 @@ bool WorldObject::IsWithinDist3d(float x, float y, float z, float dist) const
     return IsInDist(x, y, z, dist + GetObjectSize());
 }
 
-bool WorldObject::IsWithinDist3d(const Position* pos, float dist) const
+bool WorldObject::IsWithinDist3d(Position const* pos, float dist) const
 {
     return IsInDist(pos, dist + GetObjectSize());
 }
@@ -1659,7 +1658,7 @@ bool WorldObject::IsWithinDist2d(float x, float y, float dist) const
     return IsInDist2d(x, y, dist + GetObjectSize());
 }
 
-bool WorldObject::IsWithinDist2d(const Position* pos, float dist) const
+bool WorldObject::IsWithinDist2d(Position const* pos, float dist) const
 {
     return IsInDist2d(pos, dist + GetObjectSize());
 }
@@ -1689,7 +1688,7 @@ bool WorldObject::IsWithinLOS(float ox, float oy, float oz, VMAP::ModelIgnoreFla
     {
         oz += GetCollisionHeight();
         float x, y, z;
-        if (GetTypeId() == TYPEID_PLAYER)
+        if (IsPlayer())
         {
             GetPosition(x, y, z);
             z += GetCollisionHeight();
@@ -1697,19 +1696,19 @@ bool WorldObject::IsWithinLOS(float ox, float oy, float oz, VMAP::ModelIgnoreFla
         else
             GetHitSpherePointFor({ ox, oy, oz }, x, y, z);
 
-        return GetMap()->isInLineOfSight(x, y, z, ox, oy, oz, GetPhaseMask(), ignoreFlags);  // missing checks todo 
+        return GetMap()->isInLineOfSight(x, y, z, ox, oy, oz, GetPhaseMask(), ignoreFlags);  // missing checks todo
     }
 
     return true;
 }
 
-bool WorldObject::IsWithinLOSInMap(const WorldObject* obj, VMAP::ModelIgnoreFlags ignoreFlags) const
+bool WorldObject::IsWithinLOSInMap(WorldObject const* obj, VMAP::ModelIgnoreFlags ignoreFlags) const
 {
     if (!IsInMap(obj))
         return false;
 
     float ox, oy, oz;
-    if (obj->GetTypeId() == TYPEID_PLAYER)
+    if (obj->IsPlayer())
     {
         obj->GetPosition(ox, oy, oz);
         oz += GetCollisionHeight();
@@ -1718,7 +1717,7 @@ bool WorldObject::IsWithinLOSInMap(const WorldObject* obj, VMAP::ModelIgnoreFlag
         obj->GetHitSpherePointFor({ GetPositionX(), GetPositionY(), GetPositionZ() + GetCollisionHeight() }, ox, oy, oz);
 
     float x, y, z;
-    if (GetTypeId() == TYPEID_PLAYER)
+    if (IsPlayer())
     {
         GetPosition(x, y, z);
         z += GetCollisionHeight();
@@ -1726,7 +1725,7 @@ bool WorldObject::IsWithinLOSInMap(const WorldObject* obj, VMAP::ModelIgnoreFlag
     else
         GetHitSpherePointFor({ obj->GetPositionX(), obj->GetPositionY(), obj->GetPositionZ() + obj->GetCollisionHeight() }, x, y, z);
 
-    if (obj->GetTypeId() == TYPEID_UNIT)
+    if (obj->IsCreature())
         switch (obj->GetEntry())
         {
             // Hack fix for Burning Tendons (Spine of Deathwing)
@@ -1750,7 +1749,7 @@ bool WorldObject::IsWithinLOSInMap(const WorldObject* obj, VMAP::ModelIgnoreFlag
         }
 
     // AoE spells
-    if (GetTypeId() == TYPEID_UNIT)
+    if (IsCreature())
         switch (GetEntry())
         {
             // Hack fix for Burning Tendons (Spine of Deathwing)
@@ -1773,10 +1772,10 @@ bool WorldObject::IsWithinLOSInMap(const WorldObject* obj, VMAP::ModelIgnoreFlag
 
     // Hack fix for Alysrazor
     if (GetMapId() == 720 && GetAreaId() == 5766)
-        if ((GetTypeId() == TYPEID_PLAYER) || (obj->GetTypeId() == TYPEID_PLAYER))
+        if ((IsPlayer()) || (obj->IsPlayer()))
             return true;
 
-    return GetMap()->isInLineOfSight(x, y, z, ox, oy, oz, GetPhaseMask(), ignoreFlags); // missing checks todo 
+    return GetMap()->isInLineOfSight(x, y, z, ox, oy, oz, GetPhaseMask(), ignoreFlags); // missing checks todo
 }
 
 void WorldObject::GetHitSpherePointFor(Position const& dest, float& x, float& y, float& z) const
@@ -1903,7 +1902,7 @@ void Position::GetPositionOffsetTo(const Position & endPos, Position & retOffset
     retOffset.SetOrientation(endPos.GetOrientation() - GetOrientation());
 }
 
-float Position::GetAngle(const Position* obj) const
+float Position::GetAngle(Position const* obj) const
 {
     if (!obj)
         return 0;
@@ -1941,7 +1940,7 @@ void Position::GetSinCos(const float x, const float y, float &vsin, float &vcos)
     }
 }
 
-bool Position::HasInArc(float arc, const Position* obj, float border) const
+bool Position::HasInArc(float arc, Position const* obj, float border) const
 {
     // always have self in arc
     if (obj == this)
@@ -1963,7 +1962,7 @@ bool Position::HasInArc(float arc, const Position* obj, float border) const
     return ((angle >= lborder) && (angle <= rborder));
 }
 
-bool WorldObject::IsInBetween(const Position* obj1, const Position* obj2, float size) const
+bool WorldObject::IsInBetween(Position const* obj1, Position const* obj2, float size) const
 {
     if (!obj1 || !obj2)
         return false;
@@ -1983,7 +1982,7 @@ bool WorldObject::IsInBetween(const Position* obj1, const Position* obj2, float 
     return (size * size) >= GetExactDist2dSq(obj1->GetPositionX() + std::cos(angle) * dist, obj1->GetPositionY() + std::sin(angle) * dist);
 }
 
-bool WorldObject::IsInAxe(const WorldObject* obj1, const WorldObject* obj2, float size) const
+bool WorldObject::IsInAxe(WorldObject const* obj1, WorldObject const* obj2, float size) const
 {
     if (!obj1 || !obj2)
         return false;
@@ -2085,14 +2084,14 @@ void WorldObject::UpdateAllowedPositionZ(float x, float y, float &z, float* grou
 {
     if (GetMapId() == 669) // Blackwing Descent
     {
-        if (GetTypeId() == TYPEID_UNIT && GetEntry() == 41948)
+        if (IsCreature() && GetEntry() == 41948)
             return;
 
         float const floor = (x + 108.2840673f) * (x + 108.2840673f) + (y + 224.4677698f) * (y + 224.4677698f) < 400 ? 6.489f : 8.472f;
         if (z < floor)
             z = floor;
 
-        if (GetTypeId() == TYPEID_UNIT && (GetEntry() == 41376 && !ToUnit()->HasUnitMovementFlag(MOVEMENTFLAG_CAN_FLY) || GetEntry() == 41270 || GetEntry() == 41918)) // Nefarian or Onyxia or Animated Bone Warrior
+        if (IsCreature() && (GetEntry() == 41376 && !ToUnit()->HasUnitMovementFlag(MOVEMENTFLAG_CAN_FLY) || GetEntry() == 41270 || GetEntry() == 41918)) // Nefarian or Onyxia or Animated Bone Warrior
             if (z > 6.489f)
                 z = 6.489f;
     }
@@ -2164,7 +2163,7 @@ float WorldObject::GetGridActivationRange() const
 {
     if (isActiveObject())
     {
-        if (GetTypeId() == TYPEID_PLAYER && ToPlayer()->GetCinematicMgr()->IsOnCinematic())
+        if (IsPlayer() && ToPlayer()->GetCinematicMgr()->IsOnCinematic())
             return std::max(DEFAULT_VISIBILITY_INSTANCE, GetMap()->GetVisibilityRange());
 
         return GetMap()->GetVisibilityRange();
@@ -2186,7 +2185,7 @@ float WorldObject::GetVisibilityRange() const
         return GetMap()->GetVisibilityRange();
 }
 
-float WorldObject::GetSightRange(const WorldObject* target) const
+float WorldObject::GetSightRange(WorldObject const* target) const
 {
     if (ToUnit())
     {
@@ -2277,12 +2276,12 @@ bool WorldObject::CanSeeOrDetect(WorldObject const* obj, bool ignoreStealth, boo
 
             // Check Allow visible by entry
             if (auto info = sObjectMgr->GetObjectVisibilityStateData(obj->GetEntry()))
-                if (info->type == (obj->GetTypeId() == TYPEID_GAMEOBJECT ? ObjectVisibilityState::objectType::GameObject : ObjectVisibilityState::objectType::Creature) && player->GetQuestStatus(info->questId) != info->questState)
+                if (info->type == (obj->IsGameObject() ? ObjectVisibilityState::objectType::GameObject : ObjectVisibilityState::objectType::Creature) && player->GetQuestStatus(info->questId) != info->questState)
                     return false;
 
             // Allow visible by guid
             if (auto info = sObjectMgr->GetObjectVisibilityStateData(-(int32)obj->GetGUID().GetCounter()))
-                if (info->type == (obj->GetTypeId() == TYPEID_GAMEOBJECT ? ObjectVisibilityState::objectType::GameObject : ObjectVisibilityState::objectType::Creature) && player->GetQuestStatus(info->questId) != info->questState)
+                if (info->type == (obj->IsGameObject() ? ObjectVisibilityState::objectType::GameObject : ObjectVisibilityState::objectType::Creature) && player->GetQuestStatus(info->questId) != info->questState)
                     return false;
         }
 
@@ -2339,7 +2338,7 @@ bool WorldObject::CanSeeOrDetect(WorldObject const* obj, bool ignoreStealth, boo
 bool WorldObject::CanNeverSee(WorldObject const* obj) const
 {
     // Archaeology Finds can be seen only by owner
-    if (obj->GetTypeId() == TYPEID_GAMEOBJECT && (obj->GetEntry() == 203071 || obj->GetEntry() == 203078 || obj->GetEntry() == 204282 || obj->GetEntry() == 202655 ||
+    if (obj->IsGameObject() && (obj->GetEntry() == 203071 || obj->GetEntry() == 203078 || obj->GetEntry() == 204282 || obj->GetEntry() == 202655 ||
         obj->GetEntry() == 206836 || obj->GetEntry() == 207187 || obj->GetEntry() == 207188 || obj->GetEntry() == 207189 || obj->GetEntry() == 207190 ||
         obj->GetEntry() == 211163 || obj->GetEntry() == 211174 || obj->GetEntry() == 218950))
     {
@@ -2349,7 +2348,7 @@ bool WorldObject::CanNeverSee(WorldObject const* obj) const
     }
 
     Player const* player = ToPlayer();
-    if (obj->GetTypeId() == TYPEID_GAMEOBJECT && player && !player->IsGameMaster())
+    if (obj->IsGameObject() && player && !player->IsGameMaster())
     {
         // remove hack , fix in future
         // auto itr = timelessRareChestsMap.find(obj->GetEntry());
@@ -2370,7 +2369,7 @@ bool WorldObject::CanNeverSee(WorldObject const* obj) const
 
 bool WorldObject::CanDetect(WorldObject const* obj, bool ignoreStealth) const
 {
-    const WorldObject* seer = this;
+    WorldObject const* seer = this;
 
     // Pets don't have detection, they use the detection of their masters
     if (Unit const* thisUnit = ToUnit())
@@ -2434,7 +2433,7 @@ bool WorldObject::CanDetectStealthOf(WorldObject const* obj) const
 
     // Hack for Subterfuge. When rogue opens and Subterfuge triggered - player is still invisible and mob just goes to evade.
     if (Player const* player = obj->ToPlayer())
-        if (GetTypeId() == TYPEID_UNIT && player->IsInCombat() && player->HasAura(115192))
+        if (IsCreature() && player->IsInCombat() && player->HasAura(115192))
             if (const_cast<Unit*>(unit)->GetThreatManager().getThreatList().size() == 1)
                 if (const_cast<Unit*>(unit)->GetThreatManager().getThreat(const_cast<Player*>(player)) > 0.0f)
                     return true;
@@ -2521,7 +2520,7 @@ namespace Trinity
     class MonsterCustomChatBuilder
     {
         public:
-            MonsterCustomChatBuilder(WorldObject const* obj, ChatMsg msgtype, const char* text, uint32 language, WorldObject const* target)
+            MonsterCustomChatBuilder(WorldObject const* obj, ChatMsg msgtype, char const* text, uint32 language, WorldObject const* target)
                 : i_object(obj), i_msgtype(msgtype), i_text(text), i_language(Language(language)), i_target(target) { }
 
             void operator()(WorldPacket& data, LocaleConstant loc_idx)
@@ -2533,7 +2532,7 @@ namespace Trinity
         private:
             WorldObject const* i_object;
             ChatMsg i_msgtype;
-            const char* i_text;
+            char const* i_text;
             Language i_language;
             WorldObject const* i_target;
     };
@@ -2700,7 +2699,7 @@ TempSummon* Map::SummonCreature(uint32 entry, Position const& pos, SummonPropert
     if (summoner)
     {
         phase = summoner->GetPhaseMask();
-        if (summoner->GetTypeId() == TYPEID_PLAYER)
+        if (summoner->IsPlayer())
             team = summoner->ToPlayer()->GetTeam();
 
         phases = summoner->GetPhases();
@@ -2793,7 +2792,7 @@ void WorldObject::SetZoneScript()
         // if (map->IsDungeon() || map->IsScenario())
         //     m_zoneScript = (ZoneScript*)((InstanceMap*)map)->GetInstanceScript();
         if (InstanceMap* instanceMap = map->ToInstanceMap())
-            m_zoneScript = reinterpret_cast<ZoneScript*>(instanceMap->GetInstanceScript());        
+            m_zoneScript = reinterpret_cast<ZoneScript*>(instanceMap->GetInstanceScript());
         else if (!map->IsBattlegroundOrArena())
         {
             if (Battlefield* bf = sBattlefieldMgr->GetBattlefieldToZoneId(GetZoneId()))
@@ -2856,7 +2855,7 @@ GameObject* WorldObject::SummonGameObject(uint32 entry, float x, float y, float 
         go->SetPhased(phase, false, true);
 
     go->SetRespawnTime(respawnTime);
-    if (GetTypeId() == TYPEID_PLAYER || GetTypeId() == TYPEID_UNIT && summonType == GO_SUMMON_TIMED_OR_CORPSE_DESPAWN) //not sure how to handle this
+    if (IsPlayer() || IsCreature() && summonType == GO_SUMMON_TIMED_OR_CORPSE_DESPAWN) //not sure how to handle this
         ToUnit()->AddGameObject(go);
     else
         go->SetSpawnedByDefault(false);
@@ -2873,7 +2872,7 @@ Creature* WorldObject::SummonTrigger(float x, float y, float z, float ang, uint3
         return NULL;
 
     //summon->SetName(GetName());
-    if (GetTypeId() == TYPEID_PLAYER || GetTypeId() == TYPEID_UNIT)
+    if (IsPlayer() || IsCreature())
     {
         summon->SetFaction(((Unit*)this)->GetFaction());
         summon->SetLevel(((Unit*)this)->GetLevel());
@@ -2892,9 +2891,9 @@ Creature* WorldObject::SummonTrigger(float x, float y, float z, float ang, uint3
 */
 void WorldObject::SummonCreatureGroup(uint8 group, std::list<TempSummon*>* list /*= NULL*/)
 {
-    ASSERT((GetTypeId() == TYPEID_GAMEOBJECT || GetTypeId() == TYPEID_UNIT) && "Only GOs and creatures can summon npc groups!");
+    ASSERT((IsGameObject() || IsCreature()) && "Only GOs and creatures can summon npc groups!");
 
-    std::vector<TempSummonData> const* data = sObjectMgr->GetSummonGroup(GetEntry(), GetTypeId() == TYPEID_GAMEOBJECT ? SUMMONER_TYPE_GAMEOBJECT : SUMMONER_TYPE_CREATURE, group);
+    std::vector<TempSummonData> const* data = sObjectMgr->GetSummonGroup(GetEntry(), IsGameObject() ? SUMMONER_TYPE_GAMEOBJECT : SUMMONER_TYPE_CREATURE, group);
     if (!data)
         return;
 
@@ -2915,8 +2914,8 @@ Creature* WorldObject::FindNearestCreature(uint32 entry, float range, bool alive
 
 std::list<Creature*> WorldObject::FindNearestCreatures(uint32 entry, float range) const
 {
-    std::list<Creature*> creatureList;    
-    GetCreatureListWithEntryInGrid(creatureList, entry, range);   
+    std::list<Creature*> creatureList;
+    GetCreatureListWithEntryInGrid(creatureList, entry, range);
     return creatureList;
 }
 
@@ -2934,7 +2933,7 @@ std::vector<Creature*> WorldObject::FindNearestCreatures(uint32 entry, float ran
     std::list<Creature*> creatureList;
     std::vector<Creature*> returnList;
     GetCreatureListWithEntryInGrid(creatureList, entry, range);
-    
+
     for (std::list<Creature*>::iterator itr = creatureList.begin(); itr != creatureList.end(); ++itr)
     {
         if ((*itr)->IsAlive() == alive)
@@ -3185,7 +3184,7 @@ Position WorldObject::GetRandomNearPosition(float radius)
     return pos;
 }
 
-void WorldObject::GetContactPoint(const WorldObject* obj, float &x, float &y, float &z, float distance2d /*= CONTACT_DISTANCE*/) const
+void WorldObject::GetContactPoint(WorldObject const* obj, float &x, float &y, float &z, float distance2d /*= CONTACT_DISTANCE*/) const
 {
     // angle to face `obj` to `this` using distance includes size of `obj`
     GetNearPoint(obj, x, y, z, obj->GetObjectSize(), distance2d, GetAngle(obj));
@@ -3479,7 +3478,7 @@ void WorldObject::RebuildTerrainSwaps()
                 _terrainSwaps.insert(swap);
 
     // online players have a game client with world map display
-    if (GetTypeId() == TYPEID_PLAYER)
+    if (IsPlayer())
         RebuildWorldMapAreaSwaps();
 }
 
@@ -3488,7 +3487,7 @@ void WorldObject::RebuildWorldMapAreaSwaps()
     // Clear all world map area swaps, will be rebuilt below
     _worldMapSwaps.clear();
 
-    // get ALL default terrain swaps, if we are using it (condition is true) 
+    // get ALL default terrain swaps, if we are using it (condition is true)
     // send the worldmaparea for it, to see swapped worldmaparea in client from other maps too, not just from our current
     TerrainPhaseInfo const& defaults = sObjectMgr->GetDefaultTerrainSwapStore();
     for (TerrainPhaseInfo::const_iterator itr = defaults.begin(); itr != defaults.end(); ++itr)
@@ -3563,7 +3562,7 @@ void WorldObject::UpdateAreaAndZonePhase()
     }
 
     // only update visibility and send packets if there was a change in the phase list
-    if (updateNeeded && GetTypeId() == TYPEID_PLAYER && IsInWorld())
+    if (updateNeeded && IsPlayer() && IsInWorld())
         ToPlayer()->GetSession()->SendSetPhaseShift(GetPhases(), GetTerrainSwaps(), GetWorldMapSwaps());
 
     // only update visibilty once, to prevent objects appearing for a moment while adding in multiple phases
@@ -3619,11 +3618,11 @@ bool WorldObject::IsPhased(WorldObject const* obj) const
 
     if (_phases.empty() && obj->IsPhased(169))
         return true;
-    
+
     if (obj->GetPhases().empty() && IsPhased(169))
         return true;
 
-    if (GetTypeId() == TYPEID_PLAYER && ToPlayer()->IsGameMaster())
+    if (IsPlayer() && ToPlayer()->IsGameMaster())
         return true;
 
     return Trinity::Containers::Intersects(_phases.begin(), _phases.end(), obj->GetPhases().begin(), obj->GetPhases().end());
@@ -3909,7 +3908,7 @@ bool WorldObject::AddToTransportIfNeeded(Transport* transport, bool setHome, flo
     if (!transport)
         return false;
 
-    if (GetTypeId() == TYPEID_UNIT)
+    if (IsCreature())
     {
         switch (GetEntry())
         {
@@ -3953,7 +3952,7 @@ WMOAreaTableEntry const* WorldObject::GetWMOArea() const
 
     if (map->GetAreaInfo(m_phaseMask, GetPositionX(), GetPositionY(), GetPositionZ(), mogpFlags, adtId, rootId, groupId))
     {
-        const WMOAreaTableEntry * wmoEntry = GetWMOAreaTableEntryByTripple(rootId, adtId, groupId);
+        WMOAreaTableEntry const* wmoEntry = GetWMOAreaTableEntryByTripple(rootId, adtId, groupId);
         if (wmoEntry)
             return wmoEntry;
     }
@@ -4049,7 +4048,7 @@ void WorldObject::SetCustomVisibilityDistance(float distance, bool zoneOnly)
         return;
     }
 
-    if (GetTypeId() == TYPEID_PLAYER)
+    if (IsPlayer())
         return;
 
     bool switchedZoneOnly = m_customVisibilityZoneOnly != zoneOnly;

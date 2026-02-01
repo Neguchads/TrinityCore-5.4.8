@@ -149,7 +149,7 @@ class TC_GAME_API _SpellScript
             return allValid;
         }
 
-        static bool _ValidateSpellInfo(uint32 spellId);        
+        static bool _ValidateSpellInfo(uint32 spellId);
 
 };
 
@@ -283,7 +283,7 @@ class TC_GAME_API SpellScript : public _SpellScript
         #define PrepareSpellScript(CLASSNAME) SPELLSCRIPT_FUNCTION_TYPE_DEFINES(CLASSNAME) SPELLSCRIPT_FUNCTION_CAST_DEFINES(CLASSNAME)
     public:
         SpellScript();
-        ~SpellScript();        
+        ~SpellScript();
         bool _Validate(SpellInfo const* entry) override;
         bool _Load(Spell* spell);
         void _InitHit();

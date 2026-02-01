@@ -51,7 +51,7 @@ void LFGPlayerScript::OnEquipChanged(Player* player, uint32 /*item*/)
         player->GetSession()->SendLfgPlayerLockInfo();
 }
 
-void LFGPlayerScript::OnQuestRewarded(Player* player, const Quest* /*quest*/)
+void LFGPlayerScript::OnQuestRewarded(Player* player, Quest const* /*quest*/)
 {
     sLFGMgr->InitializeLockedDungeons(player);
     if (player->GetSession())

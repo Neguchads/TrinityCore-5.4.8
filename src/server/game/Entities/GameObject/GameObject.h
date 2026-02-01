@@ -32,7 +32,6 @@ class Group;
 class Transport;
 enum SpellTargetCheckTypes : uint8;
 
-
 // Benchmarked: Faster than std::map (insert/find)
 typedef std::unordered_map<uint32, GameObjectTemplate> GameObjectTemplateContainer;
 typedef std::unordered_map<uint32, GameObjectTemplateAddon> GameObjectTemplateAddonContainer;
@@ -358,7 +357,7 @@ class TC_GAME_API GameObject : public WorldObject, public GridObject<GameObject>
 
         // Event handler
         EventProcessor m_Events;
-        
+
         bool AIM_Initialize();
         void AddDelayedEvent(uint64 timeOffset, std::function<void()>&& function);
     protected:

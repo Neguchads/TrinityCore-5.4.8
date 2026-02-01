@@ -645,8 +645,8 @@ protected:
                 if (difficulty > 0)
                 {
 
-                    const char* solocraft_enabled = player->GetSession()->GetTrinityString(SOLOCRAFT_TRINITYSTRING_ENABLED);
-                    const char* solocraft_disabled = player->GetSession()->GetTrinityString(SOLOCRAFT_TRINITYSTRING_DISABLED);
+                    char const* solocraft_enabled = player->GetSession()->GetTrinityString(SOLOCRAFT_TRINITYSTRING_ENABLED);
+                    char const* solocraft_disabled = player->GetSession()->GetTrinityString(SOLOCRAFT_TRINITYSTRING_DISABLED);
                     ChatHandler(player->GetSession()).PSendSysMessage(player->GetSession()->GetTrinityString(SOLOCRAFT_TRINITYSTRING_STATUS), player->GetName().c_str(), map->GetMapName(), difficulty, SpellPowerBonus, classBalance, solocraftConfig.SolocraftXPEnabled?solocraft_enabled:solocraft_disabled, solocraftConfig.SolocraftXPBalancingEnabled?solocraft_enabled:solocraft_disabled);
                     //|cffFF0000[SoloCraft]|r |cffFF8000 %s entered %s - Difficulty Offset: %0.2f. Spellpower Bonus: %i. Class Balance Weight: %i. XP Gain: |cffFF0000%s XP Balancing:%s |cff4CFF00%s
 

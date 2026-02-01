@@ -30,18 +30,18 @@ class BIHWrap
     template<class RayCallback>
     struct MDLCallback
     {
-        const T* const* objects;
+        T const* const* objects;
         RayCallback& _callback;
         uint32 objects_size;
 
-        MDLCallback(RayCallback& callback, const T* const* objects_array, uint32 objects_size ) : objects(objects_array), _callback(callback), objects_size(objects_size) { }
+        MDLCallback(RayCallback& callback, T const* const* objects_array, uint32 objects_size ) : objects(objects_array), _callback(callback), objects_size(objects_size) { }
 
         /// Intersect ray
         bool operator() (const G3D::Ray& ray, uint32 idx, float& maxDist, bool /*stopAtFirst*/)
         {
             if (idx >= objects_size)
                 return false;
-            if (const T* obj = objects[idx])
+            if (T const* obj = objects[idx])
                 return _callback(ray, *obj, maxDist/*, stopAtFirst*/);
             return false;
         }
@@ -51,17 +51,17 @@ class BIHWrap
         {
             if (idx >= objects_size)
                 return;
-            if (const T* obj = objects[idx])
+            if (T const* obj = objects[idx])
                 _callback(p, *obj);
         }
     };
 
-    typedef G3D::Array<const T*> ObjArray;
+    typedef G3D::Array<T const*> ObjArray;
 
     BIH m_tree;
     ObjArray m_objects;
-    G3D::Table<const T*, uint32> m_obj2Idx;
-    G3D::Set<const T*> m_objects_to_push;
+    G3D::Table<T const*, uint32> m_obj2Idx;
+    G3D::Set<T const*> m_objects_to_push;
     int unbalanced_times;
 
 public:
@@ -77,7 +77,7 @@ public:
     {
         ++unbalanced_times;
         uint32 Idx = 0;
-        const T * temp;
+        T const* temp;
         if (m_obj2Idx.getRemove(&obj, temp, Idx))
             m_objects[Idx] = nullptr;
         else

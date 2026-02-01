@@ -1616,7 +1616,6 @@ struct WintergraspWorkshopData
                     if (GameObject* object = m_WG->GetGameObject(*itr))
                         object->SetRespawnTime(RESPAWN_ONE_DAY);
 
-
                 // Updating worldstate
                 m_State = BATTLEFIELD_WG_OBJECTSTATE_ALLIANCE_INTACT;
                 m_WG->SendUpdateWorldState(m_WorldState, m_State);

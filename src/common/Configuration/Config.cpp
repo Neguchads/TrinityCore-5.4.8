@@ -80,7 +80,7 @@ namespace
     {
         std::string result;
 
-        const char *str = key.c_str();
+        char const*str = key.c_str();
         size_t n = key.length();
 
         char curr;
@@ -421,7 +421,6 @@ std::vector<std::string> ConfigMgr::GetKeysByString(std::string const& name)
 }
 
 template bool ConfigMgr::GetOption<bool>(std::string const& name, bool const& def, bool showLogs) const;
-template int ConfigMgr::GetOption<int>(std::string const& name, int const& def, bool showLogs) const;
 template float ConfigMgr::GetOption<float>(std::string const& name, float const& def, bool showLogs) const;
 template std::string ConfigMgr::GetOption<std::string>(std::string const& name, std::string const& def, bool showLogs) const;
 template uint8 ConfigMgr::GetOption<uint8>(std::string const& name, uint8 const& def, bool showLogs) const;

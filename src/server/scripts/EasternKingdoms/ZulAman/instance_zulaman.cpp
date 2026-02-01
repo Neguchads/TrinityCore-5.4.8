@@ -308,7 +308,7 @@ class instance_zulaman : public InstanceMapScript
                 return ss.str();
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

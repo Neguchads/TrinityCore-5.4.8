@@ -45,7 +45,7 @@ bool TargetedMovementGeneratorMedium<T, D>::_setTargetLocation(T* owner, bool up
     if (owner->HasUnitState(UNIT_STATE_NOT_MOVE))
         return false;
 
-    if (owner->GetTypeId() == TYPEID_UNIT && !i_target->isInAccessiblePlaceFor(owner->ToCreature()))
+    if (owner->IsCreature() && !i_target->isInAccessiblePlaceFor(owner->ToCreature()))
         return false;
 
     i_recalculateTravel = false;
@@ -124,7 +124,7 @@ bool TargetedMovementGeneratorMedium<T, D>::_setTargetLocation(T* owner, bool up
                     ownerPos.m_positionY -= 1.0f;
                 // TODO: Ascend/Descend, Pitch?
 
-                uint32 const latency = i_target->GetTypeId() == TYPEID_PLAYER && (!i_target->movespline->Initialized() || i_target->movespline->Finalized()) ? i_target->ToPlayer()->GetSession()->GetLatency() : 0;
+                uint32 const latency = i_target->IsPlayer() && (!i_target->movespline->Initialized() || i_target->movespline->Finalized()) ? i_target->ToPlayer()->GetSession()->GetLatency() : 0;
                 float const direction = i_target->GetPosition().GetAngle(&ownerPos) + i_target->GetOrientation();
                 float const distance = i_target->GetSpeed(GetTargetMoveType()) * (LEADING_TIME + std::min<uint32>(LEADING_TIME, latency * 2)) / IN_MILLISECONDS;
 
@@ -182,7 +182,7 @@ bool TargetedMovementGeneratorMedium<T, D>::_setTargetLocation(T* owner, bool up
     }
 
     // allow pets to use shortcut if no path found when following their master
-    bool forceDest = (owner->GetTypeId() == TYPEID_UNIT && owner->ToCreature()->IsPet()
+    bool forceDest = (owner->IsCreature() && owner->ToCreature()->IsPet()
         && owner->HasUnitState(UNIT_STATE_FOLLOW));
 
     bool result = i_path->CalculatePath(x, y, z, forceDest);
@@ -390,7 +390,7 @@ G3D::Vector3 TargetedMovementGeneratorMedium<T, D>::GetDestination(T* owner) con
 template<class T, typename D>
 UnitMoveType TargetedMovementGeneratorMedium<T, D>::GetTargetMoveType() const
 {
-    if (i_target->GetTypeId() == TYPEID_PLAYER)
+    if (i_target->IsPlayer())
     {
         MovementFlags flags = (MovementFlags)i_target->GetUnitMovementFlags();
 

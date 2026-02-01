@@ -35,7 +35,7 @@ namespace LuaGuild
     }
 
     int GetMemberCount(lua_State* L, Guild* guild)
-    { 
+    {
         // @TODO
         //sEluna->Push(L, guild->GetMemberSize());
         return 1;
@@ -147,7 +147,7 @@ namespace LuaGuild
     int SetBankTabText(lua_State* L, Guild* guild)
     {
         //uint8 tabId = luaL_checkunsigned(L, 1);
-        //const char* text = luaL_checkstring(L, 2);
+        //char const* text = luaL_checkstring(L, 2);
         //guild->SetBankTabText(tabId, text);
         return 0;
     }
@@ -184,4 +184,3 @@ namespace LuaGuild
         return 0;
     }*/
 };
-

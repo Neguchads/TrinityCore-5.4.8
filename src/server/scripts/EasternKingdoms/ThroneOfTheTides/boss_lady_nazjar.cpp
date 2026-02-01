@@ -149,7 +149,7 @@ class boss_lady_nazjar : public CreatureScript
                 Talk(SAY_KILL);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL))
                     if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL)->m_spellInfo->Id == SPELL_SHOCK_BLAST)
@@ -539,7 +539,7 @@ class npc_lady_nazjar_geyser : public CreatureScript
                 DoCast(me, SPELL_GEYSER_VISUAL, true);
             }
 
-            void SpellHitTarget(Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (IsHeroic() && spell->Id == SPELL_GEYSER_ERRUPT_ENTRY)
                 {

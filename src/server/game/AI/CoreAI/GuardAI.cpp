@@ -40,7 +40,6 @@ void GuardAI::UpdateAI(uint32 /*diff*/)
     DoMeleeAttackIfReady();
 }
 
-
 bool GuardAI::CanSeeAlways(WorldObject const* obj)
 {
     if (!obj->isType(TYPEMASK_UNIT))

@@ -127,7 +127,7 @@ void Player::FitPlayerInTeam(bool action, Battleground* pBattleGround)
     if ((!pBattleGround || pBattleGround->isArena()) && action)
         return;
 
-    if(!IsPlayingNative() && action)
+    if (!IsPlayingNative() && action)
         setFactionForRace(getRace());
     else
         setFactionForRace(getORace());
@@ -306,7 +306,7 @@ int32 BattlegroundQueue::PreAddPlayers(QueuedGroupMap m_PreGroupMap, int32 MaxAd
     return LeftToAdd;
 }
 
-void Player::SendChatMessage(const char *format, ...)
+void Player::SendChatMessage(char const*format, ...)
 {
     if (!IsInWorld())
         return;

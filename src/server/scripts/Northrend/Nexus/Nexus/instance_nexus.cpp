@@ -241,7 +241,7 @@ class instance_nexus : public InstanceMapScript
                 return strInstData;
             }
 
-            void Load(const char* in) override
+            void Load(char const* in) override
             {
                 if (!in)
                 {

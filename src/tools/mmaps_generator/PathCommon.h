@@ -37,7 +37,7 @@
 
 namespace MMAP
 {
-    inline bool matchWildcardFilter(const char* filter, const char* str)
+    inline bool matchWildcardFilter(char const* filter, char const* str)
     {
         if (!filter || !str)
             return false;
@@ -98,7 +98,7 @@ namespace MMAP
         FindClose(hFind);
 
     #else
-        const char *p = dirpath.c_str();
+        char const*p = dirpath.c_str();
         DIR * dirp = opendir(p);
         struct dirent * dp;
 

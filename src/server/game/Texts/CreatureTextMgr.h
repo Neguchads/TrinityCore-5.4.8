@@ -96,7 +96,7 @@ class CreatureTextMgr
 {
     private:
         CreatureTextMgr() { }
-        ~CreatureTextMgr() { }    
+        ~CreatureTextMgr() { }
 
     public:
         static CreatureTextMgr* instance();
@@ -172,8 +172,6 @@ class CreatureTextLocalizer
 
             // WorldPacket data(*messageTemplate);
 
-
-
             LocaleConstant loc_idx = player->GetSession()->GetSessionDbLocaleIndex();
             WorldPacket* messageTemplate;
             size_t whisperGUIDpos;
@@ -215,7 +213,7 @@ class CreatureTextLocalizer
                     data.WriteByteSeq(receiverGUID[7]);
                     data.WriteByteSeq(receiverGUID[4]);
                     data.WriteByteSeq(receiverGUID[1]);
-                    data.WriteByteSeq(receiverGUID[0]);                  
+                    data.WriteByteSeq(receiverGUID[0]);
                     break;
                 default:
                     break;
@@ -258,7 +256,7 @@ void CreatureTextMgr::SendChatPacket(WorldObject* source, Builder const& builder
         {
             if (range == TEXT_RANGE_NORMAL) //ignores team and gmOnly
             {
-                if (!whisperTarget || whisperTarget->GetTypeId() != TYPEID_PLAYER)
+                if (!whisperTarget || !whisperTarget->IsPlayer())
                     return;
 
                 localizer(const_cast<Player*>(whisperTarget->ToPlayer()));

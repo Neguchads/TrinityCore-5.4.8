@@ -18,11 +18,20 @@
 #ifndef SPELL_HISTORY_H
 #define SPELL_HISTORY_H
 
+#include "Define.h"
 #include "QueryResult.h"
+#include "SharedDefines.h"
 #include "Transaction.h"
 #include "TimeValue.h"
 
+class Player;
+class Spell;
+class SpellInfo;
 class Unit;
+
+#include <map>
+#include <unordered_map>
+#include <vector>
 
 class SpellHistory
 {

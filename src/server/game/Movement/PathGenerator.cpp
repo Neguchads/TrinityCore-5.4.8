@@ -201,9 +201,9 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
     {
         TC_LOG_DEBUG("maps.mmaps", "++ BuildPolyPath :: (startPoly == 0 || endPoly == 0)\n");
         BuildShortcut();
-        bool path = _source->GetTypeId() == TYPEID_UNIT && _source->ToCreature()->CanFly();
+        bool path = _source->IsCreature() && _source->ToCreature()->CanFly();
 
-        bool waterPath = _source->GetTypeId() == TYPEID_UNIT && _source->ToCreature()->CanSwim() && !_source->GetTransport();
+        bool waterPath = _source->IsCreature() && _source->ToCreature()->CanSwim() && !_source->GetTransport();
         if (waterPath)
         {
             // Check both start and end points, if they're both in water, then we can *safely* let the creature move
@@ -235,7 +235,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
 
     // we may need a better number here
     bool startFarFromPoly = distToStartPoly > 7.0f;
-    bool endFarFromPoly = distToEndPoly > 7.0f;    
+    bool endFarFromPoly = distToEndPoly > 7.0f;
     if (startFarFromPoly || endFarFromPoly)
     {
         TC_LOG_DEBUG("maps.mmaps", "++ BuildPolyPath :: farFromPoly distToStartPoly=%.3f distToEndPoly=%.3f\n", distToStartPoly, distToEndPoly);
@@ -259,8 +259,8 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
                     buildShotrcut = true;
                 // Allow to build a shortcut if the unit is falling and it's trying to move downwards towards a target (i.e. charging)
                 else if (_sourceUnit->IsFalling() && endPos.z < startPos.z)
-                    buildShotrcut = true;  
-            }              
+                    buildShotrcut = true;
+            }
         }
 
         if (buildShotrcut)
@@ -514,7 +514,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
                 else
                     _type = PATHFIND_NORMAL;
                 return;
-            }            
+            }
         }
         else
         {
@@ -551,7 +551,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
     BuildPointPath(startPoint, endPoint);
 }
 
-void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoint)
+void PathGenerator::BuildPointPath(float const*startPoint, float const*endPoint)
 {
     float pathPoints[MAX_POINT_PATH_LENGTH*VERTEX_SIZE];
     uint32 pointCount = 0;
@@ -674,7 +674,7 @@ void PathGenerator::CreateFilter()
     uint16 includeFlags = 0;
     uint16 excludeFlags = 0;
 
-    if (_source->GetTypeId() == TYPEID_UNIT)
+    if (_source->IsCreature())
     {
         Creature* creature = (Creature*)_source;
         if (creature->CanWalk())
@@ -701,7 +701,7 @@ void PathGenerator::UpdateFilter()
     // allow creatures to cheat and use different movement types if they are moved
     // forcefully into terrain they can't normally move in
     if (Unit const* _sourceUnit = _source->ToUnit())
-    {    
+    {
         if (_sourceUnit->IsInWater() || _sourceUnit->IsUnderWater()) // InWater already accounts for Underwater
         {
             uint16 includedFlags = _filter.getIncludeFlags();
@@ -801,7 +801,7 @@ uint32 PathGenerator::FixupCorridor(dtPolyRef* path, uint32 npath, uint32 maxPat
 // in the path. If that happens, a shortcut is taken.
 // This can happen if the target (T) location is at tile boundary,
 // and we're (S) approaching it parallel to the tile edge.
-// The choice at the vertex can be arbitrary, 
+// The choice at the vertex can be arbitrary,
 //  +---+---+
 //  |:::|:::|
 //  +-S-+-T-+
@@ -817,14 +817,14 @@ uint32 PathGenerator::FixupShortcuts(dtPolyRef* path, int npath)
     dtPolyRef neis[maxNeis];
     int nneis = 0;
 
-    const dtMeshTile* tile = 0;
-    const dtPoly* poly = 0;
+    dtMeshTile const* tile = 0;
+    dtPoly const* poly = 0;
     if (dtStatusFailed(_navMeshQuery->getAttachedNavMesh()->getTileAndPolyByRef(path[0], &tile, &poly)))
         return npath;
 
     for (unsigned int k = poly->firstLink; k != DT_NULL_LINK; k = tile->links[k].next)
     {
-        const dtLink* link = &tile->links[k];
+        dtLink const* link = &tile->links[k];
         if (link->ref != 0)
         {
             if (nneis < maxNeis)
@@ -839,7 +839,8 @@ uint32 PathGenerator::FixupShortcuts(dtPolyRef* path, int npath)
     for (int i = dtMin(maxLookAhead, npath) - 1; i > 1 && cut == 0; i--) {
         for (int j = 0; j < nneis; j++)
         {
-            if (path[i] == neis[j]) {
+            if (path[i] == neis[j])
+            {
                 cut = i;
                 break;
             }
@@ -1029,7 +1030,7 @@ dtStatus PathGenerator::FindSmoothPath(float const* startPos, float const* endPo
     return nsmoothPath < MAX_POINT_PATH_LENGTH ? DT_SUCCESS : DT_FAILURE;
 }
 
-bool PathGenerator::InRangeYZX(const float* v1, const float* v2, float r, float h) const
+bool PathGenerator::InRangeYZX(float const* v1, float const* v2, float r, float h) const
 {
     const float dx = v2[0] - v1[0];
     const float dy = v2[1] - v1[1]; // elevation

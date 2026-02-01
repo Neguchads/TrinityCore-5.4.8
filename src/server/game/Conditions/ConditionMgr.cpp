@@ -1260,7 +1260,7 @@ void ConditionMgr::LoadConditions(bool isReload)
             }
             cond->ReferenceId = uint32(abs(iConditionTypeOrReference));
 
-            const char* rowType = "reference template";
+            char const* rowType = "reference template";
             if (iSourceTypeOrReferenceId >= 0)
                 rowType = "reference";
             //check for useless data

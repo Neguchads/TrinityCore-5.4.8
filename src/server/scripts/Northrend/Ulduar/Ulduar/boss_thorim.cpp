@@ -245,14 +245,14 @@ class HealerCheck
 {
     public:
         HealerCheck(bool shouldBe): __shouldBe(shouldBe) { }
-        bool operator() (const Unit* unit)
+        bool operator() (Unit const* unit)
         {
             return __shouldBe ? __IsHealer(unit) : !__IsHealer(unit);
         }
 
     private:
         bool __shouldBe;
-        bool __IsHealer(const Unit* who)
+        bool __IsHealer(Unit const* who)
         {
             return (who->GetEntry() == NPC_DARK_RUNE_ACOLYTE || who->GetEntry() == NPC_DARK_RUNE_EVOKER || who->GetEntry() == NPC_DARK_RUNE_ACOLYTE_TUNNEL);
         }
@@ -262,14 +262,14 @@ class ArenaAreaCheck
 {
     public:
         ArenaAreaCheck(bool shouldBeIn): __shouldBeIn(shouldBeIn) { }
-        bool operator() (const WorldObject* unit)
+        bool operator() (WorldObject const* unit)
         {
             return __shouldBeIn ? __IsInArena(unit) : !__IsInArena(unit);
         }
 
     private:
         bool __shouldBeIn;
-        bool __IsInArena(const WorldObject* who)
+        bool __IsInArena(WorldObject const* who)
         {
             return (who->GetPositionX() < POS_X_ARENA && who->GetPositionY() > POS_Y_ARENA);    // TODO: Check if this is ok, end positions ?
         }
@@ -1284,7 +1284,7 @@ class npc_thorim_arena_phase_add : public CreatureScript
                 amIhealer = HealerCheck(true)(me);
             }
 
-            bool IsOnSameSide(const Unit* who)
+            bool IsOnSameSide(Unit const* who)
             {
                 return (IsInArena == ArenaAreaCheck(false)(who));
             }
@@ -2279,7 +2279,7 @@ class at_thorim_jumpdown : public AreaTriggerScript
 class achievement_who_needs_bloodlust : public AchievementCriteriaScript
 {
     public:
-        achievement_who_needs_bloodlust(const char* name) : AchievementCriteriaScript(name) { }
+        achievement_who_needs_bloodlust(char const* name) : AchievementCriteriaScript(name) { }
 
         bool OnCheck(Player* player, Unit* /*target*/)
         {
@@ -2296,7 +2296,7 @@ class achievement_who_needs_bloodlust : public AchievementCriteriaScript
 class achievement_ill_take_you_all_on : public AchievementCriteriaScript
 {
     public:
-        achievement_ill_take_you_all_on(const char* name) : AchievementCriteriaScript(name) { }
+        achievement_ill_take_you_all_on(char const* name) : AchievementCriteriaScript(name) { }
 
         bool OnCheck(Player* player, Unit* target) override
         {

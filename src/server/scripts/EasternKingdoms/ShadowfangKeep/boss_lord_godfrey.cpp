@@ -123,7 +123,7 @@ class boss_lord_godfrey : public CreatureScript
                 DoZoneInCombat();
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->HasEffect(SPELL_EFFECT_INTERRUPT_CAST))
                     if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL))

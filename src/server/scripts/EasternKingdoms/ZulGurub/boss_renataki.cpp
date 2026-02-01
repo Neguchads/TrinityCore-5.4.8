@@ -85,7 +85,7 @@ class boss_renataki : public CreatureScript
                 _Reset();
 
                 me->SetCanDualWield(true);
-                const CreatureTemplate* cinfo = me->GetCreatureTemplate();
+                CreatureTemplate const* cinfo = me->GetCreatureTemplate();
                 me->SetBaseWeaponDamage(OFF_ATTACK, MINDAMAGE, cinfo->mindmg);
                 me->SetBaseWeaponDamage(OFF_ATTACK, MAXDAMAGE, cinfo->maxdmg);
                 me->UpdateDamagePhysical(OFF_ATTACK);
@@ -207,7 +207,7 @@ class boss_renataki : public CreatureScript
                     DoMeleeAttackIfReady();
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_THOUSAND_BLADES)
                 {

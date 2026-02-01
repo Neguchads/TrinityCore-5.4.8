@@ -2104,7 +2104,7 @@ class cond_nether_tear_selector : public ConditionScript
     public:
         cond_nether_tear_selector() : ConditionScript("cond_nether_tear_selector") { }
     
-        bool OnConditionCheck(const Condition* cond, ConditionSourceInfo& source) override
+        bool OnConditionCheck(Condition const* cond, ConditionSourceInfo& source) override
         {
             if (source.mConditionTargets[0])
                 if (Creature* target = source.mConditionTargets[0]->ToCreature())

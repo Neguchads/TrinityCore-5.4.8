@@ -175,8 +175,8 @@ class Warden
         }
         std::map<std::string, WardenFailedCheckGroupRecord> const& GetRecordedFailedCheckGroups() const { return _failedCheckGroups; }
 
-        static bool IsValidCheckSum(uint32 checksum, const uint8 *data, const uint16 length);
-        static uint32 BuildChecksum(const uint8 *data, uint32 length);
+        static bool IsValidCheckSum(uint32 checksum, uint8 const*data, const uint16 length);
+        static uint32 BuildChecksum(uint8 const*data, uint32 length);
 
         // If no check is passed, the default action from config is executed
         std::string Penalty(WardenCheck* check = nullptr);

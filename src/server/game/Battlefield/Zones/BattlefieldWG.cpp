@@ -118,7 +118,6 @@ bool BattlefieldWG::SetupBattlefield()
         m_GraveyardList[i] = graveyard;
     }
 
-
     // Spawn workshop creatures and gameobjects
     for (uint8 i = 0; i < WG_MAX_WORKSHOP; i++)
     {
@@ -230,7 +229,6 @@ void BattlefieldWG::OnBattleStart()
     }
     else
         TC_LOG_ERROR("bg.battlefield", "WG: Failed to spawn titan relic.");
-
 
     // Update tower visibility and update faction
     for (GuidSet::const_iterator itr = CanonList.begin(); itr != CanonList.end(); ++itr)
@@ -637,7 +635,7 @@ void BattlefieldWG::HandleKill(Player* killer, Unit* victim)
     bool again = false;
     TeamId killerTeam = killer->GetTeamId();
 
-    if (victim->GetTypeId() == TYPEID_PLAYER)
+    if (victim->IsPlayer())
     {
         for (GuidSet::const_iterator itr = m_PlayersInWar[killerTeam].begin(); itr != m_PlayersInWar[killerTeam].end(); ++itr)
             if (Player* player = ObjectAccessor::FindPlayer(*itr))
@@ -822,7 +820,6 @@ uint32 BattlefieldWG::GetData(uint32 data) const
 
     return Battlefield::GetData(data);
 }
-
 
 void BattlefieldWG::FillInitialWorldStates(WorldStateBuilder& builder)
 {

@@ -35,11 +35,6 @@ static void LoadConfig()
     maxRate = sConfigMgr->GetIntDefault("IndividualXP.MaxRate", 10);
     defaultRate = sConfigMgr->GetIntDefault("IndividualXP.DefaultRate", 1);
 
-    TC_LOG_INFO("server.loading", "mod-individual-xp: Enabled=%u MaxRate=%u DefaultRate=%u Announce=%u",
-        uint32(moduleEnabled),
-        maxRate,
-        defaultRate,
-        sConfigMgr->GetBoolDefault("IndividualXP.Announce", true) ? 1u : 0u);
 }
 
 class IndividualXPConfig : public WorldScript

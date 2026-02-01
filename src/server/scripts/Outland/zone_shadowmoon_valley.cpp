@@ -238,7 +238,7 @@ public:
             me->SetVisible(true);
         }
 
-        void SpellHit(Unit* caster, const SpellInfo* spell) override
+        void SpellHit(Unit* caster, SpellInfo const* spell) override
         {
             if (!caster)
                 return;
@@ -361,7 +361,7 @@ public:
             PoisonTimer = 0;
         }
 
-        void SpellHit(Unit* caster, const SpellInfo* spell) override
+        void SpellHit(Unit* caster, SpellInfo const* spell) override
         {
             if (!caster)
                 return;
@@ -707,7 +707,7 @@ class npc_overlord_morghor : public CreatureScript
 public:
     npc_overlord_morghor() : CreatureScript("npc_overlord_morghor") { }
 
-    bool OnQuestAccept(Player* player, Creature* creature, const Quest *_Quest) override
+    bool OnQuestAccept(Player* player, Creature* creature, Quest const*_Quest) override
     {
         if (_Quest->GetQuestId() == QUEST_LORD_ILLIDAN_STORMRAGE)
         {
@@ -1011,7 +1011,7 @@ class npc_earthmender_wilda : public CreatureScript
 public:
     npc_earthmender_wilda() : CreatureScript("npc_earthmender_wilda") { }
 
-    bool OnQuestAccept(Player* player, Creature* creature, const Quest* quest) override
+    bool OnQuestAccept(Player* player, Creature* creature, Quest const* quest) override
     {
         if (quest->GetQuestId() == QUEST_ESCAPE_COILSCAR)
         {
@@ -1959,7 +1959,7 @@ public:
             }
         }
 
-        void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+        void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
         {
             if (!tapped && spell->Id == SPELL_WHISTLE)
             {

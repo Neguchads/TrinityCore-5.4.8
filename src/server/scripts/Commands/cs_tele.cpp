@@ -54,7 +54,7 @@ public:
         return commandTable;
     }
 
-    static bool HandleTeleAddCommand(ChatHandler* handler, const char* args)
+    static bool HandleTeleAddCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -94,7 +94,7 @@ public:
         return true;
     }
 
-    static bool HandleTeleDelCommand(ChatHandler* handler, const char* args)
+    static bool HandleTeleDelCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -114,7 +114,7 @@ public:
     }
 
     // teleport player to given game_tele.entry
-    static bool HandleTeleNameCommand(ChatHandler* handler, const char* args)
+    static bool HandleTeleNameCommand(ChatHandler* handler, char const* args)
     {
         char* nameStr;
         char* teleStr;
@@ -211,7 +211,7 @@ public:
     }
 
     //Teleport group to given game_tele.entry
-    static bool HandleTeleGroupCommand(ChatHandler* handler, const char* args)
+    static bool HandleTeleGroupCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;
@@ -294,7 +294,7 @@ public:
         return true;
     }
 
-    static bool HandleTeleCommand(ChatHandler* handler, const char* args)
+    static bool HandleTeleCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
             return false;

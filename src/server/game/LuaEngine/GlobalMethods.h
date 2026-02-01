@@ -277,7 +277,7 @@ namespace LuaGlobalFunctions
     // GetPlayerByName("name") - Gets player object by name
     int GetPlayerByName(lua_State* L)
     {
-        const char* message = luaL_checkstring(L, 1);
+        char const* message = luaL_checkstring(L, 1);
         sEluna->Push(L, ObjectAccessor::FindPlayerByName(message));
         return 1;
     }
@@ -292,7 +292,7 @@ namespace LuaGlobalFunctions
     // SendWorldMessage("msg") - Sends a broadcast message to everyone
     int SendWorldMessage(lua_State* L)
     {
-        const char* message = luaL_checkstring(L, 1);
+        char const* message = luaL_checkstring(L, 1);
         sWorld->SendServerMessage(SERVER_MSG_STRING, message);
         return 0;
     }
@@ -363,7 +363,7 @@ namespace LuaGlobalFunctions
     // WorldDBQuery("sql") - Executes SQL to world database and returns the query Result or nil (instant)
     int WorldDBQuery(lua_State* L)
     {
-        const char* query = luaL_checkstring(L, 1);
+        char const* query = luaL_checkstring(L, 1);
         if (!query)
             return 0;
 
@@ -378,7 +378,7 @@ namespace LuaGlobalFunctions
     // WorldDBExecute("sql") - Executes SQL to world database (not instant)
     int WorldDBExecute(lua_State* L)
     {
-        const char* query = luaL_checkstring(L, 1);
+        char const* query = luaL_checkstring(L, 1);
         if (!query)
             return 0;
 
@@ -389,7 +389,7 @@ namespace LuaGlobalFunctions
     // CharDBQuery("sql") - Executes SQL to characters database and returns the query Result or nil (instant)
     int CharDBQuery(lua_State* L)
     {
-        const char* query = luaL_checkstring(L, 1);
+        char const* query = luaL_checkstring(L, 1);
         if (!query)
             return 0;
 
@@ -404,7 +404,7 @@ namespace LuaGlobalFunctions
     // CharDBExecute("sql") - Executes SQL to characters database (not instant)
     int CharDBExecute(lua_State* L)
     {
-        const char* query = luaL_checkstring(L, 1);
+        char const* query = luaL_checkstring(L, 1);
         if (!query)
             return 0;
 
@@ -415,7 +415,7 @@ namespace LuaGlobalFunctions
     // AuthDBQuery("sql") - Executes SQL to auth database and returns the query Result or nil (instant)
     int AuthDBQuery(lua_State* L)
     {
-        const char* query = luaL_checkstring(L, 1);
+        char const* query = luaL_checkstring(L, 1);
         if (!query)
             return 0;
 
@@ -430,7 +430,7 @@ namespace LuaGlobalFunctions
     // AuthDBExecute("sql") - Executes SQL to auth database (not instant)
     int AuthDBExecute(lua_State* L)
     {
-        const char* query = luaL_checkstring(L, 1);
+        char const* query = luaL_checkstring(L, 1);
         if (!query)
             return 0;
 
@@ -441,7 +441,7 @@ namespace LuaGlobalFunctions
     // GetGuildByName("name") - Gets guild object
     int GetGuildByName(lua_State* L)
     {
-        const char* name = luaL_checkstring(L, 1);
+        char const* name = luaL_checkstring(L, 1);
         sEluna->Push(L, sGuildMgr->GetGuildByName(name));
         return 1;
     }
@@ -616,7 +616,7 @@ namespace LuaGlobalFunctions
 
         if (spawntype == 2) // Spawn object
         {
-            const GameObjectTemplate* objectInfo = sObjectMgr->GetGameObjectTemplate(entry);
+            GameObjectTemplate const* objectInfo = sObjectMgr->GetGameObjectTemplate(entry);
             if (!objectInfo)
                 return 0;
 
@@ -746,7 +746,7 @@ namespace LuaGlobalFunctions
         //int banMode = luaL_checkint(L, 1);
         //std::string nameOrIP = luaL_checkstring(L, 2);
         //uint32 duration = luaL_checkunsigned(L, 3);
-        //const char* reason = luaL_checkstring(L, 4);
+        //char const* reason = luaL_checkstring(L, 4);
         //Player* whoBanned = sEluna->CHECK_PLAYER(L, 5);
         //if (!whoBanned)
         //    return 0;
@@ -997,7 +997,7 @@ namespace LuaGlobalFunctions
             return 0;
         }
 
-        const ItemTemplate* temp = sObjectMgr->GetItemTemplate(entry);
+        ItemTemplate const* temp = sObjectMgr->GetItemTemplate(entry);
         if (!temp)
         {
             luaL_error(L, "Invalid item entry (%d)", entry);

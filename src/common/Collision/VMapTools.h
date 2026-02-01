@@ -38,7 +38,7 @@ namespace VMAP
         G3D::Vector3 hitLocation;
         G3D::Vector3 hitNormal;
 
-        void operator()(const G3D::Ray& ray, const TValue* entity, bool pStopAtFirstHit, float& distance) {
+        void operator()(const G3D::Ray& ray, TValue const* entity, bool pStopAtFirstHit, float& distance) {
             entity->intersect(ray, distance, pStopAtFirstHit, hitLocation, hitNormal);
         }
     };

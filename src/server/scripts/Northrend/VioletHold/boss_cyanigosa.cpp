@@ -80,7 +80,7 @@ class boss_cyanigosa : public CreatureScript
                     instance->SetData(DATA_CYANIGOSA_EVENT, IN_PROGRESS);
             }
 
-            void SpellHitTarget (Unit* target, const SpellInfo* spell) override
+            void SpellHitTarget (Unit* target, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_ARCANE_VACUUM)
                 {

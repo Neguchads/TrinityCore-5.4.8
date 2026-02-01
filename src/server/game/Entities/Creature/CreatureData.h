@@ -37,7 +37,7 @@ enum CreatureFlagsExtra : uint32
     CREATURE_FLAG_EXTRA_GHOST_VISIBILITY     = 0x00000400,       // creature will be only visible for dead players
     CREATURE_FLAG_EXTRA_USE_OFFHAND_ATTACK   = 0x00000800,       // creature will use offhand attacks
     CREATURE_FLAG_EXTRA_NO_SELL_VENDOR       = 0x00001000,       // players can't sell items to this vendor
-    CREATURE_FLAG_EXTRA_NO_COMBAT            = 0x00002000,       // creature is not allowed to enter combat        
+    CREATURE_FLAG_EXTRA_NO_COMBAT            = 0x00002000,       // creature is not allowed to enter combat
     CREATURE_FLAG_EXTRA_WORLDEVENT           = 0x00004000,       // custom flag for world event creatures (left room for merging)
     CREATURE_FLAG_EXTRA_GUARD                = 0x00008000,       // Creature is guard
     CREATURE_FLAG_EXTRA_UNUSED_16            = 0x00010000,
@@ -50,7 +50,7 @@ enum CreatureFlagsExtra : uint32
     CREATURE_FLAG_EXTRA_UNUSED_23            = 0x00800000,
     CREATURE_FLAG_EXTRA_UNUSED_24            = 0x01000000,
     CREATURE_FLAG_EXTRA_UNUSED_25            = 0x02000000,
-    CREATURE_FLAG_EXTRA_UNUSED_26            = 0x04000000,    
+    CREATURE_FLAG_EXTRA_UNUSED_26            = 0x04000000,
     CREATURE_FLAG_EXTRA_UNUSED_27            = 0x08000000,       // Creature will always be visible to the player. Only usable on creatures with entries 190000 or higher (on purpose)
     CREATURE_FLAG_EXTRA_DUNGEON_BOSS         = 0x10000000,       // creature is a dungeon boss (SET DYNAMICALLY, DO NOT ADD IN DB)
     CREATURE_FLAG_EXTRA_IGNORE_PATHFINDING   = 0x20000000,       // creature ignore pathfinding
@@ -311,7 +311,7 @@ struct CreatureModelInfo
     float combat_reach;
     uint8 gender;
     uint32 modelid_other_gender;
-    bool is_trigger;    
+    bool is_trigger;
 };
 
 #pragma pack(pop)

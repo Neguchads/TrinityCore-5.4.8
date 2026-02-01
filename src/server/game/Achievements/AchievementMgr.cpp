@@ -313,11 +313,11 @@ bool AchievementCriteriaData::Meets(uint32 criteria_id, Player const* source, Un
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_NONE:
             return true;
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_T_CREATURE:
-            if (!target || target->GetTypeId() != TYPEID_UNIT)
+            if (!target || !target->IsCreature())
                 return false;
             return target->GetEntry() == creature.id;
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_T_PLAYER_CLASS_RACE:
-            if (!target || target->GetTypeId() != TYPEID_PLAYER)
+            if (!target || !target->IsPlayer())
                 return false;
             if (classRace.class_id && classRace.class_id != target->ToPlayer()->GetClass())
                 return false;
@@ -325,7 +325,7 @@ bool AchievementCriteriaData::Meets(uint32 criteria_id, Player const* source, Un
                 return false;
             return true;
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_S_PLAYER_CLASS_RACE:
-            if (!source || source->GetTypeId() != TYPEID_PLAYER)
+            if (!source || !source->IsPlayer())
                 return false;
             if (classRace.class_id && classRace.class_id != source->ToPlayer()->GetClass())
                 return false;
@@ -333,7 +333,7 @@ bool AchievementCriteriaData::Meets(uint32 criteria_id, Player const* source, Un
                 return false;
             return true;
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_T_PLAYER_LESS_HEALTH:
-            if (!target || target->GetTypeId() != TYPEID_PLAYER)
+            if (!target || !target->IsPlayer())
                 return false;
             return !target->HealthAbovePct(health.percent);
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_S_AURA:
@@ -361,7 +361,7 @@ bool AchievementCriteriaData::Meets(uint32 criteria_id, Player const* source, Un
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_MAP_PLAYER_COUNT:
             return source->GetMap()->GetPlayersCountExceptGMs() <= map_players.maxcount;
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_T_TEAM:
-            if (!target || target->GetTypeId() != TYPEID_PLAYER)
+            if (!target || !target->IsPlayer())
                 return false;
             return target->ToPlayer()->GetTeam() == team.team;
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_S_DRUNK:
@@ -3297,7 +3297,7 @@ bool AchievementMgr::RequirementsSatisfied(CriteriaEntry const* achievementCrite
                 return false;
             break;
         case ACHIEVEMENT_CRITERIA_TYPE_KILLED_BY_PLAYER:
-            if (!miscValue1 || !unit || unit->GetTypeId() != TYPEID_PLAYER)
+            if (!miscValue1 || !unit || !unit->IsPlayer())
                 return false;
             break;
         case ACHIEVEMENT_CRITERIA_TYPE_DEATHS_FROM:
@@ -3421,7 +3421,7 @@ bool AchievementMgr::RequirementsSatisfied(CriteriaEntry const* achievementCrite
             if (!miscValue1)
                 return false;
             // map specific case (BG in fact) expected player targeted damage/heal
-            if (!unit || unit->GetTypeId() != TYPEID_PLAYER)
+            if (!unit || !unit->IsPlayer())
                 return false;
             break;
         case ACHIEVEMENT_CRITERIA_TYPE_EQUIP_ITEM:
@@ -3548,7 +3548,7 @@ bool AchievementMgr::AdditionalRequirementsSatisfied(ModifierTreeNode const* tre
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_ADDITIONAL_CONDITION_TARGET_MUST_BE_PLAYER: // 5
-                if (!unit || unit->GetTypeId() != TYPEID_PLAYER)
+                if (!unit || !unit->IsPlayer())
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_ADDITIONAL_CONDITION_TARGET_MUST_BE_DEAD: // 6
@@ -3643,11 +3643,11 @@ bool AchievementMgr::AdditionalRequirementsSatisfied(ModifierTreeNode const* tre
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_ADDITIONAL_CONDITION_TARGET_RACE: // 27
-                if (!unit || unit->GetTypeId() != TYPEID_PLAYER || unit->GetRace() != reqValue)
+                if (!unit || !unit->IsPlayer() || unit->GetRace() != reqValue)
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_ADDITIONAL_CONDITION_TARGET_CLASS: // 28
-                if (!unit || unit->GetTypeId() != TYPEID_PLAYER || unit->GetClass() != reqValue)
+                if (!unit || !unit->IsPlayer() || unit->GetClass() != reqValue)
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_ADDITIONAL_CONDITION_MAX_GROUP_MEMBERS: // 29
@@ -4371,7 +4371,7 @@ void AchievementGlobalMgr::LoadCompletedAchievements()
         Field* fields = result->Fetch();
 
         uint16 achievementId = fields[0].GetUInt16();
-        const AchievementEntry* achievement = sAchievementMgr->GetAchievement(achievementId);
+        AchievementEntry const* achievement = sAchievementMgr->GetAchievement(achievementId);
         if (!achievement)
         {
             // Remove non existent achievements from all characters
@@ -4412,7 +4412,7 @@ void AchievementGlobalMgr::LoadRewards()
     {
         Field* fields = result->Fetch();
         uint32 entry = fields[0].GetUInt32();
-        const AchievementEntry* achievement = GetAchievement(entry);
+        AchievementEntry const* achievement = GetAchievement(entry);
         if (!achievement)
         {
             TC_LOG_ERROR("sql.sql", "Table `achievement_reward` has wrong achievement (Entry: %u), ignored.", entry);

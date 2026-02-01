@@ -416,7 +416,7 @@ class npc_muru_portal : public CreatureScript
                 summons.Summon(summon);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 float x,y,z,o;
                 me->GetHomePosition(x,y,z,o);
@@ -477,7 +477,7 @@ class npc_dark_fiend : public CreatureScript
                 me->AddUnitState(UNIT_STATE_STUNNED);
             }
 
-            void SpellHit(Unit* /*caster*/, const SpellInfo* spell) override
+            void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 for (uint8 i = 0; i < 3; ++i)
                     if (spell->Effects[i].Effect == 38)

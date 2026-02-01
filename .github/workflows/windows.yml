@@ -1,0 +1,107 @@
+name: windows-build-release
+
+on:
+  push:
+    paths-ignore:
+      - 'sql/**'    
+
+concurrency:
+  group: ${{ github.head_ref }} || concat(${{ github.ref }}, ${{ github.workflow }})
+  cancel-in-progress: true
+
+
+env:
+  BUILD_TYPE: Release
+  REPO_DIR : ${{github.workspace}}
+  BUILD_DIR: ${{github.workspace}}/bin/builddir
+  BOOST_TOOLSET: "msvc"
+  BOOST_VERSION: "1.87.0"
+  BOOST_INSTALL_DIR: C:/libs/boost
+  OPENSSL_ROOT_DIR: C:/Program Files/OpenSSL
+  
+jobs:
+  build:
+    runs-on: windows-2022
+    
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Cache Chocolatey
+      id: cache-choco
+      uses: actions/cache@v4
+      with:
+        path: |
+          C:/ProgramData/chocolatey/cache
+          C:/ProgramData/chocolatey/lib
+          C:/ProgramData/chocolatey/bin
+        key: choco-windows-2022-${{ github.ref_name }}
+
+    - name: Cache OpenSSL
+      id: cache-openssl
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.OPENSSL_ROOT_DIR }}
+        key: openssl-3.1.1-win-2022
+
+    - name: Cache Boost
+      id: cache-boost
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.BOOST_INSTALL_DIR }}
+        key: boost-${{ env.BOOST_VERSION }}-${{ env.BOOST_TOOLSET }}-win-2022
+
+    - name: Install boost
+      if: ${{ steps.cache-boost.outputs.cache-hit != 'true' }}
+      uses: MarkusJx/install-boost@v2.5.1
+      id: install-boost
+      with:
+          # REQUIRED: Specify the required boost version
+          # A list of supported versions can be found here: 
+          # https://github.com/actions/boost-versions/blob/main/versions-manifest.json
+          boost_version: ${{env.BOOST_VERSION}}
+          # OPTIONAL: Specify a platform version
+          platform_version: 2022         
+          # OPTIONAL: Specify a toolset on windows
+          toolset: ${{env.BOOST_TOOLSET}}
+          # OPTIONAL: Specify a custon install location
+          boost_install_dir: ${{ env.BOOST_INSTALL_DIR }}
+          # NOTE: If a boost version matching all requirements cannot be found,
+          # this build step will fail          
+    - name: windows dependencies
+      run: |
+        #make
+        choco install -y make
+        #cmake
+        choco install -y cmake
+        #openssl
+        if (-not (Test-Path "${{ env.OPENSSL_ROOT_DIR }}\\bin\\openssl.exe")) { choco install -y openssl --version=3.1.1 }
+      #git bash shell
+      shell: powershell
+
+    - name: Create Build Environment
+      run: |
+        cmake -E make_directory ${{ env.BUILD_DIR }}
+
+    # build and install
+    - name: windows build
+      env:
+          BOOST_ROOT: ${{ env.BOOST_INSTALL_DIR }}
+          OPENSSL_ROOT_DIR: ${{ env.OPENSSL_ROOT_DIR }}
+      run: |
+        cd $GITHUB_WORKSPACE
+
+        cmake -S . -B ${{ env.BUILD_DIR }} -A x64
+        cmake --build ${{ env.BUILD_DIR }} --config RelWithDebInfo
+      #git bash shell
+      shell: bash
+    - name: Check binaries
+      run: |
+        cd ${{ env.BUILD_DIR }}/bin/RelWithDebInfo
+        
+        dir
+          copy "C:/Program Files/MySQL/MySQL Server 8.0/lib/libmysql.dll" ${{ env.BUILD_DIR }}/bin/RelWithDebInfo/libmysql.dll
+          copy "C:/Program Files/OpenSSL/bin/libcrypto-3-x64.dll" ${{ env.BUILD_DIR }}/bin/RelWithDebInfo/libcrypto-3-x64.dll
+          copy "C:/Program Files/OpenSSL/bin/libssl-3-x64.dll" ${{ env.BUILD_DIR }}/bin/RelWithDebInfo/libssl-3-x64.dll
+        
+        ./authserver --version
+        ./worldserver --version

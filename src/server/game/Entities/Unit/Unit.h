@@ -69,7 +69,6 @@ private:
     float m_multiplier = 1.0f;
 };
 
-
 // high byte (3 from 0..3) of UNIT_FIELD_BYTES_2
 enum ShapeshiftForm
 {
@@ -107,10 +106,6 @@ enum ShapeshiftForm
     FORM_MOONKIN = 0x1F,
     FORM_SPIRITOFREDEMPTION = 0x20
 };
-
-
-
-
 
 #define CREATURE_MAX_SPELLS     8
 #define MAX_SPELL_CHARM         4
@@ -438,15 +433,11 @@ enum DamageEffectType
     SELF_DAMAGE = 5
 };
 
-
 enum NPCFlags2
 {
     UNIT_NPC_FLAG2_NONE              = 0x00000000,
     UNIT_NPC_FLAG2_ITEM_UPGRADE      = 0x00000001,    // Item Upgrade
 };
-
-
-
 
 enum UnitTypeMask
 {
@@ -1153,17 +1144,16 @@ public:
     float GetCombatReach() const override { return m_floatValues [UNIT_FIELD_COMBAT_REACH]; }
     float GetMeleeRange(Unit const* target) const;
     float GetMeleeReach() const;
-    bool IsWithinCombatRange(const Unit* obj, float dist2compare) const;
-    bool IsWithinMeleeRange(const Unit* obj, float dist = NOMINAL_MELEE_RANGE) const;
+    bool IsWithinCombatRange(Unit const* obj, float dist2compare) const;
+    bool IsWithinMeleeRange(Unit const* obj, float dist = NOMINAL_MELEE_RANGE) const;
     bool IsWithinRangedMeleeRange(Unit const* obj, float dist) const;
-    void GetRandomContactPoint(const Unit* target, float &x, float &y, float &z, float distance2dMin, float distance2dMax) const;
+    void GetRandomContactPoint(Unit const* target, float &x, float &y, float &z, float distance2dMin, float distance2dMax) const;
     uint32 m_extraAttacks;
     bool m_canDualWield;
 
-    uint32 RecaculateDamage(uint32 damage); 
+    uint32 RecaculateDamage(uint32 damage);
 
     uint32 RecaculateHealing(uint32 healamount);
-
 
     void _addAttacker(Unit* pAttacker);                  // must be called only from Unit::Attack(Unit*)
     void _removeAttacker(Unit* pAttacker);               // must be called only from Unit::AttackStop()
@@ -1200,7 +1190,7 @@ public:
     uint32 HasUnitTypeMask(uint32 mask) const { return mask & m_unitTypeMask; }
     void AddUnitTypeMask(uint32 mask) { m_unitTypeMask |= mask; }
     bool IsSummon() const   { return (m_unitTypeMask & UNIT_MASK_SUMMON) != 0; }
-    bool IsGuardian() const { return (m_unitTypeMask & UNIT_MASK_GUARDIAN) != 0; }  
+    bool IsGuardian() const { return (m_unitTypeMask & UNIT_MASK_GUARDIAN) != 0; }
     bool IsPet() const      { return (m_unitTypeMask & UNIT_MASK_PET) != 0; }
     bool IsHunterPet() const{ return (m_unitTypeMask & UNIT_MASK_HUNTER_PET) != 0; }
     bool IsTotem() const    { return (m_unitTypeMask & UNIT_MASK_TOTEM) != 0; }
@@ -1238,7 +1228,6 @@ public:
     {
         SetStatInt32Value(UNIT_FIELD_RESISTANCES + school, val);
     }
-
 
     uint32 GetHealth()    const { return GetUInt32Value(UNIT_FIELD_HEALTH); }
     uint32 GetMaxHealth() const
@@ -1415,7 +1404,7 @@ public:
     void SetPvpFlag(UnitPVPStateFlags flags) { SetByteFlag(UNIT_FIELD_BYTES_2, UNIT_BYTES_2_OFFSET_PVP_FLAG, flags); }
     void RemovePvpFlag(UnitPVPStateFlags flags) { RemoveByteFlag(UNIT_FIELD_BYTES_2, UNIT_BYTES_2_OFFSET_PVP_FLAG, flags); }
     void ReplaceAllPvpFlags(UnitPVPStateFlags flags) { SetByteValue(UNIT_FIELD_BYTES_2, UNIT_BYTES_2_OFFSET_PVP_FLAG, flags); }
-    
+
     bool IsPvP() const { return HasPvpFlag(UNIT_BYTE2_FLAG_PVP); }
     void SetPvP(bool state);
     [[nodiscard]] bool IsFFAPvP() const { return HasByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_FFA_PVP); }
@@ -1511,7 +1500,7 @@ public:
     float GetParryChanceAgainst(Unit const* attacker, WeaponAttackType attType) const;
     float GetBlockChangeAgainst(Unit const* attacker, WeaponAttackType attType) const;
     float GetUnitMissChance(WeaponAttackType attType) const;
-    float GetUnitCriticalChance(WeaponAttackType attackType, const Unit* victim) const;
+    float GetUnitCriticalChance(WeaponAttackType attackType, Unit const* victim) const;
     int32 GetMechanicResistChance(SpellInfo const* spellInfo) const;
     bool CanUseAttackType(uint8 attacktype) const;
 
@@ -1521,9 +1510,9 @@ public:
 
     float GetWeaponProcChance() const;
     float GetRealPPMProcChance(SpellInfo const* spellProto, Item const* item, WeaponAttackType attackType) const;
-    float GetPPMProcChance(uint32 WeaponSpeed, float PPM, const SpellInfo* spellProto) const;
+    float GetPPMProcChance(uint32 WeaponSpeed, float PPM, SpellInfo const* spellProto) const;
 
-    MeleeHitOutcome RollMeleeOutcomeAgainst(const Unit* victim, WeaponAttackType attType) const;
+    MeleeHitOutcome RollMeleeOutcomeAgainst(Unit const* victim, WeaponAttackType attType) const;
 
     NPCFlags GetNpcFlags() const { return NPCFlags(GetUInt32Value(UNIT_FIELD_NPC_FLAGS)); }
     bool HasNpcFlag(NPCFlags flags) const { return HasFlag(UNIT_FIELD_NPC_FLAGS, flags) != 0; }
@@ -1950,7 +1939,7 @@ public:
     {
         auto it = m_boundAuras.find(id);
         if (it == m_boundAuras.end() || it->second.empty())
-            return nullptr;            
+            return nullptr;
         return &it->second;
     }
 
@@ -1979,7 +1968,7 @@ public:
 
     int32 GetTotalAuraModifierByMiscMask(AuraType auratype, uint32 misc_mask) const;
     float GetTotalAuraMultiplierByMiscMask(AuraType auratype, uint32 misc_mask) const;
-    int32 GetMaxPositiveAuraModifierByMiscMask(AuraType auratype, uint32 misc_mask, const AuraEffect* except = NULL) const;
+    int32 GetMaxPositiveAuraModifierByMiscMask(AuraType auratype, uint32 misc_mask, AuraEffect const* except = NULL) const;
     int32 GetMaxNegativeAuraModifierByMiscMask(AuraType auratype, uint32 misc_mask) const;
 
     int32 GetTotalAuraModifierByMiscValue(AuraType auratype, int32 misc_value) const;
@@ -2197,7 +2186,7 @@ public:
     }
     virtual void SetDisplayId(uint32 modelId, float displayScale = 1.f);
     uint32 GetNativeDisplayId() const { return GetUInt32Value(UNIT_FIELD_NATIVE_DISPLAY_ID); }
-    float GetNativeDisplayScale() const { return 1.0f /**GetFloatValue(UNIT_FIELD_NATIVE_X_DISPLAY_SCALE)**/; }    
+    float GetNativeDisplayScale() const { return 1.0f /**GetFloatValue(UNIT_FIELD_NATIVE_X_DISPLAY_SCALE)**/; }
     void RestoreDisplayId();
     void SetNativeDisplayId(uint32 displayId, float displayScale = 1.f) { SetUInt32Value(UNIT_FIELD_NATIVE_DISPLAY_ID, displayId); /**SetFloatValue(UNIT_FIELD_NATIVE_X_DISPLAY_SCALE, displayScale);**/ }
 
@@ -2265,7 +2254,6 @@ public:
     uint32 MeleeDamageBonusDone(Unit* pVictim, uint32 damage, WeaponAttackType attType, SpellInfo const* spellProto = NULL);
     uint32 MeleeDamageBonusTaken(Unit* attacker, uint32 pdamage, WeaponAttackType attType, SpellInfo const* spellProto = NULL);
 
-
     bool   isSpellBlocked(Unit* victim, SpellInfo const* spellProto, WeaponAttackType attackType = BASE_ATTACK);
     bool   isBlockCritical();
     bool   isSpellCrit(Unit* victim, SpellInfo const* spellProto, SpellSchoolMask schoolMask, WeaponAttackType attackType = BASE_ATTACK) const;
@@ -2282,7 +2270,7 @@ public:
 
     void ApplyUberImmune(uint32 spellid, bool apply);
     void ApplySpellImmune(uint32 spellId, uint32 op, uint32 type, bool apply);
-    void ApplySpellDispelImmunity(const SpellInfo* spellProto, DispelType type, bool apply);
+    void ApplySpellDispelImmunity(SpellInfo const* spellProto, DispelType type, bool apply);
     virtual bool IsImmunedToSpell(SpellInfo const* spellInfo, uint32 effectMask) const; // redefined in Creature
 
     uint32 GetSchoolImmunityMask() const;
@@ -2328,7 +2316,7 @@ public:
     {
         return i_motionMaster;
     }
-    const MotionMaster* GetMotionMaster() const
+    MotionMaster const* GetMotionMaster() const
     {
         return i_motionMaster;
     }
@@ -2422,7 +2410,7 @@ public:
     void SetRedirectThreat(ObjectGuid guid, uint32 pct)
     {
         _redirectThreatInfo.TargetGUID = guid;
-        _redirectThreatInfo.ThreatPct = pct; 
+        _redirectThreatInfo.ThreatPct = pct;
     }
     void ResetRedirectThreat()
     {
@@ -2452,7 +2440,7 @@ public:
         m_vehicle = vehicle;
     }
     bool IsOnVehicle() const { return m_vehicle != NULL; }
-    bool IsOnVehicle(const Unit* vehicle) const;
+    bool IsOnVehicle(Unit const* vehicle) const;
     Unit* GetVehicleBase()  const;
     Creature* GetVehicleCreatureBase() const;
     ObjectGuid GetTransGUID() const override;
@@ -2478,7 +2466,7 @@ public:
     bool IsFlying() const { return m_movementInfo.HasMovementFlag(MOVEMENTFLAG_FLYING | MOVEMENTFLAG_DISABLE_GRAVITY); }
     bool IsFalling() const;
     virtual bool CanEnterWater() const = 0;
-    virtual bool CanSwim() const;    
+    virtual bool CanSwim() const;
 
     float GetHoverOffset() const
     {
@@ -2765,7 +2753,7 @@ namespace Trinity
                 return m_ascending ? rA < rB : rA > rB;
             }
 
-            bool operator() (const Unit* a, const Unit* b) const
+            bool operator() (Unit const* a, Unit const* b) const
             {
                 float rA = a->GetMaxPower(m_power) ? float(a->GetPower(m_power)) / float(a->GetMaxPower(m_power)) : 0.0f;
                 float rB = b->GetMaxPower(m_power) ? float(b->GetPower(m_power)) / float(b->GetMaxPower(m_power)) : 0.0f;
@@ -2791,7 +2779,7 @@ namespace Trinity
                 return m_ascending ? rA < rB : rA > rB;
             }
 
-            bool operator() (const Unit* a, const Unit* b) const
+            bool operator() (Unit const* a, Unit const* b) const
             {
                 float rA = a->GetMaxHealth() ? float(a->GetHealth()) / float(a->GetMaxHealth()) : 0.0f;
                 float rB = b->GetMaxHealth() ? float(b->GetHealth()) / float(b->GetMaxHealth()) : 0.0f;
@@ -2828,14 +2816,14 @@ namespace Trinity
     class DistanceCompareOrderPred
     {
         public:
-            DistanceCompareOrderPred(const WorldObject* object, bool ascending = true) : m_object(object), m_ascending(ascending) {}
-            bool operator() (const WorldObject* a, const WorldObject* b) const
+            DistanceCompareOrderPred(WorldObject const* object, bool ascending = true) : m_object(object), m_ascending(ascending) {}
+            bool operator() (WorldObject const* a, WorldObject const* b) const
             {
                 return m_ascending ? a->GetExactDist(m_object) < b->GetExactDist(m_object) :
                     a->GetExactDist(m_object) > b->GetExactDist(m_object);
             }
         private:
-            const WorldObject* m_object;
+            WorldObject const* m_object;
             const bool m_ascending;
     };
 }
@@ -2852,7 +2840,7 @@ inline bool IsNoFlyZone(uint32 zoneId)
         case 4080: // Isle of Quel'Danas
         case 6757: // Timeless Isle
         case 6661: // Isle of Giants
-            return true;;
+            return true;
         default:
             break;
     }

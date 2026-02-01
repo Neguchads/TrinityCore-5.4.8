@@ -81,7 +81,7 @@ void SmartScript::OnReset()
     mCounterList.clear();
 }
 
-void SmartScript::ProcessEventsFor(SMART_EVENT e, Unit* unit, uint32 var0, uint32 var1, bool bvar, const SpellInfo* spell, GameObject* gob)
+void SmartScript::ProcessEventsFor(SMART_EVENT e, Unit* unit, uint32 var0, uint32 var1, bool bvar, SpellInfo const* spell, GameObject* gob)
 {
     for (SmartAIEventList::iterator i = mEvents.begin(); i != mEvents.end(); ++i)
     {
@@ -97,7 +97,7 @@ void SmartScript::ProcessEventsFor(SMART_EVENT e, Unit* unit, uint32 var0, uint3
     }
 }
 
-void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, uint32 var1, bool bvar, const SpellInfo* spell, GameObject* gob)
+void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, uint32 var1, bool bvar, SpellInfo const* spell, GameObject* gob)
 {
     //calc random
     if (e.GetEventType() != SMART_EVENT_LINK && e.event.event_chance < 100 && e.event.event_chance)
@@ -150,7 +150,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
 
             if (!talkTarget)
                 talkTarget = GetLastInvoker();
-            
+
             if (!talker)
                 break;
 
@@ -2536,7 +2536,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
     }
 }
 
-void SmartScript::ProcessTimedAction(SmartScriptHolder& e, uint32 const& min, uint32 const& max, Unit* unit, uint32 var0, uint32 var1, bool bvar, const SpellInfo* spell, GameObject* gob)
+void SmartScript::ProcessTimedAction(SmartScriptHolder& e, uint32 const& min, uint32 const& max, Unit* unit, uint32 var0, uint32 var1, bool bvar, SpellInfo const* spell, GameObject* gob)
 {
     if (sConditionMgr->IsObjectMeetingSmartEventConditions(e.entryOrGuid, e.event_id, e.source_type, unit, GetBaseObject()))
         ProcessAction(e, unit, var0, var1, bvar, spell, gob);
@@ -2987,7 +2987,7 @@ ObjectList* SmartScript::GetWorldObjectsInDist(float dist)
     return targets;
 }
 
-void SmartScript::ProcessEvent(SmartScriptHolder& e, Unit* unit, uint32 var0, uint32 var1, bool bvar, const SpellInfo* spell, GameObject* gob)
+void SmartScript::ProcessEvent(SmartScriptHolder& e, Unit* unit, uint32 var0, uint32 var1, bool bvar, SpellInfo const* spell, GameObject* gob)
 {
     if (!e.active && e.GetEventType() != SMART_EVENT_LINK)
         return;
@@ -3174,7 +3174,7 @@ void SmartScript::ProcessEvent(SmartScriptHolder& e, Unit* unit, uint32 var0, ui
                     break;
             }
 
-            ProcessAction(e, unit, var0, var1, bvar, spell, gob);       
+            ProcessAction(e, unit, var0, var1, bvar, spell, gob);
         case SMART_EVENT_FOLLOW_COMPLETED:
         case SMART_EVENT_ON_SPELLCLICK:
         case SMART_EVENT_ON_GO_REPORT_USE:
@@ -3203,7 +3203,7 @@ void SmartScript::ProcessEvent(SmartScriptHolder& e, Unit* unit, uint32 var0, ui
         {
             if (!me || !unit)
                 return;
-            if (e.event.kill.playerOnly && unit->GetTypeId() != TYPEID_PLAYER)
+            if (e.event.kill.playerOnly && !unit->IsPlayer())
                 return;
             if (e.event.kill.creature && unit->GetEntry() != e.event.kill.creature)
                 return;
@@ -3335,7 +3335,7 @@ void SmartScript::ProcessEvent(SmartScriptHolder& e, Unit* unit, uint32 var0, ui
                 return;
             RecalcTimer(e, e.event.summoned.cooldownMin, e.event.summoned.cooldownMax);
             ProcessAction(e, unit, var0);
-            break;            
+            break;
         }
         case SMART_EVENT_INSTANCE_PLAYER_ENTER:
         {
