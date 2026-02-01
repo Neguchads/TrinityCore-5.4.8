@@ -50,8 +50,8 @@ jobs:
           # this build step will fail          
     - name: windows dependencies
       run: |
-        # MySQL
-        choco install -y mysql --version=8.0.40
+        # MySQL - install without version to get latest
+        choco install -y mysql
         # OpenSSL
         choco install -y openssl --version=3.1.1
         # CMake
@@ -77,13 +77,20 @@ jobs:
         cd ${{github.workspace}}/build/bin/RelWithDebInfo
         
         dir
-          copy "C:/Program Files/MySQL/MySQL Server 8.0/lib/libmysql.dll" ${{github.workspace}}/build/bin/RelWithDebInfo/libmysql.dll
-          copy "C:/Program Files/OpenSSL/bin/libcrypto-3-x64.dll" ${{github.workspace}}/build/bin/RelWithDebInfo/libcrypto-3-x64.dll
-          copy "C:/Program Files/OpenSSL/bin/libssl-3-x64.dll" ${{github.workspace}}/build/bin/RelWithDebInfo/libssl-3-x64.dll
-          move ${{github.workspace}}/contrib/lua_scripts ${{github.workspace}}/build/bin/RelWithDebInfo/lua_scripts
+        # Find MySQL installation directory dynamically
+        $mysqlPath = Get-ChildItem "C:\Program Files\MySQL" -Directory | Select-Object -First 1 -ExpandProperty FullName
+        if ($mysqlPath) {
+          Copy-Item "$mysqlPath\lib\libmysql.dll" -Destination "${{github.workspace}}/build/bin/RelWithDebInfo/libmysql.dll" -ErrorAction SilentlyContinue
+        }
+        Copy-Item "C:\Program Files\OpenSSL\bin\libcrypto-3-x64.dll" -Destination "${{github.workspace}}/build/bin/RelWithDebInfo/libcrypto-3-x64.dll" -ErrorAction SilentlyContinue
+        Copy-Item "C:\Program Files\OpenSSL\bin\libssl-3-x64.dll" -Destination "${{github.workspace}}/build/bin/RelWithDebInfo/libssl-3-x64.dll" -ErrorAction SilentlyContinue
+        if (Test-Path "${{github.workspace}}/contrib/lua_scripts") {
+          Move-Item "${{github.workspace}}/contrib/lua_scripts" -Destination "${{github.workspace}}/build/bin/RelWithDebInfo/lua_scripts" -Force
+        }
         
-        ./authserver --version
-        ./worldserver --version
+        .\authserver --version
+        .\worldserver --version
+      shell: pwsh
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
