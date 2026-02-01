@@ -4,7 +4,7 @@
 - 
 - 
 
-**Target branch(es)**: 335/6x
+**Target branch(es)**: 5.4.8
 
 **Issues addressed**: Fixes #
 

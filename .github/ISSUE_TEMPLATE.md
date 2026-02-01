@@ -23,8 +23,8 @@ CHANGEME Tell us what should happen instead.
 
 **Branch(es):**
 
-Writing server debug on console will return the best results for reporting bugs (3.3.5a for now)
-CHANGEME 3.3.5, master or both
+Writing server debug on console will return the best results for reporting bugs (5.4.8)
+CHANGEME 5.4.8, master or both
 
 **TC rev. hash/commit:** 
 
