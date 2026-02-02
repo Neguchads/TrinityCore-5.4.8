@@ -3323,12 +3323,24 @@ class spell_dru_shooting_stars_proc : public AuraScript
 
     bool CheckProc(ProcEventInfo& eventInfo)
     {
+        SpellInfo const* spellInfo = eventInfo.GetSpellInfo();
+        if (!spellInfo)
+            return false;
+        if (spellInfo->Id != SPELL_DRUID_MOONFIRE &&
+            spellInfo->Id != SPELL_DRUID_SUNFIRE)
+            return false;
+        Unit* procTarget = eventInfo.GetProcTarget();
+        if (!procTarget)
+            return false;
+        AddTarget(procTarget);
         if (auto list = druid->GetBoundAurasBySpellId(SPELL_DRUID_MOONFIRE))
             for (auto&& itr : *list)
-                AddTarget(itr->GetUnitOwner());
+                if (itr->GetUnitOwner())
+                    AddTarget(itr->GetUnitOwner());
         if (auto list = druid->GetBoundAurasBySpellId(SPELL_DRUID_SUNFIRE))
             for (auto&& itr : *list)
-                AddTarget(itr->GetUnitOwner());
+                if (itr->GetUnitOwner())
+                    AddTarget(itr->GetUnitOwner());
         if (uniqueTargets.empty())
         {
             TC_LOG_ERROR("misc", "spell_dru_shooting_stars_proc::CheckProc - Shit happened! GUID: %u", druid->GetGUID().GetCounter());
