@@ -24,6 +24,7 @@
 
 #include "AiFactory.h"
 #include "ChannelMgr.h"
+#include "ChatHelper.h"
 #include "CreatureAIImpl.h"
 #include "Engine.h"
 #include "ExternalEventHelper.h"
@@ -152,6 +153,7 @@ PlayerbotAI::PlayerbotAI(Player* bot)
     masterIncomingPacketHandlers.AddHandler(CMSG_LFG_TELEPORT, "lfg teleport");
 
     botOutgoingPacketHandlers.AddHandler(SMSG_LEVELUP_INFO, "levelup");
+    botOutgoingPacketHandlers.AddHandler(SMSG_MOVE_UPDATE_RUN_SPEED, "check mount state");
     botOutgoingPacketHandlers.AddHandler(SMSG_GROUP_INVITE, "group invite");
     botOutgoingPacketHandlers.AddHandler(SMSG_GROUP_DESTROYED, "group destroyed");
     botOutgoingPacketHandlers.AddHandler(SMSG_DUEL_REQUESTED, "duel requested");

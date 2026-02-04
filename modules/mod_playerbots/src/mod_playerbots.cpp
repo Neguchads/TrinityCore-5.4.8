@@ -25,6 +25,7 @@
 #include "RandomPlayerbotMgr.h"
 #include "RandomItemManager.h"
 #include "RandomPlayerbotBracketMgr.h"
+#include "TravelMgr.h"
 
 #include "Authentication/AuthCrypt.h"
 #include "CharacterHandler.h"
@@ -139,6 +140,8 @@ public:
 
             sRandomPlayerbotMgr->Reserve(sPlayerbotAIConfig->maxRandomBots);
             sRandomItemMgr->Init();
+
+            TravelMgr::instance().LoadQuestTravelTable();
 
             TC_LOG_INFO("playerbots", "Playerbots enabled: %s", sPlayerbotAIConfig->enabled ? "Yes" : "No");
             TC_LOG_INFO("playerbots", "Playerbots min/max to load: %u/%u", sPlayerbotAIConfig->minRandomBots, sPlayerbotAIConfig->maxRandomBots);

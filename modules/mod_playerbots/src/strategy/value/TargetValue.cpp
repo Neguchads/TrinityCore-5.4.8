@@ -119,3 +119,17 @@ bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
 
     return false;
 }
+
+WorldPosition LastLongMoveValue::Calculate()
+{
+    LastMovement& lastMove = *context->GetValue<LastMovement&>("last movement");
+    if (!lastMove.lastMoveShort.IsValid())
+        return WorldPosition();
+
+    return lastMove.lastMoveShort;
+}
+
+WorldPosition HomeBindValue::Calculate()
+{
+    return WorldPosition(bot->m_homebindMapId, bot->m_homebindX, bot->m_homebindY, bot->m_homebindZ, 0.f);
+}

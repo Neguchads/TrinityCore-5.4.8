@@ -11,6 +11,7 @@ public:
     TravelStrategy(PlayerbotAI* botAI);
 
     std::string const getName() override { return "travel"; }
+    NextAction** getDefaultActions() override;
     void InitTriggers(std::vector<TriggerNode*>& triggers) override;
 };
 

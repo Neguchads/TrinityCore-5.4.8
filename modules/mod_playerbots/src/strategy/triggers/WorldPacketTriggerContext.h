@@ -26,6 +26,7 @@ public:
         creators["lfg role check"] = &WorldPacketTriggerContext::lfg_role_check;
         creators["lfg proposal"] = &WorldPacketTriggerContext::lfg_proposal;
         creators["lfg teleport"] = &WorldPacketTriggerContext::lfg_teleport;
+        creators["check mount state"] = &WorldPacketTriggerContext::check_mount_state;
     }
 
 private:
@@ -44,6 +45,7 @@ private:
     static Trigger* lfg_role_check(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg role check"); }
     static Trigger* lfg_proposal(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg proposal"); }
     static Trigger* lfg_teleport(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg teleport"); }
+    static Trigger* check_mount_state(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "check mount state"); }
 };
 
 #endif

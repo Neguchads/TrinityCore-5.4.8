@@ -11,6 +11,8 @@
 
 #include <boost/functional/hash.hpp>
 #include <random>
+#include <string>
+#include <vector>
 
 class GuidPosition;
 class ObjectGuid;
@@ -132,6 +134,7 @@ public:
     std::string const print();
 
     std::string const to_string();
+    std::vector<std::string> split(const std::string& s, char delimiter);
 
     void printWKT(std::vector<WorldPosition> points, std::ostringstream& out, uint32 dim = 0, bool loop = false);
     void printWKT(std::ostringstream& out) { printWKT({ *this }, out); }
@@ -141,6 +144,7 @@ public:
     bool isOverworld();
     bool isInWater();
     bool isUnderWater();
+    bool IsValid();
 
     WorldPosition relPoint(WorldPosition* center);
     WorldPosition offset(WorldPosition* center);
@@ -321,6 +325,12 @@ public:
     bool GetReachableRandomPointOnGround(Player* bot, float radius, bool randomRange = true);
 
     uint32 getUnitsAggro(GuidVector& units, Player* bot);
+
+    // Creatures
+    std::vector<CreatureData const*> getCreaturesNear(float radius = 0, uint32 entry = 0);
+
+    // GameObjects
+    std::vector<GameObjectData const*> getGameObjectsNear(float radius = 0, uint32 entry = 0);
 private:
     uint32 visitors = 0;
 };
@@ -381,6 +391,70 @@ public:
 
 private:
     bool loadedFromDB;
+};
+
+// Generic creature finder
+class FindPointCreatureData
+{
+public:
+    FindPointCreatureData(WorldPosition point1 = WorldPosition(), float radius1 = 0, uint32 entry1 = 0)
+    {
+        point = point1;
+        radius = radius1;
+        entry = entry1;
+    }
+
+    void operator()(CreatureData const& dataPair);
+    std::vector<CreatureData const*> GetResult() const { return data; };
+
+private:
+    WorldPosition point;
+    float radius = 0.0f;
+    uint32 entry = 0;
+
+    std::vector<CreatureData const*> data;
+};
+
+// Generic gameObject finder
+class FindPointGameObjectData
+{
+public:
+    FindPointGameObjectData(WorldPosition point1 = WorldPosition(), float radius1 = 0, uint32 entry1 = 0)
+    {
+        point = point1;
+        radius = radius1;
+        entry = entry1;
+    }
+
+    void operator()(GameObjectData const& dataPair);
+    std::vector<GameObjectData const*> GetResult() const { return data; };
+
+private:
+    WorldPosition point;
+    float radius = 0.0f;
+    uint32 entry = 0;
+
+    std::vector<GameObjectData const*> data;
+};
+
+template <class T>
+std::vector<std::pair<T, WorldPosition>> GetPosList(std::vector<T> oList)
+{
+    std::vector<std::pair<T, WorldPosition>> retList;
+    for (auto& obj : oList)
+        retList.push_back(std::make_pair(obj, WorldPosition(obj)));
+
+    return std::move(retList);
+};
+
+template <class T>
+std::vector<std::pair<T, WorldPosition>> GetPosVector(std::vector<T> oList)
+{
+    std::vector<std::pair<T, WorldPosition>> retList;
+    for (auto& obj : oList)
+        retList.push_back(std::make_pair(obj, WorldPosition(obj)));
+
+    return std::move(retList);
 };
 
 #endif /*_PLAYERBOT_WORLD_POSITION_H*/

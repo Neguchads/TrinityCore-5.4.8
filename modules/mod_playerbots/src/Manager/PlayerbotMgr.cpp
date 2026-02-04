@@ -24,6 +24,7 @@
 
 #include "BotFactory.h"
 #include "Helper.h"
+#include "PlayerbotAI.h"
 #include "PlayerbotAIConfig.h"
 #include "CharacterCache.h"
 #include "ChannelMgr.h"
@@ -701,6 +702,71 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
     if (!cmd)
     {
         messages.push_back("usage: list/reload/tweak/self or add/init/remove PLAYERNAME or addclass CLASSNAME");
+        return messages;
+    }
+
+    auto parseState = [](char const* stateText) -> BotState
+    {
+        if (!stateText)
+            return BOT_STATE_NON_COMBAT;
+
+        if (!strcmp(stateText, "combat"))
+            return BOT_STATE_COMBAT;
+        if (!strcmp(stateText, "dead"))
+            return BOT_STATE_DEAD;
+        if (!strcmp(stateText, "noncombat") || !strcmp(stateText, "nc"))
+            return BOT_STATE_NON_COMBAT;
+
+        return BOT_STATE_NON_COMBAT;
+    };
+
+    if (!strcmp(cmd, "strategy") || (!strcmp(cmd, "add") && charname && !strcmp(charname, "strategy")))
+    {
+        char* strategyName = (!strcmp(cmd, "strategy")) ? charname : strtok(nullptr, " ");
+        char* stateText = strtok(nullptr, " ");
+
+        if (!strategyName)
+        {
+            messages.push_back("usage: add strategy <name> [combat|noncombat|dead]");
+            return messages;
+        }
+
+        BotState state = parseState(stateText);
+        std::string change = "+" + std::string(strategyName);
+
+        uint32 applied = 0;
+        if (master && master->GetTarget())
+        {
+            if (Player* target = ObjectAccessor::FindConnectedPlayer(master->GetTarget()))
+            {
+                if (PlayerbotAI* ai = GET_PLAYERBOT_AI(target))
+                {
+                    ai->ChangeStrategy(change, state);
+                    applied++;
+                }
+            }
+        }
+
+        if (applied == 0)
+        {
+            for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
+            {
+                if (Player* bot = it->second)
+                {
+                    if (PlayerbotAI* ai = GET_PLAYERBOT_AI(bot))
+                    {
+                        ai->ChangeStrategy(change, state);
+                        applied++;
+                    }
+                }
+            }
+        }
+
+        if (applied == 0)
+            messages.push_back("No bots found to apply strategy.");
+        else
+            messages.push_back("Strategy added: " + std::string(strategyName));
+
         return messages;
     }
 

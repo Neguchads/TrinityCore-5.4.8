@@ -3,6 +3,7 @@
 
 #include "AttackActions.h"
 #include "ActionSayHello.h"
+#include "CheckMountStateAction.h"
 #include "AutoMaintenanceOnLevelupAction.h"
 #include "BattleGroundJoinAction.h"
 #include "BattleGroundTactics.h"
@@ -24,6 +25,9 @@
 #include "StayActions.h"
 #include "StartDuelAction.h"
 #include "TellTargetAction.h"
+#include "TravelAction.h"
+#include "ChooseTravelTargetAction.h"
+#include "MoveToTravelTargetAction.h"
 #include "UseItemAction.h"
 #include "VehicleActions.h"
 
@@ -40,6 +44,10 @@ public:
         creators["greet"] = &ActionContext::greet;
         creators["move random"] = &ActionContext::move_random;
         creators["move out of collision"] = &ActionContext::move_out_of_collision;
+        creators["travel"] = &ActionContext::travel;
+        creators["choose travel target"] = &ActionContext::choose_travel_target;
+        creators["move to travel target"] = &ActionContext::move_to_travel_target;
+        creators["check mount state"] = &ActionContext::check_mount_state;
 
         creators["follow"] = &ActionContext::follow;
         creators["flee"] = &ActionContext::flee;
@@ -136,6 +144,10 @@ private:
     static Action* greet(PlayerbotAI* botAI) { return new GreetAction(botAI); }
     static Action* move_random(PlayerbotAI* botAI) { return new MoveRandomAction(botAI); }
     static Action* move_out_of_collision(PlayerbotAI* botAI) { return new MoveOutOfCollisionAction(botAI); }
+    static Action* travel(PlayerbotAI* botAI) { return new TravelAction(botAI); }
+    static Action* choose_travel_target(PlayerbotAI* botAI) { return new ChooseTravelTargetAction(botAI); }
+    static Action* move_to_travel_target(PlayerbotAI* botAI) { return new MoveToTravelTargetAction(botAI); }
+    static Action* check_mount_state(PlayerbotAI* botAI) { return new CheckMountStateAction(botAI); }
 
     static Action* follow(PlayerbotAI* botAI) { return new FollowAction(botAI); }
     static Action* flee(PlayerbotAI* botAI) { return new FleeAction(botAI); }

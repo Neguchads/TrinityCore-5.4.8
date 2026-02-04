@@ -56,6 +56,7 @@
 #include "RtiTargetValue.h"
 #include "NewPlayerNearbyValue.h"
 #include "SnareTargetValue.h"
+#include "TargetValue.h"
 
 class PlayerbotAI;
 class ValueContext : public NamedObjectContext<UntypedValue>
@@ -127,6 +128,11 @@ public:
         creators["old target"] = &ValueContext::old_target;
         creators["grind target"] = &ValueContext::grind_target;
         creators["pull target"] = &ValueContext::pull_target;
+        creators["rpg target"] = &ValueContext::rpg_target;
+        creators["travel target"] = &ValueContext::travel_target;
+        creators["ignore rpg target"] = &ValueContext::ignore_rpg_target;
+        creators["last long move"] = &ValueContext::last_long_move;
+        creators["home bind"] = &ValueContext::home_bind;
         creators["invalid target"] = &ValueContext::invalid_target;
         creators["nearest friendly players"] = &ValueContext::nearest_friendly_players;
         creators["closest friendly players"] = &ValueContext::closest_friendly_players;
@@ -262,6 +268,11 @@ private:
     static UntypedValue* old_target(PlayerbotAI* botAI) { return new CurrentTargetValue(botAI); }
     static UntypedValue* grind_target(PlayerbotAI* botAI) { return new GrindTargetValue(botAI); }
     static UntypedValue* pull_target(PlayerbotAI* botAI) { return new PullTargetValue(botAI); }
+    static UntypedValue* rpg_target(PlayerbotAI* botAI) { return new RpgTargetValue(botAI); }
+    static UntypedValue* travel_target(PlayerbotAI* botAI) { return new TravelTargetValue(botAI); }
+    static UntypedValue* ignore_rpg_target(PlayerbotAI* botAI) { return new IgnoreRpgTargetValue(botAI); }
+    static UntypedValue* last_long_move(PlayerbotAI* botAI) { return new LastLongMoveValue(botAI); }
+    static UntypedValue* home_bind(PlayerbotAI* botAI) { return new HomeBindValue(botAI); }
     static UntypedValue* invalid_target(PlayerbotAI* botAI) { return new InvalidTargetValue(botAI); }
     static UntypedValue* nearest_friendly_players(PlayerbotAI* botAI) { return new NearestFriendlyPlayersValue(botAI); }
     static UntypedValue* closest_friendly_players(PlayerbotAI* botAI) { return new NearestFriendlyPlayersValue(botAI, INTERACTION_DISTANCE); }

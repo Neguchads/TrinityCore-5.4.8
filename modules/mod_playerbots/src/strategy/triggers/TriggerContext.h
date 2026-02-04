@@ -13,6 +13,7 @@
 #include "RangeTriggers.h"
 #include "RtiTriggers.h"
 #include "NewRpgTriggers.h"
+#include "TravelTriggers.h"
 
 class PlayerbotAI;
 class TriggerContext : public NamedObjectContext<Trigger>
@@ -133,6 +134,8 @@ public:
         creators["go innkeeper status"] = &TriggerContext::go_innkeeper_status;
         creators["near random status"] = &TriggerContext::near_random_status;
         creators["near npc status"] = &TriggerContext::near_npc_status;
+        creators["no travel target"] = &TriggerContext::no_travel_target;
+        creators["far from travel target"] = &TriggerContext::far_from_travel_target;
     }
 
 private:
@@ -243,6 +246,8 @@ private:
     static Trigger* go_innkeeper_status(PlayerbotAI* botAI) { return new NewRpgStatusTrigger(botAI, NewRpgStatus::GO_INNKEEPER); }
     static Trigger* near_random_status(PlayerbotAI* botAI) { return new NewRpgStatusTrigger(botAI, NewRpgStatus::NEAR_RANDOM); }
     static Trigger* near_npc_status(PlayerbotAI* botAI) { return new NewRpgStatusTrigger(botAI, NewRpgStatus::NEAR_NPC); }
+    static Trigger* no_travel_target(PlayerbotAI* botAI) { return new NoTravelTargetTrigger(botAI); }
+    static Trigger* far_from_travel_target(PlayerbotAI* botAI) { return new FarFromTravelTargetTrigger(botAI); }
 };
 
 #endif

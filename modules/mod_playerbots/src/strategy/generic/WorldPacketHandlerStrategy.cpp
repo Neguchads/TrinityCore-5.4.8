@@ -30,6 +30,7 @@ WorldPacketHandlerStrategy::WorldPacketHandlerStrategy(PlayerbotAI* botAI) : Pas
     supported.push_back("lfg role check");
     supported.push_back("lfg teleport");
     supported.push_back("bg status");
+    supported.push_back("check mount state");
 }
 
 void ReadyCheckStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

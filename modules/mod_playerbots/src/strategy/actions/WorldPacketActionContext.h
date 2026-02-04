@@ -10,6 +10,7 @@
 #include "AcceptResurrectAction.h"
 #include "AcceptInvitationAction.h"
 #include "BattleGroundJoinAction.h"
+#include "CheckMountStateAction.h"
 #include "ReleaseSpiritAction.h"
 #include "ReviveFromCorpseAction.h"
 #include "LeaveGroupAction.h"
@@ -38,6 +39,7 @@ public:
         creators["lfg teleport"] = &WorldPacketActionContext::lfg_teleport;
         creators["bg status"] = &WorldPacketActionContext::bg_status;
         creators["bg strategy check"] = &WorldPacketActionContext::bg_strategy_check;
+        creators["check mount state"] = &WorldPacketActionContext::check_mount_state;
     }
 
 private:
@@ -54,6 +56,7 @@ private:
     static Action* lfg_teleport(PlayerbotAI* botAI) { return new LfgTeleportAction(botAI); }
     static Action* bg_status(PlayerbotAI* botAI) { return new BGStatusAction(botAI); }
     static Action* bg_strategy_check(PlayerbotAI* botAI) { return new BGStrategyCheckAction(botAI); }
+    static Action* check_mount_state(PlayerbotAI* botAI) { return new CheckMountStateAction(botAI); }
 };
 
 #endif
