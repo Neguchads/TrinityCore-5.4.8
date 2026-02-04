@@ -1114,3 +1114,52 @@ INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probab
   (55689,7,0,'You should have run, dog!',14,0,100,0,0,26255,55648,'hagara kill'),
   (55689,8,0,'Cowards! You pack of weakling...dogs...',14,0,100,0,0,26243,55715,'hagara death');
 -- END 2026_02_04_10_world.sql
+
+-- BEGIN 2026_02_04_11_world.sql
+-- Fix Dragon Soul post-Hagara dialogue group mapping (Ysera/Nozdormu/Kalecgos/Alexstrasza/Thrall)
+DELETE FROM creature_text WHERE CreatureID=56665 AND GroupID IN (1,2);
+INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
+  (56665,1,0,'Praise the Titans, they have returned!',14,0,100,0,0,26145,56694,'Ysera say'),
+  (56665,2,0,'I sense a great disturbance in the balance approaching. The chaos of it burns my mind!',14,0,100,0,0,26148,55321,'Ysera say');
+DELETE FROM creature_text WHERE CreatureID=56666 AND GroupID=0;
+INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
+  (56666,0,0,'Not entirely unexpected.',14,0,100,0,0,25953,56695,'Nozdormu say');
+DELETE FROM creature_text WHERE CreatureID=56664 AND GroupID=3;
+INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
+  (56664,3,0,'Excellent! We will begin the ritual at once!',14,0,100,0,0,26262,56696,'Kalecgos say');
+DELETE FROM creature_text WHERE CreatureID=56630 AND GroupID=1;
+INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
+  (56630,1,0,'The ritual will take much from us, as it requires a very piece of our being. We will be weakened greatly.',14,0,100,0,0,26504,56699,'Alexstrasza say');
+DELETE FROM creature_text WHERE CreatureID=56667 AND GroupID IN (2,3,4,5);
+INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
+  (56667,3,0,'Heroes, this burden falls to you once again.',14,0,100,0,0,25898,56703,'Thrall say'),
+  (56667,4,0,'You must protect us from Deathwing's forces while we imbue the Dragon Soul with the power of the Aspects.',14,0,100,0,0,25899,56723,'Thrall say'),
+  (56667,5,0,'Speak to me when you are ready to begin.',14,0,100,0,0,25900,56724,'Thrall say');
+-- END 2026_02_04_11_world.sql
+
+-- BEGIN 2026_02_04_12_world.sql
+-- Fix post-Hagara dialogue groups + audio (Ysera/Nozdormu/Kalecgos/Alexstrasza/Thrall)
+DELETE FROM creature_text WHERE CreatureID=56665 AND GroupID IN (1,2);
+INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
+  (56665,1,0,'Praise the Titans, they have returned!',14,0,100,0,0,26145,56694,'Ysera say'),
+  (56665,2,0,'I sense danger... it is a trap... carefully laid for us at this crucial moment.',14,0,100,0,0,26147,56669,'Ysera say');
+DELETE FROM creature_text WHERE CreatureID=56666 AND GroupID=0;
+INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
+  (56666,0,0,'Not entirely unexpected.',14,0,100,0,0,25953,56695,'Nozdormu say');
+DELETE FROM creature_text WHERE CreatureID=56664 AND GroupID IN (0,1,2,3);
+INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
+  (56664,0,0,'Not necessarily. I believe... yes...it just might work.',14,0,100,0,0,26547,56664,'Kalecgos say'),
+  (56664,1,0,'The Focusing Iris within the Eye of Eternity may allow us to converge the magical matrix contained within the Dragon Soul.',14,0,100,0,0,26265,56733,'Kalecgos say'),
+  (56664,2,0,'Then I will open the way into the Eye of Eternity. You must not fail, heroes. The future of Azeroth hinges on your actions.',14,0,100,0,0,26266,56665,'Kalecgos say'),
+  (56664,3,0,'Excellent! We will begin the ritual at once!',14,0,100,0,0,26262,56696,'Kalecgos say');
+DELETE FROM creature_text WHERE CreatureID=56630 AND GroupID IN (1,2,5);
+INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
+  (56630,1,0,'The ritual will take much from us, as it requires a very piece of our being. We will be weakened greatly.',14,0,100,0,0,26504,56699,'Alexstrasza say'),
+  (56630,2,0,'Then truly, we are lost.',14,0,100,0,0,26503,56668,'Alexstrasza say'),
+  (56630,5,0,'It is done! Our power now resides within the Dragon Soul! Our fate lies with you, Earth-Warder!',14,0,100,0,0,26507,56530,'Alexstrasza say');
+DELETE FROM creature_text WHERE CreatureID=56667 AND GroupID IN (3,4,5);
+INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
+  (56667,3,0,'Heroes, this burden falls to you once again.',14,0,100,0,0,25898,56703,'Thrall say'),
+  (56667,4,0,'You must protect us from Deathwing's forces while we imbue the Dragon Soul with the power of the Aspects.',14,0,100,0,0,25899,56723,'Thrall say'),
+  (56667,5,0,'Speak to me when you are ready to begin.',14,0,100,0,0,25900,56724,'Thrall say');
+-- END 2026_02_04_12_world.sql
