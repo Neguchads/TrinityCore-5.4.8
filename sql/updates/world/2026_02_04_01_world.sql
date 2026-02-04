@@ -1133,7 +1133,7 @@ INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probab
 DELETE FROM creature_text WHERE CreatureID=56667 AND GroupID IN (2,3,4,5);
 INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
   (56667,3,0,'Heroes, this burden falls to you once again.',14,0,100,0,0,25898,56703,'Thrall say'),
-  (56667,4,0,'You must protect us from Deathwing's forces while we imbue the Dragon Soul with the power of the Aspects.',14,0,100,0,0,25899,56723,'Thrall say'),
+  (56667,4,0,'You must protect us from Deathwing''s forces while we imbue the Dragon Soul with the power of the Aspects.',14,0,100,0,0,25899,56723,'Thrall say'),
   (56667,5,0,'Speak to me when you are ready to begin.',14,0,100,0,0,25900,56724,'Thrall say');
 -- END 2026_02_04_11_world.sql
 
@@ -1160,6 +1160,6 @@ INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probab
 DELETE FROM creature_text WHERE CreatureID=56667 AND GroupID IN (3,4,5);
 INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probability, Emote, Duration, Sound, BroadcastTextId, Comment) VALUES
   (56667,3,0,'Heroes, this burden falls to you once again.',14,0,100,0,0,25898,56703,'Thrall say'),
-  (56667,4,0,'You must protect us from Deathwing's forces while we imbue the Dragon Soul with the power of the Aspects.',14,0,100,0,0,25899,56723,'Thrall say'),
+  (56667,4,0,'You must protect us from Deathwing''s forces while we imbue the Dragon Soul with the power of the Aspects.',14,0,100,0,0,25899,56723,'Thrall say'),
   (56667,5,0,'Speak to me when you are ready to begin.',14,0,100,0,0,25900,56724,'Thrall say');
 -- END 2026_02_04_12_world.sql
