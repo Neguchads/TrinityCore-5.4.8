@@ -143,6 +143,7 @@ INSERT INTO `smart_scripts` (
 -- Keeshan (post-boat dialog)
 (43458, 0, 0, 0, 10, 0, 100, 1, 1, 20, 0, 0, 0, 80, 4345800, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Keeshan - On Player With Quest Complete Near - Run Script'),
 (43458, 0, 1, 0, 20, 0, 100, 0, 26616, 0, 0, 0, 0, 78, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Keeshan - On Quest Complete - Reset Script'),
+(43458, 0, 2, 0, 1, 0, 100, 1, 1000, 1000, 0, 0, 0, 80, 4345800, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Keeshan - OOC Update (Quest Complete + Nearby) - Run Script'),
 
 -- Post-boat dialog script
 (4345800, 9, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 64, 0, 1, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 'Script - Store Target List'),
@@ -171,6 +172,8 @@ INSERT INTO `smart_scripts` (
 DELETE FROM `conditions`
 WHERE `SourceTypeOrReferenceId`=22 AND `SourceEntry`=43458 AND `SourceId`=0 AND `SourceGroup`=1;
 DELETE FROM `conditions`
+WHERE `SourceTypeOrReferenceId`=22 AND `SourceEntry`=43458 AND `SourceId`=0 AND `SourceGroup`=3;
+DELETE FROM `conditions`
 WHERE `SourceTypeOrReferenceId`=22 AND `SourceEntry`=43443 AND `SourceId`=0 AND `SourceGroup`=1;
 DELETE FROM `conditions`
 WHERE `SourceTypeOrReferenceId`=22 AND `SourceEntry`=112962 AND `SourceId`=0 AND `SourceGroup`=0;
@@ -179,6 +182,8 @@ WHERE `SourceTypeOrReferenceId`=18 AND `SourceGroup`=43450 AND `SourceEntry`=465
 INSERT INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`) VALUES
 (22, 1, 43458, 0, 1, 32, 0, 144, 0, 0, 0, 0, 0, '', 'Script only runs on Player on Distance'),
 (22, 1, 43458, 0, 1, 28, 0, 26616, 0, 0, 0, 0, 0, '', 'Script Only Runs if player has completed Quest Objectives'),
+(22, 3, 43458, 0, 1, 28, 0, 26616, 0, 0, 0, 0, 0, '', 'Script Only Runs if player has completed Quest Objectives'),
+(22, 3, 43458, 0, 1, 35, 0, 1, 20, 4, 0, 0, 0, '', 'Script only runs if player within 20 yards'),
 (22, 1, 43443, 0, 0, 9, 0, 26616, 0, 0, 0, 0, 0, '', 'Boat click only if quest is active'),
 (22, 1, 43443, 0, 0, 29, 0, 43450, 90, 0, 0, 0, 0, '', 'Boat click only if boat nearby'),
 (22, 2, 43443, 0, 0, 9, 0, 26616, 0, 0, 0, 0, 0, '', 'Boat summon only if quest is active'),
