@@ -239,6 +239,10 @@ enum SharedSpells
 {
     SPELL_TELEPORT_VISUAL_ACTIVE                = 108203,
     SPELL_TELEPORT_VISUAL_DISABLED              = 108227,
+
+    SPELL_WARDEN_RING_GREEN                     = 95514,
+    SPELL_WARDEN_RING_ORANGE                    = 110468,
+    SPELL_WARDEN_RING_YELLOW                    = 110469,
     
     SPELL_CHARGING_UP_LIFE                      = 108490,
     SPELL_CHARGING_UP_MAGIC                     = 108491,

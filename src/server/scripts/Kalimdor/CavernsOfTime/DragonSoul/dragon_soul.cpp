@@ -1238,21 +1238,30 @@ class npc_dragon_soul_teleport : public CreatureScript
                         break;
                     case NPC_VALEERA:
                         if (instance->GetBossState(DATA_MORCHOK) == DONE)
+                        {
+                            creature->CastSpell(creature, SPELL_WARDEN_RING_GREEN, true);
                             if (TempSummon* taxi = player->SummonCreature(572890, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(),
                                 player->GetOrientation(), TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300 * IN_MILLISECONDS))
                                 player->CastCustomSpell(VEHICLE_SPELL_RIDE_HARDCODED, SPELLVALUE_BASE_POINT0, 1, taxi, false);
+                        }
                         break;
                     case NPC_EIENDORMI:
                         if (instance->GetBossState(DATA_MORCHOK) == DONE)
+                        {
+                            creature->CastSpell(creature, SPELL_WARDEN_RING_YELLOW, true);
                             if (TempSummon* taxi = player->SummonCreature(572880, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(),
                                 player->GetOrientation(), TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300 * IN_MILLISECONDS))
                                 player->CastCustomSpell(VEHICLE_SPELL_RIDE_HARDCODED, SPELLVALUE_BASE_POINT0, 1, taxi, false);
+                        }
                         break;
                     case NPC_NETHESTRASZ:
                         if (instance->GetBossState(DATA_YORSAHJ) == DONE && instance->GetBossState(DATA_ZONOZZ) == DONE)
+                        {
+                            creature->CastSpell(creature, SPELL_WARDEN_RING_ORANGE, true);
                             if (TempSummon* taxi = player->SummonCreature(572870, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(),
                                 player->GetOrientation(), TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300 * IN_MILLISECONDS))
                                 player->CastCustomSpell(VEHICLE_SPELL_RIDE_HARDCODED, SPELLVALUE_BASE_POINT0, 1, taxi, false);
+                        }
                         break;
                     case NPC_TRAVEL_TO_EYE_OF_ETERNITY:
                         if (instance->GetBossState(DATA_YORSAHJ) == DONE && instance->GetBossState(DATA_ZONOZZ) == DONE)

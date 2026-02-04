@@ -332,8 +332,13 @@ class instance_dragon_soul : public InstanceMapScript
                         uiEyeofEternityGUID = creature->GetGUID();
                         wyrmrestsummitGUIDs.push_back(creature->GetGUID());
                         teleportGUIDs.push_back(creature->GetGUID());
-                        SetPortalState(creature, GetData(DATA_OPEN_PORTAL_TO_EYE) == DONE);
-                        creature->SetVisible(GetData(DATA_OPEN_PORTAL_TO_EYE) == DONE);
+                        DeactivatePortal(creature);
+                        creature->SetVisible(false);
+                        if (GetData(DATA_OPEN_PORTAL_TO_EYE) == DONE)
+                        {
+                            ActivatePortal(creature);
+                            creature->SetVisible(true);
+                        }
                         break;
                     case NPC_TRAVEL_TO_DECK:
                         uiDeckGUID = creature->GetGUID();
@@ -570,6 +575,7 @@ class instance_dragon_soul : public InstanceMapScript
                             if (Creature* EyeofEternityTele = instance->GetCreature(uiEyeofEternityGUID))
                             {
                                 ActivatePortal(EyeofEternityTele);
+                                EyeofEternityTele->SetVisible(true);
                                 SaveToDB();
                             }
                         break;
