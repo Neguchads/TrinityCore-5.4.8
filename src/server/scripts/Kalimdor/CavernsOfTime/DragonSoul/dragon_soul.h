@@ -152,6 +152,9 @@ enum CreatureIds
     NPC_NETHESTRASZ                 = 57287, // teleport upstairs
     NPC_EIENDORMI                   = 57288, // teleport to Yor'sahj
     NPC_VALEERA                     = 57289, // teleport to Zon'ozz
+    NPC_NETHESTRASZ_TAXI            = 572870, // taxi vehicle to Wyrmrest Summit
+    NPC_EIENDORMI_TAXI              = 572880, // taxi vehicle to Yor'sahj
+    NPC_VALEERA_TAXI                = 572890, // taxi vehicle to Zon'ozz
     NPC_TRAVEL_TO_WYRMREST_TEMPLE   = 57328, //
     NPC_TRAVEL_TO_WYRMREST_BASE     = 57882, //
     NPC_TRAVEL_TO_WYRMREST_SUMMIT   = 57379, //
