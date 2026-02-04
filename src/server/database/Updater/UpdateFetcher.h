@@ -56,6 +56,12 @@ public:
         std::function<void(Path const& path)> const& applyFile,
         std::function<QueryResult(std::string const&)> const& retrieve,
         std::string const& dbModuleName);
+    UpdateFetcher(Path const& updateDirectory,
+        std::function<void(std::string const&)> const& apply,
+        std::function<void(Path const& path)> const& applyFile,
+        std::function<QueryResult(std::string const&)> const& retrieve,
+        std::string const& dbModuleName,
+        std::string const& modulesList);
     ~UpdateFetcher();
 
     UpdateResult Update(bool const redundancyChecks, bool const allowRehash,
@@ -71,7 +77,10 @@ private:
     enum State
     {
         RELEASED,
-        ARCHIVED
+        CUSTOM,
+        MODULE,
+        ARCHIVED,
+        PENDING
     };
 
     struct AppliedFileEntry
@@ -89,12 +98,34 @@ private:
 
         static inline State StateConvert(std::string const& state)
         {
-            return (state == "RELEASED") ? RELEASED : ARCHIVED;
+            if (state == "RELEASED")
+                return RELEASED;
+            if (state == "CUSTOM")
+                return CUSTOM;
+            if (state == "MODULE")
+                return MODULE;
+            if (state == "PENDING")
+                return PENDING;
+            return ARCHIVED;
         }
 
         static inline std::string StateConvert(State const state)
         {
-            return (state == RELEASED) ? "RELEASED" : "ARCHIVED";
+            switch (state)
+            {
+                case RELEASED:
+                    return "RELEASED";
+                case CUSTOM:
+                    return "CUSTOM";
+                case MODULE:
+                    return "MODULE";
+                case ARCHIVED:
+                    return "ARCHIVED";
+                case PENDING:
+                    return "PENDING";
+                default:
+                    return "";
+            }
         }
 
         std::string GetStateAsString() const
@@ -141,6 +172,7 @@ private:
     std::function<QueryResult(std::string const&)> const _retrieve;
 
     std::string const _dbModuleName;
+    std::string const _modulesList;
 };
 
 #endif // UpdateFetcher_h__

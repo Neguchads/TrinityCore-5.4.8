@@ -83,6 +83,7 @@ public:
     static bool Create(DatabaseWorkerPool<T>& pool);
 
     static bool Update(DatabaseWorkerPool<T>& pool);
+    static bool Update(DatabaseWorkerPool<T>& pool, std::string const& modulesList);
 
     static bool Populate(DatabaseWorkerPool<T>& pool);
 

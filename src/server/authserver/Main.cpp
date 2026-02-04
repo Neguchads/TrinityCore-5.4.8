@@ -38,6 +38,9 @@
 #include "RealmList.h"
 #include "SignalHandler.h"
 #include "Util.h"
+#ifndef TC_MODULES_LIST
+#define TC_MODULES_LIST ""
+#endif
 #include <boost/asio/signal_set.hpp>
 #include <boost/dll/runtime_symbol_info.hpp>
 #include <boost/program_options.hpp>
@@ -247,7 +250,7 @@ bool StartDB()
         synch_threads = 1;
     }
 
-    DatabaseLoader loader("server.authserver", DatabaseLoader::DATABASE_NONE);
+    DatabaseLoader loader("server.authserver", DatabaseLoader::DATABASE_MASK_ALL, TC_MODULES_LIST);
     loader
         .AddDatabase(LoginDatabase, "Login");
 

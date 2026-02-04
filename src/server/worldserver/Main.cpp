@@ -38,6 +38,9 @@
 #include "CliRunnable.h"
 #include "DeadlineTimer.h"
 #include "GitRevision.h"
+#ifndef TC_MODULES_LIST
+#define TC_MODULES_LIST ""
+#endif
 #include "IoContext.h"
 #include "InstanceSaveMgr.h"
 #include "Log.h"
@@ -570,7 +573,7 @@ bool StartDB()
     MySQL::Library_Init();
 
     // Load databases
-    DatabaseLoader loader("server.worldserver", DatabaseLoader::DATABASE_NONE);
+    DatabaseLoader loader("server.worldserver", DatabaseLoader::DATABASE_MASK_ALL, TC_MODULES_LIST);
     loader
         .AddDatabase(LoginDatabase, "Login")
         .AddDatabase(CharacterDatabase, "Character")

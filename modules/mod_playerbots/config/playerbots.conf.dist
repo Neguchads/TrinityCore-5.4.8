@@ -1439,14 +1439,6 @@ AiPlayerbot.RandomClassSpecIndex.11.3 = 3
 #
 #
 
-#    Playerbot.Updates.EnableDatabases
-#        Description: Determined if updates system work with playerbot tables (characters/world).
-#
-#        Default:     1  - (Enabled)
-#                     0  - (Disabled)
-
-Playerbots.Updates.EnableDatabases = 1
-
 # Command server port, 0 - disabled
 AiPlayerbot.CommandServerPort = 8888
 

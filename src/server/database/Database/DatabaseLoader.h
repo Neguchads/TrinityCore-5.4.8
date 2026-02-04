@@ -33,7 +33,7 @@ class DatabaseWorkerPool;
 class TC_DATABASE_API DatabaseLoader
 {
 public:
-    DatabaseLoader(std::string const& logger, uint32 const defaultUpdateMask);
+    DatabaseLoader(std::string const& logger, uint32 const defaultUpdateMask, std::string const& modulesList = {});
 
     // Register a database to the loader (lazy implemented)
     template <class T>
@@ -70,6 +70,7 @@ private:
     bool Process(std::queue<Predicate>& queue);
 
     std::string const _logger;
+    std::string const _modulesList;
     bool const _autoSetup;
     uint32 _updateFlags;
 

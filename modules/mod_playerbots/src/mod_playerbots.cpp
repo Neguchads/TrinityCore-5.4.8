@@ -9,8 +9,6 @@
 #include "ChannelMgr.h"
 #include "Config.h"
 #include "cs_playerbots.h"
-#include "DatabaseEnv.h"
-#include "DBUpdater.h"
 #include "Log.h"
 #include "Player.h"
 #include "ScriptMgr.h"
@@ -91,33 +89,6 @@ class mod_playerbots : public PlayerScript
 public:
     mod_playerbots() : PlayerScript("mod_playerbots") {}
     /*void OnLogin(Player* player) override{}*/
-};
-
-class PlayerbotsDatabaseScript : public DatabaseScript
-{
-public:
-    PlayerbotsDatabaseScript() : DatabaseScript("PlayerbotsDatabaseScript") {}
-
-    static bool ApplyUpdates()
-    {
-        if (!sConfigMgr->GetBoolDefault("Playerbots.Updates.EnableDatabases", true))
-            return true;
-
-        CharacterDatabase.PExecute("INSERT IGNORE INTO updates_include (`path`, `state`) VALUES ('$/modules/mod_playerbots/data/sql/characters/updates', 'RELEASED')");
-        WorldDatabase.PExecute("INSERT IGNORE INTO updates_include (`path`, `state`) VALUES ('$/modules/mod_playerbots/data/sql/world/updates', 'RELEASED')");
-
-        if (!DBUpdater<CharacterDatabaseConnection>::Update(CharacterDatabase))
-            return false;
-        if (!DBUpdater<WorldDatabaseConnection>::Update(WorldDatabase))
-            return false;
-
-        return true;
-    }
-
-    bool OnDatabasesLoading() override
-    {
-        return ApplyUpdates();
-    }
 };
 
 class PlayerbotsWorldScript : public WorldScript
@@ -387,8 +358,6 @@ public:
 void Addmod_playerbotsScripts()
 {
     new mod_playerbots();
-
-    new PlayerbotsDatabaseScript();
     new PlayerbotsServerScript();
     new PlayerbotsWorldScript();
     new PlayerbotsScript();

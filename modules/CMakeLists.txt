@@ -35,6 +35,24 @@ endif()
 
 message(STATUS "Modules : ${VALID_MODULES}")
 
+set(MODULES_LIST "")
+foreach(MODULE ${VALID_MODULES})
+    if(MODULES_LIST STREQUAL "")
+        set(MODULES_LIST "${MODULE}")
+    else()
+        set(MODULES_LIST "${MODULES_LIST},${MODULE}")
+    endif()
+endforeach()
+
+if (NOT MODULES_LIST STREQUAL "")
+    if (TARGET worldserver)
+        target_compile_definitions(worldserver PRIVATE TC_MODULES_LIST="${MODULES_LIST}")
+    endif()
+    if (TARGET authserver)
+        target_compile_definitions(authserver PRIVATE TC_MODULES_LIST="${MODULES_LIST}")
+    endif()
+endif()
+
 # Collect module config templates
 file(GLOB_RECURSE MODULE_CONF_DISTS
   "${CMAKE_CURRENT_SOURCE_DIR}/*/conf/*.conf.dist"

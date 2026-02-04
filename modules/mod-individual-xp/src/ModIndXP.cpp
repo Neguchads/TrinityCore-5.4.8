@@ -6,7 +6,6 @@
 #include "Chat.h"
 #include "Object.h"
 #include "DatabaseEnv.h"
-#include "DBUpdater.h"
 #include "Log.h"
 #include <unordered_map>
 
@@ -63,28 +62,6 @@ static void SetPlayerRate(Player* player, uint32 rate)
     uint32 guid = player->GetGUID().GetCounter();
     sRatesByGuid[guid] = rate;
 }
-
-class IndividualXPDatabaseScript : public DatabaseScript
-{
-public:
-    IndividualXPDatabaseScript() : DatabaseScript("IndividualXPDatabaseScript") {}
-
-    bool OnDatabasesLoading() override
-    {
-        if (!sConfigMgr->GetBoolDefault("IndividualXP.Updates.EnableDatabases", true))
-            return true;
-
-        CharacterDatabase.PExecute("INSERT IGNORE INTO updates_include (`path`, `state`) VALUES ('$/modules/mod-individual-xp/data/sql/db-characters', 'RELEASED')");
-        WorldDatabase.PExecute("INSERT IGNORE INTO updates_include (`path`, `state`) VALUES ('$/modules/mod-individual-xp/data/sql/db-world', 'RELEASED')");
-
-        if (!DBUpdater<CharacterDatabaseConnection>::Update(CharacterDatabase))
-            return false;
-        if (!DBUpdater<WorldDatabaseConnection>::Update(WorldDatabase))
-            return false;
-
-        return true;
-    }
-};
 
 // Add IndividualXP Announcer
 class IndividualXP_Announce : public PlayerScript
@@ -284,7 +261,6 @@ class IndividualXPCommandScript : public CommandScript
 void AddModIndXPScripts()
 {
     new IndividualXPConfig();
-    new IndividualXPDatabaseScript();
     new IndividualXP_Announce();
     new IndividualXP();
     new IndividualXPCommandScript();

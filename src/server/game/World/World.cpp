@@ -2297,7 +2297,7 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO("server.loading", "Initializing Scripts...");
     sScriptMgr->Initialize();
     {
-        uint32 updateFlags = sConfigMgr->GetIntDefault("Updates.EnableDatabases", DatabaseLoader::DATABASE_NONE);
+        uint32 updateFlags = sConfigMgr->GetIntDefault("Updates.EnableDatabases", DatabaseLoader::DATABASE_MASK_ALL);
         sScriptMgr->OnAfterDatabasesLoaded(updateFlags);
     }
     if (!sScriptMgr->OnDatabasesLoading())
