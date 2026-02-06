@@ -1,6 +1,8 @@
 #include "CheckMountStateAction.h"
 
+#include "BotFactory.h"
 #include "ItemVisitors.h"
+#include "Log.h"
 #include "Playerbots.h"
 #include "SpellMgr.h"
 #include "TravelMgr.h"
@@ -10,26 +12,59 @@
 
 bool CheckMountStateAction::isUseful()
 {
+    bool debugMount =
+        botAI->HasStrategy("debug mount", BOT_STATE_NON_COMBAT) || botAI->HasStrategy("debug mount", BOT_STATE_COMBAT);
+
+    auto debugLog = [&](char const* msg)
+    {
+        if (debugMount)
+            TC_LOG_DEBUG("playerbots", "mount: {} ({})", msg, bot->GetName().c_str());
+    };
+
     if (botAI->IsInVehicle() || bot->isDead() || bot->HasUnitState(UNIT_STATE_IN_FLIGHT))
+    {
+        debugLog("not useful: vehicle/dead/in flight");
         return false;
+    }
 
     if (!bot->IsOutdoors())
+    {
+        debugLog("not useful: indoors");
         return false;
+    }
 
     if (bot->HasAuraType(SPELL_AURA_TRANSFORM) && bot->IsInDisallowedMountForm())
+    {
+        debugLog("not useful: disallowed mount form");
         return false;
+    }
 
     if (!GET_PLAYERBOT_AI(bot)->HasStrategy("mount", BOT_STATE_NON_COMBAT) && !bot->IsMounted())
+    {
+        debugLog("not useful: mount strategy disabled");
         return false;
+    }
 
     if (bot->GetLevel() < sPlayerbotAIConfig->useGroundMountAtMinLevel)
+    {
+        debugLog("not useful: below mount level");
         return false;
+    }
 
     return true;
 }
 
 bool CheckMountStateAction::Execute(Event /*event*/)
 {
+    bool debugMount =
+        botAI->HasStrategy("debug mount", BOT_STATE_NON_COMBAT) || botAI->HasStrategy("debug mount", BOT_STATE_COMBAT);
+
+    auto debugLog = [&](char const* fmt, auto... args)
+    {
+        if (debugMount)
+            TC_LOG_DEBUG("playerbots", fmt, args...);
+    };
+
     float mountDistance = std::max(40.0f, sPlayerbotAIConfig->farDistance);
     float dismountDistance = std::max(10.0f, sPlayerbotAIConfig->reactDistance);
 
@@ -38,10 +73,16 @@ bool CheckMountStateAction::Execute(Event /*event*/)
     {
         float masterDistance = bot->GetExactDist(master);
         if (master->IsMounted() && !bot->IsMounted() && masterDistance > dismountDistance)
+        {
+            debugLog("mount: master mounted, distance %.1f > %.1f, trying mount (%s)", masterDistance, dismountDistance,
+                bot->GetName().c_str());
             return Mount();
+        }
 
         if (!master->IsMounted() && bot->IsMounted() && masterDistance < dismountDistance)
         {
+            debugLog("mount: master dismounted, distance %.1f < %.1f, dismounting (%s)", masterDistance, dismountDistance,
+                bot->GetName().c_str());
             Dismount();
             return true;
         }
@@ -57,18 +98,35 @@ bool CheckMountStateAction::Execute(Event /*event*/)
 
     if (shouldDismount)
     {
+        debugLog("mount: travel distance %.1f < %.1f, dismounting (%s)", distance, dismountDistance, bot->GetName().c_str());
         Dismount();
         return true;
     }
 
     if (shouldMount)
+    {
+        debugLog("mount: travel distance %.1f > %.1f, trying mount (%s)", distance, mountDistance, bot->GetName().c_str());
         return Mount();
+    }
+
+    if (debugMount && !bot->IsMounted())
+        debugLog("mount: not mounting (distance %.1f, mountDistance %.1f, inCombat %d) (%s)",
+            distance, mountDistance, bot->IsInCombat(), bot->GetName().c_str());
 
     return false;
 }
 
 bool CheckMountStateAction::Mount()
 {
+    bool debugMount =
+        botAI->HasStrategy("debug mount", BOT_STATE_NON_COMBAT) || botAI->HasStrategy("debug mount", BOT_STATE_COMBAT);
+
+    auto debugLog = [&](char const* fmt, auto... args)
+    {
+        if (debugMount)
+            TC_LOG_DEBUG("playerbots", fmt, args...);
+    };
+
     botAI->RemoveShapeshift();
 
     struct MountSpell
@@ -138,12 +196,26 @@ bool CheckMountStateAction::Mount()
     Player* master = botAI->GetMaster();
     bool wantFlight = master && master->IsMounted() && isMasterFlying(master);
     if (wantFlight && !bot->CanFly())
+    {
+        debugLog("mount: master flying but bot can't fly (%s)", bot->GetName().c_str());
         wantFlight = false;
+    }
 
     int32 masterSpeed = getMasterMountSpeed(master);
 
     std::vector<MountSpell> mounts;
     collectMountSpells(bot, mounts);
+
+    if (mounts.empty())
+    {
+        BotFactory factory(bot, bot->GetLevel());
+        factory.InitSkills();
+        factory.InitMounts();
+        collectMountSpells(bot, mounts);
+    }
+
+    if (mounts.empty())
+        debugLog("mount: no mount spells after init (%s)", bot->GetName().c_str());
 
     uint32 chosenMount = 0;
     int32 chosenSpeed = -1;
@@ -165,11 +237,17 @@ bool CheckMountStateAction::Mount()
     if (chosenMount && botAI->CanCastSpell(chosenMount, bot))
         return botAI->CastSpell(chosenMount, bot);
 
+    if (chosenMount)
+        debugLog("mount: chosen mount %u not castable (%s)", chosenMount, bot->GetName().c_str());
+
     FindMountVisitor visitor(bot);
     IterateItems(bot, visitor, ITERATE_ITEMS_IN_BAGS);
     std::vector<Item*>& items = visitor.GetResult();
     if (items.empty())
+    {
+        debugLog("mount: no mount items in bags (%s)", bot->GetName().c_str());
         return false;
+    }
 
     return UseItemOnSelf(items.front(), false);
 }

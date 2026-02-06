@@ -1,17 +1,17 @@
-#ifndef _PLAYERBOT_AZJOLNERUBSTRATEGY_H
-#define _PLAYERBOT_AZJOLNERUBSTRATEGY_H
+#ifndef _PLAYERBOT_WOTLKDUNGEONANSTRATEGY_H
+#define _PLAYERBOT_WOTLKDUNGEONANSTRATEGY_H
 
+#include "Multiplier.h"
+#include "AiObjectContext.h"
 #include "Strategy.h"
 
-class PlayerbotAI;
-
-class AzjolNerubStrategy : public Strategy
+class WotlkDungeonANStrategy : public Strategy
 {
 public:
-    AzjolNerubStrategy(PlayerbotAI* botAI);
-
-    std::string const getName() override { return "azjol'nerub"; }
-    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    WotlkDungeonANStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+    virtual std::string const getName() override { return "azjol'nerub"; }
+    virtual void InitTriggers(std::vector<TriggerNode*> &triggers) override;
+    virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) override;
 };
 
 #endif

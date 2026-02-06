@@ -1,5 +1,5 @@
 /*
-* This file is part of the Legends of Azeroth Pandaria Project. See THANKS file for Copyright information
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -253,7 +253,7 @@ WorldSafeLocsEntry const* SpiritHealerAction::GetGrave(bool startZone)
                                           travelPos.getY(), travelPos.getZ());
                 ClosestGrave = sGraveyard->GetClosestGraveyard(travelPos.getMapId(), travelPos.getX(), travelPos.getY(),
                                                                travelPos.getZ(), bot->GetTeamId(), areaId, zoneId,
-                                                               bot->getClass() == CLASS_DEATH_KNIGHT);
+                                                               bot->GetClass() == CLASS_DEATH_KNIGHT);
 
                 if (ClosestGrave)
                     return ClosestGrave;
@@ -326,3 +326,4 @@ bool SpiritHealerAction::isUseful()
 {
     return bot->HasPlayerFlag(PLAYER_FLAGS_GHOST);
 }
+

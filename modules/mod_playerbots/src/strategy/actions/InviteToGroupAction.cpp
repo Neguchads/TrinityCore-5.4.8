@@ -1,5 +1,5 @@
 /*
-* This file is part of the Legends of Azeroth Pandaria Project. See THANKS file for Copyright information
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -17,10 +17,12 @@
 
 #include "InviteToGroupAction.h"
 
+#include <cmath>
 #include <sstream>
 #include <unordered_map>
 
 #include "Event.h"
+#include "GuildMgr.h"
 #include "Group.h"
 #include "LFGMgr.h"
 #include "ObjectAccessor.h"
@@ -29,6 +31,7 @@
 #include "PlayerbotAIConfig.h"
 #include "PlayerbotSpec.h"
 #include "Playerbots.h"
+#include "ServerFacade.h"
 #include "WorldPacket.h"
 
 bool InviteToGroupAction::Invite(Player* inviter, Player* player)
@@ -73,6 +76,164 @@ bool InviteToGroupAction::Invite(Player* inviter, Player* player)
 
     player->GetSession()->SendGroupInviteNotification(inviter->GetName(), false);
     return true;
+}
+
+bool InviteToGroupAction::Execute(Event event)
+{
+    Player* requester = event.getOwner();
+    if (!requester)
+        requester = GetMaster();
+
+    if (!requester)
+        return false;
+
+    return Invite(bot, requester);
+}
+
+bool JoinGroupAction::Execute(Event event)
+{
+    if (bot->InBattleground() || bot->InBattlegroundQueue())
+        return false;
+
+    Player* requester = event.getOwner();
+    if (!requester)
+        requester = GetMaster();
+    if (!requester)
+        return false;
+
+    Group* group = requester->GetGroup();
+    if (group)
+    {
+        if (group->IsFull())
+            return false;
+
+        if (bot->GetGroup() == group)
+            return false;
+    }
+
+    if (bot->GetGroup())
+    {
+        if (botAI->HasRealPlayerMaster())
+            return false;
+
+        if (!botAI->DoSpecificAction("leave", event, true))
+            return false;
+    }
+
+    return Invite(requester, bot);
+}
+
+bool InviteNearbyToGroupAction::Execute(Event /*event*/)
+{
+    GuidVector nearGuids = botAI->GetAiObjectContext()->GetValue<GuidVector>("nearest friendly players")->Get();
+    for (auto const& guid : nearGuids)
+    {
+        Player* player = ObjectAccessor::FindPlayer(guid);
+        if (!player)
+            continue;
+
+        if (player == bot)
+            continue;
+
+        if (player->GetMapId() != bot->GetMapId())
+            continue;
+
+        if (player->GetGroup())
+            continue;
+
+        if (player->isDND())
+            continue;
+
+        if (player->IsBeingTeleported())
+            continue;
+
+        PlayerbotAI* playerAi = GET_PLAYERBOT_AI(player);
+        if (!playerAi || playerAi->HasActivePlayerMaster())
+            continue;
+
+        if (std::abs(int32(player->GetLevel() - bot->GetLevel())) > 2)
+            continue;
+
+        if (sServerFacade->GetDistance2d(bot, player) > sPlayerbotAIConfig->sightDistance)
+            continue;
+
+        return Invite(bot, player);
+    }
+
+    return false;
+}
+
+bool InviteNearbyToGroupAction::isUseful()
+{
+    if (!sRandomPlayerbotMgr->IsRandomBot(bot))
+        return false;
+
+    if (botAI->HasActivePlayerMaster())
+        return false;
+
+    if (bot->InBattleground() || bot->InBattlegroundQueue())
+        return false;
+
+    Group* group = bot->GetGroup();
+    if (group)
+    {
+        if (group->IsFull())
+            return false;
+
+        if (!group->IsLeader(bot->GetGUID()))
+            return false;
+    }
+
+    return true;
+}
+
+std::vector<Player*> InviteGuildToGroupAction::GetGuildMembers()
+{
+    Guild* guild = sGuildMgr->GetGuildById(bot->GetGuildId());
+    if (!guild)
+        return {};
+
+    FindGuildMembers worker;
+    guild->BroadcastWorker(worker);
+    return worker.GetResult();
+}
+
+bool InviteGuildToGroupAction::Execute(Event /*event*/)
+{
+    if (!bot->GetGuildId())
+        return false;
+
+    for (Player* player : GetGuildMembers())
+    {
+        if (!player)
+            continue;
+
+        if (player == bot)
+            continue;
+
+        if (player->GetGroup())
+            continue;
+
+        if (player->isDND())
+            continue;
+
+        if (player->IsBeingTeleported())
+            continue;
+
+        PlayerbotAI* playerAi = GET_PLAYERBOT_AI(player);
+        if (!playerAi || playerAi->HasActivePlayerMaster())
+            continue;
+
+        if (player->GetMapId() != bot->GetMapId())
+            continue;
+
+        if (sServerFacade->GetDistance2d(bot, player) > sPlayerbotAIConfig->sightDistance)
+            continue;
+
+        return Invite(bot, player);
+    }
+
+    return false;
 }
 
 static BotRoles GetRoleForPlayer(Player* player)
@@ -193,3 +354,4 @@ bool LfgAction::Execute(Event event)
 
     return true;
 }
+

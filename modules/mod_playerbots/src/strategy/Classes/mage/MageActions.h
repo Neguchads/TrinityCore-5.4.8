@@ -94,6 +94,12 @@ public:
     bool isUseful() override;
 };
 
+class CastBlinkBackAction : public CastBlinkAction
+{
+public:
+    CastBlinkBackAction(PlayerbotAI* botAI) : CastBlinkAction(botAI) {}
+};
+
 class CastFrostboltAction : public CastSpellAction
 {
 public:

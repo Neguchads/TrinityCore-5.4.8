@@ -1,5 +1,5 @@
 /*
-* This file is part of the Legends of Azeroth Pandaria Project. See THANKS file for Copyright information
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -21,6 +21,7 @@
 #include <mutex>
 #include <sstream>
 #include <string>
+#include <utility>
 
 #include "AiFactory.h"
 #include "ChannelMgr.h"
@@ -28,6 +29,7 @@
 #include "CreatureAIImpl.h"
 #include "Engine.h"
 #include "ExternalEventHelper.h"
+#include "Bag.h"
 #include "GuildMgr.h"
 #include "Helper.h"
 #include "LastMovementValue.h"
@@ -151,6 +153,12 @@ PlayerbotAI::PlayerbotAI(Player* bot)
     masterIncomingPacketHandlers.AddHandler(CMSG_REPOP_REQUEST, "release spirit");
     masterIncomingPacketHandlers.AddHandler(CMSG_RECLAIM_CORPSE, "revive from corpse");
     masterIncomingPacketHandlers.AddHandler(CMSG_LFG_TELEPORT, "lfg teleport");
+    masterIncomingPacketHandlers.AddHandler(CMSG_QUESTGIVER_COMPLETE_QUEST, "complete quest");
+    masterIncomingPacketHandlers.AddHandler(CMSG_QUESTGIVER_ACCEPT_QUEST, "accept quest");
+    masterIncomingPacketHandlers.AddHandler(CMSG_QUEST_CONFIRM_ACCEPT, "confirm quest");
+    masterIncomingPacketHandlers.AddHandler(CMSG_PUSHQUESTTOPARTY, "quest share");
+    masterIncomingPacketHandlers.AddHandler(CMSG_GAMEOBJ_USE, "use game object");
+    masterIncomingPacketHandlers.AddHandler(CMSG_GOSSIP_HELLO, "gossip hello");
 
     botOutgoingPacketHandlers.AddHandler(SMSG_LEVELUP_INFO, "levelup");
     botOutgoingPacketHandlers.AddHandler(SMSG_MOVE_UPDATE_RUN_SPEED, "check mount state");
@@ -164,6 +172,16 @@ PlayerbotAI::PlayerbotAI(Player* bot)
     botOutgoingPacketHandlers.AddHandler(SMSG_LFG_ROLE_CHECK_UPDATE, "lfg role check");
     botOutgoingPacketHandlers.AddHandler(SMSG_LFG_PROPOSAL_UPDATE, "lfg proposal");
     botOutgoingPacketHandlers.AddHandler(SMSG_RESURRECT_REQUEST, "resurrect request");
+    botOutgoingPacketHandlers.AddHandler(SMSG_QUEST_CONFIRM_ACCEPT, "confirm quest");
+    botOutgoingPacketHandlers.AddHandler(SMSG_QUESTUPDATE_ADD_CREDIT, "quest update add kill");
+    botOutgoingPacketHandlers.AddHandler(SMSG_QUESTUPDATE_ADD_CREDIT_SIMPLE, "quest update add kill");
+    botOutgoingPacketHandlers.AddHandler(SMSG_QUESTUPDATE_FAILED, "quest update failed");
+    botOutgoingPacketHandlers.AddHandler(SMSG_QUESTUPDATE_FAILEDTIMER, "quest update failed timer");
+    botOutgoingPacketHandlers.AddHandler(SMSG_QUEST_UPDATE_COMPLETE, "quest update complete");
+    botOutgoingPacketHandlers.AddHandler(SMSG_QUESTGIVER_QUEST_DETAILS, "questgiver quest details");
+    botOutgoingPacketHandlers.AddHandler(SMSG_ITEM_PUSH_RESULT, "item push result");
+    botOutgoingPacketHandlers.AddHandler(SMSG_LOOT_RESPONSE, "loot response");
+    botOutgoingPacketHandlers.AddHandler(SMSG_LOOT_START_ROLL, "master loot roll");
 }
 
 PlayerbotAI::~PlayerbotAI()
@@ -409,6 +427,22 @@ void PlayerbotAI::UpdateAIInternal([[maybe_unused]] uint32 elapsed, bool minimal
     botOutgoingPacketHandlers.Handle(helper);
     masterIncomingPacketHandlers.Handle(helper);
     masterOutgoingPacketHandlers.Handle(helper);
+
+    if (!_timedEvents.empty())
+    {
+        uint32 now = getMSTime();
+        for (size_t i = 0; i < _timedEvents.size();)
+        {
+            if (_timedEvents[i].dueTimeMs <= now)
+            {
+                _timedEvents[i].fn();
+                _timedEvents[i] = _timedEvents.back();
+                _timedEvents.pop_back();
+                continue;
+            }
+            ++i;
+        }
+    }
 
     DoNextAction(minimal);
 
@@ -822,6 +856,13 @@ void PlayerbotAI::ResetStrategies()
     AiFactory::AddDefaultDeadStrategies(bot, this, _engines[BOT_STATE_DEAD]);
     //if (sPlayerbotAIConfig->applyInstanceStrategies)
         //ApplyInstanceStrategies(bot->GetMapId());
+
+    if (HasActivePlayerMaster())
+    {
+        _engines[BOT_STATE_NON_COMBAT]->ChangeStrategy(
+            "+follow,-rpg,-new rpg,-grind,-travel,-loot,-gather,-quest");
+        _engines[BOT_STATE_COMBAT]->ChangeStrategy("+dps assist");
+    }
 
     for (uint8 i = 0; i < BOT_STATE_MAX; i++)
         _engines[i]->Init();
@@ -1368,6 +1409,119 @@ bool PlayerbotAI::CanMove()
     return bot->GetMotionMaster()->GetCurrentMovementGeneratorType() != FLIGHT_MOTION_TYPE;
 }
 
+bool PlayerbotAI::CanCastVehicleSpell(uint32 spellId, Unit* target)
+{
+    if (!bot)
+        return false;
+
+    return CanCastSpell(spellId, target, false);
+}
+
+bool PlayerbotAI::CastVehicleSpell(uint32 spellId, Unit* target)
+{
+    if (!CanCastVehicleSpell(spellId, target))
+        return false;
+
+    bot->CastSpell(target, spellId, TRIGGERED_NONE);
+    return true;
+}
+
+bool PlayerbotAI::HasItemInInventory(uint32 itemId)
+{
+    if (!bot)
+        return false;
+
+    for (uint8 i = INVENTORY_SLOT_ITEM_START; i < INVENTORY_SLOT_ITEM_END; ++i)
+    {
+        if (Item* item = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, i))
+        {
+            if (item->GetEntry() == itemId)
+                return true;
+        }
+    }
+
+    for (uint8 i = INVENTORY_SLOT_BAG_START; i < INVENTORY_SLOT_BAG_END; ++i)
+    {
+        if (Bag* bag = bot->GetBagByPos(i))
+        {
+            for (uint32 j = 0; j < bag->GetBagSize(); ++j)
+            {
+                if (Item* item = bag->GetItemByPos(j))
+                {
+                    if (item->GetEntry() == itemId)
+                        return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+std::vector<Item*> PlayerbotAI::GetInventoryItems()
+{
+    std::vector<Item*> items;
+    if (!bot)
+        return items;
+
+    for (uint8 i = INVENTORY_SLOT_ITEM_START; i < INVENTORY_SLOT_ITEM_END; ++i)
+    {
+        if (Item* item = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, i))
+            items.push_back(item);
+    }
+
+    for (uint8 i = INVENTORY_SLOT_BAG_START; i < INVENTORY_SLOT_BAG_END; ++i)
+    {
+        if (Bag* bag = bot->GetBagByPos(i))
+        {
+            for (uint32 j = 0; j < bag->GetBagSize(); ++j)
+            {
+                if (Item* item = bag->GetItemByPos(j))
+                    items.push_back(item);
+            }
+        }
+    }
+
+    return items;
+}
+
+bool PlayerbotAI::ImbueItem(Item* item, Unit* target)
+{
+    if (!bot || !item || !target)
+        return false;
+
+    uint32 spellId = 0;
+    ItemTemplate const* proto = item->GetTemplate();
+    for (uint8 i = 0; i < MAX_ITEM_PROTO_SPELLS; ++i)
+    {
+        if (proto->Spells[i].SpellId > 0 && proto->Spells[i].SpellTrigger == ITEM_SPELLTRIGGER_ON_USE)
+        {
+            spellId = proto->Spells[i].SpellId;
+            break;
+        }
+    }
+
+    if (!spellId)
+        return false;
+
+    if (!CanCastSpell(spellId, target, false, nullptr, item))
+        return false;
+
+    bot->CastSpell(target, spellId, TRIGGERED_NONE, item);
+    return true;
+}
+
+void PlayerbotAI::AddTimedEvent(std::function<void()> fn, uint32 delayMs)
+{
+    if (!fn)
+        return;
+
+    TimedEvent evt;
+    evt.dueTimeMs = getMSTime() + delayMs;
+    evt.fn = std::move(fn);
+    _timedEvents.push_back(std::move(evt));
+}
+
 Unit* PlayerbotAI::GetUnit(ObjectGuid guid)
 {
     if (!guid)
@@ -1390,6 +1544,54 @@ Player* PlayerbotAI::GetGroupMaster()
                 return player;
 
     return master;
+}
+
+Player* PlayerbotAI::GetGroupLeader()
+{
+    if (!bot->InBattleground())
+        if (Group* group = bot->GetGroup())
+            if (Player* player = ObjectAccessor::FindPlayer(group->GetLeaderGUID()))
+                return player;
+
+    return master;
+}
+
+std::vector<Player*> PlayerbotAI::GetPlayersInGroup() const
+{
+    std::vector<Player*> result;
+    if (!bot)
+        return result;
+
+    if (Group* group = bot->GetGroup())
+    {
+        for (GroupReference* itr = group->GetFirstMember(); itr; itr = itr->next())
+        {
+            if (Player* member = itr->GetSource())
+                result.push_back(member);
+        }
+        return result;
+    }
+
+    result.push_back(bot);
+    return result;
+}
+
+int32 PlayerbotAI::GetGroupSlotIndex(Player* player) const
+{
+    if (!bot || !player)
+        return -1;
+
+    if (Group* group = bot->GetGroup())
+    {
+        int32 index = 0;
+        for (GroupReference* itr = group->GetFirstMember(); itr; itr = itr->next(), ++index)
+        {
+            if (itr->GetSource() == player)
+                return index;
+        }
+    }
+
+    return (player == bot) ? 0 : -1;
 }
 
 uint32 PlayerbotAI::GetFixedBotNumer(uint32 maxNum, float cyclePerMin)
@@ -2819,6 +3021,54 @@ uint32 PlayerbotAI::GetMixedGearScore(Player* player, bool withBags, bool withBa
     return sum / topN;
 }
 
+bool PlayerbotAI::IsTank(Player* player, bool bySpec) { return PlayerBotSpec::IsTank(player, bySpec); }
+bool PlayerbotAI::IsHeal(Player* player, bool bySpec) { return PlayerBotSpec::IsHeal(player, bySpec); }
+bool PlayerbotAI::IsDps(Player* player, bool bySpec) { return PlayerBotSpec::IsDps(player, bySpec); }
+bool PlayerbotAI::IsRanged(Player* player, bool bySpec) { return PlayerBotSpec::IsRanged(player, bySpec); }
+bool PlayerbotAI::IsMelee(Player* player, bool bySpec) { return PlayerBotSpec::IsMelee(player, bySpec); }
+bool PlayerbotAI::IsRangedDps(Player* player, bool bySpec) { return PlayerBotSpec::IsRangedDps(player, bySpec); }
+bool PlayerbotAI::IsMainTank(Player* player) { return PlayerBotSpec::IsMainTank(player); }
+bool PlayerbotAI::IsAssistTank(Player* player) { return PlayerBotSpec::IsAssistTank(player); }
+bool PlayerbotAI::IsAssistTankOfIndex(Player* bot, Player* player, int index)
+{
+    return PlayerBotSpec::IsAssistTankOfIndex(bot, player, index);
+}
+
+bool PlayerbotAI::IsAssistHealOfIndex(Player* bot, Player* player, int index)
+{
+    if (!bot || !player)
+        return false;
+
+    Group* group = bot->GetGroup();
+    if (!group)
+        return false;
+
+    int count = 0;
+    for (GroupReference* itr = group->GetFirstMember(); itr; itr = itr->next())
+    {
+        Player* member = itr->GetSource();
+        if (!member)
+            continue;
+
+        if (!PlayerBotSpec::IsHeal(member))
+            continue;
+
+        if (member == player)
+            return count == index;
+
+        ++count;
+    }
+
+    return false;
+}
+
+bool PlayerbotAI::HasSkill(uint32 skillId)
+{
+    if (!bot)
+        return false;
+    return bot->HasSkill(skillId);
+}
+
 // A custom CanEquipItem (remove AutoUnequipOffhand in FindEquipSlot to prevent unequip on `item usage` calculation)
 InventoryResult PlayerbotAI::CanEquipItem(uint8 slot, uint16& dest, Item* pItem, bool swap, bool not_loading) const
 {
@@ -3113,3 +3363,4 @@ bool PlayerbotAI::HasAggro(Unit* unit)
     }
     return false;
 }
+

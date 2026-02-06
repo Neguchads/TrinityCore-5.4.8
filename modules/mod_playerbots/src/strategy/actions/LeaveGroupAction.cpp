@@ -5,6 +5,7 @@
 #include "Event.h"
 #include "PlayerbotAIConfig.h"
 #include "Playerbots.h"
+#include "ServerFacade.h"
 
 bool LeaveGroupAction::Leave(Player* player)
 {
@@ -60,4 +61,31 @@ bool UninviteAction::Execute(Event event)
     //botAI->Reset();
 
     return false;
+}
+
+bool LeaveFarAwayAction::Execute(Event event)
+{
+    return Leave(event.getOwner());
+}
+
+bool LeaveFarAwayAction::isUseful()
+{
+    if (bot->InBattleground() || bot->InBattlegroundQueue())
+        return false;
+
+    if (!bot->GetGroup())
+        return false;
+
+    if (botAI->HasRealPlayerMaster())
+        return false;
+
+    Player* groupLeader = botAI->GetGroupMaster();
+    if (!groupLeader || groupLeader == bot)
+        return false;
+
+    if (bot->GetMapId() != groupLeader->GetMapId())
+        return true;
+
+    float distance = sServerFacade->GetDistance2d(bot, groupLeader);
+    return distance >= 2.0f * sPlayerbotAIConfig->rpgDistance;
 }

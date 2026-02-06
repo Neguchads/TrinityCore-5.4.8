@@ -1,5 +1,5 @@
-﻿/*
-* This file is part of the Legends of Azeroth Pandaria Project. See THANKS file for Copyright information
+/*
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -16,6 +16,8 @@
 */
 
 #include "PlayerbotMgr.h"
+#include "WorldThread/PlayerbotOperations.h"
+#include "WorldThread/PlayerbotWorldThreadProcessor.h"
 
 #include <cstdio>
 #include <cstring>
@@ -109,7 +111,7 @@ void PlayerbotHolder::HandlePlayerBotLoginCallback(PlayerbotLoginQueryHolder con
 
     // At login DBC locale should be what the server is set to use by default (as spells etc are hardcoded to ENUS this
     // allows channels to work as intended)
-    // Créer une session WorldSession pour le bot
+    // Cr�er une session WorldSession pour le bot
     WorldSession* botSession = new WorldSession(botAccountId, nullptr, AccountTypes::SEC_PLAYER, Expansions::EXPANSION_MISTS_OF_PANDARIA, 0, LOCALE_frFR, 0, false, false, true);
 
     botSession->HandlePlayerLogin(holder);  // will delete lqh
@@ -302,6 +304,10 @@ void PlayerbotHolder::LogoutPlayerBot(ObjectGuid guid)
         PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);
         if (!botAI)
             return;
+
+        // Queue group cleanup in world thread to avoid unsafe cross-thread access.
+        auto cleanupOp = std::make_unique<BotLogoutGroupCleanupOperation>(guid);
+        PlayerbotWorldThreadProcessor::instance().QueueOperation(std::move(cleanupOp));
 
         Group* group = bot->GetGroup();
         if (group && !bot->InBattleground() && !bot->InBattlegroundQueue() && botAI->HasActivePlayerMaster())
@@ -1363,3 +1369,4 @@ PlayerbotMgr* PlayerbotsMgr::GetPlayerbotMgr(Player* player)
 
     return nullptr;
 }
+

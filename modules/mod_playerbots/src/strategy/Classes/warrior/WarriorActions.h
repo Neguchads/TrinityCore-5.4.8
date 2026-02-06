@@ -31,6 +31,7 @@ public:
 };
 
 REACH_ACTION(CastChargeAction, "charge", 8.0f);
+REACH_ACTION(CastInterceptAction, "intercept", 8.0f);
 MELEE_ACTION(CastHeroicStrikeAction, "heroic strike");
 BUFF_ACTION(CastCommandingShoutAction, "commanding shout");
 BUFF_ACTION(CastBattleShoutAction, "battle shout");
@@ -67,6 +68,11 @@ public:
 // -- aoe
 MELEE_ACTION(CastThunderClapAction, "thunder clap");
 MELEE_ACTION(CastWhirlWindAction, "whirlwind");
+class CastWhirlwindAction : public CastWhirlWindAction
+{
+public:
+    CastWhirlwindAction(PlayerbotAI* botAI) : CastWhirlWindAction(botAI) {}
+};
 MELEE_ACTION(CastCleaveAction, "cleave");
 MELEE_ACTION(CastBladestormAction, "bladestorm");
 MELEE_ACTION(CastDragonroarAction, "dragonroar");

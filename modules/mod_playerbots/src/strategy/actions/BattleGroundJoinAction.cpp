@@ -1,8 +1,19 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
-
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License as published by the
+* Free Software Foundation; either version 2 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along
+* with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "BattleGroundJoinAction.h"
 
 #include "DatabaseEnv.h"
@@ -61,11 +72,20 @@ bool BGJoinAction::canJoinBg(BattlegroundQueueTypeId queueTypeId, BattlegroundBr
     if (arenaType)
     {
         Group* group = bot->GetGroup();
-        if (!group || group->GetLeaderGUID() != bot->GetGUID())
-            return false;
+        if (!group)
+        {
+            // Allow random bots to attempt arena queue without a group; group will be formed in PrepareArenaGroup().
+            if (!sRandomPlayerbotMgr->IsRandomBot(bot))
+                return false;
+        }
+        else
+        {
+            if (group->GetLeaderGUID() != bot->GetGUID())
+                return false;
 
-        if (group->GetMembersCount() != arenaType)
-            return false;
+            if (group->GetMembersCount() != arenaType)
+                return false;
+        }
     }
 
     return bracketEntry->GetBracketId() == bracketId;

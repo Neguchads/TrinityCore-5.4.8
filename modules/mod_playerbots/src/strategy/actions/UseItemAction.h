@@ -19,6 +19,7 @@ public:
     bool Execute(Event event) override;
     bool isPossible() override;
     static void IterateItems(Player* bot, IterateItemsVisitor& visitor, uint32 mask = ITERATE_ITEMS_IN_BAGS);
+    static bool UseItemAuto(PlayerbotAI* botAI, Item* item, bool allowCombat = true);
 
 protected:
     Item* FindFirstItemByName(std::string const& name) const;

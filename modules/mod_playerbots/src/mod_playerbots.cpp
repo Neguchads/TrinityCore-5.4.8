@@ -1,10 +1,19 @@
 /*
-** Made by Traesh https://github.com/Traesh
-** AzerothCore 2019 http://www.azerothcore.org/
-** Conan513 https://github.com/conan513
-** Made into a module by Micrah https://github.com/milestorme/
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License as published by the
+* Free Software Foundation; either version 2 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along
+* with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include "Chat.h"
 #include "ChannelMgr.h"
 #include "Config.h"
@@ -21,6 +30,7 @@
 #include "PlayerbotAIConfig.h"
 #include "PlayerbotTextMgr.h"
 #include "RandomPlayerbotMgr.h"
+#include "WorldThread/PlayerbotWorldThreadProcessor.h"
 #include "RandomItemManager.h"
 #include "RandomPlayerbotBracketMgr.h"
 #include "TravelMgr.h"
@@ -122,6 +132,7 @@ public:
     void OnUpdate(uint32 diff) override
     {
         sBracketMgr->Update(diff);
+        PlayerbotWorldThreadProcessor::instance().Update(diff);
     }
 };
 

@@ -750,11 +750,11 @@ AiPlayerbot.RandomBotSpellIds = "54197"
 
 # Random bot default strategies (applied after defaults)
 AiPlayerbot.RandomBotCombatStrategies = +dps,+dps assist,-threat
-AiPlayerbot.RandomBotNonCombatStrategies = +travel,+mount,+grind,+loot,+rpg,+custom::say
+AiPlayerbot.RandomBotNonCombatStrategies = +travel,+mount,+grind,+loot,+rpg,+custom::say,+quest
 AiPlayerbot.RandomBotReactStrategies = 
 AiPlayerbot.RandomBotDeadStrategies = 
 AiPlayerbot.CombatStrategies = +custom::say
-AiPlayerbot.NonCombatStrategies = +travel,+mount,+custom::say,+return,+delayed roll
+AiPlayerbot.NonCombatStrategies = +travel,+mount,+custom::say,+return,+delayed roll,+quest
 AiPlayerbot.ReactStrategies = 
 AiPlayerbot.DeadStrategies = 
 

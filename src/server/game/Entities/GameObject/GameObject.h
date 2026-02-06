@@ -313,6 +313,7 @@ class TC_GAME_API GameObject : public WorldObject, public GridObject<GameObject>
         SpellInfo const* GetSpellForLock(Player const* player) const;
         bool IsAtInteractDistance(Player const* player, SpellInfo const* spell = nullptr) const;
         bool IsAtInteractDistance(Position const& pos, float radius) const;
+        float GetInteractionDistance() const { return INTERACTION_DISTANCE; }
 
         void ModifyHealth(int32 change, Unit* attackerOrHealer = NULL, uint32 spellId = 0);
         // sets GameObject type 33 destruction flags and optionally default health for that state

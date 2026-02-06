@@ -2237,6 +2237,9 @@ public:
     bool IsGroupVisibleFor(Player const* p) const;
     bool IsInSameGroupWith(Player const* p) const;
     bool IsInSameRaidWith(Player const* p) const;
+    bool IsClass(uint8 classId) const { return GetClass() == classId; }
+    bool IsWithinRange(WorldObject const* obj, float range) const;
+    void DoRandomRoll(uint32 min, uint32 max);
     void UninviteFromGroup();
     static void RemoveFromGroup(Group* group, ObjectGuid guid, RemoveMethod method = GROUP_REMOVEMETHOD_DEFAULT, ObjectGuid kicker = ObjectGuid::Empty, char const* reason = NULL);
     void RemoveFromGroup(RemoveMethod method = GROUP_REMOVEMETHOD_DEFAULT)

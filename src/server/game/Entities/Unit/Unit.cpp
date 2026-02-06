@@ -20723,3 +20723,27 @@ void Unit::JumpWithDelay(uint32 delay, float x, float y, float z, float speedXY,
 
     m_Events.AddEvent(new DelayJumpEvent(this, x, y, z, speedXY, speedZ, id), m_Events.CalculateTime(delay));
 }
+void Unit::AddSpellCooldown(uint32 spellId, uint32 itemId, int64 cooldownMs)
+{
+    if (SpellHistory* history = GetSpellHistory())
+        history->AddCooldown(spellId, itemId, cooldownMs, 0, 0);
+}
+
+bool Unit::HasSpellCooldown(uint32 spellId) const
+{
+    if (SpellHistory* history = GetSpellHistory())
+        return !history->IsReady(spellId);
+    return false;
+}
+
+uint8 Unit::GetComboPoints(Unit const* target) const
+{
+    Player const* player = ToPlayer();
+    if (!player)
+        return 0;
+
+    if (!target)
+        return player->GetComboPoints();
+
+    return player->GetComboTargetGUID() == target->GetGUID() ? player->GetComboPoints() : 0;
+}

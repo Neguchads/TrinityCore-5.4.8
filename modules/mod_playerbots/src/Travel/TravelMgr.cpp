@@ -1,8 +1,19 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
- */
-
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License as published by the
+* Free Software Foundation; either version 2 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along
+* with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "TravelMgr.h"
 
 #include <cstring>
@@ -2182,25 +2193,33 @@ void TravelMgr::LoadQuestTravelTable()
 
             }
 
-            //Mobs
-            for (uint32 i = 0; i < 4; i++)
+            // Objectives (creature / gameobject)
+            for (QuestObjective const& obj : quest->GetObjectives())
             {
-                if (quest->RequiredNpcOrGoCount[i] == 0)
+                if (obj.StorageIndex < 0 || obj.StorageIndex >= QUEST_OBJECTIVES_COUNT)
                     continue;
 
-                uint32 reqEntry = quest->RequiredNpcOrGo[i];
+                if (obj.Type != QUEST_OBJECTIVE_MONSTER && obj.Type != QUEST_OBJECTIVE_GAMEOBJECT &&
+                    obj.Type != QUEST_OBJECTIVE_TALKTO)
+                    continue;
 
-                loc = new QuestObjectiveTravelDestination(questId, reqEntry, i, sPlayerbotAIConfig->tooCloseDistance,
-    sPlayerbotAIConfig->sightDistance); loc->setExpireDelay(1 * 60 * 1000); loc->setMaxVisitors(100, 1);
+                if (obj.Amount <= 0 || obj.ObjectID == 0)
+                    continue;
+
+                int32 reqEntry = static_cast<int32>(obj.ObjectID);
+                if (obj.Type == QUEST_OBJECTIVE_GAMEOBJECT)
+                    reqEntry = -reqEntry;
+
+                loc = new QuestObjectiveTravelDestination(questId, reqEntry, obj.StorageIndex,
+                    sPlayerbotAIConfig->tooCloseDistance, sPlayerbotAIConfig->sightDistance);
+                loc->setExpireDelay(1 * 60 * 1000);
+                loc->setMaxVisitors(100, 1);
 
                 for (auto& u : units)
                 {
                     int32 entry = u.type == 0 ? u.entry : u.entry * -1;
-
                     if (entry != reqEntry)
                         continue;
-
-                    int32 guid = u.type == 0 ? u.guid : u.guid * -1;
 
                     point = WorldPosition(u.map, u.x, u.y, u.z, u.o);
                     loc->addPoint(&point);
@@ -2208,8 +2227,7 @@ void TravelMgr::LoadQuestTravelTable()
 
                 if (loc->getPoints(0).empty())
                 {
-                    logQuestError(2, quest, i, reqEntry);
-
+                    logQuestError(2, quest, obj.StorageIndex, reqEntry);
                     delete loc;
                     hasError = true;
                     continue;
@@ -2218,16 +2236,20 @@ void TravelMgr::LoadQuestTravelTable()
                 container->questObjectives.push_back(loc);
             }
 
-            //Loot
-            for (uint32 i = 0; i < 4; i++)
+            // Loot objectives
+            for (QuestObjective const& obj : quest->GetObjectives())
             {
-                if (quest->RequiredItemCount[i] == 0)
+                if (obj.Type != QUEST_OBJECTIVE_ITEM)
                     continue;
 
-                ItemTemplate const* proto = sObjectMgr->GetItemTemplate(quest->RequiredItemId[i]);
+                if (obj.Amount <= 0 || obj.ObjectID == 0 || obj.StorageIndex < 0 || obj.StorageIndex >= QUEST_OBJECTIVES_COUNT)
+                    continue;
+
+                uint32 itemId = obj.ObjectID;
+                ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
                 if (!proto)
                 {
-                    logQuestError(3, quest, i, 0, quest->RequiredItemId[i]);
+                    logQuestError(3, quest, obj.StorageIndex, 0, itemId);
                     hasError = true;
                     continue;
                 }
@@ -2236,20 +2258,20 @@ void TravelMgr::LoadQuestTravelTable()
 
                 for (auto& l : loots)
                 {
-                    if (l.item != quest->RequiredItemId[i])
+                    if (l.item != itemId)
                         continue;
 
                     int32 entry = l.type == 0 ? l.entry : l.entry * -1;
 
-                    loc = new QuestObjectiveTravelDestination(questId, entry, i, sPlayerbotAIConfig->tooCloseDistance,
-    sPlayerbotAIConfig->sightDistance, l.item); loc->setExpireDelay(1 * 60 * 1000); loc->setMaxVisitors(100, 1);
+                    loc = new QuestObjectiveTravelDestination(questId, entry, obj.StorageIndex,
+                        sPlayerbotAIConfig->tooCloseDistance, sPlayerbotAIConfig->sightDistance, l.item);
+                    loc->setExpireDelay(1 * 60 * 1000);
+                    loc->setMaxVisitors(100, 1);
 
                     for (auto& u : units)
                     {
                         if (l.type != u.type || l.entry != u.entry)
                             continue;
-
-                        int32 guid = u.type == 0 ? u.guid : u.guid * -1;
 
                         point = WorldPosition(u.map, u.x, u.y, u.z, u.o);
                         loc->addPoint(&point);
@@ -2257,20 +2279,19 @@ void TravelMgr::LoadQuestTravelTable()
 
                     if (loc->getPoints(0).empty())
                     {
-                        logQuestError(4, quest, i, entry, quest->RequiredItemId[i]);
+                        logQuestError(4, quest, obj.StorageIndex, entry, itemId);
                         delete loc;
                         continue;
                     }
 
                     container->questObjectives.push_back(loc);
-
                     foundLoot++;
                 }
 
                 if (foundLoot == 0)
                 {
                     hasError = true;
-                    logQuestError(5, quest, i, 0, quest->RequiredItemId[i]);
+                    logQuestError(5, quest, obj.StorageIndex, 0, itemId);
                 }
             }
 

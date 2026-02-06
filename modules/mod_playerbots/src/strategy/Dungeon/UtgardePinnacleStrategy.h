@@ -1,17 +1,17 @@
-#ifndef _PLAYERBOT_UTGARDEPINNACLESTRATEGY_H
-#define _PLAYERBOT_UTGARDEPINNACLESTRATEGY_H
+#ifndef _PLAYERBOT_WOTLKDUNGEONUPSTRATEGY_H
+#define _PLAYERBOT_WOTLKDUNGEONUPSTRATEGY_H
 
+#include "Multiplier.h"
+#include "AiObjectContext.h"
 #include "Strategy.h"
 
-class PlayerbotAI;
-
-class UtgardePinnacleStrategy : public Strategy
+class WotlkDungeonUPStrategy : public Strategy
 {
 public:
-    UtgardePinnacleStrategy(PlayerbotAI* botAI);
-
-    std::string const getName() override { return "utgarde pinnacle"; }
-    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    WotlkDungeonUPStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+    virtual std::string const getName() override { return "utgarde pinnacle"; }
+    virtual void InitTriggers(std::vector<TriggerNode*> &triggers) override;
+    virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) override;
 };
 
 #endif

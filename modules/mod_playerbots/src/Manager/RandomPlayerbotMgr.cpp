@@ -1,5 +1,5 @@
 /*
-* This file is part of the Legends of Azeroth Pandaria Project. See THANKS file for Copyright information
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -1566,3 +1566,4 @@ RandomPlayerbotMgr::farm_spot const* RandomPlayerbotMgr::GetFarmZoneForPlayer(Pl
     TC_LOG_WARN("playerbots", "No valid zone farm found for %s level: %u", player->GetName().c_str(), player->GetLevel());
     return nullptr;
 }
+

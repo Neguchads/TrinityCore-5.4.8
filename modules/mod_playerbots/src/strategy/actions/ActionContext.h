@@ -5,29 +5,44 @@
 #include "ActionSayHello.h"
 #include "CheckMountStateAction.h"
 #include "AutoMaintenanceOnLevelupAction.h"
+#include "CustomStrategyEditAction.h"
 #include "BattleGroundJoinAction.h"
 #include "BattleGroundTactics.h"
 #include "ChatActions.h"
+#include "DropQuestAction.h"
+#include "LootAction.h"
+#include "LootRollAction.h"
+#include "LootStrategyAction.h"
+#include "AddLootAction.h"
+#include "ChooseRpgTargetAction.h"
 #include "ChooseTargetActions.h"
 #include "FollowActions.h"
 #include "GenericActions.h"
 #include "GenericSpellActions.h"
 #include "InviteToGroupAction.h"
+#include "LeaveGroupAction.h"
 #include "LfgActions.h"
+#include "ListQuestsActions.h"
 #include "MaintenanceAction.h"
 #include "NewRpgAction.h"
 #include "NonCombatActions.h"
 #include "PositionAction.h"
+#include "QueryQuestAction.h"
 #include "RtiAction.h"
 #include "MovementActions.h"
+#include "MoveToRpgTargetAction.h"
 #include "RandomBotUpdateAction.h"
 #include "ReachTargetActions.h"
+#include "ShareQuestAction.h"
 #include "StayActions.h"
 #include "StartDuelAction.h"
 #include "TellTargetAction.h"
 #include "TravelAction.h"
 #include "ChooseTravelTargetAction.h"
 #include "MoveToTravelTargetAction.h"
+#include "RpgAction.h"
+#include "RpgSubActions.h"
+#include "ResetInstancesAction.h"
 #include "UseItemAction.h"
 #include "VehicleActions.h"
 
@@ -44,10 +59,24 @@ public:
         creators["greet"] = &ActionContext::greet;
         creators["move random"] = &ActionContext::move_random;
         creators["move out of collision"] = &ActionContext::move_out_of_collision;
+        creators["avoid aoe"] = &ActionContext::avoid_aoe;
         creators["travel"] = &ActionContext::travel;
         creators["choose travel target"] = &ActionContext::choose_travel_target;
         creators["move to travel target"] = &ActionContext::move_to_travel_target;
+        creators["choose rpg target"] = &ActionContext::choose_rpg_target;
+        creators["move to rpg target"] = &ActionContext::move_to_rpg_target;
+        creators["move to loot"] = &ActionContext::move_to_loot;
+        creators["rpg"] = &ActionContext::rpg;
+        creators["crpg"] = &ActionContext::crpg;
         creators["check mount state"] = &ActionContext::check_mount_state;
+        creators["loot"] = &ActionContext::loot;
+        creators["open loot"] = &ActionContext::open_loot;
+        creators["store loot"] = &ActionContext::store_loot;
+        creators["release loot"] = &ActionContext::release_loot;
+        creators["add loot"] = &ActionContext::add_loot;
+        creators["add all loot"] = &ActionContext::add_all_loot;
+        creators["add gathering loot"] = &ActionContext::add_gathering_loot;
+        creators["ll"] = &ActionContext::loot_strategy;
 
         creators["follow"] = &ActionContext::follow;
         creators["flee"] = &ActionContext::flee;
@@ -88,6 +117,8 @@ public:
         creators["lfg join"] = &ActionContext::lfg_join;
         creators["lfg leave"] = &ActionContext::lfg_leave;
         creators["lfg"] = &ActionContext::lfg;
+        creators["join"] = &ActionContext::join;
+        creators["invite"] = &ActionContext::invite;
         creators["maintenance"] = &ActionContext::maintenance;
         creators["bg join"] = &ActionContext::bg_join;
         creators["bg leave"] = &ActionContext::bg_leave;
@@ -131,9 +162,39 @@ public:
         creators["new rpg move random"] = &ActionContext::new_rpg_move_random;
         creators["new rpg move npc"] = &ActionContext::new_rpg_move_npc;
         creators["rpg status"] = &ActionContext::rpg_status;
+        creators["rpg stay"] = &ActionContext::rpg_stay;
+        creators["rpg work"] = &ActionContext::rpg_work;
+        creators["rpg emote"] = &ActionContext::rpg_emote;
+        creators["rpg cancel"] = &ActionContext::rpg_cancel;
+        creators["rpg taxi"] = &ActionContext::rpg_taxi;
+        creators["rpg discover"] = &ActionContext::rpg_discover;
+        creators["rpg start quest"] = &ActionContext::rpg_start_quest;
+        creators["rpg end quest"] = &ActionContext::rpg_end_quest;
+        creators["rpg buy"] = &ActionContext::rpg_buy;
+        creators["rpg sell"] = &ActionContext::rpg_sell;
+        creators["rpg repair"] = &ActionContext::rpg_repair;
+        creators["rpg train"] = &ActionContext::rpg_train;
+        creators["rpg heal"] = &ActionContext::rpg_heal;
+        creators["rpg home bind"] = &ActionContext::rpg_home_bind;
+        creators["rpg queue bg"] = &ActionContext::rpg_queue_bg;
+        creators["rpg buy petition"] = &ActionContext::rpg_buy_petition;
+        creators["rpg use"] = &ActionContext::rpg_use;
+        creators["rpg spell"] = &ActionContext::rpg_spell;
+        creators["rpg craft"] = &ActionContext::rpg_craft;
+        creators["rpg trade useful"] = &ActionContext::rpg_trade_useful;
+        creators["rpg duel"] = &ActionContext::rpg_duel;
+        creators["rpg mount anim"] = &ActionContext::rpg_mount_anim;
+        creators["list quests"] = &ActionContext::list_quests;
+        creators["query quest"] = &ActionContext::query_quest;
+        creators["drop quest"] = &ActionContext::drop_quest;
+        creators["clean quest log"] = &ActionContext::clean_quest_log;
+        creators["share quest"] = &ActionContext::share_quest;
 
-        //creators["invite nearby"] = &ActionContext::invite_nearby;
-        //creators["invite guild"] = &ActionContext::invite_guild;
+        creators["invite nearby"] = &ActionContext::invite_nearby;
+        creators["invite guild"] = &ActionContext::invite_guild;
+        creators["leave far away"] = &ActionContext::leave_far_away;
+        creators["reset instances"] = &ActionContext::reset_instances;
+        creators["cs"] = &ActionContext::custom_strategy_edit;
     }
 
 private:
@@ -144,10 +205,24 @@ private:
     static Action* greet(PlayerbotAI* botAI) { return new GreetAction(botAI); }
     static Action* move_random(PlayerbotAI* botAI) { return new MoveRandomAction(botAI); }
     static Action* move_out_of_collision(PlayerbotAI* botAI) { return new MoveOutOfCollisionAction(botAI); }
+    static Action* avoid_aoe(PlayerbotAI* botAI) { return new AvoidAoeAction(botAI); }
     static Action* travel(PlayerbotAI* botAI) { return new TravelAction(botAI); }
     static Action* choose_travel_target(PlayerbotAI* botAI) { return new ChooseTravelTargetAction(botAI); }
     static Action* move_to_travel_target(PlayerbotAI* botAI) { return new MoveToTravelTargetAction(botAI); }
+    static Action* choose_rpg_target(PlayerbotAI* botAI) { return new ChooseRpgTargetAction(botAI); }
+    static Action* move_to_rpg_target(PlayerbotAI* botAI) { return new MoveToRpgTargetAction(botAI); }
+    static Action* move_to_loot(PlayerbotAI* botAI) { return new MoveToLootAction(botAI); }
+    static Action* rpg(PlayerbotAI* botAI) { return new RpgAction(botAI); }
+    static Action* crpg(PlayerbotAI* botAI) { return new CRpgAction(botAI); }
     static Action* check_mount_state(PlayerbotAI* botAI) { return new CheckMountStateAction(botAI); }
+    static Action* loot(PlayerbotAI* botAI) { return new LootAction(botAI); }
+    static Action* open_loot(PlayerbotAI* botAI) { return new OpenLootAction(botAI); }
+    static Action* store_loot(PlayerbotAI* botAI) { return new StoreLootAction(botAI); }
+    static Action* release_loot(PlayerbotAI* botAI) { return new ReleaseLootAction(botAI); }
+    static Action* add_loot(PlayerbotAI* botAI) { return new AddLootAction(botAI); }
+    static Action* add_all_loot(PlayerbotAI* botAI) { return new AddAllLootAction(botAI); }
+    static Action* add_gathering_loot(PlayerbotAI* botAI) { return new AddGatheringLootAction(botAI); }
+    static Action* loot_strategy(PlayerbotAI* botAI) { return new LootStrategyAction(botAI); }
 
     static Action* follow(PlayerbotAI* botAI) { return new FollowAction(botAI); }
     static Action* flee(PlayerbotAI* botAI) { return new FleeAction(botAI); }
@@ -186,6 +261,8 @@ private:
     static Action* lfg_join(PlayerbotAI* botAI) { return new LfgJoinAction(botAI); }
     static Action* lfg_leave(PlayerbotAI* botAI) { return new LfgLeaveAction(botAI); }
     static Action* lfg(PlayerbotAI* botAI) { return new LfgAction(botAI); }
+    static Action* join(PlayerbotAI* botAI) { return new JoinGroupAction(botAI); }
+    static Action* invite(PlayerbotAI* botAI) { return new InviteToGroupAction(botAI); }
     static Action* maintenance(PlayerbotAI* botAI) { return new MaintenanceAction(botAI); }
     static Action* bg_join(PlayerbotAI* botAI) { return new BGJoinAction(botAI); }
     static Action* bg_leave(PlayerbotAI* botAI) { return new BGLeaveAction(botAI); }
@@ -229,6 +306,38 @@ private:
     static Action* new_rpg_move_random(PlayerbotAI* botAI) { return new NewRpgMoveRandomAction(botAI); }
     static Action* new_rpg_move_npc(PlayerbotAI* botAI) { return new NewRpgMoveNpcAction(botAI); }
     static Action* rpg_status(PlayerbotAI* botAI) { return new TellRpgStatusAction(botAI); }
+    static Action* rpg_stay(PlayerbotAI* botAI) { return new RpgStayAction(botAI); }
+    static Action* rpg_work(PlayerbotAI* botAI) { return new RpgWorkAction(botAI); }
+    static Action* rpg_emote(PlayerbotAI* botAI) { return new RpgEmoteAction(botAI); }
+    static Action* rpg_cancel(PlayerbotAI* botAI) { return new RpgCancelAction(botAI); }
+    static Action* rpg_taxi(PlayerbotAI* botAI) { return new RpgTaxiAction(botAI); }
+    static Action* rpg_discover(PlayerbotAI* botAI) { return new RpgDiscoverAction(botAI); }
+    static Action* rpg_start_quest(PlayerbotAI* botAI) { return new RpgStartQuestAction(botAI); }
+    static Action* rpg_end_quest(PlayerbotAI* botAI) { return new RpgEndQuestAction(botAI); }
+    static Action* rpg_buy(PlayerbotAI* botAI) { return new RpgBuyAction(botAI); }
+    static Action* rpg_sell(PlayerbotAI* botAI) { return new RpgSellAction(botAI); }
+    static Action* rpg_repair(PlayerbotAI* botAI) { return new RpgRepairAction(botAI); }
+    static Action* rpg_train(PlayerbotAI* botAI) { return new RpgTrainAction(botAI); }
+    static Action* rpg_heal(PlayerbotAI* botAI) { return new RpgHealAction(botAI); }
+    static Action* rpg_home_bind(PlayerbotAI* botAI) { return new RpgHomeBindAction(botAI); }
+    static Action* rpg_queue_bg(PlayerbotAI* botAI) { return new RpgQueueBgAction(botAI); }
+    static Action* rpg_buy_petition(PlayerbotAI* botAI) { return new RpgBuyPetitionAction(botAI); }
+    static Action* rpg_use(PlayerbotAI* botAI) { return new RpgUseAction(botAI); }
+    static Action* rpg_spell(PlayerbotAI* botAI) { return new RpgSpellAction(botAI); }
+    static Action* rpg_craft(PlayerbotAI* botAI) { return new RpgCraftAction(botAI); }
+    static Action* rpg_trade_useful(PlayerbotAI* botAI) { return new RpgTradeUsefulAction(botAI); }
+    static Action* rpg_duel(PlayerbotAI* botAI) { return new RpgDuelAction(botAI); }
+    static Action* rpg_mount_anim(PlayerbotAI* botAI) { return new RpgMountAnimAction(botAI); }
+    static Action* invite_nearby(PlayerbotAI* botAI) { return new InviteNearbyToGroupAction(botAI); }
+    static Action* invite_guild(PlayerbotAI* botAI) { return new InviteGuildToGroupAction(botAI); }
+    static Action* leave_far_away(PlayerbotAI* botAI) { return new LeaveFarAwayAction(botAI); }
+    static Action* reset_instances(PlayerbotAI* botAI) { return new ResetInstancesAction(botAI); }
+    static Action* custom_strategy_edit(PlayerbotAI* botAI) { return new CustomStrategyEditAction(botAI); }
+    static Action* list_quests(PlayerbotAI* botAI) { return new ListQuestsAction(botAI); }
+    static Action* query_quest(PlayerbotAI* botAI) { return new QueryQuestAction(botAI); }
+    static Action* drop_quest(PlayerbotAI* botAI) { return new DropQuestAction(botAI); }
+    static Action* clean_quest_log(PlayerbotAI* botAI) { return new CleanQuestLogAction(botAI); }
+    static Action* share_quest(PlayerbotAI* botAI) { return new ShareQuestAction(botAI); }
 };
 
 #endif

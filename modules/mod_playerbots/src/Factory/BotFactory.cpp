@@ -174,6 +174,9 @@ void BotFactory::Randomize(bool incremental)
     }
 
     InitPet();
+
+    InitSkills();
+    InitMounts();
  
     bot->SetMoney(urand(level * 100000, level * 5 * 100000));
     bot->SetHealth(bot->GetMaxHealth());
@@ -1078,6 +1081,14 @@ void BotFactory::InitMounts()
         case RACE_TROLL: slow = {10796, 10799, 8395}; fast = {23241, 23242, 23243}; break;
         case RACE_DRAENEI: slow = {34406, 35711, 35710}; fast = {35713, 35712, 35714}; break;
         case RACE_BLOODELF: slow = {33660, 35020, 35022, 35018}; fast = {35025, 35025, 35027}; break;
+        case RACE_GOBLIN: slow = {87090}; fast = {87091}; break;
+        case RACE_WORGEN: slow = {103195}; fast = {103196}; break;
+        case RACE_PANDAREN_NEUTRAL:
+        case RACE_PANDAREN_ALLIANCE:
+        case RACE_PANDAREN_HORDE:
+            slow = {120395, 127286, 127287, 127288, 127289, 127290};
+            fast = {127293, 127295, 127302, 127308, 127310, 120822};
+            break;
         default: break;
     }
 

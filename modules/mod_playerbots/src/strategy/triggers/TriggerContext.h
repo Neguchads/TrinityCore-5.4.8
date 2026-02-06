@@ -9,10 +9,12 @@
 #include "GenericTriggers.h"
 #include "HealthTriggers.h"
 #include "LfgTriggers.h"
+#include "LootTriggers.h"
 #include "PvpTriggers.h"
 #include "RangeTriggers.h"
 #include "RtiTriggers.h"
 #include "NewRpgTriggers.h"
+#include "RpgTriggers.h"
 #include "TravelTriggers.h"
 
 class PlayerbotAI;
@@ -113,6 +115,14 @@ public:
         creators["lfg teleport in"] = &TriggerContext::lfg_teleport_in;
         creators["lfg"] = &TriggerContext::lfg;
         creators["maintenance"] = &TriggerContext::maintenance;
+        creators["cs"] = &TriggerContext::cs;
+        creators["q"] = &TriggerContext::q;
+        creators["quests"] = &TriggerContext::quests;
+        creators["drop"] = &TriggerContext::drop;
+        creators["share"] = &TriggerContext::share;
+        creators["loot available"] = &TriggerContext::loot_available;
+        creators["far from loot target"] = &TriggerContext::far_from_loot_target;
+        creators["can loot"] = &TriggerContext::can_loot;
 
         creators["bg waiting"] = &TriggerContext::bg_waiting;
         creators["bg active"] = &TriggerContext::bg_active;
@@ -134,6 +144,28 @@ public:
         creators["go innkeeper status"] = &TriggerContext::go_innkeeper_status;
         creators["near random status"] = &TriggerContext::near_random_status;
         creators["near npc status"] = &TriggerContext::near_npc_status;
+        creators["no rpg target"] = &TriggerContext::no_rpg_target;
+        creators["has rpg target"] = &TriggerContext::has_rpg_target;
+        creators["far from rpg target"] = &TriggerContext::far_from_rpg_target;
+        creators["near rpg target"] = &TriggerContext::near_rpg_target;
+        creators["rpg"] = &TriggerContext::rpg;
+        creators["rpg taxi"] = &TriggerContext::rpg_taxi;
+        creators["rpg discover"] = &TriggerContext::rpg_discover;
+        creators["rpg start quest"] = &TriggerContext::rpg_start_quest;
+        creators["rpg end quest"] = &TriggerContext::rpg_end_quest;
+        creators["rpg buy"] = &TriggerContext::rpg_buy;
+        creators["rpg sell"] = &TriggerContext::rpg_sell;
+        creators["rpg repair"] = &TriggerContext::rpg_repair;
+        creators["rpg train"] = &TriggerContext::rpg_train;
+        creators["rpg heal"] = &TriggerContext::rpg_heal;
+        creators["rpg home bind"] = &TriggerContext::rpg_home_bind;
+        creators["rpg queue bg"] = &TriggerContext::rpg_queue_bg;
+        creators["rpg buy petition"] = &TriggerContext::rpg_buy_petition;
+        creators["rpg use"] = &TriggerContext::rpg_use;
+        creators["rpg spell"] = &TriggerContext::rpg_spell;
+        creators["rpg craft"] = &TriggerContext::rpg_craft;
+        creators["rpg trade useful"] = &TriggerContext::rpg_trade_useful;
+        creators["rpg duel"] = &TriggerContext::rpg_duel;
         creators["no travel target"] = &TriggerContext::no_travel_target;
         creators["far from travel target"] = &TriggerContext::far_from_travel_target;
     }
@@ -225,6 +257,14 @@ private:
     static Trigger* lfg_teleport_in(PlayerbotAI* botAI) { return new LfgTeleportInTrigger(botAI); }
     static Trigger* lfg(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "lfg"); }
     static Trigger* maintenance(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "maintenance"); }
+    static Trigger* cs(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "cs"); }
+    static Trigger* q(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "q"); }
+    static Trigger* quests(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "quests"); }
+    static Trigger* drop(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "drop"); }
+    static Trigger* share(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "share"); }
+    static Trigger* loot_available(PlayerbotAI* botAI) { return new LootAvailableTrigger(botAI); }
+    static Trigger* far_from_loot_target(PlayerbotAI* botAI) { return new FarFromCurrentLootTrigger(botAI); }
+    static Trigger* can_loot(PlayerbotAI* botAI) { return new CanLootTrigger(botAI); }
 
     static Trigger* bg_waiting(PlayerbotAI* botAI) { return new BgWaitingTrigger(botAI); }
     static Trigger* bg_active(PlayerbotAI* botAI) { return new BgActiveTrigger(botAI); }
@@ -246,6 +286,28 @@ private:
     static Trigger* go_innkeeper_status(PlayerbotAI* botAI) { return new NewRpgStatusTrigger(botAI, NewRpgStatus::GO_INNKEEPER); }
     static Trigger* near_random_status(PlayerbotAI* botAI) { return new NewRpgStatusTrigger(botAI, NewRpgStatus::NEAR_RANDOM); }
     static Trigger* near_npc_status(PlayerbotAI* botAI) { return new NewRpgStatusTrigger(botAI, NewRpgStatus::NEAR_NPC); }
+    static Trigger* no_rpg_target(PlayerbotAI* botAI) { return new NoRpgTargetTrigger(botAI); }
+    static Trigger* has_rpg_target(PlayerbotAI* botAI) { return new HasRpgTargetTrigger(botAI); }
+    static Trigger* far_from_rpg_target(PlayerbotAI* botAI) { return new FarFromRpgTargetTrigger(botAI); }
+    static Trigger* near_rpg_target(PlayerbotAI* botAI) { return new NearRpgTargetTrigger(botAI); }
+    static Trigger* rpg(PlayerbotAI* botAI) { return new RpgTrigger(botAI); }
+    static Trigger* rpg_taxi(PlayerbotAI* botAI) { return new RpgTaxiTrigger(botAI); }
+    static Trigger* rpg_discover(PlayerbotAI* botAI) { return new RpgDiscoverTrigger(botAI); }
+    static Trigger* rpg_start_quest(PlayerbotAI* botAI) { return new RpgStartQuestTrigger(botAI); }
+    static Trigger* rpg_end_quest(PlayerbotAI* botAI) { return new RpgEndQuestTrigger(botAI); }
+    static Trigger* rpg_buy(PlayerbotAI* botAI) { return new RpgBuyTrigger(botAI); }
+    static Trigger* rpg_sell(PlayerbotAI* botAI) { return new RpgSellTrigger(botAI); }
+    static Trigger* rpg_repair(PlayerbotAI* botAI) { return new RpgRepairTrigger(botAI); }
+    static Trigger* rpg_train(PlayerbotAI* botAI) { return new RpgTrainTrigger(botAI); }
+    static Trigger* rpg_heal(PlayerbotAI* botAI) { return new RpgHealTrigger(botAI); }
+    static Trigger* rpg_home_bind(PlayerbotAI* botAI) { return new RpgHomeBindTrigger(botAI); }
+    static Trigger* rpg_queue_bg(PlayerbotAI* botAI) { return new RpgQueueBGTrigger(botAI); }
+    static Trigger* rpg_buy_petition(PlayerbotAI* botAI) { return new RpgBuyPetitionTrigger(botAI); }
+    static Trigger* rpg_use(PlayerbotAI* botAI) { return new RpgUseTrigger(botAI); }
+    static Trigger* rpg_spell(PlayerbotAI* botAI) { return new RpgSpellTrigger(botAI); }
+    static Trigger* rpg_craft(PlayerbotAI* botAI) { return new RpgCraftTrigger(botAI); }
+    static Trigger* rpg_trade_useful(PlayerbotAI* botAI) { return new RpgTradeUsefulTrigger(botAI); }
+    static Trigger* rpg_duel(PlayerbotAI* botAI) { return new RpgDuelTrigger(botAI); }
     static Trigger* no_travel_target(PlayerbotAI* botAI) { return new NoTravelTargetTrigger(botAI); }
     static Trigger* far_from_travel_target(PlayerbotAI* botAI) { return new FarFromTravelTargetTrigger(botAI); }
 };

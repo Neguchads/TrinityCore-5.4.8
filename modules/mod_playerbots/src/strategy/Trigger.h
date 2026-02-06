@@ -5,6 +5,7 @@
 
 #include "Action.h"
 #include "Common.h"
+#include <initializer_list>
 
 class PlayerbotAI;
 class Unit;
@@ -41,6 +42,19 @@ public:
         : trigger(nullptr), handlers(handlers), name(name)
     {
     }  // reorder args - whipowill
+
+    TriggerNode(std::string const name, std::initializer_list<NextAction*> list)
+        : trigger(nullptr), handlers(nullptr), name(name)
+    {
+        if (list.size() == 0)
+            return;
+
+        handlers = new NextAction*[list.size() + 1];
+        size_t i = 0;
+        for (NextAction* action : list)
+            handlers[i++] = action;
+        handlers[i] = nullptr;
+    }
 
     virtual ~TriggerNode() { NextAction::destroy(handlers); }
 

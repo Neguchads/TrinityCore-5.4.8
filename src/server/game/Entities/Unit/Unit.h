@@ -1599,6 +1599,11 @@ public:
     bool HasAuraTypeWithFamilyFlags(AuraType auraType, uint32 familyName, uint32 familyFlags) const;
     bool virtual HasSpell(uint32 /*spellID*/) const { return false; }
 
+    // Compatibility helpers for imported modules
+    void AddSpellCooldown(uint32 spellId, uint32 itemId, int64 cooldownMs);
+    bool HasSpellCooldown(uint32 spellId) const;
+    uint8 GetComboPoints(Unit const* target = nullptr) const;
+
     bool HasCrowdControlAuraType(AuraType type, uint32 excludeAura = 0, uint32 dispelType = 0) const;
     bool HasCrowdControlAura(Unit* excludeCasterChannel = NULL, uint32 dispelType = 0) const;
     bool HasBreakableByDamageAuraType(AuraType type, uint32 excludeAura = 0) const;

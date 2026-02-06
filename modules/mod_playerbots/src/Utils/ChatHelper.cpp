@@ -9,9 +9,12 @@
 
 #include "ItemPrototype.h"
 #include "ObjectMgr.h"
+#include "ObjectAccessor.h"
+#include "Player.h"
 #include "QuestDef.h"
 #include "SpellInfo.h"
 #include "World.h"
+#include "Object.h"
 
 std::string const ChatHelper::FormatQuest(Quest const* quest)
 {
@@ -78,6 +81,25 @@ std::string const ChatHelper::FormatWorldEntry(int32 entry)
         out << "unknown";
 
     out << " (" << std::abs(entry) << ")";
+    return out.str();
+}
+
+std::string const ChatHelper::FormatWorldobject(WorldObject const* object)
+{
+    if (!object)
+        return "unknown";
+
+    if (object->GetTypeId() == TYPEID_PLAYER)
+        return object->ToPlayer()->GetName();
+
+    if (object->GetTypeId() == TYPEID_UNIT)
+        return FormatWorldEntry(static_cast<int32>(object->ToCreature()->GetEntry()));
+
+    if (object->GetTypeId() == TYPEID_GAMEOBJECT)
+        return FormatWorldEntry(-static_cast<int32>(object->ToGameObject()->GetEntry()));
+
+    std::ostringstream out;
+    out << "object (" << object->GetEntry() << ")";
     return out.str();
 }
 

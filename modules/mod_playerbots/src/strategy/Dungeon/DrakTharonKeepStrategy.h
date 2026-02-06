@@ -1,17 +1,17 @@
-#ifndef _PLAYERBOT_DRAKTHARONKEEPSTRATEGY_H
-#define _PLAYERBOT_DRAKTHARONKEEPSTRATEGY_H
+#ifndef _PLAYERBOT_WOTLKDUNGEONDTKSTRATEGY_H
+#define _PLAYERBOT_WOTLKDUNGEONDTKSTRATEGY_H
 
+#include "Multiplier.h"
+#include "AiObjectContext.h"
 #include "Strategy.h"
 
-class PlayerbotAI;
-
-class DrakTharonKeepStrategy : public Strategy
+class WotlkDungeonDTKStrategy : public Strategy
 {
 public:
-    DrakTharonKeepStrategy(PlayerbotAI* botAI);
-
-    std::string const getName() override { return "drak'tharon keep"; }
-    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    WotlkDungeonDTKStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+    virtual std::string const getName() override { return "drak'tharon keep"; }
+    virtual void InitTriggers(std::vector<TriggerNode*> &triggers) override;
+    virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) override;
 };
 
 #endif
