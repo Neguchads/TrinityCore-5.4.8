@@ -308,6 +308,8 @@ bool BGJoinAction::PrepareArenaGroup(uint8 arenaType)
     {
         if (group->GetLeaderGUID() == bot->GetGUID() && group->GetMembersCount() >= arenaType)
             return true;
+        TC_LOG_INFO("playerbots", "Arena prep blocked: bot already in group leader=%u members=%u need=%u",
+            group->GetLeaderGUID().GetCounter(), group->GetMembersCount(), arenaType);
         return false;
     }
 
@@ -326,9 +328,21 @@ bool BGJoinAction::PrepareArenaGroup(uint8 arenaType)
     if (!newGroup->Create(bot))
     {
         delete newGroup;
+        TC_LOG_INFO("playerbots", "Arena prep failed: could not create group for bot %u", bot->GetGUID().GetCounter());
         return false;
     }
     sGroupMgr->AddGroup(newGroup);
+
+    uint32 checked = 0;
+    uint32 skippedNotInWorld = 0;
+    uint32 skippedNotRandom = 0;
+    uint32 skippedHasMaster = 0;
+    uint32 skippedBusy = 0;
+    uint32 skippedBg = 0;
+    uint32 skippedGrouped = 0;
+    uint32 skippedAccess = 0;
+    uint32 skippedBracket = 0;
+    uint32 addFailed = 0;
 
     for (PlayerBotMap::const_iterator it = sRandomPlayerbotMgr->GetPlayerBotsBegin();
          it != sRandomPlayerbotMgr->GetPlayerBotsEnd(); ++it)
@@ -338,33 +352,61 @@ bool BGJoinAction::PrepareArenaGroup(uint8 arenaType)
 
         Player* member = it->second;
         if (!member || member == bot || !member->IsInWorld())
+        {
+            ++skippedNotInWorld;
             continue;
+        }
+        ++checked;
 
         if (!sRandomPlayerbotMgr->IsRandomBot(member))
+        {
+            ++skippedNotRandom;
             continue;
+        }
 
         PlayerbotAI* memberAI = GET_PLAYERBOT_AI(member);
         if (!memberAI || memberAI->HasActivePlayerMaster())
+        {
+            ++skippedHasMaster;
             continue;
+        }
 
         if (member->IsInCombat() || member->IsBeingTeleported() || member->isDead())
+        {
+            ++skippedBusy;
             continue;
+        }
 
         if (member->InBattleground() || member->InBattlegroundQueue())
+        {
+            ++skippedBg;
             continue;
+        }
 
         if (member->GetGroup())
+        {
+            ++skippedGrouped;
             continue;
+        }
 
         if (!member->GetBGAccessByLevel(BATTLEGROUND_AA))
+        {
+            ++skippedAccess;
             continue;
+        }
 
         PvPDifficultyEntry const* memberBracket = GetBattlegroundBracketByLevel(bg->GetMapId(), member->GetLevel());
         if (!memberBracket || memberBracket->GetBracketId() != leaderBracket->GetBracketId())
+        {
+            ++skippedBracket;
             continue;
+        }
 
         if (!newGroup->AddMember(member))
+        {
+            ++addFailed;
             continue;
+        }
 
         memberAI->Reset();
         member->RemoveAurasWithInterruptFlags(
@@ -374,6 +416,23 @@ bool BGJoinAction::PrepareArenaGroup(uint8 arenaType)
 
     if (newGroup->GetMembersCount() >= arenaType)
         return true;
+
+    TC_LOG_INFO("playerbots",
+        "Arena prep failed: leader=%u bracket=%u need=%u got=%u checked=%u skips[nw=%u rand=%u master=%u busy=%u bg=%u grp=%u access=%u bracket=%u addfail=%u]",
+        bot->GetGUID().GetCounter(),
+        leaderBracket->GetBracketId(),
+        arenaType,
+        newGroup->GetMembersCount(),
+        checked,
+        skippedNotInWorld,
+        skippedNotRandom,
+        skippedHasMaster,
+        skippedBusy,
+        skippedBg,
+        skippedGrouped,
+        skippedAccess,
+        skippedBracket,
+        addFailed);
 
     newGroup->Disband(true);
     return false;
