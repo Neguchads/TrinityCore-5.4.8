@@ -26,7 +26,7 @@ bool LeaveGroupAction::Leave(Player* player)
         GET_PLAYERBOT_AI(bot)->SetMaster(nullptr);
     }
 
-    if (!aiMaster)
+    if (randomBot || !aiMaster)
         botAI->ResetStrategies();
 
     botAI->Reset();
@@ -50,11 +50,33 @@ bool UninviteAction::Execute(Event event)
 
     if (p.GetOpcode() == CMSG_GROUP_UNINVITE_GUID)
     {
-        p.rpos(1);
-        uint32 guid_low;
-        p >> guid_low;
+        p.rpos(0);
+        ObjectGuid guid;
 
-        if (bot->GetGUID().GetCounter() == guid_low)
+        p.read_skip<uint8>();
+
+        guid[6] = p.ReadBit();
+        guid[4] = p.ReadBit();
+        guid[3] = p.ReadBit();
+        guid[2] = p.ReadBit();
+        guid[0] = p.ReadBit();
+        guid[1] = p.ReadBit();
+        guid[7] = p.ReadBit();
+        guid[5] = p.ReadBit();
+
+        uint8 reasonLen = p.ReadBits(8);
+        p.ReadString(reasonLen);
+
+        p.ReadByteSeq(guid[5]);
+        p.ReadByteSeq(guid[6]);
+        p.ReadByteSeq(guid[1]);
+        p.ReadByteSeq(guid[4]);
+        p.ReadByteSeq(guid[3]);
+        p.ReadByteSeq(guid[2]);
+        p.ReadByteSeq(guid[7]);
+        p.ReadByteSeq(guid[0]);
+
+        if (bot->GetGUID() == guid)
             return Leave(bot);
     }
 

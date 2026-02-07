@@ -452,7 +452,6 @@ void BotFactory::InitSkills()
         return;
 
     bot->UpdateSkillsForLevel();
-    bot->SetSkill(SKILL_RIDING, 0, 0, 0);
     if (bot->GetLevel() >= sPlayerbotAIConfig->useGroundMountAtMinLevel)
         bot->LearnSpell(33388, false);
     if (bot->GetLevel() >= sPlayerbotAIConfig->useFastGroundMountAtMinLevel)
@@ -461,6 +460,29 @@ void BotFactory::InitSkills()
         bot->LearnSpell(34090, false);
     if (bot->GetLevel() >= sPlayerbotAIConfig->useFastFlyMountAtMinLevel)
         bot->LearnSpell(34091, false);
+    if (bot->GetLevel() >= sPlayerbotAIConfig->useFlyMountAtMinLevel)
+    {
+        bot->LearnSpell(54197, false); // Cold Weather Flying
+        bot->LearnSpell(90267, false); // Flight Master's License
+    }
+    if (bot->GetLevel() >= 90)
+        bot->LearnSpell(115913, false); // Wisdom of the Four Winds
+
+    uint16 ridingValue = 0;
+    if (bot->HasSpell(34091))
+        ridingValue = 300;
+    else if (bot->HasSpell(34090))
+        ridingValue = 225;
+    else if (bot->HasSpell(33391))
+        ridingValue = 150;
+    else if (bot->HasSpell(33388))
+        ridingValue = 75;
+
+    if (ridingValue)
+    {
+        uint16 skillStep = bot->GetSkillStep(SKILL_RIDING);
+        bot->SetSkill(SKILL_RIDING, skillStep, ridingValue, ridingValue);
+    }
 
     uint32 skillLevel = bot->GetLevel() < 40 ? 0 : 1;
     uint32 dualWieldLevel = bot->GetLevel() < 20 ? 0 : 1;

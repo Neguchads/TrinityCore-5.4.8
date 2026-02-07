@@ -1,7 +1,6 @@
 #include "CheckMountStateAction.h"
 
 #include "BotFactory.h"
-#include "ItemVisitors.h"
 #include "Log.h"
 #include "Playerbots.h"
 #include "SpellMgr.h"
@@ -12,42 +11,52 @@
 
 bool CheckMountStateAction::isUseful()
 {
-    bool debugMount =
-        botAI->HasStrategy("debug mount", BOT_STATE_NON_COMBAT) || botAI->HasStrategy("debug mount", BOT_STATE_COMBAT);
+    Player* master = botAI->GetMaster();
+    bool masterMounted = master && master != bot &&
+        (master->IsMounted() ||
+         master->HasAuraType(SPELL_AURA_MOUNTED) ||
+         master->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) ||
+         master->HasAuraType(SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS) ||
+         master->HasAuraType(SPELL_AURA_FLY));
 
-    auto debugLog = [&](char const* msg)
+    auto infoLog = [&](char const* msg)
     {
-        if (debugMount)
-            TC_LOG_DEBUG("playerbots", "mount: {} ({})", msg, bot->GetName().c_str());
+        if (masterMounted)
+            TC_LOG_INFO("server", "playerbots mount: %s (%s)", msg, bot->GetName().c_str());
     };
 
     if (botAI->IsInVehicle() || bot->isDead() || bot->HasUnitState(UNIT_STATE_IN_FLIGHT))
     {
-        debugLog("not useful: vehicle/dead/in flight");
+        infoLog("not useful: vehicle/dead/in flight");
         return false;
     }
 
-    if (!bot->IsOutdoors())
+    if (!bot->IsOutdoors() && !masterMounted)
     {
-        debugLog("not useful: indoors");
         return false;
     }
+    if (!bot->IsOutdoors() && masterMounted)
+        infoLog("isUseful: indoors while master mounted, allowing sync attempt");
 
     if (bot->HasAuraType(SPELL_AURA_TRANSFORM) && bot->IsInDisallowedMountForm())
     {
-        debugLog("not useful: disallowed mount form");
+        infoLog("not useful: disallowed mount form");
         return false;
     }
 
     if (!GET_PLAYERBOT_AI(bot)->HasStrategy("mount", BOT_STATE_NON_COMBAT) && !bot->IsMounted())
     {
-        debugLog("not useful: mount strategy disabled");
-        return false;
+        if (!masterMounted)
+        {
+            return false;
+        }
+
+        infoLog("isUseful: mount strategy disabled but master mounted, allowing sync");
     }
 
     if (bot->GetLevel() < sPlayerbotAIConfig->useGroundMountAtMinLevel)
     {
-        debugLog("not useful: below mount level");
+        infoLog("not useful: below mount level");
         return false;
     }
 
@@ -56,36 +65,41 @@ bool CheckMountStateAction::isUseful()
 
 bool CheckMountStateAction::Execute(Event /*event*/)
 {
-    bool debugMount =
-        botAI->HasStrategy("debug mount", BOT_STATE_NON_COMBAT) || botAI->HasStrategy("debug mount", BOT_STATE_COMBAT);
-
-    auto debugLog = [&](char const* fmt, auto... args)
+    auto infoLog = [&](char const* fmt, auto... args)
     {
-        if (debugMount)
-            TC_LOG_DEBUG("playerbots", fmt, args...);
+        TC_LOG_INFO("server", fmt, args...);
     };
 
-    float mountDistance = std::max(40.0f, sPlayerbotAIConfig->farDistance);
-    float dismountDistance = std::max(10.0f, sPlayerbotAIConfig->reactDistance);
+    // Keep travel mount thresholds tight: large dismount ranges cause mount/dismount loops.
+    float dismountDistance = std::max(10.0f, sPlayerbotAIConfig->spellDistance + 2.0f);
+    float mountDistance = std::max(21.0f, dismountDistance + 10.0f);
 
     Player* master = botAI->GetMaster();
     if (master && master != bot)
     {
-        float masterDistance = bot->GetExactDist(master);
-        if (master->IsMounted() && !bot->IsMounted() && masterDistance > dismountDistance)
+        bool masterMounted = master->IsMounted() ||
+            master->HasAuraType(SPELL_AURA_MOUNTED) ||
+            master->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) ||
+            master->HasAuraType(SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS) ||
+            master->HasAuraType(SPELL_AURA_FLY);
+
+        if (masterMounted && !bot->IsMounted() && !bot->IsInCombat())
         {
-            debugLog("mount: master mounted, distance %.1f > %.1f, trying mount (%s)", masterDistance, dismountDistance,
-                bot->GetName().c_str());
+            infoLog("playerbots mount: master mounted, trying mount (%s)", bot->GetName().c_str());
             return Mount();
         }
 
-        if (!master->IsMounted() && bot->IsMounted() && masterDistance < dismountDistance)
+        if (!masterMounted && bot->IsMounted())
         {
-            debugLog("mount: master dismounted, distance %.1f < %.1f, dismounting (%s)", masterDistance, dismountDistance,
-                bot->GetName().c_str());
+            infoLog("playerbots mount: master dismounted, dismounting (%s)", bot->GetName().c_str());
             Dismount();
             return true;
         }
+
+        // When following a master, do not use travel-distance dismount logic,
+        // otherwise bots can mount and instantly dismount because travel distance
+        // may be zero while staying near the master.
+        return false;
     }
 
     float distance = 0.0f;
@@ -98,36 +112,62 @@ bool CheckMountStateAction::Execute(Event /*event*/)
 
     if (shouldDismount)
     {
-        debugLog("mount: travel distance %.1f < %.1f, dismounting (%s)", distance, dismountDistance, bot->GetName().c_str());
+        infoLog("playerbots mount: travel distance %.1f < %.1f, dismounting (%s)", distance, dismountDistance, bot->GetName().c_str());
         Dismount();
         return true;
     }
 
     if (shouldMount)
     {
-        debugLog("mount: travel distance %.1f > %.1f, trying mount (%s)", distance, mountDistance, bot->GetName().c_str());
+        infoLog("playerbots mount: travel distance %.1f > %.1f, trying mount (%s)", distance, mountDistance, bot->GetName().c_str());
         return Mount();
     }
-
-    if (debugMount && !bot->IsMounted())
-        debugLog("mount: not mounting (distance %.1f, mountDistance %.1f, inCombat %d) (%s)",
-            distance, mountDistance, bot->IsInCombat(), bot->GetName().c_str());
 
     return false;
 }
 
 bool CheckMountStateAction::Mount()
 {
-    bool debugMount =
-        botAI->HasStrategy("debug mount", BOT_STATE_NON_COMBAT) || botAI->HasStrategy("debug mount", BOT_STATE_COMBAT);
-
-    auto debugLog = [&](char const* fmt, auto... args)
+    auto infoLog = [&](char const* fmt, auto... args)
     {
-        if (debugMount)
-            TC_LOG_DEBUG("playerbots", fmt, args...);
+        TC_LOG_INFO("server", fmt, args...);
     };
 
     botAI->RemoveShapeshift();
+
+    if (bot->GetLevel() >= sPlayerbotAIConfig->useGroundMountAtMinLevel)
+        bot->LearnSpell(33388, false);  // Apprentice Riding
+    if (bot->GetLevel() >= sPlayerbotAIConfig->useFastGroundMountAtMinLevel)
+        bot->LearnSpell(33391, false);  // Journeyman Riding
+    if (bot->GetLevel() >= sPlayerbotAIConfig->useFlyMountAtMinLevel)
+        bot->LearnSpell(34090, false);  // Expert Riding
+    if (bot->GetLevel() >= sPlayerbotAIConfig->useFastFlyMountAtMinLevel)
+        bot->LearnSpell(34091, false);  // Artisan Riding
+
+    // Ensure older bots have required riding licenses when they attempt to mount.
+    if (bot->GetLevel() >= sPlayerbotAIConfig->useFlyMountAtMinLevel)
+    {
+        bot->LearnSpell(54197, false);  // Cold Weather Flying
+        bot->LearnSpell(90267, false);  // Flight Master's License
+    }
+    if (bot->GetLevel() >= 90)
+        bot->LearnSpell(115913, false); // Wisdom of the Four Winds
+
+    uint16 ridingValue = 0;
+    if (bot->HasSpell(34091))
+        ridingValue = 300;
+    else if (bot->HasSpell(34090))
+        ridingValue = 225;
+    else if (bot->HasSpell(33391))
+        ridingValue = 150;
+    else if (bot->HasSpell(33388))
+        ridingValue = 75;
+
+    if (ridingValue && bot->GetSkillValue(SKILL_RIDING) < ridingValue)
+    {
+        uint16 skillStep = bot->GetSkillStep(SKILL_RIDING);
+        bot->SetSkill(SKILL_RIDING, skillStep, ridingValue, ridingValue);
+    }
 
     struct MountSpell
     {
@@ -136,7 +176,74 @@ bool CheckMountStateAction::Mount()
         bool isFlight = false;
     };
 
-    auto collectMountSpells = [](Player* player, std::vector<MountSpell>& out)
+    auto isGroundMountSpeedAura = [](uint32 auraType) -> bool
+    {
+        return auraType == SPELL_AURA_MOD_INCREASE_MOUNTED_SPEED ||
+            auraType == SPELL_AURA_MOD_MOUNTED_SPEED_ALWAYS ||
+            auraType == SPELL_AURA_MOD_MOUNTED_SPEED_NOT_STACK;
+    };
+
+    auto isFlightMountSpeedAura = [](uint32 auraType) -> bool
+    {
+        return auraType == SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED ||
+            auraType == SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS;
+    };
+
+    auto speedTier = [](int32 speed) -> int32
+    {
+        if (speed >= 279)
+            return 279;
+        if (speed >= 149)
+            return 149;
+        if (speed >= 99)
+            return 99;
+        if (speed >= 59)
+            return 59;
+        return 0;
+    };
+
+    auto fallbackRidingSpeed = [](Player const* player, bool isFlight) -> int32
+    {
+        if (isFlight)
+        {
+            if (player->HasSpell(34091))
+                return 279;
+            if (player->HasSpell(34090))
+                return 149;
+            return 0;
+        }
+
+        if (player->HasSpell(33391))
+            return 99;
+        if (player->HasSpell(33388))
+            return 59;
+        return 0;
+    };
+
+    auto extractMountData = [&](Player const* player, SpellInfo const* spellInfo, bool& isMount, bool& isFlight, int32& speed)
+    {
+        isMount = false;
+        isFlight = false;
+        speed = 0;
+
+        for (uint8 i = EFFECT_0; i <= EFFECT_2; ++i)
+        {
+            uint32 auraType = spellInfo->Effects[i].ApplyAuraName;
+            if (auraType == SPELL_AURA_MOUNTED)
+                isMount = true;
+
+            if (isGroundMountSpeedAura(auraType) || isFlightMountSpeedAura(auraType))
+                speed = std::max(speed, spellInfo->Effects[i].BasePoints);
+
+            if (isFlightMountSpeedAura(auraType) || auraType == SPELL_AURA_FLY)
+                isFlight = true;
+        }
+
+        if (isMount && speed <= 0)
+            speed = fallbackRidingSpeed(player, isFlight);
+    };
+
+    auto collectMountSpells = [&](Player* player, std::vector<MountSpell>& out)
     {
         for (auto const& entry : player->GetSpellMap())
         {
@@ -145,28 +252,54 @@ bool CheckMountStateAction::Mount()
             if (!spellInfo)
                 continue;
 
-            if (entry.second->state == PLAYERSPELL_REMOVED || !entry.second->active || spellInfo->IsPassive())
+            if (entry.second->state == PLAYERSPELL_REMOVED || spellInfo->IsPassive())
                 continue;
 
-            if (spellInfo->Effects[0].ApplyAuraName != SPELL_AURA_MOUNTED)
+            bool isMount = false;
+            bool isFlight = false;
+            int32 speed = 0;
+            extractMountData(player, spellInfo, isMount, isFlight, speed);
+
+            if (!isMount)
                 continue;
-
-            int32 effect1 = spellInfo->Effects[1].BasePoints;
-            int32 effect2 = spellInfo->Effects[2].BasePoints;
-            int32 speed = std::max(effect1, effect2);
-
-            bool isFlight = (spellInfo->Effects[1].ApplyAuraName == SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED ||
-                             spellInfo->Effects[2].ApplyAuraName == SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED ||
-                             spellInfo->Effects[1].ApplyAuraName == SPELL_AURA_FLY ||
-                             spellInfo->Effects[2].ApplyAuraName == SPELL_AURA_FLY);
 
             out.push_back(MountSpell{ spellId, speed, isFlight });
         }
     };
 
-    auto getMasterMountSpeed = [](Player* master) -> int32
+    auto isMasterFlying = [](Player* master) -> bool
     {
         if (!master)
+            return false;
+
+        if (master->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) ||
+            master->HasAuraType(SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS) ||
+            master->HasAuraType(SPELL_AURA_FLY))
+            return true;
+
+        auto auraEffects = master->GetAuraEffectsByType(SPELL_AURA_MOUNTED);
+        if (!auraEffects.empty())
+        {
+            SpellInfo const* masterSpell = auraEffects.front()->GetSpellInfo();
+            if (masterSpell)
+            {
+                for (uint8 i = EFFECT_0; i <= EFFECT_2; ++i)
+                {
+                    uint32 auraType = masterSpell->Effects[i].ApplyAuraName;
+                    if (auraType == SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED ||
+                        auraType == SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS ||
+                        auraType == SPELL_AURA_FLY)
+                        return true;
+                }
+            }
+        }
+
+        return false;
+    };
+
+    auto getMasterSpeedTier = [&](Player* master) -> int32
+    {
+        if (!master || !master->IsMounted())
             return 0;
 
         auto auraEffects = master->GetAuraEffectsByType(SPELL_AURA_MOUNTED);
@@ -177,31 +310,18 @@ bool CheckMountStateAction::Mount()
         if (!masterSpell)
             return 0;
 
-        int32 effect1 = masterSpell->Effects[1].BasePoints;
-        int32 effect2 = masterSpell->Effects[2].BasePoints;
-        return std::max(effect1, effect2);
-    };
-
-    auto isMasterFlying = [](Player* master) -> bool
-    {
-        if (!master)
-            return false;
-
-        if (master->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) || master->HasAuraType(SPELL_AURA_FLY))
-            return true;
-
-        return false;
+        bool isMount = false;
+        bool isFlight = false;
+        int32 speed = 0;
+        extractMountData(master, masterSpell, isMount, isFlight, speed);
+        return speedTier(speed);
     };
 
     Player* master = botAI->GetMaster();
-    bool wantFlight = master && master->IsMounted() && isMasterFlying(master);
-    if (wantFlight && !bot->CanFly())
-    {
-        debugLog("mount: master flying but bot can't fly (%s)", bot->GetName().c_str());
-        wantFlight = false;
-    }
-
-    int32 masterSpeed = getMasterMountSpeed(master);
+    bool canFlyHere = bot->IsKnowHowFlyIn(bot->GetMapId(), bot->GetZoneId());
+    bool masterMounted = master && (master->IsMounted() || master->HasAuraType(SPELL_AURA_MOUNTED));
+    bool wantFlight = masterMounted ? (isMasterFlying(master) && canFlyHere) : canFlyHere;
+    int32 masterSpeedTier = getMasterSpeedTier(master);
 
     std::vector<MountSpell> mounts;
     collectMountSpells(bot, mounts);
@@ -215,41 +335,94 @@ bool CheckMountStateAction::Mount()
     }
 
     if (mounts.empty())
-        debugLog("mount: no mount spells after init (%s)", bot->GetName().c_str());
-
-    uint32 chosenMount = 0;
-    int32 chosenSpeed = -1;
-    for (MountSpell const& mount : mounts)
     {
-        if (mount.isFlight != wantFlight)
-            continue;
-
-        if (masterSpeed > 0 && mount.speed > masterSpeed)
-            continue;
-
-        if (mount.speed > chosenSpeed)
-        {
-            chosenSpeed = mount.speed;
-            chosenMount = mount.id;
-        }
-    }
-
-    if (chosenMount && botAI->CanCastSpell(chosenMount, bot))
-        return botAI->CastSpell(chosenMount, bot);
-
-    if (chosenMount)
-        debugLog("mount: chosen mount %u not castable (%s)", chosenMount, bot->GetName().c_str());
-
-    FindMountVisitor visitor(bot);
-    IterateItems(bot, visitor, ITERATE_ITEMS_IN_BAGS);
-    std::vector<Item*>& items = visitor.GetResult();
-    if (items.empty())
-    {
-        debugLog("mount: no mount items in bags (%s)", bot->GetName().c_str());
+        infoLog("playerbots mount: no mount spells after init (%s)", bot->GetName().c_str());
         return false;
     }
 
-    return UseItemOnSelf(items.front(), false);
+    std::vector<MountSpell> preferred;
+    for (MountSpell const& mount : mounts)
+    {
+        if (mount.isFlight == wantFlight)
+            preferred.push_back(mount);
+    }
+
+    if (preferred.empty())
+        preferred = mounts;
+
+    auto meetsMasterSpeed = [&](MountSpell const& mount) -> bool
+    {
+        if (masterSpeedTier >= 279)
+            return mount.speed >= 279;
+        if (masterSpeedTier >= 149)
+            return mount.isFlight ? mount.speed >= 149 : mount.speed >= 99;
+        if (masterSpeedTier >= 99)
+            return mount.speed >= 99;
+        if (masterSpeedTier >= 59)
+            return mount.speed >= 59;
+        return true;
+    };
+
+    auto sortByBestSpeed = [](std::vector<MountSpell>& mountList)
+    {
+        std::sort(mountList.begin(), mountList.end(), [](MountSpell const& a, MountSpell const& b)
+        {
+            if (a.speed != b.speed)
+                return a.speed > b.speed;
+            // When speeds tie, prefer flight for flight requests and ground otherwise (handled by preferred list).
+            return a.id < b.id;
+        });
+    };
+
+    if (bot->isMoving())
+        bot->StopMoving();
+
+    if (!bot->IsStandState())
+    {
+        bot->SetStandState(UNIT_STAND_STATE_STAND);
+        return false;
+    }
+
+    auto tryCastFrom = [&](std::vector<MountSpell> candidates, bool strictMasterSpeed) -> bool
+    {
+        sortByBestSpeed(candidates);
+        for (MountSpell const& mount : candidates)
+        {
+            if (strictMasterSpeed && !meetsMasterSpeed(mount))
+                continue;
+
+            if (!sSpellMgr->GetSpellInfo(mount.id))
+                continue;
+
+            bool canCastCheck = botAI->CanCastSpell(mount.id, bot, false);
+            bool hasSpell = bot->HasSpell(mount.id);
+            infoLog("playerbots mount: casting mount spell %u speed %d flight %d (%s)",
+                mount.id, mount.speed, mount.isFlight, bot->GetName().c_str());
+            infoLog("playerbots mount: precheck spell %u hasSpell=%u canCast=%u (%s)",
+                mount.id, hasSpell ? 1 : 0, canCastCheck ? 1 : 0, bot->GetName().c_str());
+            bool casted = botAI->CastSpell(mount.id, bot);
+            if (casted)
+                return true;
+
+            infoLog("playerbots mount: cast failed for %u (%s)", mount.id, bot->GetName().c_str());
+        }
+        return false;
+    };
+
+    if (tryCastFrom(preferred, true))
+        return true;
+    if (tryCastFrom(preferred, false))
+        return true;
+    if (preferred.size() != mounts.size())
+    {
+        if (tryCastFrom(mounts, true))
+            return true;
+        if (tryCastFrom(mounts, false))
+            return true;
+    }
+
+    infoLog("playerbots mount: no castable mount spell found (%s)", bot->GetName().c_str());
+    return false;
 }
 
 void CheckMountStateAction::Dismount()

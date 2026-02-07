@@ -1002,6 +1002,19 @@ void PlayerbotAI::DoNextAction(bool min)
     if (master)
         masterBotAI = GET_PLAYERBOT_AI(master);
 
+    // Random bots should not keep following a player after they are no longer grouped.
+    if (master && master != bot && sRandomPlayerbotMgr->IsRandomBot(bot))
+    {
+        bool masterInGroup = group && group->IsMember(master->GetGUID());
+        if (!masterInGroup)
+        {
+            SetMaster(nullptr);
+            master = nullptr;
+            masterBotAI = nullptr;
+            ResetStrategies();
+        }
+    }
+
     // Test BG master set
     if ((!master || (masterBotAI && !masterBotAI->IsRealPlayer())) && group)
     {
@@ -1083,6 +1096,40 @@ void PlayerbotAI::DoNextAction(bool min)
     if (master && master->IsInWorld())
     {
         float distance = sServerFacade->GetDistance2d(bot, master);
+
+        // Keep mount state in sync with player master without bypassing normal mount logic.
+        if (master != bot && !bot->IsInCombat() && bot->IsAlive() && !bot->HasUnitState(UNIT_STATE_IN_FLIGHT))
+        {
+            bool masterMounted = master->IsMounted() ||
+                master->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) ||
+                master->HasAuraType(SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS) ||
+                master->HasAuraType(SPELL_AURA_FLY);
+
+            if (masterMounted && !bot->IsMounted())
+            {
+                TC_LOG_INFO("server", "playerbots mount: sync trigger mount bot=%s master=%s",
+                    bot->GetName().c_str(), master->GetName().c_str());
+
+                if (_engines[BOT_STATE_NON_COMBAT])
+                {
+                    ActionResult mountRes = _engines[BOT_STATE_NON_COMBAT]->ExecuteAction("check mount state", Event(), "");
+                    TC_LOG_INFO("server", "playerbots mount: sync execute result bot=%s result=%u",
+                        bot->GetName().c_str(), uint32(mountRes));
+                }
+                else
+                {
+                    TC_LOG_INFO("server", "playerbots mount: non-combat engine missing bot=%s", bot->GetName().c_str());
+                }
+            }
+            else if (!masterMounted && bot->IsMounted())
+            {
+                TC_LOG_INFO("server", "playerbots mount: sync trigger dismount bot=%s master=%s",
+                    bot->GetName().c_str(), master->GetName().c_str());
+                WorldPacket emptyPacket;
+                bot->GetSession()->HandleCancelMountAuraOpcode(emptyPacket);
+            }
+        }
+
         if (master->m_movementInfo.HasMovementFlag(MOVEMENTFLAG_WALKING) && distance < 20.0f)
             bot->m_movementInfo.AddMovementFlag(MOVEMENTFLAG_WALKING);
         else
@@ -1103,11 +1150,17 @@ void PlayerbotAI::DoNextAction(bool min)
 
 
     bool hasMountAura = bot->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_SPEED) ||
-        bot->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED);
+        bot->HasAuraType(SPELL_AURA_MOD_MOUNTED_SPEED_ALWAYS) ||
+        bot->HasAuraType(SPELL_AURA_MOD_MOUNTED_SPEED_NOT_STACK) ||
+        bot->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) ||
+        bot->HasAuraType(SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS);
     if (hasMountAura && !bot->IsMounted())
     {
         bot->RemoveAurasByType(SPELL_AURA_MOD_INCREASE_MOUNTED_SPEED);
+        bot->RemoveAurasByType(SPELL_AURA_MOD_MOUNTED_SPEED_ALWAYS);
+        bot->RemoveAurasByType(SPELL_AURA_MOD_MOUNTED_SPEED_NOT_STACK);
         bot->RemoveAurasByType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED);
+        bot->RemoveAurasByType(SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS);
     }
 }
 
@@ -2640,6 +2693,22 @@ bool PlayerbotAI::CastSpell(uint32 spellId, Unit* target, Item* itemTarget)
     SpellCastResult result = spell->CheckCast(false);
     if (result != SPELL_CAST_OK)
     {
+        bool isMountSpell = false;
+        for (uint8 i = EFFECT_0; i <= EFFECT_2; ++i)
+        {
+            if (spellInfo->Effects[i].ApplyAuraName == SPELL_AURA_MOUNTED)
+            {
+                isMountSpell = true;
+                break;
+            }
+        }
+
+        if (isMountSpell)
+        {
+            TC_LOG_INFO("server", "playerbots mount: cast failed bot=%s spell=%u result=%u",
+                bot->GetName().c_str(), spellId, uint32(result));
+        }
+
         // if (!sPlayerbotAIConfig->logInGroupOnly || (bot->GetGroup() && HasRealPlayerMaster())) {
         TC_LOG_DEBUG("playerbots", "Spell cast failed. - target name: %s, spellid: %u, bot name: %s, result: %u", target->GetName().c_str(), spellId, bot->GetName().c_str(), result);
         // }

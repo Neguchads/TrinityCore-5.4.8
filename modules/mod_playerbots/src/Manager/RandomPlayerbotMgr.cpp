@@ -1071,7 +1071,7 @@ void RandomPlayerbotMgr::OnPlayerLogout(Player* player)
             botAI->SetMaster(nullptr);
             if (!bot->InBattleground())
             {
-                //botAI->ResetStrategies();
+                botAI->ResetStrategies();
             }
         }
     }

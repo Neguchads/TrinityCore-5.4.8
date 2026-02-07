@@ -87,16 +87,19 @@ void MovementAction::UpdateMovementState()
 
     bool onGround = bot->GetPositionZ() < bot->GetMapWaterOrGroundLevel(bot->GetPositionX(), bot->GetPositionY(), bot->GetPositionZ()) + 1.0f;
 
+    bool hasMountedFlightAura = bot->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) ||
+        bot->HasAuraType(SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS);
+
     // Keep bot->SendMovementFlagUpdate() withing the if statements to not intefere with bot behavior on ground/(shallow) waters
     if (!bot->HasUnitMovementFlag(MOVEMENTFLAG_FLYING) &&
-        bot->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) && !onGround)
+        hasMountedFlightAura && !onGround)
     {
         bot->AddUnitMovementFlag(MOVEMENTFLAG_FLYING);
         bot->SendMovementFlagUpdate();
     }
 
     else if (bot->HasUnitMovementFlag(MOVEMENTFLAG_FLYING) &&
-        (!bot->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) || onGround))
+        (!hasMountedFlightAura || onGround))
     {
         bot->RemoveUnitMovementFlag(MOVEMENTFLAG_FLYING);
         bot->SendMovementFlagUpdate();
