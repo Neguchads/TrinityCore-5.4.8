@@ -860,7 +860,7 @@ void PlayerbotAI::ResetStrategies()
     if (HasActivePlayerMaster())
     {
         _engines[BOT_STATE_NON_COMBAT]->ChangeStrategy(
-            "+follow,-rpg,-new rpg,-grind,-travel,-loot,-gather,-quest");
+            "+follow,-rpg,-new rpg,-grind,-travel,-loot,-gather,-quest,-say hello");
         _engines[BOT_STATE_COMBAT]->ChangeStrategy("+dps assist");
     }
 
