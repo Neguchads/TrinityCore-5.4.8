@@ -55,6 +55,9 @@ void WindwalkerMonkStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericMonkStrategy::InitTriggers(triggers);
 
+    triggers.push_back(new TriggerNode("enemy out of melee",
+        NextAction::array(0, new NextAction("reach melee", ACTION_HIGH + 1), nullptr)));
+
     triggers.push_back(new TriggerNode("stance of the fierce tiger",
         NextAction::array(0, new NextAction("stance of the fierce tiger", ACTION_HIGH + 9), nullptr)));
 

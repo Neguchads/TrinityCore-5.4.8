@@ -17,5 +17,8 @@ void MeleeDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode(
         "omen of clarity", NextAction::array(0, new NextAction("omen of clarity", ACTION_HIGH + 9), nullptr)));
 
+    triggers.push_back(new TriggerNode("enemy out of melee",
+        NextAction::array(0, new NextAction("reach melee", ACTION_HIGH + 1), nullptr)));
+
     CombatStrategy::InitTriggers(triggers);
 }
