@@ -458,6 +458,22 @@ bool BGStatusAction::JoinInvitedBattleground(uint8 queueSlot, BattlegroundQueueT
     if (!bot->IsInvitedForBattlegroundQueueType(queueTypeId))
         return false;
 
+    if (ginfo.ArenaType)
+    {
+        Group* group = bot->GetGroup();
+        if (!group || group->GetMembersCount() < ginfo.ArenaType)
+        {
+            TC_LOG_INFO("playerbots", "Bot %u %s:%u <%s> declined arena invite due to short group (have=%u need=%u)",
+                bot->GetGUID().GetCounter(),
+                bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H",
+                bot->GetLevel(),
+                bot->GetName().c_str(),
+                group ? group->GetMembersCount() : 0,
+                ginfo.ArenaType);
+            return false;
+        }
+    }
+
     BattlegroundTypeId bgTypeId = BattlegroundMgr::BGTemplateId(queueTypeId);
     Battleground* bg = sBattlegroundMgr->GetBattleground(
         ginfo.IsInvitedToBGInstanceGUID, bgTypeId == BATTLEGROUND_AA ? BATTLEGROUND_TYPE_NONE : bgTypeId);
@@ -611,7 +627,7 @@ bool BGStatusAction::Execute(Event event)
         BattlegroundBracketId bracketId = bracketEntry->GetBracketId();
         auto& bgInfo = sRandomPlayerbotMgr->BattlegroundData[queueTypeId][bracketId];
         uint8 arenaType = BattlegroundMgr::BGArenaType(queueTypeId);
-        bool activeQueue = arenaType ? (bgInfo.activeRatedArenaQueue > 0 || sPlayerbotAIConfig->randomBotAutoJoinBG)
+        bool activeQueue = arenaType ? ((bgInfo.activeRatedArenaQueue > 0 || bgInfo.activeSkirmishArenaQueue > 0) || sPlayerbotAIConfig->randomBotAutoJoinBG)
                                       : (bgInfo.activeBgQueue > 0 || sPlayerbotAIConfig->randomBotAutoJoinBG);
 
         if (!activeQueue)

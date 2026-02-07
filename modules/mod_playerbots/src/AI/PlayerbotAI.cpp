@@ -1101,6 +1101,10 @@ void PlayerbotAI::DoNextAction(bool min)
         if (master != bot && !bot->IsInCombat() && bot->IsAlive() && !bot->HasUnitState(UNIT_STATE_IN_FLIGHT))
         {
             bool masterMounted = master->IsMounted() ||
+                master->IsFlying() ||
+                master->HasAuraType(SPELL_AURA_MOUNTED) ||
+                master->HasAuraType(SPELL_AURA_MOD_INCREASE_FLIGHT_SPEED) ||
+                master->HasAuraType(SPELL_AURA_MOD_FLIGHT_SPEED_NOT_STACK) ||
                 master->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) ||
                 master->HasAuraType(SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS) ||
                 master->HasAuraType(SPELL_AURA_FLY);
