@@ -1377,6 +1377,14 @@ Updates.CleanDeadRefMaxCount = 3
 ###################################################################################################
 # WARDEN SETTINGS
 #
+#    Warden.Enabled
+#        Description: Enable Warden anticheat system.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Warden.Enabled = 1
+
+#
 #    Warden.NumMemChecks
 #        Description: Number of Warden memory checks that are sent to the client each cycle.
 #        Default:     3 - (Enabled)
