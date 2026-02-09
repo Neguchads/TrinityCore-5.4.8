@@ -71,7 +71,6 @@ class WorldSession;
 enum class QuestGiverStatus : uint32;
 enum QuestStatus : uint8;
 
-// AzerothCore-compatible DatabaseScript hooks (currently unused by core).
 enum DatabaseHook
 {
     DATABASEHOOK_ON_AFTER_DATABASES_LOADED,
@@ -255,7 +254,7 @@ protected:
 
 public:
 
-    // AzerothCore-style hooks for module database lifecycle.
+    // Hooks for module database lifecycle.
     virtual void OnAfterDatabasesLoaded(uint32 /*updateFlags*/) { }
     virtual void OnAfterDatabaseLoadCreatureTemplates(std::vector<CreatureTemplate*> /*creatureTemplates*/) { }
 
