@@ -11,6 +11,7 @@
 #    PERFORMANCE SETTINGS
 #    SERVER LOGGING
 #    SERVER SETTINGS
+#    UPDATE SETTINGS
 #    WARDEN SETTINGS
 #    PLAYER INTERACTION
 #    CREATURE SETTINGS
@@ -33,10 +34,12 @@
 #    LOGGING SYSTEM SETTINGS
 #    CURRENCIES SETTINGS
 #    BATTLE PET SETTINGS
+#    BATTLE PAY SETTINGS
 #    BLACK MARKET SETTINGS
 #    PACKET SPOOF PROTECTION SETTINGS
-#    STARTING GUILD
+#    GUILD LEVELING SETTINGS
 #    LOAD SETTINGS
+#    CUSTOM SETTINGS
 #
 ###################################################################################################
 
@@ -346,7 +349,7 @@ ChangeWeatherInterval = 600000
 #        Description: Time (in milliseconds) for player save interval.
 #        Default:     900000 - (15 min)
 
-PlayerSaveInterval = 900000
+PlayerSaveInterval = 90000
 
 #
 #    PlayerSave.Stats.MinLevel
@@ -442,7 +445,7 @@ LogDB.Opt.ClearTime = 1209600
 #        Default:     0   - (Disabled)
 #                     10+ - (Enabled, Recommended 10+)
 
-MaxCoreStuckTime = 0
+MaxCoreStuckTime = 60
 
 #
 #    AddonChannel
@@ -1034,7 +1037,7 @@ InstancesResetAnnounce = false
 #        Default:     4  - (Enabled, Hide quests that have 4 levels less than the character)
 #                     -1 - (Disabled, Show all available quest marks)
 
-Quests.LowLevelHideDiff = 4
+Quests.LowLevelHideDiff = 10
 
 #
 #    Quests.HighLevelHideDiff
@@ -1185,7 +1188,7 @@ ClientCacheVersion = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-Event.Announce = 1
+Event.Announce = 0
 
 #
 #    BeepAtStart
@@ -1320,7 +1323,7 @@ BirthdayTime = 1222964635
 #                     4  - (Enable world only)
 #                     0  - (All disabled)
 
-Updates.EnableDatabases = 0
+Updates.EnableDatabases = 7
 
 #
 #    Updates.AutoSetup
@@ -1328,21 +1331,51 @@ Updates.EnableDatabases = 0
 #        Default:     1 - (Enabled)
 #                     0 - (Disabled)
 
-Updates.AutoSetup   = 0
+Updates.AutoSetup   = 1
+
+#
+#    Updates.Redundancy
+#        Description: Perform data redundancy checks through hashing
+#                     to detect changes on sql updates and reapply it.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Updates.Redundancy  = 1
+
+#
+#    Updates.ArchivedRedundancy
+#        Description: Check hashes of archived updates (slows down startup).
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Updates.ArchivedRedundancy = 0
+
+#
+#    Updates.AllowRehash
+#        Description: Inserts the current file hash in the database if it is left empty.
+#                     Useful if you want to mark a file as applied but you don't know its hash.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Updates.AllowRehash = 1
+
+#
+#    Updates.CleanDeadRefMaxCount
+#        Description: Cleans dead/ orphaned references that occur if an update was removed or renamed and edited in one step.
+#                     It only starts the clean up if the count of the missing updates is below or equal the Updates.CleanDeadRefMaxCount value.
+#                     This way prevents erasing of the update history due to wrong source directory state (maybe wrong branch or bad revision).
+#                     Disable this if you want to know if the database is in a possible "dirty state".
+#        Default:     3 - (Enabled)
+#                     0 - (Disabled)
+#                    -1 - (Enabled - unlimited)
+
+Updates.CleanDeadRefMaxCount = 3
 
 #
 ###################################################################################################
 
 ###################################################################################################
 # WARDEN SETTINGS
-#
-#    Warden.Enabled
-#        Description: Enable Warden anticheat system.
-#        Default:     0 - (Disabled)
-#                     1 - (Enabled)
-
-Warden.Enabled = 0
-
 #
 #    Warden.NumMemChecks
 #        Description: Number of Warden memory checks that are sent to the client each cycle.
@@ -1872,7 +1905,7 @@ Visibility.GroupMode = 1
 #                     170 - (Visibility.Distance.Instances)
 #                     533 - (Visibility.Distance.BGArenas)
 
-Visibility.Distance.Continents = 90
+Visibility.Distance.Continents = 100
 Visibility.Distance.Instances = 170
 Visibility.Distance.BGArenas = 533
 
@@ -2033,13 +2066,6 @@ Rate.Auction.Cut     = 1
 #        Default:     1
 
 Rate.Honor = 1
-
-#
-#    Rate.Talent
-#        Description: Talent point rate.
-#        Default:     1
-
-Rate.Talent = 1
 
 #
 #    Rate.Reputation.Gain
@@ -2443,22 +2469,6 @@ Arena.RatingDiscardTimer = 600000
 Arena.RatedUpdateTimer = 5000
 
 #
-#    Arena.AutoDistributePoints
-#        Description: Automatically distribute arena points.
-#        Default:     0 - (Disabled)
-#                     1 - (Enabled)
-
-Arena.AutoDistributePoints = 0
-
-#
-#    Arena.AutoDistributeInterval
-#        Description: Time (in days) how often arena points should be distributed if automatic
-#                     distribution is enabled.
-#        Default:     7 - (Weekly)
-
-Arena.AutoDistributeInterval = 7
-
-#
 #    Arena.QueueAnnouncer.Enable
 #        Description: Announce arena queue status to chat.
 #        Default:     0 - (Disabled)
@@ -2655,7 +2665,7 @@ CharDelete.Heroic.MinLevel = 0
 #        Default:     30 - (Enabled)
 #                     0  - (Disabled, Don't delete any characters)
 
-CharDelete.KeepDays = 0
+CharDelete.KeepDays = 30
 
 #
 ###################################################################################################
@@ -2758,7 +2768,7 @@ PvPToken.ItemCount = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-NoResetTalentsCost = 1
+NoResetTalentsCost = 0
 
 #
 #     Guild.AllowMultipleGuildMaster
@@ -2950,7 +2960,7 @@ AuctionHouseBot.Update.Interval = 20
 #       Default:     0 - (Disabled)
 #                    1 - (Enabled)
 
-AuctionHouseBot.Seller.Enabled = 1
+AuctionHouseBot.Seller.Enabled = 0
 
 #
 #    AuctionHouseBot.Alliance.Items.Amount.Ratio
@@ -3079,7 +3089,7 @@ AuctionHouseBot.ItemsPerCycle.Normal = 20
 #       Default:     1 - (use SellPrice)
 #                    0 - (use BuyPrice)
 
-AuctionHouseBot.BuyPrice.Seller = 1
+AuctionHouseBot.BuyPrice.Seller = 0
 
 #
 #    AuctionHouseBot.BidPrice.*
@@ -3293,7 +3303,7 @@ AuctionHouseBot.forceIncludeItems = ""
 #       Default:     ""
 #
 
-AuctionHouseBot.forceExcludeItems = "6343,6345,6376"
+AuctionHouseBot.forceExcludeItems = "6343,6345,6376,7192"
 
 #
 #    AuctionHouseBot.Class.RandomStackRatio.*
@@ -3836,6 +3846,11 @@ PacketSpoof.BanMode = 0
 
 PacketSpoof.BanDuration = 86400
 
+#
+###################################################################################################
+
+###################################################################################################
+# CUSTOM SETTINGS
 #
 ###################################################################################################
 
@@ -4480,7 +4495,7 @@ IsleofThunder.Progression.Alliance = 0
 
 BonusRates.Enabled = 0
 
-DisconnectToleranceInterval = 1
+DisconnectToleranceInterval = 0
 
 GuarderSight = 50
 
@@ -4557,7 +4572,7 @@ DeletingItem.MinOtherItemLevel = 85
 DeletingItem.MinQuality = 3
 DeletingItem.MaxQuality = 5
 
-Creature.PickPocketRefillDelay = 600000
+Creature.PickPocketRefillDelay = 600
 
 AuctionHouse.AllowSorting = 1
 AuctionHouse.ForceMainThread = 0
@@ -4600,12 +4615,6 @@ Rate.Modw.InGame = 1
 #        Default: 1 (Enabled)
 #                 0 (Disabled)
 #
-#   Eluna.TraceBack
-#       Description: Sets whether to use debug.traceback function on a lua error or not.
-#                    Notice that you can redefine the function.
-#       Default:    false - (use default error output)
-#                   true  - (use debug.traceback function)
-#
 #   Eluna.ScriptPath
 #       Description: Sets the location of the script folder to load scripts from
 #                    The path can be relative or absolute.
@@ -4617,7 +4626,6 @@ Rate.Modw.InGame = 1
 ###################################################################################################################
 
 Eluna.Enabled = 0
-Eluna.TraceBack = false
 Eluna.ScriptPath = "lua_scripts"
 
 ###############################################################################
@@ -4639,9 +4647,6 @@ Load.Locales = 1
 
 Respawn.GuidWarnLevel = 12000000
 Respawn.GuidAlertLevel = 16000000
-mmap.AllowReuseOfPreviousPathSegments = 1
-AuthServer.Process =
-AuthServer.Command =
 DEBUG_LFG_QUEUE_SAVE_PREV_STATE = 0
 Arena.BonusReward.GamesCount.2v2 = 0
 Arena.BonusReward.Item.2v2 = 0
@@ -4666,7 +4671,3 @@ Arena.SeasonReward.Cleanup.Titles = 44 43 45
 Arena.SeasonReward.RatingThreshold.3x3 = -1
 Arena.SeasonReward.RatingThreshold.5x5 = -1
 Arena.SeasonReward.RatingThreshold.2x2 = -1
-Updates.CleanDeadRefMaxCount = 3
-Updates.ArchivedRedundancy = 0
-Updates.AllowRehash = 1
-Updates.Redundancy = 1
