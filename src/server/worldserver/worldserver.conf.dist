@@ -4659,6 +4659,7 @@ Arena.BonusReward.GamesCount.RBG = 0
 Arena.BonusReward.Item.RBG = 0 
 Arena.BonusReward.MailTitle.RBG = 
 Arena.BonusReward.MailText.RBG = 
+Arena.SeasonReward.Cleanup.Enabled = 1
 Arena.SeasonReward.Cleanup.KeepWithAchievements = 2091
 Arena.SeasonReward.Cleanup.Achievements = 2093 2092 2090
 Arena.SeasonReward.Cleanup.Titles = 44 43 45
