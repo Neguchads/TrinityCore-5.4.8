@@ -1,4 +1,4 @@
-ï»¿#include "RandomItemManager.h"
+#include "RandomItemManager.h"
 
 #include "Player.h"
 #include "PlayerbotSpec.h"
@@ -665,7 +665,7 @@ bool RandomItemManager::CanEquipWeapon(Player* bot, ItemTemplate const* proto)
     return true;
 }
 
-// DÃ©finition des seuils de qualitÃ© avec une valeur de repli
+// Définition des seuils de qualité avec une valeur de repli
 static const std::map<uint32, std::tuple<ItemQualities, ItemQualities, uint32, uint32>> qualityRules =
 {
     {1,   std::make_tuple(ItemQualities::ITEM_QUALITY_NORMAL,   ItemQualities::ITEM_QUALITY_POOR,       20, 5)},
@@ -726,18 +726,18 @@ uint32 RandomItemManager::FindBestItemForLevelAndEquip(Player* bot, InventoryTyp
             // Item Quality
             {
                 auto quality_iterator = qualityRules.upper_bound(bot->GetLevel());
-                if (quality_iterator != qualityRules.begin()) --quality_iterator; // RÃ©cupÃ©rer la tranche correcte
+                if (quality_iterator != qualityRules.begin()) --quality_iterator; // Récupérer la tranche correcte
                 // Extraire les valeurs correspondantes
                 ItemQualities minQuality = std::get<0>(quality_iterator->second);
-                ItemQualities fallbackQuality = std::get<1>(quality_iterator->second); // QualitÃ© infÃ©rieure en cas d'absence
+                ItemQualities fallbackQuality = std::get<1>(quality_iterator->second); // Qualité inférieure en cas d'absence
                 uint32 rareChance = std::get<2>(quality_iterator->second);
                 uint32 uncommonChance = std::get<3>(quality_iterator->second);
-                // VÃ©rification de la qualitÃ© de l'objet
+                // Vérification de la qualité de l'objet
                 if (proto->Quality >= minQuality) {
-                    // Accepter immÃ©diatement l'objet
+                    // Accepter immédiatement l'objet
                 }
                 else if (proto->Quality >= fallbackQuality) {
-                    // Accepter un objet de qualitÃ© infÃ©rieure en dernier recours
+                    // Accepter un objet de qualité inférieure en dernier recours
                 }
                 else if (proto->Quality == ItemQualities::ITEM_QUALITY_RARE && urand(1, 100) <= rareChance) {
                     // Accepter avec un % pour Rare

@@ -1,17 +1,18 @@
-#ifndef _PLAYERBOT_RAIDKARAZHANSTRATEGY_H
-#define _PLAYERBOT_RAIDKARAZHANSTRATEGY_H
+#ifndef _PLAYERBOT_RAIDKARAZHANSTRATEGY_H_
+#define _PLAYERBOT_RAIDKARAZHANSTRATEGY_H_
 
 #include "Strategy.h"
-
-class PlayerbotAI;
+#include "Multiplier.h"
 
 class RaidKarazhanStrategy : public Strategy
 {
 public:
-    RaidKarazhanStrategy(PlayerbotAI* botAI);
+    RaidKarazhanStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     std::string const getName() override { return "karazhan"; }
+
     void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    void InitMultipliers(std::vector<Multiplier*>& multipliers) override;
 };
 
 #endif

@@ -1,5 +1,5 @@
-﻿/*
-* This file is part of the Legends of Azeroth Pandaria Project. See THANKS file for Copyright information
+/*
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -16,6 +16,8 @@
 */
 
 #include "PlayerbotMgr.h"
+#include "WorldThread/PlayerbotOperations.h"
+#include "WorldThread/PlayerbotWorldThreadProcessor.h"
 
 #include <cstdio>
 #include <cstring>
@@ -24,6 +26,7 @@
 
 #include "BotFactory.h"
 #include "Helper.h"
+#include "PlayerbotAI.h"
 #include "PlayerbotAIConfig.h"
 #include "CharacterCache.h"
 #include "ChannelMgr.h"
@@ -108,7 +111,7 @@ void PlayerbotHolder::HandlePlayerBotLoginCallback(PlayerbotLoginQueryHolder con
 
     // At login DBC locale should be what the server is set to use by default (as spells etc are hardcoded to ENUS this
     // allows channels to work as intended)
-    // Créer une session WorldSession pour le bot
+    // Cr�er une session WorldSession pour le bot
     WorldSession* botSession = new WorldSession(botAccountId, nullptr, AccountTypes::SEC_PLAYER, Expansions::EXPANSION_MISTS_OF_PANDARIA, 0, LOCALE_frFR, 0, false, false, true);
 
     botSession->HandlePlayerLogin(holder);  // will delete lqh
@@ -301,6 +304,10 @@ void PlayerbotHolder::LogoutPlayerBot(ObjectGuid guid)
         PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);
         if (!botAI)
             return;
+
+        // Queue group cleanup in world thread to avoid unsafe cross-thread access.
+        auto cleanupOp = std::make_unique<BotLogoutGroupCleanupOperation>(guid);
+        PlayerbotWorldThreadProcessor::instance().QueueOperation(std::move(cleanupOp));
 
         Group* group = bot->GetGroup();
         if (group && !bot->InBattleground() && !bot->InBattlegroundQueue() && botAI->HasActivePlayerMaster())
@@ -701,6 +708,71 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
     if (!cmd)
     {
         messages.push_back("usage: list/reload/tweak/self or add/init/remove PLAYERNAME or addclass CLASSNAME");
+        return messages;
+    }
+
+    auto parseState = [](char const* stateText) -> BotState
+    {
+        if (!stateText)
+            return BOT_STATE_NON_COMBAT;
+
+        if (!strcmp(stateText, "combat"))
+            return BOT_STATE_COMBAT;
+        if (!strcmp(stateText, "dead"))
+            return BOT_STATE_DEAD;
+        if (!strcmp(stateText, "noncombat") || !strcmp(stateText, "nc"))
+            return BOT_STATE_NON_COMBAT;
+
+        return BOT_STATE_NON_COMBAT;
+    };
+
+    if (!strcmp(cmd, "strategy") || (!strcmp(cmd, "add") && charname && !strcmp(charname, "strategy")))
+    {
+        char* strategyName = (!strcmp(cmd, "strategy")) ? charname : strtok(nullptr, " ");
+        char* stateText = strtok(nullptr, " ");
+
+        if (!strategyName)
+        {
+            messages.push_back("usage: add strategy <name> [combat|noncombat|dead]");
+            return messages;
+        }
+
+        BotState state = parseState(stateText);
+        std::string change = "+" + std::string(strategyName);
+
+        uint32 applied = 0;
+        if (master && master->GetTarget())
+        {
+            if (Player* target = ObjectAccessor::FindConnectedPlayer(master->GetTarget()))
+            {
+                if (PlayerbotAI* ai = GET_PLAYERBOT_AI(target))
+                {
+                    ai->ChangeStrategy(change, state);
+                    applied++;
+                }
+            }
+        }
+
+        if (applied == 0)
+        {
+            for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
+            {
+                if (Player* bot = it->second)
+                {
+                    if (PlayerbotAI* ai = GET_PLAYERBOT_AI(bot))
+                    {
+                        ai->ChangeStrategy(change, state);
+                        applied++;
+                    }
+                }
+            }
+        }
+
+        if (applied == 0)
+            messages.push_back("No bots found to apply strategy.");
+        else
+            messages.push_back("Strategy added: " + std::string(strategyName));
+
         return messages;
     }
 
@@ -1297,3 +1369,4 @@ PlayerbotMgr* PlayerbotsMgr::GetPlayerbotMgr(Player* player)
 
     return nullptr;
 }
+

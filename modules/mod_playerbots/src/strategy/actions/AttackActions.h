@@ -1,7 +1,7 @@
 
 
-#ifndef _PLAYERBOT_ATTACKACTION_H
-#define _PLAYERBOT_ATTACKACTION_H
+#ifndef _PLAYERBOT_ATTACKACTIONS_H
+#define _PLAYERBOT_ATTACKACTIONS_H
 
 #include "MovementActions.h"
 

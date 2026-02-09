@@ -1,17 +1,17 @@
-#ifndef _PLAYERBOT_GUNDRAKSTRATEGY_H
-#define _PLAYERBOT_GUNDRAKSTRATEGY_H
+#ifndef _PLAYERBOT_WOTLKDUNGEONGDSTRATEGY_H
+#define _PLAYERBOT_WOTLKDUNGEONGDSTRATEGY_H
 
+#include "Multiplier.h"
+#include "AiObjectContext.h"
 #include "Strategy.h"
 
-class PlayerbotAI;
-
-class GundrakStrategy : public Strategy
+class WotlkDungeonGDStrategy : public Strategy
 {
 public:
-    GundrakStrategy(PlayerbotAI* botAI);
-
-    std::string const getName() override { return "gundrak"; }
-    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    WotlkDungeonGDStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+    virtual std::string const getName() override { return "gundrak"; }
+    virtual void InitTriggers(std::vector<TriggerNode*> &triggers) override;
+    virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) override;
 };
 
 #endif

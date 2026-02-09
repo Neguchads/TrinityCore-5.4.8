@@ -1,10 +1,12 @@
 #ifndef _PLAYERBOT_PLAYERBOTAI_H
 #define _PLAYERBOT_PLAYERBOTAI_H
 
+#include <functional>
 #include <map>
 #include <mutex>
 #include <queue>
 #include <stack>
+#include <vector>
 
 #include "Chat.h"
 #include "Event.h"
@@ -141,6 +143,9 @@ public:
     Player* GetBot() { return bot; }
     Player* GetMaster() { return master; }
     Player* GetGroupMaster();
+    Player* GetGroupLeader();
+    std::vector<Player*> GetPlayersInGroup() const;
+    int32 GetGroupSlotIndex(Player* player) const;
     uint32 GetFixedBotNumer(uint32 maxNum = 100, float cyclePerMin = 1);
     uint32 AutoScaleActivity(uint32 mod);
     bool IsInRealGuild();
@@ -185,11 +190,51 @@ public:
     // Checks if the bot is summoned as alt of a player
     bool IsAlt();
     bool IsInVehicle(bool canControl = false, bool canCast = false, bool canAttack = false, bool canTurn = false, bool fixed = false);
+    bool CanCastVehicleSpell(uint32 spellId, Unit* target);
+    bool CastVehicleSpell(uint32 spellId, Unit* target);
+    bool HasItemInInventory(uint32 itemId);
+    std::vector<Item*> GetInventoryItems();
+    bool ImbueItem(Item* item, Unit* target);
+    void AddTimedEvent(std::function<void()> fn, uint32 delayMs);
 
     bool HasStrategy(std::string const name, BotState type);
     bool ContainsStrategy(StrategyType type);
 
     void SetMaster(Player* newMaster) { master = newMaster; }
+
+    // Role helpers (wrappers for PlayerBotSpec)
+    static bool IsTank(Player* player, bool bySpec = false);
+    static bool IsHeal(Player* player, bool bySpec = false);
+    static bool IsDps(Player* player, bool bySpec = false);
+    static bool IsRanged(Player* player, bool bySpec = false);
+    static bool IsMelee(Player* player, bool bySpec = false);
+    static bool IsRangedDps(Player* player, bool bySpec = false);
+    static bool IsMainTank(Player* player);
+    static bool IsAssistTank(Player* player);
+    static bool IsAssistTankOfIndex(Player* bot, Player* player, int index);
+    static bool IsAssistHealOfIndex(Player* bot, Player* player, int index);
+
+    bool IsTank(bool bySpec = false) { return IsTank(bot, bySpec); }
+    bool IsHeal(bool bySpec = false) { return IsHeal(bot, bySpec); }
+    bool IsDps(bool bySpec = false) { return IsDps(bot, bySpec); }
+    bool IsRanged(bool bySpec = false) { return IsRanged(bot, bySpec); }
+    bool IsMelee(bool bySpec = false) { return IsMelee(bot, bySpec); }
+    bool IsRangedDps(bool bySpec = false) { return IsRangedDps(bot, bySpec); }
+    bool IsMainTank() { return IsMainTank(bot); }
+    bool IsAssistTank() { return IsAssistTank(bot); }
+    bool IsBotMainTank(Player* player) { return IsMainTank(player); }
+    bool IsAssistTankOfIndex(Player* player, int index, bool bySpec = false)
+    {
+        (void)bySpec;
+        return PlayerbotAI::IsAssistTankOfIndex(bot, player, index);
+    }
+    bool IsAssistHealOfIndex(Player* player, int index, bool bySpec = false)
+    {
+        (void)bySpec;
+        return PlayerbotAI::IsAssistHealOfIndex(bot, player, index);
+    }
+
+    bool HasSkill(uint32 skillId);
 
     bool CanMove();
 
@@ -259,6 +304,12 @@ protected:
     time_t _allowActiveCheckTimer[MAX_ACTIVITY_TYPE];
     //bool inCombat = false;
     BotCheatMask cheatMask = BotCheatMask::none;
+    struct TimedEvent
+    {
+        uint32 dueTimeMs;
+        std::function<void()> fn;
+    };
+    std::vector<TimedEvent> _timedEvents;
     //Position jumpDestination = Position();
     //uint32 nextTransportCheck = 0;
 };

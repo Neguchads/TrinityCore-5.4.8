@@ -11,12 +11,3 @@
 #
 
 ModExample.Enable = 0
-
-#
-#    ModExample.Updates.EnableDatabases
-#        Description: Enable module database updates.
-#        Default:     1 - Enabled
-#                     0 - Disabled
-#
-
-ModExample.Updates.EnableDatabases = 1

@@ -1216,10 +1216,12 @@ class ObjectMgr
         void LoadCreatureQuestEnders();
 
         QuestRelations* GetGOQuestRelationMapHACK() { return &_goQuestRelations; }
+        QuestRelations* GetGOQuestInvolvedRelationMapHACK() { return &_goQuestInvolvedRelations; }
         QuestRelationResult GetGOQuestRelations(uint32 entry) const { return GetQuestRelationsFrom(_goQuestRelations, entry, true); }
         QuestRelationResult GetGOQuestInvolvedRelations(uint32 entry) const { return GetQuestRelationsFrom(_goQuestInvolvedRelations, entry, false); }
         Trinity::IteratorPair<QuestRelationsReverse::const_iterator> GetGOQuestInvolvedRelationReverseBounds(uint32 questId) const { return _goQuestInvolvedRelationsReverse.equal_range(questId); }
         QuestRelations* GetCreatureQuestRelationMapHACK() { return &_creatureQuestRelations; }
+        QuestRelations* GetCreatureQuestInvolvedRelationMapHACK() { return &_creatureQuestInvolvedRelations; }
         QuestRelationResult GetCreatureQuestRelations(uint32 entry) const { return GetQuestRelationsFrom(_creatureQuestRelations, entry, true); }
         QuestRelationResult GetCreatureQuestInvolvedRelations(uint32 entry) const { return GetQuestRelationsFrom(_creatureQuestInvolvedRelations, entry, false); }
         Trinity::IteratorPair<QuestRelationsReverse::const_iterator> GetCreatureQuestInvolvedRelationReverseBounds(uint32 questId) const { return _creatureQuestInvolvedRelationsReverse.equal_range(questId); }
@@ -1504,6 +1506,7 @@ class ObjectMgr
             if (itr == _creatureDataStore.end()) return NULL;
             return &itr->second;
         }
+        CreatureDataContainer const& GetAllCreatureData() const { return _creatureDataStore; }
         CreatureData& NewOrExistCreatureData(uint32 guid) { return _creatureDataStore[guid]; }
         void DeleteCreatureData(uint32 guid);
         ObjectGuid GetLinkedRespawnGuid(ObjectGuid guid) const
@@ -1585,6 +1588,7 @@ class ObjectMgr
             if (itr == _gameObjectDataStore.end()) return NULL;
             return &itr->second;
         }
+        GameObjectDataContainer const& GetAllGOData() const { return _gameObjectDataStore; }
         GameObjectData& NewGOData(uint32 guid) { return _gameObjectDataStore[guid]; }
 
         void DeleteGOData(uint32 guid);

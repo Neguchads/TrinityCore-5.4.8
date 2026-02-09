@@ -47,6 +47,8 @@ protected:
     bool MoveAway(Unit* target, float distance = sPlayerbotAIConfig->fleeDistance, bool backwards = false);
     bool MoveFromGroup(float distance);
     bool Move(float angle, float distance);
+    bool JumpTo(uint32 mapId, float x, float y, float z);
+    bool MoveInside(uint32 mapId, float x, float y, float z, float distance = sPlayerbotAIConfig->contactDistance, MovementPriority priority = MovementPriority::MOVEMENT_NORMAL);
     bool Flee(Unit* target);
     bool FleePosition(Position pos, float radius, uint32 minInterval = 1000);
     bool CheckLastFlee(float curAngle, std::list<FleeInfo>& infoList);
@@ -90,6 +92,51 @@ public:
 
     bool Execute(Event event) override;
     bool isUseful() override;
+};
+
+class AvoidAoeAction : public MovementAction
+{
+public:
+    AvoidAoeAction(PlayerbotAI* botAI) : MovementAction(botAI, "avoid aoe") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class MoveAwayFromCreatureAction : public MovementAction
+{
+public:
+    MoveAwayFromCreatureAction(PlayerbotAI* botAI, std::string const name, uint32 creatureEntry, float distance)
+        : MovementAction(botAI, name), creatureEntry(creatureEntry), distance(distance)
+    {
+    }
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+
+protected:
+    Unit* GetCreature() const;
+
+    uint32 creatureEntry;
+    float distance;
+};
+
+class MoveAwayFromPlayerWithDebuffAction : public MovementAction
+{
+public:
+    MoveAwayFromPlayerWithDebuffAction(PlayerbotAI* botAI, std::string const name, uint32 auraId, float distance)
+        : MovementAction(botAI, name), auraId(auraId), distance(distance)
+    {
+    }
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+
+protected:
+    Player* GetPlayerWithDebuff() const;
+
+    uint32 auraId;
+    float distance;
 };
 
 class CombatFormationMoveAction : public MovementAction
@@ -142,6 +189,14 @@ class RunAwayAction : public MovementAction
 {
 public:
     RunAwayAction(PlayerbotAI* botAI) : MovementAction(botAI, "runaway") {}
+
+    bool Execute(Event event) override;
+};
+
+class MoveToLootAction : public MovementAction
+{
+public:
+    MoveToLootAction(PlayerbotAI* botAI) : MovementAction(botAI, "move to loot") {}
 
     bool Execute(Event event) override;
 };

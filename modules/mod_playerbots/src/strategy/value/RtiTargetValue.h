@@ -14,6 +14,15 @@ public:
     {
     }
 
+    static constexpr int32 starIndex = 0;
+    static constexpr int32 circleIndex = 1;
+    static constexpr int32 diamondIndex = 2;
+    static constexpr int32 triangleIndex = 3;
+    static constexpr int32 moonIndex = 4;
+    static constexpr int32 squareIndex = 5;
+    static constexpr int32 crossIndex = 6;
+    static constexpr int32 skullIndex = 7;
+
     static int32 GetRtiIndex(std::string const rti);
     Unit* Calculate() override;
 

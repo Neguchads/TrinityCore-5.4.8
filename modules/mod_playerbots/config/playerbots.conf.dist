@@ -750,11 +750,11 @@ AiPlayerbot.RandomBotSpellIds = "54197"
 
 # Random bot default strategies (applied after defaults)
 AiPlayerbot.RandomBotCombatStrategies = +dps,+dps assist,-threat
-AiPlayerbot.RandomBotNonCombatStrategies = +grind,+loot,+rpg,+custom::say
+AiPlayerbot.RandomBotNonCombatStrategies = +travel,+mount,+grind,+loot,+rpg,+custom::say,+quest
 AiPlayerbot.RandomBotReactStrategies = 
 AiPlayerbot.RandomBotDeadStrategies = 
 AiPlayerbot.CombatStrategies = +custom::say
-AiPlayerbot.NonCombatStrategies = +custom::say,+return,+delayed roll
+AiPlayerbot.NonCombatStrategies = +travel,+mount,+custom::say,+return,+delayed roll,+quest
 AiPlayerbot.ReactStrategies = 
 AiPlayerbot.DeadStrategies = 
 
@@ -1438,14 +1438,6 @@ AiPlayerbot.RandomClassSpecIndex.11.3 = 3
 # DATABASE & CONNECTIONS
 #
 #
-
-#    Playerbot.Updates.EnableDatabases
-#        Description: Determined if updates system work with playerbot tables (characters/world).
-#
-#        Default:     1  - (Enabled)
-#                     0  - (Disabled)
-
-Playerbots.Updates.EnableDatabases = 1
 
 # Command server port, 0 - disabled
 AiPlayerbot.CommandServerPort = 8888

@@ -1,8 +1,8 @@
-﻿# Fichier source temporaire généré
+# Generated temporary source file
 set(MODULES_LOADER_TEMP "${CMAKE_CURRENT_BINARY_DIR}/gen_scriptloader/ModulesLoader.cpp")
 set(MODULES_LOADER_TEMPLATE "${CMAKE_SOURCE_DIR}/modules/ModulesLoader.cpp.in.cmake")
 
-# Fonction pour récupérer tous les sous-dossiers d'un répertoire donné
+# Function to get all subdirectories of a given directory
 function(get_subdirectories result curdir)
     file(GLOB children LIST_DIRECTORIES true ${curdir}/*)
     set(subdirs "")
@@ -15,14 +15,14 @@ function(get_subdirectories result curdir)
     set(${result} ${subdirs} PARENT_SCOPE)
 endfunction()
 
-# Détection automatique des modules (tous les sous-dossiers de modules/)
+# Automatic module detection (all subdirectories in modules/)
 get_subdirectories(MODULE_DIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
-# Détecter les modules valides
+# Detect valid modules
 set(VALID_MODULES "")
 foreach(MODULE ${MODULE_DIRS})
     if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE})
-        # Vérifie qu'il contient des fichiers .cpp ou .h
+        # Check that it contains .cpp or .h files
         file(GLOB_RECURSE MODULE_SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/*.h")
         if(MODULE_SRC_FILES)
             list(APPEND VALID_MODULES ${MODULE})
@@ -33,7 +33,25 @@ if(NOT PLAYERBOTS)
     list(REMOVE_ITEM VALID_MODULES "mod_playerbots")
 endif()
 
-message(STATUS "Modules : ${VALID_MODULES}")
+message(STATUS "Modules: ${VALID_MODULES}")
+
+set(MODULES_LIST "")
+foreach(MODULE ${VALID_MODULES})
+    if(MODULES_LIST STREQUAL "")
+        set(MODULES_LIST "${MODULE}")
+    else()
+        set(MODULES_LIST "${MODULES_LIST},${MODULE}")
+    endif()
+endforeach()
+
+if (NOT MODULES_LIST STREQUAL "")
+    if (TARGET worldserver)
+        target_compile_definitions(worldserver PRIVATE TC_MODULES_LIST="${MODULES_LIST}")
+    endif()
+    if (TARGET authserver)
+        target_compile_definitions(authserver PRIVATE TC_MODULES_LIST="${MODULES_LIST}")
+    endif()
+endif()
 
 # Collect module config templates
 file(GLOB_RECURSE MODULE_CONF_DISTS
@@ -41,16 +59,16 @@ file(GLOB_RECURSE MODULE_CONF_DISTS
   "${CMAKE_CURRENT_SOURCE_DIR}/*/config/*.conf.dist"
 )
 
-# Ajout des fichiers dans les groupes Visual Studio
+# Add files to Visual Studio groups
 set(MODULES_SOURCES "")
 foreach(MODULE ${VALID_MODULES})
     string(REPLACE "-" "_" MODULE_FUNC_NAME ${MODULE})
 
-    # Récupération des fichiers source du module
+    # Gather module source files
     file(GLOB_RECURSE MODULE_SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/*.h")
     list(APPEND MODULES_SOURCES ${MODULE_SRC_FILES})
 
-    # Créer un groupe Visual Studio reflétant l'arborescence des fichiers
+    # Create a Visual Studio group matching the file tree structure
     foreach(SRC_FILE ${MODULE_SRC_FILES})
         get_filename_component(SRC_PATH ${SRC_FILE} DIRECTORY)
         file(RELATIVE_PATH REL_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${SRC_PATH})
@@ -65,24 +83,24 @@ set(MODULES_CALLS "")
 foreach(MODULE ${VALID_MODULES})
     string(REPLACE "-" "_" MODULE_FUNC_NAME ${MODULE})
 
-    # AzerothCore-style module loader naming: Add<module>Scripts()
+    # AzerothCore-style module loader naming: Add<module>Scripts() - hopefully for cross compatibility in the future
     set(MODULES_INCLUDES "${MODULES_INCLUDES}void Add${MODULE_FUNC_NAME}Scripts();\n")
 
-    # Ajout des déclarations et appels pour ModulesLoader.cpp
+    # Add declarations and calls for ModulesLoader.cpp
     set(MODULES_DECLARATIONS "${MODULES_DECLARATIONS}void Add${MODULE_FUNC_NAME}Scripts();\n")
     set(MODULES_CALLS "${MODULES_CALLS}    Add${MODULE_FUNC_NAME}Scripts();\n")
 endforeach()
 
-# Génération du fichier ModulesLoader.cpp dans le build tree
+# Generate ModulesLoader.cpp in the build tree
 configure_file(${MODULES_LOADER_TEMPLATE} ${MODULES_LOADER_TEMP} @ONLY)
 
-# Inclure explicitement ModulesLoader.cpp (généré) et ModulesLoader.h
+# Explicitly include generated ModulesLoader.cpp and ModulesLoader.h
 set(MODULES_LOADER_FILES
     ${MODULES_LOADER_TEMP}
     ${CMAKE_SOURCE_DIR}/modules/ModulesLoader.h
 )
 
-# Ajouter ces fichiers dans les sources
+# Add these files to the source list
 list(APPEND MODULES_SOURCES ${MODULES_LOADER_FILES})
 source_group("ModulesLoader" FILES ${MODULES_LOADER_FILES})
 
@@ -91,7 +109,7 @@ if (USE_COREPCH)
   set(PRIVATE_PCH_HEADER ModulesPCH.h)
 endif()
 
-# Création de la bibliothèque statique "modules"
+# Create the "modules" static library
 add_library(modules STATIC ${MODULES_SOURCES})
 
 # Copy module configs to build output (AzerothCore-style)
@@ -112,7 +130,7 @@ if (MODULE_CONF_DISTS)
   endforeach()
 endif()
 
-# Fonction pour récupérer récursivement tous les sous-dossiers
+# Function to recursively get all subdirectories
 function(get_all_subdirectories result curdir)
     file(GLOB_RECURSE children LIST_DIRECTORIES true ${curdir}/*)
     set(subdirs "")
@@ -124,10 +142,10 @@ function(get_all_subdirectories result curdir)
     set(${result} ${subdirs} PARENT_SCOPE)
 endfunction()
 
-# Récupérer tous les sous-dossiers dans "modules/"
+# Get all subdirectories under "modules/"
 get_all_subdirectories(ALL_MODULE_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})
 
-# Ajout des chemins d'inclusion nécessaires pour accéder aux fichiers comme "Player.h"
+# Add include paths required to access files like "Player.h"
 target_include_directories(modules PRIVATE
   ${ALL_MODULE_INCLUDES}
   ${CMAKE_BINARY_DIR}

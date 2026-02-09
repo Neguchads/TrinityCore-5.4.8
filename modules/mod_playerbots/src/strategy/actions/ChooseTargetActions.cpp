@@ -25,6 +25,9 @@ bool AttackEnemyFlagCarrierAction::isUseful()
 
 bool AttackAnythingAction::isUseful()
 {
+    if (botAI->HasActivePlayerMaster())
+        return false;
+
     if (!botAI->AllowActivity(GRIND_ACTIVITY))  // Bot not allowed to be active
         return false;
 

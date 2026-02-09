@@ -4,6 +4,8 @@
 #define _PLAYERBOT_TARGETVALUE_H
 
 #include "NamedObjectContext.h"
+#include "ObjectGuid.h"
+#include "TravelMgr.h"
 #include "Value.h"
 
 class PlayerbotAI;
@@ -56,6 +58,51 @@ public:
         : ManualSetValue<ObjectGuid>(botAI, ObjectGuid::Empty, name)
     {
     }
+};
+
+class RpgTargetValue : public ManualSetValue<GuidPosition>
+{
+public:
+    RpgTargetValue(PlayerbotAI* botAI, std::string const name = "rpg target")
+        : ManualSetValue<GuidPosition>(botAI, GuidPosition(), name)
+    {
+    }
+};
+
+class TravelTargetValue : public ManualSetValue<TravelTarget*>
+{
+public:
+    TravelTargetValue(PlayerbotAI* botAI, std::string const name = "travel target")
+        : ManualSetValue<TravelTarget*>(botAI, new TravelTarget(botAI), name)
+    {
+    }
+
+    ~TravelTargetValue() override { delete value; }
+};
+
+class LastLongMoveValue : public CalculatedValue<WorldPosition>
+{
+public:
+    LastLongMoveValue(PlayerbotAI* botAI) : CalculatedValue<WorldPosition>(botAI, "last long move", 30 * 1000) {}
+
+    WorldPosition Calculate() override;
+};
+
+class HomeBindValue : public CalculatedValue<WorldPosition>
+{
+public:
+    HomeBindValue(PlayerbotAI* botAI) : CalculatedValue<WorldPosition>(botAI, "home bind", 30 * 1000) {}
+
+    WorldPosition Calculate() override;
+};
+
+class IgnoreRpgTargetValue : public ManualSetValue<GuidSet&>
+{
+public:
+    IgnoreRpgTargetValue(PlayerbotAI* botAI) : ManualSetValue<GuidSet&>(botAI, data, "ignore rpg target") {}
+
+private:
+    GuidSet data;
 };
 
 #endif

@@ -1,17 +1,17 @@
-#ifndef _PLAYERBOT_UTGARDEKEEPSTRATEGY_H
-#define _PLAYERBOT_UTGARDEKEEPSTRATEGY_H
+#ifndef _PLAYERBOT_WOTLKDUNGEONUKSTRATEGY_H
+#define _PLAYERBOT_WOTLKDUNGEONUKSTRATEGY_H
 
+#include "Multiplier.h"
+#include "AiObjectContext.h"
 #include "Strategy.h"
 
-class PlayerbotAI;
-
-class UtgardeKeepStrategy : public Strategy
+class WotlkDungeonUKStrategy : public Strategy
 {
 public:
-    UtgardeKeepStrategy(PlayerbotAI* botAI);
-
-    std::string const getName() override { return "utgarde keep"; }
-    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    WotlkDungeonUKStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+    virtual std::string const getName() override { return "utgarde keep"; }
+    virtual void InitTriggers(std::vector<TriggerNode*> &triggers) override;
+    virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) override;
 };
 
 #endif

@@ -203,6 +203,22 @@ public:
         creators["utgarde keep"] = &StrategyContext::utgarde_keep;
         creators["utgarde pinnacle"] = &StrategyContext::utgarde_pinnacle;
         creators["violet hold"] = &StrategyContext::violet_hold;
+        creators["wotlk-uk"] = &StrategyContext::utgarde_keep;
+        creators["wotlk-nex"] = &StrategyContext::nexus;
+        creators["wotlk-an"] = &StrategyContext::azjol_nerub;
+        creators["wotlk-ok"] = &StrategyContext::old_kingdom;
+        creators["wotlk-dtk"] = &StrategyContext::drak_tharon_keep;
+        creators["wotlk-vh"] = &StrategyContext::violet_hold;
+        creators["wotlk-gd"] = &StrategyContext::gundrak;
+        creators["wotlk-hos"] = &StrategyContext::halls_of_stone;
+        creators["wotlk-hol"] = &StrategyContext::halls_of_lightning;
+        creators["wotlk-occ"] = &StrategyContext::oculus;
+        creators["wotlk-up"] = &StrategyContext::utgarde_pinnacle;
+        creators["wotlk-cos"] = &StrategyContext::culling_of_stratholme;
+        creators["wotlk-toc"] = &StrategyContext::trial_of_the_champion;
+        creators["wotlk-pos"] = &StrategyContext::pit_of_saron;
+        creators["wotlk-fos"] = &StrategyContext::forge_of_souls;
+        creators["wotlk-hor"] = &StrategyContext::wotlk_hor;
         creators["aq20"] = &StrategyContext::raid_aq20;
         creators["bwl"] = &StrategyContext::raid_bwl;
         creators["wotlk-eoe"] = &StrategyContext::raid_eoe;
@@ -343,21 +359,22 @@ private:
     static Strategy* netherspite(PlayerbotAI* botAI) { return new NetherspiteFightStrategy(botAI); }
     static Strategy* prince_malchezaar(PlayerbotAI* botAI) { return new PrinceMalchezaarFightStrategy(botAI); }
     static Strategy* four_horseman(PlayerbotAI* botAI) { return new FourHorsemanFightStrategy(botAI); }
-    static Strategy* azjol_nerub(PlayerbotAI* botAI) { return new AzjolNerubStrategy(botAI); }
-    static Strategy* culling_of_stratholme(PlayerbotAI* botAI) { return new CullingOfStratholmeStrategy(botAI); }
-    static Strategy* drak_tharon_keep(PlayerbotAI* botAI) { return new DrakTharonKeepStrategy(botAI); }
-    static Strategy* forge_of_souls(PlayerbotAI* botAI) { return new ForgeOfSoulsStrategy(botAI); }
-    static Strategy* gundrak(PlayerbotAI* botAI) { return new GundrakStrategy(botAI); }
-    static Strategy* halls_of_lightning(PlayerbotAI* botAI) { return new HallsOfLightningStrategy(botAI); }
-    static Strategy* halls_of_stone(PlayerbotAI* botAI) { return new HallsOfStoneStrategy(botAI); }
-    static Strategy* nexus(PlayerbotAI* botAI) { return new NexusStrategy(botAI); }
-    static Strategy* oculus(PlayerbotAI* botAI) { return new OculusStrategy(botAI); }
-    static Strategy* old_kingdom(PlayerbotAI* botAI) { return new OldKingdomStrategy(botAI); }
-    static Strategy* pit_of_saron(PlayerbotAI* botAI) { return new PitOfSaronStrategy(botAI); }
-    static Strategy* trial_of_the_champion(PlayerbotAI* botAI) { return new TrialOfTheChampionStrategy(botAI); }
-    static Strategy* utgarde_keep(PlayerbotAI* botAI) { return new UtgardeKeepStrategy(botAI); }
-    static Strategy* utgarde_pinnacle(PlayerbotAI* botAI) { return new UtgardePinnacleStrategy(botAI); }
-    static Strategy* violet_hold(PlayerbotAI* botAI) { return new VioletHoldStrategy(botAI); }
+    static Strategy* azjol_nerub(PlayerbotAI* botAI) { return new WotlkDungeonANStrategy(botAI); }
+    static Strategy* culling_of_stratholme(PlayerbotAI* botAI) { return new WotlkDungeonCoSStrategy(botAI); }
+    static Strategy* drak_tharon_keep(PlayerbotAI* botAI) { return new WotlkDungeonDTKStrategy(botAI); }
+    static Strategy* forge_of_souls(PlayerbotAI* botAI) { return new WotlkDungeonFoSStrategy(botAI); }
+    static Strategy* gundrak(PlayerbotAI* botAI) { return new WotlkDungeonGDStrategy(botAI); }
+    static Strategy* halls_of_lightning(PlayerbotAI* botAI) { return new WotlkDungeonHoLStrategy(botAI); }
+    static Strategy* halls_of_stone(PlayerbotAI* botAI) { return new WotlkDungeonHoSStrategy(botAI); }
+    static Strategy* nexus(PlayerbotAI* botAI) { return new WotlkDungeonNexStrategy(botAI); }
+    static Strategy* oculus(PlayerbotAI* botAI) { return new WotlkDungeonOccStrategy(botAI); }
+    static Strategy* old_kingdom(PlayerbotAI* botAI) { return new WotlkDungeonOKStrategy(botAI); }
+    static Strategy* pit_of_saron(PlayerbotAI* botAI) { return new WotlkDungeonPoSStrategy(botAI); }
+    static Strategy* trial_of_the_champion(PlayerbotAI* botAI) { return new WotlkDungeonToCStrategy(botAI); }
+    static Strategy* utgarde_keep(PlayerbotAI* botAI) { return new WotlkDungeonUKStrategy(botAI); }
+    static Strategy* utgarde_pinnacle(PlayerbotAI* botAI) { return new WotlkDungeonUPStrategy(botAI); }
+    static Strategy* violet_hold(PlayerbotAI* botAI) { return new WotlkDungeonVHStrategy(botAI); }
+    static Strategy* wotlk_hor(PlayerbotAI* botAI) { return new DungeonStrategy(botAI); }
     static Strategy* raid_aq20(PlayerbotAI* botAI) { return new RaidAq20Strategy(botAI); }
     static Strategy* raid_bwl(PlayerbotAI* botAI) { return new RaidBwlStrategy(botAI); }
     static Strategy* raid_eoe(PlayerbotAI* botAI) { return new RaidEoEStrategy(botAI); }

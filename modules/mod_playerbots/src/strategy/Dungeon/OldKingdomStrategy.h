@@ -1,17 +1,17 @@
-#ifndef _PLAYERBOT_OLDKINGDOMSTRATEGY_H
-#define _PLAYERBOT_OLDKINGDOMSTRATEGY_H
+#ifndef _PLAYERBOT_WOTLKDUNGEONOKSTRATEGY_H
+#define _PLAYERBOT_WOTLKDUNGEONOKSTRATEGY_H
 
+#include "Multiplier.h"
+#include "AiObjectContext.h"
 #include "Strategy.h"
 
-class PlayerbotAI;
-
-class OldKingdomStrategy : public Strategy
+class WotlkDungeonOKStrategy : public Strategy
 {
 public:
-    OldKingdomStrategy(PlayerbotAI* botAI);
-
-    std::string const getName() override { return "old kingdom"; }
-    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    WotlkDungeonOKStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+    virtual std::string const getName() override { return "old kingdom"; }
+    virtual void InitTriggers(std::vector<TriggerNode*> &triggers) override;
+    virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) override;
 };
 
 #endif

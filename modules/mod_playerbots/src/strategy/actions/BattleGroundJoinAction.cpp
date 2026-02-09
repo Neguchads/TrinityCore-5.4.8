@@ -1,8 +1,19 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
- */
-
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License as published by the
+* Free Software Foundation; either version 2 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along
+* with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "BattleGroundJoinAction.h"
 
 #include "DatabaseEnv.h"
@@ -61,11 +72,20 @@ bool BGJoinAction::canJoinBg(BattlegroundQueueTypeId queueTypeId, BattlegroundBr
     if (arenaType)
     {
         Group* group = bot->GetGroup();
-        if (!group || group->GetLeaderGUID() != bot->GetGUID())
-            return false;
+        if (!group)
+        {
+            // Allow random bots to attempt arena queue without a group; group will be formed in PrepareArenaGroup().
+            if (!sRandomPlayerbotMgr->IsRandomBot(bot))
+                return false;
+        }
+        else
+        {
+            if (group->GetLeaderGUID() != bot->GetGUID())
+                return false;
 
-        if (group->GetMembersCount() != arenaType)
-            return false;
+            if (group->GetMembersCount() != arenaType)
+                return false;
+        }
     }
 
     return bracketEntry->GetBracketId() == bracketId;
@@ -288,6 +308,8 @@ bool BGJoinAction::PrepareArenaGroup(uint8 arenaType)
     {
         if (group->GetLeaderGUID() == bot->GetGUID() && group->GetMembersCount() >= arenaType)
             return true;
+        TC_LOG_INFO("playerbots", "Arena prep blocked: bot already in group leader=%u members=%u need=%u",
+            group->GetLeaderGUID().GetCounter(), group->GetMembersCount(), arenaType);
         return false;
     }
 
@@ -306,9 +328,21 @@ bool BGJoinAction::PrepareArenaGroup(uint8 arenaType)
     if (!newGroup->Create(bot))
     {
         delete newGroup;
+        TC_LOG_INFO("playerbots", "Arena prep failed: could not create group for bot %u", bot->GetGUID().GetCounter());
         return false;
     }
     sGroupMgr->AddGroup(newGroup);
+
+    uint32 checked = 0;
+    uint32 skippedNotInWorld = 0;
+    uint32 skippedNotRandom = 0;
+    uint32 skippedHasMaster = 0;
+    uint32 skippedBusy = 0;
+    uint32 skippedBg = 0;
+    uint32 skippedGrouped = 0;
+    uint32 skippedAccess = 0;
+    uint32 skippedBracket = 0;
+    uint32 addFailed = 0;
 
     for (PlayerBotMap::const_iterator it = sRandomPlayerbotMgr->GetPlayerBotsBegin();
          it != sRandomPlayerbotMgr->GetPlayerBotsEnd(); ++it)
@@ -318,33 +352,61 @@ bool BGJoinAction::PrepareArenaGroup(uint8 arenaType)
 
         Player* member = it->second;
         if (!member || member == bot || !member->IsInWorld())
+        {
+            ++skippedNotInWorld;
             continue;
+        }
+        ++checked;
 
         if (!sRandomPlayerbotMgr->IsRandomBot(member))
+        {
+            ++skippedNotRandom;
             continue;
+        }
 
         PlayerbotAI* memberAI = GET_PLAYERBOT_AI(member);
         if (!memberAI || memberAI->HasActivePlayerMaster())
+        {
+            ++skippedHasMaster;
             continue;
+        }
 
         if (member->IsInCombat() || member->IsBeingTeleported() || member->isDead())
+        {
+            ++skippedBusy;
             continue;
+        }
 
         if (member->InBattleground() || member->InBattlegroundQueue())
+        {
+            ++skippedBg;
             continue;
+        }
 
         if (member->GetGroup())
+        {
+            ++skippedGrouped;
             continue;
+        }
 
         if (!member->GetBGAccessByLevel(BATTLEGROUND_AA))
+        {
+            ++skippedAccess;
             continue;
+        }
 
         PvPDifficultyEntry const* memberBracket = GetBattlegroundBracketByLevel(bg->GetMapId(), member->GetLevel());
         if (!memberBracket || memberBracket->GetBracketId() != leaderBracket->GetBracketId())
+        {
+            ++skippedBracket;
             continue;
+        }
 
         if (!newGroup->AddMember(member))
+        {
+            ++addFailed;
             continue;
+        }
 
         memberAI->Reset();
         member->RemoveAurasWithInterruptFlags(
@@ -354,6 +416,23 @@ bool BGJoinAction::PrepareArenaGroup(uint8 arenaType)
 
     if (newGroup->GetMembersCount() >= arenaType)
         return true;
+
+    TC_LOG_INFO("playerbots",
+        "Arena prep failed: leader=%u bracket=%u need=%u got=%u checked=%u skips[nw=%u rand=%u master=%u busy=%u bg=%u grp=%u access=%u bracket=%u addfail=%u]",
+        bot->GetGUID().GetCounter(),
+        leaderBracket->GetBracketId(),
+        arenaType,
+        newGroup->GetMembersCount(),
+        checked,
+        skippedNotInWorld,
+        skippedNotRandom,
+        skippedHasMaster,
+        skippedBusy,
+        skippedBg,
+        skippedGrouped,
+        skippedAccess,
+        skippedBracket,
+        addFailed);
 
     newGroup->Disband(true);
     return false;
@@ -378,6 +457,22 @@ bool BGStatusAction::JoinInvitedBattleground(uint8 queueSlot, BattlegroundQueueT
 {
     if (!bot->IsInvitedForBattlegroundQueueType(queueTypeId))
         return false;
+
+    if (ginfo.ArenaType)
+    {
+        Group* group = bot->GetGroup();
+        if (!group || group->GetMembersCount() < ginfo.ArenaType)
+        {
+            TC_LOG_INFO("playerbots", "Bot %u %s:%u <%s> declined arena invite due to short group (have=%u need=%u)",
+                bot->GetGUID().GetCounter(),
+                bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H",
+                bot->GetLevel(),
+                bot->GetName().c_str(),
+                group ? group->GetMembersCount() : 0,
+                ginfo.ArenaType);
+            return false;
+        }
+    }
 
     BattlegroundTypeId bgTypeId = BattlegroundMgr::BGTemplateId(queueTypeId);
     Battleground* bg = sBattlegroundMgr->GetBattleground(
@@ -532,7 +627,7 @@ bool BGStatusAction::Execute(Event event)
         BattlegroundBracketId bracketId = bracketEntry->GetBracketId();
         auto& bgInfo = sRandomPlayerbotMgr->BattlegroundData[queueTypeId][bracketId];
         uint8 arenaType = BattlegroundMgr::BGArenaType(queueTypeId);
-        bool activeQueue = arenaType ? (bgInfo.activeRatedArenaQueue > 0 || sPlayerbotAIConfig->randomBotAutoJoinBG)
+        bool activeQueue = arenaType ? ((bgInfo.activeRatedArenaQueue > 0 || bgInfo.activeSkirmishArenaQueue > 0) || sPlayerbotAIConfig->randomBotAutoJoinBG)
                                       : (bgInfo.activeBgQueue > 0 || sPlayerbotAIConfig->randomBotAutoJoinBG);
 
         if (!activeQueue)

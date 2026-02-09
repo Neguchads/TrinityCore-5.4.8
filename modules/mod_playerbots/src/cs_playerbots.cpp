@@ -13,6 +13,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "BattleGroundTactics.h"
 #include "Chat.h"
 #include "PlayerbotMgr.h"
 #include "PerformanceMonitor.h"
@@ -27,9 +28,38 @@ public:
 
     std::vector<ChatCommand> GetCommands() const override
     {
+        static std::vector<ChatCommand> playerbotsDebugCommandTable =
+        {
+            { "bg",             SEC_GAMEMASTER,             true,           &HandleDebugBGCommand },
+        };
+
+        static std::vector<ChatCommand> playerbotsAccountCommandTable =
+        {
+            // Not implemented in this core yet.
+            // { "setkey",         SEC_PLAYER,                false,          &HandleSetSecurityKeyCommand },
+            // { "link",           SEC_PLAYER,                false,          &HandleLinkAccountCommand },
+            // { "linkedaccounts", SEC_PLAYER,                false,          &HandleViewLinkedAccountsCommand },
+            // { "unlink",         SEC_PLAYER,                false,          &HandleUnlinkAccountCommand },
+        };
+
+        static std::vector<ChatCommand> playerbotsCommandTable =
+        {
+            { "bot",            SEC_PLAYER,                false,          &HandlePlayerbotCommand },
+            { "add",            SEC_PLAYER,                false,          &HandlePlayerbotCommand },
+            { "strategy",       SEC_PLAYER,                false,          &HandlePlayerbotCommand },
+            // Not implemented in this core yet.
+            // { "gtask",          SEC_GAMEMASTER,             true,           &HandleGuildTaskCommand },
+            { "pmon",           SEC_GAMEMASTER,             true,           &HandlePerfMonCommand },
+            // Not implemented in this core yet.
+            // { "rndbot",         SEC_GAMEMASTER,             true,           &HandleRandomPlayerbotCommand },
+            { "debug",          SEC_GAMEMASTER,             true,           playerbotsDebugCommandTable },
+            { "account",        SEC_PLAYER,                false,          playerbotsAccountCommandTable },
+        };
+
         static std::vector<ChatCommand> commandTable =
         {
-            { "npcbot",         SEC_ADMINISTRATOR,          true,           &HandlePlayerbotCommand},
+            { "playerbots",     SEC_PLAYER,                true,           playerbotsCommandTable },
+            { "playerbot",      SEC_ADMINISTRATOR,          true,           &HandlePlayerbotCommand},
             { "pmon",           SEC_GAMEMASTER,             true,           &HandlePerfMonCommand},
         };
         return commandTable;
@@ -72,6 +102,11 @@ public:
 
         sPerformanceMonitor->PrintStats();
         return true;
+    }
+
+    static bool HandleDebugBGCommand(ChatHandler* handler, char const* args)
+    {
+        return BGTactics::HandleConsoleCommand(handler, args);
     }
 };
 

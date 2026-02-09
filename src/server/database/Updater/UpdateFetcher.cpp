@@ -1,19 +1,19 @@
 /*
-* This file is part of the Pandaria 5.4.8 Project. See THANKS file for Copyright information
-*
-* This program is free software; you can redistribute it and/or modify it
-* under the terms of the GNU General Public License as published by the
-* Free Software Foundation; either version 2 of the License, or (at your
-* option) any later version.
-*
-* This program is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-* more details.
-*
-* You should have received a copy of the GNU General Public License along
-* with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "UpdateFetcher.h"
 #include "Common.h"
@@ -47,7 +47,18 @@ UpdateFetcher::UpdateFetcher(Path const& sourceDirectory,
     std::function<QueryResult(std::string const&)> const& retrieve,
     std::string const& dbModuleName) :
         _sourceDirectory(std::make_unique<Path>(sourceDirectory)), _apply(apply), _applyFile(applyFile),
-        _retrieve(retrieve), _dbModuleName(dbModuleName)
+        _retrieve(retrieve), _dbModuleName(dbModuleName), _modulesList("")
+{
+}
+
+UpdateFetcher::UpdateFetcher(Path const& sourceDirectory,
+    std::function<void(std::string const&)> const& apply,
+    std::function<void(Path const& path)> const& applyFile,
+    std::function<QueryResult(std::string const&)> const& retrieve,
+    std::string const& dbModuleName,
+    std::string const& modulesList) :
+        _sourceDirectory(std::make_unique<Path>(sourceDirectory)), _apply(apply), _applyFile(applyFile),
+        _retrieve(retrieve), _dbModuleName(dbModuleName), _modulesList(modulesList)
 {
 }
 
@@ -103,6 +114,24 @@ UpdateFetcher::DirectoryStorage UpdateFetcher::ReceiveIncludedDirectories() cons
     DirectoryStorage directories;
     std::set<std::string> includedPaths;
 
+    auto addDirectory = [&](Path const& path, State state, char const* logTag)
+    {
+        if (!is_directory(path))
+            return;
+
+        std::string norm = path.lexically_normal().generic_string();
+#ifdef _WIN32
+        std::transform(norm.begin(), norm.end(), norm.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+#endif
+        if (!includedPaths.insert(norm).second)
+            return;
+
+        DirectoryEntry const entry = { path, state };
+        directories.push_back(entry);
+
+        TC_LOG_TRACE("sql.updates", "Added applied %s file \"%s\" from remote.", logTag, path.filename().generic_string().c_str());
+    };
+
     QueryResult const result = _retrieve("SELECT `path`, `state` FROM `updates_include`");
     if (!result)
         return directories;
@@ -123,19 +152,65 @@ UpdateFetcher::DirectoryStorage UpdateFetcher::ReceiveIncludedDirectories() cons
             continue;
         }
 
-        DirectoryEntry const entry = { p, AppliedFileEntry::StateConvert(fields[1].GetString()) };
-        directories.push_back(entry);
-        {
-            std::string norm = p.lexically_normal().generic_string();
-#ifdef _WIN32
-            std::transform(norm.begin(), norm.end(), norm.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
-#endif
-            includedPaths.insert(norm);
-        }
-
-        TC_LOG_TRACE("sql.updates", "Added applied file \"%s\" from remote.", p.filename().generic_string().c_str());
+        addDirectory(p, AppliedFileEntry::StateConvert(fields[1].GetString()), "update");
 
     } while (result->NextRow());
+
+    auto overlapsIncluded = [&](Path const& candidate) -> bool
+    {
+        std::string cand = candidate.lexically_normal().generic_string();
+#ifdef _WIN32
+        std::transform(cand.begin(), cand.end(), cand.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+#endif
+
+        for (std::string const& existing : includedPaths)
+        {
+            if (cand == existing)
+                return true;
+
+            auto isPrefix = [](std::string const& a, std::string const& b) -> bool
+            {
+                if (b.size() < a.size())
+                    return false;
+                if (b.compare(0, a.size(), a) != 0)
+                    return false;
+                return b.size() == a.size() || b[a.size()] == '/';
+            };
+
+            if (isPrefix(existing, cand) || isPrefix(cand, existing))
+                return true;
+        }
+
+        return false;
+    };
+
+    if (!_modulesList.empty())
+    {
+        for (auto const& modName : Trinity::Tokenize(_modulesList, ',', true))
+        {
+            if (modName.empty())
+                continue;
+
+            std::string modNameStr(modName.data(), modName.size());
+            std::string base = _sourceDirectory->generic_string() + "/modules/" + modNameStr + "/data/sql/";
+
+            std::vector<Path> candidates;
+            candidates.emplace_back(base + _dbModuleName);
+            candidates.emplace_back(base + "db-" + _dbModuleName);
+
+            for (Path const& p : candidates)
+            {
+                if (!is_directory(p))
+                    continue;
+
+                if (overlapsIncluded(p))
+                    break;
+
+                addDirectory(p, MODULE, "modules");
+                break;
+            }
+        }
+    }
 
     return directories;
 }

@@ -1,6 +1,18 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it
- * and/or modify it under version 2 of the License, or (at your option), any later version.
+ * This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "WindwalkerMonkStrategy.h"
@@ -54,6 +66,9 @@ NextAction** WindwalkerMonkStrategy::getDefaultActions()
 void WindwalkerMonkStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericMonkStrategy::InitTriggers(triggers);
+
+    triggers.push_back(new TriggerNode("enemy out of melee",
+        NextAction::array(0, new NextAction("reach melee", ACTION_HIGH + 1), nullptr)));
 
     triggers.push_back(new TriggerNode("stance of the fierce tiger",
         NextAction::array(0, new NextAction("stance of the fierce tiger", ACTION_HIGH + 9), nullptr)));

@@ -190,7 +190,6 @@ bool ConfigMgr::LoadModulesConfigs()
     if (cfgDir.empty())
         cfgDir = ".";
 
-    // Load only from a "modules" subfolder (AzerothCore-style).
     fs::path modulesDir = cfgDir / "modules";
     if (fs::exists(modulesDir) && fs::is_directory(modulesDir))
     {

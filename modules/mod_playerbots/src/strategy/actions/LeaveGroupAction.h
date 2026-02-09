@@ -26,5 +26,13 @@ public:
     bool Execute(Event event) override;
 };
 
+class LeaveFarAwayAction : public LeaveGroupAction
+{
+public:
+    LeaveFarAwayAction(PlayerbotAI* botAI) : LeaveGroupAction(botAI, "leave far away") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
 
 #endif

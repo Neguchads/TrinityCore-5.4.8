@@ -1,16 +1,23 @@
 /*
-** Made by Traesh https://github.com/Traesh
-** AzerothCore 2019 http://www.azerothcore.org/
-** Conan513 https://github.com/conan513
-** Made into a module by Micrah https://github.com/milestorme/
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License as published by the
+* Free Software Foundation; either version 2 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along
+* with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include "Chat.h"
 #include "ChannelMgr.h"
 #include "Config.h"
 #include "cs_playerbots.h"
-#include "DatabaseEnv.h"
-#include "DBUpdater.h"
 #include "Log.h"
 #include "Player.h"
 #include "ScriptMgr.h"
@@ -23,8 +30,10 @@
 #include "PlayerbotAIConfig.h"
 #include "PlayerbotTextMgr.h"
 #include "RandomPlayerbotMgr.h"
+#include "WorldThread/PlayerbotWorldThreadProcessor.h"
 #include "RandomItemManager.h"
 #include "RandomPlayerbotBracketMgr.h"
+#include "TravelMgr.h"
 
 #include "Authentication/AuthCrypt.h"
 #include "CharacterHandler.h"
@@ -92,33 +101,6 @@ public:
     /*void OnLogin(Player* player) override{}*/
 };
 
-class PlayerbotsDatabaseScript : public DatabaseScript
-{
-public:
-    PlayerbotsDatabaseScript() : DatabaseScript("PlayerbotsDatabaseScript") {}
-
-    static bool ApplyUpdates()
-    {
-        if (!sConfigMgr->GetBoolDefault("Playerbots.Updates.EnableDatabases", true))
-            return true;
-
-        CharacterDatabase.PExecute("INSERT IGNORE INTO updates_include (`path`, `state`) VALUES ('$/modules/mod_playerbots/data/sql/characters/updates', 'RELEASED')");
-        WorldDatabase.PExecute("INSERT IGNORE INTO updates_include (`path`, `state`) VALUES ('$/modules/mod_playerbots/data/sql/world/updates', 'RELEASED')");
-
-        if (!DBUpdater<CharacterDatabaseConnection>::Update(CharacterDatabase))
-            return false;
-        if (!DBUpdater<WorldDatabaseConnection>::Update(WorldDatabase))
-            return false;
-
-        return true;
-    }
-
-    bool OnDatabasesLoading() override
-    {
-        return ApplyUpdates();
-    }
-};
-
 class PlayerbotsWorldScript : public WorldScript
 {
 public:
@@ -140,6 +122,8 @@ public:
             sRandomPlayerbotMgr->Reserve(sPlayerbotAIConfig->maxRandomBots);
             sRandomItemMgr->Init();
 
+            TravelMgr::instance().LoadQuestTravelTable();
+
             TC_LOG_INFO("playerbots", "Playerbots enabled: %s", sPlayerbotAIConfig->enabled ? "Yes" : "No");
             TC_LOG_INFO("playerbots", "Playerbots min/max to load: %u/%u", sPlayerbotAIConfig->minRandomBots, sPlayerbotAIConfig->maxRandomBots);
             TC_LOG_INFO("playerbots", "Playerbots autologin: %s", sPlayerbotAIConfig->randomBotAutologin ? "Yes" : "No");
@@ -148,6 +132,7 @@ public:
     void OnUpdate(uint32 diff) override
     {
         sBracketMgr->Update(diff);
+        PlayerbotWorldThreadProcessor::instance().Update(diff);
     }
 };
 
@@ -384,8 +369,6 @@ public:
 void Addmod_playerbotsScripts()
 {
     new mod_playerbots();
-
-    new PlayerbotsDatabaseScript();
     new PlayerbotsServerScript();
     new PlayerbotsWorldScript();
     new PlayerbotsScript();

@@ -346,6 +346,7 @@ void WorldSession::HandleWhoOpcode(WorldPacket& recvData)
     uint32 security = GetSecurity();
     bool allowTwoSideWhoList = sWorld->getBoolConfig(CONFIG_ALLOW_TWO_SIDE_WHO_LIST);
     uint32 gmLevelInWhoList  = sWorld->getIntConfig(CONFIG_GM_LEVEL_IN_WHO_LIST);
+    uint32 matchCount = 0;
     uint8 displaycount = 0;
 
     ByteBuffer bytesData;
@@ -356,7 +357,7 @@ void WorldSession::HandleWhoOpcode(WorldPacket& recvData)
 
     std::shared_lock<std::shared_mutex> lock(*HashMapHolder<Player>::GetLock());
     HashMapHolder<Player>::MapType const& m = ObjectAccessor::GetPlayers();
-    for (auto itr = m.begin(); itr != m.end() && displaycount <= sWorld->getIntConfig(CONFIG_MAX_WHO); ++itr)
+    for (auto itr = m.begin(); itr != m.end(); ++itr)
     {
         Player* target = itr->second;
         if (security == SEC_PLAYER)
@@ -448,6 +449,9 @@ void WorldSession::HandleWhoOpcode(WorldPacket& recvData)
             }
         }
         if (!s_show)
+            continue;
+
+        if ((matchCount++) >= sWorld->getIntConfig(CONFIG_MAX_WHO))
             continue;
 
         ObjectGuid playerGuid = target->GetGUID();

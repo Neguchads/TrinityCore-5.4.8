@@ -2826,6 +2826,51 @@ bool Player::IsInSameRaidWith(Player const* p) const
     return p == this || (GetGroup() != NULL && GetGroup() == p->GetGroup());
 }
 
+bool Player::IsWithinRange(WorldObject const* obj, float range) const
+{
+    if (!obj)
+        return false;
+
+    return IsWithinDistInMap(obj, range);
+}
+
+void Player::DoRandomRoll(uint32 min, uint32 max)
+{
+    if (min > max || max > 10000)
+        return;
+
+    uint32 roll = urand(min, max);
+    ObjectGuid guid = GetGUID();
+
+    WorldPacket data(SMSG_RANDOM_ROLL, 4 + 4 + 4 + 1 + 8);
+    data << uint32(roll);
+    data << uint32(min);
+    data << uint32(max);
+
+    data.WriteBit(guid[0]);
+    data.WriteBit(guid[6]);
+    data.WriteBit(guid[7]);
+    data.WriteBit(guid[1]);
+    data.WriteBit(guid[4]);
+    data.WriteBit(guid[5]);
+    data.WriteBit(guid[2]);
+    data.WriteBit(guid[3]);
+
+    data.WriteByteSeq(guid[5]);
+    data.WriteByteSeq(guid[4]);
+    data.WriteByteSeq(guid[2]);
+    data.WriteByteSeq(guid[0]);
+    data.WriteByteSeq(guid[3]);
+    data.WriteByteSeq(guid[1]);
+    data.WriteByteSeq(guid[6]);
+    data.WriteByteSeq(guid[7]);
+
+    if (GetGroup())
+        GetGroup()->BroadcastPacket(&data, false);
+    else if (GetSession())
+        GetSession()->SendPacket(&data);
+}
+
 ///- If the player is invited, remove him. If the group if then only 1 person, disband the group.
 /// @todo Shouldn't we also check if there is no other invitees before disbanding the group?
 void Player::UninviteFromGroup()

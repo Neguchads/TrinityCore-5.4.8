@@ -2,8 +2,6 @@
 #include "Player.h"
 #include "Config.h"
 #include "Chat.h"
-#include "DatabaseEnv.h"
-#include "DBUpdater.h"
 
 enum ModExampleString
 {
@@ -22,27 +20,7 @@ public:
     }
 };
 
-class ModExampleDatabaseScript : public DatabaseScript
-{
-public:
-    ModExampleDatabaseScript() : DatabaseScript("ModExampleDatabaseScript") {}
-
-    bool OnDatabasesLoading() override
-    {
-        if (!sConfigMgr->GetBoolDefault("ModExample.Updates.EnableDatabases", true))
-            return true;
-
-        WorldDatabase.PExecute("INSERT IGNORE INTO updates_include (`path`, `state`) VALUES ('$/modules/mod-example/data/sql/world', 'RELEASED')");
-
-        if (!DBUpdater<WorldDatabaseConnection>::Update(WorldDatabase))
-            return false;
-
-        return true;
-    }
-};
-
 void AddExampleScripts()
 {
-    new ModExampleDatabaseScript();
     new ModExamplePlayer();
 }

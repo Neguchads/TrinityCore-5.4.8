@@ -39,21 +39,3 @@ IndividualXP.MaxRate = 10
 #
 
 IndividualXP.DefaultRate = 1
-
-#
-#    IndividualXP.Updates.EnableDatabases
-#        Description: Enable module database auto-updates.
-#        Default:     0 - Disabled
-#                     1 - Enabled
-#
-
-IndividualXP.Updates.EnableDatabases = 1
-
-#
-#    IndividualXP.Updates.EnableDatabases
-#        Description: Enable automatic DB updates for this module.
-#        Default:     0 - Disabled
-#                     1 - Enabled
-#
-
-IndividualXP.Updates.EnableDatabases = 1

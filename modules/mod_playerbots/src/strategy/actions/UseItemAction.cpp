@@ -1,5 +1,5 @@
 /*
-* This file is part of the Legends of Azeroth Pandaria Project. See THANKS file for Copyright information
+* This file is part of the TrinityCore Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -99,6 +99,15 @@ void UseItemAction::IterateItems(Player* bot, IterateItemsVisitor& visitor, uint
             }
         }
     }
+}
+
+bool UseItemAction::UseItemAuto(PlayerbotAI* botAI, Item* item, bool allowCombat)
+{
+    if (!botAI || !item)
+        return false;
+
+    UseItemAction action(botAI);
+    return action.UseItemOnSelf(item, allowCombat);
 }
 
 Item* UseItemAction::FindFirstItemByName(std::string const& name) const
@@ -226,3 +235,4 @@ bool UseManaPotion::isUseful()
 
     return bot->IsInCombat();
 }
+

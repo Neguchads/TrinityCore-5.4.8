@@ -1,17 +1,17 @@
-#ifndef _PLAYERBOT_HALLSOFLIGHTNINGSTRATEGY_H
-#define _PLAYERBOT_HALLSOFLIGHTNINGSTRATEGY_H
+#ifndef _PLAYERBOT_WOTLKDUNGEONHOLSTRATEGY_H
+#define _PLAYERBOT_WOTLKDUNGEONHOLSTRATEGY_H
 
+#include "Multiplier.h"
+#include "AiObjectContext.h"
 #include "Strategy.h"
 
-class PlayerbotAI;
-
-class HallsOfLightningStrategy : public Strategy
+class WotlkDungeonHoLStrategy : public Strategy
 {
 public:
-    HallsOfLightningStrategy(PlayerbotAI* botAI);
-
-    std::string const getName() override { return "halls of lightning"; }
-    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    WotlkDungeonHoLStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+    virtual std::string const getName() override { return "halls of lightning"; }
+    virtual void InitTriggers(std::vector<TriggerNode*> &triggers) override;
+    virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) override;
 };
 
 #endif

@@ -4,7 +4,7 @@
 
 void NonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-
+    triggers.push_back(new TriggerNode("timer", NextAction::array(0, new NextAction("check mount state", 1.0f), nullptr)));
 }
 
 void CollisionStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

@@ -1,17 +1,17 @@
-#ifndef _PLAYERBOT_CULLINGOFSTRATHOLMESTRATEGY_H
-#define _PLAYERBOT_CULLINGOFSTRATHOLMESTRATEGY_H
+#ifndef _PLAYERBOT_WOTLKDUNGEONCOSSTRATEGY_H
+#define _PLAYERBOT_WOTLKDUNGEONCOSSTRATEGY_H
 
+#include "Multiplier.h"
+#include "AiObjectContext.h"
 #include "Strategy.h"
 
-class PlayerbotAI;
-
-class CullingOfStratholmeStrategy : public Strategy
+class WotlkDungeonCoSStrategy : public Strategy
 {
 public:
-    CullingOfStratholmeStrategy(PlayerbotAI* botAI);
-
-    std::string const getName() override { return "culling of stratholme"; }
-    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    WotlkDungeonCoSStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+    virtual std::string const getName() override { return "culling of stratholme"; }
+    virtual void InitTriggers(std::vector<TriggerNode*> &triggers) override;
+    virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) override;
 };
 
 #endif

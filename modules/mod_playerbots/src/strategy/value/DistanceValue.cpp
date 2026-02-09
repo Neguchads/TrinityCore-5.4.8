@@ -1,15 +1,16 @@
 #include "DistanceValue.h"
 
 //#include "Formations.h"
-//#include "LootObjectStack.h"
+#include "LootObjectStack.h"
 #include "Playerbots.h"
+#include "TravelMgr.h"
 #include "PositionValue.h"
 #include "ServerFacade.h"
 //#include "Stances.h"
 
 float DistanceValue::Calculate()
 {
-    /*if (qualifier == "loot target")
+    if (qualifier == "loot target")
     {
         LootObject loot = AI_VALUE(LootObject, qualifier);
         if (loot.IsEmpty())
@@ -20,7 +21,7 @@ float DistanceValue::Calculate()
             return 0.0f;
 
         return sServerFacade->GetDistance2d(botAI->GetBot(), obj);
-    }*/
+    }
 
     if (qualifier.find("position_") == 0)
     {
@@ -36,27 +37,33 @@ float DistanceValue::Calculate()
     }
 
     Unit* target = nullptr;
-    /*if (qualifier == "rpg target")
+    if (qualifier == "rpg target")
     {
         GuidPosition rpgTarget = AI_VALUE(GuidPosition, qualifier);
+        if (!rpgTarget)
+            return 0.0f;
+
         return rpgTarget.distance(bot);
     }
     else if (qualifier == "travel target")
     {
         TravelTarget* travelTarget = AI_VALUE(TravelTarget*, qualifier);
+        if (!travelTarget)
+            return 0.0f;
+
         return travelTarget->distance(botAI->GetBot());
     }
     else if (qualifier == "last long move")
     {
-        WorldPosition target = AI_VALUE(WorldPosition, qualifier);
-        return target.distance(botAI->GetBot());
+        WorldPosition targetPos = AI_VALUE(WorldPosition, qualifier);
+        return targetPos.distance(botAI->GetBot());
     }
     else if (qualifier == "home bind")
     {
-        WorldPosition target = AI_VALUE(WorldPosition, qualifier);
-        return target.distance(botAI->GetBot());
+        WorldPosition targetPos = AI_VALUE(WorldPosition, qualifier);
+        return targetPos.distance(botAI->GetBot());
     }
-    else */if (qualifier == "current target")
+    else if (qualifier == "current target")
     {
         Unit* target = AI_VALUE(Unit*, qualifier);
         if (!target || !target->IsInWorld())

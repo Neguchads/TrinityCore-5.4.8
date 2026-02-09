@@ -2,9 +2,11 @@
 #define _PLAYERBOT_VALUECONTEXT_H
 
 #include "ActiveSpellValue.h"
+#include "AlwaysLootListValue.h"
 #include "AttackersValue.h"
 #include "AttackerCountValues.h"
 #include "AttackerWithoutAuraTargetValue.h"
+#include "AvailableLootValue.h"
 #include "CcTargetValue.h"
 #include "CollisionValue.h"
 #include "CurrentCcTargetValue.h"
@@ -27,6 +29,7 @@
 #include "LastSpellCastValue.h"
 #include "LastSpellCastTimeValue.h"
 #include "LfgValues.h"
+#include "LootStrategyValue.h"
 #include "MaintenanceValues.h"
 #include "ManaSaveLevelValue.h"
 #include "MasterTargetValue.h"
@@ -41,7 +44,10 @@
 #include "PartyMemberToResurectValue.h"
 #include "PetTargetValue.h"
 #include "PositionValue.h"
+#include "PossibleRpgTargetsValue.h"
 #include "PvpValues.h"
+#include "QuestValues.h"
+#include "RpgValues.h"
 #include "StatsValues.h"
 #include "SelfTargetValue.h"
 #include "SpellCastUsefulValue.h"
@@ -54,8 +60,11 @@
 #include "RangeValues.h"
 #include "RtiValue.h"
 #include "RtiTargetValue.h"
+#include "HasAvailableLootValue.h"
 #include "NewPlayerNearbyValue.h"
 #include "SnareTargetValue.h"
+#include "TargetValue.h"
+#include "TradeValues.h"
 
 class PlayerbotAI;
 class ValueContext : public NamedObjectContext<UntypedValue>
@@ -127,6 +136,22 @@ public:
         creators["old target"] = &ValueContext::old_target;
         creators["grind target"] = &ValueContext::grind_target;
         creators["pull target"] = &ValueContext::pull_target;
+        creators["rpg target"] = &ValueContext::rpg_target;
+        creators["travel target"] = &ValueContext::travel_target;
+        creators["available loot"] = &ValueContext::available_loot;
+        creators["loot target"] = &ValueContext::loot_target;
+        creators["can loot"] = &ValueContext::can_loot;
+        creators["has available loot"] = &ValueContext::has_available_loot;
+        creators["always loot list"] = &ValueContext::always_loot_list;
+        creators["loot strategy"] = &ValueContext::loot_strategy;
+        creators["ignore rpg target"] = &ValueContext::ignore_rpg_target;
+        creators["possible rpg targets"] = &ValueContext::possible_rpg_targets;
+        creators["possible new rpg targets"] = &ValueContext::possible_new_rpg_targets;
+        creators["possible new rpg game objects"] = &ValueContext::possible_new_rpg_game_objects;
+        creators["next rpg action"] = &ValueContext::next_rpg_action;
+        creators["items useful to give"] = &ValueContext::items_useful_to_give;
+        creators["last long move"] = &ValueContext::last_long_move;
+        creators["home bind"] = &ValueContext::home_bind;
         creators["invalid target"] = &ValueContext::invalid_target;
         creators["nearest friendly players"] = &ValueContext::nearest_friendly_players;
         creators["closest friendly players"] = &ValueContext::closest_friendly_players;
@@ -194,12 +219,23 @@ public:
         creators["bg type"] = &ValueContext::bg_type;
         creators["bg role"] = &ValueContext::bg_role;
         creators["arena type"] = &ValueContext::arena_type;
+        creators["rpg bg type"] = &ValueContext::rpg_bg_type;
         creators["enemy healer target"] = &ValueContext::enemy_healer_target;
         creators["snare target"] = &ValueContext::snare_target;
 
         creators["last flee angle"] = &ValueContext::last_flee_angle;
         creators["last flee timestamp"] = &ValueContext::last_flee_timestamp;
         creators["recently flee info"] = &ValueContext::recently_flee_info;
+
+        creators["active quest givers"] = &ValueContext::active_quest_givers;
+        creators["active quest takers"] = &ValueContext::active_quest_takers;
+        creators["active quest objectives"] = &ValueContext::active_quest_objectives;
+        creators["free quest log slots"] = &ValueContext::free_quest_log_slots;
+        creators["dialog status"] = &ValueContext::dialog_status;
+        creators["dialog status quest"] = &ValueContext::dialog_status_quest;
+        creators["can accept quest npc"] = &ValueContext::can_accept_quest_npc;
+        creators["can accept quest low level npc"] = &ValueContext::can_accept_quest_low_level_npc;
+        creators["can turn in quest npc"] = &ValueContext::can_turn_in_quest_npc;
     }
 
 private:
@@ -262,6 +298,22 @@ private:
     static UntypedValue* old_target(PlayerbotAI* botAI) { return new CurrentTargetValue(botAI); }
     static UntypedValue* grind_target(PlayerbotAI* botAI) { return new GrindTargetValue(botAI); }
     static UntypedValue* pull_target(PlayerbotAI* botAI) { return new PullTargetValue(botAI); }
+    static UntypedValue* rpg_target(PlayerbotAI* botAI) { return new RpgTargetValue(botAI); }
+    static UntypedValue* travel_target(PlayerbotAI* botAI) { return new TravelTargetValue(botAI); }
+    static UntypedValue* available_loot(PlayerbotAI* botAI) { return new AvailableLootValue(botAI); }
+    static UntypedValue* loot_target(PlayerbotAI* botAI) { return new LootTargetValue(botAI); }
+    static UntypedValue* can_loot(PlayerbotAI* botAI) { return new CanLootValue(botAI); }
+    static UntypedValue* has_available_loot(PlayerbotAI* botAI) { return new HasAvailableLootValue(botAI); }
+    static UntypedValue* always_loot_list(PlayerbotAI* botAI) { return new AlwaysLootListValue(botAI); }
+    static UntypedValue* loot_strategy(PlayerbotAI* botAI) { return new LootStrategyValue(botAI); }
+    static UntypedValue* ignore_rpg_target(PlayerbotAI* botAI) { return new IgnoreRpgTargetValue(botAI); }
+    static UntypedValue* possible_rpg_targets(PlayerbotAI* botAI) { return new PossibleRpgTargetsValue(botAI); }
+    static UntypedValue* possible_new_rpg_targets(PlayerbotAI* botAI) { return new PossibleNewRpgTargetsValue(botAI); }
+    static UntypedValue* possible_new_rpg_game_objects(PlayerbotAI* botAI) { return new PossibleNewRpgGameObjectsValue(botAI); }
+    static UntypedValue* next_rpg_action(PlayerbotAI* botAI) { return new NextRpgActionValue(botAI); }
+    static UntypedValue* items_useful_to_give(PlayerbotAI* botAI) { return new ItemsUsefulToGiveValue(botAI); }
+    static UntypedValue* last_long_move(PlayerbotAI* botAI) { return new LastLongMoveValue(botAI); }
+    static UntypedValue* home_bind(PlayerbotAI* botAI) { return new HomeBindValue(botAI); }
     static UntypedValue* invalid_target(PlayerbotAI* botAI) { return new InvalidTargetValue(botAI); }
     static UntypedValue* nearest_friendly_players(PlayerbotAI* botAI) { return new NearestFriendlyPlayersValue(botAI); }
     static UntypedValue* closest_friendly_players(PlayerbotAI* botAI) { return new NearestFriendlyPlayersValue(botAI, INTERACTION_DISTANCE); }
@@ -333,6 +385,7 @@ private:
     static UntypedValue* bg_type(PlayerbotAI* botAI) { return new BgTypeValue(botAI); }
     static UntypedValue* bg_role(PlayerbotAI* botAI) { return new BgRoleValue(botAI); }
     static UntypedValue* arena_type(PlayerbotAI* botAI) { return new ArenaTypeValue(botAI); }
+    static UntypedValue* rpg_bg_type(PlayerbotAI* botAI) { return new RpgBgTypeValue(botAI); }
     static UntypedValue* threat(PlayerbotAI* botAI) { return new ThreatValue(botAI); }
     static UntypedValue* has_aggro(PlayerbotAI* botAI) { return new HasAggroValue(botAI); }
     static UntypedValue* enemy_healer_target(PlayerbotAI* botAI) { return new EnemyHealerTargetValue(botAI); }
@@ -341,6 +394,15 @@ private:
     static UntypedValue* last_flee_angle(PlayerbotAI* ai) { return new LastFleeAngleValue(ai); }
     static UntypedValue* last_flee_timestamp(PlayerbotAI* ai) { return new LastFleeTimestampValue(ai); }
     static UntypedValue* recently_flee_info(PlayerbotAI* ai) { return new RecentlyFleeInfo(ai); }
+    static UntypedValue* active_quest_givers(PlayerbotAI* ai) { return new ActiveQuestGiversValue(ai); }
+    static UntypedValue* active_quest_takers(PlayerbotAI* ai) { return new ActiveQuestTakersValue(ai); }
+    static UntypedValue* active_quest_objectives(PlayerbotAI* ai) { return new ActiveQuestObjectivesValue(ai); }
+    static UntypedValue* free_quest_log_slots(PlayerbotAI* ai) { return new FreeQuestLogSlotValue(ai); }
+    static UntypedValue* dialog_status(PlayerbotAI* ai) { return new DialogStatusValue(ai); }
+    static UntypedValue* dialog_status_quest(PlayerbotAI* ai) { return new DialogStatusQuestValue(ai); }
+    static UntypedValue* can_accept_quest_npc(PlayerbotAI* ai) { return new CanAcceptQuestValue(ai); }
+    static UntypedValue* can_accept_quest_low_level_npc(PlayerbotAI* ai) { return new CanAcceptQuestLowLevelValue(ai); }
+    static UntypedValue* can_turn_in_quest_npc(PlayerbotAI* ai) { return new CanTurnInQuestValue(ai); }
 };
 
 #endif

@@ -1,4 +1,4 @@
-﻿
+
 
 #include "MovementActions.h"
 
@@ -13,6 +13,7 @@
 #include "PositionValue.h"
 #include "G3D/Vector3.h"
 #include "GameObject.h"
+#include "Group.h"
 #include "LastMovementValue.h"
 #include "Map.h"
 #include "MotionMaster.h"
@@ -24,6 +25,7 @@
 #include "PlayerbotAI.h"
 #include "PlayerbotAIConfig.h"
 #include "Playerbots.h"
+#include "LootObjectStack.h"
 #include "PlayerbotSpec.h"
 #include "Position.h"
 
@@ -85,16 +87,19 @@ void MovementAction::UpdateMovementState()
 
     bool onGround = bot->GetPositionZ() < bot->GetMapWaterOrGroundLevel(bot->GetPositionX(), bot->GetPositionY(), bot->GetPositionZ()) + 1.0f;
 
+    bool hasMountedFlightAura = bot->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) ||
+        bot->HasAuraType(SPELL_AURA_MOD_MOUNTED_FLIGHT_SPEED_ALWAYS);
+
     // Keep bot->SendMovementFlagUpdate() withing the if statements to not intefere with bot behavior on ground/(shallow) waters
     if (!bot->HasUnitMovementFlag(MOVEMENTFLAG_FLYING) &&
-        bot->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) && !onGround)
+        hasMountedFlightAura && !onGround)
     {
         bot->AddUnitMovementFlag(MOVEMENTFLAG_FLYING);
         bot->SendMovementFlagUpdate();
     }
 
     else if (bot->HasUnitMovementFlag(MOVEMENTFLAG_FLYING) &&
-        (!bot->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) || onGround))
+        (!hasMountedFlightAura || onGround))
     {
         bot->RemoveUnitMovementFlag(MOVEMENTFLAG_FLYING);
         bot->SendMovementFlagUpdate();
@@ -538,6 +543,96 @@ bool MoveOutOfCollisionAction::isUseful()
     return AI_VALUE2(bool, "collision", "self target");
 }
 
+bool AvoidAoeAction::isUseful()
+{
+    return sPlayerbotAIConfig->autoAvoidAoe && botAI->CanMove();
+}
+
+bool AvoidAoeAction::Execute(Event /*event*/)
+{
+    if (!sPlayerbotAIConfig->autoAvoidAoe || !botAI->CanMove())
+        return false;
+
+    Unit* target = AI_VALUE(Unit*, "current target");
+    if (!target)
+        return false;
+
+    float radius = std::max(sPlayerbotAIConfig->aoeRadius, 5.0f);
+    float distanceToTarget = bot->GetDistance(target);
+    if (distanceToTarget < radius)
+        return MoveAway(target, radius - distanceToTarget);
+
+    return false;
+}
+
+Unit* MoveAwayFromCreatureAction::GetCreature() const
+{
+    GuidVector npcs = AI_VALUE(GuidVector, "nearest hostile npcs");
+    for (ObjectGuid const& guid : npcs)
+    {
+        Unit* unit = botAI->GetUnit(guid);
+        if (unit && unit->IsAlive() && unit->GetEntry() == creatureEntry)
+            return unit;
+    }
+
+    return nullptr;
+}
+
+bool MoveAwayFromCreatureAction::isUseful()
+{
+    Unit* creature = GetCreature();
+    if (!creature)
+        return false;
+
+    return bot->GetDistance(creature) < distance;
+}
+
+bool MoveAwayFromCreatureAction::Execute(Event /*event*/)
+{
+    Unit* creature = GetCreature();
+    if (!creature)
+        return false;
+
+    return MoveAway(creature, distance - bot->GetDistance(creature));
+}
+
+Player* MoveAwayFromPlayerWithDebuffAction::GetPlayerWithDebuff() const
+{
+    Group* group = bot->GetGroup();
+    if (!group)
+        return nullptr;
+
+    for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
+    {
+        Player* member = ref->GetSource();
+        if (!member || member == bot)
+            continue;
+
+        if (botAI->HasAura(auraId, member))
+            return member;
+    }
+
+    return nullptr;
+}
+
+bool MoveAwayFromPlayerWithDebuffAction::isUseful()
+{
+    Player* player = GetPlayerWithDebuff();
+    if (!player)
+        return false;
+
+    return bot->GetDistance(player) < distance;
+}
+
+bool MoveAwayFromPlayerWithDebuffAction::Execute(Event /*event*/)
+{
+    Player* player = GetPlayerWithDebuff();
+    if (!player)
+        return false;
+
+    return MoveAway(player, distance - bot->GetDistance(player));
+}
+
 bool MovementAction::Follow(Unit* target, float distance) { return Follow(target, distance, GetFollowAngle()); }
 bool MovementAction::Follow(Unit* target, float distance, float angle)
 {
@@ -796,6 +891,26 @@ bool MovementAction::Move(float angle, float distance)
         return false;
 
     return MoveTo(bot->GetMapId(), x, y, z);
+}
+
+bool MovementAction::JumpTo(uint32 mapId, float x, float y, float z)
+{
+    if (!IsMovingAllowed())
+        return false;
+
+    if (bot->GetMapId() != mapId)
+        return false;
+
+    bot->GetMotionMaster()->MoveJump(x, y, z, bot->GetSpeed(MOVE_RUN), 7.0f);
+    return true;
+}
+
+bool MovementAction::MoveInside(uint32 mapId, float x, float y, float z, float distance, MovementPriority priority)
+{
+    if (!IsMovingAllowed())
+        return false;
+
+    return MoveNear(mapId, x, y, z, distance, priority);
 }
 
 // just calculates average position of group and runs away from that position
@@ -1221,6 +1336,15 @@ bool MovementAction::CheckLastFlee(float curAngle, std::list<FleeInfo>& infoList
 }
 
 bool RunAwayAction::Execute(Event event) { return Flee(AI_VALUE(Unit*, "master target")); }
+
+bool MoveToLootAction::Execute(Event /*event*/)
+{
+    LootObject loot = AI_VALUE(LootObject, "loot target");
+    if (!loot.IsLootPossible(bot))
+        return false;
+
+    return MoveNear(loot.GetWorldObject(bot), sPlayerbotAIConfig->contactDistance);
+}
 
 bool SetFacingTargetAction::Execute(Event event)
 {

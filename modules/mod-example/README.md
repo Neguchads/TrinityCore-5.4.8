@@ -1,7 +1,7 @@
 mod-example
 
 Purpose
-- Example module that shows config usage, database updates, and a simple script.
+- Example module that shows config usage and a simple script.
 
 Configuration
 - Config files are loaded from: <server_root>/modules/
@@ -11,12 +11,11 @@ Configuration
 
 Config keys
 - ModExample.Enable (default 0)
-- ModExample.Updates.EnableDatabases (default 1)
 
-Auto SQL updates (module)
-- The module registers a DatabaseScript hook and inserts a path into updates_include:
-  $/modules/mod-example/data/sql/world
-- DBUpdater will automatically apply SQL files from that path when the server starts.
+Auto SQL updates (core)
+- Module SQL updates are handled by the core autoupdater.
+- Place update files under:
+  ./data/sql/<database>
 
 SQL standards (safe default)
 - No multiple blank lines.

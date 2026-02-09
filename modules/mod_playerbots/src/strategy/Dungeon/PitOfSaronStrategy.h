@@ -1,17 +1,16 @@
-#ifndef _PLAYERBOT_PITOFSARONSTRATEGY_H
-#define _PLAYERBOT_PITOFSARONSTRATEGY_H
-
+#ifndef _PLAYERBOT_WOTLKDUNGEONPOSSTRATEGY_H
+#define _PLAYERBOT_WOTLKDUNGEONPOSSTRATEGY_H
+#include "Multiplier.h"
 #include "Strategy.h"
 
-class PlayerbotAI;
-
-class PitOfSaronStrategy : public Strategy
+class WotlkDungeonPoSStrategy : public Strategy
 {
 public:
-    PitOfSaronStrategy(PlayerbotAI* botAI);
-
+    WotlkDungeonPoSStrategy(PlayerbotAI* ai) : Strategy(ai) {}
     std::string const getName() override { return "pit of saron"; }
-    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    void InitTriggers(std::vector<TriggerNode*> &triggers) override;
+    void InitMultipliers(std::vector<Multiplier*> &multipliers) override;
+
 };
 
-#endif
+#endif  // !_PLAYERBOT_WOTLKDUNGEONFOSSTRATEGY_H

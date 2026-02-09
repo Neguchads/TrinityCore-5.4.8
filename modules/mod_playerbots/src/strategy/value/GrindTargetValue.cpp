@@ -1,6 +1,8 @@
 #include "GrindTargetValue.h"
 
+#include "ChatHelper.h"
 #include "Playerbots.h"
+#include "QuestDef.h"
 #include "SharedDefines.h"
 #include "ServerFacade.h"
 
@@ -88,7 +90,7 @@ Unit* GrindTargetValue::FindTargetForGrinding(uint32 assistCount)
             && sServerFacade->GetDistance2d(master, unit) > sPlayerbotAIConfig->lootDistance)
         {
             /*if (botAI->HasStrategy("debug grind", BotState::BOT_STATE_NON_COMBAT))
-                botAI->TellMaster(chat->FormatWorldobject(unit) + " ignored (far from master).");
+                botAI->TellMaster(ChatHelper::FormatWorldobject(unit) + " ignored (far from master).");
             continue;*/
         }
 
@@ -151,10 +153,10 @@ Unit* GrindTargetValue::FindTargetForGrinding(uint32 assistCount)
 
 bool GrindTargetValue::needForQuest(Unit* target)
 {
-    /*bool justCheck = (bot->GetGUID() == target->GetGUID());
+    bool justCheck = (bot->GetGUID() == target->GetGUID());
 
     QuestStatusMap& questMap = bot->getQuestStatusMap();
-    for (auto& quest : questMap)
+    for (auto const& quest : questMap)
     {
         Quest const* questTemplate = sObjectMgr->GetQuestTemplate(quest.first);
         if (!questTemplate)
@@ -166,7 +168,7 @@ bool GrindTargetValue::needForQuest(Unit* target)
 
         QuestStatus status = bot->GetQuestStatus(questId);
 
-        if ((status == QUEST_STATUS_COMPLETE && !bot->GetQuestRewardStatus(questId)))
+        if (status == QUEST_STATUS_COMPLETE && !bot->GetQuestRewardStatus(questId))
         {
             if (!justCheck && !target->hasInvolvedQuest(questId))
                 continue;
@@ -175,36 +177,31 @@ bool GrindTargetValue::needForQuest(Unit* target)
         }
         else if (status == QUEST_STATUS_INCOMPLETE)
         {
-            QuestStatusData* questStatus = sTravelMgr->getQuestStatus(bot, questId);
-
             if (questTemplate->GetQuestLevel() > bot->GetLevel() + 5)
                 continue;
 
-            for (int j = 0; j < QUEST_OBJECTIVES_COUNT; j++)
+            for (QuestObjective const& objective : questTemplate->GetObjectives())
             {
-                int32 entry = questTemplate->RequiredNpcOrGo[j];
+                if (objective.Amount <= 0)
+                    continue;
 
-                if (entry && entry > 0)
+                uint32 current = bot->GetQuestObjectiveCounter(objective.ID);
+                if (current >= uint32(objective.Amount))
+                    continue;
+
+                switch (objective.Type)
                 {
-                    int required = questTemplate->RequiredNpcOrGoCount[j];
-                    int available = questStatus->CreatureOrGOCount[j];
-
-                    if (required && available < required && (target->GetEntry() == entry || justCheck))
-                        return true;
-                }
-
-                if (justCheck)
-                {
-                    int32 itemId = questTemplate->RequiredItemId[j];
-
-                    if (itemId && itemId > 0)
-                    {
-                        uint32 required = questTemplate->RequiredItemCount[j];
-                        uint32 available = questStatus->ItemCount[j];
-
-                        if (required && available < required)
+                    case QUEST_OBJECTIVE_MONSTER:
+                        if (objective.ObjectID && (justCheck || target->GetEntry() == objective.ObjectID))
                             return true;
-                    }
+                        break;
+                    case QUEST_OBJECTIVE_ITEM:
+                    case QUEST_OBJECTIVE_GAMEOBJECT:
+                        if (justCheck)
+                            return true;
+                        break;
+                    default:
+                        break;
                 }
             }
 
@@ -220,7 +217,7 @@ bool GrindTargetValue::needForQuest(Unit* target)
                 }
             }
         }
-    }*/
+    }
 
     return false;
 }
