@@ -203,7 +203,6 @@ public:
         creators["utgarde keep"] = &StrategyContext::utgarde_keep;
         creators["utgarde pinnacle"] = &StrategyContext::utgarde_pinnacle;
         creators["violet hold"] = &StrategyContext::violet_hold;
-        // AzerothCore-style dungeon aliases
         creators["wotlk-uk"] = &StrategyContext::utgarde_keep;
         creators["wotlk-nex"] = &StrategyContext::nexus;
         creators["wotlk-an"] = &StrategyContext::azjol_nerub;

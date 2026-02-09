@@ -83,7 +83,7 @@ set(MODULES_CALLS "")
 foreach(MODULE ${VALID_MODULES})
     string(REPLACE "-" "_" MODULE_FUNC_NAME ${MODULE})
 
-    # AzerothCore-style module loader naming: Add<module>Scripts()
+    # AzerothCore-style module loader naming: Add<module>Scripts() - hopefully for cross compatibility in the future
     set(MODULES_INCLUDES "${MODULES_INCLUDES}void Add${MODULE_FUNC_NAME}Scripts();\n")
 
     # Add declarations and calls for ModulesLoader.cpp
