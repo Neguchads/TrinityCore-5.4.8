@@ -11,7 +11,6 @@ NextAction** SurvivalHunterStrategy::getDefaultActions()
         new NextAction("explosive shot", ACTION_DEFAULT + 0.9f),
         new NextAction("black arrow", ACTION_DEFAULT + 0.85f),
         new NextAction("kill shot", ACTION_DEFAULT + 0.82f),
-        new NextAction("stampede", ACTION_DEFAULT + 0.8f),
         new NextAction("a murder of crows", ACTION_DEFAULT + 0.78f),
         new NextAction("glaive toss", ACTION_DEFAULT + 0.76f),
         new NextAction("fervor", ACTION_DEFAULT + 0.74f),

@@ -116,6 +116,9 @@ public:
         creators["inquisition"] = &PaladinTriggerFactoryInternal::inquisition;
         creators["bastion of glory"] = &PaladinTriggerFactoryInternal::bastion_of_glory;
         creators["bastion of glory 5"] = &PaladinTriggerFactoryInternal::bastion_of_glory_5;
+        creators["avenging wrath"] = &PaladinTriggerFactoryInternal::avenging_wrath;
+        creators["holy avenger"] = &PaladinTriggerFactoryInternal::holy_avenger;
+        creators["guardian of ancient kings"] = &PaladinTriggerFactoryInternal::guardian_of_ancient_kings;
     }
 private:
     static Trigger* seal(PlayerbotAI* botAI) { return new SealTrigger(botAI); }
@@ -127,6 +130,9 @@ private:
     static Trigger* inquisition(PlayerbotAI* botAI) { return new InquisitionTrigger(botAI); }
     static Trigger* bastion_of_glory(PlayerbotAI* botAI) { return new BastionOfGloryTrigger(botAI, 3); }
     static Trigger* bastion_of_glory_5(PlayerbotAI* botAI) { return new BastionOfGloryTrigger(botAI, 5); }
+    static Trigger* avenging_wrath(PlayerbotAI* botAI) { return new AvengingWrathTrigger(botAI); }
+    static Trigger* holy_avenger(PlayerbotAI* botAI) { return new HolyAvengerTrigger(botAI); }
+    static Trigger* guardian_of_ancient_kings(PlayerbotAI* botAI) { return new GuardianOfAncientKingsTrigger(botAI); }
 };
 
 class PaladinAiObjectContextInternal : public NamedObjectContext<Action>

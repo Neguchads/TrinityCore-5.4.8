@@ -36,7 +36,6 @@ DestruWarlockStrategy::DestruWarlockStrategy(PlayerbotAI* botAI) : GenericWarloc
 NextAction** DestruWarlockStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-        new NextAction("dark soul: instability", ACTION_DEFAULT + 0.8f),
         new NextAction("immolate", ACTION_DEFAULT + 0.7f),
         new NextAction("conflagrate", ACTION_DEFAULT + 0.6f),
         new NextAction("chaos bolt", ACTION_DEFAULT + 0.5f),

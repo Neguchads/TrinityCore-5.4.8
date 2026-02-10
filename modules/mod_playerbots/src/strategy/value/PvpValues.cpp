@@ -18,6 +18,7 @@
 
 #include "BattlegroundEY.h"
 #include "BattlegroundMgr.h"
+#include "BattlegroundTP.h"
 #include "BattlegroundWS.h"
 #include "Playerbots.h"
 #include "ServerFacade.h"
@@ -29,9 +30,11 @@ Unit* FlagCarrierValue::Calculate()
     if (!botAI->GetBot()->InBattleground())
         return nullptr;
 
-    if (botAI->GetBot()->GetBattlegroundTypeId() == BattlegroundTypeId::BATTLEGROUND_WS)
+    BattlegroundTypeId bgTypeId = botAI->GetBot()->GetBattlegroundTypeId();
+
+    if (bgTypeId == BattlegroundTypeId::BATTLEGROUND_WS || bgTypeId == BattlegroundTypeId::BATTLEGROUND_TP)
     {
-        BattlegroundWS* bg = static_cast<BattlegroundWS*>(botAI->GetBot()->GetBattleground());
+        Battleground* bg = botAI->GetBot()->GetBattleground();
         if (!bg)
             return nullptr;
 

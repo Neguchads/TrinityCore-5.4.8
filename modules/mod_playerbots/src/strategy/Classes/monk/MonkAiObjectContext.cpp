@@ -80,6 +80,8 @@ public:
         creators["detox"] = &MonkTriggerFactoryInternal::detox;
         creators["party member detox"] = &MonkTriggerFactoryInternal::party_member_detox;
         creators["renewing mist on party"] = &MonkTriggerFactoryInternal::renewing_mist_on_party;
+        creators["tiger eye brew"] = &MonkTriggerFactoryInternal::tiger_eye_brew;
+        creators["invoke xuen"] = &MonkTriggerFactoryInternal::invoke_xuen;
     }
 
 private:
@@ -97,6 +99,8 @@ private:
     static Trigger* detox(PlayerbotAI* botAI) { return new DetoxTrigger(botAI); }
     static Trigger* party_member_detox(PlayerbotAI* botAI) { return new DetoxPartyTrigger(botAI); }
     static Trigger* renewing_mist_on_party(PlayerbotAI* botAI) { return new RenewingMistOnPartyTrigger(botAI); }
+    static Trigger* tiger_eye_brew(PlayerbotAI* botAI) { return new TigerEyeBrewTrigger(botAI); }
+    static Trigger* invoke_xuen(PlayerbotAI* botAI) { return new InvokeXuenTrigger(botAI); }
 };
 
 class MonkAiObjectContextInternal : public NamedObjectContext<Action>

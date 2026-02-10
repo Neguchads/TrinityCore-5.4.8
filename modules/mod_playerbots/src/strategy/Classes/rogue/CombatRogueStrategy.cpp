@@ -7,9 +7,6 @@ CombatRogueStrategy::CombatRogueStrategy(PlayerbotAI* botAI) : DpsRogueStrategy(
 NextAction** CombatRogueStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-                             new NextAction("adrenaline rush", ACTION_DEFAULT + 0.9f),
-                             new NextAction("killing spree", ACTION_DEFAULT + 0.85f),
-                             new NextAction("shadow blades", ACTION_DEFAULT + 0.8f),
                              new NextAction("slice and dice", ACTION_DEFAULT + 0.7f),
                              new NextAction("revealing strike", ACTION_DEFAULT + 0.6f),
                              new NextAction("rupture", ACTION_DEFAULT + 0.5f),
@@ -30,6 +27,10 @@ void CombatRogueStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
                                        NextAction::array(0, new NextAction("rupture", ACTION_HIGH + 4), nullptr)));
     triggers.push_back(new TriggerNode("adrenaline rush",
                                        NextAction::array(0, new NextAction("adrenaline rush", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(new TriggerNode("killing spree",
+                                       NextAction::array(0, new NextAction("killing spree", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(new TriggerNode("shadow blades",
+                                       NextAction::array(0, new NextAction("shadow blades", ACTION_HIGH + 2), nullptr)));
     triggers.push_back(new TriggerNode("blade flurry",
                                        NextAction::array(0, new NextAction("blade flurry", ACTION_HIGH + 2), nullptr)));
     triggers.push_back(new TriggerNode("light aoe",

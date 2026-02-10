@@ -26,7 +26,7 @@ bool TimeWarpTrigger::IsActive()
     {
         return false;
     }
-    return true;
+    return BoostTrigger::IsActive();
 }
 
 bool MageArmorTrigger::IsActive()
@@ -64,7 +64,7 @@ bool IcyVeinsTrigger::IsActive()
     {
         return false;
     }
-    return !botAI->HasAura("icy veins", target);
+    return BoostTrigger::IsActive() && !botAI->HasAura("icy veins", target);
 }
 
 bool FingersOfFrostSingleTrigger::IsActive()

@@ -18,6 +18,7 @@
 #include "RandomPlayerbotMgr.h"
 
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <ctime>
 #include <chrono>
@@ -39,6 +40,7 @@
 #include "GridNotifiersImpl.h"
 #include "GuildMgr.h"
 #include "Helper.h"
+#include "IVMapManager.h"
 #include "LFGMgr.h"
 #include "MapManager.h"
 #include "Player.h"
@@ -1494,6 +1496,83 @@ void RandomPlayerbotMgr::PrepareTeleportCache()
 void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
 {
     if (!bot) return;
+
+    if (sPlayerbotAIConfig->randomBotTeleportNearPlayer &&
+        urand(0u, 99u) < sPlayerbotAIConfig->randomBotTeleportNearPlayerChance)
+    {
+        std::vector<Player*> candidates;
+        candidates.reserve(_players.size());
+
+        for (Player* player : _players)
+        {
+            if (!player || player == bot || !player->IsInWorld() || player->IsBeingTeleported() || !player->IsAlive())
+                continue;
+
+            if (sRandomPlayerbotMgr->IsRandomBot(player))
+                continue;
+
+            if (player->GetMap()->IsDungeon() || player->GetMap()->IsRaid() || player->InBattleground())
+                continue;
+
+            if (std::abs(int32(player->GetLevel()) - int32(bot->GetLevel())) > int32(sPlayerbotAIConfig->randomBotTeleportNearPlayerLevelDelta))
+                continue;
+
+            uint32 nearbyBots = 0;
+            for (PlayerBotMap::const_iterator itr = GetPlayerBotsBegin(); itr != GetPlayerBotsEnd(); ++itr)
+            {
+                Player* const rb = itr->second;
+                if (!rb || rb == bot || !rb->IsInWorld() || rb->IsBeingTeleported())
+                    continue;
+
+                if (rb->GetMapId() != player->GetMapId())
+                    continue;
+
+                if (rb->GetExactDist2d(player) <= sPlayerbotAIConfig->randomBotTeleportNearPlayerRadius)
+                    ++nearbyBots;
+            }
+
+            if (nearbyBots >= sPlayerbotAIConfig->randomBotTeleportNearPlayerMaxBots)
+                continue;
+
+            candidates.push_back(player);
+        }
+
+        if (!candidates.empty())
+        {
+            std::mt19937 gen(std::chrono::system_clock::now().time_since_epoch().count());
+            std::shuffle(candidates.begin(), candidates.end(), gen);
+
+            for (Player* player : candidates)
+            {
+                for (uint8 attempt = 0; attempt < 8; ++attempt)
+                {
+                    float x = player->GetPositionX();
+                    float y = player->GetPositionY();
+                    float z = player->GetPositionZ();
+
+                    float angle = frand(0.0f, 6.28318530718f);
+                    float dist = frand(12.0f, float(sPlayerbotAIConfig->randomBotTeleportNearPlayerRadius));
+                    x += std::cos(angle) * dist;
+                    y += std::sin(angle) * dist;
+
+                    if (Map* map = sMapMgr->FindMap(player->GetMapId(), 0))
+                    {
+                        float groundZ = map->GetHeight(x, y, z);
+                        if (groundZ != VMAP_INVALID_HEIGHT_VALUE)
+                            z = groundZ;
+                    }
+
+                    if (bot->TeleportTo(player->GetMapId(), x, y, z, bot->GetOrientation(), 0))
+                    {
+                        TC_LOG_INFO("playerbots", "Bot #%u <%s> teleported near real player <%s>: map{%u} %f:%f:%f",
+                            bot->GetGUID().GetCounter(), bot->GetName().c_str(), player->GetName().c_str(),
+                            player->GetMapId(), x, y, z);
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
     // Teleport to city
     if (bot->GetLevel() >= 10 && urand(0, 100) < 0.25 * 100)

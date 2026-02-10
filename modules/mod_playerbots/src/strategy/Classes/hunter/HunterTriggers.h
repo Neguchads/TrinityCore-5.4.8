@@ -91,4 +91,22 @@ public:
     bool IsActive() override;
 };
 
+class RapidFireTrigger : public BoostTrigger
+{
+public:
+    RapidFireTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "rapid fire") {}
+};
+
+class BestialWrathTrigger : public BoostTrigger
+{
+public:
+    BestialWrathTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "bestial wrath") {}
+};
+
+class StampedeTrigger : public BoostTrigger
+{
+public:
+    StampedeTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "stampede") {}
+};
+
 #endif

@@ -10,8 +10,6 @@ NextAction** BeastMasteryHunterStrategy::getDefaultActions()
         0,
         new NextAction("kill shot", ACTION_DEFAULT + 0.9f),
         new NextAction("kill command", ACTION_DEFAULT + 0.85f),
-        new NextAction("bestial wrath", ACTION_DEFAULT + 0.8f),
-        new NextAction("stampede", ACTION_DEFAULT + 0.78f),
         new NextAction("a murder of crows", ACTION_DEFAULT + 0.76f),
         new NextAction("glaive toss", ACTION_DEFAULT + 0.74f),
         new NextAction("dire beast", ACTION_DEFAULT + 0.72f),

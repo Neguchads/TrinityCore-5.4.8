@@ -41,7 +41,6 @@ DemonoWarlockStrategy::DemonoWarlockStrategy(PlayerbotAI* botAI) : GenericWarloc
 NextAction** DemonoWarlockStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-        new NextAction("dark soul: knowledge", ACTION_DEFAULT + 0.8f),
         new NextAction("hand of guldan", ACTION_DEFAULT + 0.7f),
         new NextAction("soul fire", ACTION_DEFAULT + 0.6f),
         new NextAction("doom", ACTION_DEFAULT + 0.5f),

@@ -44,4 +44,16 @@ CURE_PARTY_TRIGGER(DetoxPartyTrigger, "detox", DISPEL_DISEASE | DISPEL_POISON | 
 
 BUFF_PARTY_TRIGGER(RenewingMistOnPartyTrigger, "renewing mist");
 
+class TigerEyeBrewTrigger : public BoostTrigger
+{
+public:
+    TigerEyeBrewTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "tiger eye brew") {}
+};
+
+class InvokeXuenTrigger : public BoostTrigger
+{
+public:
+    InvokeXuenTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "invoke xuen") {}
+};
+
 #endif

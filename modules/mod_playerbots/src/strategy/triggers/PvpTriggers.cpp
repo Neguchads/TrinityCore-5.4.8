@@ -21,9 +21,41 @@
 #include "BattlegroundAV.h"
 #include "BattlegroundEY.h"
 #include "BattlegroundMgr.h"
+#include "BattlegroundTP.h"
 #include "BattlegroundWS.h"
 #include "Playerbots.h"
 #include "ServerFacade.h"
+
+namespace
+{
+bool IsFlagOnPlayer(Battleground* bg, uint32 team)
+{
+    if (!bg)
+        return false;
+
+    if (BattlegroundWS* ws = dynamic_cast<BattlegroundWS*>(bg))
+        return ws->GetFlagState(team) == BG_WS_FLAG_STATE_ON_PLAYER;
+
+    if (BattlegroundTP* tp = dynamic_cast<BattlegroundTP*>(bg))
+        return tp->GetFlagState(team) == BG_TP_FLAG_STATE_ON_PLAYER;
+
+    return false;
+}
+
+bool IsFlagOnBase(Battleground* bg, uint32 team)
+{
+    if (!bg)
+        return false;
+
+    if (BattlegroundWS* ws = dynamic_cast<BattlegroundWS*>(bg))
+        return ws->GetFlagState(team) == BG_WS_FLAG_STATE_ON_BASE;
+
+    if (BattlegroundTP* tp = dynamic_cast<BattlegroundTP*>(bg))
+        return tp->GetFlagState(team) == BG_TP_FLAG_STATE_ON_BASE;
+
+    return false;
+}
+}
 
 bool EnemyPlayerNear::IsActive()
 {
@@ -34,11 +66,12 @@ bool PlayerHasNoFlag::IsActive()
 {
     if (botAI->GetBot()->InBattleground())
     {
-        if (botAI->GetBot()->GetBattlegroundTypeId() == BattlegroundTypeId::BATTLEGROUND_WS)
+        BattlegroundTypeId bgType = botAI->GetBot()->GetBattlegroundTypeId();
+        if (bgType == BattlegroundTypeId::BATTLEGROUND_WS || bgType == BattlegroundTypeId::BATTLEGROUND_TP)
         {
-            BattlegroundWS* bg = static_cast<BattlegroundWS*>(botAI->GetBot()->GetBattleground());
+            Battleground* bg = botAI->GetBot()->GetBattleground();
             uint32 enemyTeam = bg->GetOtherTeam(bot->GetBGTeam());
-            if (bg->GetFlagState(enemyTeam) != BG_WS_FLAG_STATE_ON_PLAYER)
+            if (!IsFlagOnPlayer(bg, enemyTeam))
                 return true;
 
             if (bot->GetGUID() == bg->GetFlagPickerGUID(TEAM_ALLIANCE) ||
@@ -114,11 +147,12 @@ bool PlayerIsInBattlegroundWithoutFlag::IsActive()
 {
     if (botAI->GetBot()->InBattleground())
     {
-        if (botAI->GetBot()->GetBattlegroundTypeId() == BattlegroundTypeId::BATTLEGROUND_WS)
+        BattlegroundTypeId bgType = botAI->GetBot()->GetBattlegroundTypeId();
+        if (bgType == BattlegroundTypeId::BATTLEGROUND_WS || bgType == BattlegroundTypeId::BATTLEGROUND_TP)
         {
-            BattlegroundWS* bg = static_cast<BattlegroundWS*>(botAI->GetBot()->GetBattleground());
+            Battleground* bg = botAI->GetBot()->GetBattleground();
             uint32 enemyTeam = bg->GetOtherTeam(bot->GetBGTeam());
-            if (bg->GetFlagState(enemyTeam) != BG_WS_FLAG_STATE_ON_PLAYER)
+            if (!IsFlagOnPlayer(bg, enemyTeam))
                 return true;
 
             if (bot->GetGUID() == bg->GetFlagPickerGUID(TEAM_ALLIANCE) ||
@@ -143,14 +177,15 @@ bool PlayerHasFlag::IsCapturingFlag(Player* bot)
 {
     if (bot->InBattleground())
     {
-        if (bot->GetBattlegroundTypeId() == BATTLEGROUND_WS)
+        if (bot->GetBattlegroundTypeId() == BATTLEGROUND_WS || bot->GetBattlegroundTypeId() == BATTLEGROUND_TP)
         {
-            BattlegroundWS* bg = static_cast<BattlegroundWS*>(bot->GetBattleground());
+            Battleground* bg = bot->GetBattleground();
             if (bot->GetGUID() == bg->GetFlagPickerGUID(TEAM_ALLIANCE))
             {
                 if (bg->GetFlagPickerGUID(TEAM_HORDE))
                 {
-                    if (GameObject* go = bg->GetBGObject(BG_WS_OBJECT_H_FLAG))
+                    uint32 enemyBaseFlagObj = bot->GetBattlegroundTypeId() == BATTLEGROUND_TP ? BG_TP_OBJECT_H_FLAG : BG_WS_OBJECT_H_FLAG;
+                    if (GameObject* go = bg->GetBGObject(enemyBaseFlagObj))
                         return bot->GetDistance(go) > 36.0f;
                 }
                 return true;
@@ -159,7 +194,8 @@ bool PlayerHasFlag::IsCapturingFlag(Player* bot)
             {
                 if (bg->GetFlagPickerGUID(TEAM_ALLIANCE))
                 {
-                    if (GameObject* go = bg->GetBGObject(BG_WS_OBJECT_A_FLAG))
+                    uint32 enemyBaseFlagObj = bot->GetBattlegroundTypeId() == BATTLEGROUND_TP ? BG_TP_OBJECT_A_FLAG : BG_WS_OBJECT_A_FLAG;
+                    if (GameObject* go = bg->GetBGObject(enemyBaseFlagObj))
                         return bot->GetDistance(go) > 36.0f;
                 }
                 return true;
@@ -198,10 +234,11 @@ bool TeamHasFlag::IsActive()
     if (!botAI->GetBot()->InBattleground())
         return false;
 
-    if (botAI->GetBot()->GetBattlegroundTypeId() != BattlegroundTypeId::BATTLEGROUND_WS)
+    if (botAI->GetBot()->GetBattlegroundTypeId() != BattlegroundTypeId::BATTLEGROUND_WS &&
+        botAI->GetBot()->GetBattlegroundTypeId() != BattlegroundTypeId::BATTLEGROUND_TP)
         return false;
 
-    BattlegroundWS* bg = static_cast<BattlegroundWS*>(botAI->GetBot()->GetBattleground());
+    Battleground* bg = botAI->GetBot()->GetBattleground();
 
     ObjectGuid botGuid = bot->GetGUID();
     uint32 team = bot->GetBGTeam();
@@ -210,8 +247,8 @@ bool TeamHasFlag::IsActive()
     if (botGuid == bg->GetFlagPickerGUID(TEAM_ALLIANCE) || botGuid == bg->GetFlagPickerGUID(TEAM_HORDE))
         return false;
 
-    bool ownTeamHasFlag = bg->GetFlagState(enemyTeam) == BG_WS_FLAG_STATE_ON_PLAYER;
-    bool enemyTeamHasFlag = bg->GetFlagState(team) == BG_WS_FLAG_STATE_ON_PLAYER;
+    bool ownTeamHasFlag = IsFlagOnPlayer(bg, enemyTeam);
+    bool enemyTeamHasFlag = IsFlagOnPlayer(bg, team);
 
     return ownTeamHasFlag && !enemyTeamHasFlag;
 }
@@ -220,9 +257,10 @@ bool EnemyTeamHasFlag::IsActive()
 {
     if (botAI->GetBot()->InBattleground())
     {
-        if (botAI->GetBot()->GetBattlegroundTypeId() == BattlegroundTypeId::BATTLEGROUND_WS)
+        if (botAI->GetBot()->GetBattlegroundTypeId() == BattlegroundTypeId::BATTLEGROUND_WS ||
+            botAI->GetBot()->GetBattlegroundTypeId() == BattlegroundTypeId::BATTLEGROUND_TP)
         {
-            BattlegroundWS* bg = static_cast<BattlegroundWS*>(botAI->GetBot()->GetBattleground());
+            Battleground* bg = botAI->GetBot()->GetBattleground();
 
             if (bot->GetTeamId() == TEAM_HORDE)
             {
@@ -265,14 +303,14 @@ bool EnemyFlagCarrierNear::IsActive()
 
 bool TeamFlagCarrierNear::IsActive()
 {
-    if (bot->GetBattlegroundTypeId() == BATTLEGROUND_WS)
+    if (bot->GetBattlegroundTypeId() == BATTLEGROUND_WS || bot->GetBattlegroundTypeId() == BATTLEGROUND_TP)
     {
-        BattlegroundWS* bg = dynamic_cast<BattlegroundWS*>(bot->GetBattleground());
+        Battleground* bg = bot->GetBattleground();
         if (bg)
         {
             bool bothFlagsNotAtBase =
-                bg->GetFlagState(ALLIANCE) != BG_WS_FLAG_STATE_ON_BASE &&
-                bg->GetFlagState(HORDE) != BG_WS_FLAG_STATE_ON_BASE;
+                !IsFlagOnBase(bg, ALLIANCE) &&
+                !IsFlagOnBase(bg, HORDE);
 
             if (bothFlagsNotAtBase)
                 return false;

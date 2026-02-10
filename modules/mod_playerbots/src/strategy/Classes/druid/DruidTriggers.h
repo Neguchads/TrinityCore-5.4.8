@@ -54,10 +54,10 @@ public:
     TigersFuryTrigger(PlayerbotAI* botAI) : SpellCanBeCastTrigger(botAI, "tiger's fury") {}
 };
 
-class BerserkTrigger : public SpellCanBeCastTrigger
+class BerserkTrigger : public BoostTrigger
 {
 public:
-    BerserkTrigger(PlayerbotAI* botAI) : SpellCanBeCastTrigger(botAI, "berserk") {}
+    BerserkTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "berserk") {}
 };
 
 class EnrageTrigger : public SpellCanBeCastTrigger

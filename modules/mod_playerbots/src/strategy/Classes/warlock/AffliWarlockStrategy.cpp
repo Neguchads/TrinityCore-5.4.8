@@ -36,7 +36,6 @@ AffliWarlockStrategy::AffliWarlockStrategy(PlayerbotAI* botAI) : GenericWarlockS
 NextAction** AffliWarlockStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-        new NextAction("dark soul: misery", ACTION_DEFAULT + 0.8f),
         new NextAction("haunt", ACTION_DEFAULT + 0.7f),
         new NextAction("malefic grasp", ACTION_DEFAULT + 0.6f),
         new NextAction("shadow bolt", ACTION_DEFAULT + 0.5f),

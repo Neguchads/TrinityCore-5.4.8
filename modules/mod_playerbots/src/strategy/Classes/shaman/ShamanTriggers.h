@@ -57,10 +57,10 @@ public:
     ElementalMasteryTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "elemental mastery") {}
 };
 
-class AscendanceTrigger : public BuffTrigger
+class AscendanceTrigger : public BoostTrigger
 {
 public:
-    AscendanceTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "ascendance") {}
+    AscendanceTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "ascendance") {}
 };
 
 class ElementalBlastTrigger : public SpellNoCooldownTrigger
@@ -75,16 +75,16 @@ public:
     UnleashElementsTrigger(PlayerbotAI* botAI) : SpellNoCooldownTrigger(botAI, "unleash elements") {}
 };
 
-class FireElementalTotemTrigger : public SpellNoCooldownTrigger
+class FireElementalTotemTrigger : public BoostTrigger
 {
 public:
-    FireElementalTotemTrigger(PlayerbotAI* botAI) : SpellNoCooldownTrigger(botAI, "fire elemental totem") {}
+    FireElementalTotemTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "fire elemental totem") {}
 };
 
-class EarthElementalTotemTrigger : public SpellNoCooldownTrigger
+class EarthElementalTotemTrigger : public BoostTrigger
 {
 public:
-    EarthElementalTotemTrigger(PlayerbotAI* botAI) : SpellNoCooldownTrigger(botAI, "earth elemental totem") {}
+    EarthElementalTotemTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "earth elemental totem") {}
 };
 
 class HealingTideTotemTrigger : public SpellNoCooldownTrigger
@@ -186,16 +186,16 @@ public:
     }
 };
 
-class HeroismTrigger : public SpellNoCooldownTrigger
+class HeroismTrigger : public BoostTrigger
 {
 public:
-    HeroismTrigger(PlayerbotAI* botAI) : SpellNoCooldownTrigger(botAI, "heroism") {}
+    HeroismTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "heroism") {}
 };
 
-class BloodlustTrigger : public SpellNoCooldownTrigger
+class BloodlustTrigger : public BoostTrigger
 {
 public:
-    BloodlustTrigger(PlayerbotAI* botAI) : SpellNoCooldownTrigger(botAI, "bloodlust") {}
+    BloodlustTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "bloodlust") {}
 };
 
 class TotemMissingTrigger : public Trigger

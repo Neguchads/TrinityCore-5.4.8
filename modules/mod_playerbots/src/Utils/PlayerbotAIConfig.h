@@ -104,6 +104,11 @@ public:
     uint32 randomBotUpdateInterval, randomBotCountChangeMinInterval, randomBotCountChangeMaxInterval;
     uint32 minRandomBotRandomizeTime, maxRandomBotRandomizeTime;
     uint32 minRandomBotTeleportInterval, maxRandomBotTeleportInterval;
+    bool randomBotTeleportNearPlayer;
+    uint32 randomBotTeleportNearPlayerChance;
+    uint32 randomBotTeleportNearPlayerRadius;
+    uint32 randomBotTeleportNearPlayerMaxBots;
+    uint32 randomBotTeleportNearPlayerLevelDelta;
     uint32 minRandomBotInWorldTime, maxRandomBotInWorldTime;
     uint32 minRandomBotReviveTime, maxRandomBotReviveTime;
     uint32 randomBotsPerInterval;

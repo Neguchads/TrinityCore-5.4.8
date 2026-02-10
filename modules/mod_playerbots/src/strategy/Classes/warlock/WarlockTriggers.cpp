@@ -11,7 +11,7 @@ bool MetamorphosisTrigger::IsActive()
     {
         botAI->RemoveAura("metamorphosis");
     }
-    return BuffTrigger::IsActive() && bot->GetPower(Powers::POWER_DEMONIC_FURY) >= 800;
+    return BoostTrigger::IsActive() && bot->GetPower(Powers::POWER_DEMONIC_FURY) >= 800;
 }
 
 bool CorruptionTrigger::IsActive()

@@ -32,6 +32,9 @@
 #include "BattlegroundRL.h"
 #include "BattlegroundRV.h"
 #include "BattlegroundSA.h"
+#include "BattlegroundTP.h"
+#include "BattlegroundBFG.h"
+#include "BattlegroundTTP.h"
 #include "BattlegroundWS.h"
 #include "Event.h"
 #include "GameObject.h"
@@ -179,7 +182,20 @@ std::vector<uint32> const vFlagsAB = {
 std::vector<uint32> const vFlagsWS = {BG_OBJECT_A_FLAG_WS_ENTRY, BG_OBJECT_H_FLAG_WS_ENTRY,
                                       BG_OBJECT_A_FLAG_GROUND_WS_ENTRY, BG_OBJECT_H_FLAG_GROUND_WS_ENTRY};
 
+std::vector<uint32> const vFlagsTP = {BG_OBJECT_A_FLAG_TP_ENTRY, BG_OBJECT_H_FLAG_TP_ENTRY,
+                                      BG_OBJECT_A_FLAG_GROUND_TP_ENTRY, BG_OBJECT_H_FLAG_GROUND_TP_ENTRY};
+
 std::vector<uint32> const vFlagsEY = {BG_OBJECT_FLAG2_EY_ENTRY, BG_OBJECT_FLAG3_EY_ENTRY};
+
+std::vector<uint32> const vFlagsBFG = {
+    BG_BFG_OBJECTID_BANNER_A,
+    BG_BFG_OBJECTID_BANNER_CONT_A,
+    BG_BFG_OBJECTID_BANNER_H,
+    BG_BFG_OBJECTID_BANNER_CONT_H,
+    BG_BFG_OBJECTID_NODE_BANNER_0,
+    BG_BFG_OBJECTID_NODE_BANNER_1,
+    BG_BFG_OBJECTID_NODE_BANNER_2
+};
 
 std::vector<uint32> const vFlagsIC = {GO_HORDE_BANNER,
                                       GO_ALLIANCE_BANNER,
@@ -1241,6 +1257,8 @@ std::vector<BattleBotPath*> const vPaths_IC = {
     &vPath_IC_Hanger_to_Workshop,
 };
 
+std::vector<BattleBotPath*> const vPaths_EMPTY = {};
+
 std::vector<BattleBotPath*> const vPaths_NoReverseAllowed = {
     &vPath_WSG_AllianceGraveyardJump,
     &vPath_WSG_HordeGraveyardJump,
@@ -1651,10 +1669,22 @@ bool BGTactics::Execute(Event event)
             vFlagIds = &vFlagsWS;
             break;
         }
+        case BATTLEGROUND_TP:
+        {
+            vPaths = &vPaths_EMPTY;
+            vFlagIds = &vFlagsTP;
+            break;
+        }
         case BATTLEGROUND_EY:
         {
             vPaths = &vPaths_EY;
             vFlagIds = &vFlagsEY;
+            break;
+        }
+        case BATTLEGROUND_BFG:
+        {
+            vPaths = &vPaths_EMPTY;
+            vFlagIds = &vFlagsBFG;
             break;
         }
         case BATTLEGROUND_IC:
@@ -1677,6 +1707,8 @@ bool BGTactics::Execute(Event event)
         bool isCarryingFlag =
             bot->HasAura(BG_WS_SPELL_WARSONG_FLAG) ||
             bot->HasAura(BG_WS_SPELL_SILVERWING_FLAG) ||
+            bot->HasAura(BG_TP_SPELL_HORDE_FLAG) ||
+            bot->HasAura(BG_TP_SPELL_ALLIANCE_FLAG) ||
             bot->HasAura(BG_EY_NETHERSTORM_FLAG_SPELL);
 
         if (!isCarryingFlag)
@@ -1738,14 +1770,18 @@ bool BGTactics::Execute(Event event)
 
         // bot with flag should only move to objective
         if (bot->HasAura(BG_WS_SPELL_WARSONG_FLAG) || bot->HasAura(BG_WS_SPELL_SILVERWING_FLAG) ||
+            bot->HasAura(BG_TP_SPELL_HORDE_FLAG) || bot->HasAura(BG_TP_SPELL_ALLIANCE_FLAG) ||
             bot->HasAura(BG_EY_NETHERSTORM_FLAG_SPELL))
             return false;
 
-        if (!startNewPathBegin(*vPaths))
-            return moveToObjective(true);
+        if (!vPaths->empty())
+        {
+            if (!startNewPathBegin(*vPaths))
+                return moveToObjective(true);
 
-        if (!startNewPathFree(*vPaths))
-            return moveToObjective(true);
+            if (!startNewPathFree(*vPaths))
+                return moveToObjective(true);
+        }
     }
 
     if (getName() == "use buff")
@@ -1880,6 +1916,13 @@ bool BGTactics::moveToStart(bool force)
                        IC_WAITING_POS_ALLIANCE.GetPositionY() + frand(-5.0f, 5.0f),
                        IC_WAITING_POS_ALLIANCE.GetPositionZ());
         }
+    }
+    else if (bgType == BATTLEGROUND_TP || bgType == BATTLEGROUND_BFG || bgType == BATTLEGROUND_DG ||
+             bgType == BATTLEGROUND_SM || bgType == BATTLEGROUND_TOK)
+    {
+        float sx = 0.0f, sy = 0.0f, sz = 0.0f, so = 0.0f;
+        bg->GetTeamStartLoc(bot->GetBGTeam(), sx, sy, sz, so);
+        MoveTo(bg->GetMapId(), sx + frand(-6.0f, 6.0f), sy + frand(-6.0f, 6.0f), sz);
     }
 
     return true;
@@ -2536,6 +2579,82 @@ bool BGTactics::selectObjective(bool reset)
             }
 
             return true;
+        }
+        case BATTLEGROUND_BFG:
+        {
+            // BFG is an AB-style node map. Use nearest enemy or known node positions as dynamic objectives.
+            if (Unit* enemy = AI_VALUE(Unit*, "enemy player target"))
+            {
+                if (bot->GetDistance(enemy) < 250.0f)
+                {
+                    pos.Set(enemy->GetPositionX(), enemy->GetPositionY(), enemy->GetPositionZ(), bot->GetMapId());
+                    posMap["bg objective"] = pos;
+                    return true;
+                }
+            }
+
+            uint32 nodeId = urand(0, BG_BFG_DYNAMIC_NODES_COUNT - 1);
+            Position nodePos(BG_BFG_NodePositions[nodeId][0], BG_BFG_NodePositions[nodeId][1], BG_BFG_NodePositions[nodeId][2]);
+            float rx, ry, rz;
+            bot->GetRandomPoint(nodePos, 12.0f, rx, ry, rz);
+            if (Map* map = bot->GetMap())
+            {
+                float groundZ = map->GetHeight(rx, ry, rz);
+                if (groundZ != VMAP_INVALID_HEIGHT_VALUE)
+                    rz = groundZ;
+            }
+
+            pos.Set(rx, ry, rz, bot->GetMapId());
+            posMap["bg objective"] = pos;
+            return true;
+        }
+        case BATTLEGROUND_TP:
+        {
+            // Twin Peaks is a CTF map equivalent to WSG.
+            bool hasFlag = bot->HasAura(BG_TP_SPELL_HORDE_FLAG) || bot->HasAura(BG_TP_SPELL_ALLIANCE_FLAG) ||
+                           bot->HasAura(BG_TP_SPELL_HORDE_FLAG_DROPPED) || bot->HasAura(BG_TP_SPELL_ALLIANCE_FLAG_DROPPED);
+
+            if (hasFlag)
+            {
+                uint32 ownBaseFlag = bot->GetTeamId() == TEAM_ALLIANCE ? BG_TP_OBJECT_A_FLAG : BG_TP_OBJECT_H_FLAG;
+                if (GameObject* homeFlag = bg->GetBGObject(ownBaseFlag))
+                {
+                    float rx, ry, rz;
+                    bot->GetRandomPoint(homeFlag->GetPosition(), 6.0f, rx, ry, rz);
+                    pos.Set(rx, ry, rz, homeFlag->GetMapId());
+                    posMap["bg objective"] = pos;
+                    return true;
+                }
+            }
+
+            if (Unit* enemyFC = AI_VALUE(Unit*, "enemy flag carrier"))
+            {
+                pos.Set(enemyFC->GetPositionX(), enemyFC->GetPositionY(), enemyFC->GetPositionZ(), bot->GetMapId());
+                posMap["bg objective"] = pos;
+                return true;
+            }
+
+            if (Unit* enemy = AI_VALUE(Unit*, "enemy player target"))
+            {
+                if (bot->GetDistance(enemy) < 250.0f)
+                {
+                    pos.Set(enemy->GetPositionX(), enemy->GetPositionY(), enemy->GetPositionZ(), bot->GetMapId());
+                    posMap["bg objective"] = pos;
+                    return true;
+                }
+            }
+
+            uint32 enemyBaseFlag = bot->GetTeamId() == TEAM_ALLIANCE ? BG_TP_OBJECT_H_FLAG : BG_TP_OBJECT_A_FLAG;
+            if (GameObject* enemyFlag = bg->GetBGObject(enemyBaseFlag))
+            {
+                float rx, ry, rz;
+                bot->GetRandomPoint(enemyFlag->GetPosition(), 6.0f, rx, ry, rz);
+                pos.Set(rx, ry, rz, enemyFlag->GetMapId());
+                posMap["bg objective"] = pos;
+                return true;
+            }
+
+            break;
         }
         case BATTLEGROUND_EY:
         {
@@ -3423,7 +3542,7 @@ bool BGTactics::resetObjective()
     uint32 oddsToChangeRole = 1;  // default low
     BattlegroundTypeId bgType = bg->GetTypeID();
 
-    if (bgType == BATTLEGROUND_WS)
+    if (bgType == BATTLEGROUND_WS || bgType == BATTLEGROUND_TP)
         oddsToChangeRole = 2;
     else if (bgType == BATTLEGROUND_EY || bgType == BATTLEGROUND_IC || bgType == BATTLEGROUND_AB)
         oddsToChangeRole = 1;
@@ -3433,6 +3552,8 @@ bool BGTactics::resetObjective()
     bool isCarryingFlag =
         bot->HasAura(BG_WS_SPELL_WARSONG_FLAG) ||
         bot->HasAura(BG_WS_SPELL_SILVERWING_FLAG) ||
+        bot->HasAura(BG_TP_SPELL_HORDE_FLAG) ||
+        bot->HasAura(BG_TP_SPELL_ALLIANCE_FLAG) ||
         bot->HasAura(BG_EY_NETHERSTORM_FLAG_SPELL);
 
     // Change role if allowed by odds and not carrying flag
@@ -3754,7 +3875,7 @@ bool BGTactics::atFlag(std::vector<BattleBotPath*> const& vPaths, std::vector<ui
     }
 
     // If we found a valid flag/base to interact with
-    if (bgType != BATTLEGROUND_WS && bgType != BATTLEGROUND_AV)
+    if (bgType != BATTLEGROUND_WS && bgType != BATTLEGROUND_TP && bgType != BATTLEGROUND_AV)
     {
         if (targetFlag)
         {
@@ -3839,7 +3960,7 @@ bool BGTactics::atFlag(std::vector<BattleBotPath*> const& vPaths, std::vector<ui
             continue;
 
         // Verify we can interact with it
-        if (!bot->CanUseBattlegroundObject(go) && bgType != BATTLEGROUND_WS)
+        if (!bot->CanUseBattlegroundObject(go) && bgType != BATTLEGROUND_WS && bgType != BATTLEGROUND_TP)
             continue;
 
         float const dist = bot->GetDistance(go);
@@ -3848,6 +3969,7 @@ bool BGTactics::atFlag(std::vector<BattleBotPath*> const& vPaths, std::vector<ui
 
         // Special handling for WSG and EY base flags
         bool isWsBaseFlag = bgType == BATTLEGROUND_WS && go->GetEntry() == vFlagsWS[bot->GetTeamId()];
+        bool isTpBaseFlag = bgType == BATTLEGROUND_TP && go->GetEntry() == vFlagsTP[bot->GetTeamId()];
         bool isEyBaseFlag = bgType == BATTLEGROUND_EY && go->GetEntry() == vFlagsEY[0];
 
         // Ensure bots are inside the Eye of the Storm capture circle before casting
@@ -3884,11 +4006,16 @@ bool BGTactics::atFlag(std::vector<BattleBotPath*> const& vPaths, std::vector<ui
             !(bot->HasAura(BG_WS_SPELL_WARSONG_FLAG) || bot->HasAura(BG_WS_SPELL_SILVERWING_FLAG)))
             continue;
 
+        if (isTpBaseFlag && bgType == BATTLEGROUND_TP &&
+            !(bot->HasAura(BG_TP_SPELL_HORDE_FLAG) || bot->HasAura(BG_TP_SPELL_ALLIANCE_FLAG)))
+            continue;
+
         // Handle capture mechanics based on BG type
         switch (bgType)
         {
             case BATTLEGROUND_AV:
             case BATTLEGROUND_AB:
+            case BATTLEGROUND_BFG:
             case BATTLEGROUND_IC:
             {
                 // Prevent capturing from inside flag pole
@@ -3950,6 +4077,39 @@ bool BGTactics::atFlag(std::vector<BattleBotPath*> const& vPaths, std::vector<ui
                 else
                 {
                     // Move to flag if not in range
+                    return MoveTo(bot->GetMapId(), go->GetPositionX(), go->GetPositionY(), go->GetPositionZ());
+                }
+            }
+            case BATTLEGROUND_TP:
+            {
+                if (dist < INTERACTION_DISTANCE)
+                {
+                    bool isTpBaseFlag = go->GetEntry() == BG_OBJECT_A_FLAG_TP_ENTRY || go->GetEntry() == BG_OBJECT_H_FLAG_TP_ENTRY;
+                    if (isTpBaseFlag)
+                    {
+                        BattlegroundTP* tp = static_cast<BattlegroundTP*>(bg);
+                        if (tp)
+                        {
+                            tp->EventPlayerCapturedFlag(bot);
+                            return true;
+                        }
+                    }
+
+                    if (bot->IsMounted())
+                        bot->RemoveAurasByType(SPELL_AURA_MOUNTED);
+
+                    if (bot->IsInDisallowedMountForm())
+                        bot->RemoveAurasByType(SPELL_AURA_MOD_SHAPESHIFT);
+
+                    WorldPacket data(CMSG_GAMEOBJ_USE);
+                    data << go->GetGUID();
+                    bot->GetSession()->HandleGameObjectUseOpcode(data);
+
+                    resetObjective();
+                    return true;
+                }
+                else
+                {
                     return MoveTo(bot->GetMapId(), go->GetPositionX(), go->GetPositionY(), go->GetPositionZ());
                 }
             }
@@ -4024,8 +4184,14 @@ bool BGTactics::atFlag(std::vector<BattleBotPath*> const& vPaths, std::vector<ui
 
 bool BGTactics::flagTaken()
 {
-    BattlegroundWS* bg = (BattlegroundWS*)bot->GetBattleground();
+    Battleground* bg = bot->GetBattleground();
     if (!bg)
+        return false;
+
+    BattlegroundTypeId bgType = bg->GetTypeID();
+    if (bgType == BATTLEGROUND_RB)
+        bgType = bg->GetTypeID(true);
+    if (bgType != BATTLEGROUND_WS && bgType != BATTLEGROUND_TP)
         return false;
 
     TeamId enemyTeamId = bot->GetBGTeamId() == TEAM_ALLIANCE ? TEAM_HORDE : TEAM_ALLIANCE;
@@ -4034,8 +4200,14 @@ bool BGTactics::flagTaken()
 
 bool BGTactics::teamFlagTaken()
 {
-    BattlegroundWS* bg = (BattlegroundWS*)bot->GetBattleground();
+    Battleground* bg = bot->GetBattleground();
     if (!bg)
+        return false;
+
+    BattlegroundTypeId bgType = bg->GetTypeID();
+    if (bgType == BATTLEGROUND_RB)
+        bgType = bg->GetTypeID(true);
+    if (bgType != BATTLEGROUND_WS && bgType != BATTLEGROUND_TP)
         return false;
 
     return !bg->GetFlagPickerGUID(bot->GetBGTeamId()).IsEmpty();
@@ -4085,7 +4257,8 @@ bool BGTactics::useBuff()
     bool needRegen = bot->GetHealthPct() < sPlayerbotAIConfig->mediumHealth ||
                      (AI_VALUE2(bool, "has mana", "self target") &&
                       AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig->mediumMana);
-    bool needSpeed = (bgType != BATTLEGROUND_WS || bot->HasAura(BG_WS_SPELL_WARSONG_FLAG) ||
+    bool needSpeed = ((bgType != BATTLEGROUND_WS && bgType != BATTLEGROUND_TP) || bot->HasAura(BG_WS_SPELL_WARSONG_FLAG) ||
+                      bot->HasAura(BG_TP_SPELL_HORDE_FLAG) || bot->HasAura(BG_TP_SPELL_ALLIANCE_FLAG) ||
                       bot->HasAura(BG_WS_SPELL_SILVERWING_FLAG) || bot->HasAura(BG_EY_NETHERSTORM_FLAG_SPELL)) ||
                      !(teamFlagTaken() || flagTaken());
     bool foundBuff = false;
@@ -4112,6 +4285,7 @@ bool BGTactics::useBuff()
 
         // do not move to Berserk buff if bot is healer or has flag
         if (!(bot->HasAura(BG_WS_SPELL_WARSONG_FLAG) || bot->HasAura(BG_WS_SPELL_SILVERWING_FLAG) ||
+              bot->HasAura(BG_TP_SPELL_HORDE_FLAG) || bot->HasAura(BG_TP_SPELL_ALLIANCE_FLAG) ||
               bot->HasAura(BG_EY_NETHERSTORM_FLAG_SPELL)) &&
             !PlayerBotSpec::IsHeal(bot) && go->GetEntry() == Buff_Entries[2])
             foundBuff = true;
@@ -4471,6 +4645,9 @@ bool ArenaTactics::moveToCenter(Battleground* bg)
             break;
         case BATTLEGROUND_RV:
             MoveTo(bg->GetMapId(), 764.65f + frand(-2, +2), -283.85f + frand(-2, +2), 28.28f, false, true);
+            break;
+        case BATTLEGROUND_TTP:
+            MoveTo(bg->GetMapId(), 566.8f + frand(-2, +2), 633.1f + frand(-2, +2), 380.7f, false, true);
             break;
         default:
             break;

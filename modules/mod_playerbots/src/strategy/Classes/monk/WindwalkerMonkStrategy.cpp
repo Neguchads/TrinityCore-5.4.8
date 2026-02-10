@@ -56,7 +56,6 @@ NextAction** WindwalkerMonkStrategy::getDefaultActions()
         new NextAction("blackout kick", ACTION_DEFAULT + 0.5f),
         new NextAction("tiger palm", ACTION_DEFAULT + 0.4f),
         new NextAction("chi wave", ACTION_DEFAULT + 0.3f),
-        new NextAction("tiger eye brew", ACTION_DEFAULT + 0.25f),
         new NextAction("energizing brew", ACTION_DEFAULT + 0.2f),
         new NextAction("jab", ACTION_DEFAULT + 0.2f),
         new NextAction("melee", ACTION_DEFAULT),
@@ -78,6 +77,12 @@ void WindwalkerMonkStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
     triggers.push_back(new TriggerNode("rising sun kick",
         NextAction::array(0, new NextAction("rising sun kick", ACTION_HIGH + 7), nullptr)));
+
+    triggers.push_back(new TriggerNode("tiger eye brew",
+        NextAction::array(0, new NextAction("tiger eye brew", ACTION_HIGH + 6), nullptr)));
+
+    triggers.push_back(new TriggerNode("invoke xuen",
+        NextAction::array(0, new NextAction("invoke xuen", ACTION_HIGH + 5), nullptr)));
 
     triggers.push_back(new TriggerNode("high energy available",
         NextAction::array(0, new NextAction("jab", ACTION_HIGH + 3), nullptr)));

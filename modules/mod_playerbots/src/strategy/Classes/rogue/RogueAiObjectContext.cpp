@@ -73,6 +73,7 @@ public:
         creators["adrenaline rush"] = &RogueTriggerFactoryInternal::adrenaline_rush;
         creators["shadow blades"] = &RogueTriggerFactoryInternal::shadow_blades;
         creators["shadow dance"] = &RogueTriggerFactoryInternal::shadow_dance;
+        creators["killing spree"] = &RogueTriggerFactoryInternal::killing_spree;
         creators["vendetta"] = &RogueTriggerFactoryInternal::vendetta;
         creators["blindside"] = &RogueTriggerFactoryInternal::blindside;
     }
@@ -86,6 +87,7 @@ private:
     static Trigger* adrenaline_rush(PlayerbotAI* botAI) { return new AdrenalineRushTrigger(botAI); }
     static Trigger* shadow_blades(PlayerbotAI* botAI) { return new ShadowBladesTrigger(botAI); }
     static Trigger* shadow_dance(PlayerbotAI* botAI) { return new ShadowDanceTrigger(botAI); }
+    static Trigger* killing_spree(PlayerbotAI* botAI) { return new KillingSpreeTrigger(botAI); }
     static Trigger* vendetta(PlayerbotAI* botAI) { return new VendettaTrigger(botAI); }
     static Trigger* blindside(PlayerbotAI* botAI) { return new BlindsideTrigger(botAI); }
 

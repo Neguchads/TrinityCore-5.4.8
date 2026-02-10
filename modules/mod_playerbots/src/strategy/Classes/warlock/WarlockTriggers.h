@@ -64,11 +64,29 @@ public:
     bool IsActive() override;
 };
 
-// -- DEMONO
-class MetamorphosisTrigger : public BuffTrigger
+class DarkSoulMiseryTrigger : public BoostTrigger
 {
 public:
-    MetamorphosisTrigger(PlayerbotAI* ai) : BuffTrigger(ai, "metamorphosis", true) {}
+    DarkSoulMiseryTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "dark soul: misery") {}
+};
+
+class DarkSoulKnowledgeTrigger : public BoostTrigger
+{
+public:
+    DarkSoulKnowledgeTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "dark soul: knowledge") {}
+};
+
+class DarkSoulInstabilityTrigger : public BoostTrigger
+{
+public:
+    DarkSoulInstabilityTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "dark soul: instability") {}
+};
+
+// -- DEMONO
+class MetamorphosisTrigger : public BoostTrigger
+{
+public:
+    MetamorphosisTrigger(PlayerbotAI* ai) : BoostTrigger(ai, "metamorphosis") {}
     bool IsActive() override;
 };
 

@@ -105,13 +105,17 @@ void GenericHunterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
 NextAction** HunterBoostStrategy::getDefaultActions()
 {
-    return NextAction::array(0, new NextAction("bestial wrath", 15.0f), nullptr);
+    return NextAction::array(0, nullptr);
 }
 
 void HunterBoostStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(
         new TriggerNode("rapid fire", NextAction::array(0, new NextAction("rapid fire", 16.0f), nullptr)));
+    triggers.push_back(
+        new TriggerNode("bestial wrath", NextAction::array(0, new NextAction("bestial wrath", 15.5f), nullptr)));
+    triggers.push_back(
+        new TriggerNode("stampede", NextAction::array(0, new NextAction("stampede", 15.0f), nullptr)));
 }
 
 void HunterCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

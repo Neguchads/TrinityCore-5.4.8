@@ -107,8 +107,10 @@ void MistweaverMonkStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("often",
         NextAction::array(0,
             new NextAction("chi torpedo", ACTION_NORMAL + 1),
-            new NextAction("invoke xuen", ACTION_NORMAL),
             nullptr)));
+
+    triggers.push_back(new TriggerNode("invoke xuen",
+        NextAction::array(0, new NextAction("invoke xuen", ACTION_HIGH + 1), nullptr)));
 
     triggers.push_back(new TriggerNode("medium mana",
         NextAction::array(0, new NextAction("mana tea", ACTION_HIGH + 5), nullptr)));

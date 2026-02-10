@@ -71,10 +71,10 @@ public:
     FingersOfFrostDoubleTrigger(PlayerbotAI* ai) : HasAuraStackTrigger(ai, "fingers of frost", 2, 1) {}
 };
 
-class ArcanePowerTrigger : public BuffTrigger
+class ArcanePowerTrigger : public BoostTrigger
 {
 public:
-    ArcanePowerTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "arcane power") {}
+    ArcanePowerTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "arcane power") {}
 };
 
 class PresenceOfMindTrigger : public BuffTrigger
@@ -91,10 +91,10 @@ public:
     bool IsActive() override;
 };
 
-class IcyVeinsTrigger : public BuffTrigger
+class IcyVeinsTrigger : public BoostTrigger
 {
 public:
-    IcyVeinsTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "icy veins") {}
+    IcyVeinsTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "icy veins") {}
     bool IsActive() override;
 };
 
@@ -161,10 +161,10 @@ public:
     GreaterInvisibilityTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "greater invisibility") {}
 };
 
-class TimeWarpTrigger : public Trigger
+class TimeWarpTrigger : public BoostTrigger
 {
 public:
-    TimeWarpTrigger(PlayerbotAI* botAI) : Trigger(botAI, "time warp", 10) {}
+    TimeWarpTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "time warp") {}
     bool IsActive() override;
 };
 

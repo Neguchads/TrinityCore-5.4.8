@@ -103,6 +103,9 @@ public:
         creators["agony"] = &WarlockTriggerFactoryInternal::agony;
         creators["unstable affliction"] = &WarlockTriggerFactoryInternal::unstable_affliction;
         creators["life tap glyph buff"] = &WarlockTriggerFactoryInternal::life_tap_glyph_buff;
+        creators["dark soul: misery"] = &WarlockTriggerFactoryInternal::dark_soul_misery;
+        creators["dark soul: knowledge"] = &WarlockTriggerFactoryInternal::dark_soul_knowledge;
+        creators["dark soul: instability"] = &WarlockTriggerFactoryInternal::dark_soul_instability;
 
         // -- Demonologie
         creators["metamorphosis"] = &WarlockTriggerFactoryInternal::metamorphosis;
@@ -137,6 +140,9 @@ private:
     static Trigger* agony(PlayerbotAI* botAI) { return new CurseOfAgonyTrigger(botAI); }
     static Trigger* unstable_affliction(PlayerbotAI* botAI) { return new UnstableAfflictionTrigger(botAI); }
     static Trigger* life_tap_glyph_buff(PlayerbotAI* botAI) { return new LifeTapGlyphBuffTrigger(botAI); }
+    static Trigger* dark_soul_misery(PlayerbotAI* botAI) { return new DarkSoulMiseryTrigger(botAI); }
+    static Trigger* dark_soul_knowledge(PlayerbotAI* botAI) { return new DarkSoulKnowledgeTrigger(botAI); }
+    static Trigger* dark_soul_instability(PlayerbotAI* botAI) { return new DarkSoulInstabilityTrigger(botAI); }
 
     // -- Demonologie
     static Trigger* metamorphosis(PlayerbotAI* botAI) { return new MetamorphosisTrigger(botAI); }

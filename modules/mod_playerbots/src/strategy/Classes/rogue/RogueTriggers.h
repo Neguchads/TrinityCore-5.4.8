@@ -17,22 +17,28 @@ public:
     BladeFlurryTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "blade flurry") {}
 };
 
-class AdrenalineRushTrigger : public BuffTrigger
+class AdrenalineRushTrigger : public BoostTrigger
 {
 public:
-    AdrenalineRushTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "adrenaline rush") {}
+    AdrenalineRushTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "adrenaline rush") {}
 };
 
-class ShadowBladesTrigger : public BuffTrigger
+class ShadowBladesTrigger : public BoostTrigger
 {
 public:
-    ShadowBladesTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "shadow blades") {}
+    ShadowBladesTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "shadow blades") {}
 };
 
-class ShadowDanceTrigger : public BuffTrigger
+class ShadowDanceTrigger : public BoostTrigger
 {
 public:
-    ShadowDanceTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "shadow dance") {}
+    ShadowDanceTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "shadow dance") {}
+};
+
+class KillingSpreeTrigger : public BoostTrigger
+{
+public:
+    KillingSpreeTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "killing spree") {}
 };
 
 class VendettaTrigger : public DebuffTrigger

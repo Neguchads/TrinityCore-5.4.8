@@ -31,7 +31,6 @@ NextAction** FuryWarriorStrategy::getDefaultActions()
 {
     return NextAction::array(0,
         new NextAction("bloodbath", ACTION_DEFAULT + 0.8f),
-        new NextAction("recklessness", ACTION_DEFAULT + 0.7f),
         new NextAction("skull banner", ACTION_DEFAULT + 0.6f),
         new NextAction("bloodthirst", ACTION_DEFAULT + 0.5f),
         new NextAction("raging blow", ACTION_DEFAULT + 0.4f),
@@ -46,6 +45,7 @@ void FuryWarriorStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     GenericWarriorStrategy::InitTriggers(triggers);
 
     triggers.push_back(new TriggerNode("battle shout", NextAction::array(0, new NextAction("battle shout", ACTION_HIGH + 9), nullptr)));
+    triggers.push_back(new TriggerNode("recklessness", NextAction::array(0, new NextAction("recklessness", ACTION_HIGH + 8), nullptr)));
     triggers.push_back(new TriggerNode("raging blow", NextAction::array(0, new NextAction("raging blow", ACTION_HIGH + 9), nullptr)));
     triggers.push_back(new TriggerNode("meat cleaver", NextAction::array(0, new NextAction("raging blow", ACTION_HIGH + 9), nullptr)));
     triggers.push_back(new TriggerNode("bloodsurge", NextAction::array(0, new NextAction("wild strike", ACTION_HIGH + 9), nullptr)));

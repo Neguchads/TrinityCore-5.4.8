@@ -63,4 +63,10 @@ public:
 
 	bool IsActive() override;
 };
+
+class RecklessnessTrigger : public BoostTrigger
+{
+public:
+    RecklessnessTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "recklessness") {}
+};
 #endif

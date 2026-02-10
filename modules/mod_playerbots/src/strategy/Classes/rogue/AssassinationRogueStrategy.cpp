@@ -45,8 +45,6 @@ AssassinationRogueStrategy::AssassinationRogueStrategy(PlayerbotAI* ai) : MeleeC
 NextAction** AssassinationRogueStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-                             new NextAction("vendetta", ACTION_DEFAULT + 0.9f),
-                             new NextAction("shadow blades", ACTION_DEFAULT + 0.85f),
                              new NextAction("slice and dice", ACTION_DEFAULT + 0.8f),
                              new NextAction("rupture", ACTION_DEFAULT + 0.7f),
                              new NextAction("envenom", ACTION_DEFAULT + 0.6f),

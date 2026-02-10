@@ -75,6 +75,9 @@ public:
         creators["serpent sting on attacker"] = &HunterTriggerFactoryInternal::serpent_sting_on_attacker;
         creators["concussive shot on snare target"] = &HunterTriggerFactoryInternal::concussive_shot_on_snare_target;
         creators["focus fire"] = &HunterTriggerFactoryInternal::focus_fire;
+        creators["rapid fire"] = &HunterTriggerFactoryInternal::rapid_fire;
+        creators["bestial wrath"] = &HunterTriggerFactoryInternal::bestial_wrath;
+        creators["stampede"] = &HunterTriggerFactoryInternal::stampede;
         creators["lock and load"] = &HunterTriggerFactoryInternal::lock_and_load;
         creators["fire!"] = &HunterTriggerFactoryInternal::fire;
         creators["aspect of the hawk"] = &HunterTriggerFactoryInternal::aspect_of_the_hawk;
@@ -93,6 +96,9 @@ private:
     static Trigger* serpent_sting_on_attacker(PlayerbotAI* botAI) { return new DebuffOnAttackerTrigger(botAI, "serpent sting", true); }
     static Trigger* concussive_shot_on_snare_target(PlayerbotAI* botAI) { return new SnareTargetTrigger(botAI, "concussive shot"); }
     static Trigger* focus_fire(PlayerbotAI* botAI) { return new HunterFocusFireTrigger(botAI); }
+    static Trigger* rapid_fire(PlayerbotAI* botAI) { return new RapidFireTrigger(botAI); }
+    static Trigger* bestial_wrath(PlayerbotAI* botAI) { return new BestialWrathTrigger(botAI); }
+    static Trigger* stampede(PlayerbotAI* botAI) { return new StampedeTrigger(botAI); }
     static Trigger* lock_and_load(PlayerbotAI* botAI) { return new HunterLockAndLoadTrigger(botAI); }
     static Trigger* fire(PlayerbotAI* botAI) { return new HunterFireTrigger(botAI); }
     static Trigger* aspect_of_the_hawk(PlayerbotAI* botAI) { return new HunterAspectOfTheHawkTrigger(botAI); }

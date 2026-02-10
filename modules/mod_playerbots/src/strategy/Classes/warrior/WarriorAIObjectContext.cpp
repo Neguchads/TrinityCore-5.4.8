@@ -81,6 +81,7 @@ public:
         creators["shield block"] = &WarriorTriggerFactoryInternal::shield_block;
         creators["revenge"] = &WarriorTriggerFactoryInternal::revenge;
         creators["vigilance"] = &WarriorTriggerFactoryInternal::vigilance;
+        creators["recklessness"] = &WarriorTriggerFactoryInternal::recklessness;
     }
 private:
     static Trigger* battle_shout(PlayerbotAI* botAI) { return new BattleShoutTrigger(botAI); }
@@ -113,6 +114,7 @@ private:
     static Trigger* shield_barrier(PlayerbotAI* botAI) { return new ShieldBarrierTrigger(botAI); }
     static Trigger* revenge(PlayerbotAI* botAI) { return new RevengeAvailableTrigger(botAI); }
     static Trigger* vigilance(PlayerbotAI* botAI) { return new VigilanceTrigger(botAI); }
+    static Trigger* recklessness(PlayerbotAI* botAI) { return new RecklessnessTrigger(botAI); }
 };
 
 class WarriorAiObjectContextInternal : public NamedObjectContext<Action>

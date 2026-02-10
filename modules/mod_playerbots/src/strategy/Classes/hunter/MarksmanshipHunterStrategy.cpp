@@ -11,8 +11,6 @@ NextAction** MarksmanshipHunterStrategy::getDefaultActions()
         new NextAction("kill shot", ACTION_DEFAULT + 0.9f),
         new NextAction("chimera shot", ACTION_DEFAULT + 0.85f),
         new NextAction("aimed shot", ACTION_DEFAULT + 0.8f),
-        new NextAction("rapid fire", ACTION_DEFAULT + 0.78f),
-        new NextAction("stampede", ACTION_DEFAULT + 0.76f),
         new NextAction("a murder of crows", ACTION_DEFAULT + 0.74f),
         new NextAction("glaive toss", ACTION_DEFAULT + 0.72f),
         new NextAction("fervor", ACTION_DEFAULT + 0.7f),

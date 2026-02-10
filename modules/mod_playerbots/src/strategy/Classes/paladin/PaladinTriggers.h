@@ -59,4 +59,22 @@ public:
     }
 };
 
+class AvengingWrathTrigger : public BoostTrigger
+{
+public:
+    AvengingWrathTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "avenging wrath") {}
+};
+
+class HolyAvengerTrigger : public BoostTrigger
+{
+public:
+    HolyAvengerTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "holy avenger") {}
+};
+
+class GuardianOfAncientKingsTrigger : public BoostTrigger
+{
+public:
+    GuardianOfAncientKingsTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "guardian of ancient kings") {}
+};
+
 #endif /*_PLAYERBOT_PALADINTRIGGERS_H*/
