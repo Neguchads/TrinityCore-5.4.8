@@ -47,7 +47,6 @@
 #include "PerformanceMonitor.h"
 #include "Playerbots.h"
 #include "RandomItemManager.h"
-#include "RandomPlayerbotBracketMgr.h"
 #include "SharedDefines.h"
 #include "Unit.h"
 #include "World.h"
@@ -94,6 +93,21 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
 
     if (!sPlayerbotAIConfig->randomBotAutologin || !sPlayerbotAIConfig->enabled)
         return;
+
+    if (sPlayerbotAIConfig->syncLevelWithPlayers)
+    {
+        uint32 maxRealPlayerLevel = 0;
+        for (Player* player : _players)
+        {
+            if (!player || !player->IsInWorld())
+                continue;
+
+            maxRealPlayerLevel = std::max<uint32>(maxRealPlayerLevel, player->GetLevel());
+        }
+        if (!maxRealPlayerLevel)
+            maxRealPlayerLevel = sPlayerbotAIConfig->syncLevelNoPlayer;
+        _playersLevel = maxRealPlayerLevel;
+    }
 
     uint32 maxAllowedBotCount = GetEventValue(0, "bot_count");
     if (!maxAllowedBotCount || (maxAllowedBotCount < sPlayerbotAIConfig->minRandomBots ||
@@ -234,8 +248,8 @@ uint32 RandomPlayerbotMgr::AddRandomBots()
 
                 SetEventValue(guid, "add", 1, add_time);
                 SetEventValue(guid, "logout", 0, 0);
-                SetEventValue(guid, "randomize", 1, add_time * 2);
-                SetEventValue(guid, "teleport", 1, add_time * 2);
+                SetEventValue(guid, "randomize", 0, 0);
+                SetEventValue(guid, "teleport", 0, 0);
                 _currentBots.push_back(guid);
 
                 maxAllowedBotCount--;
@@ -798,9 +812,12 @@ void RandomPlayerbotMgr::RandomizeFirst(Player* bot)
     maxLevel = std::min(maxLevel, sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL));
 
     // if lvl sync is enabled, max level is limited by online players lvl
-    /*if (sPlayerbotAIConfig->syncLevelWithPlayers)
-        maxLevel = std::max(sPlayerbotAIConfig->randomBotMinLevel,
-            std::min(playersLevel, sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL)));*/
+    if (sPlayerbotAIConfig->syncLevelWithPlayers)
+    {
+        uint32 syncedMax = std::min(_playersLevel + sPlayerbotAIConfig->syncLevelMaxAbove,
+            uint32(sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL)));
+        maxLevel = std::max(sPlayerbotAIConfig->randomBotMinLevel, syncedMax);
+    }
 
     //PerformanceMonitorOperation* pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "RandomizeFirst");
 
@@ -859,10 +876,23 @@ void RandomPlayerbotMgr::Randomize(Player* bot)
     if (GET_PLAYERBOT_AI(bot))
             GET_PLAYERBOT_AI(bot)->Reset(true);
 
+    bool initialRandom = false;
+    if (bot->GetLevel() <= sPlayerbotAIConfig->randombotStartingLevel)
+        initialRandom = true;
+
+    if (!initialRandom && sPlayerbotAIConfig->syncLevelWithPlayers && !_players.empty())
+    {
+        uint32 syncedMax = std::max(sPlayerbotAIConfig->randomBotMinLevel,
+            std::min(_playersLevel + sPlayerbotAIConfig->syncLevelMaxAbove,
+                uint32(sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))));
+        if (bot->GetLevel() > syncedMax || (bot->GetLevel() + sPlayerbotAIConfig->syncLevelMaxAbove) < _playersLevel)
+            initialRandom = true;
+    }
+
     uint32 level = GetValue(bot, "level");
     uint32 maxLevel = std::min(sPlayerbotAIConfig->randomBotMaxLevel, sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL));
     uint32 minLevel = std::min(sPlayerbotAIConfig->randomBotMinLevel, maxLevel);
-    if (!level || level < minLevel || level > maxLevel)
+    if (initialRandom || !level || level < minLevel || level > maxLevel)
     {
         RandomizeFirst(bot);
         return;
@@ -878,8 +908,8 @@ void RandomPlayerbotMgr::Randomize(Player* bot)
     Refresh(bot);
     RandomTeleportForLevel(bot);
 
-    // -- safe
-    ScheduleRandomize(bot->GetGUID().GetCounter(), 62208000);
+    uint32 randomTime = urand(sPlayerbotAIConfig->minRandomBotRandomizeTime, sPlayerbotAIConfig->maxRandomBotRandomizeTime);
+    ScheduleRandomize(bot->GetGUID().GetCounter(), randomTime);
 }
 
 void RandomPlayerbotMgr::Refresh(Player* bot)

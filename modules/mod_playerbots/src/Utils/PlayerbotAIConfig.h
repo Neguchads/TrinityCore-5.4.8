@@ -74,6 +74,8 @@ public:
     uint32 useFastFlyMountAtMinLevel;
     uint32 minEnchantingBotLevel;
     std::vector<uint32> randomBotSpellIds;
+    bool randomBotPreQuests;
+    std::vector<uint32> randomBotQuestIds;
 
     bool altMaintenanceBags;
     bool altMaintenanceFood;
@@ -93,7 +95,8 @@ public:
     bool altMaintenanceReputation;
 
     uint32 openGoSpell;
-    bool randomBotAutologin, disableRandomLevels;
+    bool randomBotAutologin, disableRandomLevels, syncLevelWithPlayers;
+    uint32 syncLevelMaxAbove, syncLevelNoPlayer;
     uint32 randomBotMaxLevel, randomBotMinLevel;
     float randomBotMaxLevelChance;
     uint32 randombotStartingLevel;

@@ -2080,7 +2080,7 @@ void TravelNodeMap::generateTaxiPaths()
     }
 }
 
-void TravelNodeMap::removeLowNodes()
+/*void TravelNodeMap::removeLowNodes()
 {
     std::vector<TravelNode*> goodNodes;
     std::vector<TravelNode*> remNodes;
@@ -2105,7 +2105,7 @@ void TravelNodeMap::removeLowNodes()
 
     for (auto& node : remNodes)
         TravelNodeMap::instance().removeNode(node);
-}
+}*/
 
 void TravelNodeMap::removeUselessPaths()
 {
@@ -2163,8 +2163,11 @@ void TravelNodeMap::generatePaths()
 {
     TC_LOG_INFO("playerbots", "-Calculating walkable paths");
     generateWalkPaths();
+    /*
+    This is broken on Cata+ due to the large amount of nodes and the fact that many nodes are in areas with bad pathfinding.
     TC_LOG_INFO("playerbots", "-Removing useless nodes");
     removeLowNodes();
+    */
     TC_LOG_INFO("playerbots", "-Removing useless paths");
     removeUselessPaths();
     TC_LOG_INFO("playerbots", "-Calculating path costs");
@@ -2503,6 +2506,8 @@ void TravelNodeMap::calcMapOffset()
     mapOffsets.push_back(std::make_pair(1, WorldPosition(1, -3680.0, 13670.0, 0, 0)));
     mapOffsets.push_back(std::make_pair(530, WorldPosition(530, 15000.0, -20000.0, 0, 0)));
     mapOffsets.push_back(std::make_pair(571, WorldPosition(571, 10000.0, 5000.0, 0, 0)));
+    mapOffsets.push_back(std::make_pair(860, WorldPosition(860, 18000.0, 12000.0, 0, 0)));
+    mapOffsets.push_back(std::make_pair(870, WorldPosition(870, 22000.0, 15000.0, 0, 0)));
 
     std::vector<uint32> mapIds;
 

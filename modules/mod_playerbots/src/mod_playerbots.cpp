@@ -32,7 +32,6 @@
 #include "RandomPlayerbotMgr.h"
 #include "WorldThread/PlayerbotWorldThreadProcessor.h"
 #include "RandomItemManager.h"
-#include "RandomPlayerbotBracketMgr.h"
 #include "TravelMgr.h"
 
 #include "Authentication/AuthCrypt.h"
@@ -131,7 +130,6 @@ public:
     }
     void OnUpdate(uint32 diff) override
     {
-        sBracketMgr->Update(diff);
         PlayerbotWorldThreadProcessor::instance().Update(diff);
     }
 };

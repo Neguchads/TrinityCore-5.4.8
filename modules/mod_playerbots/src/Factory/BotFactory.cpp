@@ -1,6 +1,7 @@
 #include "BotFactory.h"
 
 #include <algorithm>
+#include <list>
 #include <random>
 #include <unordered_map>
 #include <unordered_set>
@@ -41,6 +42,70 @@ std::map<uint8, std::vector<uint32>> s_trainerIdCache;
 std::vector<uint32> s_enchantSpellIdCache;
 std::vector<uint32> s_enchantGemIdCache;
 bool s_enchantCachesLoaded = false;
+std::list<uint32> s_specialQuestIds;
+bool s_specialQuestCacheBuilt = false;
+
+void AddPrevQuests(uint32 questId, std::list<uint32>& questIds, std::unordered_set<uint32>& visiting)
+{
+    if (!questId || visiting.find(questId) != visiting.end())
+        return;
+
+    visiting.insert(questId);
+    Quest const* quest = sObjectMgr->GetQuestTemplate(questId);
+    if (!quest)
+        return;
+
+    int32 prevQuest = quest->GetPrevQuestId();
+    if (prevQuest)
+    {
+        uint32 prevId = uint32(prevQuest > 0 ? prevQuest : -prevQuest);
+        AddPrevQuests(prevId, questIds, visiting);
+        questIds.remove(prevId);
+        questIds.push_back(prevId);
+    }
+}
+
+void BuildSpecialQuestCache()
+{
+    if (s_specialQuestCacheBuilt)
+        return;
+
+    s_specialQuestIds.clear();
+    std::unordered_set<uint32> visiting;
+
+    for (uint32 questId : sPlayerbotAIConfig->randomBotQuestIds)
+    {
+        AddPrevQuests(questId, s_specialQuestIds, visiting);
+        s_specialQuestIds.remove(questId);
+        s_specialQuestIds.push_back(questId);
+    }
+
+    s_specialQuestCacheBuilt = true;
+}
+
+void InitPreQuests(Player* bot)
+{
+    if (!sPlayerbotAIConfig->randomBotPreQuests)
+        return;
+
+    BuildSpecialQuestCache();
+
+    for (uint32 questId : s_specialQuestIds)
+    {
+        Quest const* quest = sObjectMgr->GetQuestTemplate(questId);
+        if (!quest)
+            continue;
+
+        if (!bot->SatisfyQuestClass(quest, false) || !bot->SatisfyQuestRace(quest, false) || quest->GetMinLevel() > bot->GetLevel())
+            continue;
+
+        if (bot->GetQuestRewardStatus(questId))
+            continue;
+
+        bot->SetQuestStatus(questId, QUEST_STATUS_COMPLETE, false);
+        bot->RewardQuest(quest, 0, bot, false);
+    }
+}
 }
   
 BotFactory::BotFactory(Player* bot, uint32 level, uint32 itemQuality, uint32 gearScoreLimit)
@@ -154,6 +219,8 @@ void BotFactory::Randomize(bool incremental)
             bot->GetName().c_str(), level, ClassToString((Classes)bot->GetClass()).c_str());
 
     Prepare();
+    if (!incremental)
+        InitPreQuests(bot);
     if (!incremental)
     {
         // -- Unlearn talents and spec

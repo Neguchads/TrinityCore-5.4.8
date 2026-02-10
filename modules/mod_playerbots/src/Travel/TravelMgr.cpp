@@ -17,6 +17,7 @@
 #include "TravelMgr.h"
 
 #include <cstring>
+#include <deque>
 #include <iomanip>
 #include <numeric>
 
@@ -216,7 +217,8 @@ float WorldPosition::getO() { return GetOrientation(); }
 
 bool WorldPosition::isOverworld()
 {
-    return GetMapId() == 0 || GetMapId() == 1 || GetMapId() == 530 || GetMapId() == 571;
+    MapEntry const* mapEntry = getMapEntry();
+    return mapEntry && mapEntry->IsContinent();
 }
 
 bool WorldPosition::isInWater()
@@ -887,10 +889,47 @@ void FindPointGameObjectData::operator()(GameObjectData const& gameobjectData)
 
 std::vector<CreatureData const*> WorldPosition::getCreaturesNear(float radius, uint32 entry)
 {
-    thread_local std::vector<CreatureData> creatureStore;
+    thread_local std::deque<CreatureData> creatureStore;
     creatureStore.clear();
 
     std::vector<CreatureData const*> result;
+
+    if (radius <= 0.0f)
+    {
+        QueryResult resultSet = entry ? WorldDatabase.PQuery(
+                                              "SELECT guid, id, map, position_x, position_y, position_z, orientation "
+                                              "FROM creature WHERE id = %u",
+                                              entry)
+                                      : WorldDatabase.PQuery(
+                                            "SELECT guid, id, map, position_x, position_y, position_z, orientation "
+                                            "FROM creature");
+
+        if (!resultSet)
+            return result;
+
+        do
+        {
+            Field* fields = resultSet->Fetch();
+            CreatureData data;
+            std::memset(&data, 0, sizeof(CreatureData));
+            data.dbData = true;
+            data.spawnId = fields[0].GetUInt32();
+            data.id = fields[1].GetUInt32();
+            data.mapId = static_cast<uint16>(fields[2].GetUInt32());
+            data.posX = fields[3].GetFloat();
+            data.posY = fields[4].GetFloat();
+            data.posZ = fields[5].GetFloat();
+            data.orientation = fields[6].GetFloat();
+            data.phaseMask = PHASEMASK_NORMAL;
+            data.spawnMask = 1;
+
+            creatureStore.push_back(data);
+            result.push_back(&creatureStore.back());
+        } while (resultSet->NextRow());
+
+        return result;
+    }
+
     if (GetMapId() == MAPID_INVALID || !getMapEntry())
         return result;
 
@@ -943,10 +982,46 @@ std::vector<CreatureData const*> WorldPosition::getCreaturesNear(float radius, u
 
 std::vector<GameObjectData const*> WorldPosition::getGameObjectsNear(float radius, uint32 entry)
 {
-    thread_local std::vector<GameObjectData> gameObjectStore;
+    thread_local std::deque<GameObjectData> gameObjectStore;
     gameObjectStore.clear();
 
     std::vector<GameObjectData const*> result;
+
+    if (radius <= 0.0f)
+    {
+        QueryResult resultSet = entry ? WorldDatabase.PQuery(
+                                              "SELECT guid, id, map, position_x, position_y, position_z, orientation "
+                                              "FROM gameobject WHERE id = %u",
+                                              entry)
+                                      : WorldDatabase.PQuery(
+                                            "SELECT guid, id, map, position_x, position_y, position_z, orientation "
+                                            "FROM gameobject");
+
+        if (!resultSet)
+            return result;
+
+        do
+        {
+            Field* fields = resultSet->Fetch();
+            GameObjectData data;
+            std::memset(&data, 0, sizeof(GameObjectData));
+            data.dbData = true;
+            data.id = fields[1].GetUInt32();
+            data.mapid = static_cast<uint16>(fields[2].GetUInt32());
+            data.posX = fields[3].GetFloat();
+            data.posY = fields[4].GetFloat();
+            data.posZ = fields[5].GetFloat();
+            data.orientation = fields[6].GetFloat();
+            data.phaseMask = PHASEMASK_NORMAL;
+            data.spawnMask = 1;
+
+            gameObjectStore.push_back(data);
+            result.push_back(&gameObjectStore.back());
+        } while (resultSet->NextRow());
+
+        return result;
+    }
+
     if (GetMapId() == MAPID_INVALID || !getMapEntry())
         return result;
 

@@ -311,10 +311,17 @@ bool PlayerbotAIConfig::Initialize()
     maxAddedBots = sConfigMgr->GetIntDefault("AiPlayerbot.MaxAddedBots", 200);
     minRandomBots = sConfigMgr->GetIntDefault("AiPlayerbot.MinRandomBots", 50);
     maxRandomBots = sConfigMgr->GetIntDefault("AiPlayerbot.MaxRandomBots", 200);
-    disableRandomLevels = sConfigMgr->GetBoolDefault("AiPlayerbot.DisableRandomLevels", true);
+    disableRandomLevels = sConfigMgr->GetBoolDefault("AiPlayerbot.DisableRandomLevels", false);
     randomBotMaxLevel = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotMaxLevel", 90);
     randomBotMinLevel = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotMinLevel", 1);
+    syncLevelWithPlayers = sConfigMgr->GetBoolDefault("AiPlayerbot.SyncLevelWithPlayers", false);
     randombotStartingLevel = sConfigMgr->GetIntDefault("AiPlayerbot.RandombotStartingLevel", 5);
+    randomBotPreQuests = sConfigMgr->GetBoolDefault("AiPlayerbot.PreQuests", false);
+    randomBotQuestIds.clear();
+    LoadList<std::vector<uint32>>(sConfigMgr->GetStringDefault("AiPlayerbot.RandomBotQuestIds",
+        "7848,3802,5505,6502,7761,10277,10285,11492,24499,24511,24710,24712"), randomBotQuestIds);
+    syncLevelMaxAbove = sConfigMgr->GetIntDefault("AiPlayerbot.SyncLevelMaxAbove", 5);
+    syncLevelNoPlayer = sConfigMgr->GetIntDefault("AiPlayerbot.SyncLevelNoPlayer", randombotStartingLevel);
     if (randomBotMaxLevel > sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
         randomBotMaxLevel = sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL);
     if (randomBotMinLevel > randomBotMaxLevel)
