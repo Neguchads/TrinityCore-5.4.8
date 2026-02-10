@@ -140,22 +140,6 @@ CREATE TABLE `addons` (
 
 insert  into `addons`(`name`,`crc`) values ('Blizzard_AchievementUI',1276933997),('Blizzard_ArchaeologyUI',1276933997),('Blizzard_ArenaUI',1276933997),('Blizzard_AuctionUI',1276933997),('Blizzard_AuthChallengeUI',1276933997),('Blizzard_BarbershopUI',1276933997),('Blizzard_BattlefieldMinimap',1276933997),('Blizzard_BindingUI',1276933997),('Blizzard_BlackMarketUI',1276933997),('Blizzard_Calendar',1276933997),('Blizzard_ChallengesUI',1276933997),('Blizzard_ClientSavedVariables',1276933997),('Blizzard_CombatLog',1276933997),('Blizzard_CombatText',1276933997),('Blizzard_CompactRaidFrames',1276933997),('Blizzard_CUFProfiles',1276933997),('Blizzard_DebugTools',1276933997),('Blizzard_EncounterJournal',1276933997),('Blizzard_GlyphUI',1276933997),('Blizzard_GMChatUI',1276933997),('Blizzard_GMSurveyUI',1276933997),('Blizzard_GuildBankUI',1276933997),('Blizzard_GuildControlUI',1276933997),('Blizzard_GuildUI',1276933997),('Blizzard_InspectUI',1276933997),('Blizzard_ItemAlterationUI',1276933997),('Blizzard_ItemSocketingUI',1276933997),('Blizzard_ItemUpgradeUI',1276933997),('Blizzard_LookingForGuildUI',1276933997),('Blizzard_MacroUI',1276933997),('Blizzard_MovePad',1276933997),('Blizzard_PetBattleUI',1276933997),('Blizzard_PetJournal',1276933997),('Blizzard_PVPUI',1276933997),('Blizzard_QuestChoice',1276933997),('Blizzard_RaidUI',1276933997),('Blizzard_ReforgingUI',1276933997),('Blizzard_StoreUI',1276933997),('Blizzard_TalentUI',1276933997),('Blizzard_TimeManager',1276933997),('Blizzard_TokenUI',1276933997),('Blizzard_TradeSkillUI',1276933997),('Blizzard_TrainerUI',1276933997),('Blizzard_VoidStorageUI',1276933997);
 
-/*Table structure for table `armory_character_stats` */
-
-DROP TABLE IF EXISTS `armory_character_stats`;
-
-CREATE TABLE `armory_character_stats` (
-  `guid` int(11) NOT NULL,
-  `data` longtext NOT NULL,
-  `item_level` smallint(5) unsigned DEFAULT NULL,
-  `gear_score` smallint(5) unsigned DEFAULT NULL,
-  `achievement_points` smallint(5) unsigned DEFAULT NULL,
-  `save_date` int(11) DEFAULT NULL,
-  PRIMARY KEY (`guid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='World of Warcraft Armory table';
-
-/*Data for the table `armory_character_stats` */
-
 --
 -- Table structure for table `auctionbidders`
 --
@@ -1302,17 +1286,6 @@ CREATE TABLE `executed_services` (
 
 /*Data for the table `executed_services` */
 
-/*Table structure for table `fake_items` */
-
-DROP TABLE IF EXISTS `fake_items`;
-
-CREATE TABLE `fake_items` (
-  `guid` int(11) NOT NULL,
-  `fakeEntry` int(11) NOT NULL,
-  PRIMARY KEY (`guid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `fake_items` */
 
 /*Table structure for table `game_event_condition_save` */
 
