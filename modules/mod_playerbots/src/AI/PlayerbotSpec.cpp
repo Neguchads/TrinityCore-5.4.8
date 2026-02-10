@@ -88,7 +88,7 @@ bool PlayerBotSpec::IsRanged(Player* player, bool bySpec)
         }
         case CLASS_PALADIN:
         {
-            if (spec != Specializations::SPEC_DEATH_KNIGHT_UNHOLY)
+            if (spec != Specializations::SPEC_PALADIN_HOLY)
             {
                 return false;
             }
@@ -166,7 +166,7 @@ bool PlayerBotSpec::IsDps(Player* player, bool bySpec)
     if (!bySpec && botAi)
         return botAi->ContainsStrategy(STRATEGY_TYPE_DPS);
 
-    return (!IsTank(player) && !IsHeal(player));
+    return (!IsTank(player, bySpec) && !IsHeal(player, bySpec));
 }
 
 uint32 PlayerBotSpec::GetGroupTankNum(Player* player)
