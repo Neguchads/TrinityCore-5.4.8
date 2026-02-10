@@ -78,21 +78,21 @@ bool PlayerbotAIConfig::Initialize()
     }
 
     perfMonEnabled = sConfigMgr->GetBoolDefault("AiPlayerbot.PerfMonEnabled", false);
-    globalCoolDown = sConfigMgr->GetIntDefault("AiPlayerbot.GlobalCooldown", 1500);
+    globalCoolDown = sConfigMgr->GetIntDefault("AiPlayerbot.GlobalCooldown", 500);
     maxWaitForMove = sConfigMgr->GetIntDefault("AiPlayerbot.MaxWaitForMove", 5000);
     disableMoveSplinePath = sConfigMgr->GetIntDefault("AiPlayerbot.DisableMoveSplinePath", 0);
     maxMovementSearchTime = sConfigMgr->GetIntDefault("AiPlayerbot.MaxMovementSearchTime", 3);
     expireActionTime = sConfigMgr->GetIntDefault("AiPlayerbot.ExpireActionTime", 5000);
-    dispelAuraDuration = sConfigMgr->GetIntDefault("AiPlayerbot.DispelAuraDuration", 7000);
+    dispelAuraDuration = sConfigMgr->GetIntDefault("AiPlayerbot.DispelAuraDuration", 700);
     reactDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ReactDelay", 100);
     dynamicReactDelay = sConfigMgr->GetBoolDefault("AiPlayerbot.DynamicReactDelay", true);
     fastReactInBG = sConfigMgr->GetBoolDefault("AiPlayerbot.FastReactInBG", true);
     passiveDelay = sConfigMgr->GetIntDefault("AiPlayerbot.PassiveDelay", 10000);
     repeatDelay = sConfigMgr->GetIntDefault("AiPlayerbot.RepeatDelay", 2000);
-    errorDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ErrorDelay", 5000);
+    errorDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ErrorDelay", 100);
     rpgDelay = sConfigMgr->GetIntDefault("AiPlayerbot.RpgDelay", 10000);
-    sitDelay = sConfigMgr->GetIntDefault("AiPlayerbot.SitDelay", 30000);
-    returnDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ReturnDelay", 7000);
+    sitDelay = sConfigMgr->GetIntDefault("AiPlayerbot.SitDelay", 20000);
+    returnDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ReturnDelay", 2000);
     lootDelay = sConfigMgr->GetIntDefault("AiPlayerbot.LootDelay", 1000);
 
     farDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.FarDistance", 20.0f);

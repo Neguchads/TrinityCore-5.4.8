@@ -231,7 +231,7 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
 {
     if (!player->InBattleground())
     {
-        engine->addStrategiesNoInit("racials", "chat", "default", "cast time", "duel", "boost", nullptr);
+        engine->addStrategiesNoInit("racials", "chat", "default", "cast time", "potions", "duel", "boost", nullptr);
     }
     if (sPlayerbotAIConfig->autoAvoidAoe && facade->HasRealPlayerMaster())
     {
@@ -444,10 +444,11 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
             }
         }
     }
+
+    if (sRandomPlayerbotMgr->IsRandomBot(player))
+        engine->ChangeStrategy(sPlayerbotAIConfig->randomBotCombatStrategies);
     else
-    {
         engine->ChangeStrategy(sPlayerbotAIConfig->combatStrategies);
-    }
 
     // Battleground switch
     if (player->InBattleground() && player->GetBattleground())
