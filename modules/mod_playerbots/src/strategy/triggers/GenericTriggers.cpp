@@ -339,17 +339,26 @@ bool BoostTrigger::IsActive()
 {
     if (!BuffTrigger::IsActive())
         return false;
+
+    if (botAI->HasRealPlayerMaster())
+        return true;
+
     Unit* target = AI_VALUE(Unit*, "current target");
     if (target && target->ToPlayer())
         return true;
+
     return AI_VALUE(uint8, "balance") <= balance;
 }
 
 bool GenericBoostTrigger::IsActive()
 {
+    if (botAI->HasRealPlayerMaster())
+        return true;
+
     Unit* target = AI_VALUE(Unit*, "current target");
     if (target && target->ToPlayer())
         return true;
+
     return AI_VALUE(uint8, "balance") <= balance;
 }
 

@@ -458,7 +458,11 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
 
         if (bgType == BATTLEGROUND_WS)
             engine->addStrategy("warsong", false);
+        if (bgType == BATTLEGROUND_TP)
+            engine->addStrategy("warsong", false);
         if (bgType == BATTLEGROUND_AB)
+            engine->addStrategy("arathi", false);
+        if (bgType == BATTLEGROUND_BFG)
             engine->addStrategy("arathi", false);
         if (bgType == BATTLEGROUND_AV)
             engine->addStrategy("alterac", false);
@@ -618,14 +622,18 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
         if (bgType == BATTLEGROUND_RB)
             bgType = player->GetBattleground()->GetTypeID(true);
 
-        if ((bgType <= BATTLEGROUND_EY || bgType == BATTLEGROUND_IC) && !player->InArena())
+        if (!player->InArena())
             nonCombatEngine->addStrategy("battleground", false);
 
         if (bgType == BATTLEGROUND_WS)
             nonCombatEngine->addStrategy("warsong", false);
+        if (bgType == BATTLEGROUND_TP)
+            nonCombatEngine->addStrategy("warsong", false);
         if (bgType == BATTLEGROUND_AV)
             nonCombatEngine->addStrategy("alterac", false);
         if (bgType == BATTLEGROUND_AB)
+            nonCombatEngine->addStrategy("arathi", false);
+        if (bgType == BATTLEGROUND_BFG)
             nonCombatEngine->addStrategy("arathi", false);
         if (bgType == BATTLEGROUND_EY)
             nonCombatEngine->addStrategy("eye", false);

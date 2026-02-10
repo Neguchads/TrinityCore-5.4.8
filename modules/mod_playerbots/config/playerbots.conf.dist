@@ -909,14 +909,10 @@ AiPlayerbot.MinRandomBotTeleportInterval = 3600
 AiPlayerbot.MaxRandomBotTeleportInterval = 18000
 # When enabled, random bots can teleport near real players to improve world-population feel.
 AiPlayerbot.RandomBotTeleportNearPlayer = 1
-# Chance (0-100) to use near-player teleport each teleport cycle.
-AiPlayerbot.RandomBotTeleportNearPlayerChance = 45
-# Radius around selected real player for bot placement (yards).
-AiPlayerbot.RandomBotTeleportNearPlayerRadius = 120
-# Max random bots allowed around a selected real player within the configured radius.
-AiPlayerbot.RandomBotTeleportNearPlayerMaxBots = 8
-# Max level difference allowed between random bot and selected real player.
-AiPlayerbot.RandomBotTeleportNearPlayerLevelDelta = 18
+# Limit how many random bots teleport to points around real players (0 disables this cap).
+AiPlayerbot.RandomBotTeleportNearPlayerMaxAmount = 8
+# Radius used for the MaxAmount cap around real players (0 disables this cap).
+AiPlayerbot.RandomBotTeleportNearPlayerMaxAmountRadius = 120
 AiPlayerbot.RandomBotInWorldWithRotationDisabled = 31104000
 
 #

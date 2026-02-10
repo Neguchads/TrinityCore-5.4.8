@@ -339,16 +339,9 @@ bool PlayerbotAIConfig::Initialize()
     maxRandomBotRandomizeTime = sConfigMgr->GetIntDefault("AiPlayerbot.MaxRandomBotRandomizeTime", 14 * 24 * HOUR);
     minRandomBotTeleportInterval = sConfigMgr->GetIntDefault("AiPlayerbot.MinRandomBotTeleportInterval", 1 * HOUR);
     maxRandomBotTeleportInterval = sConfigMgr->GetIntDefault("AiPlayerbot.MaxRandomBotTeleportInterval", 5 * HOUR);
-    randomBotTeleportNearPlayer = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotTeleportNearPlayer",
-        sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotTeleportNearPlayers", true));
-    randomBotTeleportNearPlayerChance = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotTeleportNearPlayerChance",
-        sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotTeleportNearPlayersChance", 45));
-    randomBotTeleportNearPlayerRadius = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotTeleportNearPlayerRadius",
-        sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotTeleportNearPlayersRadius", 120));
-    randomBotTeleportNearPlayerMaxBots = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotTeleportNearPlayerMaxBots",
-        sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotTeleportNearPlayersMaxBots", 8));
-    randomBotTeleportNearPlayerLevelDelta = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotTeleportNearPlayerLevelDelta",
-        sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotTeleportNearPlayersLevelDelta", 18));
+    randomBotTeleportNearPlayer = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotTeleportNearPlayer", true);
+    randomBotTeleportNearPlayerMaxAmount = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotTeleportNearPlayerMaxAmount", 8);
+    randomBotTeleportNearPlayerMaxAmountRadius = sConfigMgr->GetFloatDefault("AiPlayerbot.RandomBotTeleportNearPlayerMaxAmountRadius", 120.0f);
     minRandomBotReviveTime = sConfigMgr->GetIntDefault("AiPlayerbot.MinRandomBotReviveTime", 60);
     maxRandomBotReviveTime = sConfigMgr->GetIntDefault("AiPlayerbot.MaxRandomBotReviveTime", 300);
 

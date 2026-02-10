@@ -543,7 +543,7 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
             if (player->GetMapId() != bot->GetMapId())
                 continue;
 
-            if (player->IsGameMaster() && !player->IsVisible())
+            if (player->IsGameMaster())
             {
                 continue;
             }
@@ -1274,7 +1274,7 @@ bool PlayerbotAI::HasPlayerNearby(WorldPosition* pos, float range)
     bool nearPlayer = false;
     for (auto& player : sRandomPlayerbotMgr->GetPlayers())
     {
-        if (!player->IsGameMaster() || player->isGMVisible())
+        if (!player->IsGameMaster())
         {
             if (player->GetMapId() != bot->GetMapId())
                 continue;
@@ -1308,7 +1308,7 @@ bool PlayerbotAI::HasManyPlayersNearby(uint32 trigerrValue, float range)
 
     for (auto& player : sRandomPlayerbotMgr->GetPlayers())
     {
-        if ((!player->IsGameMaster() || player->isGMVisible()) && sServerFacade->GetDistance2d(player, bot) < sqRange)
+        if (!player->IsGameMaster() && sServerFacade->GetDistance2d(player, bot) < sqRange)
         {
             found++;
 

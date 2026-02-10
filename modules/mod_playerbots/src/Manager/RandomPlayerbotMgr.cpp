@@ -1497,9 +1497,9 @@ void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
 {
     if (!bot) return;
 
-    if (sPlayerbotAIConfig->randomBotTeleportNearPlayer &&
-        urand(0u, 99u) < sPlayerbotAIConfig->randomBotTeleportNearPlayerChance)
+    if (sPlayerbotAIConfig->randomBotTeleportNearPlayer)
     {
+        constexpr float nearPlayerTeleportRadius = 120.0f;
         std::vector<Player*> candidates;
         candidates.reserve(_players.size());
 
@@ -1514,25 +1514,26 @@ void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
             if (player->GetMap()->IsDungeon() || player->GetMap()->IsRaid() || player->InBattleground())
                 continue;
 
-            if (std::abs(int32(player->GetLevel()) - int32(bot->GetLevel())) > int32(sPlayerbotAIConfig->randomBotTeleportNearPlayerLevelDelta))
-                continue;
-
-            uint32 nearbyBots = 0;
-            for (PlayerBotMap::const_iterator itr = GetPlayerBotsBegin(); itr != GetPlayerBotsEnd(); ++itr)
+            if (sPlayerbotAIConfig->randomBotTeleportNearPlayerMaxAmount > 0 &&
+                sPlayerbotAIConfig->randomBotTeleportNearPlayerMaxAmountRadius > 0.0f)
             {
-                Player* const rb = itr->second;
-                if (!rb || rb == bot || !rb->IsInWorld() || rb->IsBeingTeleported())
-                    continue;
+                uint32 nearbyBots = 0;
+                for (PlayerBotMap::const_iterator itr = GetPlayerBotsBegin(); itr != GetPlayerBotsEnd(); ++itr)
+                {
+                    Player* const rb = itr->second;
+                    if (!rb || rb == bot || !rb->IsInWorld() || rb->IsBeingTeleported())
+                        continue;
 
-                if (rb->GetMapId() != player->GetMapId())
-                    continue;
+                    if (rb->GetMapId() != player->GetMapId())
+                        continue;
 
-                if (rb->GetExactDist2d(player) <= sPlayerbotAIConfig->randomBotTeleportNearPlayerRadius)
-                    ++nearbyBots;
+                    if (rb->GetExactDist2d(player) <= sPlayerbotAIConfig->randomBotTeleportNearPlayerMaxAmountRadius)
+                        ++nearbyBots;
+                }
+
+                if (nearbyBots >= sPlayerbotAIConfig->randomBotTeleportNearPlayerMaxAmount)
+                    continue;
             }
-
-            if (nearbyBots >= sPlayerbotAIConfig->randomBotTeleportNearPlayerMaxBots)
-                continue;
 
             candidates.push_back(player);
         }
@@ -1551,7 +1552,7 @@ void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
                     float z = player->GetPositionZ();
 
                     float angle = frand(0.0f, 6.28318530718f);
-                    float dist = frand(12.0f, float(sPlayerbotAIConfig->randomBotTeleportNearPlayerRadius));
+                    float dist = frand(12.0f, nearPlayerTeleportRadius);
                     x += std::cos(angle) * dist;
                     y += std::sin(angle) * dist;
 
