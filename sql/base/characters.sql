@@ -1145,7 +1145,7 @@ CREATE TABLE `characters` (
   PRIMARY KEY (`guid`),
   KEY `idx_account` (`account`),
   KEY `idx_online` (`online`),
-  KEY `idx_name` (`name`)
+  UNIQUE KEY `idx_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Player System';
 
 /*Data for the table `characters` */

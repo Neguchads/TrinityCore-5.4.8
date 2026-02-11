@@ -21,6 +21,7 @@
 #include "BattlePayMgr.h"
 #include "CalendarMgr.h"
 #include "Chat.h"
+#include "CharacterCache.h"
 #include "Common.h"
 #include "CharacterHandler.h"
 #include "DatabaseEnv.h"
@@ -679,6 +680,16 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
             {
                 WorldPacket data(SMSG_CHAR_CREATE, 1);
                 data << uint8(CHAR_CREATE_LEVEL_REQUIREMENT);
+                SendPacket(&data);
+                delete createInfo;
+                return;
+            }
+
+            // Check name uniqueness in the same step as saving to database.
+            if (sCharacterCache->GetCharacterCacheByName(createInfo->Name))
+            {
+                WorldPacket data(SMSG_CHAR_CREATE, 1);
+                data << uint8(CHAR_CREATE_NAME_IN_USE);
                 SendPacket(&data);
                 delete createInfo;
                 return;
