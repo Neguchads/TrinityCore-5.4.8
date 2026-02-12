@@ -143,6 +143,48 @@ AiPlayerbot.RandomBotGuildNearby = 0
 # Randombots will invite players to groups/raids/guilds.
 AiPlayerbot.RandomBotInvitePlayer = 1
 
+# Login random bots only when at least one real player is online.
+AiPlayerbot.RandomBotLoginWithPlayer = 0
+
+# Keep random bots online for a timed interval before forcing rotation.
+AiPlayerbot.RandomBotTimedLogout = 1
+
+# Keep logged-out random bots offline for a timed interval.
+AiPlayerbot.RandomBotTimedOffline = 0
+
+# Enable asynchronous random-bot login queue manager (CMaNGOS parity name).
+AiPlayerbot.AsyncBotLogin = 0
+
+# Preload login holders for queued bots (CMaNGOS parity name).
+AiPlayerbot.PreloadHolders = 0
+
+# Reserve slots so non-spare criteria bots can still log in.
+AiPlayerbot.FreeRoomForNonSpareBots = 1
+
+# Distance used by "range" login criterion.
+AiPlayerbot.LoginBotsNearPlayerRange = 1000
+
+# Comma-separated login criteria for bot queueing (CMaNGOS parity name).
+AiPlayerbot.DefaultLoginCriteria = "maxbots,spareroom,offline"
+
+# Optional progressive login criteria attempts (CMaNGOS parity names).
+# AiPlayerbot.LoginCriteria.1 = "group"
+# AiPlayerbot.LoginCriteria.2 = "bg"
+# AiPlayerbot.LoginCriteria.3 = "arena"
+# AiPlayerbot.LoginCriteria.4 = "guild"
+# AiPlayerbot.LoginCriteria.5 = "logoff,classrace,level,online"
+# AiPlayerbot.LoginCriteria.6 = "logoff,classrace,level"
+# AiPlayerbot.LoginCriteria.7 = "logoff,classrace"
+
+# Optional class/race bucket controls (CMaNGOS parity names).
+# AiPlayerbot.ClassRace.UseFixedClassRaceCounts = 0
+# AiPlayerbot.ClassRaceProb.0.<race> = 100
+# AiPlayerbot.ClassRaceProb.<class> = 100
+# AiPlayerbot.ClassRaceProb.<class>.<race> = 100
+
+# Optional level distribution controls (CMaNGOS parity name).
+# AiPlayerbot.LevelProbability.<level> = 100
+
 # Bots will chat in say/guild when they invite other bots to groups/raids/guilds
 AiPlayerbot.InviteChat = 0
 
@@ -664,7 +706,13 @@ AiPlayerbot.HunterWolfPet = 0
 # This value is only applied to inactive areas where no real-players are detected, when
 # real-players are nearby, friend, group, guild, bg, instances etc the value is always
 # enforced to 100%
-AiPlayerbot.BotActiveAlone = 100
+AiPlayerbot.BotActiveAlone = 10
+
+# Disable random-bot throttling optimizations and keep all bot activities active.
+AiPlayerbot.DisableBotOptimizations = 0
+
+# Disable activity-priority throttling (useful for CMaNGOS-style behavior checks).
+AiPlayerbot.DisableActivityPriorities = 0
 
 # Force botActiveAlone when bot is ... of real player
 AiPlayerbot.BotActiveAloneForceWhenInRadius = 150
@@ -672,6 +720,19 @@ AiPlayerbot.BotActiveAloneForceWhenInZone = 1
 AiPlayerbot.BotActiveAloneForceWhenInMap = 0
 AiPlayerbot.BotActiveAloneForceWhenIsFriend = 1
 AiPlayerbot.BotActiveAloneForceWhenInGuild = 1
+
+# Target world diff used for random bot global activity scaling.
+# Values are in milliseconds. The lower this is, the more aggressive throttling becomes.
+AiPlayerbot.DiffWithPlayer = 100
+AiPlayerbot.DiffEmpty = 200
+
+# Respawn modulation controls (CMaNGOS parity names).
+AiPlayerbot.RespawnModNeutral = 10.0
+AiPlayerbot.RespawnModHostile = 5.0
+AiPlayerbot.RespawnModThreshold = 10
+AiPlayerbot.RespawnModMax = 18
+AiPlayerbot.RespawnModForPlayerBots = 0
+AiPlayerbot.RespawnModForInstances = 0
 
 # SmartScale is enabled or not.
 # The default is 1. When enabled (smart) scales the 'BotActiveAlone' value.
@@ -903,6 +964,12 @@ AiPlayerbot.MaxRandomBotInWorldTime = 1209600
 AiPlayerbot.MinRandomBotRandomizeTime = 7200
 AiPlayerbot.MaxRandomBotRandomizeTime = 1209600
 AiPlayerbot.RandomBotsPerInterval = 60
+# Max number of new bot logins attempted each update interval.
+AiPlayerbot.RandomBotsMaxLoginsPerInterval = 10
+# Character DB ping cadence in milliseconds (0 disables ping-based gating).
+AiPlayerbot.RandomBotsDatabasePingInterval = 1000
+# Skip new logins while measured character DB delay is above this threshold (milliseconds).
+AiPlayerbot.RandomBotsDatabaseDelayThreshold = 10000
 AiPlayerbot.MinRandomBotReviveTime = 60
 AiPlayerbot.MaxRandomBotReviveTime = 300
 AiPlayerbot.MinRandomBotTeleportInterval = 3600

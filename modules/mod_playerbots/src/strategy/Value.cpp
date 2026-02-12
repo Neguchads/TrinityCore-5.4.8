@@ -120,8 +120,7 @@ Unit* UnitCalculatedValue::Get()
 {
     if (checkInterval < 2)
     {
-        PerformanceMonitorOperation *pmo = sPerformanceMonitor->start(
-                PERF_MON_VALUE, this->getName(), this->context ? &this->context->performanceStack : nullptr);
+        auto pmo = sPerformanceMonitor->start(PERF_MON_VALUE, this->getName(), botAI);
         value = Calculate();
         if (pmo)
             pmo->finish();

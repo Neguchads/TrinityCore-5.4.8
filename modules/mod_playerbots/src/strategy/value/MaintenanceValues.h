@@ -47,6 +47,14 @@ public:
     bool Calculate() override;
 };
 
+class ShouldGetMoneyValue : public BoolCalculatedValue
+{
+public:
+    ShouldGetMoneyValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI, "should get money", 2 * 2000) {}
+
+    bool Calculate() override;
+};
+
 class CanSellValue : public BoolCalculatedValue
 {
 public:

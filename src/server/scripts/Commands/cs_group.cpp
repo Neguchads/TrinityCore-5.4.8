@@ -40,6 +40,7 @@ public:
             { "join",       SEC_ADMINISTRATOR,  false,  &HandleGroupJoinCommand,    },
             { "list",       SEC_ADMINISTRATOR,  false,  &HandleGroupListCommand,    },
             { "summon",     SEC_ADMINISTRATOR,  false,  &HandleGroupSummonCommand,  },
+            { "revive",     SEC_ADMINISTRATOR,  false,  &HandleGroupReviveCommand,  },
             { "",           SEC_ADMINISTRATOR,  false,  &HandleGroupCommand,        },
         };
 
@@ -139,6 +140,41 @@ public:
             float x, y, z;
             gmPlayer->GetClosePoint(x, y, z, player->GetObjectSize());
             player->TeleportTo(gmPlayer->GetMapId(), x, y, z, player->GetOrientation());
+        }
+
+        return true;
+    }
+
+    // Revive group of player
+    static bool HandleGroupReviveCommand(ChatHandler* handler, char const* args)
+    {
+        Player* target;
+        if (!handler->extractPlayerTarget((char*)args, &target))
+            return false;
+
+        Group* group = target->GetGroup();
+        std::string nameLink = handler->GetNameLink(target);
+
+        if (!group)
+        {
+            handler->PSendSysMessage(LANG_NOT_IN_GROUP, nameLink.c_str());
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        for (GroupReference* itr = group->GetFirstMember(); itr != NULL; itr = itr->next())
+        {
+            Player* player = itr->GetSource();
+            if (!player)
+                continue;
+
+            if (!player->IsAlive())
+            {
+                player->ResurrectPlayer(1.0f);
+                player->SpawnCorpseBones();
+            }
+
+            player->SaveToDB();
         }
 
         return true;

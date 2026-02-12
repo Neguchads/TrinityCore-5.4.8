@@ -8,6 +8,8 @@ class PlayerbotAI;
 class Unit;
 class WorldObject;
 class Position;
+class WorldPosition;
+class TravelPath;
 
 #define ANGLE_45_DEG (static_cast<float>(M_PI) / 4.f)
 #define ANGLE_90_DEG M_PI_2
@@ -25,6 +27,7 @@ class MovementAction : public Action
 {
 public:
     MovementAction(PlayerbotAI* botAI, std::string const name);
+    bool isPossible() override;
 
     bool IsMovingAllowed();
     bool IsMovingAllowed(WorldObject* target);
@@ -44,6 +47,7 @@ protected:
     bool MoveTo(WorldObject* target, float distance = 0.0f, MovementPriority priority = MovementPriority::MOVEMENT_NORMAL);
     bool MoveNear(uint32 mapId, float x, float y, float z, float distance = sPlayerbotAIConfig->contactDistance, MovementPriority priority = MovementPriority::MOVEMENT_NORMAL);
     bool MoveNear(WorldObject* target, float distance = sPlayerbotAIConfig->contactDistance, MovementPriority priority = MovementPriority::MOVEMENT_NORMAL);
+    bool FlyDirect(WorldPosition& startPosition, WorldPosition& endPosition, WorldPosition& movePosition, TravelPath movePath, bool idle);
     bool MoveAway(Unit* target, float distance = sPlayerbotAIConfig->fleeDistance, bool backwards = false);
     bool MoveFromGroup(float distance);
     bool Move(float angle, float distance);
@@ -62,7 +66,9 @@ protected:
     // -- Follow movement
     bool Follow(Unit* target, float distance = sPlayerbotAIConfig->followDistance);
     bool Follow(Unit* target, float distance, float angle);
+    bool FollowOnTransport(Unit* target);
     float GetFollowAngle();
+    void CreateWp(Player* wpOwner, float x, float y, float z, float o, uint32 entry, bool important = false);
 
 protected:
     struct CheckAngle
@@ -73,6 +79,9 @@ protected:
 
 private:
     const Movement::PointsArray SearchForBestPath(float x, float y, float z, float& modified_z, int maxSearchCount = 5, bool normal_only = false, float step = 8.0f);
+    bool IsValidPosition(WorldPosition position, WorldPosition visibleFromPosition);
+    bool IsHazardNearPosition(WorldPosition position);
+    bool GeneratePathAvoidingHazards(WorldPosition endPosition, bool generatePath, Movement::PointsArray& outPath);
 };
 
 class MoveRandomAction : public MovementAction
@@ -177,6 +186,16 @@ public:
     bool isPossible() override;
 };
 
+class SetBehindTargetAction : public MovementAction
+{
+public:
+    SetBehindTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "set behind") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+    bool isPossible() override;
+};
+
 class MoveFromGroupAction : public MovementAction
 {
 public:
@@ -193,12 +212,103 @@ public:
     bool Execute(Event event) override;
 };
 
+class FleeWithPetAction : public MovementAction
+{
+public:
+    FleeWithPetAction(PlayerbotAI* botAI) : MovementAction(botAI, "flee with pet") {}
+
+    bool Execute(Event event) override;
+};
+
 class MoveToLootAction : public MovementAction
 {
 public:
     MoveToLootAction(PlayerbotAI* botAI) : MovementAction(botAI, "move to loot") {}
 
     bool Execute(Event event) override;
+};
+
+class MoveOutOfEnemyContactAction : public MovementAction
+{
+public:
+    MoveOutOfEnemyContactAction(PlayerbotAI* botAI) : MovementAction(botAI, "move out of enemy contact") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class JumpAction : public MovementAction
+{
+public:
+    JumpAction(PlayerbotAI* botAI) : MovementAction(botAI, "jump") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+
+    static WorldPosition CalculateJumpParameters(
+        WorldPosition src,
+        Unit* jumper,
+        float angle,
+        float vSpeed,
+        float hSpeed,
+        float& timeToLand,
+        float& distanceToLand,
+        float& maxHeight,
+        bool& goodLanding,
+        std::vector<WorldPosition>& path,
+        float maxJumpHeight = 8.0f);
+
+private:
+    bool DoJump(
+        WorldPosition dest,
+        WorldPosition highestPoint,
+        float angle,
+        float vSpeed,
+        float hSpeed,
+        float timeToLand,
+        float distanceToLand,
+        float maxHeight,
+        bool goodLanding,
+        bool jumpInPlace,
+        bool jumpBackward,
+        bool showOnly);
+    bool JumpTowards(WorldPosition src, WorldPosition dest, Unit* jumper, float jumpSpeed, bool preSetLanding = false);
+    static float CalculateJumpTime(float srcZ, float destZ, float vSpeed, float hSpeed, float distance);
+    static float CalculateJumpTime(float zDiff, float vSpeed, bool ascending);
+    WorldPosition GetPossibleJumpStartFor(
+        WorldPosition src,
+        WorldPosition dest,
+        WorldPosition& possibleLanding,
+        Unit* jumper,
+        float& requiredSpeed,
+        float distanceTo,
+        float distanceFrom);
+    WorldPosition GetPossibleJumpStartForInRange(
+        WorldPosition src,
+        WorldPosition dest,
+        WorldPosition& possibleLanding,
+        Unit* jumper,
+        float& requiredSpeed,
+        float distanceTo,
+        float distanceFrom);
+    bool CanJumpTo(
+        WorldPosition src,
+        WorldPosition dest,
+        WorldPosition& possibleLanding,
+        float& jumpAngle,
+        Unit* jumper,
+        float jumpSpeed,
+        float maxDistance = 10.0f);
+    bool CanWalkTo(WorldPosition src, WorldPosition dest, Unit* jumper, float maxDistance = sPlayerbotAIConfig->sightDistance);
+    bool IsJumpFasterThanWalking(
+        WorldPosition src,
+        WorldPosition dest,
+        WorldPosition jumpLanding,
+        Unit* jumper,
+        float maxDistance = sPlayerbotAIConfig->sightDistance);
+    static bool IsJumpSafe(WorldPosition src, WorldPosition dest, Unit* jumper);
+    static bool CanLand(WorldPosition dest, Unit* jumper);
+    static bool IsNotMagmaSlime(WorldPosition dest, Unit* jumper);
 };
 
 class FleeAction : public MovementAction

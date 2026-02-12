@@ -17,6 +17,8 @@
 
 #include "LfgActions.h"
 
+#include <cmath>
+
 #include "DBCStores.h"
 #include "Event.h"
 #include "LFGMgr.h"
@@ -32,6 +34,8 @@ using namespace lfg;
 
 namespace
 {
+    constexpr uint8 kLfgLevelTolerance = 10;
+
     bool GroupHasRealPlayer(Group* group)
     {
         if (!group)
@@ -51,7 +55,19 @@ namespace
         return false;
     }
 
-    bool HasRealPlayerInLfgQueue()
+    bool IsRealPlayerForLfg(Player* player)
+    {
+        if (!player)
+            return false;
+
+        if (!player->GetSession() || !player->GetSession()->IsBot())
+            return true;
+
+        PlayerbotAI* botAI = GET_PLAYERBOT_AI(player);
+        return !botAI || botAI->IsRealPlayer();
+    }
+
+    bool HasCompatibleRealPlayerInLfgQueue(TeamId teamId, uint8 botLevel, uint8 levelTolerance = kLfgLevelTolerance)
     {
         for (auto const& managerPair : sLFGMgr->GetQueueManagers())
         {
@@ -64,11 +80,14 @@ namespace
                     if (!player)
                         continue;
 
-                    if (!player->GetSession() || !player->GetSession()->IsBot())
-                        return true;
+                    if (player->GetTeamId() != teamId)
+                        continue;
 
-                    PlayerbotAI* botAI = GET_PLAYERBOT_AI(player);
-                    if (!botAI || botAI->IsRealPlayer())
+                    if (!IsRealPlayerForLfg(player))
+                        continue;
+
+                    int32 levelDiff = std::abs(int32(player->GetLevel()) - int32(botLevel));
+                    if (levelDiff <= int32(levelTolerance))
                         return true;
                 }
             }
@@ -100,7 +119,7 @@ bool LfgJoinAction::isUseful()
     if (GroupHasRealPlayer(bot->GetGroup()))
         return false;
 
-    if (!HasRealPlayerInLfgQueue())
+    if (!HasCompatibleRealPlayerInLfgQueue(bot->GetTeamId(), uint8(bot->GetLevel())))
         return false;
 
     if (bot->IsBeingTeleported())
@@ -164,6 +183,8 @@ bool LfgJoinAction::JoinLfg()
 
         uint32 botLevel = bot->GetLevel();
         if (dungeon->minlevel && (botLevel < dungeon->minlevel || botLevel > dungeon->maxlevel))
+            continue;
+        if (dungeon->type == LFG_TYPE_DUNGEON && botLevel > dungeon->minlevel + kLfgLevelTolerance)
             continue;
 
         list.insert(dungeon->ID);
@@ -324,7 +345,7 @@ bool LfgLeaveAction::isUseful()
     if (!sPlayerbotAIConfig->randomBotJoinLfg)
         return true;
 
-    if (!HasRealPlayerInLfgQueue())
+    if (!HasCompatibleRealPlayerInLfgQueue(bot->GetTeamId(), uint8(bot->GetLevel())))
         return true;
 
     if (!sRandomPlayerbotMgr->LfgDungeons[bot->GetTeamId()].empty())

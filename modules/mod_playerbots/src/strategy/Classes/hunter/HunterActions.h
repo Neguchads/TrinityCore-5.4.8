@@ -131,7 +131,13 @@ public:
 class CastCallPetAction : public CastBuffSpellAction
 {
 public:
-    CastCallPetAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "call pet 1") {}
+    CastCallPetAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "call pet") {}
+    bool Execute(Event event) override;
+    bool isPossible() override;
+    bool isUseful() override;
+
+private:
+    uint32 GetCallPetSpellId() const;
 };
 
 class CastMendPetAction : public CastAuraSpellAction

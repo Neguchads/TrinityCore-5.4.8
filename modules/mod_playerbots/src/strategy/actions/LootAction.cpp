@@ -312,7 +312,10 @@ bool StoreLootAction::Execute(Event /*event*/)
     }
 
     if (loot->isLooted())
+    {
         bot->GetSession()->DoLootRelease(lootGuid);
+        botAI->AccelerateRespawn(lootGuid);
+    }
 
     if (looted)
     {
@@ -376,6 +379,7 @@ bool ReleaseLootAction::Execute(Event /*event*/)
         WorldPacket* packet = new WorldPacket(CMSG_LOOT_RELEASE, 8);
         *packet << guid;
         bot->GetSession()->QueuePacket(packet);
+        botAI->AccelerateRespawn(guid);
     }
 
     return true;

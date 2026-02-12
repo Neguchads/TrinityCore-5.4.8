@@ -288,6 +288,15 @@ void WorldSession::QueuePacket(WorldPacket* new_packet)
         _recvQueue.add(new_packet);
 }
 
+void WorldSession::HandleBotPackets()
+{
+    if (!_player)
+        return;
+
+    WorldSessionFilter updater(this);
+    Update(0, updater);
+}
+
 bool WorldSession::HandleSocketClosed()
 {
     if (m_Socket && !m_Socket->IsOpen() && GetPlayer() && !PlayerLogout() && GetPlayer()->m_taxi.empty() && GetPlayer()->IsInWorld() && !World::IsStopped())

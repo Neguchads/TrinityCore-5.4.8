@@ -56,27 +56,69 @@ namespace
         return !playerAI || playerAI->IsRealPlayer();
     }
 
-    bool IsLfgCommand(std::string const& msg, std::string& outCommand)
+    bool StartsWithCommandToken(std::string const& text, std::string const& token)
+    {
+        return text.rfind(token, 0) == 0 && (text.size() == token.size() || text[token.size()] == ' ');
+    }
+
+    bool ParsePlayerbotCommand(std::string const& msg, std::string& outCommand)
     {
         size_t start = msg.find_first_not_of(" \t\r\n");
         if (start == std::string::npos)
             return false;
 
-        outCommand = msg.substr(start);
-        std::string lowered = outCommand;
+        std::string trimmed = msg.substr(start);
+        std::string lowered = trimmed;
         std::transform(lowered.begin(), lowered.end(), lowered.begin(),
             [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
 
-        if (lowered.rfind("lfg", 0) != 0)
-            return false;
+        static std::string const groupSummonCommand = "group summon";
+        static std::string const groupReviveCommand = "group revive";
 
-        if (lowered.size() > 3 && lowered[3] != ' ')
-            return false;
+        if (StartsWithCommandToken(lowered, groupSummonCommand))
+        {
+            outCommand = "summon";
+            if (trimmed.size() > groupSummonCommand.size())
+                outCommand += trimmed.substr(groupSummonCommand.size());
+            return true;
+        }
 
-        return true;
+        if (StartsWithCommandToken(lowered, groupReviveCommand))
+        {
+            outCommand = "revive";
+            if (trimmed.size() > groupReviveCommand.size())
+                outCommand += trimmed.substr(groupReviveCommand.size());
+            return true;
+        }
+
+        if (StartsWithCommandToken(lowered, "lfg"))
+        {
+            outCommand = "lfg";
+            if (trimmed.size() > 3)
+                outCommand += trimmed.substr(3);
+            return true;
+        }
+
+        if (StartsWithCommandToken(lowered, "summon"))
+        {
+            outCommand = "summon";
+            if (trimmed.size() > 6)
+                outCommand += trimmed.substr(6);
+            return true;
+        }
+
+        if (StartsWithCommandToken(lowered, "revive"))
+        {
+            outCommand = "revive";
+            if (trimmed.size() > 6)
+                outCommand += trimmed.substr(6);
+            return true;
+        }
+
+        return false;
     }
 
-    void DispatchLfgToBot(Player* sender, Player* botPlayer, std::string const& command)
+    void DispatchCommandToBot(Player* sender, Player* botPlayer, std::string const& command)
     {
         if (!sender || !botPlayer || sender == botPlayer)
             return;
@@ -257,10 +299,10 @@ public:
             return;
 
         std::string command;
-        if (!IsLfgCommand(msg, command))
+        if (!ParsePlayerbotCommand(msg, command))
             return;
 
-        DispatchLfgToBot(player, receiver, command);
+        DispatchCommandToBot(player, receiver, command);
     }
 
     void OnChat(Player* player, uint32 type, uint32 /*lang*/, std::string& msg) override
@@ -272,7 +314,7 @@ public:
             return;
 
         std::string command;
-        if (!IsLfgCommand(msg, command))
+        if (!ParsePlayerbotCommand(msg, command))
             return;
 
         Map* map = player->GetMap();
@@ -290,7 +332,7 @@ public:
             if (player->GetDistance(target) > range)
                 continue;
 
-            DispatchLfgToBot(player, target, command);
+            DispatchCommandToBot(player, target, command);
         }
     }
 
@@ -303,7 +345,7 @@ public:
             return;
 
         std::string command;
-        if (!IsLfgCommand(msg, command))
+        if (!ParsePlayerbotCommand(msg, command))
             return;
 
         for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
@@ -312,7 +354,7 @@ public:
             if (!member)
                 continue;
 
-            DispatchLfgToBot(player, member, command);
+            DispatchCommandToBot(player, member, command);
         }
     }
 
@@ -325,7 +367,7 @@ public:
             return;
 
         std::string command;
-        if (!IsLfgCommand(msg, command))
+        if (!ParsePlayerbotCommand(msg, command))
             return;
 
         uint32 guildId = player->GetGuildId();
@@ -339,7 +381,7 @@ public:
             if (!member || member->GetGuildId() != guildId)
                 continue;
 
-            DispatchLfgToBot(player, member, command);
+            DispatchCommandToBot(player, member, command);
         }
     }
 
@@ -349,7 +391,7 @@ public:
             return;
 
         std::string command;
-        if (!IsLfgCommand(msg, command))
+        if (!ParsePlayerbotCommand(msg, command))
             return;
 
         uint32 zoneId = player->GetZoneId();
@@ -360,7 +402,7 @@ public:
             if (!member || member->GetZoneId() != zoneId)
                 continue;
 
-            DispatchLfgToBot(player, member, command);
+            DispatchCommandToBot(player, member, command);
         }
     }
 };

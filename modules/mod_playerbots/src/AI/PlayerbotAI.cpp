@@ -17,10 +17,14 @@
 
 #include "PlayerbotAI.h"
 
+#include <algorithm>
+#include <chrono>
 #include <cmath>
+#include <list>
 #include <mutex>
 #include <sstream>
 #include <string>
+#include <thread>
 #include <utility>
 
 #include "AiFactory.h"
@@ -36,9 +40,12 @@
 #include "LastSpellCastValue.h"
 #include "LFGMgr.h"
 #include "MapManager.h"
+#include "MemoryMonitor.h"
 #include "MotionMaster.h"
 #include "MoveSpline.h"
 #include "MoveSplineInit.h"
+#include "ObjectMgr.h"
+#include "Opcodes.h"
 #include "Player.h"
 #include "PositionValue.h"
 #include "PointMovementGenerator.h"
@@ -118,6 +125,10 @@ PlayerbotAI::PlayerbotAI()
         _allowActiveCheckTimer[i] = time(nullptr);
         _allowActive[i] = false;
     }
+
+#ifdef MEMORY_MONITOR
+    sMemoryMonitor.Add("PlayerbotAI", reinterpret_cast<uint64>(this));
+#endif
 }
 
 PlayerbotAI::PlayerbotAI(Player* bot)
@@ -182,6 +193,10 @@ PlayerbotAI::PlayerbotAI(Player* bot)
     botOutgoingPacketHandlers.AddHandler(SMSG_ITEM_PUSH_RESULT, "item push result");
     botOutgoingPacketHandlers.AddHandler(SMSG_LOOT_RESPONSE, "loot response");
     botOutgoingPacketHandlers.AddHandler(SMSG_LOOT_START_ROLL, "master loot roll");
+
+#ifdef MEMORY_MONITOR
+    sMemoryMonitor.Add("PlayerbotAI", reinterpret_cast<uint64>(this));
+#endif
 }
 
 PlayerbotAI::~PlayerbotAI()
@@ -194,6 +209,10 @@ PlayerbotAI::~PlayerbotAI()
 
     if (_aiObjectContext)
         delete _aiObjectContext;
+
+#ifdef MEMORY_MONITOR
+    sMemoryMonitor.Rem("PlayerbotAI", reinterpret_cast<uint64>(this));
+#endif
 }
 
 uint32 PlayerbotAI::GetReactDelay()
@@ -389,8 +408,7 @@ void PlayerbotAI::UpdateAIInternal([[maybe_unused]] uint32 elapsed, bool minimal
         return; // instances are created and destroyed on demand
 
     std::string const mapString = WorldPosition(bot).isOverworld() ? std::to_string(bot->GetMapId()) : "I";
-    PerformanceMonitorOperation* pmo =
-            sPerformanceMonitor->start(PERF_MON_TOTAL, "PlayerbotAI::UpdateAIInternal " + mapString);
+    auto pmo = sPerformanceMonitor->start(PERF_MON_TOTAL, "PlayerbotAI::UpdateAIInternal " + mapString, this);
 
     ExternalEventHelper helper(_aiObjectContext);
 
@@ -445,9 +463,6 @@ void PlayerbotAI::UpdateAIInternal([[maybe_unused]] uint32 elapsed, bool minimal
     }
 
     DoNextAction(minimal);
-
-    if (pmo)
-        pmo->finish();
 }
 
 bool PlayerbotAI::DoSpecificAction(std::string const name, Event event, bool silent, std::string const qualifier)
@@ -746,6 +761,12 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
         mod = AutoScaleActivity(mod);
     }
 
+    if (sRandomPlayerbotMgr->IsRandomBot(bot))
+    {
+        uint32 globalActivityMod = static_cast<uint32>(std::clamp(sRandomPlayerbotMgr->getActivityPercentage(), 0.0f, 100.0f));
+        mod = mod * globalActivityMod / 100;
+    }
+
     uint32 ActivityNumber =
         GetFixedBotNumer(100, sPlayerbotAIConfig->botActiveAlone * static_cast<float>(mod) / 100 * 0.01f);
 
@@ -756,6 +777,9 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
 
 bool PlayerbotAI::AllowActivity(ActivityType activityType, bool checkNow)
 {
+    if (sPlayerbotAIConfig->disableBotOptimizations || sPlayerbotAIConfig->disableActivityPriorities)
+        return true;
+
     if (!_allowActiveCheckTimer[activityType])
         _allowActiveCheckTimer[activityType] = time(nullptr);
 
@@ -1542,6 +1566,200 @@ void PlayerbotAI::AddTimedEvent(std::function<void()> fn, uint32 delayMs)
     _timedEvents.push_back(std::move(evt));
 }
 
+void PlayerbotAI::QueueChatResponse(uint32 msgType, ObjectGuid guid1, ObjectGuid /*guid2*/, std::string message,
+    std::string /*chanName*/, std::string name, bool noDelay)
+{
+    if (message.empty())
+        return;
+
+    uint32 delayMs = 0;
+    if (!noDelay)
+    {
+        bool inCombat = bot && bot->IsInCombat();
+        delayMs = urand(inCombat ? 1500 : 1000, inCombat ? 3000 : 2000);
+    }
+
+    AddTimedEvent([this, msgType, guid1, message = std::move(message), name = std::move(name)]() mutable
+    {
+        if (!bot || !bot->IsInWorld())
+            return;
+
+        switch (msgType)
+        {
+            case CHAT_MSG_WHISPER:
+            {
+                Player* receiver = ObjectAccessor::FindPlayer(guid1);
+                if (!receiver && !name.empty())
+                    receiver = ObjectAccessor::FindPlayerByName(name);
+
+                if (receiver)
+                    bot->Whisper(message, bot->GetTeamId() == TeamId::TEAM_ALLIANCE ? LANG_COMMON : LANG_ORCISH, receiver);
+                else
+                    TellMasterNoFacing(message);
+                break;
+            }
+            case CHAT_MSG_PARTY:
+                SayToParty(message);
+                break;
+            case CHAT_MSG_RAID:
+                SayToRaid(message);
+                break;
+            case CHAT_MSG_YELL:
+                Yell(message);
+                break;
+            default:
+                Say(message);
+                break;
+        }
+    }, delayMs);
+}
+
+void PlayerbotAI::SendDelayedPacket(WorldSession* session, futurePackets futPackets)
+{
+    if (!session)
+        return;
+
+    for (auto& delayedPacket : futPackets.get())
+    {
+        if (delayedPacket.second)
+            std::this_thread::sleep_for(std::chrono::milliseconds(delayedPacket.second));
+
+        session->QueuePacket(new WorldPacket(delayedPacket.first));
+    }
+}
+
+void PlayerbotAI::ReceiveDelayedPacket(futurePackets futPackets)
+{
+    for (auto& delayedPacket : futPackets.get())
+    {
+        botOutgoingPacketHandlers.AddPacket(delayedPacket.first);
+        if (delayedPacket.second)
+            std::this_thread::sleep_for(std::chrono::milliseconds(delayedPacket.second));
+    }
+}
+
+void PlayerbotAI::QueuePacket(WorldPacket& pkt)
+{
+    if (!bot || !bot->GetSession())
+        return;
+
+    bot->GetSession()->QueuePacket(new WorldPacket(pkt));
+}
+
+void PlayerbotAI::StopMoving()
+{
+    if (!bot || bot->IsInFlight() || IsInVehicle() || bot->IsBeingTeleportedFar())
+        return;
+
+    bot->m_movementInfo.SetMovementFlags(MOVEMENTFLAG_NONE);
+    bot->StopMoving();
+
+    if (WorldSession* session = bot->GetSession())
+    {
+        WorldPacket packet(MSG_MOVE_STOP, 64);
+        bot->WriteMovementInfo(packet);
+        session->HandleMovementOpcodes(packet);
+    }
+
+    MotionMaster* motionMaster = bot->GetMotionMaster();
+    if (!motionMaster)
+        return;
+
+    if (motionMaster->GetCurrentMovementGeneratorType())
+    {
+        motionMaster->Clear();
+        motionMaster->MoveIdle();
+    }
+}
+
+void PlayerbotAI::Unmount()
+{
+    if (!bot || bot->IsInFlight())
+        return;
+
+    if (bot->IsMounted())
+        bot->RemoveAurasByType(SPELL_AURA_MOUNTED);
+}
+
+void PlayerbotAI::AccelerateRespawn(Creature* creature, float accelMod)
+{
+    if (!creature)
+        return;
+
+    if (!sPlayerbotAIConfig->respawnModForPlayerBots && HasRealPlayerMaster())
+        return;
+
+    if (!sPlayerbotAIConfig->respawnModForInstances && !WorldPosition(creature).isOverworld())
+        return;
+
+    if (!accelMod)
+    {
+        if (!sPlayerbotAIConfig->respawnModHostile && !sPlayerbotAIConfig->respawnModNeutral)
+            return;
+
+        uint32 playersNr = 1;
+        if (AiObjectContext* aiContext = GetAiObjectContext())
+        {
+            if (Value<std::list<ObjectGuid>>* nearbyPlayersValue =
+                    aiContext->GetValue<std::list<ObjectGuid>>("nearest friendly players"))
+            {
+                playersNr = static_cast<uint32>(nearbyPlayersValue->Get().size()) + 1;
+            }
+        }
+        if (playersNr <= sPlayerbotAIConfig->respawnModThreshold)
+            return;
+
+        playersNr = std::min(playersNr - sPlayerbotAIConfig->respawnModThreshold, sPlayerbotAIConfig->respawnModMax);
+        accelMod = playersNr * (creature->IsHostileTo(bot) ? sPlayerbotAIConfig->respawnModHostile : sPlayerbotAIConfig->respawnModNeutral) * 0.01f;
+    }
+
+    if (!accelMod)
+        return;
+
+    uint32 respawnDelay = creature->GetRespawnDelay();
+    if (!respawnDelay)
+    {
+        if (CreatureData const* data = sObjectMgr->GetCreatureData(creature->GetSpawnId()))
+            respawnDelay = data->spawntimesecs;
+    }
+
+    if (accelMod >= 1.0f)
+    {
+        creature->SetRespawnDelay(0);
+        creature->SetRespawnTime(1);
+        creature->SaveRespawnTime();
+
+        if (creature->getDeathState() == CORPSE)
+            creature->SetCorpseRemoveTime(time(nullptr));
+        return;
+    }
+
+    uint32 const newRespawnDelay = std::max<uint32>(1, static_cast<uint32>(std::round(respawnDelay * (1.0f - accelMod))));
+    creature->SetRespawnDelay(newRespawnDelay);
+
+    time_t const now = time(nullptr);
+    time_t const respawnTime = creature->GetRespawnTime();
+    if (respawnTime > now)
+    {
+        uint32 remaining = static_cast<uint32>(respawnTime - now);
+        uint32 const newRemaining = std::max<uint32>(1, static_cast<uint32>(std::round(remaining * (1.0f - accelMod))));
+        creature->SetRespawnTime(newRemaining);
+        creature->SaveRespawnTime();
+    }
+
+    if (creature->getDeathState() == CORPSE)
+    {
+        uint32 const corpseDelay = creature->GetCorpseDelay();
+        if (corpseDelay)
+        {
+            uint32 const newCorpseDelay =
+                std::max<uint32>(20, static_cast<uint32>(std::round(static_cast<float>(corpseDelay) / (1.0f + accelMod))));
+            creature->SetCorpseDelay(newCorpseDelay);
+            creature->SetCorpseRemoveTime(now + newCorpseDelay);
+        }
+    }
+}
+
 Unit* PlayerbotAI::GetUnit(ObjectGuid guid)
 {
     if (!guid)
@@ -2227,6 +2445,22 @@ void PlayerbotAI::InterruptSpell()
 
         SpellInterrupted(spell->m_spellInfo->Id);
     }
+}
+
+void PlayerbotAI::WaitForSpellCast(Spell* spell)
+{
+    if (!spell)
+        return;
+
+    uint32 castTime = spell->GetCastTime();
+    if (!castTime)
+    {
+        SpellInfo const* spellInfo = spell->GetSpellInfo();
+        if (spellInfo)
+            castTime = spellInfo->CalcCastTime(bot->GetLevel());
+    }
+
+    SetNextCheckDelay(std::max<uint32>(castTime, sPlayerbotAIConfig->reactDelay));
 }
 
 bool PlayerbotAI::CanCastSpell(std::string const name, Unit* target, Item* itemTarget)

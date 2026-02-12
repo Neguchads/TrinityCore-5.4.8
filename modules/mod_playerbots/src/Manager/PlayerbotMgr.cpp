@@ -28,6 +28,7 @@
 #include "Helper.h"
 #include "PlayerbotAI.h"
 #include "PlayerbotAIConfig.h"
+#include "PlayerbotLoginQueryHolder.h"
 #include "CharacterCache.h"
 #include "ChannelMgr.h"
 #include "CharacterHandler.h"
@@ -46,23 +47,6 @@
 #include "Log.h"
 
 PlayerbotHolder::PlayerbotHolder() : PlayerbotAIBase(false) {}
-class PlayerbotLoginQueryHolder : public LoginQueryHolder
-{
-private:
-    uint32 masterAccountId;
-    PlayerbotHolder* playerbotHolder;
-
-public:
-    PlayerbotLoginQueryHolder(PlayerbotHolder* playerbotHolder, uint32 masterAccount, uint32 accountId, ObjectGuid guid)
-        : LoginQueryHolder(accountId, guid)
-        , masterAccountId(masterAccount)
-        , playerbotHolder(playerbotHolder)
-    {
-    }
-
-    uint32 GetMasterAccountId() const { return masterAccountId; }
-    PlayerbotHolder* GetPlayerbotHolder() { return playerbotHolder; }
-};
 
 void PlayerbotHolder::AddPlayerBot(ObjectGuid playerGuid, uint32 masterAccountId)
 {
@@ -111,7 +95,7 @@ void PlayerbotHolder::HandlePlayerBotLoginCallback(PlayerbotLoginQueryHolder con
 
     // At login DBC locale should be what the server is set to use by default (as spells etc are hardcoded to ENUS this
     // allows channels to work as intended)
-    // Créer une session WorldSession pour le bot
+    // Create a WorldSession for the bot
     WorldSession* botSession = new WorldSession(botAccountId, nullptr, AccountTypes::SEC_PLAYER, Expansions::EXPANSION_MISTS_OF_PANDARIA, 0, LOCALE_frFR, 0, false, false, true);
 
     botSession->HandlePlayerLogin(holder);  // will delete lqh
@@ -217,14 +201,10 @@ void PlayerbotHolder::UpdateSessions()
 
 void PlayerbotHolder::HandleBotPackets(WorldSession* session)
 {
-    /*WorldPacket* packet;
-    while (session->GetPacketQueue().next(packet))
-    {
-        OpcodeClient opcode = static_cast<OpcodeClient>(packet->GetOpcode());
-        ClientOpcodeHandler const* opHandle = opcodeTable[opcode];
-        opHandle->Call(session, *packet);
-        delete packet;
-    }*/
+    if (!session || !session->GetPlayer())
+        return;
+
+    session->HandleBotPackets();
 }
 
 void PlayerbotHolder::LogoutAllBots()

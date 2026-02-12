@@ -46,6 +46,13 @@ bool ShouldSellValue::Calculate()
     //return AI_VALUE(uint8, "bag space") > 80;
 }
 
+bool ShouldGetMoneyValue::Calculate()
+{
+    // CMaNGOS uses the "should get money" value as a travel/grind gate.
+    // Budget values are not fully backported here, so keep this available and safe.
+    return bot->GetLevel() > 6;
+}
+
 bool CanSellValue::Calculate()
 {
     return false;

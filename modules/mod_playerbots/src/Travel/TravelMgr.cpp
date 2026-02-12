@@ -1280,8 +1280,16 @@ std::string const QuestTravelDestination::getTitle() { return ChatHelper::Format
 
 bool QuestRelationTravelDestination::isActive(Player* bot)
 {
+    if (!bot || !questTemplate)
+        return false;
+
     PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);
+    if (!botAI)
+        return false;
+
     AiObjectContext* context = botAI->GetAiObjectContext();
+    if (!context)
+        return false;
 
     if (botAI && !botAI->HasStrategy("rpg quest", BOT_STATE_NON_COMBAT))
         return false;
@@ -1292,10 +1300,12 @@ bool QuestRelationTravelDestination::isActive(Player* bot)
             return false;
 
         // skip for now this quest
-        if (getPoints().front()->GetMapId() != bot->GetMapId())
+        auto points = getPoints();
+        if (points.empty() || points.front()->GetMapId() != bot->GetMapId())
             return false;
 
-        if (!bot->GetMap()->GetEntry()->IsWorldMap() || !bot->CanTakeQuest(questTemplate, false))
+        Map* botMap = bot->GetMap();
+        if (!botMap || !botMap->GetEntry() || !botMap->GetEntry()->IsWorldMap() || !bot->CanTakeQuest(questTemplate, false))
             return false;
 
         //uint32 dialogStatus = TravelMgr::instance().getDialogStatus(bot, entry, questTemplate); //not used, shadowed by the next declaration, line marked for removal.
@@ -1345,11 +1355,20 @@ std::string const QuestRelationTravelDestination::getTitle()
 
 bool QuestObjectiveTravelDestination::isActive(Player* bot)
 {
+    if (!bot || !questTemplate)
+        return false;
+
     if (questTemplate->GetQuestLevel() > bot->GetLevel() + 1)
         return false;
 
     PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);
+    if (!botAI)
+        return false;
+
     AiObjectContext* context = botAI->GetAiObjectContext();
+    if (!context)
+        return false;
+
     if (questTemplate->GetQuestLevel() + 5 > bot->GetLevel() && !AI_VALUE(bool, "can fight equal"))
         return false;
 
@@ -1357,15 +1376,18 @@ bool QuestObjectiveTravelDestination::isActive(Player* bot)
     if (getEntry() > 0)
     {
         CreatureTemplate const* cInfo = sObjectMgr->GetCreatureTemplate(getEntry());
-        if (cInfo && (int)cInfo->maxlevel - (int)bot->GetLevel() > 4)
+        if (!cInfo)
+            return false;
+
+        if ((int)cInfo->maxlevel - (int)bot->GetLevel() > 4)
             return false;
 
         // Do not try to hand-in dungeon/elite quests in instances without a group.
         if (cInfo->rank > CREATURE_ELITE_NORMAL)
         {
             WorldPosition pos(bot);
-            if (!this->nearestPoint(const_cast<WorldPosition*>(&pos))->isOverworld() &&
-                !AI_VALUE(bool, "can fight boss"))
+            WorldPosition* nearest = this->nearestPoint(const_cast<WorldPosition*>(&pos));
+            if (!nearest || (!nearest->isOverworld() && !AI_VALUE(bool, "can fight boss")))
                 return false;
 
             if (!AI_VALUE(bool, "can fight elite"))
@@ -1411,8 +1433,16 @@ std::string const QuestObjectiveTravelDestination::getTitle()
 
 bool RpgTravelDestination::isActive(Player* bot)
 {
+    if (!bot)
+        return false;
+
     PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);
+    if (!botAI)
+        return false;
+
     AiObjectContext* context = botAI->GetAiObjectContext();
+    if (!context)
+        return false;
 
     CreatureTemplate const* cInfo = GetCreatureTemplate();
     if (!cInfo)
@@ -1432,7 +1462,7 @@ bool RpgTravelDestination::isActive(Player* bot)
         return false;
 
     // Once the target rpged with it is added to the ignore list. We can now move on.
-    GuidSet& ignoreList = GET_PLAYERBOT_AI(bot)->GetAiObjectContext()->GetValue<GuidSet&>("ignore rpg target")->Get();
+    GuidSet& ignoreList = context->GetValue<GuidSet&>("ignore rpg target")->Get();
 
     for (ObjectGuid const guid : ignoreList)
     {
@@ -1443,6 +1473,9 @@ bool RpgTravelDestination::isActive(Player* bot)
     }
 
     FactionTemplateEntry const* factionEntry = sFactionTemplateStore.LookupEntry(cInfo->faction);
+    if (!factionEntry)
+        return false;
+
     ReputationRank reaction = bot->GetReputationRank(factionEntry->faction);
 
     return reaction > REP_NEUTRAL;
@@ -1464,7 +1497,12 @@ std::string const RpgTravelDestination::getTitle()
 
 bool ExploreTravelDestination::isActive(Player* bot)
 {
+    if (!bot)
+        return false;
+
     AreaTableEntry const* area = sAreaTableStore.LookupEntry(areaId);
+    if (!area)
+        return false;
 
     if (area->area_level && (uint32)area->area_level > bot->GetLevel() && bot->GetLevel() < DEFAULT_MAX_LEVEL)
         return false;
@@ -1487,8 +1525,16 @@ bool ExploreTravelDestination::isActive(Player* bot)
 
 bool GrindTravelDestination::isActive(Player* bot)
 {
+    if (!bot)
+        return false;
+
     PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);
+    if (!botAI)
+        return false;
+
     AiObjectContext* context = botAI->GetAiObjectContext();
+    if (!context)
+        return false;
 
     if (!AI_VALUE(bool, "should get money"))
         return false;
@@ -1497,6 +1543,8 @@ bool GrindTravelDestination::isActive(Player* bot)
         return false;
 
     CreatureTemplate const* cInfo = GetCreatureTemplate();
+    if (!cInfo)
+        return false;
 
     int32 botLevel = bot->GetLevel();
 
@@ -1521,6 +1569,9 @@ bool GrindTravelDestination::isActive(Player* bot)
         return false;
 
     FactionTemplateEntry const* factionEntry = sFactionTemplateStore.LookupEntry(cInfo->faction);
+    if (!factionEntry)
+        return false;
+
     ReputationRank reaction = bot->GetReputationRank(factionEntry->faction);
 
     return reaction < REP_NEUTRAL;
@@ -1541,13 +1592,23 @@ std::string const GrindTravelDestination::getTitle()
 
 bool BossTravelDestination::isActive(Player* bot)
 {
+    if (!bot)
+        return false;
+
     PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);
+    if (!botAI)
+        return false;
+
     AiObjectContext* context = botAI->GetAiObjectContext();
+    if (!context)
+        return false;
 
     if (!AI_VALUE(bool, "can fight boss"))
         return false;
 
     CreatureTemplate const* cInfo = getCreatureTemplate();
+    if (!cInfo)
+        return false;
 
     /*
     int32 botLevel = bot->GetLevel();

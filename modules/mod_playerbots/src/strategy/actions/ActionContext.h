@@ -44,7 +44,9 @@
 #include "RpgSubActions.h"
 #include "ResetInstancesAction.h"
 #include "UseItemAction.h"
+#include "UseMeetingStoneAction.h"
 #include "VehicleActions.h"
+#include "ReviveFromCorpseAction.h"
 
 class PlayerbotAI;
 class ActionContext : public NamedObjectContext<Action>
@@ -58,6 +60,7 @@ public:
         creators["emote"] = &ActionContext::emote;
         creators["greet"] = &ActionContext::greet;
         creators["move random"] = &ActionContext::move_random;
+        creators["jump"] = &ActionContext::jump;
         creators["move out of collision"] = &ActionContext::move_out_of_collision;
         creators["avoid aoe"] = &ActionContext::avoid_aoe;
         creators["travel"] = &ActionContext::travel;
@@ -80,7 +83,9 @@ public:
 
         creators["follow"] = &ActionContext::follow;
         creators["flee"] = &ActionContext::flee;
+        creators["flee with pet"] = &ActionContext::flee_with_pet;
         creators["move from group"] = &ActionContext::move_from_group;
+        creators["move out of enemy contact"] = &ActionContext::move_out_of_enemy_contact;
         creators["flee to master"] = &ActionContext::flee_to_master;
         creators["guard"] = &ActionContext::guard;
         creators["runaway"] = &ActionContext::runaway;
@@ -95,6 +100,7 @@ public:
         creators["tank face"] = &ActionContext::tank_face;
         creators["tank assist"] = &ActionContext::tank_assist;
         creators["set facing"] = &ActionContext::set_facing;
+        creators["set behind"] = &ActionContext::set_behind;
         creators["drop target"] = &ActionContext::drop_target;
         creators["dps assist"] = &ActionContext::dps_assist;
         creators["dps aoe"] = &ActionContext::dps_aoe;
@@ -117,6 +123,8 @@ public:
         creators["lfg join"] = &ActionContext::lfg_join;
         creators["lfg leave"] = &ActionContext::lfg_leave;
         creators["lfg"] = &ActionContext::lfg;
+        creators["summon"] = &ActionContext::summon;
+        creators["spirit healer"] = &ActionContext::spirit_healer;
         creators["join"] = &ActionContext::join;
         creators["invite"] = &ActionContext::invite;
         creators["maintenance"] = &ActionContext::maintenance;
@@ -204,6 +212,7 @@ private:
     static Action* emote(PlayerbotAI* botAI) { return new EmoteAction(botAI); }
     static Action* greet(PlayerbotAI* botAI) { return new GreetAction(botAI); }
     static Action* move_random(PlayerbotAI* botAI) { return new MoveRandomAction(botAI); }
+    static Action* jump(PlayerbotAI* botAI) { return new JumpAction(botAI); }
     static Action* move_out_of_collision(PlayerbotAI* botAI) { return new MoveOutOfCollisionAction(botAI); }
     static Action* avoid_aoe(PlayerbotAI* botAI) { return new AvoidAoeAction(botAI); }
     static Action* travel(PlayerbotAI* botAI) { return new TravelAction(botAI); }
@@ -226,7 +235,9 @@ private:
 
     static Action* follow(PlayerbotAI* botAI) { return new FollowAction(botAI); }
     static Action* flee(PlayerbotAI* botAI) { return new FleeAction(botAI); }
+    static Action* flee_with_pet(PlayerbotAI* botAI) { return new FleeWithPetAction(botAI); }
     static Action* move_from_group(PlayerbotAI* botAI) { return new MoveFromGroupAction(botAI); }
+    static Action* move_out_of_enemy_contact(PlayerbotAI* botAI) { return new MoveOutOfEnemyContactAction(botAI); }
     static Action* flee_to_master(PlayerbotAI* botAI) { return new FleeToMasterAction(botAI); }
     static Action* guard(PlayerbotAI* botAI) { return new GuardAction(botAI); }
     static Action* stay(PlayerbotAI* botAI) { return new StayAction(botAI); }
@@ -241,6 +252,7 @@ private:
     static Action* tank_face(PlayerbotAI* botAI) { return new TankFaceAction(botAI); }
     static Action* tank_assist(PlayerbotAI* botAI) { return new TankAssistAction(botAI); }
     static Action* set_facing(PlayerbotAI* botAI) { return new SetFacingTargetAction(botAI); }
+    static Action* set_behind(PlayerbotAI* botAI) { return new SetBehindTargetAction(botAI); }
     static Action* drop_target(PlayerbotAI* botAI) { return new DropTargetAction(botAI); }
     static Action* dps_assist(PlayerbotAI* botAI) { return new DpsAssistAction(botAI); }
     static Action* dps_aoe(PlayerbotAI* botAI) { return new DpsAoeAction(botAI); }
@@ -261,6 +273,8 @@ private:
     static Action* lfg_join(PlayerbotAI* botAI) { return new LfgJoinAction(botAI); }
     static Action* lfg_leave(PlayerbotAI* botAI) { return new LfgLeaveAction(botAI); }
     static Action* lfg(PlayerbotAI* botAI) { return new LfgAction(botAI); }
+    static Action* summon(PlayerbotAI* botAI) { return new SummonAction(botAI); }
+    static Action* spirit_healer(PlayerbotAI* botAI) { return new SpiritHealerAction(botAI); }
     static Action* join(PlayerbotAI* botAI) { return new JoinGroupAction(botAI); }
     static Action* invite(PlayerbotAI* botAI) { return new InviteToGroupAction(botAI); }
     static Action* maintenance(PlayerbotAI* botAI) { return new MaintenanceAction(botAI); }

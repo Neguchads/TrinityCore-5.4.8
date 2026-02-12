@@ -114,6 +114,10 @@ public:
         creators["lfg proposal active"] = &TriggerContext::lfg_proposal_active;
         creators["lfg teleport in"] = &TriggerContext::lfg_teleport_in;
         creators["lfg"] = &TriggerContext::lfg;
+        creators["summon"] = &TriggerContext::summon;
+        creators["group summon"] = &TriggerContext::group_summon;
+        creators["revive"] = &TriggerContext::revive;
+        creators["group revive"] = &TriggerContext::group_revive;
         creators["maintenance"] = &TriggerContext::maintenance;
         creators["cs"] = &TriggerContext::cs;
         creators["q"] = &TriggerContext::q;
@@ -256,6 +260,10 @@ private:
     static Trigger* lfg_proposal_active(PlayerbotAI* botAI) { return new LfgProposalActiveTrigger(botAI); }
     static Trigger* lfg_teleport_in(PlayerbotAI* botAI) { return new LfgTeleportInTrigger(botAI); }
     static Trigger* lfg(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "lfg"); }
+    static Trigger* summon(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "summon"); }
+    static Trigger* group_summon(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "group summon"); }
+    static Trigger* revive(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "revive"); }
+    static Trigger* group_revive(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "group revive"); }
     static Trigger* maintenance(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "maintenance"); }
     static Trigger* cs(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "cs"); }
     static Trigger* q(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "q"); }

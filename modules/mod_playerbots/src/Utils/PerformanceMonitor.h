@@ -4,12 +4,17 @@
 #include <chrono>
 #include <ctime>
 #include <map>
+#include <memory>
 #include <mutex>
+#include <string>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include "Common.h"
 
 typedef std::vector<std::string> PerformanceStack;
+class PlayerbotAI;
 
 struct PerformanceData
 {
@@ -32,21 +37,28 @@ enum PerformanceMetric
 class PerformanceMonitorOperation
 {
 public:
-    PerformanceMonitorOperation(PerformanceData* data, std::string const name, PerformanceStack* stack);
+    PerformanceMonitorOperation(std::vector<PerformanceData*> dataRefs, std::string const name, PerformanceStack* stack);
+    ~PerformanceMonitorOperation();
     void finish();
 
 private:
-    PerformanceData* data;
+    std::vector<PerformanceData*> dataRefs;
     std::string const name;
     PerformanceStack* stack;
     std::chrono::microseconds started;
+    bool finished = false;
 };
+
+using PerformanceNameMap = std::map<std::string, PerformanceData*>;
+using PerformanceMetricMap = std::map<PerformanceMetric, PerformanceNameMap>;
+using PerformanceInstanceMap = std::map<uint32, PerformanceMetricMap>;
+using PerformanceMapMap = std::map<uint32, PerformanceInstanceMap>;
 
 class PerformanceMonitor
 {
 public:
-    PerformanceMonitor(){};
-    virtual ~PerformanceMonitor(){};
+    PerformanceMonitor();
+    virtual ~PerformanceMonitor();
     static PerformanceMonitor* instance()
     {
         static PerformanceMonitor instance;
@@ -54,13 +66,21 @@ public:
     }
 
 public:
-    PerformanceMonitorOperation* start(PerformanceMetric metric, std::string const name,
-                                       PerformanceStack* stack = nullptr);
-    void PrintStats(bool perTick = false, bool fullStack = false);
+    std::unique_ptr<PerformanceMonitorOperation> start(
+        PerformanceMetric metric,
+        std::string const name,
+        PerformanceStack* stack = nullptr,
+        uint32 mapId = 0,
+        uint32 instanceId = 0);
+    std::unique_ptr<PerformanceMonitorOperation> start(PerformanceMetric metric, std::string const name, PlayerbotAI* ai);
+    void Init(uint32 mapId = 0, uint32 instanceId = 0);
+    void PrintStats(bool perTick = false, bool fullStack = false, bool showMap = false);
     void Reset();
 
 private:
-    std::map<PerformanceMetric, std::map<std::string, PerformanceData*> > data;
+    static PerformanceData* GetOrCreateData(PerformanceNameMap& nameMap, std::string const& name);
+    PerformanceMetricMap data;
+    PerformanceMapMap mapsData;
     std::mutex lock;
 };
 

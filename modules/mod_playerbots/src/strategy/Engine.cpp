@@ -202,7 +202,7 @@ bool Engine::DoNextAction(Unit* unit, uint32 depth, bool minimal)
                     }
                 }
 
-                PerformanceMonitorOperation* pmo = sPerformanceMonitor->start(PERF_MON_ACTION, action->getName(), &aiObjectContext->performanceStack);
+                auto pmo = sPerformanceMonitor->start(PERF_MON_ACTION, action->getName(), botAI);
                 actionExecuted = ListenAndExecute(action, event);
                 if (pmo)
                     pmo->finish();

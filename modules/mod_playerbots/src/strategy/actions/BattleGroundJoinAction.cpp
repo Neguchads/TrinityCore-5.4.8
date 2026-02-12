@@ -31,7 +31,61 @@
 #include "PlayerbotAI.h"
 #include "PlayerbotAIConfig.h"
 #include "Playerbots.h"
+#include "World.h"
 #include "WorldPacket.h"
+
+namespace
+{
+    bool ShouldJoinBgByLoad(Player* bot, BattlegroundQueueTypeId queueTypeId, BattlegroundBracketId bracketId, float lagMultiplier)
+    {
+        if (!bot)
+            return false;
+
+        BattlegroundTypeId bgTypeId = BattlegroundMgr::BGTemplateId(queueTypeId);
+        Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(bgTypeId);
+        if (!bg)
+            return false;
+
+        auto& bgInfo = sRandomPlayerbotMgr->BattlegroundData[queueTypeId][bracketId];
+        uint8 arenaType = BattlegroundMgr::BGArenaType(queueTypeId);
+
+        bool noLag = static_cast<float>(sWorld->GetUpdateTime()) <
+            static_cast<float>(!sRandomPlayerbotMgr->HasPlayers() ?
+                sPlayerbotAIConfig->diffEmpty : sPlayerbotAIConfig->diffWithPlayer) * lagMultiplier;
+        if (sPlayerbotAIConfig->disableActivityPriorities)
+            noLag = true;
+
+        bool hasPlayers = arenaType ?
+            (bgInfo.ratedArenaPlayerCount + bgInfo.skirmishArenaPlayerCount) > 0 :
+            (bgInfo.bgAlliancePlayerCount + bgInfo.bgHordePlayerCount) > 0;
+        if (!hasPlayers && !noLag)
+            return false;
+
+        uint32 targetQueues = arenaType ?
+            (bgInfo.activeRatedArenaQueue + bgInfo.activeSkirmishArenaQueue) :
+            bgInfo.activeBgQueue;
+
+        if (sPlayerbotAIConfig->randomBotAutoJoinBG)
+            targetQueues += arenaType ?
+            (bgInfo.ratedArenaInstanceCount + bgInfo.skirmishArenaInstanceCount) :
+            bgInfo.bgInstanceCount;
+
+        if (!targetQueues)
+            return false;
+
+        if (arenaType)
+        {
+            return (bgInfo.ratedArenaPlayerCount + bgInfo.skirmishArenaPlayerCount +
+                bgInfo.ratedArenaBotCount + bgInfo.skirmishArenaBotCount) < arenaType * 2 * targetQueues;
+        }
+
+        uint32 maxPerTeam = bg->GetMaxPlayersPerTeam();
+        if (bot->GetTeamId() == TEAM_ALLIANCE)
+            return (bgInfo.bgAlliancePlayerCount + bgInfo.bgAllianceBotCount) < maxPerTeam * targetQueues;
+
+        return (bgInfo.bgHordePlayerCount + bgInfo.bgHordeBotCount) < maxPerTeam * targetQueues;
+    }
+}
 
 bool BGJoinAction::Execute(Event event)
 {
@@ -93,28 +147,7 @@ bool BGJoinAction::canJoinBg(BattlegroundQueueTypeId queueTypeId, BattlegroundBr
 
 bool BGJoinAction::shouldJoinBg(BattlegroundQueueTypeId queueTypeId, BattlegroundBracketId bracketId)
 {
-    BattlegroundTypeId bgTypeId = BattlegroundMgr::BGTemplateId(queueTypeId);
-    Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(bgTypeId);
-    if (!bg)
-        return false;
-
-    auto& bgInfo = sRandomPlayerbotMgr->BattlegroundData[queueTypeId][bracketId];
-    uint8 arenaType = BattlegroundMgr::BGArenaType(queueTypeId);
-    uint32 targetQueues = arenaType ? (bgInfo.activeRatedArenaQueue + bgInfo.activeSkirmishArenaQueue) : bgInfo.activeBgQueue;
-    if (sPlayerbotAIConfig->randomBotAutoJoinBG)
-        targetQueues += arenaType ? (bgInfo.ratedArenaInstanceCount + bgInfo.skirmishArenaInstanceCount) : bgInfo.bgInstanceCount;
-    if (!targetQueues)
-        return false;
-
-    if (arenaType)
-        return (bgInfo.ratedArenaPlayerCount + bgInfo.skirmishArenaPlayerCount +
-            bgInfo.ratedArenaBotCount + bgInfo.skirmishArenaBotCount) < arenaType * 2 * targetQueues;
-
-    uint32 maxPerTeam = bg->GetMaxPlayersPerTeam();
-    if (bot->GetTeamId() == TEAM_ALLIANCE)
-        return (bgInfo.bgAlliancePlayerCount + bgInfo.bgAllianceBotCount) < maxPerTeam * targetQueues;
-
-    return (bgInfo.bgHordePlayerCount + bgInfo.bgHordeBotCount) < maxPerTeam * targetQueues;
+    return ShouldJoinBgByLoad(bot, queueTypeId, bracketId, 1.1f);
 }
 
 bool BGJoinAction::isUseful()
@@ -440,7 +473,10 @@ bool BGJoinAction::PrepareArenaGroup(uint8 arenaType)
 
 bool FreeBGJoinAction::shouldJoinBg(BattlegroundQueueTypeId queueTypeId, BattlegroundBracketId bracketId)
 {
-    return BGJoinAction::shouldJoinBg(queueTypeId, bracketId);
+    if (!sPlayerbotAIConfig->randomBotAutoJoinBG)
+        return false;
+
+    return ShouldJoinBgByLoad(bot, queueTypeId, bracketId, 1.5f);
 }
 
 bool BGLeaveAction::Execute(Event event)

@@ -9,7 +9,7 @@ CREATE TABLE `playerbots_random_bots` (
   `value` INT(11) DEFAULT NULL,
   `data` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `owner` (`owner`),
-  KEY `bot` (`bot`),
-  KEY `event` (`event`)
+  UNIQUE KEY `uniq_owner_bot_event` (`owner`,`bot`,`event`),
+  KEY `idx_owner_event_bot` (`owner`,`event`,`bot`),
+  KEY `idx_owner_bot` (`owner`,`bot`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

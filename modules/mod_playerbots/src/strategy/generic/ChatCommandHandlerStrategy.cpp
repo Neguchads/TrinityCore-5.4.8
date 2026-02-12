@@ -7,6 +7,10 @@ ChatCommandHandlerStrategy::ChatCommandHandlerStrategy(PlayerbotAI* botAI) : Pas
 void ChatCommandHandlerStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode("lfg", NextAction::array(0, new NextAction("lfg", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("summon", NextAction::array(0, new NextAction("summon", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("group summon", NextAction::array(0, new NextAction("summon", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("revive", NextAction::array(0, new NextAction("spirit healer", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("group revive", NextAction::array(0, new NextAction("spirit healer", relevance), nullptr)));
     triggers.push_back(new TriggerNode("maintenance", NextAction::array(0, new NextAction("maintenance", relevance), nullptr)));
     triggers.push_back(new TriggerNode("cs", NextAction::array(0, new NextAction("cs", relevance), nullptr)));
     triggers.push_back(new TriggerNode("q", NextAction::array(0, new NextAction("query quest", relevance), nullptr)));

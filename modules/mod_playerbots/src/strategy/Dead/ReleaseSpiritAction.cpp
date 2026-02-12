@@ -12,6 +12,30 @@
 #include "Corpse.h"
 #include "WorldPosition.h"
 
+namespace
+{
+void BuildGossipHelloPacket(WorldPacket& packet, ObjectGuid const& guid)
+{
+    packet.WriteBit(guid[2]);
+    packet.WriteBit(guid[4]);
+    packet.WriteBit(guid[0]);
+    packet.WriteBit(guid[3]);
+    packet.WriteBit(guid[6]);
+    packet.WriteBit(guid[7]);
+    packet.WriteBit(guid[5]);
+    packet.WriteBit(guid[1]);
+
+    packet.WriteByteSeq(guid[4]);
+    packet.WriteByteSeq(guid[7]);
+    packet.WriteByteSeq(guid[1]);
+    packet.WriteByteSeq(guid[0]);
+    packet.WriteByteSeq(guid[5]);
+    packet.WriteByteSeq(guid[3]);
+    packet.WriteByteSeq(guid[6]);
+    packet.WriteByteSeq(guid[2]);
+}
+} // namespace
+
 bool ReleaseSpiritAction::Execute(Event event)
 {
     if (bot->IsAlive())
@@ -133,7 +157,7 @@ bool AutoReleaseSpiritAction::Execute(Event event)
         {
             bg_gossip_time = time(NULL);
             WorldPacket packet(CMSG_GOSSIP_HELLO);
-            packet << guid;
+            BuildGossipHelloPacket(packet, guid);
             bot->GetSession()->HandleGossipHelloOpcode(packet);
         }
     }

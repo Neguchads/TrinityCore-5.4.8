@@ -612,6 +612,11 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
             nonCombatEngine->addStrategy("bg", false);
     }
 
+    if (sRandomPlayerbotMgr->IsRandomBot(player))
+        nonCombatEngine->ChangeStrategy(sPlayerbotAIConfig->randomBotNonCombatStrategies);
+    else
+        nonCombatEngine->ChangeStrategy(sPlayerbotAIConfig->nonCombatStrategies);
+
     // Battleground switch
     if (player->InBattleground() && player->GetBattleground())
     {

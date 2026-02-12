@@ -2,6 +2,7 @@
 #define _PLAYERBOT_PLAYERBOTAI_H
 
 #include <functional>
+#include <future>
 #include <map>
 #include <mutex>
 #include <queue>
@@ -56,8 +57,10 @@ class GameObject;
 class ObjectGuid;
 class Player;
 class Position;
+class Spell;
 class Unit;
 class Item;
+class WorldSession;
 class WorldObject;
 struct CreatureData;
 
@@ -108,6 +111,8 @@ private:
 class PlayerbotAI : public PlayerbotAIBase
 {
 public:
+    using futurePackets = std::future<std::vector<std::pair<WorldPacket, uint32>>>;
+
     PlayerbotAI();
     PlayerbotAI(Player* bot);
     virtual ~PlayerbotAI();
@@ -196,6 +201,20 @@ public:
     std::vector<Item*> GetInventoryItems();
     bool ImbueItem(Item* item, Unit* target);
     void AddTimedEvent(std::function<void()> fn, uint32 delayMs);
+    void QueueChatResponse(uint32 msgType, ObjectGuid guid1, ObjectGuid guid2, std::string message,
+        std::string chanName, std::string name, bool noDelay = false);
+    static void SendDelayedPacket(WorldSession* session, futurePackets futPackets);
+    void ReceiveDelayedPacket(futurePackets futPackets);
+    void QueuePacket(WorldPacket& pkt);
+    void StopMoving();
+    void Unmount();
+    void AccelerateRespawn(Creature* creature, float accelMod = 0.0f);
+    void AccelerateRespawn(ObjectGuid guid, float accelMod = 0.0f)
+    {
+        Creature* creature = GetCreature(guid);
+        if (creature)
+            AccelerateRespawn(creature, accelMod);
+    }
 
     bool HasStrategy(std::string const name, BotState type);
     bool ContainsStrategy(StrategyType type);
@@ -245,6 +264,7 @@ public:
     virtual bool HasAuraToDispel(Unit* player, uint32 dispelType);
     void RemoveAura(std::string const name);
     void RemoveShapeshift();
+    void WaitForSpellCast(Spell* spell);
     void SpellInterrupted(uint32 spellid);
     virtual bool CanCastSpell(std::string const name, Unit* target, Item* itemTarget = nullptr);
     virtual bool CastSpell(std::string const name, Unit* target, Item* itemTarget = nullptr);

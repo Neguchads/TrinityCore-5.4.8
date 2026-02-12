@@ -32,6 +32,30 @@
 #include "SocialMgr.h"
 #include "TradeData.h"
 
+namespace
+{
+void BuildGossipHelloPacket(WorldPacket& packet, ObjectGuid const& guid)
+{
+    packet.WriteBit(guid[2]);
+    packet.WriteBit(guid[4]);
+    packet.WriteBit(guid[0]);
+    packet.WriteBit(guid[3]);
+    packet.WriteBit(guid[6]);
+    packet.WriteBit(guid[7]);
+    packet.WriteBit(guid[5]);
+    packet.WriteBit(guid[1]);
+
+    packet.WriteByteSeq(guid[4]);
+    packet.WriteByteSeq(guid[7]);
+    packet.WriteByteSeq(guid[1]);
+    packet.WriteByteSeq(guid[0]);
+    packet.WriteByteSeq(guid[5]);
+    packet.WriteByteSeq(guid[3]);
+    packet.WriteByteSeq(guid[6]);
+    packet.WriteByteSeq(guid[2]);
+}
+} // namespace
+
 void RpgHelper::OnExecute(std::string nextAction)
 {
     if (botAI->HasRealPlayerMaster() && nextAction == "rpg")
@@ -142,8 +166,9 @@ bool RpgEmoteAction::Execute(Event /*event*/)
 {
     uint32 type = EMOTE_ONESHOT_TALK;
 
+    ObjectGuid guid = rpg->guid();
     WorldPacket p1;
-    p1 << rpg->guid();
+    BuildGossipHelloPacket(p1, guid);
     bot->GetSession()->HandleGossipHelloOpcode(p1);
 
     bot->HandleEmoteCommand(type);

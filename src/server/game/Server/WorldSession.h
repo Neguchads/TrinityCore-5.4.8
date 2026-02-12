@@ -359,6 +359,7 @@ class TC_GAME_API WorldSession
         bool forceExit;
 
         void QueuePacket(WorldPacket* new_packet);
+        void HandleBotPackets();
         bool Update(uint32 diff, PacketFilter& updater);
 
         /// Handle the authentication waiting queue (to be completed)

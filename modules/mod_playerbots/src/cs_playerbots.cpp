@@ -78,18 +78,6 @@ public:
             return true;
         }
 
-        if (!strcmp(args, "tick"))
-        {
-            sPerformanceMonitor->PrintStats(true, false);
-            return true;
-        }
-
-        if (!strcmp(args, "stack"))
-        {
-            sPerformanceMonitor->PrintStats(false, true);
-            return true;
-        }
-
         if (!strcmp(args, "toggle"))
         {
             sPlayerbotAIConfig->perfMonEnabled = !sPlayerbotAIConfig->perfMonEnabled;
@@ -100,7 +88,12 @@ public:
             return true;
         }
 
-        sPerformanceMonitor->PrintStats();
+        std::string arguments = args ? args : "";
+        bool tick = arguments.find("tick") != std::string::npos;
+        bool stack = arguments.find("stack") != std::string::npos;
+        bool map = arguments.find("map") != std::string::npos;
+
+        sPerformanceMonitor->PrintStats(tick, stack, map);
         return true;
     }
 

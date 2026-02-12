@@ -11,7 +11,18 @@
 
 bool ReachTargetAction::Execute(Event event)
 {
-    return ReachCombatTo(AI_VALUE(Unit*, GetTargetName()), distance);
+    Unit* target = AI_VALUE(Unit*, GetTargetName());
+    if (!target)
+        return false;
+
+    // Melee reaches are smoother with persistent chase than repeated point moves.
+    if (getName() == "reach melee")
+    {
+        float chaseDistance = distance + bot->GetCombatReach() + target->GetCombatReach();
+        return ChaseTo(target, chaseDistance);
+    }
+
+    return ReachCombatTo(target, distance);
 }
 
 bool ReachTargetAction::isUseful()

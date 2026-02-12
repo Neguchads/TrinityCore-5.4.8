@@ -3,12 +3,15 @@
 #ifndef _PLAYERBOT_PLAYERBOTAIBASE_H
 #define _PLAYERBOT_PLAYERBOTAIBASE_H
 
+#include <memory>
+
 #include "Define.h"
 
 class PlayerbotAIBase
 {
 public:
     PlayerbotAIBase(bool isBotAI);
+    virtual ~PlayerbotAIBase();
 
     bool CanUpdateAI();
     void SetNextCheckDelay(uint32 const delay);
@@ -21,7 +24,7 @@ public:
 
 protected:
     uint32 nextAICheckDelay;
-    class PerformanceMonitorOperation* totalPmo = nullptr;
+    std::unique_ptr<class PerformanceMonitorOperation> totalPmo;
 
 private:
     bool _isBotAI;
