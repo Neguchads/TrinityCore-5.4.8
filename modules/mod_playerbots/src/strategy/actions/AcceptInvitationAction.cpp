@@ -5,6 +5,7 @@
 #include "ObjectAccessor.h"
 #include "PlayerbotAIConfig.h"
 #include "Playerbots.h"
+#include "PlayerbotSecurity.h"
 #include "WorldPacket.h"
 
 AcceptInvitationAction::AcceptInvitationAction(PlayerbotAI* botAI, const std::string name)
@@ -47,14 +48,14 @@ bool AcceptInvitationAction::Execute(Event event)
 
     grp->BroadcastGroupUpdate();
 
-    /*if (!botAI->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, inviter))
+    if (!botAI->GetSecurity()->CheckLevelFor(PlayerbotSecurityLevel::PLAYERBOT_SECURITY_INVITE, false, inviter))
     {
         WorldPacket data(SMSG_GROUP_DECLINE, 10);
         data << bot->GetName();
         inviter->SendDirectMessage(&data);
         bot->UninviteFromGroup();
         return false;
-    }*/
+    }
 
     if (sRandomPlayerbotMgr->IsRandomBot(bot) && inviter)
         botAI->SetMaster(inviter);

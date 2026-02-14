@@ -637,3 +637,32 @@ void RandomPlayerbotFactory::CreateRandomBots()
     TC_LOG_INFO("server.loading", ">> %u random bot accounts with %u characters available", sPlayerbotAIConfig->randomBotAccounts.size(), totalRandomBotChars);
 }
 
+std::string RandomPlayerbotFactory::CreateRandomGuildName()
+{
+    QueryResult result = CharacterDatabase.Query("SELECT MAX(name_id) FROM ai_playerbot_guild_names");
+    if (!result)
+    {
+        TC_LOG_ERROR("playerbots", "No more names left for random guilds (ai_playerbot_guild_names missing/empty?)");
+        return "";
+    }
+
+    Field* fields = result->Fetch();
+    uint32 maxId = fields[0].GetUInt32();
+
+    uint32 id = urand(0, maxId);
+    result = CharacterDatabase.PQuery(
+        "SELECT n.name FROM ai_playerbot_guild_names n "
+        "LEFT OUTER JOIN guild e ON e.name = n.name "
+        "WHERE e.guildid IS NULL AND n.name_id >= '%u' LIMIT 1",
+        id);
+
+    if (!result)
+    {
+        TC_LOG_ERROR("playerbots", "No more names left for random guilds (all taken?)");
+        return "";
+    }
+
+    fields = result->Fetch();
+    return fields[0].GetString();
+}
+

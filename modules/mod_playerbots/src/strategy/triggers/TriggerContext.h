@@ -16,6 +16,7 @@
 #include "NewRpgTriggers.h"
 #include "RpgTriggers.h"
 #include "TravelTriggers.h"
+#include "GuildTriggers.h"
 
 class PlayerbotAI;
 class TriggerContext : public NamedObjectContext<Trigger>
@@ -118,7 +119,32 @@ public:
         creators["group summon"] = &TriggerContext::group_summon;
         creators["revive"] = &TriggerContext::revive;
         creators["group revive"] = &TriggerContext::group_revive;
+        creators["leave large guild"] = &TriggerContext::leave_large_guild;
+        creators["petition signed"] = &TriggerContext::petition_signed;
+        creators["buy tabard"] = &TriggerContext::buy_tabard;
         creators["maintenance"] = &TriggerContext::maintenance;
+        creators["bank"] = &TriggerContext::bank;
+        creators["gb"] = &TriggerContext::gb;
+        creators["guild bank"] = &TriggerContext::guild_bank;
+        creators["guild invite"] = &TriggerContext::guild_invite;
+        creators["guild join"] = &TriggerContext::guild_join;
+        creators["guild promote"] = &TriggerContext::guild_promote;
+        creators["guild demote"] = &TriggerContext::guild_demote;
+        creators["guild remove"] = &TriggerContext::guild_remove;
+        creators["guild leader"] = &TriggerContext::guild_leader;
+        creators["guild leave"] = &TriggerContext::guild_leave;
+        creators["mail"] = &TriggerContext::mail;
+        creators["sendmail"] = &TriggerContext::sendmail;
+        creators["ah"] = &TriggerContext::ah;
+        creators["help"] = &TriggerContext::help;
+        creators["reset"] = &TriggerContext::reset;
+        creators["reset ai"] = &TriggerContext::reset_ai;
+        creators["reset ai soft"] = &TriggerContext::reset_ai_soft;
+        creators["reset strats"] = &TriggerContext::reset_strats;
+        creators["reset values"] = &TriggerContext::reset_values;
+        creators["save ai"] = &TriggerContext::save_ai;
+        creators["load ai"] = &TriggerContext::load_ai;
+        creators["list ai"] = &TriggerContext::list_ai;
         creators["cs"] = &TriggerContext::cs;
         creators["q"] = &TriggerContext::q;
         creators["quests"] = &TriggerContext::quests;
@@ -264,7 +290,32 @@ private:
     static Trigger* group_summon(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "group summon"); }
     static Trigger* revive(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "revive"); }
     static Trigger* group_revive(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "group revive"); }
+    static Trigger* leave_large_guild(PlayerbotAI* botAI) { return new LeaveLargeGuildTrigger(botAI); }
+    static Trigger* petition_signed(PlayerbotAI* botAI) { return new PetitionTurnInTrigger(botAI); }
+    static Trigger* buy_tabard(PlayerbotAI* botAI) { return new BuyTabardTrigger(botAI); }
     static Trigger* maintenance(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "maintenance"); }
+    static Trigger* bank(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "bank"); }
+    static Trigger* gb(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "gb"); }
+    static Trigger* guild_bank(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "guild bank"); }
+    static Trigger* guild_invite(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "guild invite"); }
+    static Trigger* guild_join(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "guild join"); }
+    static Trigger* guild_promote(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "guild promote"); }
+    static Trigger* guild_demote(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "guild demote"); }
+    static Trigger* guild_remove(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "guild remove"); }
+    static Trigger* guild_leader(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "guild leader"); }
+    static Trigger* guild_leave(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "guild leave"); }
+    static Trigger* mail(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "mail"); }
+    static Trigger* sendmail(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "sendmail"); }
+    static Trigger* ah(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "ah"); }
+    static Trigger* help(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "help"); }
+    static Trigger* reset(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "reset"); }
+    static Trigger* reset_ai(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "reset ai"); }
+    static Trigger* reset_ai_soft(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "reset ai soft"); }
+    static Trigger* reset_strats(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "reset strats"); }
+    static Trigger* reset_values(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "reset values"); }
+    static Trigger* save_ai(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "save ai"); }
+    static Trigger* load_ai(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "load ai"); }
+    static Trigger* list_ai(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "list ai"); }
     static Trigger* cs(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "cs"); }
     static Trigger* q(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "q"); }
     static Trigger* quests(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "quests"); }

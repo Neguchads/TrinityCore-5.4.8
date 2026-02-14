@@ -1,11 +1,10 @@
-DROP TABLE IF EXISTS `playerbots_guild_names`;
-CREATE TABLE `playerbots_guild_names` (
-                                          `name_id` INT(11) NOT NULL AUTO_INCREMENT UNIQUE,
-                                          `name` varchar(24) NOT NULL UNIQUE,
-                                          PRIMARY KEY (`name_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Playerbot guild names';
+CREATE TABLE IF NOT EXISTS `ai_playerbot_guild_names` (
+  `name_id` mediumint(8) NOT NULL AUTO_INCREMENT UNIQUE,
+  `name` varchar(24) NOT NULL UNIQUE,
+  PRIMARY KEY (`name_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='PlayerbotAI guild names';
 
-INSERT INTO `playerbots_guild_names` VALUES
+INSERT IGNORE INTO `ai_playerbot_guild_names` (`name_id`, `name`) VALUES
 (NULL, 'Black Guard'),
 (NULL, 'White Guard'),
 (NULL, 'Amber Guard'),
@@ -406,3 +405,4 @@ INSERT INTO `playerbots_guild_names` VALUES
 (NULL, 'Breakneck Raiders'),
 (NULL, 'Dungeoneers'),
 (NULL, 'Confused Confederation');
+

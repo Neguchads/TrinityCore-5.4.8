@@ -143,6 +143,41 @@ public:
     bool randomBotAutoJoinBG;
     bool randomBotJoinLfg;
 
+    // CMaNGOS parity: when enabled, DbStore is only saved via explicit chat commands (save ai).
+    bool explicitDbStoreSave = false;
+
+    // Guild automation (random bots).
+    uint32 randomBotGuildCount = 0;
+    bool deleteRandomBotGuilds = false;
+    uint32 guildMaxBotLimit = 1000;
+    bool randomBotGuildNearby = true;
+    bool randomBotInvitePlayer = true;
+    bool inviteChat = false;
+    bool randomBotFormGuild = true;
+
+    // Runtime list of guild ids that were created/managed for random bots.
+    std::vector<uint32> randomBotGuilds;
+
+    uint32 llmEnabled = 0; // 0=disabled, 1=enabled with "ai chat" strategy
+    std::string llmExpansionName;
+    std::string llmApiEndpoint;
+    std::string llmApiKey;
+    std::string llmApiJson;
+    uint32 llmContextLength = 4096;
+    uint32 llmGenerationTimeout = 15;
+    uint32 llmMaxSimultaniousGenerations = 32;
+    std::string llmPrePrompt;
+    std::string llmPrompt;
+    std::string llmPostPrompt;
+    std::string llmResponseStartPattern;
+    std::string llmResponseEndPattern;
+    std::string llmResponseDeletePattern;
+    std::string llmResponseSplitPattern;
+    bool llmGlobalContext = false;
+    uint32 llmBotToBotChatChance = 0;
+    uint32 llmRpgAIChatChance = 100;
+    std::set<uint32> llmBlockedReplyChannels;
+
     uint32 botActiveAlone;
     uint32 BotActiveAloneForceWhenInRadius;
     bool BotActiveAloneForceWhenInZone;

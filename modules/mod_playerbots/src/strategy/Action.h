@@ -49,6 +49,8 @@ public:
     virtual bool Execute([[maybe_unused]] Event event) { return true; }
     virtual bool isPossible() { return true; }
     virtual bool isUseful() { return true; }
+    // Called by the engine when the bot is stunned (some chat/maintenance actions should still run).
+    virtual bool isUsefulWhenStunned() { return false; }
     virtual NextAction** getPrerequisites() { return nullptr; }
     virtual NextAction** getAlternatives() { return nullptr; }
     virtual NextAction** getContinuers() { return nullptr; }

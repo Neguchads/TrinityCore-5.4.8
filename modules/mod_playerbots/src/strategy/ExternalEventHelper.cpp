@@ -3,23 +3,29 @@
 #include "ExternalEventHelper.h"
 
 //#include "ChatHelper.h"
+#include "ChatHelper.h"
 #include "Playerbots.h"
 #include "Trigger.h"
 
 bool ExternalEventHelper::ParseChatCommand(std::string const command, Player* owner)
 {
-    if (HandleCommand(command, "", owner))
+    std::string filtered = command;
+    std::string linkCommand = ChatHelper::parseValue("command", filtered);
+    if (!linkCommand.empty())
+        filtered = linkCommand;
+
+    if (HandleCommand(filtered, "", owner))
         return true;
 
     size_t i = std::string::npos;
     while (true)
     {
-        size_t found = command.rfind(" ", i);
+        size_t found = filtered.rfind(" ", i);
         if (found == std::string::npos || !found)
             break;
 
-        std::string const name = command.substr(0, found);
-        std::string const param = command.substr(found + 1);
+        std::string const name = filtered.substr(0, found);
+        std::string const param = filtered.substr(found + 1);
 
         i = found - 1;
 
@@ -30,8 +36,8 @@ bool ExternalEventHelper::ParseChatCommand(std::string const command, Player* ow
     //if (!ChatHelper::parseable(command))
         //return false;
 
-    HandleCommand("c", command, owner);
-    HandleCommand("t", command, owner);
+    HandleCommand("c", filtered, owner);
+    HandleCommand("t", filtered, owner);
 
     return true;
 }

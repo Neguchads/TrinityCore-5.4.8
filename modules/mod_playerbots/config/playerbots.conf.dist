@@ -83,6 +83,10 @@ AiPlayerbot.Enabled = 1
 # Enable random bot system
 AiPlayerbot.RandomBotAutologin = 1
 
+# When enabled, bot DbStore is only saved via explicit chat commands (save ai).
+# default: 0 (autosave)
+AiPlayerbot.ExplicitDbStoreSave = 0
+
 # Random bot account
 # Please ensure that RandomBotAccountCount is greater than (MaxRandomBots / 10 + AddClassAccountPoolSize)
 AiPlayerbot.RandomBotAccountCount = 200
@@ -134,14 +138,17 @@ AiPlayerbot.BotAutologin = 0
 # Default: 0 (disabled)
 AiPlayerbot.AllowPlayerBots = 0
 
-# Allow/deny bots from your guild
-AiPlayerbot.AllowGuildBots = 1
-
 # Randombots will invite nearby bots to guilds
 AiPlayerbot.RandomBotGuildNearby = 0
 
 # Randombots will invite players to groups/raids/guilds.
 AiPlayerbot.RandomBotInvitePlayer = 1
+
+# Maximum guild size for random-bot guild automation (prevents overflow).
+AiPlayerbot.GuildMaxBotLimit = 1000
+
+# Enable random-bot guild charter creation/signing flow.
+AiPlayerbot.RandomBotFormGuild = 1
 
 # Login random bots only when at least one real player is online.
 AiPlayerbot.RandomBotLoginWithPlayer = 0
@@ -152,10 +159,10 @@ AiPlayerbot.RandomBotTimedLogout = 1
 # Keep logged-out random bots offline for a timed interval.
 AiPlayerbot.RandomBotTimedOffline = 0
 
-# Enable asynchronous random-bot login queue manager (CMaNGOS parity name).
+# Enable asynchronous random-bot login queue manager.
 AiPlayerbot.AsyncBotLogin = 0
 
-# Preload login holders for queued bots (CMaNGOS parity name).
+# Preload login holders for queued bots.
 AiPlayerbot.PreloadHolders = 0
 
 # Reserve slots so non-spare criteria bots can still log in.
@@ -164,10 +171,10 @@ AiPlayerbot.FreeRoomForNonSpareBots = 1
 # Distance used by "range" login criterion.
 AiPlayerbot.LoginBotsNearPlayerRange = 1000
 
-# Comma-separated login criteria for bot queueing (CMaNGOS parity name).
-AiPlayerbot.DefaultLoginCriteria = "maxbots,spareroom,offline"
+# Comma-separated login criteria for bot queueing.
+AiPlayerbot.DefaultLoginCriteria1 = maxbots,spareroom,offline
 
-# Optional progressive login criteria attempts (CMaNGOS parity names).
+# Optional progressive login criteria attempts.
 # AiPlayerbot.LoginCriteria.1 = "group"
 # AiPlayerbot.LoginCriteria.2 = "bg"
 # AiPlayerbot.LoginCriteria.3 = "arena"
@@ -176,13 +183,13 @@ AiPlayerbot.DefaultLoginCriteria = "maxbots,spareroom,offline"
 # AiPlayerbot.LoginCriteria.6 = "logoff,classrace,level"
 # AiPlayerbot.LoginCriteria.7 = "logoff,classrace"
 
-# Optional class/race bucket controls (CMaNGOS parity names).
+# Optional class/race bucket controls.
 # AiPlayerbot.ClassRace.UseFixedClassRaceCounts = 0
 # AiPlayerbot.ClassRaceProb.0.<race> = 100
 # AiPlayerbot.ClassRaceProb.<class> = 100
 # AiPlayerbot.ClassRaceProb.<class>.<race> = 100
 
-# Optional level distribution controls (CMaNGOS parity name).
+# Optional level distribution controls.
 # AiPlayerbot.LevelProbability.<level> = 100
 
 # Bots will chat in say/guild when they invite other bots to groups/raids/guilds
@@ -190,10 +197,6 @@ AiPlayerbot.InviteChat = 0
 
 # Bots will be summoned to player when accept group invitation
 AiPlayerbot.SummonWhenGroup = 1
-
-# Added following config
-# Selfbot permission level (0 = disabled, 1 = gm only (default), 2 = all players, 3 = activate on login)
-AiPlayerbot.SelfBotLevel = 0
 
 # Give free food to bots
 # Default: 1 (enabled)
@@ -711,7 +714,7 @@ AiPlayerbot.BotActiveAlone = 10
 # Disable random-bot throttling optimizations and keep all bot activities active.
 AiPlayerbot.DisableBotOptimizations = 0
 
-# Disable activity-priority throttling (useful for CMaNGOS-style behavior checks).
+# Disable activity-priority throttling.
 AiPlayerbot.DisableActivityPriorities = 0
 
 # Force botActiveAlone when bot is ... of real player
@@ -726,7 +729,7 @@ AiPlayerbot.BotActiveAloneForceWhenInGuild = 1
 AiPlayerbot.DiffWithPlayer = 100
 AiPlayerbot.DiffEmpty = 200
 
-# Respawn modulation controls (CMaNGOS parity names).
+# Respawn modulation controls.
 AiPlayerbot.RespawnModNeutral = 10.0
 AiPlayerbot.RespawnModHostile = 5.0
 AiPlayerbot.RespawnModThreshold = 10
@@ -1505,25 +1508,6 @@ AiPlayerbot.RandomClassSpecIndex.11.3 = 3
 ###################################################################################################
 
 
-###################################
-#                                 #
-# PLAYERBOT SYSTEM SETTINGS       #
-#                                 #
-###################################
-
-####################################################################################################
-# DATABASE & CONNECTIONS
-#
-#
-
-# Command server port, 0 - disabled
-AiPlayerbot.CommandServerPort = 8888
-
-#
-#
-#
-####################################################################################################
-
 ####################################################################################################
 # DEBUG SWITCHES
 #
@@ -1690,16 +1674,14 @@ AiPlayerbot.AllowedLogFiles = ""
 # Log on all random bots on start
 AiPlayerbot.RandomBotLoginAtStartup = 1
 
-# Guild Task system
-AiPlayerbot.EnableGuildTasks = 0
-
 # Enable dungeon suggestions in lower case randomly
 AiPlayerbot.SuggestDungeonsInLowerCaseRandomly = 0
 
 # Random bot guild count
 AiPlayerbot.RandomBotGuildCount = 20
 
-# Delete all random bot guilds
+# Delete all random bot guilds created/managed for random bots (by leader).
+# The flag is treated as one-shot and will be auto-reset to 0 at runtime after processing.
 AiPlayerbot.DeleteRandomBotGuilds = 0
 
 # Chance bot chooses RPG (Teleport to random camp for their level) instead of grinding
@@ -1721,26 +1703,45 @@ AiPlayerbot.MinRandomBotChangeStrategyTime = 180
 AiPlayerbot.MaxRandomBotChangeStrategyTime = 720
 
 
-# How often tasks are changed
-AiPlayerbot.MinGuildTaskChangeTime = 172800
-AiPlayerbot.MaxGuildTaskChangeTime = 432000
-
-# Mail spam interval
-AiPlayerbot.MinGuildTaskAdvertisementTime = 300
-AiPlayerbot.MaxGuildTaskAdvertisementTime = 28800
-
-# Delay before reward is sent
-AiPlayerbot.MinGuildTaskRewardTime = 300
-AiPlayerbot.MaxGuildTaskRewardTime = 3600
-
-# Cleanup of guild tasks interval
-AiPlayerbot.GuildTaskAdvertCleanupTime = 300
-
-# Specify max distance between victim and bot when creating guild kill task
-AiPlayerbot.GuildTaskKillTaskDistance = 200
-
 # Distance margin for facade calculations
 AiPlayerbot.TargetPosRecalcDistance = 0.1
 
 # Allow bots to be summoned near innkeepers
 AiPlayerbot.SummonAtInnkeepersEnabled = 1
+
+#
+# LLM Chat (optional)
+# Supports HTTP and HTTPS endpoints.
+#
+# 0 = disabled, 1 = enabled (requires "ai chat" strategy on the bot)
+AiPlayerbot.LLMEnabled = 0
+
+# Used only in prompt templating (roleplay context).
+AiPlayerbot.LLMExpansionName = "Mists of Pandaria"
+
+# Example: https://example.com/v1/chat/completions
+AiPlayerbot.LLMApiEndpoint = ""
+AiPlayerbot.LLMApiKey = ""
+
+# Raw JSON payload template sent to the endpoint. Placeholders are filled server-side:
+# <pre prompt> <context> <prompt> <post prompt>
+AiPlayerbot.LLMApiJson = ""
+
+AiPlayerbot.LLMContextLength = 4096
+AiPlayerbot.LLMGenerationTimeout = 15
+AiPlayerbot.LLMMaxSimultaniousGenerations = 32
+
+AiPlayerbot.LLMPrePrompt = ""
+AiPlayerbot.LLMPrompt = "<receiver name>:<initial message>"
+AiPlayerbot.LLMPostPrompt = "<bot name>:"
+
+# Regex-based response extraction from the response body.
+AiPlayerbot.LLMResponseStartPattern = "(\\\"content\\\"\\\\s*:\\\\s*\\\")|(\\\"text\\\"\\\\s*:\\\\s*\\\")"
+AiPlayerbot.LLMResponseEndPattern = "(\\\")"
+AiPlayerbot.LLMResponseDeletePattern = "(\\\\n|\\\\r|\\\\t)"
+AiPlayerbot.LLMResponseSplitPattern = "([^\\r\\n]+)"
+
+AiPlayerbot.LLMGlobalContext = 0
+AiPlayerbot.LLMBotToBotChatChance = 0
+AiPlayerbot.LLMRpgAIChatChance = 100
+AiPlayerbot.LLMBlockedReplyChannels = ""

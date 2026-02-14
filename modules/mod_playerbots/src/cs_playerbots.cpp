@@ -20,6 +20,13 @@
 #include "PlayerbotAIConfig.h"
 #include "RandomPlayerbotMgr.h"
 #include "ScriptMgr.h"
+#include "DatabaseEnv.h"
+
+#include <algorithm>
+#include <cctype>
+#include <ctime>
+#include <cstdlib>
+#include <sstream>
 
 class playerbots_commandscript : public CommandScript
 {
@@ -33,27 +40,14 @@ public:
             { "bg",             SEC_GAMEMASTER,             true,           &HandleDebugBGCommand },
         };
 
-        static std::vector<ChatCommand> playerbotsAccountCommandTable =
-        {
-            // Not implemented in this core yet.
-            // { "setkey",         SEC_PLAYER,                false,          &HandleSetSecurityKeyCommand },
-            // { "link",           SEC_PLAYER,                false,          &HandleLinkAccountCommand },
-            // { "linkedaccounts", SEC_PLAYER,                false,          &HandleViewLinkedAccountsCommand },
-            // { "unlink",         SEC_PLAYER,                false,          &HandleUnlinkAccountCommand },
-        };
-
         static std::vector<ChatCommand> playerbotsCommandTable =
         {
             { "bot",            SEC_PLAYER,                false,          &HandlePlayerbotCommand },
             { "add",            SEC_PLAYER,                false,          &HandlePlayerbotCommand },
             { "strategy",       SEC_PLAYER,                false,          &HandlePlayerbotCommand },
-            // Not implemented in this core yet.
-            // { "gtask",          SEC_GAMEMASTER,             true,           &HandleGuildTaskCommand },
             { "pmon",           SEC_GAMEMASTER,             true,           &HandlePerfMonCommand },
-            // Not implemented in this core yet.
-            // { "rndbot",         SEC_GAMEMASTER,             true,           &HandleRandomPlayerbotCommand },
+            { "rndbot",         SEC_GAMEMASTER,             true,           &HandleRandomPlayerbotCommand },
             { "debug",          SEC_GAMEMASTER,             true,           playerbotsDebugCommandTable },
-            { "account",        SEC_PLAYER,                false,          playerbotsAccountCommandTable },
         };
 
         static std::vector<ChatCommand> commandTable =
@@ -100,6 +94,13 @@ public:
     static bool HandleDebugBGCommand(ChatHandler* handler, char const* args)
     {
         return BGTactics::HandleConsoleCommand(handler, args);
+    }
+
+    static bool HandleRandomPlayerbotCommand(ChatHandler* handler, char const* args)
+    {
+        if (!handler)
+            return false;
+        return sRandomPlayerbotMgr->HandlePlayerbotConsoleCommand(handler, args);
     }
 };
 

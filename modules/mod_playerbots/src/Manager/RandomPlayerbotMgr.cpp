@@ -33,6 +33,7 @@
 #include "BattlegroundMgr.h"
 #include "BotFactory.h"
 #include "CharacterCache.h"
+#include "RandomPlayerbotFactory.h"
 #include "CellImpl.h"
 #include "Chat.h"
 #include "ChannelMgr.h"
@@ -61,6 +62,7 @@
 #include "SharedDefines.h"
 #include "Unit.h"
 #include "World.h"
+#include "ObjectMgr.h"
 
 namespace
 {
@@ -275,6 +277,8 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
     uint32 onlineBotCount = playerBots.size();
     bool const loginAllowedByRealPlayers = !(sPlayerbotAIConfig->randomBotLoginWithPlayer && _players.empty());
 
+    EnsureRandomBotGuilds();
+
     uint32 onlineBotFocus = 75;
     if (onlineBotCount < (uint32)(sPlayerbotAIConfig->minRandomBots * 90 / 100))
         onlineBotFocus = 25;
@@ -390,6 +394,223 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
 
     if (pmo)
         pmo->finish();
+}
+
+namespace
+{
+    static bool EndsWith(std::string const& s, std::string const& suffix)
+    {
+        return s.size() >= suffix.size() && s.compare(s.size() - suffix.size(), suffix.size(), suffix) == 0;
+    }
+
+    static std::string FormatMoney(uint64 copper)
+    {
+        uint64 gold = copper / GOLD;
+        copper %= GOLD;
+        uint64 silver = copper / SILVER;
+        copper %= SILVER;
+
+        std::ostringstream out;
+        bool first = true;
+        if (gold)
+        {
+            out << gold << "g";
+            first = false;
+        }
+        if (silver || (!gold && (copper == 0)))
+        {
+            if (!first) out << " ";
+            out << silver << "s";
+            first = false;
+        }
+        if (copper)
+        {
+            if (!first) out << " ";
+            out << copper << "c";
+        }
+        return out.str();
+    }
+
+    static bool PickRandomKillTarget(uint32 targetLevel, uint32 levelWindow, uint32& outEntry, std::string& outName)
+    {
+        outEntry = 0;
+        outName.clear();
+
+        CreatureTemplateContainer const* ctc = sObjectMgr->GetCreatureTemplates();
+        if (!ctc)
+            return false;
+
+        uint32 count = 0;
+        for (CreatureTemplateContainer::const_iterator itr = ctc->begin(); itr != ctc->end(); ++itr)
+        {
+            CreatureTemplate const& c = itr->second;
+
+            // Skip non-hostile/non-combat entries best-effort.
+            if (c.npcflag != 0 || c.npcflag2 != 0)
+                continue;
+            if (c.rank >= 3) // world bosses etc
+                continue;
+            if (c.minlevel < 1 || c.maxlevel < 1)
+                continue;
+            if (c.type == CREATURE_TYPE_CRITTER)
+                continue;
+
+            uint32 minL = c.minlevel;
+            uint32 maxL = c.maxlevel;
+            if (targetLevel < minL || targetLevel > maxL)
+                continue;
+
+            // Ensure it isn't too wide; prefer more "normal" mobs.
+            if ((maxL - minL) > 10)
+                continue;
+
+            // Tighten to a window around targetLevel.
+            if (targetLevel > levelWindow && minL + levelWindow < targetLevel)
+                continue;
+            if (maxL > targetLevel + levelWindow)
+                continue;
+
+            ++count;
+            if (urand(1, count) == 1)
+            {
+                outEntry = c.Entry;
+                outName = c.Name;
+            }
+        }
+
+        return outEntry != 0 && !outName.empty();
+    }
+}
+
+void RandomPlayerbotMgr::EnsureRandomBotGuilds()
+{
+    // CMaNGOS parity: Random guild creation is based on random-bot accounts and guild leaders,
+    // using a static name pool in `ai_playerbot_guild_names` (characters DB).
+
+    time_t const now = time(nullptr);
+    uint32 const minInterval = _randomBotGuildsInitialized ? 300u : 30u;
+    if (_randomBotGuildsLastUpdate && (now - _randomBotGuildsLastUpdate) < time_t(minInterval))
+        return;
+    _randomBotGuildsLastUpdate = now;
+
+    std::vector<uint32> randomBots;
+    std::map<uint32, std::vector<uint32>> charAccGuids;
+
+    if (QueryResult charAccounts = CharacterDatabase.PQuery("SELECT `account`, `guid` FROM `characters`"))
+    {
+        do
+        {
+            Field* fields = charAccounts->Fetch();
+            uint32 accId = fields[0].GetUInt32();
+            uint32 guid = fields[1].GetUInt32();
+            charAccGuids[accId].push_back(guid);
+        } while (charAccounts->NextRow());
+    }
+
+    if (!charAccGuids.empty())
+    {
+        for (uint32 accId : sPlayerbotAIConfig->randomBotAccounts)
+            if (!charAccGuids[accId].empty())
+                randomBots.insert(randomBots.end(), charAccGuids[accId].begin(), charAccGuids[accId].end());
+    }
+
+    if (randomBots.empty())
+    {
+        _randomBotGuildsInitialized = true;
+        return;
+    }
+
+    if (sPlayerbotAIConfig->deleteRandomBotGuilds)
+    {
+        TC_LOG_WARN("playerbots", "Deleting random bot guilds...");
+        uint32 counter = 0;
+        for (uint32 guidLow : randomBots)
+        {
+            ObjectGuid leader = ObjectGuid::Create<HighGuid::Player>(guidLow);
+            if (Guild* guild = sGuildMgr->GetGuildByLeader(leader))
+            {
+                guild->Disband();
+                ++counter;
+            }
+        }
+        TC_LOG_WARN("playerbots", "%u random bot guild(s) deleted", counter);
+        sPlayerbotAIConfig->deleteRandomBotGuilds = false; // one-shot
+    }
+
+    if (!sPlayerbotAIConfig->randomBotGuildCount)
+    {
+        _randomBotGuildsInitialized = true;
+        return;
+    }
+
+    uint32 guildNumber = 0;
+    std::vector<ObjectGuid> availableLeaders;
+    for (uint32 guidLow : randomBots)
+    {
+        ObjectGuid leader = ObjectGuid::Create<HighGuid::Player>(guidLow);
+        if (Guild* guild = sGuildMgr->GetGuildByLeader(leader))
+        {
+            if (std::find(sPlayerbotAIConfig->randomBotGuilds.begin(), sPlayerbotAIConfig->randomBotGuilds.end(), guild->GetId()) == sPlayerbotAIConfig->randomBotGuilds.end())
+            {
+                ++guildNumber;
+                sPlayerbotAIConfig->randomBotGuilds.push_back(guild->GetId());
+            }
+        }
+        else
+        {
+            Player* player = ObjectAccessor::FindPlayer(leader);
+            if (player && !player->GetGuildId() && player->GetLevel() >= 10)
+                availableLeaders.push_back(leader);
+        }
+    }
+
+    if (availableLeaders.empty())
+    {
+        // Try again later when more random bots are online.
+        return;
+    }
+
+    uint32 attempts = 0;
+    uint32 maxNewGuilds = (sPlayerbotAIConfig->randomBotGuildCount > sPlayerbotAIConfig->randomBotGuilds.size())
+        ? (sPlayerbotAIConfig->randomBotGuildCount - uint32(sPlayerbotAIConfig->randomBotGuilds.size()))
+        : 0u;
+    bool newGuilds = false;
+
+    for (; guildNumber < maxNewGuilds; ++guildNumber)
+    {
+        ++attempts;
+        if (attempts > std::min<uint32>(5, sPlayerbotAIConfig->randomBotGuildCount))
+            break;
+        if (sPlayerbotAIConfig->randomBotGuilds.size() >= sPlayerbotAIConfig->randomBotGuildCount)
+            break;
+
+        std::string guildName = RandomPlayerbotFactory::CreateRandomGuildName();
+        if (guildName.empty())
+            continue;
+
+        ObjectGuid leader = availableLeaders[urand(0, uint32(availableLeaders.size() - 1))];
+        Player* player = ObjectAccessor::FindPlayer(leader);
+        if (!player || player->GetGuildId())
+            continue;
+
+        Guild* guild = new Guild();
+        if (!guild->Create(player, guildName))
+        {
+            TC_LOG_ERROR("playerbots", "Error creating random guild '%s'", guildName.c_str());
+            delete guild;
+            continue;
+        }
+
+        sGuildMgr->AddGuild(guild);
+        sPlayerbotAIConfig->randomBotGuilds.push_back(guild->GetId());
+        TC_LOG_INFO("playerbots", "Random Guild <%s>, GM: %s", guildName.c_str(), player->GetName().c_str());
+        newGuilds = true;
+    }
+
+    if (newGuilds)
+        TC_LOG_INFO("playerbots", "Total Random Guilds: %u", uint32(sPlayerbotAIConfig->randomBotGuilds.size()));
+
+    _randomBotGuildsInitialized = true;
 }
 
 void RandomPlayerbotMgr::ScaleBotActivity()

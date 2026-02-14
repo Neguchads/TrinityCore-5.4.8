@@ -26,6 +26,7 @@
 #include "ObjectMgr.h"
 #include "Playerbots.h"
 #include "PlayerbotTextMgr.h"
+#include "PlayerbotHelpMgr.h"
 #include "RandomPlayerbotMgr.h"
 #include "Factory/RandomPlayerbotFactory.h"
 
@@ -196,6 +197,38 @@ bool PlayerbotAIConfig::Initialize()
     randomBotJoinBG = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotJoinBG", true);
     randomBotAutoJoinBG = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotAutoJoinBG", false);
     randomBotJoinLfg = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotJoinLfg", true);
+
+    explicitDbStoreSave = sConfigMgr->GetBoolDefault("AiPlayerbot.ExplicitDbStoreSave", false);
+
+    randomBotGuildCount = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotGuildCount", 0);
+    deleteRandomBotGuilds = sConfigMgr->GetBoolDefault("AiPlayerbot.DeleteRandomBotGuilds", false);
+    guildMaxBotLimit = sConfigMgr->GetIntDefault("AiPlayerbot.GuildMaxBotLimit", 1000);
+    randomBotGuildNearby = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotGuildNearby", true);
+    randomBotInvitePlayer = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotInvitePlayer", true);
+    inviteChat = sConfigMgr->GetBoolDefault("AiPlayerbot.InviteChat", false);
+    randomBotFormGuild = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotFormGuild", true);
+
+    llmEnabled = sConfigMgr->GetIntDefault("AiPlayerbot.LLMEnabled", 0);
+    llmExpansionName = sConfigMgr->GetStringDefault("AiPlayerbot.LLMExpansionName", "Mists of Pandaria");
+    llmApiEndpoint = sConfigMgr->GetStringDefault("AiPlayerbot.LLMApiEndpoint", "");
+    llmApiKey = sConfigMgr->GetStringDefault("AiPlayerbot.LLMApiKey", "");
+    llmApiJson = sConfigMgr->GetStringDefault("AiPlayerbot.LLMApiJson", "");
+    llmContextLength = sConfigMgr->GetIntDefault("AiPlayerbot.LLMContextLength", 4096);
+    llmGenerationTimeout = sConfigMgr->GetIntDefault("AiPlayerbot.LLMGenerationTimeout", 15);
+    llmMaxSimultaniousGenerations = sConfigMgr->GetIntDefault("AiPlayerbot.LLMMaxSimultaniousGenerations", 32);
+    llmPrePrompt = sConfigMgr->GetStringDefault("AiPlayerbot.LLMPrePrompt", "");
+    llmPrompt = sConfigMgr->GetStringDefault("AiPlayerbot.LLMPrompt", "<receiver name>:<initial message>");
+    llmPostPrompt = sConfigMgr->GetStringDefault("AiPlayerbot.LLMPostPrompt", "<bot name>:");
+    llmResponseStartPattern = sConfigMgr->GetStringDefault("AiPlayerbot.LLMResponseStartPattern", R"((\"content\"\\s*:\\s*\")|(\"text\"\\s*:\\s*\"))");
+    llmResponseEndPattern = sConfigMgr->GetStringDefault("AiPlayerbot.LLMResponseEndPattern", R"((\"))");
+    llmResponseDeletePattern = sConfigMgr->GetStringDefault("AiPlayerbot.LLMResponseDeletePattern", R"((\\n|\\r|\\t))");
+    llmResponseSplitPattern = sConfigMgr->GetStringDefault("AiPlayerbot.LLMResponseSplitPattern", R"(([^\r\n]+))");
+    llmGlobalContext = sConfigMgr->GetBoolDefault("AiPlayerbot.LLMGlobalContext", false);
+    llmBotToBotChatChance = sConfigMgr->GetIntDefault("AiPlayerbot.LLMBotToBotChatChance", 0);
+    llmRpgAIChatChance = sConfigMgr->GetIntDefault("AiPlayerbot.LLMRpgAIChatChance", 100);
+    llmBlockedReplyChannels.clear();
+    LoadSet<std::set<uint32>>(sConfigMgr->GetStringDefault("AiPlayerbot.LLMBlockedReplyChannels", ""), llmBlockedReplyChannels);
+
     randomBotTalk = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotTalk", true);
     randomBotEmote = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotEmote", false);
     enableGreet = sConfigMgr->GetBoolDefault("AiPlayerbot.EnableGreet", false);
@@ -209,7 +242,7 @@ bool PlayerbotAIConfig::Initialize()
     loginBotsNearPlayerRange = sConfigMgr->GetIntDefault("AiPlayerbot.LoginBotsNearPlayerRange", 1000);
     defaultLoginCriteria.clear();
     LoadListString<std::vector<std::string>>(
-        sConfigMgr->GetStringDefault("AiPlayerbot.DefaultLoginCriteria", "maxbots,spareroom,offline"),
+        sConfigMgr->GetStringDefault("AiPlayerbot.DefaultLoginCriteria1", "maxbots,spareroom,offline"),
         defaultLoginCriteria);
     loginCriteria.clear();
     for (uint8 i = 1; i <= 20; ++i)
@@ -455,6 +488,7 @@ bool PlayerbotAIConfig::Initialize()
 
     sPlayerbotTextMgr->LoadBotTexts();
     sPlayerbotTextMgr->LoadBotTextChance();
+    sPlayerbotHelpMgr->LoadBotHelpTexts();
 
     TC_LOG_INFO("server.loading", "---------------------------------------");
     TC_LOG_INFO("server.loading", "          Loading TalentSpecs          ");

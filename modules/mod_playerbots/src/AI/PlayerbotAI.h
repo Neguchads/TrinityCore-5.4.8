@@ -16,6 +16,7 @@
 #include "PlayerbotAIConfig.h"
 #include "NewRpgStrategy.h"
 #include "WorldPacket.h"
+#include "PlayerbotSecurity.h"
 
 enum BotState
 {
@@ -46,6 +47,23 @@ enum ActivityType
     ALL_ACTIVITY = 8,
 
     MAX_ACTIVITY_TYPE
+};
+
+// CMaNGOS parity: deterministic per-bot "personality" numbers (seeded by purpose).
+enum class BotTypeNumber : uint8
+{
+    GUILDER_TYPE_NUMBER = 3
+};
+
+// CMaNGOS parity: guild-size preference profile.
+enum class GuilderType : uint8
+{
+    SOLO = 0,
+    TINY = 30,
+    SMALL = 50,
+    MEDIUM = 70,
+    LARGE = 120,
+    MASSIVE = 250
 };
 
 class Aura;
@@ -152,8 +170,11 @@ public:
     std::vector<Player*> GetPlayersInGroup() const;
     int32 GetGroupSlotIndex(Player* player) const;
     uint32 GetFixedBotNumer(uint32 maxNum = 100, float cyclePerMin = 1);
+    uint32 GetFixedBotNumber(BotTypeNumber typeNumber, uint32 maxNum = 100, float cyclePerMin = 1.0f, bool ignoreGuid = false);
     uint32 AutoScaleActivity(uint32 mod);
     bool IsInRealGuild();
+    GuilderType GetGuilderType();
+    uint32 GetMaxPreferedGuildSize();
     Creature* GetCreature(ObjectGuid guid);
     Unit* GetUnit(ObjectGuid guid);
     Player* GetPlayer(ObjectGuid guid);
@@ -297,6 +318,10 @@ public:
     bool SayToRaid(const std::string& msg);
     bool SayToParty(const std::string& msg);
     bool TellError(std::string const text);
+    // Helper for ported actions that need to reply to a specific requester (not always the master).
+    bool TellError(Player* requester, std::string const& text);
+
+    PlayerbotSecurity* GetSecurity() { return &security; }
 private:
     bool _isBotInitializing;
 
@@ -316,7 +341,7 @@ protected:
     PacketHandlingHelper masterIncomingPacketHandlers;
     PacketHandlingHelper masterOutgoingPacketHandlers;
     //CompositeChatFilter chatFilter;
-    //PlayerbotSecurity security;
+    PlayerbotSecurity security;
     //std::map<std::string, time_t> whispers;
     //std::pair<ChatMsg, time_t> currentChat;
     //static std::set<std::string> unsecuredCommands;

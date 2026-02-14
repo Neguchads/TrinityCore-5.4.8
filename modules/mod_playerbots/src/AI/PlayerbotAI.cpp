@@ -22,6 +22,7 @@
 #include <cmath>
 #include <list>
 #include <mutex>
+#include <random>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -29,6 +30,7 @@
 
 #include "AiFactory.h"
 #include "ChannelMgr.h"
+#include "Chat.h"
 #include "ChatHelper.h"
 #include "CreatureAIImpl.h"
 #include "Engine.h"
@@ -47,6 +49,7 @@
 #include "ObjectMgr.h"
 #include "Opcodes.h"
 #include "Player.h"
+#include "Group.h"
 #include "PositionValue.h"
 #include "PointMovementGenerator.h"
 #include "Playerbots.h"
@@ -136,6 +139,7 @@ PlayerbotAI::PlayerbotAI(Player* bot)
     _isBotInitializing{ true },
     bot(bot),
     master(nullptr),
+    security(bot),
     _aiObjectContext{ nullptr },
     _currentEngine{ nullptr },
     _engines{ nullptr }
@@ -193,6 +197,10 @@ PlayerbotAI::PlayerbotAI(Player* bot)
     botOutgoingPacketHandlers.AddHandler(SMSG_ITEM_PUSH_RESULT, "item push result");
     botOutgoingPacketHandlers.AddHandler(SMSG_LOOT_RESPONSE, "loot response");
     botOutgoingPacketHandlers.AddHandler(SMSG_LOOT_START_ROLL, "master loot roll");
+
+    // CMaNGOS parity: guild/petition automation (guild invites + guild charter signing).
+    botOutgoingPacketHandlers.AddHandler(SMSG_GUILD_INVITE, "guild accept");
+    botOutgoingPacketHandlers.AddHandler(SMSG_PETITION_SHOW_SIGNATURES, "petition offer");
 
 #ifdef MEMORY_MONITOR
     sMemoryMonitor.Add("PlayerbotAI", reinterpret_cast<uint64>(this));
@@ -1848,6 +1856,51 @@ uint32 PlayerbotAI::GetFixedBotNumer(uint32 maxNum, float cyclePerMin)
     return randnum;
 }
 
+uint32 PlayerbotAI::GetFixedBotNumber(BotTypeNumber typeNumber, uint32 maxNum, float cyclePerMin, bool ignoreGuid)
+{
+    uint8 seedNumber = static_cast<uint8>(typeNumber);
+    std::mt19937 rng(seedNumber);
+    uint32 randseed = rng();
+    uint32 randnum = randseed;
+
+    if (!ignoreGuid)
+        randnum += bot->GetGUID().GetCounter();
+
+    if (cyclePerMin > 0.0f)
+    {
+        uint32 cycle = floor(getMSTime() / 1000);
+        cycle = uint32(cycle * cyclePerMin / 60);
+        randnum += cycle;
+    }
+
+    randnum = (randnum % (maxNum + 1));
+    return randnum;
+}
+
+GuilderType PlayerbotAI::GetGuilderType()
+{
+    uint32 n = GetFixedBotNumber(BotTypeNumber::GUILDER_TYPE_NUMBER, 100, 0.0f);
+
+    if (n < 20 && !HasRealPlayerMaster())
+        return GuilderType::SOLO;
+    if (n < 30)
+        return GuilderType::TINY;
+    if (n < 40)
+        return GuilderType::SMALL;
+    if (n < 60)
+        return GuilderType::MEDIUM;
+    if (n < 80)
+        return GuilderType::LARGE;
+
+    return GuilderType::MASSIVE;
+}
+
+uint32 PlayerbotAI::GetMaxPreferedGuildSize()
+{
+    // Base preference (CMaNGOS parity). Rank-based adjustment is intentionally omitted.
+    return static_cast<uint32>(static_cast<uint8>(GetGuilderType()));
+}
+
 uint32 GetCreatureIdForCreatureTemplateId(uint32 creatureTemplateId)
 {
     QueryResult results = WorldDatabase.PQuery("SELECT guid FROM `creature` WHERE id = %u LIMIT 1;", creatureTemplateId);
@@ -1904,34 +1957,32 @@ WorldObject* PlayerbotAI::GetWorldObject(ObjectGuid guid)
 
 bool PlayerbotAI::SayToParty(const std::string& msg)
 {
-    if (!bot->GetGroup())
+    Group* group = bot->GetGroup();
+    if (!group)
         return false;
 
-    /*WorldPacket data;
-    ChatHandler::BuildChatPacket(data, CHAT_MSG_PARTY, msg.c_str(), LANG_UNIVERSAL, CHAT_TAG_NONE, bot->GetGUID(),
-        bot->GetName());
+    if (group->isRaidGroup())
+        return false;
 
-    for (auto reciever : GetPlayersInGroup())
-    {
-        sServerFacade->SendPacket(reciever, &data);
-    }*/
+    WorldPacket data;
+    ChatHandler::BuildChatPacket(data, CHAT_MSG_PARTY, LANG_UNIVERSAL, bot, nullptr, msg);
+    group->BroadcastPacket(&data, false);
 
     return true;
 }
 
 bool PlayerbotAI::SayToRaid(const std::string& msg)
 {
-    if (!bot->GetGroup() || bot->GetGroup()->isRaidGroup())
+    Group* group = bot->GetGroup();
+    if (!group)
         return false;
 
-    /*WorldPacket data;
-    ChatHandler::BuildChatPacket(data, CHAT_MSG_RAID, msg.c_str(), LANG_UNIVERSAL, CHAT_TAG_NONE, bot->GetGUID(),
-        bot->GetName());
+    if (!group->isRaidGroup())
+        return false;
 
-    for (auto reciever : GetPlayersInGroup())
-    {
-        sServerFacade->SendPacket(reciever, &data);
-    }*/
+    WorldPacket data;
+    ChatHandler::BuildChatPacket(data, CHAT_MSG_RAID, LANG_UNIVERSAL, bot, nullptr, msg);
+    group->BroadcastPacket(&data, false);
 
     return true;
 }
@@ -2056,6 +2107,16 @@ bool PlayerbotAI::TellError(std::string const text)
         mgr->TellError(bot->GetName(), text);
 
     return false;
+}
+
+bool PlayerbotAI::TellError(Player* requester, std::string const& text)
+{
+    if (!requester || text.empty() || !bot)
+        return false;
+
+    // Reply directly to the requester (not necessarily the master).
+    bot->Whisper(text, bot->GetTeamId() == TEAM_ALLIANCE ? LANG_COMMON : LANG_ORCISH, requester);
+    return true;
 }
 
 int32 PlayerbotAI::GetNearGroupMemberCount(float dis)

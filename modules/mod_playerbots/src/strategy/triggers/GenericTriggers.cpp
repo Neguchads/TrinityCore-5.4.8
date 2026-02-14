@@ -7,7 +7,7 @@
 #include "DatabaseEnvFwd.h"
 #include "BattlegroundWS.h"
 #include "CreatureAI.h"
-#include "GameTime.h"
+#include "Time/GameTime.h"
 #include "LastSpellCastValue.h"
 #include "ObjectGuid.h"
 #include "PlayerbotAIConfig.h"

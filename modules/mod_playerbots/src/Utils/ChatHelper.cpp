@@ -116,3 +116,25 @@ std::string const ChatHelper::FormatSpell(SpellInfo const* spellInfo)
     out << spellName << " (" << spellInfo->Id << ")";
     return out.str();
 }
+
+std::string ChatHelper::formatValue(std::string const& type, std::string const& code, std::string const& name, std::string const& color)
+{
+    std::ostringstream out;
+    out << "|c" << color << "|Hvalue:" << type << ":" << code << "|h[" << name << "]|h|r";
+    return out.str();
+}
+
+std::string ChatHelper::parseValue(std::string const& type, std::string const& text)
+{
+    std::string const pattern = "Hvalue:" + type + ":";
+    size_t pos = text.find(pattern);
+    if (pos == std::string::npos)
+        return std::string();
+
+    pos += pattern.size();
+    size_t endPos = text.find('|', pos);
+    if (endPos == std::string::npos || endPos <= pos)
+        return std::string();
+
+    return text.substr(pos, endPos - pos);
+}

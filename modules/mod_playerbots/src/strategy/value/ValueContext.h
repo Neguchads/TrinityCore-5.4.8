@@ -20,6 +20,7 @@
 #include "Formations.h"
 #include "GroupValues.h"
 #include "GrindTargetValue.h"
+#include "GuildValues.h"
 #include "HasTotemValue.h"
 #include "InvalidTargetValue.h"
 #include "IsBehindValue.h"
@@ -100,6 +101,9 @@ public:
         creators["last emote"] = &ValueContext::last_emote;
         creators["new player nearby"] = &ValueContext::new_player_nearby;
         creators["already seen players"] = &ValueContext::already_seen_players;
+        creators["petition signs"] = &ValueContext::petition_signs;
+        creators["can hand in petition"] = &ValueContext::can_hand_in_petition;
+        creators["can buy tabard"] = &ValueContext::can_buy_tabard;
 
         creators["distance"] = &ValueContext::distance;
         creators["moving"] = &ValueContext::moving;
@@ -265,6 +269,9 @@ private:
     static UntypedValue* last_emote(PlayerbotAI* botAI) { return new LastEmoteValue(botAI); }
     static UntypedValue* new_player_nearby(PlayerbotAI* botAI) { return new NewPlayerNearbyValue(botAI); }
     static UntypedValue* already_seen_players(PlayerbotAI* botAI) { return new AlreadySeenPlayersValue(botAI); }
+    static UntypedValue* petition_signs(PlayerbotAI* botAI) { return new PetitionSignsValue(botAI); }
+    static UntypedValue* can_hand_in_petition(PlayerbotAI* botAI) { return new CanHandInPetitionValue(botAI); }
+    static UntypedValue* can_buy_tabard(PlayerbotAI* botAI) { return new CanBuyTabardValue(botAI); }
     static UntypedValue* duel_target(PlayerbotAI* botAI) { return new DuelTargetValue(botAI); }
 
     static UntypedValue* position(PlayerbotAI* botAI) { return new PositionValue(botAI); }

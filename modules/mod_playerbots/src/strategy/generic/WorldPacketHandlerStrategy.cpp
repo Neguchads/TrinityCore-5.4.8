@@ -10,6 +10,10 @@ void WorldPacketHandlerStrategy::InitTriggers(std::vector<TriggerNode*>& trigger
 
     triggers.push_back(new TriggerNode("levelup", NextAction::array(0, new NextAction("auto maintenance on levelup", relevance + 3), nullptr)));
 
+    // CMaNGOS parity: periodically run background maintenance actions.
+    triggers.push_back(new TriggerNode("often",
+        NextAction::array(0, new NextAction("security check", relevance), new NextAction("check mail", relevance), nullptr)));
+
     // party handlers
     triggers.push_back(new TriggerNode("group invite", NextAction::array(0, new NextAction("accept invitation", relevance), nullptr)));
     triggers.push_back(new TriggerNode("uninvite guid", NextAction::array(0, new NextAction("uninvite", relevance), nullptr)));
@@ -31,6 +35,10 @@ void WorldPacketHandlerStrategy::InitTriggers(std::vector<TriggerNode*>& trigger
     triggers.push_back(new TriggerNode("lfg teleport", NextAction::array(0, new NextAction("lfg teleport", relevance), nullptr)));
     triggers.push_back(new TriggerNode("loot response", NextAction::array(0, new NextAction("store loot", relevance), nullptr)));
     triggers.push_back(new TriggerNode("master loot roll", NextAction::array(0, new NextAction("master loot roll", relevance), nullptr)));
+
+    // CMaNGOS parity: guild/petition automation.
+    triggers.push_back(new TriggerNode("guild accept", NextAction::array(0, new NextAction("guild accept", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("petition offer", NextAction::array(0, new NextAction("petition sign", relevance), nullptr)));
 }
 
 WorldPacketHandlerStrategy::WorldPacketHandlerStrategy(PlayerbotAI* botAI) : PassTroughStrategy(botAI)
@@ -49,6 +57,8 @@ WorldPacketHandlerStrategy::WorldPacketHandlerStrategy(PlayerbotAI* botAI) : Pas
     supported.push_back("quest item push result");
     supported.push_back("loot response");
     supported.push_back("master loot roll");
+    supported.push_back("guild accept");
+    supported.push_back("petition offer");
 }
 
 void ReadyCheckStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

@@ -9,11 +9,20 @@
 #include "BattleGroundJoinAction.h"
 #include "BattleGroundTactics.h"
 #include "ChatActions.h"
+#include "BankActions.h"
+#include "GuildBankActions.h"
+#include "GuildCreateActions.h"
+#include "GuildManagementActions.h"
+#include "AuctionActions.h"
 #include "DropQuestAction.h"
+#include "HelpActions.h"
 #include "LootAction.h"
 #include "LootRollAction.h"
 #include "LootStrategyAction.h"
 #include "AddLootAction.h"
+#include "MailActions.h"
+#include "SendMailAction.h"
+#include "CheckMailAction.h"
 #include "ChooseRpgTargetAction.h"
 #include "ChooseTargetActions.h"
 #include "FollowActions.h"
@@ -43,6 +52,7 @@
 #include "RpgAction.h"
 #include "RpgSubActions.h"
 #include "ResetInstancesAction.h"
+#include "ResetAiAction.h"
 #include "UseItemAction.h"
 #include "UseMeetingStoneAction.h"
 #include "VehicleActions.h"
@@ -80,6 +90,19 @@ public:
         creators["add all loot"] = &ActionContext::add_all_loot;
         creators["add gathering loot"] = &ActionContext::add_gathering_loot;
         creators["ll"] = &ActionContext::loot_strategy;
+
+        creators["guild manage nearby"] = &ActionContext::guild_manage_nearby;
+        creators["guild invite"] = &ActionContext::guild_invite;
+        creators["guild join"] = &ActionContext::guild_join;
+        creators["guild promote"] = &ActionContext::guild_promote;
+        creators["guild demote"] = &ActionContext::guild_demote;
+        creators["guild remove"] = &ActionContext::guild_remove;
+        creators["guild leader"] = &ActionContext::guild_leader;
+        creators["guild leave"] = &ActionContext::guild_leave;
+        creators["buy petition"] = &ActionContext::buy_petition;
+        creators["offer petition nearby"] = &ActionContext::offer_petition_nearby;
+        creators["turn in petition"] = &ActionContext::turn_in_petition;
+        creators["buy tabard"] = &ActionContext::buy_tabard;
 
         creators["follow"] = &ActionContext::follow;
         creators["flee"] = &ActionContext::flee;
@@ -128,6 +151,13 @@ public:
         creators["join"] = &ActionContext::join;
         creators["invite"] = &ActionContext::invite;
         creators["maintenance"] = &ActionContext::maintenance;
+        creators["bank"] = &ActionContext::bank;
+        creators["gb"] = &ActionContext::gb;
+        creators["guild bank"] = &ActionContext::guild_bank;
+        creators["mail"] = &ActionContext::mail;
+        creators["sendmail"] = &ActionContext::sendmail;
+        creators["ah"] = &ActionContext::ah;
+        creators["help"] = &ActionContext::help;
         creators["bg join"] = &ActionContext::bg_join;
         creators["bg leave"] = &ActionContext::bg_leave;
         creators["bg status check"] = &ActionContext::bg_status_check;
@@ -202,6 +232,15 @@ public:
         creators["invite guild"] = &ActionContext::invite_guild;
         creators["leave far away"] = &ActionContext::leave_far_away;
         creators["reset instances"] = &ActionContext::reset_instances;
+        creators["check mail"] = &ActionContext::check_mail;
+        creators["reset ai"] = &ActionContext::reset_ai;
+        creators["reset ai soft"] = &ActionContext::reset_ai_soft;
+        creators["reset strats"] = &ActionContext::reset_strats;
+        creators["reset values"] = &ActionContext::reset_values;
+        creators["save ai"] = &ActionContext::save_ai;
+        creators["load ai"] = &ActionContext::load_ai;
+        creators["list ai"] = &ActionContext::list_ai;
+        creators["reset"] = &ActionContext::reset;
         creators["cs"] = &ActionContext::custom_strategy_edit;
     }
 
@@ -232,6 +271,18 @@ private:
     static Action* add_all_loot(PlayerbotAI* botAI) { return new AddAllLootAction(botAI); }
     static Action* add_gathering_loot(PlayerbotAI* botAI) { return new AddGatheringLootAction(botAI); }
     static Action* loot_strategy(PlayerbotAI* botAI) { return new LootStrategyAction(botAI); }
+    static Action* guild_manage_nearby(PlayerbotAI* botAI) { return new GuildManageNearbyAction(botAI); }
+    static Action* guild_invite(PlayerbotAI* botAI) { return new GuildInviteAction(botAI); }
+    static Action* guild_join(PlayerbotAI* botAI) { return new GuildJoinAction(botAI); }
+    static Action* guild_promote(PlayerbotAI* botAI) { return new GuildPromoteAction(botAI); }
+    static Action* guild_demote(PlayerbotAI* botAI) { return new GuildDemoteAction(botAI); }
+    static Action* guild_remove(PlayerbotAI* botAI) { return new GuildRemoveAction(botAI); }
+    static Action* guild_leader(PlayerbotAI* botAI) { return new GuildLeaderAction(botAI); }
+    static Action* guild_leave(PlayerbotAI* botAI) { return new GuildLeaveAction(botAI); }
+    static Action* buy_petition(PlayerbotAI* botAI) { return new BuyPetitionAction(botAI); }
+    static Action* offer_petition_nearby(PlayerbotAI* botAI) { return new PetitionOfferNearbyAction(botAI); }
+    static Action* turn_in_petition(PlayerbotAI* botAI) { return new PetitionTurnInAction(botAI); }
+    static Action* buy_tabard(PlayerbotAI* botAI) { return new BuyTabardAction(botAI); }
 
     static Action* follow(PlayerbotAI* botAI) { return new FollowAction(botAI); }
     static Action* flee(PlayerbotAI* botAI) { return new FleeAction(botAI); }
@@ -278,6 +329,13 @@ private:
     static Action* join(PlayerbotAI* botAI) { return new JoinGroupAction(botAI); }
     static Action* invite(PlayerbotAI* botAI) { return new InviteToGroupAction(botAI); }
     static Action* maintenance(PlayerbotAI* botAI) { return new MaintenanceAction(botAI); }
+    static Action* bank(PlayerbotAI* botAI) { return new BankCommandAction(botAI); }
+    static Action* gb(PlayerbotAI* botAI) { return new GuildBankCommandAction(botAI); }
+    static Action* guild_bank(PlayerbotAI* botAI) { return new GuildBankCommandAction(botAI, "guild bank"); }
+    static Action* mail(PlayerbotAI* botAI) { return new MailCommandAction(botAI); }
+    static Action* sendmail(PlayerbotAI* botAI) { return new SendMailAction(botAI); }
+    static Action* ah(PlayerbotAI* botAI) { return new AuctionCommandAction(botAI); }
+    static Action* help(PlayerbotAI* botAI) { return new HelpCommandAction(botAI); }
     static Action* bg_join(PlayerbotAI* botAI) { return new BGJoinAction(botAI); }
     static Action* bg_leave(PlayerbotAI* botAI) { return new BGLeaveAction(botAI); }
     static Action* bg_status_check(PlayerbotAI* botAI) { return new BGStatusCheckAction(botAI); }
@@ -346,6 +404,15 @@ private:
     static Action* invite_guild(PlayerbotAI* botAI) { return new InviteGuildToGroupAction(botAI); }
     static Action* leave_far_away(PlayerbotAI* botAI) { return new LeaveFarAwayAction(botAI); }
     static Action* reset_instances(PlayerbotAI* botAI) { return new ResetInstancesAction(botAI); }
+    static Action* check_mail(PlayerbotAI* botAI) { return new CheckMailAction(botAI); }
+    static Action* reset_ai(PlayerbotAI* botAI) { return new ResetAiAction(botAI, true, "reset ai"); }
+    static Action* reset_ai_soft(PlayerbotAI* botAI) { return new ResetAiAction(botAI, false, "reset ai soft"); }
+    static Action* reset_strats(PlayerbotAI* botAI) { return new ResetStratsAction(botAI, "reset strats", true); }
+    static Action* reset_values(PlayerbotAI* botAI) { return new ResetValuesAction(botAI, "reset values", true); }
+    static Action* save_ai(PlayerbotAI* botAI) { return new SaveAiAction(botAI, "save ai"); }
+    static Action* load_ai(PlayerbotAI* botAI) { return new LoadAiAction(botAI, "load ai"); }
+    static Action* list_ai(PlayerbotAI* botAI) { return new ListAiAction(botAI, "list ai"); }
+    static Action* reset(PlayerbotAI* botAI) { return new ResetAction(botAI, "reset"); }
     static Action* custom_strategy_edit(PlayerbotAI* botAI) { return new CustomStrategyEditAction(botAI); }
     static Action* list_quests(PlayerbotAI* botAI) { return new ListQuestsAction(botAI); }
     static Action* query_quest(PlayerbotAI* botAI) { return new QueryQuestAction(botAI); }

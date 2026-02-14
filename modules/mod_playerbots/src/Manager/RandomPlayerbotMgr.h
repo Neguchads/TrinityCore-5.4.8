@@ -231,6 +231,7 @@ private:
     bool ProcessBot(uint32 bot);
     void ScaleBotActivity();
     void QueueDatabasePingQuery();
+    void EnsureRandomBotGuilds();
     void ScheduleRandomize(uint32 bot, uint32 time);
     std::vector<std::pair<uint32, uint32>> RpgLocationsNear(WorldLocation pos,
         std::map<uint32, std::map<uint32, std::vector<std::string>>> const& areaNames, uint32 radius = 2000);
@@ -263,7 +264,8 @@ private:
     time_t _delayedFacingFixTimer = 0;
     time_t _eventTimeSyncTimer = 0;
     bool _eventTimersSynced = false;
-
+    bool _randomBotGuildsInitialized = false;
+    time_t _randomBotGuildsLastUpdate = 0;
     // -- lists
     std::unordered_map<uint32, BotEventCache> _eventCache;
     std::map<std::string, uint32> _databaseDelay;

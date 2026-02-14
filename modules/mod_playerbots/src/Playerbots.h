@@ -1,7 +1,9 @@
 
 
-#ifndef _PLAYERBOT_H
-#define _PLAYERBOT_H
+// NOTE: this header guard must be unique. `_PLAYERBOT_H` collides with other codebases/headers
+// and can cause this header to be skipped, breaking macros like GET_PLAYERBOT_AI.
+#ifndef MOD_PLAYERBOTS_PLAYERBOTS_H
+#define MOD_PLAYERBOTS_PLAYERBOTS_H
 
 #include "AiObjectContext.h"
 #include "Group.h"
@@ -39,4 +41,4 @@
 #define GAI_VALUE(type, name) sSharedValueContext->getGlobalValue<type>(name)->Get()
 #define GAI_VALUE2(type, name, param) sSharedValueContext->getGlobalValue<type>(name, param)->Get()
 
-#endif
+#endif // MOD_PLAYERBOTS_PLAYERBOTS_H

@@ -19,6 +19,9 @@
 #include "LootAction.h"
 #include "LootRollAction.h"
 #include "QuestAction.h"
+#include "SecurityCheckAction.h"
+#include "GuildAcceptAction.h"
+#include "PetitionSignAction.h"
 
 class PlayerbotAI;
 
@@ -47,6 +50,9 @@ public:
         creators["store loot"] = &WorldPacketActionContext::store_loot;
         creators["loot roll"] = &WorldPacketActionContext::loot_roll;
         creators["master loot roll"] = &WorldPacketActionContext::master_loot_roll;
+        creators["security check"] = &WorldPacketActionContext::security_check;
+        creators["guild accept"] = &WorldPacketActionContext::guild_accept;
+        creators["petition sign"] = &WorldPacketActionContext::petition_sign;
         creators["talk to quest giver"] = &WorldPacketActionContext::talk_to_quest_giver;
         creators["accept quest"] = &WorldPacketActionContext::accept_quest;
         creators["accept all quests"] = &WorldPacketActionContext::accept_all_quests;
@@ -78,6 +84,9 @@ private:
     static Action* store_loot(PlayerbotAI* botAI) { return new StoreLootAction(botAI); }
     static Action* loot_roll(PlayerbotAI* botAI) { return new LootRollAction(botAI); }
     static Action* master_loot_roll(PlayerbotAI* botAI) { return new MasterLootRollAction(botAI); }
+    static Action* security_check(PlayerbotAI* botAI) { return new SecurityCheckAction(botAI); }
+    static Action* guild_accept(PlayerbotAI* botAI) { return new GuildAcceptAction(botAI); }
+    static Action* petition_sign(PlayerbotAI* botAI) { return new PetitionSignAction(botAI); }
     static Action* talk_to_quest_giver(PlayerbotAI* botAI) { return new TalkToQuestGiverAction(botAI); }
     static Action* accept_quest(PlayerbotAI* botAI) { return new AcceptQuestAction(botAI); }
     static Action* accept_all_quests(PlayerbotAI* botAI) { return new AcceptAllQuestsAction(botAI); }

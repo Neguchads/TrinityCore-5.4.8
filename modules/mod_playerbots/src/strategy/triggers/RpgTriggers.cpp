@@ -24,6 +24,7 @@
 #include "GameObject.h"
 #include "ObjectMgr.h"
 #include "Playerbots.h"
+#include "GuildCreateActions.h"
 #include "ServerFacade.h"
 #include "SocialMgr.h"
 #include "TravelMgr.h"
@@ -296,9 +297,11 @@ bool RpgBuyPetitionTrigger::IsActive()
     if (!guidP.HasNpcFlag(UNIT_NPC_FLAG_PETITIONER))
         return false;
 
-    return false;
+    if (Unit* u = guidP.GetUnit())
+        if (bot->IsHostileTo(u))
+            return false;
 
-    return true;
+    return BuyPetitionAction::CanBuyPetition(bot);
 }
 
 bool RpgUseTrigger::IsActive()

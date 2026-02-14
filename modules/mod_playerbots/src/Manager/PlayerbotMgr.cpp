@@ -45,6 +45,7 @@
 #include "WorldSession.h"
 #include "ChannelMgr.h"
 #include "Log.h"
+#include "PlayerbotDbStore.h"
 
 PlayerbotHolder::PlayerbotHolder() : PlayerbotAIBase(false) {}
 
@@ -122,23 +123,14 @@ void PlayerbotHolder::HandlePlayerBotLoginCallback(PlayerbotLoginQueryHolder con
 
     std::ostringstream out;
     bool allowed = true;
-    if (botAccountId == masterAccount)
-    {
-        allowed = true;
-    }
-    else if (masterSession /* && sPlayerbotAIConfig->allowGuildBots*/ && bot->GetGuildId() != 0 && bot->GetGuildId() == masterPlayer->GetGuildId())
-    {
-        allowed = true;
-    }
-    else if (sPlayerbotAIConfig->IsInRandomAccountList(botAccountId))
-    {
-        allowed = true;
-    }
-    else
-    {
-        allowed = false;
+
+    // Random-bot only: only allow control for bots from configured random-bot accounts.
+    // (Plus GM override for admin/testing.)
+    allowed = sPlayerbotAIConfig->IsInRandomAccountList(botAccountId) ||
+        (masterSession && masterSession->GetSecurity() >= SEC_GAMEMASTER);
+
+    if (!allowed)
         out << "Failure: You are not allowed to control bot " << bot->GetName().c_str();
-    }
 
     if (allowed && masterSession && masterPlayer)
     {
@@ -292,7 +284,8 @@ void PlayerbotHolder::LogoutPlayerBot(ObjectGuid guid)
         Group* group = bot->GetGroup();
         if (group && !bot->InBattleground() && !bot->InBattlegroundQueue() && botAI->HasActivePlayerMaster())
         {
-            //sPlayerbotDbStore->Save(botAI);
+            if (!sPlayerbotAIConfig->explicitDbStoreSave)
+                sPlayerbotDbStore->Save(botAI, "");
         }
 
         TC_LOG_INFO("playerbots", "Bot %s logging out", bot->GetName().c_str());
@@ -394,7 +387,8 @@ void PlayerbotHolder::DisablePlayerBot(ObjectGuid guid)
         Group* group = bot->GetGroup();
         if (group && !bot->InBattleground() && !bot->InBattlegroundQueue() && botAI->HasActivePlayerMaster())
         {
-            //sPlayerbotDbStore->Save(botAI);
+            if (!sPlayerbotAIConfig->explicitDbStoreSave)
+                sPlayerbotDbStore->Save(botAI, "");
         }
 
         TC_LOG_DEBUG("playerbots", "Bot %s logged out", bot->GetName().c_str());
@@ -565,18 +559,8 @@ void PlayerbotHolder::OnBotLogin(Player* const bot)
         factory.Randomize(false);
     }
 
-    // bots join World chat if not solo oriented
-    if (bot->getLevel() >= 10 && sRandomPlayerbotMgr->IsRandomBot(bot) && GET_PLAYERBOT_AI(bot) &&
-        GET_PLAYERBOT_AI(bot)->GetGrouperType() != GrouperType::SOLO)
-    {
-        // TODO make action/config
-        // Make the bot join the world channel for chat
-        WorldPacket pkt(CMSG_JOIN_CHANNEL);
-        pkt << uint32(0) << uint8(0) << uint8(0);
-        pkt << std::string("World");
-        pkt << "";  // Pass
-        bot->GetSession()->HandleJoinChannel(pkt);
-    }
+    // CMaNGOS has additional "grouper" personality logic to decide whether a bot should join
+    // global/world chat. That system is not ported here, so we do not auto-join World.
 
     // join standard channels
     uint8 locale = BroadcastHelper::GetLocale();
@@ -1180,6 +1164,7 @@ void PlayerbotMgr::OnBotLoginInternal(Player* const bot)
     }
     botAI->SetMaster(master);
     //botAI->ResetStrategies();
+    sPlayerbotDbStore->Load(botAI, "");
 
     TC_LOG_INFO("playerbots", "Bot %s logged in - Active spec tab: %u Spec: %u ", bot->GetName().c_str(), (uint32)bot->GetActiveSpec(), (uint32)bot->GetSpecialization());
 }

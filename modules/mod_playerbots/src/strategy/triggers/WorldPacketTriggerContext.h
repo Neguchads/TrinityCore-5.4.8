@@ -41,6 +41,10 @@ public:
         creators["check mount state"] = &WorldPacketTriggerContext::check_mount_state;
         creators["loot response"] = &WorldPacketTriggerContext::loot_response;
         creators["master loot roll"] = &WorldPacketTriggerContext::master_loot_roll;
+
+        // CMaNGOS parity: guild/petition automation.
+        creators["guild accept"] = &WorldPacketTriggerContext::guild_accept;
+        creators["petition offer"] = &WorldPacketTriggerContext::petition_offer;
     }
 
 private:
@@ -74,6 +78,9 @@ private:
     static Trigger* check_mount_state(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "check mount state"); }
     static Trigger* loot_response(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "loot response"); }
     static Trigger* master_loot_roll(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "master loot roll"); }
+
+    static Trigger* guild_accept(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "guild accept"); }
+    static Trigger* petition_offer(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "petition offer"); }
 };
 
 #endif
