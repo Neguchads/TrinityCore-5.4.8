@@ -57,6 +57,7 @@ public:
             { "gender",     SEC_GAMEMASTER, false,  &HandleModifyGenderCommand,     },
             { "honor",      SEC_GAMEMASTER, false,  &HandleModifyHonorCommand,      },
             { "hp",         SEC_GAMEMASTER, false,  &HandleModifyHPCommand,         },
+            { "health",     SEC_GAMEMASTER, false,  &HandleModifyHPCommand,         },
             { "mana",       SEC_GAMEMASTER, false,  &HandleModifyManaCommand,       },
             { "money",      SEC_GAMEMASTER, false,  &HandleModifyMoneyCommand,      },
             { "mount",      SEC_GAMEMASTER, false,  &HandleModifyMountCommand,      },
