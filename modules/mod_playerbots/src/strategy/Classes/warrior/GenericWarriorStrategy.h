@@ -23,4 +23,13 @@ public:
     std::string const getName() override { return "aoe"; }
 };
 
+class WarriorCcStrategy : public Strategy
+{
+public:
+    WarriorCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+
+    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    std::string const getName() override { return "cc"; }
+};
+
 #endif

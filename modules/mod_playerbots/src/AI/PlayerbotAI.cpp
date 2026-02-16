@@ -2597,8 +2597,12 @@ bool PlayerbotAI::CanCastSpell(uint32 spellid, Unit* target, bool checkHasSpell,
     }
 
     uint32 CastingTime = !spellInfo->IsChanneled() ? spellInfo->CalcCastTime(bot->GetLevel()) : spellInfo->GetDuration();
-    // bool interruptOnMove = spellInfo->InterruptFlags & SPELL_INTERRUPT_FLAG_MOVEMENT;
-    if ((CastingTime || spellInfo->IsAutoRepeatRangedSpell()) && bot->isMoving())
+    bool const interruptedByMovement = (spellInfo->InterruptFlags & SPELL_INTERRUPT_FLAG_MOVEMENT) != 0;
+    // MoP parity: Fire Mage Scorch is intended as a moving filler even if spell data marks movement interrupt.
+    constexpr uint32 SPELL_MAGE_SCORCH = 2948;
+    bool const isMovingCastException = (spellid == SPELL_MAGE_SCORCH);
+    if (bot->isMoving() && !isMovingCastException &&
+        (spellInfo->IsAutoRepeatRangedSpell() || (CastingTime > 0 && interruptedByMovement)))
     {
         //if (!sPlayerbotAIConfig->logInGroupOnly || (bot->GetGroup() && HasRealPlayerMaster()))
         {
@@ -2723,7 +2727,8 @@ bool PlayerbotAI::CanCastSpell(uint32 spellid, GameObject* goTarget, uint8 effec
         return false;
 
     int32 CastingTime = !spellInfo->IsChanneled() ? spellInfo->CalcCastTime(bot->GetLevel()) : spellInfo->GetDuration();
-    if (CastingTime > 0 && bot->isMoving())
+    bool const interruptedByMovement = (spellInfo->InterruptFlags & SPELL_INTERRUPT_FLAG_MOVEMENT) != 0;
+    if (bot->isMoving() && CastingTime > 0 && interruptedByMovement)
         return false;
 
     bool damage = false;

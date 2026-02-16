@@ -17,6 +17,10 @@ Player* StartDuelAction::SelectOpponent()
     if (!bot)
         return nullptr;
 
+    ObjectGuid masterGuid;
+    if (botAI && botAI->HasRealPlayerMaster() && botAI->GetMaster())
+        masterGuid = botAI->GetMaster()->GetGUID();
+
     GuidVector players = AI_VALUE(GuidVector, "nearest friendly players");
     for (ObjectGuid const& guid : players)
     {
@@ -27,7 +31,7 @@ Player* StartDuelAction::SelectOpponent()
             continue;
         if (player->IsGameMaster())
             continue;
-        if (player->GetGroup() && bot->GetGroup() && player->GetGroup() == bot->GetGroup())
+        if (player->GetGroup() && bot->GetGroup() && player->GetGroup() == bot->GetGroup() && player->GetGUID() != masterGuid)
             continue;
         if (!bot->IsWithinDistInMap(player, INTERACTION_DISTANCE))
             continue;

@@ -21,7 +21,7 @@ NextAction** SurvivalHunterStrategy::getDefaultActions()
 
 void SurvivalHunterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    GenericHunterStrategy::InitTriggers(triggers);
+    DpsHunterStrategy::InitTriggers(triggers);
 
     triggers.push_back(
         new TriggerNode("lock and load", NextAction::array(0, new NextAction("explosive shot", 25.0f), nullptr)));

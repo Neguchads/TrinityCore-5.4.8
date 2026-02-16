@@ -194,11 +194,15 @@ void GenericMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     RangedCombatStrategy::InitTriggers(triggers);
 
+    triggers.push_back(new TriggerNode("enemy too close for spell",
+        NextAction::array(0, new NextAction("flee", ACTION_HIGH + 4), nullptr)));
+
     triggers.push_back(new TriggerNode("enemy is close", NextAction::array(0,
         new NextAction("frost nova", 25.0f),
         new NextAction("cone of cold", 5.0f),
         new NextAction("dragon's breath", 25.0f),
         new NextAction("blink", 50.0f),
+        new NextAction("flee", ACTION_MOVE + 1),
         nullptr)));
     triggers.push_back(new TriggerNode("frost nova on target", NextAction::array(0, new NextAction("deep freeze", ACTION_NORMAL + 1), nullptr)));
     triggers.push_back(new TriggerNode("counterspell on enemy healer",NextAction::array(0, new NextAction("counterspell on enemy healer", 40.0f), nullptr)));
@@ -213,4 +217,14 @@ void GenericMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("rune of power", NextAction::array(0, new NextAction("rune of power", 50.0f), nullptr)));
     triggers.push_back(new TriggerNode("mirror image", NextAction::array(0, new NextAction("mirror image", 41.0f), nullptr)));
     triggers.push_back(new TriggerNode("time warp", NextAction::array(0, new NextAction("time warp", ACTION_HIGH + 3), nullptr)));
+}
+
+void MageCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+{
+    triggers.push_back(
+        new TriggerNode("polymorph", NextAction::array(0, new NextAction("polymorph", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(
+        new TriggerNode("frostjaw", NextAction::array(0, new NextAction("frostjaw on cc", ACTION_HIGH + 1), nullptr)));
+    triggers.push_back(
+        new TriggerNode("deep freeze", NextAction::array(0, new NextAction("deep freeze on cc", ACTION_HIGH), nullptr)));
 }

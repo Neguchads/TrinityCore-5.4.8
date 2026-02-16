@@ -76,5 +76,23 @@ private:
 Unit* CcTargetValue::Calculate()
 {
     FindTargetForCcStrategy strategy(botAI, qualifier);
-    return FindTarget(&strategy);
+    if (Unit* target = FindTarget(&strategy))
+        return target;
+
+    Unit* currentTarget = AI_VALUE(Unit*, "current target");
+    if (!currentTarget || !currentTarget->IsPlayer())
+        return nullptr;
+
+    Player* bot = botAI->GetBot();
+    bool const isPvpContext = bot->InBattleground() || bot->InArena() || bot->duel || bot->IsPvP();
+    if (!isPvpContext)
+        return nullptr;
+
+    if (!botAI->CanCastSpell(qualifier, currentTarget))
+        return nullptr;
+
+    if (AI_VALUE2(Unit*, "current cc target", qualifier))
+        return nullptr;
+
+    return currentTarget;
 }

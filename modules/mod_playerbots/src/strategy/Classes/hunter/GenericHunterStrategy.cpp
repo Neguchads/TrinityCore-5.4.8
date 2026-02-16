@@ -124,4 +124,6 @@ void HunterCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         "scare beast", NextAction::array(0, new NextAction("scare beast on cc", ACTION_HIGH + 3), nullptr)));
     triggers.push_back(new TriggerNode(
         "freezing trap", NextAction::array(0, new NextAction("freezing trap on cc", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "wyvern sting", NextAction::array(0, new NextAction("wyvern sting on cc", ACTION_HIGH + 2), nullptr)));
 }

@@ -30,6 +30,7 @@ public:
         creators["cure"] = &ShamanStrategyFactoryInternal::cure;
         creators["healer dps"] = &ShamanStrategyFactoryInternal::healer_dps;
         creators["shaman"] = &ShamanStrategyFactoryInternal::shaman;
+        creators["cc"] = &ShamanStrategyFactoryInternal::cc;
     }
 
 private:
@@ -40,6 +41,7 @@ private:
     static Strategy* cure(PlayerbotAI* botAI) { return new ShamanCureStrategy(botAI); }
     static Strategy* healer_dps(PlayerbotAI* botAI) { return new ShamanHealerDpsStrategy(botAI); }
     static Strategy* shaman(PlayerbotAI* botAI) { return new ShamanStrategy(botAI); }
+    static Strategy* cc(PlayerbotAI* botAI) { return new ShamanCcStrategy(botAI); }
 };
 
 class ShamanBuffStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -124,6 +126,8 @@ public:
         creators["bloodlust"] = &ShamanATriggerFactoryInternal::bloodlust;
         creators["earth shield on main tank"] = &ShamanATriggerFactoryInternal::earth_shield_on_main_tank;
         creators["water shield"] = &ShamanATriggerFactoryInternal::water_shield;
+        creators["hex"] = &ShamanATriggerFactoryInternal::hex;
+        creators["frost shock"] = &ShamanATriggerFactoryInternal::frost_shock;
     }
 
 private:
@@ -180,6 +184,8 @@ private:
         return new BuffOnMainTankTrigger(botAI, "earth shield");
     }
     static Trigger* water_shield(PlayerbotAI* botAI) { return new WaterShieldTrigger(botAI); }
+    static Trigger* hex(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "hex"); }
+    static Trigger* frost_shock(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "frost shock"); }
 };
 
 class ShamanAiObjectContextInternal : public NamedObjectContext<Action>
@@ -259,6 +265,8 @@ public:
         creators["wrath of air totem"] = &ShamanAiObjectContextInternal::wrath_of_air_totem;
         creators["shamanistic rage"] = &ShamanAiObjectContextInternal::shamanistic_rage;
         creators["feral spirit"] = &ShamanAiObjectContextInternal::feral_spirit;
+        creators["hex on cc"] = &ShamanAiObjectContextInternal::hex_on_cc;
+        creators["frost shock on cc"] = &ShamanAiObjectContextInternal::frost_shock_on_cc;
     }
 
 private:
@@ -349,6 +357,14 @@ private:
     static Action* wrath_of_air_totem(PlayerbotAI* ai) { return new CastWrathOfAirTotemAction(ai); }
     static Action* shamanistic_rage(PlayerbotAI* ai) { return new CastShamanisticRageAction(ai); }
     static Action* feral_spirit(PlayerbotAI* ai) { return new CastFeralSpiritAction(ai); }
+    static Action* hex_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "hex");
+    }
+    static Action* frost_shock_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "frost shock");
+    }
 };
 
 ShamanAiObjectContext::ShamanAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)

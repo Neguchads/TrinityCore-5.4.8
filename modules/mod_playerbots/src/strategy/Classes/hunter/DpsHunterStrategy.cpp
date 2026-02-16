@@ -67,6 +67,8 @@ void DpsHunterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     GenericHunterStrategy::InitTriggers(triggers);
 
     triggers.push_back(
+        new TriggerNode("target critical health", NextAction::array(0, new NextAction("kill shot", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(
         new TriggerNode("black arrow", NextAction::array(0, new NextAction("black arrow", 19.0f), nullptr)));
     triggers.push_back(
         new TriggerNode("focus fire", NextAction::array(0, new NextAction("focus fire", 19.0f), nullptr)));

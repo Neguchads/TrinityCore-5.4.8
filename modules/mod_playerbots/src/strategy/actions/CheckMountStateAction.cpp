@@ -69,6 +69,18 @@ bool CheckMountStateAction::Execute(Event /*event*/)
     bool shouldMount = false;
 
     Unit* currentTarget = AI_VALUE(Unit*, "current target");
+    bool hasPvpTarget =
+        (bot->duel && bot->duel->opponent && bot->duel->opponent->IsAlive()) ||
+        (enemy && enemy->IsPlayer() && bot->IsValidAttackTarget(enemy)) ||
+        (currentTarget && currentTarget->IsPlayer() && bot->IsValidAttackTarget(currentTarget));
+
+    // Do not ride into PvP engagements: dismount as soon as we have a valid hostile player target.
+    if (hasPvpTarget && bot->IsMounted())
+    {
+        Dismount();
+        return true;
+    }
+
     if (currentTarget)
     {
         float dismountDistance = CalculateDismountDistance();

@@ -13,8 +13,12 @@ ShadowPriestStrategy::ShadowPriestStrategy(PlayerbotAI* botAI) : GenericPriestSt
 NextAction** ShadowPriestStrategy::getDefaultActions()
 {
     return NextAction::array(0,
+                             new NextAction("devouring plague", ACTION_DEFAULT + 0.85f),
+                             new NextAction("vampiric touch", ACTION_DEFAULT + 0.8f),
+                             new NextAction("shadow word: pain", ACTION_DEFAULT + 0.75f),
                              new NextAction("mind blast", ACTION_DEFAULT + 0.7f),
                              new NextAction("mind flay", ACTION_DEFAULT + 0.6f),
+                             new NextAction("mind spike", ACTION_DEFAULT + 0.55f),
                              new NextAction("shadow word: death", ACTION_DEFAULT + 0.5f),
                              new NextAction("shoot", ACTION_DEFAULT), nullptr);
 }
@@ -31,6 +35,8 @@ void ShadowPriestStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         new TriggerNode("inner fire", NextAction::array(0, new NextAction("inner fire", ACTION_HIGH), nullptr)));
     triggers.push_back(new TriggerNode("low mana", NextAction::array(0, new NextAction("dispersion", ACTION_HIGH
         + 5), nullptr)));
+    triggers.push_back(new TriggerNode("medium mana", NextAction::array(0, new NextAction("shadowfiend", ACTION_HIGH
+        + 4), new NextAction("mindbender", ACTION_HIGH + 3), nullptr)));
     triggers.push_back(new TriggerNode("critical health", NextAction::array(0, new NextAction("dispersion", ACTION_HIGH
         + 5), nullptr)));
     triggers.push_back(

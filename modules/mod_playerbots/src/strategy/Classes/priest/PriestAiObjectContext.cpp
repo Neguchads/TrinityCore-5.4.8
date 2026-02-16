@@ -55,6 +55,7 @@ public:
         creators["heal"] = &PriestCombatStrategyFactoryInternal::heal;
         creators["shadow"] = &PriestCombatStrategyFactoryInternal::dps;
         creators["dps"] = &PriestCombatStrategyFactoryInternal::dps;
+        creators["holy"] = &PriestCombatStrategyFactoryInternal::holy_heal;
         creators["holy dps"] = &PriestCombatStrategyFactoryInternal::holy_dps;
         creators["holy heal"] = &PriestCombatStrategyFactoryInternal::holy_heal;
         creators["discipline"] = &PriestCombatStrategyFactoryInternal::discipline;
@@ -84,6 +85,8 @@ public:
         creators["shadow orbs"] = &PriestTriggerFactoryInternal::shadow_orbs;
         creators["shadow orbs 3"] = &PriestTriggerFactoryInternal::shadow_orbs_3;
         creators["surge of darkness"] = &PriestTriggerFactoryInternal::surge_of_darkness;
+        creators["psychic scream"] = &PriestTriggerFactoryInternal::psychic_scream;
+        creators["shackle undead"] = &PriestTriggerFactoryInternal::shackle_undead;
     }
 
 private:
@@ -98,6 +101,8 @@ private:
     static Trigger* shadow_orbs(PlayerbotAI* botAI) { return new ShadowOrbsTrigger(botAI, 3); }
     static Trigger* shadow_orbs_3(PlayerbotAI* botAI) { return new ShadowOrbsTrigger(botAI, 3); }
     static Trigger* surge_of_darkness(PlayerbotAI* botAI) { return new SurgeOfDarknessTrigger(botAI); }
+    static Trigger* psychic_scream(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "psychic scream"); }
+    static Trigger* shackle_undead(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "shackle undead"); }
 };
 
 class PriestAiObjectContextInternal : public NamedObjectContext<Action>
@@ -152,6 +157,7 @@ public:
         creators["resurrection"] = &PriestAiObjectContextInternal::resurrection;
         creators["circle of healing on party"] = &PriestAiObjectContextInternal::circle_of_healing;
         creators["psychic scream"] = &PriestAiObjectContextInternal::psychic_scream;
+        creators["psychic scream on cc"] = &PriestAiObjectContextInternal::psychic_scream_on_cc;
         creators["vampiric touch"] = &PriestAiObjectContextInternal::vampiric_touch;
         creators["vampiric touch on attacker"] = &PriestAiObjectContextInternal::vampiric_touch_on_attacker;
         creators["vampiric embrace"] = &PriestAiObjectContextInternal::vampiric_embrace;
@@ -224,6 +230,10 @@ private:
         return new CastVampiricTouchOnAttackerAction(botAI);
     }
     static Action* psychic_scream(PlayerbotAI* botAI) { return new CastPsychicScreamAction(botAI); }
+    static Action* psychic_scream_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "psychic scream");
+    }
     static Action* circle_of_healing(PlayerbotAI* botAI) { return new CastCircleOfHealingAction(botAI); }
     static Action* resurrection(PlayerbotAI* botAI) { return new CastResurrectionAction(botAI); }
     static Action* shadow_word_pain(PlayerbotAI* botAI) { return new CastPowerWordPainAction(botAI); }

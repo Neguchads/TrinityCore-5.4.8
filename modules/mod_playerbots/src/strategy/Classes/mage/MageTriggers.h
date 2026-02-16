@@ -91,6 +91,13 @@ public:
     bool IsActive() override;
 };
 
+class PolymorphReasonTrigger : public HasCcTargetTrigger
+{
+public:
+    PolymorphReasonTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(botAI, "polymorph") {}
+    bool IsActive() override;
+};
+
 class IcyVeinsTrigger : public BoostTrigger
 {
 public:

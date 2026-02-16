@@ -209,3 +209,15 @@ void GenericDKStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(
         new TriggerNode("pestilence glyph", NextAction::array(0, new NextAction("pestilence", ACTION_HIGH + 9), NULL)));
 }
+
+void DKCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+{
+    triggers.push_back(
+        new TriggerNode("strangulate", NextAction::array(0, new NextAction("strangulate on cc", ACTION_HIGH + 4), nullptr)));
+    triggers.push_back(
+        new TriggerNode("chains of ice", NextAction::array(0, new NextAction("chains of ice on cc", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(
+        new TriggerNode("death grip", NextAction::array(0, new NextAction("death grip on cc", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(
+        new TriggerNode("hungering cold", NextAction::array(0, new NextAction("hungering cold on cc", ACTION_HIGH + 1), nullptr)));
+}

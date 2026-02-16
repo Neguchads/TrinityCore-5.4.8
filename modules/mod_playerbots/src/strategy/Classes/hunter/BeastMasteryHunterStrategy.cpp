@@ -20,8 +20,12 @@ NextAction** BeastMasteryHunterStrategy::getDefaultActions()
 
 void BeastMasteryHunterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    GenericHunterStrategy::InitTriggers(triggers);
+    DpsHunterStrategy::InitTriggers(triggers);
 
+    triggers.push_back(
+        new TriggerNode("bestial wrath", NextAction::array(0, new NextAction("bestial wrath", ACTION_HIGH + 5), nullptr)));
+    triggers.push_back(
+        new TriggerNode("stampede", NextAction::array(0, new NextAction("stampede", ACTION_HIGH + 4), nullptr)));
     triggers.push_back(
         new TriggerNode("focus fire", NextAction::array(0, new NextAction("focus fire", 22.0f), nullptr)));
     triggers.push_back(

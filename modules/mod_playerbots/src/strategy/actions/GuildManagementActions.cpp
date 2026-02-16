@@ -11,7 +11,7 @@
 
 namespace
 {
-Player* ResolvePlayerTarget(Player* bot, Event const& event)
+Player* ResolvePlayerTarget(Player* bot, Event& event)
 {
     ObjectGuid guid = event.getObject();
     if (guid && guid.IsPlayer())

@@ -142,10 +142,10 @@ void UnholyDKStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode(
         "sudden doom", NextAction::array(0, new NextAction("death coil", ACTION_HIGH + 4), nullptr)));
 
-    // triggers.push_back(
-    //     new TriggerNode("icy touch", NextAction::array(0, new NextAction("icy touch", ACTION_HIGH + 2), nullptr)));
-    // triggers.push_back(new TriggerNode(
-    //     "plague strike", NextAction::array(0, new NextAction("plague strike", ACTION_HIGH + 1), nullptr)));
+    triggers.push_back(
+        new TriggerNode("icy touch", NextAction::array(0, new NextAction("icy touch", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "plague strike", NextAction::array(0, new NextAction("plague strike", ACTION_HIGH + 1), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "high frost rune", NextAction::array(0, new NextAction("festering strike", ACTION_NORMAL + 3), nullptr)));

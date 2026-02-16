@@ -82,6 +82,8 @@ void PriestBoostStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 void PriestCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(
+        new TriggerNode("psychic scream", NextAction::array(0, new NextAction("psychic scream on cc", 32.0f), nullptr)));
+    triggers.push_back(
         new TriggerNode("shackle undead", NextAction::array(0, new NextAction("shackle undead", 31.0f), nullptr)));
 }
 

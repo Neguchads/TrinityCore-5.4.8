@@ -22,6 +22,31 @@ bool AttackAction::Execute(Event event)
     {
         return false;
     }
+
+    if (bot->GetClass() == CLASS_ROGUE && target->IsPlayer() && !bot->IsInCombat() && bot->IsValidAttackTarget(target))
+    {
+        context->GetValue<Unit*>("current target")->Set(target);
+        bot->SetSelection(target->GetGUID());
+
+        if (!botAI->HasAura("stealth", bot))
+        {
+            if (botAI->DoSpecificAction("stealth", event, true))
+            {
+                botAI->DoSpecificAction("check stealth", event, true);
+                return true;
+            }
+        }
+        else
+        {
+            if (botAI->DoSpecificAction("cheap shot", event, true) ||
+                botAI->DoSpecificAction("garrote", event, true) ||
+                botAI->DoSpecificAction("ambush", event, true))
+            {
+                return true;
+            }
+        }
+    }
+
     return Attack(target);
 }
 
@@ -41,7 +66,36 @@ bool AttackMyTargetAction::Execute(Event event)
     }
 
     botAI->GetAiObjectContext()->GetValue<GuidVector>("prioritized targets")->Set({ guid });
-    bool result = Attack(botAI->GetUnit(guid));
+
+    Unit* target = botAI->GetUnit(guid);
+    if (!target)
+        return false;
+
+    if (bot->GetClass() == CLASS_ROGUE && target->IsPlayer() && !bot->IsInCombat() && bot->IsValidAttackTarget(target))
+    {
+        context->GetValue<Unit*>("current target")->Set(target);
+        bot->SetSelection(target->GetGUID());
+
+        if (!botAI->HasAura("stealth", bot))
+        {
+            if (botAI->DoSpecificAction("stealth", event, true))
+            {
+                botAI->DoSpecificAction("check stealth", event, true);
+                return true;
+            }
+        }
+        else
+        {
+            if (botAI->DoSpecificAction("cheap shot", event, true) ||
+                botAI->DoSpecificAction("garrote", event, true) ||
+                botAI->DoSpecificAction("ambush", event, true))
+            {
+                return true;
+            }
+        }
+    }
+
+    bool result = Attack(target);
     if (result)
         context->GetValue<ObjectGuid>("pull target")->Set(guid);
 
@@ -94,6 +148,17 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
 
     if (!bot->IsWithinLOSInMap(target))
     {
+        // Reposition on LOS breaks (duels/pvp pillars/terrain) instead of idling until LOS magically returns.
+        if (IsMovingAllowed(target))
+        {
+            if (bot->IsMounted())
+                bot->Dismount();
+
+            float chaseDistance = PlayerBotSpec::IsMelee(bot) ? 0.0f : sPlayerbotAIConfig->tooCloseDistance;
+            if (ChaseTo(target, chaseDistance))
+                return true;
+        }
+
         msg << " is not in my sight";
         if (verbose)
             botAI->TellError(msg.str());
@@ -119,11 +184,8 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
         return false;
     }
 
-    // if (bot->IsMounted() && bot->IsWithinLOSInMap(target))
-    // {
-    //     WorldPacket emptyPacket;
-    //     bot->GetSession()->HandleCancelMountAuraOpcode(emptyPacket);
-    // }
+    if (bot->IsMounted())
+        bot->Dismount();
 
     ObjectGuid guid = target->GetGUID();
     bot->SetSelection(target->GetGUID());
@@ -165,5 +227,34 @@ bool AttackDuelOpponentAction::isUseful()
 
 bool AttackDuelOpponentAction::Execute(Event event)
 {
-    return Attack(AI_VALUE(Unit*, "duel target"));
+    Unit* target = AI_VALUE(Unit*, "duel target");
+    if (!target)
+        return false;
+
+    // Rogues should prep/open duels like PvP, not immediately auto-attack from non-stealth.
+    if (bot->GetClass() == CLASS_ROGUE && !bot->IsInCombat() && bot->IsValidAttackTarget(target))
+    {
+        context->GetValue<Unit*>("current target")->Set(target);
+        bot->SetSelection(target->GetGUID());
+
+        if (!botAI->HasAura("stealth", bot))
+        {
+            if (botAI->DoSpecificAction("stealth", event, true))
+            {
+                botAI->DoSpecificAction("check stealth", event, true);
+                return true;
+            }
+        }
+        else
+        {
+            if (botAI->DoSpecificAction("cheap shot", event, true) ||
+                botAI->DoSpecificAction("garrote", event, true) ||
+                botAI->DoSpecificAction("ambush", event, true))
+            {
+                return true;
+            }
+        }
+    }
+
+    return Attack(target);
 }

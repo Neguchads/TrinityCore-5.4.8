@@ -48,6 +48,7 @@ public:
     RogueCombatStrategyFactoryInternal() : NamedObjectContext<Strategy>(false, true)
     {
         creators["dps"] = &RogueCombatStrategyFactoryInternal::dps;
+        creators["assassination"] = &RogueCombatStrategyFactoryInternal::melee;
         creators["melee"] = &RogueCombatStrategyFactoryInternal::melee;
         creators["combat"] = &RogueCombatStrategyFactoryInternal::combat;
         creators["subtlety"] = &RogueCombatStrategyFactoryInternal::subtlety;
@@ -76,6 +77,14 @@ public:
         creators["killing spree"] = &RogueTriggerFactoryInternal::killing_spree;
         creators["vendetta"] = &RogueTriggerFactoryInternal::vendetta;
         creators["blindside"] = &RogueTriggerFactoryInternal::blindside;
+        creators["stealth"] = &RogueTriggerFactoryInternal::stealth;
+        creators["stealthed"] = &RogueTriggerFactoryInternal::stealthed;
+        creators["no stealth"] = &RogueTriggerFactoryInternal::no_stealth;
+        creators["sap"] = &RogueTriggerFactoryInternal::sap;
+        creators["blind"] = &RogueTriggerFactoryInternal::blind;
+        creators["gouge"] = &RogueTriggerFactoryInternal::gouge;
+        creators["kidney shot pvp"] = &RogueTriggerFactoryInternal::kidney_shot_pvp;
+        creators["stealth pvp opener"] = &RogueTriggerFactoryInternal::stealth_pvp_opener;
     }
 
 private:
@@ -90,6 +99,14 @@ private:
     static Trigger* killing_spree(PlayerbotAI* botAI) { return new KillingSpreeTrigger(botAI); }
     static Trigger* vendetta(PlayerbotAI* botAI) { return new VendettaTrigger(botAI); }
     static Trigger* blindside(PlayerbotAI* botAI) { return new BlindsideTrigger(botAI); }
+    static Trigger* stealth(PlayerbotAI* botAI) { return new HasNoAuraTrigger(botAI, "stealth"); }
+    static Trigger* stealthed(PlayerbotAI* botAI) { return new HasAuraTrigger(botAI, "stealth"); }
+    static Trigger* no_stealth(PlayerbotAI* botAI) { return new HasNoAuraTrigger(botAI, "stealth"); }
+    static Trigger* sap(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "sap"); }
+    static Trigger* blind(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "blind"); }
+    static Trigger* gouge(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "gouge"); }
+    static Trigger* kidney_shot_pvp(PlayerbotAI* botAI) { return new KidneyShotPvpTrigger(botAI); }
+    static Trigger* stealth_pvp_opener(PlayerbotAI* botAI) { return new StealthPvpOpenerTrigger(botAI); }
 
 };
 
@@ -140,6 +157,8 @@ public:
         creators["tricks of the trade on main tank"] = &RogueAiObjectContextInternal::tricks_of_the_trade_on_main_tank;
         creators["fan of knives"] = &RogueAiObjectContextInternal::fan_of_knives;
         creators["killing spree"] = &RogueAiObjectContextInternal::killing_spree;
+        creators["blind on cc"] = &RogueAiObjectContextInternal::blind_on_cc;
+        creators["gouge on cc"] = &RogueAiObjectContextInternal::gouge_on_cc;
     }
 
 private:
@@ -189,6 +208,14 @@ private:
 
     static Action* fan_of_knives(PlayerbotAI* ai) { return new FanOfKnivesAction(ai); }
     static Action* killing_spree(PlayerbotAI* ai) { return new CastKillingSpreeAction(ai); }
+    static Action* blind_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "blind");
+    }
+    static Action* gouge_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "gouge");
+    }
 };
 
 RogueAiObjectContext::RogueAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)

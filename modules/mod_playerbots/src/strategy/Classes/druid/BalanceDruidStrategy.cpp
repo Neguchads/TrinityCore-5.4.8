@@ -21,7 +21,7 @@ NextAction** BalanceDruidStrategy::getDefaultActions()
 
 void BalanceDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    GenericDruidStrategy::InitTriggers(triggers);
+    CasterDruidStrategy::InitTriggers(triggers);
 
     triggers.push_back(new TriggerNode(
         "starfall", NextAction::array(0, new NextAction("starfall", ACTION_HIGH + 5), nullptr)));
@@ -29,6 +29,8 @@ void BalanceDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         "celestial alignment", NextAction::array(0, new NextAction("celestial alignment", ACTION_HIGH + 4), nullptr)));
     triggers.push_back(new TriggerNode(
         "force of nature", NextAction::array(0, new NextAction("force of nature", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "astral communion", NextAction::array(0, new NextAction("astral communion", ACTION_HIGH + 2), nullptr)));
     triggers.push_back(new TriggerNode(
         "shooting stars", NextAction::array(0, new NextAction("starsurge", ACTION_HIGH + 6), nullptr)));
     triggers.push_back(new TriggerNode(

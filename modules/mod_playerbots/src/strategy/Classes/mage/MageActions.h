@@ -15,12 +15,14 @@ class CastFireballAction : public CastSpellAction
 {
 public:
     CastFireballAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "fireball") {}
+    bool isUseful() override;
 };
 
 class CastScorchAction : public CastSpellAction
 {
 public:
     CastScorchAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "scorch") {}
+    bool isUseful() override;
 };
 
 class CastFireBlastAction : public CastSpellAction
@@ -333,6 +335,7 @@ class CastInfernoBlastAction : public CastSpellAction
 public:
     CastInfernoBlastAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "inferno blast") {}
     ActionThreatType getThreatType() override { return ActionThreatType::Single; }
+    bool isUseful() override;
 };
 
 class CastBlastWaveAction : public CastSpellAction

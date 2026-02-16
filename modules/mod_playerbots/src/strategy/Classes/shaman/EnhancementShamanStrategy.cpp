@@ -24,6 +24,8 @@ void EnhancementShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers
         "maelstrom weapon 5",
         NextAction::array(0, new NextAction("elemental blast", ACTION_HIGH + 1),
                           new NextAction("lightning bolt", ACTION_HIGH), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "unleash elements", NextAction::array(0, new NextAction("unleash elements", ACTION_HIGH + 1), nullptr)));
     triggers.push_back(
         new TriggerNode("ascendance", NextAction::array(0, new NextAction("ascendance", ACTION_HIGH + 2), nullptr)));
     triggers.push_back(new TriggerNode(

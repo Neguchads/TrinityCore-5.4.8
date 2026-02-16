@@ -57,6 +57,30 @@ bool FrostNovaOnTargetTrigger::IsActive()
     return botAI->HasAura(spell, target);
 }
 
+bool PolymorphReasonTrigger::IsActive()
+{
+    if (!HasCcTargetTrigger::IsActive())
+        return false;
+
+    Unit* ccTarget = AI_VALUE2(Unit*, "cc target", "polymorph");
+    if (!ccTarget || !ccTarget->IsAlive() || !bot->IsValidAttackTarget(ccTarget))
+        return false;
+
+    Unit* currentTarget = AI_VALUE(Unit*, "current target");
+    bool underPressure =
+        AI_VALUE(uint8, "my attacker count") >= 2 ||
+        AI_VALUE2(uint8, "health", "self target") < sPlayerbotAIConfig->mediumHealth;
+
+    // Use polymorph for control/peel, not as a default spam on the main kill target.
+    if (!underPressure && currentTarget && ccTarget == currentTarget)
+        return false;
+
+    if (!underPressure && AI_VALUE(uint8, "attacker count") < 2)
+        return false;
+
+    return true;
+}
+
 bool IcyVeinsTrigger::IsActive()
 {
     Unit* target = GetTarget();

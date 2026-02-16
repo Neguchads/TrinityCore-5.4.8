@@ -16,4 +16,13 @@ public:
     void InitTriggers(std::vector<TriggerNode*>& triggers) override;
 };
 
+class DKCcStrategy : public Strategy
+{
+public:
+    DKCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+
+    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    std::string const getName() override { return "cc"; }
+};
+
 #endif

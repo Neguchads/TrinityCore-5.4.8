@@ -21,4 +21,12 @@ public:
     }
 };
 
+class MageCcStrategy : public Strategy
+{
+public:
+    MageCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+    std::string const getName() override { return "cc"; }
+    void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+};
+
 #endif

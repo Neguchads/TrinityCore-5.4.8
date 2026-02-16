@@ -75,11 +75,11 @@ FireMageStrategy::FireMageStrategy(PlayerbotAI* botAI)
 NextAction** FireMageStrategy::getDefaultActions()
 {
     return NextAction::array(0,
-        new NextAction("pyroblast", ACTION_DEFAULT + 0.9f),
-        new NextAction("combustion", ACTION_DEFAULT + 0.8f),
-        new NextAction("living bomb", ACTION_DEFAULT + 0.7f),
+        // Pyroblast should be proc-driven from the "pyroblast!" trigger, not unconditional default spam.
+        new NextAction("living bomb", ACTION_DEFAULT + 0.8f),
+        new NextAction("fireball", ACTION_DEFAULT + 0.7f),
         new NextAction("inferno blast", ACTION_DEFAULT + 0.6f), // cast during movement
-        new NextAction("fireball", ACTION_DEFAULT + 0.5f),
+        new NextAction("combustion", ACTION_DEFAULT + 0.5f),
         new NextAction("scorch", ACTION_DEFAULT + 0.1f),
         new NextAction("shoot", ACTION_DEFAULT), nullptr);
 }
@@ -95,8 +95,11 @@ void FireMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("pyroblast!", NextAction::array(0, new NextAction("pyroblast", ACTION_INTERRUPT + 10), nullptr)));
     triggers.push_back(new TriggerNode("combustion", NextAction::array(0, new NextAction("combustion", 50.0f), nullptr)));
     triggers.push_back(new TriggerNode("living bomb", NextAction::array(0, new NextAction("living bomb", 19.0f), nullptr)));
-    // triggers.push_back(new TriggerNode("enemy too close for spell", NextAction::array(0, new NextAction("dragon's
-    // breath", 70.0f), nullptr)));
+    triggers.push_back(new TriggerNode("enemy is close",
+                                       NextAction::array(0,
+                                                         new NextAction("dragon's breath", ACTION_HIGH + 1),
+                                                         new NextAction("scorch", ACTION_HIGH),
+                                                         nullptr)));
 }
 
 void FireMageAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

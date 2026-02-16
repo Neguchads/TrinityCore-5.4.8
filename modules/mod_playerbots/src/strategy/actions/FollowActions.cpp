@@ -47,6 +47,9 @@ bool FollowAction::isUseful()
         botAI->HasStrategy("move from group", BOT_STATE_NON_COMBAT))
         return false;
 
+    if (bot->duel)
+        return false;
+
     if (bot->GetCurrentSpell(CURRENT_CHANNELED_SPELL) != nullptr)
         return false;
 

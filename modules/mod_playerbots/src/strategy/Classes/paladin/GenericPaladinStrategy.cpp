@@ -66,6 +66,10 @@ void PaladinBoostStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 void PaladinCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(
+        new TriggerNode("hammer of justice", NextAction::array(0, new NextAction("hammer of justice on cc", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(
+        new TriggerNode("repentance", NextAction::array(0, new NextAction("repentance on cc", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(
         new TriggerNode("turn undead", NextAction::array(0, new NextAction("turn undead", ACTION_HIGH + 1), nullptr)));
 }
 

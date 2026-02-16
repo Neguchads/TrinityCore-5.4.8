@@ -114,7 +114,12 @@ bool HasManaValue::Calculate()
 Unit* ComboPointsValue::GetTarget()
 {
     AiObjectContext* ctx = AiObject::context;
-    return ctx->GetValue<Unit*>(qualifier)->Get();
+    std::string const targetQualifier = qualifier.empty() ? "current target" : qualifier;
+    Value<Unit*>* targetValue = ctx->GetValue<Unit*>(targetQualifier);
+    if (!targetValue)
+        return nullptr;
+
+    return targetValue->Get();
 }
 
 uint8 ComboPointsValue::Calculate()

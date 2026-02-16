@@ -116,6 +116,8 @@ void WarlockCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode("banish", NextAction::array(0, new NextAction("banish on cc", 32.0f), nullptr)));
     triggers.push_back(new TriggerNode("fear", NextAction::array(0, new NextAction("fear on cc", 33.0f), nullptr)));
+    triggers.push_back(new TriggerNode("mortal coil", NextAction::array(0, new NextAction("mortal coil on cc", 31.0f), nullptr)));
+    triggers.push_back(new TriggerNode("shadowfury", NextAction::array(0, new NextAction("shadowfury on cc", 30.0f), nullptr)));
 }
 
 void AoeWarlockStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

@@ -50,6 +50,7 @@ void ArmsWarriorStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("battle shout", NextAction::array(0, new NextAction("battle shout", ACTION_HIGH + 9), nullptr)));
     triggers.push_back(new TriggerNode("recklessness", NextAction::array(0, new NextAction("recklessness", ACTION_HIGH + 8), nullptr)));
     triggers.push_back(new TriggerNode("high rage available",NextAction::array(0, new NextAction("slam", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(new TriggerNode("mortal wounds", NextAction::array(0, new NextAction("mortal strike", ACTION_HIGH + 5), nullptr)));
     triggers.push_back(new TriggerNode("overpower", NextAction::array(0, new NextAction("overpower", ACTION_HIGH + 4), nullptr)));
     triggers.push_back(new TriggerNode("taste for blood", NextAction::array(0, new NextAction("overpower", ACTION_HIGH + 4), nullptr)));
     triggers.push_back(new TriggerNode("colossus smash", NextAction::array(0, new NextAction("colossus smash", ACTION_HIGH + 6), nullptr)));

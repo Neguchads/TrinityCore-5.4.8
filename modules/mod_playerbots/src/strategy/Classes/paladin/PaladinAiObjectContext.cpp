@@ -119,6 +119,9 @@ public:
         creators["avenging wrath"] = &PaladinTriggerFactoryInternal::avenging_wrath;
         creators["holy avenger"] = &PaladinTriggerFactoryInternal::holy_avenger;
         creators["guardian of ancient kings"] = &PaladinTriggerFactoryInternal::guardian_of_ancient_kings;
+        creators["turn undead"] = &PaladinTriggerFactoryInternal::turn_undead;
+        creators["repentance"] = &PaladinTriggerFactoryInternal::repentance;
+        creators["hammer of justice"] = &PaladinTriggerFactoryInternal::hammer_of_justice;
     }
 private:
     static Trigger* seal(PlayerbotAI* botAI) { return new SealTrigger(botAI); }
@@ -133,6 +136,9 @@ private:
     static Trigger* avenging_wrath(PlayerbotAI* botAI) { return new AvengingWrathTrigger(botAI); }
     static Trigger* holy_avenger(PlayerbotAI* botAI) { return new HolyAvengerTrigger(botAI); }
     static Trigger* guardian_of_ancient_kings(PlayerbotAI* botAI) { return new GuardianOfAncientKingsTrigger(botAI); }
+    static Trigger* turn_undead(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "turn undead"); }
+    static Trigger* repentance(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "repentance"); }
+    static Trigger* hammer_of_justice(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "hammer of justice"); }
 };
 
 class PaladinAiObjectContextInternal : public NamedObjectContext<Action>
@@ -206,6 +212,8 @@ public:
         creators["repentance"] = &PaladinAiObjectContextInternal::repentance;
         creators["repentance on snare target"] = &PaladinAiObjectContextInternal::repentance_on_snare_target;
         creators["repentance on enemy healer"] = &PaladinAiObjectContextInternal::repentance_on_enemy_healer;
+        creators["repentance on cc"] = &PaladinAiObjectContextInternal::repentance_on_cc;
+        creators["hammer of justice on cc"] = &PaladinAiObjectContextInternal::hammer_of_justice_on_cc;
         creators["sanctity aura"] = &PaladinAiObjectContextInternal::sanctity_aura;
         creators["holy shock"] = &PaladinAiObjectContextInternal::holy_shock;
         creators["holy shock on party"] = &PaladinAiObjectContextInternal::holy_shock_on_party;
@@ -303,6 +311,14 @@ private:
     static Action* repentance(PlayerbotAI* botAI) { return new CastRepentanceAction(botAI); }
     static Action* repentance_on_snare_target(PlayerbotAI* botAI) { return new CastRepentanceSnareAction(botAI); }
     static Action* repentance_on_enemy_healer(PlayerbotAI* botAI) { return new CastRepentanceOnHealerAction(botAI); }
+    static Action* repentance_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "repentance");
+    }
+    static Action* hammer_of_justice_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "hammer of justice");
+    }
     static Action* sanctity_aura(PlayerbotAI* botAI) { return new CastSanctityAuraAction(botAI); }
     static Action* holy_shock(PlayerbotAI* botAI) { return new CastHolyShockAction(botAI); }
     static Action* holy_shock_on_party(PlayerbotAI* botAI) { return new CastHolyShockOnPartyAction(botAI); }

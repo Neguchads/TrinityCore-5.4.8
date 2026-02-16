@@ -21,8 +21,10 @@ NextAction** MarksmanshipHunterStrategy::getDefaultActions()
 
 void MarksmanshipHunterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    GenericHunterStrategy::InitTriggers(triggers);
+    DpsHunterStrategy::InitTriggers(triggers);
 
+    triggers.push_back(
+        new TriggerNode("rapid fire", NextAction::array(0, new NextAction("rapid fire", ACTION_HIGH + 5), nullptr)));
     triggers.push_back(
         new TriggerNode("fire!", NextAction::array(0, new NextAction("aimed shot", 25.0f), nullptr)));
     triggers.push_back(

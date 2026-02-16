@@ -67,6 +67,34 @@
 namespace
 {
     uint32 constexpr GM_ISLAND_ZONE_ID = 876;
+
+    bool IsHostileForTeam(AreaTableEntry const* area, uint32 team)
+    {
+        if (!area)
+            return false;
+
+        switch (area->team)
+        {
+            case AREATEAM_ALLY:
+                return team != ALLIANCE;
+            case AREATEAM_HORDE:
+                return team != HORDE;
+            default:
+                return false;
+        }
+    }
+
+    bool IsInvalidTeleportAreaForBot(Player const* bot, uint32 zoneId, uint32 areaId)
+    {
+        if (!bot)
+            return true;
+
+        if (IsHostileForTeam(sAreaTableStore.LookupEntry(areaId), bot->GetTeam()) ||
+            IsHostileForTeam(sAreaTableStore.LookupEntry(zoneId), bot->GetTeam()))
+            return true;
+
+        return sPlayerbotAIConfig->IsPvpProhibited(zoneId, areaId);
+    }
 }
 
 class botPIDImpl
@@ -2721,6 +2749,9 @@ void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
             if (player->GetMap()->IsDungeon() || player->GetMap()->IsRaid() || player->InBattleground())
                 continue;
 
+            if (IsInvalidTeleportAreaForBot(bot, player->GetZoneId(), player->GetAreaId()))
+                continue;
+
             if (sPlayerbotAIConfig->randomBotTeleportNearPlayerMaxAmount > 0 &&
                 sPlayerbotAIConfig->randomBotTeleportNearPlayerMaxAmountRadius > 0.0f)
             {
@@ -2779,6 +2810,9 @@ void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
                         if (!allowGmIslandTeleport)
                             continue;
                     }
+
+                    if (IsInvalidTeleportAreaForBot(bot, zoneId, areaId))
+                        continue;
 
                     if (bot->TeleportTo(player->GetMapId(), x, y, z, bot->GetOrientation(), 0))
                     {
@@ -3077,7 +3111,7 @@ RandomPlayerbotMgr::city const* RandomPlayerbotMgr::GetCityForPlayer(Player* pla
 
         uint32 zoneId = sMapMgr->GetZoneId(PHASEMASK_NORMAL, city_data.map_id, city_data.x, city_data.y, city_data.z);
         uint32 areaId = sMapMgr->GetAreaId(PHASEMASK_NORMAL, city_data.map_id, city_data.x, city_data.y, city_data.z);
-        if (zoneId == GM_ISLAND_ZONE_ID || areaId == GM_ISLAND_ZONE_ID)
+        if (zoneId == GM_ISLAND_ZONE_ID || areaId == GM_ISLAND_ZONE_ID || IsInvalidTeleportAreaForBot(player, zoneId, areaId))
             continue;
 
         return &city_data;
@@ -3099,6 +3133,9 @@ RandomPlayerbotMgr::farm_spot const* RandomPlayerbotMgr::GetFarmZoneForPlayer(Pl
             continue;
 
         if (player->GetLevel() < zone.min_level || player->GetLevel() > zone.max_level || zone.team_disabled == player->GetTeam())
+            continue;
+
+        if (IsInvalidTeleportAreaForBot(player, zone.zone_id, zone.zone_id))
             continue;
 
         if (zone.max_player != 0)
@@ -3133,7 +3170,7 @@ RandomPlayerbotMgr::farm_spot const* RandomPlayerbotMgr::GetFarmZoneForPlayer(Pl
         {
             uint32 zoneId = sMapMgr->GetZoneId(PHASEMASK_NORMAL, spot.map_id, spot.x, spot.y, spot.z);
             uint32 areaId = sMapMgr->GetAreaId(PHASEMASK_NORMAL, spot.map_id, spot.x, spot.y, spot.z);
-            if (zoneId == GM_ISLAND_ZONE_ID || areaId == GM_ISLAND_ZONE_ID)
+            if (zoneId == GM_ISLAND_ZONE_ID || areaId == GM_ISLAND_ZONE_ID || IsInvalidTeleportAreaForBot(player, zoneId, areaId))
                 continue;
 
             if (player->GetLevel() >= spot.min_level && player->GetLevel() <= spot.max_level)

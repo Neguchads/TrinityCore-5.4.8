@@ -10,6 +10,39 @@
 
 Value<Unit*>* CastPolymorphAction::GetTargetValue() { return context->GetValue<Unit*>("cc target", getName()); }
 
+bool CastFireballAction::isUseful()
+{
+    if (AI_VALUE2(bool, "moving", "self target"))
+        return false;
+
+    return CastSpellAction::isUseful();
+}
+
+bool CastScorchAction::isUseful()
+{
+    bool const moving = AI_VALUE2(bool, "moving", "self target");
+    if (!moving)
+    {
+        Unit* target = AI_VALUE(Unit*, "current target");
+        bool const underClosePressure =
+            target && sServerFacade->IsDistanceLessOrEqualThan(
+                          AI_VALUE2(float, "distance", GetTargetName()), sPlayerbotAIConfig->tooCloseDistance);
+        if (!underClosePressure)
+            return false;
+    }
+
+    return CastSpellAction::isUseful();
+}
+
+bool CastInfernoBlastAction::isUseful()
+{
+    // Fire's movement filler is scorch; keep inferno blast for movement windows and Heating Up conversion.
+    if (!AI_VALUE2(bool, "moving", "self target") && !botAI->HasAura("heating up", bot))
+        return false;
+
+    return CastSpellAction::isUseful();
+}
+
 bool CastFrostNovaAction::isUseful()
 {
     Unit* target = AI_VALUE(Unit*, "current target");

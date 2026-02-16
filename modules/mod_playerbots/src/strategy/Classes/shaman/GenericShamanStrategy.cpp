@@ -175,3 +175,11 @@ void ShamanHealerDpsStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
                         NextAction::array(0, 
                             new NextAction("chain lightning", ACTION_DEFAULT + 0.3f), nullptr)));
 }
+
+void ShamanCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+{
+    triggers.push_back(
+        new TriggerNode("hex", NextAction::array(0, new NextAction("hex on cc", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(
+        new TriggerNode("frost shock", NextAction::array(0, new NextAction("frost shock on cc", ACTION_HIGH + 2), nullptr)));
+}

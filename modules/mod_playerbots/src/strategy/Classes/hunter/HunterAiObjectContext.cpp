@@ -27,8 +27,11 @@ public:
         creators["pet"] = &HunterStrategyFactoryInternal::pet;
         creators["cc"] = &HunterStrategyFactoryInternal::cc;
         creators["beast"] = &HunterStrategyFactoryInternal::beast;
+        creators["beast mastery"] = &HunterStrategyFactoryInternal::beast;
         creators["marks"] = &HunterStrategyFactoryInternal::marks;
+        creators["marksmanship"] = &HunterStrategyFactoryInternal::marks;
         creators["surv"] = &HunterStrategyFactoryInternal::surv;
+        creators["survival"] = &HunterStrategyFactoryInternal::surv;
         creators["hunter"] = &HunterStrategyFactoryInternal::hunter;
     }
 
@@ -87,6 +90,9 @@ public:
         creators["aspect of the pack"] = &HunterTriggerFactoryInternal::aspect_of_the_pack;
         creators["trueshot aura"] = &HunterTriggerFactoryInternal::trueshot_aura;
         creators["no track"] = &HunterTriggerFactoryInternal::no_track;
+        creators["scare beast"] = &HunterTriggerFactoryInternal::scare_beast;
+        creators["freezing trap"] = &HunterTriggerFactoryInternal::freezing_trap;
+        creators["wyvern sting"] = &HunterTriggerFactoryInternal::wyvern_sting;
     }
 
 private:
@@ -108,6 +114,9 @@ private:
     static Trigger* aspect_of_the_pack(PlayerbotAI* botAI) { return new HunterAspectOfThePackTrigger(botAI); }
     static Trigger* trueshot_aura(PlayerbotAI* botAI) { return new TrueshotAuraTrigger(botAI); }
     static Trigger* no_track(PlayerbotAI* botAI) { return new NoTrackTrigger(botAI); }
+    static Trigger* scare_beast(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "scare beast"); }
+    static Trigger* freezing_trap(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "freezing trap"); }
+    static Trigger* wyvern_sting(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "wyvern sting"); }
 };
 
 class HunterAiObjectContextInternal : public NamedObjectContext<Action>
@@ -137,6 +146,7 @@ public:
         creators["call pet 1"] = &HunterAiObjectContextInternal::call_pet;
         creators["black arrow"] = &HunterAiObjectContextInternal::black_arrow;
         creators["freezing trap"] = &HunterAiObjectContextInternal::freezing_trap;
+        creators["freezing trap on cc"] = &HunterAiObjectContextInternal::freezing_trap_on_cc;
         creators["rapid fire"] = &HunterAiObjectContextInternal::rapid_fire;
         creators["boost"] = &HunterAiObjectContextInternal::rapid_fire;
         creators["deterrence"] = &HunterAiObjectContextInternal::deterrence;
@@ -171,6 +181,7 @@ public:
         creators["barrage"] = &HunterAiObjectContextInternal::barrage;
         creators["explosive trap"] = &HunterAiObjectContextInternal::explosive_trap;
         creators["fervor"] = &HunterAiObjectContextInternal::fervor;
+        creators["wyvern sting on cc"] = &HunterAiObjectContextInternal::wyvern_sting_on_cc;
     }
 
 private:
@@ -201,6 +212,10 @@ private:
     static Action* call_pet(PlayerbotAI* botAI) { return new CastCallPetAction(botAI); }
     static Action* black_arrow(PlayerbotAI* botAI) { return new CastBlackArrow(botAI); }
     static Action* freezing_trap(PlayerbotAI* botAI) { return new CastFreezingTrap(botAI); }
+    static Action* freezing_trap_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "freezing trap");
+    }
     static Action* rapid_fire(PlayerbotAI* botAI) { return new CastRapidFireAction(botAI); }
     static Action* deterrence(PlayerbotAI* botAI) { return new CastDeterrenceAction(botAI); }
     static Action* readiness(PlayerbotAI* botAI) { return new CastReadinessAction(botAI); }
@@ -228,6 +243,10 @@ private:
     static Action* barrage(PlayerbotAI* ai) { return new CastBarrageAction(ai); }
     static Action* explosive_trap(PlayerbotAI* ai) { return new CastExplosiveTrapAction(ai); }
     static Action* fervor(PlayerbotAI* ai) { return new CastFervorAction(ai); }
+    static Action* wyvern_sting_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "wyvern sting");
+    }
     
 };
 

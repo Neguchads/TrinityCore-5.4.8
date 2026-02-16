@@ -481,12 +481,17 @@ void RandomPlayerbotFactory::CreateRandomBots()
     TC_LOG_INFO("playerbots", "Creating random bot accounts...");
 
     std::unordered_map<Gender, std::vector<std::string>> nameCache;
-    uint32 totalAccCount = sPlayerbotAIConfig->randomBotAccountCount;
     std::vector<std::future<void>> account_creations;
     int account_creation = 0;
 
     TC_LOG_INFO("playerbots", "Creating cache for names per gender and race.");
-    QueryResult result = CharacterDatabase.Query("SELECT name, gender FROM playerbots_names");
+    // Only cache unused names. Otherwise, after a reboot we'd pick names already present in `characters`
+    // and fail character creation with duplicate key `characters.idx_name`.
+    QueryResult result = CharacterDatabase.Query(
+        "SELECT n.name, n.gender "
+        "FROM playerbots_names n "
+        "LEFT OUTER JOIN characters c ON c.name = n.name "
+        "WHERE c.guid IS NULL");
     if (!result)
     {
         TC_LOG_ERROR("playerbots", "No more unused names left");
@@ -528,16 +533,22 @@ void RandomPlayerbotFactory::CreateRandomBots()
         else
             password = accountName;
 
-        AccountOpResult res = sAccountMgr->CreateAccount(accountName, password, "");
-        if (AccountOpResult::AOR_OK == res)
-            TC_LOG_INFO("playerbots", "Account %s created for random bots", accountName.c_str());
+        account_creations.push_back(std::async(
+            std::launch::async,
+            [accountName, password]()
+            {
+                AccountOpResult res = sAccountMgr->CreateAccount(accountName, password, "");
+                if (AccountOpResult::AOR_OK == res)
+                    TC_LOG_INFO("playerbots", "Account %s created for random bots", accountName.c_str());
+            }));
     }
 
     if (account_creation)
     {
-        /* wait for async accounts create to make character create correctly, same as account delete */
+        // Keep CMaNGOS behavior: wait for every pending account creation before character creation.
         TC_LOG_INFO("playerbots", "Waiting for %u accounts loading into database...", account_creation);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10) * sPlayerbotAIConfig->randomBotAccountCount);
+        for (std::future<void>& accountCreation : account_creations)
+            accountCreation.wait();
     }
 
     TC_LOG_INFO("playerbots", "Creating random bot characters...");
@@ -564,7 +575,12 @@ void RandomPlayerbotFactory::CreateRandomBots()
 
         sPlayerbotAIConfig->randomBotAccounts.push_back(accountId);
 
-        uint32 character_count = AccountMgr::GetCharactersCount(accountId);
+        // `AccountMgr::GetCharactersCount` relies on realm character counters that may not be updated
+        // when creating characters via this factory. Use the characters DB as source of truth.
+        uint32 character_count = 0;
+        if (QueryResult countResult = CharacterDatabase.PQuery("SELECT COUNT(*) FROM characters WHERE account = %u", accountId))
+            character_count = countResult->Fetch()[0].GetUInt32();
+
         if (character_count >= 10)
         {
             continue;
@@ -631,7 +647,8 @@ void RandomPlayerbotFactory::CreateRandomBots()
 
     for (uint32 accountId : sPlayerbotAIConfig->randomBotAccounts)
     {
-        totalRandomBotChars += AccountMgr::GetCharactersCount(accountId);
+        if (QueryResult countResult = CharacterDatabase.PQuery("SELECT COUNT(*) FROM characters WHERE account = %u", accountId))
+            totalRandomBotChars += countResult->Fetch()[0].GetUInt32();
     }
 
     TC_LOG_INFO("server.loading", ">> %u random bot accounts with %u characters available", sPlayerbotAIConfig->randomBotAccounts.size(), totalRandomBotChars);

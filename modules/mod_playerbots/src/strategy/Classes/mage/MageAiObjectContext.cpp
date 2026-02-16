@@ -31,7 +31,7 @@ public:
         //creators["cure"] = &MageStrategyFactoryInternal::cure;
         creators["buff"] = &MageStrategyFactoryInternal::buff;
         //creators["boost"] = &MageStrategyFactoryInternal::boost;
-        //creators["cc"] = &MageStrategyFactoryInternal::cc;
+        creators["cc"] = &MageStrategyFactoryInternal::cc;
         creators["mage"] = &MageStrategyFactoryInternal::mage;
     }
 
@@ -44,7 +44,7 @@ private:
     //static Strategy* cure(PlayerbotAI* botAI) { return new MageCureStrategy(botAI); }
     static Strategy* buff(PlayerbotAI* botAI) { return new MageBuffStrategy(botAI); }
     //static Strategy* boost(PlayerbotAI* botAI) { return new MageBoostStrategy(botAI); }
-    //static Strategy* cc(PlayerbotAI* botAI) { return new MageCcStrategy(botAI); }
+    static Strategy* cc(PlayerbotAI* botAI) { return new MageCcStrategy(botAI); }
     static Strategy* mage(PlayerbotAI* botAI) { return new MageStrategy(botAI); }
 };
 
@@ -94,6 +94,9 @@ public:
         creators["missile barrage"] = &MageTriggerFactoryInternal::missile_barrage;
         creators["presence of mind"] = &MageTriggerFactoryInternal::presence_of_mind;
         creators["frost nova on target"] = &MageTriggerFactoryInternal::frost_nova_on_target;
+        creators["polymorph"] = &MageTriggerFactoryInternal::polymorph;
+        creators["frostjaw"] = &MageTriggerFactoryInternal::frostjaw;
+        creators["deep freeze"] = &MageTriggerFactoryInternal::deep_freeze;
         creators["counterspell"] = &MageTriggerFactoryInternal::counterspell;
         creators["spellsteal"] = &MageTriggerFactoryInternal::spellsteal;
         creators["temporal shield"] = &MageTriggerFactoryInternal::temporal_shield;
@@ -129,6 +132,9 @@ private:
     static Trigger* molten_armor(PlayerbotAI* botAI) { return new MoltenArmorTrigger(botAI); }
     static Trigger* living_bomb(PlayerbotAI* botAI) { return new LivingBombTrigger(botAI); }
     static Trigger* frost_nova_on_target(PlayerbotAI* botAI) { return new FrostNovaOnTargetTrigger(botAI); }
+    static Trigger* polymorph(PlayerbotAI* botAI) { return new PolymorphReasonTrigger(botAI); }
+    static Trigger* frostjaw(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "frostjaw"); }
+    static Trigger* deep_freeze(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "deep freeze"); }
     static Trigger* counterspell(PlayerbotAI* botAI) { return new CounterspellInterruptSpellTrigger(botAI); }
     static Trigger* spellsteal(PlayerbotAI* botAI) { return new SpellstealTrigger(botAI); }
     static Trigger* temporal_shield(PlayerbotAI* botAI) { return new TemporalShieldTrigger(botAI); }
@@ -171,6 +177,7 @@ public:
         creators["frostfire bolt"] = &MageAiObjectContextInternal::frostfirebolt;
         creators["frost nova"] = &MageAiObjectContextInternal::frostnova;
         creators["fire blast"] = &MageAiObjectContextInternal::fireblast;
+        creators["polymorph"] = &MageAiObjectContextInternal::polymorph;
         creators["counterspell"] = &MageAiObjectContextInternal::counterspell;
         creators["counterspell on enemy healer"] = &MageAiObjectContextInternal::counterspell_on_enemy_healer;
         creators["spellsteal"] = &MageAiObjectContextInternal::spellsteal;
@@ -189,6 +196,8 @@ public:
         creators["time warp"] = &MageAiObjectContextInternal::time_warp;
         creators["blink"] = &MageAiObjectContextInternal::blink;
         creators["frostjaw"] = &MageAiObjectContextInternal::frostjaw;
+        creators["frostjaw on cc"] = &MageAiObjectContextInternal::frostjaw_on_cc;
+        creators["deep freeze on cc"] = &MageAiObjectContextInternal::deep_freeze_on_cc;
 
         // --
 
@@ -232,6 +241,7 @@ private:
     static Action* frostbolt(PlayerbotAI* botAI) { return new CastFrostboltAction(botAI); }
     static Action* frostnova(PlayerbotAI* botAI) { return new CastFrostNovaAction(botAI); }
     static Action* fireblast(PlayerbotAI* botAI) { return new CastFireBlastAction(botAI); }
+    static Action* polymorph(PlayerbotAI* botAI) { return new CastPolymorphAction(botAI); }
     static Action* counterspell(PlayerbotAI* botAI) { return new CastCounterspellAction(botAI); }
     static Action* counterspell_on_enemy_healer(PlayerbotAI* botAI) { return new CastCounterspellOnEnemyHealerAction(botAI); }
     static Action* spellsteal(PlayerbotAI* botAI) { return new CastSpellstealAction(botAI); }
@@ -256,6 +266,14 @@ private:
     static Action* cold_snap(PlayerbotAI* botAI) { return new CastColdSnapAction(botAI); }
     static Action* ice_barrier(PlayerbotAI* botAI) { return new CastIceBarrierAction(botAI); }
     static Action* frostjaw(PlayerbotAI* botAI) { return new CastFrostjawAction(botAI); }
+    static Action* frostjaw_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "frostjaw");
+    }
+    static Action* deep_freeze_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "deep freeze");
+    }
 
     // -- fire
     static Action* fireball(PlayerbotAI* botAI) { return new CastFireballAction(botAI); }

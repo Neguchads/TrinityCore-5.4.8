@@ -36,12 +36,14 @@ public:
         creators["cure"] = &MonkStrategyFactoryInternal::cure;
         creators["aoe"] = &MonkStrategyFactoryInternal::aoe;
         creators["melee aoe"] = &MonkStrategyFactoryInternal::aoe;
+        creators["cc"] = &MonkStrategyFactoryInternal::cc;
     }
 
 private:
     static Strategy* nc(PlayerbotAI* botAI) { return new GenericMonkNonCombatStrategy(botAI); }
     static Strategy* cure(PlayerbotAI* botAI) { return new MonkCureStrategy(botAI); }
     static Strategy* aoe(PlayerbotAI* botAI) { return new MonkAoeStrategy(botAI); }
+    static Strategy* cc(PlayerbotAI* botAI) { return new MonkCcStrategy(botAI); }
 };
 
 class MonkCombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -51,8 +53,11 @@ public:
     {
         creators["melee"] = &MonkCombatStrategyFactoryInternal::dps;
         creators["dps"] = &MonkCombatStrategyFactoryInternal::dps;
+        creators["windwalker"] = &MonkCombatStrategyFactoryInternal::dps;
         creators["tank"] = &MonkCombatStrategyFactoryInternal::tank;
+        creators["brewmaster"] = &MonkCombatStrategyFactoryInternal::tank;
         creators["heal"] = &MonkCombatStrategyFactoryInternal::heal;
+        creators["mistweaver"] = &MonkCombatStrategyFactoryInternal::heal;
     }
 
 private:
@@ -82,6 +87,10 @@ public:
         creators["renewing mist on party"] = &MonkTriggerFactoryInternal::renewing_mist_on_party;
         creators["tiger eye brew"] = &MonkTriggerFactoryInternal::tiger_eye_brew;
         creators["invoke xuen"] = &MonkTriggerFactoryInternal::invoke_xuen;
+        creators["paralysis"] = &MonkTriggerFactoryInternal::paralysis;
+        creators["clash"] = &MonkTriggerFactoryInternal::clash;
+        creators["dizzying haze"] = &MonkTriggerFactoryInternal::dizzying_haze;
+        creators["fists of fury"] = &MonkTriggerFactoryInternal::fists_of_fury;
     }
 
 private:
@@ -101,6 +110,10 @@ private:
     static Trigger* renewing_mist_on_party(PlayerbotAI* botAI) { return new RenewingMistOnPartyTrigger(botAI); }
     static Trigger* tiger_eye_brew(PlayerbotAI* botAI) { return new TigerEyeBrewTrigger(botAI); }
     static Trigger* invoke_xuen(PlayerbotAI* botAI) { return new InvokeXuenTrigger(botAI); }
+    static Trigger* paralysis(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "paralysis"); }
+    static Trigger* clash(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "clash"); }
+    static Trigger* dizzying_haze(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "dizzying haze"); }
+    static Trigger* fists_of_fury(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "fists of fury"); }
 };
 
 class MonkAiObjectContextInternal : public NamedObjectContext<Action>
@@ -155,6 +168,10 @@ public:
 
         creators["detox"] = &MonkAiObjectContextInternal::detox;
         creators["detox on party"] = &MonkAiObjectContextInternal::detox_on_party;
+        creators["paralysis on cc"] = &MonkAiObjectContextInternal::paralysis_on_cc;
+        creators["clash on cc"] = &MonkAiObjectContextInternal::clash_on_cc;
+        creators["dizzying haze on cc"] = &MonkAiObjectContextInternal::dizzying_haze_on_cc;
+        creators["fists of fury on cc"] = &MonkAiObjectContextInternal::fists_of_fury_on_cc;
     }
 
 private:
@@ -205,6 +222,22 @@ private:
 
     static Action* detox(PlayerbotAI* botAI) { return new CastDetoxAction(botAI); }
     static Action* detox_on_party(PlayerbotAI* botAI) { return new CastDetoxOnPartyAction(botAI); }
+    static Action* paralysis_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "paralysis");
+    }
+    static Action* clash_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "clash");
+    }
+    static Action* dizzying_haze_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "dizzying haze");
+    }
+    static Action* fists_of_fury_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "fists of fury");
+    }
 };
 
 MonkAiObjectContext::MonkAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)

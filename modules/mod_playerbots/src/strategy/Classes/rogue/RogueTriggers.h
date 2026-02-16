@@ -71,4 +71,20 @@ public:
     BlindsideTrigger(PlayerbotAI* botAI) : HasAuraTrigger(botAI, "blindside") {}
 };
 
+class KidneyShotPvpTrigger : public Trigger
+{
+public:
+    KidneyShotPvpTrigger(PlayerbotAI* botAI) : Trigger(botAI, "kidney shot pvp") {}
+
+    bool IsActive() override;
+};
+
+class StealthPvpOpenerTrigger : public Trigger
+{
+public:
+    StealthPvpOpenerTrigger(PlayerbotAI* botAI) : Trigger(botAI, "stealth pvp opener") {}
+
+    bool IsActive() override;
+};
+
 #endif

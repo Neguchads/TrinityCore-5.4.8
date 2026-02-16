@@ -69,14 +69,14 @@ void GenericWarriorStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("target critical health", NextAction::array(0, new NextAction("execute", ACTION_HIGH + 20), nullptr)));
     triggers.push_back(new TriggerNode("victory rush", NextAction::array(0, new NextAction("victory rush", ACTION_INTERRUPT), nullptr)));
     triggers.push_back(new TriggerNode("colossus smash", NextAction::array(0, new NextAction("colossus smash", ACTION_HIGH + 4), nullptr)));
-    //triggers.push_back(new TriggerNode("sunder armor", NextAction::array(0, new NextAction("sunder armor", ACTION_HIGH + 4), nullptr)));
-    //triggers.push_back(new TriggerNode("thunder clap", NextAction::array(0, new NextAction("thunder clap", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(new TriggerNode("sunder armor", NextAction::array(0, new NextAction("sunder armor", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(new TriggerNode("thunder clap", NextAction::array(0, new NextAction("thunder clap", ACTION_HIGH + 2), nullptr)));
 
     //triggers.push_back(new TriggerNode("medium health", NextAction::array(0, new NextAction("", ACTION_INTERRUPT), nullptr)));
     triggers.push_back(new TriggerNode("low health", NextAction::array(0, new NextAction("shield wall", ACTION_INTERRUPT), nullptr)));
     triggers.push_back(new TriggerNode("critical health", NextAction::array(0, new NextAction("rallying cry", ACTION_INTERRUPT), nullptr)));
 
-    //triggers.push_back(new TriggerNode("pummel on enemy healer", NextAction::array(0, new NextAction("pummel on enemy healer", ACTION_INTERRUPT), nullptr)));
+    triggers.push_back(new TriggerNode("pummel on enemy healer", NextAction::array(0, new NextAction("pummel on enemy healer", ACTION_INTERRUPT + 1), nullptr)));
     triggers.push_back(new TriggerNode("pummel", NextAction::array(0, new NextAction("pummel", ACTION_INTERRUPT), nullptr)));
 }
 
@@ -128,4 +128,12 @@ void WarriorAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         new NextAction("thunder clap", ACTION_HIGH + 5),
         new NextAction("cleave", ACTION_HIGH),
         nullptr)));
+}
+
+void WarriorCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+{
+    triggers.push_back(
+        new TriggerNode("storm bolt", NextAction::array(0, new NextAction("storm bolt on cc", ACTION_HIGH + 4), nullptr)));
+    triggers.push_back(
+        new TriggerNode("shockwave", NextAction::array(0, new NextAction("shockwave on cc", ACTION_HIGH + 3), nullptr)));
 }

@@ -246,15 +246,15 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
         {
             if (spec == Specializations::SPEC_PRIEST_SHADOW)
             {
-                engine->addStrategiesNoInit("dps", "shadow debuff", "shadow aoe", nullptr);
+                engine->addStrategiesNoInit("shadow", "shadow debuff", "shadow aoe", nullptr);
             }
             else if (spec == Specializations::SPEC_PRIEST_DISCIPLINE)
             {
-                engine->addStrategiesNoInit("heal", nullptr);
+                engine->addStrategiesNoInit("discipline", nullptr);
             }
             else
             {
-                engine->addStrategiesNoInit("holy heal", nullptr);
+                engine->addStrategiesNoInit("holy", nullptr);
             }
 
             engine->addStrategiesNoInit("dps assist", "cure", nullptr);
@@ -275,7 +275,7 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
         case CLASS_WARRIOR:
         {
             if (spec == Specializations::SPEC_WARRIOR_PROTECTION)
-                engine->addStrategiesNoInit("tank", "tank assist", "aoe", nullptr);
+                engine->addStrategiesNoInit("protection", "tank assist", "aoe", nullptr);
             else if (player->GetLevel() < 10 || spec == Specializations::SPEC_WARRIOR_ARMS)
                 engine->addStrategiesNoInit("arms", "aoe", "dps assist", /*"behind",*/ nullptr);
             else
@@ -285,11 +285,11 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
         case CLASS_SHAMAN:
         {
             if (spec == Specializations::SPEC_SHAMAN_ELEMENTAL)
-                engine->addStrategiesNoInit("caster", "caster aoe", "bmana", nullptr);
+                engine->addStrategiesNoInit("elemental", "caster aoe", "bmana", nullptr);
             else if (spec == Specializations::SPEC_SHAMAN_RESTORATION)
-                engine->addStrategiesNoInit("heal", "bmana", nullptr);
+                engine->addStrategiesNoInit("restoration", "bmana", nullptr);
             else
-                engine->addStrategiesNoInit("melee", "melee aoe", "bdps", nullptr);
+                engine->addStrategiesNoInit("enhancement", "melee aoe", "bdps", nullptr);
 
             engine->addStrategiesNoInit("dps assist", "cure", "totems", nullptr);
             break;
@@ -297,41 +297,41 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
         case CLASS_PALADIN:
         {
             if (spec == Specializations::SPEC_PALADIN_PROTECTION)
-                engine->addStrategiesNoInit("tank", "tank assist", "bthreat", "barmor", "cure", nullptr);
+                engine->addStrategiesNoInit("protection", "tank assist", "bthreat", "barmor", "cure", nullptr);
             else if (spec == Specializations::SPEC_PALADIN_HOLY)
-                engine->addStrategiesNoInit("heal", "dps assist", "cure", "bcast", nullptr);
+                engine->addStrategiesNoInit("holy", "dps assist", "cure", "bcast", nullptr);
             else
-                engine->addStrategiesNoInit("dps", "dps assist", "cure", "baoe", nullptr);
+                engine->addStrategiesNoInit("retribution", "dps assist", "cure", "baoe", nullptr);
             break;
         }
         case CLASS_DRUID:
         {
             if (spec == Specializations::SPEC_DRUID_BALANCE)
             {
-                engine->addStrategiesNoInit("caster", "cure", "caster aoe", "dps assist", nullptr);
+                engine->addStrategiesNoInit("balance", "cure", "caster aoe", "dps assist", nullptr);
                 engine->addStrategy("caster debuff", false);
             }
             else if (spec == Specializations::SPEC_DRUID_RESTORATION)
-                engine->addStrategiesNoInit("heal", "cure", "dps assist", nullptr);
+                engine->addStrategiesNoInit("restoration", "cure", "dps assist", nullptr);
             else if (spec == Specializations::SPEC_DRUID_FERAL)
             {
-                if (player->GetLevel() >= 20 && !player->HasAura(16931) /*thick hide*/)
-                {
-                    engine->addStrategiesNoInit("cat", "dps assist", nullptr);
-                }
-                else
-                {
-                    engine->addStrategiesNoInit("bear", "tank assist", nullptr);
-                }
+                engine->addStrategiesNoInit("dps feral", "dps assist", nullptr);
             }
             else if (spec == Specializations::SPEC_DRUID_GUARDIAN)
             {
-                engine->addStrategiesNoInit("bear", "tank assist", nullptr);
+                engine->addStrategiesNoInit("tank feral", "tank assist", nullptr);
             }
             break;
         }
         case CLASS_HUNTER:
         {
+            if (spec == Specializations::SPEC_HUNTER_BEAST_MASTERY)
+                engine->addStrategy("beast mastery", false);
+            else if (spec == Specializations::SPEC_HUNTER_MARKSMANSHIP)
+                engine->addStrategy("marksmanship", false);
+            else
+                engine->addStrategy("survival", false);
+
             engine->addStrategiesNoInit("dps", "aoe", "bdps", "dps assist", nullptr);
             engine->addStrategy("dps debuff", false);
             break;
@@ -340,22 +340,30 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
         {
             if (spec == Specializations::SPEC_ROGUE_ASSASSINATION)
             {
-                engine->addStrategiesNoInit("melee", "dps assist", "aoe", /*"behind",*/ nullptr);
+                engine->addStrategiesNoInit("assassination", "dps assist", "aoe", "stealth", /*"behind",*/ nullptr);
+            }
+            else if (spec == Specializations::SPEC_ROGUE_COMBAT)
+            {
+                engine->addStrategiesNoInit("combat", "dps assist", "aoe", "stealth", /*"behind",*/ nullptr);
+            }
+            else if (spec == Specializations::SPEC_ROGUE_SUBTLETY)
+            {
+                engine->addStrategiesNoInit("subtlety", "dps assist", "aoe", "stealth", /*"behind",*/ nullptr);
             }
             else
             {
-                engine->addStrategiesNoInit("dps", "dps assist", "aoe", /*"behind",*/ nullptr);
+                engine->addStrategiesNoInit("dps", "dps assist", "aoe", "stealth", /*"behind",*/ nullptr);
             }
             break;
         }
         case CLASS_WARLOCK:
         {
             if (spec == Specializations::SPEC_WARLOCK_DEMONOLOGY)
-                engine->addStrategy("demono", false);
+                engine->addStrategy("demonology", false);
             else if (spec == Specializations::SPEC_WARLOCK_DESTRUCTION)
-                engine->addStrategy("destru", false);
+                engine->addStrategy("destruction", false);
             else
-                engine->addStrategy("affli", false);
+                engine->addStrategy("affliction", false);
             
             engine->addStrategiesNoInit("dps assist", "dps", "aoe", nullptr);
             break;
@@ -373,16 +381,19 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
         case CLASS_MONK:
         {
             if (spec == Specializations::SPEC_MONK_BREWMASTER)
-                engine->addStrategiesNoInit("tank", "tank assist", "aoe", nullptr);
+                engine->addStrategiesNoInit("brewmaster", "tank assist", "aoe", nullptr);
             else if (spec == Specializations::SPEC_MONK_MISTWEAVER)
-                engine->addStrategiesNoInit("heal", nullptr);
+                engine->addStrategiesNoInit("mistweaver", nullptr);
             else
-                engine->addStrategiesNoInit("melee", "melee aoe", "dps assist", nullptr);
+                engine->addStrategiesNoInit("windwalker", "melee aoe", "dps assist", nullptr);
 
             engine->addStrategiesNoInit("dps assist", "cure", nullptr);
         }
         break;
     }
+
+    // Enable class CC strategies in all combat contexts (world PvP/duels/arena too), not only battlegrounds.
+    engine->addStrategy("cc", false);
 
     if (PlayerBotSpec::IsTank(player, true))
         engine->addStrategy("tank face", false);

@@ -119,6 +119,10 @@ public:
         creators["backdraft"] = &WarlockTriggerFactoryInternal::backdraft;
         creators["conflagrate"] = &WarlockTriggerFactoryInternal::conflagrate;
         creators["fire and brimstone"] = &WarlockTriggerFactoryInternal::fire_and_brimstone;
+        creators["banish"] = &WarlockTriggerFactoryInternal::banish;
+        creators["fear"] = &WarlockTriggerFactoryInternal::fear;
+        creators["mortal coil"] = &WarlockTriggerFactoryInternal::mortal_coil;
+        creators["shadowfury"] = &WarlockTriggerFactoryInternal::shadowfury;
 
         // -- Pet
         creators["warlock pet low health"] = &WarlockTriggerFactoryInternal::warlock_pet_low_health;
@@ -156,6 +160,10 @@ private:
     static Trigger* backdraft(PlayerbotAI* botAI) { return new BackdraftTrigger(botAI); }
     static Trigger* conflagrate(PlayerbotAI* botAI) { return new ConflagrateTrigger(botAI); }
     static Trigger* fire_and_brimstone(PlayerbotAI* botAI) { return new FireAndBrimeStoneTrigger(botAI); }
+    static Trigger* banish(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "banish"); }
+    static Trigger* fear(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "fear"); }
+    static Trigger* mortal_coil(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "mortal coil"); }
+    static Trigger* shadowfury(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "shadowfury"); }
 
     // -- Pet
     static Trigger* warlock_pet_low_health(PlayerbotAI* botAI) { return new WarlockPetLowHealthTrigger(botAI); }
@@ -227,6 +235,8 @@ public:
         creators["life tap"] = &WarlockAiObjectContextInternal::life_tap;
         creators["fear"] = &WarlockAiObjectContextInternal::fear;
         creators["fear on cc"] = &WarlockAiObjectContextInternal::fear_on_cc; 
+        creators["mortal coil on cc"] = &WarlockAiObjectContextInternal::mortal_coil_on_cc;
+        creators["shadowfury on cc"] = &WarlockAiObjectContextInternal::shadowfury_on_cc;
         creators["demonic empowerment"] = &WarlockAiObjectContextInternal::demonic_empowerment;
         
         // -- Affliction
@@ -297,6 +307,14 @@ private:
     static Action* siphon_life_on_attacker(PlayerbotAI* botAI) { return new CastSiphonLifeOnAttackerAction(botAI); }
     static Action* fear_on_cc(PlayerbotAI* botAI) { return new CastFearOnCcAction(botAI); }
     static Action* fear(PlayerbotAI* botAI) { return new CastFearAction(botAI); }
+    static Action* mortal_coil_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "mortal coil");
+    }
+    static Action* shadowfury_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "shadowfury");
+    }
     static Action* banish(PlayerbotAI* botAI) { return new CastBanishAction(botAI); }
     static Action* banish_on_cc(PlayerbotAI* botAI) { return new CastBanishAction(botAI); }
     static Action* shadow_bolt(PlayerbotAI* botAI) { return new CastShadowBoltAction(botAI); }

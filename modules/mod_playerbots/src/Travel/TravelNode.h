@@ -139,7 +139,11 @@ public:
     {
         setPath(path1);
         calculateCost(true);
-        extraCost = distance / speed;
+        // Some transport templates can report 0 move speed; avoid inf in persisted SQL values.
+        if (speed > 0.0f)
+            extraCost = distance / speed;
+        else
+            extraCost = 0.0f;
     }
 
     // void setPortal(bool portal1, uint32 portalId1 = 0) { portal = portal1; portalId = portalId1; }

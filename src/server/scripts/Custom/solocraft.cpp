@@ -29,6 +29,7 @@
 #include "InstanceScript.h"
 #include "Chat.h"
 #include "Log.h"
+#include <cmath>
 #include <math.h>
 #include <unordered_map>
 
@@ -488,6 +489,15 @@ protected:
     SolocraftConfig solocraftConfig;   
     bool noXPGainFlag = false; // if noXPGainFlag before solocraft setting
 
+    static float SanitizeFinite(float value, char const* label, ObjectGuid::LowType guid)
+    {
+        if (std::isfinite(value))
+            return value;
+
+        TC_LOG_ERROR("solocraft", "solocraft: non-finite %s (%f) for player %u, clamping to 0", label, value, guid);
+        return 0.0f;
+    }
+
     float CalculateDifficulty(Map* map, Player* /*player*/)
     {
         if (map)
@@ -557,6 +567,10 @@ protected:
             Group::MemberSlotList const& groupMembers = group->GetMemberSlots();
             numInGroup = groupMembers.size();
         }
+
+        if (numInGroup <= 0)
+            numInGroup = 1;
+
         return numInGroup;
     }
 
@@ -578,6 +592,10 @@ protected:
 
     void ApplyBuffs(Player* player, Map* map, float difficulty, int dunLevel, int numInGroup, int classBalance)
     {
+        ObjectGuid::LowType const guid = player->GetGUID().GetCounter();
+        difficulty = SanitizeFinite(difficulty, "difficulty input", guid);
+        float const statsMult = SanitizeFinite(solocraftConfig.SoloCraftStatsMult, "stats multiplier config", guid);
+
         if (difficulty > 0)
         {
 
@@ -594,8 +612,10 @@ protected:
 
                 if (GroupDifficulty >= difficulty && solocraftConfig.SoloCraftDebuffEnable)
                 {
-                    difficulty = (-abs(difficulty)) + ((((float)classBalance / 100) * difficulty) / numInGroup);
+                    int const safeNumInGroup = (numInGroup > 0) ? numInGroup : 1;
+                    difficulty = (-abs(difficulty)) + ((((float)classBalance / 100) * difficulty) / safeNumInGroup);
                     difficulty = roundf(difficulty * 100) / 100;
+                    difficulty = SanitizeFinite(difficulty, "difficulty debuff", guid);
 
                     if (!player->HasFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_NO_XP_GAIN) && solocraftConfig.SolocraftXPBalancingEnabled)
                     {
@@ -609,10 +629,12 @@ protected:
                 {
                     if (result)
                     {
-                        player->HandleStatModifier(UnitMods(UNIT_MOD_STAT_START + i), TOTAL_VALUE, (*result)[1].GetFloat() * (*result)[4].GetFloat(), false);
+                        float const storedDifficulty = SanitizeFinite((*result)[1].GetFloat(), "stored difficulty", guid);
+                        float const storedStatsMult = SanitizeFinite((*result)[4].GetFloat(), "stored stats multiplier", guid);
+                        player->HandleStatModifier(UnitMods(UNIT_MOD_STAT_START + i), TOTAL_VALUE, storedDifficulty * storedStatsMult, false);
                     }
 
-                    player->HandleStatModifier(UnitMods(UNIT_MOD_STAT_START + i), TOTAL_VALUE, difficulty * solocraftConfig.SoloCraftStatsMult, true);
+                    player->HandleStatModifier(UnitMods(UNIT_MOD_STAT_START + i), TOTAL_VALUE, difficulty * statsMult, true);
                 }
 
                 player->SetFullHealth();
@@ -629,7 +651,9 @@ protected:
 
                     if (difficulty > 0)
                     {
-                        SpellPowerBonus = static_cast<int>((player->GetLevel() * solocraftConfig.SoloCraftSpellMult) * difficulty);
+                        float const rawSpellPowerBonus =
+                            SanitizeFinite((player->GetLevel() * solocraftConfig.SoloCraftSpellMult) * difficulty, "spell power bonus", guid);
+                        SpellPowerBonus = static_cast<int>(rawSpellPowerBonus);
                         player->ApplySpellPowerBonus(SpellPowerBonus, true);
                     }
                 }
@@ -657,7 +681,11 @@ protected:
                     // |cffFF0000[SoloCraft]|r |cffFF8000 %s entered %s - |cffFF0000BE ADVISED - You have been debuffed by offset: %0.2f with a Class Balance Weight: %i. |cffFF8000A group member already inside has the dungeon's full buff offset. No Spellpower buff will be applied to spell casters. ALL group members must exit the dungeon and re-enter to receive a balanced offset.
                 }
 
-                CharacterDatabase.PExecute("REPLACE INTO `custom_solocraft_character_stats` (`guid`, `Difficulty`, `GroupSize`, `SpellPower`, `Stats`) VALUES (%lu, %f, %u, %i, %f)", player->GetGUID().GetCounter(), difficulty, numInGroup, SpellPowerBonus, solocraftConfig.SoloCraftStatsMult);
+                float const storedDifficulty = SanitizeFinite(difficulty, "stored difficulty", guid);
+                uint32 const storedGroupSize = (numInGroup > 0) ? static_cast<uint32>(numInGroup) : 1u;
+                CharacterDatabase.PExecute(
+                    "REPLACE INTO `custom_solocraft_character_stats` (`guid`, `Difficulty`, `GroupSize`, `SpellPower`, `Stats`) VALUES (%lu, %f, %u, %i, %f)",
+                    guid, storedDifficulty, storedGroupSize, SpellPowerBonus, statsMult);
             }
             else
             {
@@ -706,9 +734,10 @@ protected:
 
         if (result)
         {
-            float difficulty = (*result)[1].GetFloat();
+            ObjectGuid::LowType const guid = player->GetGUID().GetCounter();
+            float difficulty = SanitizeFinite((*result)[1].GetFloat(), "clear difficulty", guid);
             int SpellPowerBonus = (*result)[3].GetUInt32();
-            float StatsMultPct = (*result)[4].GetFloat();
+            float StatsMultPct = SanitizeFinite((*result)[4].GetFloat(), "clear stats multiplier", guid);
 
             ChatHandler(player->GetSession()).PSendSysMessage(player->GetSession()->GetTrinityString(SOLOCRAFT_TRINITYSTRING_CLEAR_BUFFS), player->GetName().c_str(), map->GetMapName(), difficulty, SpellPowerBonus);
 

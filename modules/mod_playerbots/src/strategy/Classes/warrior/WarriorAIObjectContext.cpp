@@ -21,12 +21,14 @@ public:
         creators["nc"] = &WarriorStrategyFactoryInternal::nc;
         creators["aoe"] = &WarriorStrategyFactoryInternal::aoe;
         creators["warrior"] = &WarriorStrategyFactoryInternal::warrior;
+        creators["cc"] = &WarriorStrategyFactoryInternal::cc;
     }
 
 private:
     static Strategy* nc(PlayerbotAI* botAI) { return new GenericWarriorNonCombatStrategy(botAI); }
     static Strategy* aoe(PlayerbotAI* botAI) { return new WarriorAoeStrategy(botAI); }
     static Strategy* warrior(PlayerbotAI* botAI) { return new WarriorStrategy(botAI); }
+    static Strategy* cc(PlayerbotAI* botAI) { return new WarriorCcStrategy(botAI); }
 };
 
 class WarriorCombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -82,6 +84,8 @@ public:
         creators["revenge"] = &WarriorTriggerFactoryInternal::revenge;
         creators["vigilance"] = &WarriorTriggerFactoryInternal::vigilance;
         creators["recklessness"] = &WarriorTriggerFactoryInternal::recklessness;
+        creators["storm bolt"] = &WarriorTriggerFactoryInternal::storm_bolt;
+        creators["shockwave"] = &WarriorTriggerFactoryInternal::shockwave;
     }
 private:
     static Trigger* battle_shout(PlayerbotAI* botAI) { return new BattleShoutTrigger(botAI); }
@@ -115,6 +119,8 @@ private:
     static Trigger* revenge(PlayerbotAI* botAI) { return new RevengeAvailableTrigger(botAI); }
     static Trigger* vigilance(PlayerbotAI* botAI) { return new VigilanceTrigger(botAI); }
     static Trigger* recklessness(PlayerbotAI* botAI) { return new RecklessnessTrigger(botAI); }
+    static Trigger* storm_bolt(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "storm bolt"); }
+    static Trigger* shockwave(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "shockwave"); }
 };
 
 class WarriorAiObjectContextInternal : public NamedObjectContext<Action>
@@ -136,6 +142,8 @@ public:
         creators["victory rush"] = &WarriorAiObjectContextInternal::victory_rush;
         creators["execute"] = &WarriorAiObjectContextInternal::execute;
         creators["sunder armor"] = &WarriorAiObjectContextInternal::sunder_armor;
+        creators["pummel"] = &WarriorAiObjectContextInternal::pummel;
+        creators["pummel on enemy healer"] = &WarriorAiObjectContextInternal::pummel_on_enemy_healer;
 
         creators["bloodbath"] = &WarriorAiObjectContextInternal::bloodbath;
         creators["berserker rage"] = &WarriorAiObjectContextInternal::berserker_rage;
@@ -180,6 +188,8 @@ public:
         creators["vigilance"] = &WarriorAiObjectContextInternal::vigilance;
         creators["storm bolt"] = &WarriorAiObjectContextInternal::storm_bolt;
         creators["mocking banner"] = &WarriorAiObjectContextInternal::mocking_banner;
+        creators["storm bolt on cc"] = &WarriorAiObjectContextInternal::storm_bolt_on_cc;
+        creators["shockwave on cc"] = &WarriorAiObjectContextInternal::shockwave_on_cc;
     }
 private:
     // -- buffs
@@ -196,6 +206,11 @@ private:
     static Action* victory_rush(PlayerbotAI* botAI) { return new CastVictoryRushAction(botAI); }
     static Action* execute(PlayerbotAI* botAI) { return new CastExecuteAction(botAI); }
     static Action* sunder_armor(PlayerbotAI* botAI) { return new CastSunderArmorAction(botAI); }
+    static Action* pummel(PlayerbotAI* botAI) { return new CastPummelAction(botAI); }
+    static Action* pummel_on_enemy_healer(PlayerbotAI* botAI)
+    {
+        return new CastSpellOnEnemyHealerAction(botAI, "pummel");
+    }
     static Action* bloodbath(PlayerbotAI* botAI) { return new CastBloodbathAction(botAI); }
     static Action* berserker_rage(PlayerbotAI* botAI) { return new CastBerserkerRageAction(botAI); }
     static Action* rallying_cry(PlayerbotAI* botAI) { return new CastRallyingCryAction(botAI); }
@@ -239,6 +254,14 @@ private:
     static Action* vigilance(PlayerbotAI* botAI) { return new CastVigilanceAction(botAI); }
     static Action* storm_bolt(PlayerbotAI* botAI) { return new CastStormBoltAction(botAI); }
     static Action* mocking_banner(PlayerbotAI* botAI) { return new CastMockingBannerAction(botAI); }
+    static Action* storm_bolt_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "storm bolt");
+    }
+    static Action* shockwave_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "shockwave");
+    }
 };
 
 WarriorAiObjectContext::WarriorAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)

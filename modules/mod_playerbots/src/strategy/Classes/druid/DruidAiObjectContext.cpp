@@ -124,6 +124,10 @@ public:
         creators["cenarion ward on main tank"] = &DruidTriggerFactoryInternal::cenarion_ward_on_main_tank;
         creators["genesis"] = &DruidTriggerFactoryInternal::genesis;
         creators["wild mushroom: bloom"] = &DruidTriggerFactoryInternal::wild_mushroom_bloom;
+        creators["bash"] = &DruidTriggerFactoryInternal::bash;
+        creators["entangling roots"] = &DruidTriggerFactoryInternal::entangling_roots;
+        creators["entangling roots kite"] = &DruidTriggerFactoryInternal::entangling_roots_kite;
+        creators["hibernate"] = &DruidTriggerFactoryInternal::hibernate;
     }
 
 private:
@@ -159,6 +163,10 @@ private:
     static Trigger* cenarion_ward_on_main_tank(PlayerbotAI* botAI) { return new CenarionWardOnMainTankTrigger(botAI); }
     static Trigger* genesis(PlayerbotAI* botAI) { return new GenesisTrigger(botAI); }
     static Trigger* wild_mushroom_bloom(PlayerbotAI* botAI) { return new WildMushroomBloomTrigger(botAI); }
+    static Trigger* bash(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "bash"); }
+    static Trigger* entangling_roots(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "entangling roots"); }
+    static Trigger* entangling_roots_kite(PlayerbotAI* botAI) { return new EntanglingRootsKiteTrigger(botAI); }
+    static Trigger* hibernate(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "hibernate"); }
 };
 
 class DruidAiObjectContextInternal : public NamedObjectContext<Action>
@@ -183,6 +191,7 @@ public:
         creators["mangle (bear)"] = &DruidAiObjectContextInternal::mangle_bear;
         creators["maul"] = &DruidAiObjectContextInternal::maul;
         creators["bash"] = &DruidAiObjectContextInternal::bash;
+        creators["bash on cc"] = &DruidAiObjectContextInternal::bash_on_cc;
         creators["swipe"] = &DruidAiObjectContextInternal::swipe;
         creators["growl"] = &DruidAiObjectContextInternal::growl;
         creators["demoralizing roar"] = &DruidAiObjectContextInternal::demoralizing_roar;
@@ -291,6 +300,10 @@ private:
     static Action* mangle_bear(PlayerbotAI* botAI) { return new CastMangleBearAction(botAI); }
     static Action* maul(PlayerbotAI* botAI) { return new CastMaulAction(botAI); }
     static Action* bash(PlayerbotAI* botAI) { return new CastBashAction(botAI); }
+    static Action* bash_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "bash");
+    }
     static Action* swipe(PlayerbotAI* botAI) { return new CastSwipeAction(botAI); }
     static Action* growl(PlayerbotAI* botAI) { return new CastGrowlAction(botAI); }
     static Action* demoralizing_roar(PlayerbotAI* botAI) { return new CastDemoralizingRoarAction(botAI); }

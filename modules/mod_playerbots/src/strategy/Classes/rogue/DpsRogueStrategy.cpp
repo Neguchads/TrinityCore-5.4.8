@@ -89,6 +89,17 @@ void DpsRogueStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     MeleeCombatStrategy::InitTriggers(triggers);
 
+    triggers.push_back(new TriggerNode(
+        "stealthed", NextAction::array(0, new NextAction("check stealth", ACTION_EMERGENCY + 1), nullptr)));
+
+    triggers.push_back(new TriggerNode(
+        "stealth pvp opener",
+        NextAction::array(0, new NextAction("cheap shot", ACTION_HIGH + 8), new NextAction("garrote", ACTION_HIGH + 7),
+                          new NextAction("ambush", ACTION_HIGH + 6), nullptr)));
+
+    triggers.push_back(new TriggerNode(
+        "kidney shot pvp", NextAction::array(0, new NextAction("kidney shot", ACTION_HIGH + 6), nullptr)));
+
     triggers.push_back(new TriggerNode("high energy available",
                                        NextAction::array(0, new NextAction("garrote", ACTION_HIGH + 7),
                                                          new NextAction("ambush", ACTION_HIGH + 6), nullptr)));
@@ -123,9 +134,9 @@ void DpsRogueStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         new TriggerNode("kick on enemy healer",
                         NextAction::array(0, new NextAction("kick on enemy healer", ACTION_INTERRUPT + 1), nullptr)));
 
-    // triggers.push_back(new TriggerNode(
-    //     "behind target",
-    //     NextAction::array(0, new NextAction("backstab", ACTION_NORMAL), nullptr)));
+    triggers.push_back(new TriggerNode(
+        "behind target",
+        NextAction::array(0, new NextAction("backstab", ACTION_NORMAL), nullptr)));
 
     triggers.push_back(
         new TriggerNode("light aoe", NextAction::array(0, new NextAction("blade flurry", ACTION_HIGH + 3), nullptr)));
@@ -259,6 +270,10 @@ void RogueBoostStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
 void RogueCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
+    triggers.push_back(
+        new TriggerNode("blind", NextAction::array(0, new NextAction("blind on cc", ACTION_INTERRUPT + 1), nullptr)));
+    triggers.push_back(
+        new TriggerNode("gouge", NextAction::array(0, new NextAction("gouge on cc", ACTION_INTERRUPT), nullptr)));
     triggers.push_back(new TriggerNode("sap", NextAction::array(0, new NextAction("stealth", ACTION_INTERRUPT),
                                                                 new NextAction("sap", ACTION_INTERRUPT), nullptr)));
 }

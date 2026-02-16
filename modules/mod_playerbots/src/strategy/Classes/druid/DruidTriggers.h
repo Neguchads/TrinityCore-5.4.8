@@ -199,4 +199,11 @@ public:
     WildMushroomBloomTrigger(PlayerbotAI* botAI) : SpellCanBeCastTrigger(botAI, "wild mushroom: bloom") {}
 };
 
+class EntanglingRootsKiteTrigger : public DebuffTrigger
+{
+public:
+    EntanglingRootsKiteTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "entangling roots", 1, true) {}
+    bool IsActive() override;
+};
+
 #endif

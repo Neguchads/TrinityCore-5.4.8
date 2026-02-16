@@ -21,6 +21,7 @@ public:
         //creators["pull"] = &DeathKnightStrategyFactoryInternal::pull;
         creators["frost aoe"] = &DeathKnightStrategyFactoryInternal::frost_aoe;
         creators["unholy aoe"] = &DeathKnightStrategyFactoryInternal::unholy_aoe;
+        creators["cc"] = &DeathKnightStrategyFactoryInternal::cc;
     }
 
 private:
@@ -28,6 +29,7 @@ private:
     //static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(botAI, "icy touch"); }
     static Strategy* frost_aoe(PlayerbotAI* botAI) { return new FrostDKAoeStrategy(botAI); }
     static Strategy* unholy_aoe(PlayerbotAI* botAI) { return new UnholyDKAoeStrategy(botAI); }
+    static Strategy* cc(PlayerbotAI* botAI) { return new DKCcStrategy(botAI); }
 };
 
 class DeathKnightCombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -71,6 +73,10 @@ public:
         creators["sudden doom"] = &DeathKnightTriggerFactoryInternal::sudden_doom;
         creators["dark transformation"] = &DeathKnightTriggerFactoryInternal::dark_transformation;
         creators["scent of blood"] = &DeathKnightTriggerFactoryInternal::scent_of_blood;
+        creators["chains of ice"] = &DeathKnightTriggerFactoryInternal::chains_of_ice;
+        creators["strangulate"] = &DeathKnightTriggerFactoryInternal::strangulate;
+        creators["death grip"] = &DeathKnightTriggerFactoryInternal::death_grip;
+        creators["hungering cold"] = &DeathKnightTriggerFactoryInternal::hungering_cold;
     }
 
 private:
@@ -80,6 +86,10 @@ private:
     static Trigger* sudden_doom(PlayerbotAI* botAI) { return new SuddenDoomTrigger(botAI); }
     static Trigger* dark_transformation(PlayerbotAI* botAI) { return new DarkTransformationTrigger(botAI); }
     static Trigger* scent_of_blood(PlayerbotAI* botAI) { return new ScentOfBloodTrigger(botAI); }
+    static Trigger* chains_of_ice(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "chains of ice"); }
+    static Trigger* strangulate(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "strangulate"); }
+    static Trigger* death_grip(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "death grip"); }
+    static Trigger* hungering_cold(PlayerbotAI* botAI) { return new HasCcTargetTrigger(botAI, "hungering cold"); }
 };
 
 class DeathKnightAiObjectContextInternal : public NamedObjectContext<Action>
@@ -126,6 +136,7 @@ public:
         creators["deathchill"] = &DeathKnightAiObjectContextInternal::deathchill;
         creators["icebound fortitude"] = &DeathKnightAiObjectContextInternal::icebound_fortitude;
         creators["mind freeze"] = &DeathKnightAiObjectContextInternal::mind_freeze;
+        creators["mind freeze on enemy healer"] = &DeathKnightAiObjectContextInternal::mind_freeze_on_enemy_healer;
         creators["empower rune weapon"] = &DeathKnightAiObjectContextInternal::empower_rune_weapon;
         creators["hungering cold"] = &DeathKnightAiObjectContextInternal::hungering_cold;
         creators["unbreakable armor"] = &DeathKnightAiObjectContextInternal::unbreakable_armor;
@@ -147,6 +158,10 @@ public:
         // creators["hysteria"] = &DeathKnightAiObjectContextInternal::hysteria;
         creators["dancing rune weapon"] = &DeathKnightAiObjectContextInternal::dancing_rune_weapon;
         creators["dark command"] = &DeathKnightAiObjectContextInternal::dark_command;
+        creators["chains of ice on cc"] = &DeathKnightAiObjectContextInternal::chains_of_ice_on_cc;
+        creators["strangulate on cc"] = &DeathKnightAiObjectContextInternal::strangulate_on_cc;
+        creators["death grip on cc"] = &DeathKnightAiObjectContextInternal::death_grip_on_cc;
+        creators["hungering cold on cc"] = &DeathKnightAiObjectContextInternal::hungering_cold_on_cc;
     }
 
 private:
@@ -210,6 +225,22 @@ private:
     // static Action* hysteria(PlayerbotAI* botAI) { return new CastHysteriaAction(botAI); }
     static Action* dancing_rune_weapon(PlayerbotAI* botAI) { return new CastDancingRuneWeaponAction(botAI); }
     static Action* dark_command(PlayerbotAI* botAI) { return new CastDarkCommandAction(botAI); }
+    static Action* chains_of_ice_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "chains of ice");
+    }
+    static Action* strangulate_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "strangulate");
+    }
+    static Action* death_grip_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "death grip");
+    }
+    static Action* hungering_cold_on_cc(PlayerbotAI* botAI)
+    {
+        return new CastCrowdControlSpellAction(botAI, "hungering cold");
+    }
     static Action* mind_freeze_on_enemy_healer(PlayerbotAI* botAI)
     {
         return new CastMindFreezeOnEnemyHealerAction(botAI);

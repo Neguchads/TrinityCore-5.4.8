@@ -19,7 +19,7 @@ NextAction** RetributionPaladinStrategy::getDefaultActions()
 
 void RetributionPaladinStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    GenericPaladinStrategy::InitTriggers(triggers);
+    DpsPaladinStrategy::InitTriggers(triggers);
 
     triggers.push_back(
         new TriggerNode("seal", NextAction::array(0, new NextAction("seal of truth", ACTION_HIGH), nullptr)));
@@ -32,6 +32,8 @@ void RetributionPaladinStrategy::InitTriggers(std::vector<TriggerNode*>& trigger
         "holy avenger", NextAction::array(0, new NextAction("holy avenger", ACTION_HIGH + 5), nullptr)));
     triggers.push_back(
         new TriggerNode("light aoe", NextAction::array(0, new NextAction("seal of righteousness", ACTION_HIGH + 1), nullptr)));
+    triggers.push_back(
+        new TriggerNode("medium aoe", NextAction::array(0, new NextAction("divine storm", ACTION_HIGH + 3), nullptr)));
 
     triggers.push_back(
         new TriggerNode("inquisition", NextAction::array(0, new NextAction("inquisition", ACTION_HIGH + 6), nullptr)));

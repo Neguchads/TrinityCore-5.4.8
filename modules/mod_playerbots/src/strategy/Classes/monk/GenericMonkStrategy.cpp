@@ -116,3 +116,15 @@ void MonkCureStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("party member detox",
         NextAction::array(0, new NextAction("detox on party", ACTION_DISPEL + 1), nullptr)));
 }
+
+void MonkCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+{
+    triggers.push_back(new TriggerNode("paralysis",
+        NextAction::array(0, new NextAction("paralysis on cc", ACTION_HIGH + 4), nullptr)));
+    triggers.push_back(new TriggerNode("clash",
+        NextAction::array(0, new NextAction("clash on cc", ACTION_HIGH + 3), nullptr)));
+    triggers.push_back(new TriggerNode("fists of fury",
+        NextAction::array(0, new NextAction("fists of fury on cc", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(new TriggerNode("dizzying haze",
+        NextAction::array(0, new NextAction("dizzying haze on cc", ACTION_HIGH + 1), nullptr)));
+}

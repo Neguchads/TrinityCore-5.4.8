@@ -54,6 +54,7 @@ BUFF_ACTION(CastDieByTheSwordAction, "die by the sword");
 MELEE_ACTION(CastColossusSmashAction, "colossus smash");
 MELEE_ACTION(CastVictoryRushAction, "victory rush");
 MELEE_ACTION(CastExecuteAction, "execute");
+MELEE_ACTION(CastPummelAction, "pummel");
 class CastSunderArmorAction : public CastDebuffSpellAction
 {
 public:

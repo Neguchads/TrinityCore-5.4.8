@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <set>
 
 #include "CharacterCache.h"
 #include "DatabaseEnv.h"
@@ -457,6 +458,18 @@ void PlayerBotLoginMgr::Update(RealPlayers& realPlayers)
 BotPool PlayerBotLoginMgr::LoadBotsFromDb()
 {
     BotPool newPool;
+    std::set<uint32> accounts;
+    std::string const prefixString = sPlayerbotAIConfig->randomBotAccountPrefix + "%";
+    QueryResult accountResult = LoginDatabase.PQuery("SELECT id FROM account where UPPER(username) like UPPER('%s')", prefixString.c_str());
+    if (!accountResult)
+        return newPool;
+
+    do
+    {
+        Field* accountFields = accountResult->Fetch();
+        accounts.insert(accountFields[0].GetUInt32());
+    } while (accountResult->NextRow());
+
     QueryResult result = CharacterDatabase.Query(
         "SELECT c.account, c.guid, c.race, c.class, c.level, c.totaltime, c.map, c.position_x, c.position_y, c.position_z, c.orientation, "
         "(SELECT guildid FROM guild_member gm WHERE gm.guid = c.guid LIMIT 1) "
@@ -469,7 +482,7 @@ BotPool PlayerBotLoginMgr::LoadBotsFromDb()
         Field* fields = result->Fetch();
 
         uint32 account = fields[0].GetUInt32();
-        if (!sPlayerbotAIConfig->IsInRandomAccountList(account))
+        if (accounts.find(account) == accounts.end())
             continue;
 
         uint32 guid = fields[1].GetUInt32();
