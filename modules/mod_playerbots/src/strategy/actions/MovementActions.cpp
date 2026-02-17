@@ -46,28 +46,6 @@
 #include "Corpse.h"
 #include "Creature.h"
 
-namespace
-{
-/*
- * TrinityCore can occasionally leave MOVEMENTFLAG_BACKWARD set after backpedal/reposition updates.
- * If a new forward chase/follow/point move starts while that stale flag is still active,
- * clients can render reverse-run jitter ("moonwalk"/forward-backward flicker).
- *
- * Clear the backward flag before issuing normal forward movement generators.
- */
-void ClearBackwardMovementFlag(Unit* unit)
-{
-    if (!unit)
-        return;
-
-    if (unit->HasUnitMovementFlag(MOVEMENTFLAG_BACKWARD))
-    {
-        unit->RemoveUnitMovementFlag(MOVEMENTFLAG_BACKWARD);
-        unit->SendMovementFlagUpdate();
-    }
-}
-}
-
 MovementAction::MovementAction(PlayerbotAI* botAI, std::string const name) : Action(botAI, name)
 {
     bot = botAI->GetBot();
@@ -195,7 +173,6 @@ bool MovementAction::ChaseTo(WorldObject* obj, float distance, float angle)
             return true;
     }
 
-    ClearBackwardMovementFlag(bot);
     bot->GetMotionMaster()->MoveChase(chaseTarget, distance);
 
     // TODO shouldnt this use "last movement" value?
@@ -454,7 +431,6 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
             mm.Clear();
             if (!backwards)
             {
-                ClearBackwardMovementFlag(vehicleBase);
                 mm.MovePoint(0, x, y, z, generatePath);
             }
             else
@@ -485,7 +461,6 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
             mm.Clear();
             if (!backwards)
             {
-                ClearBackwardMovementFlag(bot);
                 mm.MovePoint(0, x, y, z, generatePath);
             }
             else
@@ -543,7 +518,6 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
             mm.Clear();
             if (!backwards)
             {
-                ClearBackwardMovementFlag(bot);
                 mm.MovePoint(0, x, y, z, generatePath);
             }
             else
@@ -845,20 +819,20 @@ bool MoveAwayFromPlayerWithDebuffAction::Execute(Event /*event*/)
 bool MovementAction::Follow(Unit* target, float distance) { return Follow(target, distance, GetFollowAngle()); }
 bool MovementAction::Follow(Unit* target, float distance, float angle)
 {
-    MotionMaster& mm = *bot->GetMotionMaster();
-
-    if (target)
-        distance = distance <= target->GetCombatReach() ? 0.0f : distance - target->GetCombatReach();
-
     UpdateMovementState();
-
-    if (FollowOnTransport(target))
-        return true;
 
     if (!target)
         return false;
 
-    float const desiredFollowDistance = std::max(0.0f, distance);
+    if (FollowOnTransport(target))
+        return true;
+
+    if (!bot->InBattleground() && sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(bot, target),
+        sPlayerbotAIConfig->followDistance))
+    {
+        // botAI->TellError("No need to follow");
+        return false;
+    }
 
     // Move to target corpse if alive.
     if (!target->IsAlive() && bot->IsAlive() && target->GetGUID().IsPlayer())
@@ -878,7 +852,7 @@ bool MovementAction::Follow(Unit* target, float distance, float angle)
     }
 
     if (sServerFacade->IsDistanceGreaterOrEqualThan(sServerFacade->GetDistance2d(bot, target),
-        sPlayerbotAIConfig->sightDistance) || target->HasUnitState(UNIT_STATE_IN_FLIGHT))
+        sPlayerbotAIConfig->sightDistance))
     {
         if (target->GetGUID().IsPlayer())
         {
@@ -897,7 +871,7 @@ bool MovementAction::Follow(Unit* target, float distance, float angle)
                     float lDist = botPos.fDist(longMove);
                     float tDist = botPos.fDist(tarPos);
                     float ang = botPos.getAngleBetween(tarPos, longMove);
-                    if ((lDist * 1.5f < tDist && ang < static_cast<float>(M_PI) / 2) ||
+                    if ((lDist * 1.5 < tDist && ang < static_cast<float>(M_PI) / 2) ||
                         target->HasUnitState(UNIT_STATE_IN_FLIGHT))
                     {
                         return MoveTo(longMove.getMapId(), longMove.getX(), longMove.getY(), longMove.getZ());
@@ -919,7 +893,24 @@ bool MovementAction::Follow(Unit* target, float distance, float angle)
         }
 
         if (!target->HasUnitState(UNIT_STATE_IN_FLIGHT))
-            return MoveTo(target, desiredFollowDistance);
+            return MoveTo(target, sPlayerbotAIConfig->followDistance);
+    }
+
+    if (sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(bot, target),
+        sPlayerbotAIConfig->followDistance))
+    {
+        // botAI->TellError("No need to follow");
+        return false;
+    }
+
+    if (target->IsFriendlyTo(bot) && bot->IsMounted() && AI_VALUE(GuidVector, "all targets").empty())
+        distance += angle;
+
+    if (!bot->InBattleground() && sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(bot, target),
+        sPlayerbotAIConfig->followDistance))
+    {
+        // botAI->TellError("No need to follow");
+        return false;
     }
 
     bot->HandleEmoteCommand(0);
@@ -933,7 +924,7 @@ bool MovementAction::Follow(Unit* target, float distance, float angle)
         botAI->InterruptSpell();
     }
 
-    AI_VALUE(LastMovement&, "last movement").Set(target);
+    // AI_VALUE(LastMovement&, "last movement").Set(target);
     ClearIdleState();
 
     if (bot->GetMotionMaster()->GetCurrentMovementGeneratorType() == FOLLOW_MOTION_TYPE)
@@ -943,8 +934,10 @@ bool MovementAction::Follow(Unit* target, float distance, float angle)
             return false;
     }
 
-    ClearBackwardMovementFlag(bot);
-    mm.MoveFollow(target, desiredFollowDistance, angle);
+    if (bot->GetMotionMaster()->GetCurrentMovementGeneratorType() != FOLLOW_MOTION_TYPE)
+        bot->GetMotionMaster()->Clear();
+
+    bot->GetMotionMaster()->MoveFollow(target, distance, angle);
     return true;
 }
 

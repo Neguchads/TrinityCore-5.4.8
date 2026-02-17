@@ -14,7 +14,6 @@ file(GLOB_RECURSE sources_Addons Addons/*.cpp Addons/*.h)
 file(GLOB_RECURSE sources_AI AI/*.cpp AI/*.h)
 file(GLOB_RECURSE sources_Anticheat Anticheat/*.cpp Anticheat/*.h)
 file(GLOB_RECURSE sources_AuctionHouse AuctionHouse/*.cpp AuctionHouse/*.h)
-file(GLOB_RECURSE sources_AuctionHouseBot AuctionHouseBot/*.cpp AuctionHouse/*.h)
 file(GLOB_RECURSE sources_Battlefield Battlefield/*.cpp Battlefield/*.h)
 file(GLOB_RECURSE sources_Battlegrounds Battlegrounds/*.cpp Battlegrounds/*.h)
 file(GLOB_RECURSE sources_BattlePay BattlePay/*.cpp BattlePay/*.h)
@@ -25,7 +24,6 @@ file(GLOB_RECURSE sources_Calendar Calendar/*.cpp Calendar/*.h)
 file(GLOB_RECURSE sources_Chat Chat/*.cpp Chat/*.h)
 file(GLOB_RECURSE sources_Combat Combat/*.cpp Combat/*.h)
 file(GLOB_RECURSE sources_Conditions Conditions/*.cpp Conditions/*.h)
-file(GLOB_RECURSE sources_CustomTransmogrification CustomTransmogrification/*.cpp CustomTransmogrification/*.h)
 file(GLOB_RECURSE sources_DataStores DataStores/*.cpp DataStores/*.h)
 file(GLOB_RECURSE sources_DungeonFinding DungeonFinding/*.cpp DungeonFinding/*.h)
 file(GLOB_RECURSE sources_Entities Entities/*.cpp Entities/*.h)
@@ -69,7 +67,6 @@ source_group(Addons FILES ${sources_Addons})
 source_group(AI FILES ${sources_AI})
 source_group(Anticheat FILES ${sources_Anticheat})
 source_group(AuctionHouse FILES ${sources_AuctionHouse})
-source_group(AuctionHouseBot FILES ${sources_AuctionHouseBot})
 source_group(Battlefield FILES ${sources_Battlefield})
 source_group(Battlegrounds FILES ${sources_Battlegrounds})
 source_group(BattlePay FILES ${sources_BattlePay})
@@ -80,7 +77,6 @@ source_group(Calendar FILES ${sources_Calendar})
 source_group(Chat FILES ${sources_Chat})
 source_group(Combat FILES ${sources_Combat})
 source_group(Conditions FILES ${sources_Conditions})
-source_group(CustomTransmogrification FILES ${sources_CustomTransmogrification})
 source_group(DataStores FILES ${sources_DataStores})
 source_group(DungeonFinding FILES ${sources_DungeonFinding})
 source_group(Entities FILES ${sources_Entities})
@@ -129,7 +125,6 @@ set(game_STAT_SRCS
   ${sources_AI}
   ${sources_Anticheat}
   ${sources_AuctionHouse}
-  ${sources_AuctionHouseBot}
   ${sources_Battlefield}
   ${sources_Battlegrounds}
   ${sources_BattlePay}
@@ -140,7 +135,6 @@ set(game_STAT_SRCS
   ${sources_Chat}
   ${sources_Combat}
   ${sources_Conditions}
-  ${sources_CustomTransmogrification}
   ${sources_DataStores}
   ${sources_DungeonFinding}
   ${sources_Entities}
@@ -205,7 +199,6 @@ target_include_directories(game
     ${CMAKE_CURRENT_SOURCE_DIR}/AI/SmartScripts
     ${CMAKE_CURRENT_SOURCE_DIR}/Anticheat
     ${CMAKE_CURRENT_SOURCE_DIR}/AuctionHouse
-    ${CMAKE_CURRENT_SOURCE_DIR}/AuctionHouseBot
     ${CMAKE_CURRENT_SOURCE_DIR}/Battlefield
     ${CMAKE_CURRENT_SOURCE_DIR}/Battlefield/Zones
     ${CMAKE_CURRENT_SOURCE_DIR}/Battlegrounds
@@ -219,7 +212,6 @@ target_include_directories(game
     ${CMAKE_CURRENT_SOURCE_DIR}/Chat/Channels
     ${CMAKE_CURRENT_SOURCE_DIR}/Combat
     ${CMAKE_CURRENT_SOURCE_DIR}/Conditions
-    ${CMAKE_CURRENT_SOURCE_DIR}/CustomTransmogrification
     ${CMAKE_CURRENT_SOURCE_DIR}/DataStores
     ${CMAKE_CURRENT_SOURCE_DIR}/DungeonFinding
     ${CMAKE_CURRENT_SOURCE_DIR}/Entities

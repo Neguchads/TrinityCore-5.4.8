@@ -18,7 +18,6 @@
 #include "TravelNode.h"
 
 #include <algorithm>
-#include <cmath>
 #include <iomanip>
 #include <regex>
 
@@ -2350,9 +2349,6 @@ void TravelNodeMap::saveNodeStore()
             for (auto& link : *node->getLinks())
             {
                 TravelNodePath* path = link.second;
-                float const distance = std::isfinite(path->getDistance()) ? path->getDistance() : 0.1f;
-                float const swimDistance = std::isfinite(path->getSwimDistance()) ? path->getSwimDistance() : 0.0f;
-                float const extraCost = std::isfinite(path->getExtraCost()) ? path->getExtraCost() : 0.0f;
 
                 std::ostringstream linkQuery;
                 linkQuery.setf(std::ios::fixed);
@@ -2362,7 +2358,7 @@ void TravelNodeMap::saveNodeStore()
                              "VALUES (";
                 linkQuery << i << ", " << saveNodes.find(link.first)->second << ", "
                           << static_cast<uint32>(path->getPathType()) << ", " << path->getPathObject() << ", "
-                          << distance << ", " << swimDistance << ", " << extraCost
+                          << path->getDistance() << ", " << path->getSwimDistance() << ", " << path->getExtraCost()
                           << ", " << (path->getCalculated() ? 1 : 0) << ", "
                           << static_cast<uint32>(path->getMaxLevelCreature()[0]) << ", "
                           << static_cast<uint32>(path->getMaxLevelCreature()[1]) << ", "

@@ -36,7 +36,6 @@
 #include "World.h"
 #include "AccountMgr.h"
 #include "AchievementMgr.h"
-#include "AuctionHouseBot.h"
 #include "AuctionHouseMgr.h"
 #include "BlackMarketMgr.h"
 #include "ObjectMgr.h"
@@ -1204,85 +1203,6 @@ void World::LoadConfigSettings(bool reload)
 
     m_bool_configs[CONFIG_EXECUTED_SERVICES_LOG] = sConfigMgr->GetBoolDefault("ExecutedServices.Log.Enabled", true);
 
-    // custom balance system
-    m_float_configs[CONFIGSPECMAGEARCANE] = sConfigMgr->GetFloatDefault("CONFIGSPECMAGEARCANE", 100.0f);
-    m_float_configs[CONFIGSPECMAGEFIRE] = sConfigMgr->GetFloatDefault("CONFIGSPECMAGEFIRE", 100.0f);
-    m_float_configs[CONFIGSPECMAGEFROST] = sConfigMgr->GetFloatDefault("CONFIGSPECMAGEFROST", 100.0f);
-    m_float_configs[CONFIGSPECPALADINHOLY] = sConfigMgr->GetFloatDefault("CONFIGSPECPALADINHOLY", 100.0f);
-    m_float_configs[CONFIGSPECPALADINPROTECTION] = sConfigMgr->GetFloatDefault("CONFIGSPECPALADINPROTECTION", 100.0f);
-    m_float_configs[CONFIGSPECPALADINRETRIBUTION] = sConfigMgr->GetFloatDefault("CONFIGSPECPALADINRETRIBUTION", 100.0f);
-    m_float_configs[CONFIGSPECWARRIORARMS] = sConfigMgr->GetFloatDefault("CONFIGSPECWARRIORARMS", 100.0f);
-    m_float_configs[CONFIGSPECWARRIORFURY] = sConfigMgr->GetFloatDefault("CONFIGSPECWARRIORFURY", 100.0f);
-    m_float_configs[CONFIGSPECWARRIORPROTECTION] = sConfigMgr->GetFloatDefault("CONFIGSPECWARRIORPROTECTION", 100.0f);
-    m_float_configs[CONFIGSPECDRUIDBALANCE] = sConfigMgr->GetFloatDefault("CONFIGSPECDRUIDBALANCE", 100.0f);
-    m_float_configs[CONFIGSPECDRUIDFERAL] = sConfigMgr->GetFloatDefault("CONFIGSPECDRUIDFERAL", 100.0f);
-    m_float_configs[CONFIGSPECDRUIDGUARDIAN] = sConfigMgr->GetFloatDefault("CONFIGSPECDRUIDGUARDIAN", 100.0f);
-    m_float_configs[CONFIGSPECDRUIDRESTORATION] = sConfigMgr->GetFloatDefault("CONFIGSPECDRUIDRESTORATION", 100.0f);
-    m_float_configs[CONFIGSPECDEATHKNIGHTBLOOD] = sConfigMgr->GetFloatDefault("CONFIGSPECDEATHKNIGHTBLOOD", 100.0f);
-    m_float_configs[CONFIGSPECDEATHKNIGHTFROST] = sConfigMgr->GetFloatDefault("CONFIGSPECDEATHKNIGHTFROST", 100.0f);
-    m_float_configs[CONFIGSPECDEATHKNIGHTUNHOLY] = sConfigMgr->GetFloatDefault("CONFIGSPECDEATHKNIGHTUNHOLY", 100.0f);
-    m_float_configs[CONFIGSPECHUNTERBEASTMASTERY] = sConfigMgr->GetFloatDefault("CONFIGSPECHUNTERBEASTMASTERY", 100.0f);
-    m_float_configs[CONFIGSPECHUNTERMARKSMANSHIP] = sConfigMgr->GetFloatDefault("CONFIGSPECHUNTERMARKSMANSHIP", 100.0f);
-    m_float_configs[CONFIGSPECHUNTERSURVIVAL] = sConfigMgr->GetFloatDefault("CONFIGSPECHUNTERSURVIVAL", 100.0f);
-    m_float_configs[CONFIGSPECPRIESTDISCIPLINE] = sConfigMgr->GetFloatDefault("CONFIGSPECPRIESTDISCIPLINE", 100.0f);
-    m_float_configs[CONFIGSPECPRIESTHOLY] = sConfigMgr->GetFloatDefault("CONFIGSPECPRIESTHOLY", 100.0f);
-    m_float_configs[CONFIGSPECPRIESTSHADOW] = sConfigMgr->GetFloatDefault("CONFIGSPECPRIESTSHADOW", 100.0f);
-    m_float_configs[CONFIGSPECROGUEASSASSINATION] = sConfigMgr->GetFloatDefault("CONFIGSPECROGUEASSASSINATION", 100.0f);
-    m_float_configs[CONFIGSPECROGUECOMBAT] = sConfigMgr->GetFloatDefault("CONFIGSPECROGUECOMBAT", 100.0f);
-    m_float_configs[CONFIGSPECROGUESUBTLETY] = sConfigMgr->GetFloatDefault("CONFIGSPECROGUESUBTLETY", 100.0f);
-    m_float_configs[CONFIGSPECSHAMANELEMENTAL] = sConfigMgr->GetFloatDefault("CONFIGSPECSHAMANELEMENTAL", 100.0f);
-    m_float_configs[CONFIGSPECSHAMANENHANCEMENT] = sConfigMgr->GetFloatDefault("CONFIGSPECSHAMANENHANCEMENT", 100.0f);
-    m_float_configs[CONFIGSPECSHAMANRESTORATION] = sConfigMgr->GetFloatDefault("CONFIGSPECSHAMANRESTORATION", 100.0f);
-    m_float_configs[CONFIGSPECWARLOCKAFFLICTION] = sConfigMgr->GetFloatDefault("CONFIGSPECWARLOCKAFFLICTION", 100.0f);
-    m_float_configs[CONFIGSPECWARLOCKDEMONOLOGY] = sConfigMgr->GetFloatDefault("CONFIGSPECWARLOCKDEMONOLOGY", 100.0f);
-    m_float_configs[CONFIGSPECWARLOCKDESTRUCTION] = sConfigMgr->GetFloatDefault("CONFIGSPECWARLOCKDESTRUCTION", 100.0f);
-    m_float_configs[CONFIGSPECMONKBREWMASTER] = sConfigMgr->GetFloatDefault("CONFIGSPECMONKBREWMASTER", 100.0f);
-    m_float_configs[CONFIGSPECMONKWINDWALKER] = sConfigMgr->GetFloatDefault("CONFIGSPECMONKWINDWALKER", 100.0f);
-    m_float_configs[CONFIGSPECMONKMISTWEAVER] = sConfigMgr->GetFloatDefault("CONFIGSPECMONKMISTWEAVER", 100.0f);
-    // healing custom config balance system
-    m_float_configs[HEALCONFIGSPECMAGEARCANE] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECMAGEARCANE", 100.0f);
-    m_float_configs[HEALCONFIGSPECMAGEFIRE] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECMAGEFIRE", 100.0f);
-    m_float_configs[HEALCONFIGSPECMAGEFROST] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECMAGEFROST", 100.0f);
-    m_float_configs[HEALCONFIGSPECPALADINHOLY] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECPALADINHOLY", 100.0f);
-    m_float_configs[HEALCONFIGSPECPALADINPROTECTION] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECPALADINPROTECTION", 100.0f);
-    m_float_configs[HEALCONFIGSPECPALADINRETRIBUTION] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECPALADINRETRIBUTION", 100.0f);
-    m_float_configs[HEALCONFIGSPECWARRIORARMS] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECWARRIORARMS", 100.0f);
-    m_float_configs[HEALCONFIGSPECWARRIORFURY] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECWARRIORFURY", 100.0f);
-    m_float_configs[HEALCONFIGSPECWARRIORPROTECTION] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECWARRIORPROTECTION", 100.0f);
-    m_float_configs[HEALCONFIGSPECDRUIDBALANCE] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECDRUIDBALANCE", 100.0f);
-    m_float_configs[HEALCONFIGSPECDRUIDFERAL] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECDRUIDFERAL", 100.0f);
-    m_float_configs[HEALCONFIGSPECDRUIDGUARDIAN] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECDRUIDGUARDIAN", 100.0f);
-    m_float_configs[HEALCONFIGSPECDRUIDRESTORATION] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECDRUIDRESTORATION", 100.0f);
-    m_float_configs[HEALCONFIGSPECDEATHKNIGHTBLOOD] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECDEATHKNIGHTBLOOD", 100.0f);
-    m_float_configs[HEALCONFIGSPECDEATHKNIGHTFROST] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECDEATHKNIGHTFROST", 100.0f);
-    m_float_configs[HEALCONFIGSPECDEATHKNIGHTUNHOLY] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECDEATHKNIGHTUNHOLY", 100.0f);
-    m_float_configs[HEALCONFIGSPECHUNTERBEASTMASTERY] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECHUNTERBEASTMASTERY", 100.0f);
-    m_float_configs[HEALCONFIGSPECHUNTERMARKSMANSHIP] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECHUNTERMARKSMANSHIP", 100.0f);
-    m_float_configs[HEALCONFIGSPECHUNTERSURVIVAL] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECHUNTERSURVIVAL", 100.0f);
-    m_float_configs[HEALCONFIGSPECPRIESTDISCIPLINE] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECPRIESTDISCIPLINE", 100.0f);
-    m_float_configs[HEALCONFIGSPECPRIESTHOLY] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECPRIESTHOLY", 100.0f);
-    m_float_configs[HEALCONFIGSPECPRIESTSHADOW] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECPRIESTSHADOW", 100.0f);
-    m_float_configs[HEALCONFIGSPECROGUEASSASSINATION] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECROGUEASSASSINATION", 100.0f);
-    m_float_configs[HEALCONFIGSPECROGUECOMBAT] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECROGUECOMBAT", 100.0f);
-    m_float_configs[HEALCONFIGSPECROGUESUBTLETY] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECROGUESUBTLETY", 100.0f);
-    m_float_configs[HEALCONFIGSPECSHAMANELEMENTAL] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECSHAMANELEMENTAL", 100.0f);
-    m_float_configs[HEALCONFIGSPECSHAMANENHANCEMENT] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECSHAMANENHANCEMENT", 100.0f);
-    m_float_configs[HEALCONFIGSPECSHAMANRESTORATION] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECSHAMANRESTORATION", 100.0f);
-    m_float_configs[HEALCONFIGSPECWARLOCKAFFLICTION] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECWARLOCKAFFLICTION", 100.0f);
-    m_float_configs[HEALCONFIGSPECWARLOCKDEMONOLOGY] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECWARLOCKDEMONOLOGY", 100.0f);
-    m_float_configs[HEALCONFIGSPECWARLOCKDESTRUCTION] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECWARLOCKDESTRUCTION", 100.0f);
-    m_float_configs[HEALCONFIGSPECMONKBREWMASTER] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECMONKBREWMASTER", 100.0f);
-    m_float_configs[HEALCONFIGSPECMONKWINDWALKER] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECMONKWINDWALKER", 100.0f);
-    m_float_configs[HEALCONFIGSPECMONKMISTWEAVER] = sConfigMgr->GetFloatDefault("HEALCONFIGSPECMONKMISTWEAVER", 100.0f);
-
-    // PETS CUSTOM BALANCE SYSTEM
-    m_float_configs[CONFIG_SPEC_PET_FEROCITY] = sConfigMgr->GetFloatDefault("CONFIG_SPEC_PET_FEROCITY", 100.0f);
-    m_float_configs[CONFIG_SPEC_PET_TENACITY] = sConfigMgr->GetFloatDefault("CONFIG_SPEC_PET_TENACITY", 100.0f);
-    m_float_configs[CONFIG_SPEC_PET_CUNNING] = sConfigMgr->GetFloatDefault("CONFIG_SPEC_PET_CUNNING", 100.0f);
-
-    // THIS IS USED FOR PETS THAT HAVE NO SPECS, SO MAYBE SOME MAGE PETS OR WARLOCK PETS?
-    m_float_configs[CONFIG_PET_NO_SPEC] = sConfigMgr->GetFloatDefault("CONFIG_PET_NO_SPEC", 100.0f);
-
     ///- Read the "Data" directory from the config file
     std::string dataPath = sConfigMgr->GetStringDefault("DataDir", "./");
     if (dataPath.empty() || (dataPath.at(dataPath.length()-1) != '/' && dataPath.at(dataPath.length()-1) != '\\'))
@@ -1468,9 +1388,6 @@ void World::LoadConfigSettings(bool reload)
         m_int_configs[CONFIG_PACKET_SPOOF_BANMODE] = BAN_ACCOUNT;
 
     m_int_configs[CONFIG_PACKET_SPOOF_BANDURATION] = sConfigMgr->GetIntDefault("PacketSpoof.BanDuration", 86400);
-
-    // AHBot
-    m_int_configs[CONFIG_AHBOT_UPDATE_INTERVAL] = sConfigMgr->GetIntDefault("AuctionHouseBot.Update.Interval", 20);
 
     m_bool_configs[CONFIG_CALCULATE_CREATURE_ZONE_AREA_DATA] = sConfigMgr->GetBoolDefault("Calculate.Creature.Zone.Area.Data", false);
     m_bool_configs[CONFIG_CALCULATE_GAMEOBJECT_ZONE_AREA_DATA] = sConfigMgr->GetBoolDefault("Calculate.Gameoject.Zone.Area.Data", false);
@@ -2373,9 +2290,6 @@ void World::SetInitialWorldSettings()
 
     m_timers[WUPDATE_DELETECHARS].SetInterval(DAY*IN_MILLISECONDS); // check for chars to delete every day
 
-    // for AhBot
-    m_timers[WUPDATE_AHBOT].SetInterval(getIntConfig(CONFIG_AHBOT_UPDATE_INTERVAL) * IN_MILLISECONDS); // every 20 sec
-
     m_timers[WUPDATE_PINGDB].SetInterval(getIntConfig(CONFIG_DB_PING_INTERVAL)*MINUTE*IN_MILLISECONDS);    // Mysql ping time in minutes
 
     m_timers[WUPDATE_GUILDSAVE].SetInterval(getIntConfig(CONFIG_GUILD_SAVE_INTERVAL) * MINUTE * IN_MILLISECONDS);
@@ -2408,9 +2322,6 @@ void World::SetInitialWorldSettings()
 
     // Delete all characters which have been deleted X days before
     Player::DeleteOldCharacters(true);
-
-    TC_LOG_INFO("server.loading", "Initialize AuctionHouseBot...");
-    sAuctionBot->Initialize();
 
     // Delete all custom channels which haven't been used for PreserveCustomChannelDuration days.
     Channel::CleanOldChannelsInDB();
@@ -2687,13 +2598,6 @@ void World::Update(uint32 diff)
         m_timers[WUPDATE_AUCTIONS_PENDING].Reset();
 
         sAuctionMgr->UpdatePendingAuctions();
-    }
-
-    /// <li> Handle AHBot operations
-    if (m_timers[WUPDATE_AHBOT].Passed())
-    {
-        sAuctionBot->Update();
-        m_timers[WUPDATE_AHBOT].Reset();
     }
 
     /// <li> Handle session updates when the timer has passed

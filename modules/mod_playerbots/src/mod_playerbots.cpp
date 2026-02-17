@@ -696,7 +696,7 @@ public:
 
     void OnPlayerbotPacketSent(Player* player, WorldPacket const* packet) override
     {
-        if (!player)
+        if (!player || !packet || !player->GetSession() || player->IsDuringRemoveFromWorld())
             return;
         
         if (PlayerbotAI* botAI = GET_PLAYERBOT_AI(player))
@@ -724,6 +724,9 @@ public:
 
     void OnPlayerbotLogout(Player* player) override
     {
+        if (!player)
+            return;
+
         if (PlayerbotMgr* playerbotMgr = GET_PLAYERBOT_MGR(player))
         {
             PlayerbotAI* botAI = GET_PLAYERBOT_AI(player);
@@ -734,6 +737,8 @@ public:
         }
 
         sRandomPlayerbotMgr->OnPlayerLogout(player);
+        sPlayerbotsMgr->RemovePlayerBotData(player->GetGUID(), true);
+        sPlayerbotsMgr->RemovePlayerBotData(player->GetGUID(), false);
     }
 
     void OnPlayerbotLogoutBots() override { sRandomPlayerbotMgr->LogoutAllBots(); }

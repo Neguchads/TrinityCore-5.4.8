@@ -91,7 +91,6 @@ void AddSC_titles_commandscript();
 void AddSC_warden_commandscript();
 void AddSC_wp_commandscript();
 void AddSC_mmaps_commandscript();
-void AddSC_ahbot_commandscript();
 
 // Battlegrounds
 void AddSC_alterac_valley();
@@ -122,7 +121,6 @@ void AddSC_npc_taxi();
 void AddSC_achievement_scripts();
 void AddSC_brawlers_guild();
 void AddSC_on_duel();
-void AddSC_transmog();
 void AddSC_world_map_scripts();
 
 //eastern kingdoms
@@ -1128,7 +1126,6 @@ void AddCommandScripts()
     AddSC_warden_commandscript();
     AddSC_wp_commandscript();
     AddSC_mmaps_commandscript();
-    AddSC_ahbot_commandscript();
 }
 
 void AddWorldScripts()
@@ -1151,7 +1148,6 @@ void AddWorldScripts()
     AddSC_brawlers_guild();
     AddSC_chat_log();
     AddSC_on_duel();
-    AddSC_transmog();
     AddSC_world_map_scripts();
 #endif
 }
@@ -2140,7 +2136,6 @@ void AddSC_wow_token();
 void AddSC_custom_reward();
 void AddSC_boost_profession();
 void AddSC_custom_items();
-void AddSC_solocraft_system();
 
 void AddCustomScripts()
 {
@@ -2151,7 +2146,6 @@ void AddCustomScripts()
 //AddSC_custom_reward();
 //AddSC_boost_profession();
 //AddSC_custom_items();
-	AddSC_solocraft_system();
 
 #endif
     AddSC_Anticheat();

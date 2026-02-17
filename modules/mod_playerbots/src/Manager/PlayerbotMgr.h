@@ -9,6 +9,7 @@
 #include "QueryHolder.h"
 #include "QueryResult.h"
 
+#include <mutex>
 #include <unordered_set>
 
 class ChatHandler;
@@ -109,6 +110,7 @@ public:
     PlayerbotMgr* GetPlayerbotMgr(Player* player);
 
 private:
+    mutable std::mutex _dataMutex;
     std::unordered_map<ObjectGuid, PlayerbotAIBase*> _playerbotsAIMap;
     std::unordered_map<ObjectGuid, PlayerbotAIBase*> _playerbotsMgrMap;
 };

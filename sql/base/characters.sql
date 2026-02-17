@@ -1196,60 +1196,6 @@ CREATE TABLE `creature_respawn` (
 
 /*Data for the table `creature_respawn` */
 
---
--- Table structure for table `custom_solocraft_character_stats`
---
-
-DROP TABLE IF EXISTS `custom_solocraft_character_stats`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `custom_solocraft_character_stats` (
-  `guid` int unsigned NOT NULL,
-  `Difficulty` float NOT NULL,
-  `GroupSize` int(11) NOT NULL,
-  `SpellPower` int(10) unsigned NOT NULL DEFAULT '0',
-  `Stats` float NOT NULL DEFAULT '100',
-  PRIMARY KEY (`guid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `custom_solocraft_character_stats`
---
-
-LOCK TABLES `custom_solocraft_character_stats` WRITE;
-/*!40000 ALTER TABLE `custom_solocraft_character_stats` DISABLE KEYS */;
-/*!40000 ALTER TABLE `custom_solocraft_character_stats` ENABLE KEYS */;
-UNLOCK TABLES;
-
-/*Table structure for table `custom_transmogrification` */
-
-DROP TABLE IF EXISTS `custom_transmogrification`;
-
-CREATE TABLE `custom_transmogrification` (
-  `GUID` int(10) unsigned NOT NULL COMMENT 'Item guidLow',
-  `FakeEntry` int(10) unsigned NOT NULL COMMENT 'Item entry',
-  `Owner` int(10) unsigned NOT NULL COMMENT 'Player guidLow',
-  PRIMARY KEY (`GUID`),
-  KEY `Owner` (`Owner`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='don''t work just yet.';
-
-/*Data for the table `custom_transmogrification` */
-
-/*Table structure for table `custom_transmogrification_sets` */
-
-DROP TABLE IF EXISTS `custom_transmogrification_sets`;
-
-CREATE TABLE `custom_transmogrification_sets` (
-  `Owner` int(10) unsigned NOT NULL COMMENT 'Player guidlow',
-  `PresetID` tinyint(3) unsigned NOT NULL COMMENT 'Preset identifier',
-  `SetName` text COMMENT 'SetName',
-  `SetData` text COMMENT 'Slot1 Entry1 Slot2 Entry2',
-  PRIMARY KEY (`Owner`,`PresetID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='6_1';
-
-/*Data for the table `custom_transmogrification_sets` */
-
 /*Table structure for table `daily_players_reports` */
 
 DROP TABLE IF EXISTS `daily_players_reports`;

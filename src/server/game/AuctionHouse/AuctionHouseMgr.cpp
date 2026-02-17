@@ -26,7 +26,6 @@
 #include "ScriptMgr.h"
 #include "AccountMgr.h"
 #include "AuctionHouseMgr.h"
-#include "AuctionHouseBot.h"
 #include "Item.h"
 #include "Language.h"
 #include "Log.h"
@@ -156,7 +155,7 @@ void AuctionHouseMgr::SendAuctionWonMail(AuctionEntry* auction, CharacterDatabas
     }
 
     // receiver exist
-    if (bidder || bidderAccId && !sAuctionBotConfig->IsBotChar(auction->bidder))
+    if (bidder || bidderAccId)
     {
         // set owner to bidder (to prevent delete item with sender char deleting)
         // owner in `data` will set at mail receive and item extracting
@@ -183,7 +182,7 @@ void AuctionHouseMgr::SendAuctionSalePendingMail(AuctionEntry* auction, Characte
     Player* owner = ObjectAccessor::FindConnectedPlayer(auction->owner);
     uint32 owner_accId = sObjectMgr->GetPlayerAccountIdByGUID(auction->owner);
     // owner exist (online or offline)
-    if (owner || owner_accId && !sAuctionBotConfig->IsBotChar(auction->owner))
+    if (owner || owner_accId)
         MailDraft(auction->BuildAuctionMailSubject(AUCTION_SALE_PENDING), AuctionEntry::BuildAuctionMailBody(auction->bidder, auction->bid, auction->buyout, auction->deposit, auction->GetAuctionCut()))
             .SendMailTo(trans, MailReceiver(owner, auction->owner), auction, MAIL_CHECK_MASK_COPIED);
 }
@@ -194,7 +193,7 @@ void AuctionHouseMgr::SendAuctionSuccessfulMail(AuctionEntry* auction, Character
     Player* owner = ObjectAccessor::FindConnectedPlayer(auction->owner);
     uint32 owner_accId = sObjectMgr->GetPlayerAccountIdByGUID(auction->owner);
     // owner exist
-    if (owner || owner_accId && !sAuctionBotConfig->IsBotChar(auction->owner))
+    if (owner || owner_accId)
     {
         uint32 profit = auction->bid + auction->deposit - auction->GetAuctionCut();
 
@@ -224,7 +223,7 @@ void AuctionHouseMgr::SendAuctionExpiredMail(AuctionEntry* auction, CharacterDat
     Player* owner = ObjectAccessor::FindConnectedPlayer(auction->owner);
     uint32 owner_accId = sObjectMgr->GetPlayerAccountIdByGUID(auction->owner);
     // owner exist
-    if (owner || owner_accId && !sAuctionBotConfig->IsBotChar(auction->owner))
+    if (owner || owner_accId)
     {
         if (owner)
             owner->GetSession()->SendAuctionOwnerNotification(auction);
@@ -250,7 +249,7 @@ void AuctionHouseMgr::SendAuctionOutbiddedMail(AuctionEntry* auction, uint64 new
         oldBidder_accId = sObjectMgr->GetPlayerAccountIdByGUID(auction->bidder);
 
     // old bidder exist
-    if (oldBidder || oldBidder_accId && !sAuctionBotConfig->IsBotChar(auction->bidder))
+    if (oldBidder || oldBidder_accId)
     {
         if (oldBidder && newBidder)
             oldBidder->GetSession()->SendAuctionBidderNotification(auction->GetHouseId(), auction->Id, newBidder->GetGUID(), newPrice, auction->GetAuctionOutBid(), auction->itemEntry);
@@ -274,7 +273,7 @@ void AuctionHouseMgr::SendAuctionCancelledToBidderMail(AuctionEntry* auction, Ch
 //         bidder->GetSession()->SendAuctionRemovedNotification(auction->Id, auction->itemEntry, item->GetItemRandomPropertyId());
 
     // bidder exist
-    if (bidder || bidder_accId && !sAuctionBotConfig->IsBotChar(auction->bidder))
+    if (bidder || bidder_accId)
         MailDraft(auction->BuildAuctionMailSubject(AUCTION_CANCELLED_TO_BIDDER), AuctionEntry::BuildAuctionMailBody(auction->owner, auction->bid, auction->buyout, auction->deposit, 0))
             .AddMoney(auction->bid)
             .SendMailTo(trans, MailReceiver(bidder, auction->bidder), auction, MAIL_CHECK_MASK_COPIED);
