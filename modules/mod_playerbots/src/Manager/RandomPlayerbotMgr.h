@@ -6,6 +6,7 @@
 #include "DatabaseEnvFwd.h"
 #include <list>
 #include <map>
+#include <mutex>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -157,9 +158,17 @@ public:
     
     Player* GetRandomPlayer();
     Player* GetPlayer(uint32 playerGuid);
-    std::vector<Player*> GetPlayers() { return _players; };
-    bool HasPlayers() const { return !_players.empty(); }
-    PlayerBotMap GetAllBots() { return playerBots; };
+    std::vector<Player*> GetPlayers()
+    {
+        std::lock_guard<std::mutex> lock(_playersMutex);
+        return _players;
+    };
+    bool HasPlayers() const
+    {
+        std::lock_guard<std::mutex> lock(_playersMutex);
+        return !_players.empty();
+    }
+    PlayerBotMap GetAllBots() { return GetPlayerBotsSnapshot(); };
     void Refresh(Player* bot);
     uint32 GetMaxAllowedBotCount();
     bool AddRandomBot(uint32 bot);
@@ -204,9 +213,21 @@ public:
     std::vector<uint32> GetBgBots(uint32 bracket);
     void SetDatabaseDelay(std::string const& db, uint32 delay);
     uint32 GetDatabaseDelay(std::string const& db) const;
-    float getActivityMod() { return _activityMod; }
-    float getActivityPercentage() { return _activityMod * 100.0f; }
-    void setActivityPercentage(float percentage) { _activityMod = percentage / 100.0f; }
+    float getActivityMod()
+    {
+        std::lock_guard<std::recursive_mutex> lock(_stateMutex);
+        return _activityMod;
+    }
+    float getActivityPercentage()
+    {
+        std::lock_guard<std::recursive_mutex> lock(_stateMutex);
+        return _activityMod * 100.0f;
+    }
+    void setActivityPercentage(float percentage)
+    {
+        std::lock_guard<std::recursive_mutex> lock(_stateMutex);
+        _activityMod = percentage / 100.0f;
+    }
     static uint8 GetTeamClassIdx(bool isAlliance, uint8 claz) { return isAlliance * 20 + claz; }
 
     void ScheduleTeleport(uint32 bot, uint32 time = 0);
@@ -255,6 +276,7 @@ private:
     time_t _playersCheckTimer;
     typedef void (RandomPlayerbotMgr::* ConsoleCommandHandler)(Player*);
     std::vector<Player*> _players;
+    mutable std::mutex _playersMutex;
     uint32 _processTicks;
     uint32 _playersLevel;
     time_t _bgCheckTimer = 0;
@@ -286,6 +308,7 @@ private:
     std::unordered_map<std::string, botPerformanceMetric> _botPerformanceMetrics;
     std::unordered_set<uint32> _currentBotSet;
     std::vector<uint32> _currentBots;
+    mutable std::recursive_mutex _stateMutex;
 };
 
 #define sRandomPlayerbotMgr RandomPlayerbotMgr::instance()

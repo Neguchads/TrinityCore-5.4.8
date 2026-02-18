@@ -334,7 +334,7 @@ AiPlayerbot.LootRollLevel = 1
 AiPlayerbot.IterationsPerTick = 10
 
 # Delay between two short-time spells cast
-AiPlayerbot.GlobalCooldown = 500
+AiPlayerbot.GlobalCooldown = 1500
 
 # Max wait time when moving
 AiPlayerbot.MaxWaitForMove = 5000
@@ -357,19 +357,19 @@ AiPlayerbot.ExpireActionTime = 5000
 AiPlayerbot.DispelAuraDuration = 700
 
 # Delay between two bot actions
-AiPlayerbot.ReactDelay = 100
+AiPlayerbot.ReactDelay = 500
 
 # Dynamically adjust react delay for bots in different status to reduce server lags
-AiPlayerbot.DynamicReactDelay = 1
+AiPlayerbot.DynamicReactDelay = 0
 
 # Inactivity delay
 AiPlayerbot.PassiveDelay = 10000
 
 # Minimum delay between repeating actions (chat messages, emotes etc)
-AiPlayerbot.RepeatDelay = 2000
+AiPlayerbot.RepeatDelay = 5000
 
 # Delay timers
-AiPlayerbot.ErrorDelay = 100
+AiPlayerbot.ErrorDelay = 5000
 AiPlayerbot.RpgDelay = 10000
 AiPlayerbot.SitDelay = 20000
 # ReturnDelay has a minimum value of 2000 - lower values will cause a crash!
@@ -387,9 +387,9 @@ AiPlayerbot.LootDelay = 1000
 #
 
 AiPlayerbot.FarDistance = 20.0
-AiPlayerbot.SightDistance = 75.0
-AiPlayerbot.SpellDistance = 28.5
-AiPlayerbot.ShootDistance = 5.0
+AiPlayerbot.SightDistance = 60.0
+AiPlayerbot.SpellDistance = 26.0
+AiPlayerbot.ShootDistance = 26.0
 AiPlayerbot.ReactDistance = 150.0
 AiPlayerbot.GrindDistance = 75.0
 AiPlayerbot.HealDistance = 38.5
@@ -960,7 +960,7 @@ AiPlayerbot.FastReactInBG = 1
 #
 
 # All In seconds
-AiPlayerbot.RandomBotUpdateInterval = 60
+AiPlayerbot.RandomBotUpdateInterval = 1
 AiPlayerbot.RandomBotCountChangeMinInterval = 1800
 AiPlayerbot.RandomBotCountChangeMaxInterval = 7200
 AiPlayerbot.MinRandomBotInWorldTime = 3600

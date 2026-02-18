@@ -18,7 +18,9 @@ bool RandomBotUpdateAction::Execute(Event event)
     if (botAI->HasPlayerNearby(sPlayerbotAIConfig->grindDistance))
         return true;
 
-    return sRandomPlayerbotMgr->ProcessBot(bot);
+    // Random bot lifecycle updates are processed by RandomPlayerbotMgr on the world thread.
+    // Avoid calling ProcessBot from per-bot AI action context (map update threads).
+    return true;
 }
 
 bool RandomBotUpdateAction::isUseful() { return AI_VALUE(bool, "random bot update"); }

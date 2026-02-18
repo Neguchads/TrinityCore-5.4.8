@@ -377,8 +377,8 @@ bool BGJoinAction::PrepareArenaGroup(uint8 arenaType)
     uint32 skippedBracket = 0;
     uint32 addFailed = 0;
 
-    for (PlayerBotMap::const_iterator it = sRandomPlayerbotMgr->GetPlayerBotsBegin();
-         it != sRandomPlayerbotMgr->GetPlayerBotsEnd(); ++it)
+    PlayerBotMap randomBots = sRandomPlayerbotMgr->GetPlayerBotsSnapshot();
+    for (PlayerBotMap::const_iterator it = randomBots.begin(); it != randomBots.end(); ++it)
     {
         if (newGroup->GetMembersCount() >= arenaType)
             break;

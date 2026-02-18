@@ -34,8 +34,11 @@ public:
     void DisablePlayerBot(ObjectGuid guid);
     Player* GetPlayerBot(ObjectGuid guid) const;
     Player* GetPlayerBot(ObjectGuid::LowType lowGuid) const;
-    PlayerBotMap::const_iterator GetPlayerBotsBegin() const { return playerBots.begin(); }
-    PlayerBotMap::const_iterator GetPlayerBotsEnd() const { return playerBots.end(); }
+    PlayerBotMap GetPlayerBotsSnapshot() const;
+    bool IsBotLoading(ObjectGuid guid) const;
+    void MarkBotLoading(ObjectGuid guid);
+    void UnmarkBotLoading(ObjectGuid guid);
+    size_t GetBotLoadingCount() const;
 
     void UpdateAIInternal([[maybe_unused]] uint32 elapsed, [[maybe_unused]] bool minimal = false) override {};
     void UpdateSessions();
@@ -51,7 +54,7 @@ public:
     uint32 GetAccountId(ObjectGuid guid);
     std::string const ListBots(Player* master);
     std::string const LookupBots(Player* master);
-    uint32 GetPlayerbotsCount() { return playerBots.size(); }
+    uint32 GetPlayerbotsCount() const;
     uint32 GetPlayerbotsCountByClass(uint32 cls);
 
 protected:
@@ -59,6 +62,7 @@ protected:
 
     PlayerBotMap playerBots;
     std::unordered_set<ObjectGuid> botLoading;
+    mutable std::recursive_mutex _botStateMutex;
 };
 
 class PlayerbotMgr : public PlayerbotHolder
@@ -88,6 +92,7 @@ protected:
 private:
     Player* const master;
     PlayerBotErrorMap errors;
+    mutable std::mutex _errorsMutex;
     time_t lastErrorTell;
 };
 

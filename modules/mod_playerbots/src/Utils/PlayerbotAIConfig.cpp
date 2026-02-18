@@ -81,27 +81,27 @@ bool PlayerbotAIConfig::Initialize()
     }
 
     perfMonEnabled = sConfigMgr->GetBoolDefault("AiPlayerbot.PerfMonEnabled", false);
-    globalCoolDown = sConfigMgr->GetIntDefault("AiPlayerbot.GlobalCooldown", 500);
+    globalCoolDown = sConfigMgr->GetIntDefault("AiPlayerbot.GlobalCooldown", 1500);
     maxWaitForMove = sConfigMgr->GetIntDefault("AiPlayerbot.MaxWaitForMove", 5000);
     disableMoveSplinePath = sConfigMgr->GetIntDefault("AiPlayerbot.DisableMoveSplinePath", 0);
     maxMovementSearchTime = sConfigMgr->GetIntDefault("AiPlayerbot.MaxMovementSearchTime", 3);
     expireActionTime = sConfigMgr->GetIntDefault("AiPlayerbot.ExpireActionTime", 5000);
     dispelAuraDuration = sConfigMgr->GetIntDefault("AiPlayerbot.DispelAuraDuration", 700);
-    reactDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ReactDelay", 100);
-    dynamicReactDelay = sConfigMgr->GetBoolDefault("AiPlayerbot.DynamicReactDelay", true);
+    reactDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ReactDelay", 500);
+    dynamicReactDelay = sConfigMgr->GetBoolDefault("AiPlayerbot.DynamicReactDelay", false);
     fastReactInBG = sConfigMgr->GetBoolDefault("AiPlayerbot.FastReactInBG", true);
     passiveDelay = sConfigMgr->GetIntDefault("AiPlayerbot.PassiveDelay", 10000);
-    repeatDelay = sConfigMgr->GetIntDefault("AiPlayerbot.RepeatDelay", 2000);
-    errorDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ErrorDelay", 100);
+    repeatDelay = sConfigMgr->GetIntDefault("AiPlayerbot.RepeatDelay", 5000);
+    errorDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ErrorDelay", 5000);
     rpgDelay = sConfigMgr->GetIntDefault("AiPlayerbot.RpgDelay", 10000);
     sitDelay = sConfigMgr->GetIntDefault("AiPlayerbot.SitDelay", 20000);
     returnDelay = sConfigMgr->GetIntDefault("AiPlayerbot.ReturnDelay", 2000);
     lootDelay = sConfigMgr->GetIntDefault("AiPlayerbot.LootDelay", 1000);
 
     farDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.FarDistance", 20.0f);
-    sightDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.SightDistance", 75.0f);
-    spellDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.SpellDistance", 25.0f);
-    shootDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.ShootDistance", 25.0f);
+    sightDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.SightDistance", 60.0f);
+    spellDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.SpellDistance", 26.0f);
+    shootDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.ShootDistance", 26.0f);
     healDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.HealDistance", 25.0f);
     lootDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.LootDistance", 15.0f);
     fleeDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.FleeDistance", 7.5f);
@@ -449,7 +449,7 @@ bool PlayerbotAIConfig::Initialize()
     randomBotsMaxLoginsPerInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotsMaxLoginsPerInterval", 10);
     randomBotsDatabasePingInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotsDatabasePingInterval", 1000);
     randomBotsDatabaseDelayThreshold = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotsDatabaseDelayThreshold", 10000);
-    randomBotUpdateInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotUpdateInterval", 20);
+    randomBotUpdateInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotUpdateInterval", 1);
     randomBotCountChangeMinInterval =
         sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotCountChangeMinInterval", 30 * MINUTE);
     randomBotCountChangeMaxInterval =

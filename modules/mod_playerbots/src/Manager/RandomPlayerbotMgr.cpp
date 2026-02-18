@@ -189,6 +189,7 @@ RandomPlayerbotMgr::~RandomPlayerbotMgr() {}
 
 void RandomPlayerbotMgr::Reserve(const uint32 size)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     _currentBots.reserve(size);
     _availableBots.reserve(size);
     _currentBotSet.reserve(size);
@@ -196,6 +197,7 @@ void RandomPlayerbotMgr::Reserve(const uint32 size)
 
 uint32 RandomPlayerbotMgr::GetMaxAllowedBotCount()
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     return GetEventValue(0, "bot_count");
 }
 
@@ -254,11 +256,14 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
 
     ScaleBotActivity();
 
+    std::vector<Player*> const realPlayersSnapshot = GetPlayers();
+    bool const hasRealPlayers = !realPlayersSnapshot.empty();
+
     if (sPlayerbotAIConfig->asyncBotLogin)
     {
         auto pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "AsyncBotLogin");
         RealPlayers realPlayers;
-        for (Player* player : _players)
+        for (Player* player : realPlayersSnapshot)
         {
             if (!player || !player->IsInWorld())
                 continue;
@@ -297,13 +302,18 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
         CheckBgQueue();
     if (sPlayerbotAIConfig->randomBotJoinLfg)
         CheckLfgQueue();
-    if (!_players.empty())
+    if (hasRealPlayers)
         AddOfflineGroupBots();
-    _availableBots = _currentBots;
-    std::vector<uint32> const& availableBots = _availableBots;
-    uint32 availableBotCount = _currentBots.size();
-    uint32 onlineBotCount = playerBots.size();
-    bool const loginAllowedByRealPlayers = !(sPlayerbotAIConfig->randomBotLoginWithPlayer && _players.empty());
+    std::vector<uint32> availableBots;
+    uint32 availableBotCount = 0;
+    {
+        std::lock_guard<std::recursive_mutex> stateLock(_stateMutex);
+        _availableBots = _currentBots;
+        availableBots = _availableBots;
+        availableBotCount = static_cast<uint32>(_currentBots.size());
+    }
+    uint32 onlineBotCount = GetPlayerbotsCount();
+    bool const loginAllowedByRealPlayers = !(sPlayerbotAIConfig->randomBotLoginWithPlayer && !hasRealPlayers);
 
     EnsureRandomBotGuilds();
 
@@ -318,8 +328,8 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
         _isBotInitializing = sWorld->GetUptime() < sPlayerbotAIConfig->maxRandomBots * (0.11 + 0.4);
     }
 
-    uint32 updateIntervalTurboBoost = _isBotInitializing ? 1 : sPlayerbotAIConfig->randomBotUpdateInterval;
-    SetNextCheckDelay(updateIntervalTurboBoost * (onlineBotFocus + 25) * 10);
+    uint32 const updateIntervalMs = std::max<uint32>(1, sPlayerbotAIConfig->randomBotUpdateInterval) * IN_MILLISECONDS;
+    SetNextCheckDelay(updateIntervalMs);
 
     auto pmo = sPerformanceMonitor->start(
             PERF_MON_TOTAL,
@@ -335,7 +345,7 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
     uint32 loginBots = std::min(sPlayerbotAIConfig->randomBotsPerInterval - updateBots, maxNewBots);
     uint32 const dbDelay = GetDatabaseDelay("CharacterDatabase");
     uint32 const maxLoginsPerInterval = sPlayerbotAIConfig->randomBotsMaxLoginsPerInterval;
-    uint32 const pendingLogins = static_cast<uint32>(botLoading.size());
+    uint32 const pendingLogins = static_cast<uint32>(GetBotLoadingCount());
 
     if (maxLoginsPerInterval == 0)
         loginBots = 0;
@@ -406,7 +416,7 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
         }
     }
 
-    if (!_players.empty())
+    if (hasRealPlayers)
         LoginFreeBots();
 
     LogPlayerLocation();
@@ -653,7 +663,7 @@ void RandomPlayerbotMgr::ScaleBotActivity()
 
     float const activityPercentageMod =
         static_cast<float>(pid.calculate(
-            _players.empty() ? sPlayerbotAIConfig->diffEmpty : sPlayerbotAIConfig->diffWithPlayer,
+            HasPlayers() ? sPlayerbotAIConfig->diffWithPlayer : sPlayerbotAIConfig->diffEmpty,
             std::max(_avgUpdateTime, 1.0f)));
 
     activityPercentage = activityPercentageMod + 50.0f;
@@ -669,13 +679,14 @@ void RandomPlayerbotMgr::ScaleBotActivity()
         out << getActivityPercentage() << ",";
         out << activityPercentageMod << ",";
         out << activeBots << ",";
-        out << playerBots.size() << ",";
+        out << GetPlayerbotsCount() << ",";
 
         float totalLevel = 0.0f;
         float totalGold = 0.0f;
         float totalGearscore = 0.0f;
 
-        for (PlayerBotMap::const_iterator itr = GetPlayerBotsBegin(); itr != GetPlayerBotsEnd(); ++itr)
+        PlayerBotMap bots = GetPlayerBotsSnapshot();
+        for (PlayerBotMap::const_iterator itr = bots.begin(); itr != bots.end(); ++itr)
         {
             Player* const bot = itr->second;
             if (!bot)
@@ -730,6 +741,7 @@ void RandomPlayerbotMgr::DatabasePing(QueryResult /*result*/, uint32 pingStart, 
 
 void RandomPlayerbotMgr::LoadNamedLocations()
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     _namedLocations.clear();
 
     // Keep parity with CMaNGOS table naming if the table exists.
@@ -762,6 +774,7 @@ void RandomPlayerbotMgr::LoadNamedLocations()
 
 bool RandomPlayerbotMgr::AddNamedLocation(std::string const& name, WorldLocation const& location)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     auto [it, inserted] = _namedLocations.emplace(name, location);
     if (!inserted)
     {
@@ -774,6 +787,7 @@ bool RandomPlayerbotMgr::AddNamedLocation(std::string const& name, WorldLocation
 
 bool RandomPlayerbotMgr::GetNamedLocation(std::string const& name, WorldLocation& location)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     auto const itr = _namedLocations.find(name);
     if (itr == _namedLocations.end())
         return false;
@@ -784,11 +798,13 @@ bool RandomPlayerbotMgr::GetNamedLocation(std::string const& name, WorldLocation
 
 void RandomPlayerbotMgr::SetDatabaseDelay(std::string const& db, uint32 delay)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     _databaseDelay[db] = delay;
 }
 
 uint32 RandomPlayerbotMgr::GetDatabaseDelay(std::string const& db) const
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     auto itr = _databaseDelay.find(db);
     if (itr == _databaseDelay.end())
         return 0;
@@ -798,6 +814,7 @@ uint32 RandomPlayerbotMgr::GetDatabaseDelay(std::string const& db) const
 
 uint32 RandomPlayerbotMgr::AddRandomBots()
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     uint32 maxAllowedBotCount = GetEventValue(0, "bot_count");
 
     if (_currentBots.size() < maxAllowedBotCount)
@@ -879,6 +896,7 @@ uint32 RandomPlayerbotMgr::AddRandomBots()
 
 void RandomPlayerbotMgr::RefreshRandomBotGuidCache()
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     uint32 const nowMs = getMSTime();
     constexpr uint32 randomBotGuidCacheRefreshMs = 60 * IN_MILLISECONDS;
 
@@ -917,6 +935,7 @@ void RandomPlayerbotMgr::RefreshRandomBotGuidCache()
 
 void RandomPlayerbotMgr::Remove(Player* bot)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     ObjectGuid owner = bot->GetGUID();
 
     CharacterDatabase.PExecute("DELETE FROM playerbots_random_bots WHERE owner = 0 AND bot = %u", owner.GetCounter());
@@ -938,7 +957,7 @@ void RandomPlayerbotMgr::CheckPlayers()
     _playersCheckTimer = now;
 
     uint32 newPlayersLevel = 0;
-    for (Player* player : _players)
+    for (Player* player : GetPlayers())
     {
         if (!player || !player->IsInWorld() || player->IsGameMaster())
             continue;
@@ -967,7 +986,7 @@ void RandomPlayerbotMgr::CheckBgQueue()
         }
     }
 
-    for (Player* player : _players)
+    for (Player* player : GetPlayers())
     {
         if (!player || !player->IsInWorld() || !player->InBattlegroundQueue())
             continue;
@@ -1059,7 +1078,8 @@ void RandomPlayerbotMgr::CheckBgQueue()
         }
     }
 
-    for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
+    PlayerBotMap bots = GetPlayerBotsSnapshot();
+    for (PlayerBotMap::const_iterator it = bots.begin(); it != bots.end(); ++it)
     {
         Player* bot = it->second;
         if (!bot || !bot->IsInWorld() || !IsRandomBot(bot))
@@ -1145,7 +1165,7 @@ void RandomPlayerbotMgr::CheckBgQueue()
         }
     }
 
-    if (sPlayerbotAIConfig->randomBotAutoJoinBG && playerBots.size() >= GetMaxAllowedBotCount())
+    if (sPlayerbotAIConfig->randomBotAutoJoinBG && GetPlayerbotsCount() >= GetMaxAllowedBotCount())
     {
         auto parseBrackets = [](std::string const& data)
         {
@@ -1209,9 +1229,8 @@ void RandomPlayerbotMgr::CheckLfgQueue()
     LfgDungeons[TEAM_ALLIANCE].clear();
     LfgDungeons[TEAM_HORDE].clear();
 
-    for (std::vector<Player*>::iterator it = _players.begin(); it != _players.end(); ++it)
+    for (Player* player : GetPlayers())
     {
-        Player* player = *it;
         if (!player || !player->IsInWorld())
             continue;
 
@@ -1252,14 +1271,14 @@ void RandomPlayerbotMgr::AddOfflineGroupBots()
     _offlineGroupBotsTimer = now;
 
     uint32 const maxLoginsPerInterval = std::max<uint32>(1, sPlayerbotAIConfig->randomBotsMaxLoginsPerInterval);
-    uint32 pendingLogins = static_cast<uint32>(botLoading.size());
+    uint32 pendingLogins = static_cast<uint32>(GetBotLoadingCount());
     if (pendingLogins >= maxLoginsPerInterval)
         return;
 
     uint32 loginBudget = maxLoginsPerInterval - pendingLogins;
     uint32 totalCounter = 0;
 
-    for (Player* player : _players)
+    for (Player* player : GetPlayers())
     {
         if (!player || !player->IsInWorld())
             continue;
@@ -1284,7 +1303,7 @@ void RandomPlayerbotMgr::AddOfflineGroupBots()
             if (GetPlayerBot(member))
                 continue;
 
-            if (botLoading.find(member) != botLoading.end())
+            if (IsBotLoading(member))
                 continue;
 
             uint32 account = sCharacterCache->GetCharacterAccountIdByGuid(member);
@@ -1345,10 +1364,11 @@ InventoryResult RandomPlayerbotMgr::CanEquipUnseenItem(Player* player, uint8 slo
 
 bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     Player* player = GetPlayerBot(bot);
     PlayerbotAI* botAI = player ? GET_PLAYERBOT_AI(player) : nullptr;
     ObjectGuid botGUID = ObjectGuid::Create<HighGuid::Player>(bot);
-    bool const botsAllowedInWorld = !sPlayerbotAIConfig->randomBotLoginWithPlayer || !_players.empty();
+    bool const botsAllowedInWorld = !sPlayerbotAIConfig->randomBotLoginWithPlayer || HasPlayers();
 
     uint32 isValid = GetEventValue(bot, "add");
     if (!botsAllowedInWorld)
@@ -1386,11 +1406,11 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
         if (!botsAllowedInWorld)
             return false;
 
-        if (botLoading.find(botGUID) != botLoading.end())
+        if (IsBotLoading(botGUID))
             return false;
 
         AddPlayerBot(botGUID, 0);
-        if (botLoading.find(botGUID) == botLoading.end())
+        if (!IsBotLoading(botGUID))
             return false;
 
         randomTime = 1 + (std::rand() % 2);
@@ -1494,6 +1514,7 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
 
 bool RandomPlayerbotMgr::ProcessBot(Player* player)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     ObjectGuid bot = player->GetGUID();
 
     if (player->InBattleground())
@@ -1695,7 +1716,7 @@ void RandomPlayerbotMgr::Randomize(Player* bot)
     if (bot->GetLevel() <= sPlayerbotAIConfig->randombotStartingLevel)
         initialRandom = true;
 
-    if (!initialRandom && sPlayerbotAIConfig->syncLevelWithPlayers && !_players.empty())
+    if (!initialRandom && sPlayerbotAIConfig->syncLevelWithPlayers && HasPlayers())
     {
         uint32 syncedMax = std::max(sPlayerbotAIConfig->randomBotMinLevel,
             std::min(_playersLevel + sPlayerbotAIConfig->syncLevelMaxAbove,
@@ -1811,6 +1832,7 @@ bool RandomPlayerbotMgr::IsRandomBot(Player* bot)
 
 bool RandomPlayerbotMgr::IsRandomBot(ObjectGuid::LowType bot)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     ObjectGuid guid = ObjectGuid::Create<HighGuid::Player>(bot);
     if (!sPlayerbotAIConfig->IsInRandomAccountList(sCharacterCache->GetCharacterAccountIdByGuid(guid)))
         return false;
@@ -1821,6 +1843,7 @@ bool RandomPlayerbotMgr::IsRandomBot(ObjectGuid::LowType bot)
 
 void RandomPlayerbotMgr::GetBots()
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     if (!_currentBots.empty())
         return;
 
@@ -1863,6 +1886,7 @@ std::vector<uint32> RandomPlayerbotMgr::GetBgBots(uint32 bracket)
 
 CachedEvent* RandomPlayerbotMgr::FindEvent(uint32 bot, std::string const& event)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     BotEventCache& cache = _eventCache[bot];
 
     // Load all events for this bot once.
@@ -1905,6 +1929,7 @@ CachedEvent* RandomPlayerbotMgr::FindEvent(uint32 bot, std::string const& event)
 
 uint32 RandomPlayerbotMgr::GetEventValue(uint32 bot, std::string const event)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     if (CachedEvent* e = FindEvent(bot, event))
         return e->value;
 
@@ -1913,6 +1938,7 @@ uint32 RandomPlayerbotMgr::GetEventValue(uint32 bot, std::string const event)
 
 std::string const RandomPlayerbotMgr::GetEventData(uint32 bot, std::string const event)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     if (CachedEvent* e = FindEvent(bot, event))
         return e->data;
 
@@ -1922,6 +1948,7 @@ std::string const RandomPlayerbotMgr::GetEventData(uint32 bot, std::string const
 uint32 RandomPlayerbotMgr::SetEventValue(uint32 bot, std::string const event, uint32 value, uint32 validIn,
     std::string const data)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     BotEventCache& cache = _eventCache[bot];
     if (cache.loaded && value == 0)
     {
@@ -1998,7 +2025,8 @@ void RandomPlayerbotMgr::OnPlayerLogout(Player* player)
 
     DisablePlayerBot(player->GetGUID());
 
-    for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
+    PlayerBotMap bots = GetPlayerBotsSnapshot();
+    for (PlayerBotMap::const_iterator it = bots.begin(); it != bots.end(); ++it)
     {
         Player* const bot = it->second;
         PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);
@@ -2012,6 +2040,7 @@ void RandomPlayerbotMgr::OnPlayerLogout(Player* player)
         }
     }
 
+    std::lock_guard<std::mutex> lock(_playersMutex);
     std::vector<Player*>::iterator i = std::find(_players.begin(), _players.end(), player);
     if (i != _players.end())
         _players.erase(i);
@@ -2020,7 +2049,7 @@ void RandomPlayerbotMgr::OnPlayerLogout(Player* player)
 void RandomPlayerbotMgr::OnBotLoginInternal(Player* const bot)
 {
     auto maxAllowed = sRandomPlayerbotMgr->GetMaxAllowedBotCount();
-    TC_LOG_INFO("playerbots", "%u/%u Bot %s logged in - Active spec tab: %u Spec: %u", playerBots.size(), maxAllowed, bot->GetName().c_str(), (uint32)bot->GetActiveSpec(), (uint32)bot->GetSpecialization());
+    TC_LOG_INFO("playerbots", "%u/%u Bot %s logged in - Active spec tab: %u Spec: %u", GetPlayerbotsCount(), maxAllowed, bot->GetName().c_str(), (uint32)bot->GetActiveSpec(), (uint32)bot->GetSpecialization());
 
     // If this player has been created recently and is not assign horde / alliance as pandaren
     if (bot->GetRace() == RACE_PANDAREN_NEUTRAL)
@@ -2097,7 +2126,8 @@ void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
 {
     uint32 botsNearby = 0;
 
-    for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
+    PlayerBotMap bots = GetPlayerBotsSnapshot();
+    for (PlayerBotMap::const_iterator it = bots.begin(); it != bots.end(); ++it)
     {
         Player* const bot = it->second;
         if (player == bot /* || GET_PLAYERBOT_AI(player)*/)  // TEST
@@ -2167,6 +2197,7 @@ void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
 
     if (!IsRandomBot(player))
     {
+        std::lock_guard<std::mutex> lock(_playersMutex);
         if (std::find(_players.begin(), _players.end(), player) == _players.end())
         {
             _players.push_back(player);
@@ -2177,6 +2208,7 @@ void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
 
 void RandomPlayerbotMgr::OnPlayerLoginError(uint32 bot)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     SetEventValue(bot, "add", 0, 0);
     _currentBots.erase(std::remove(_currentBots.begin(), _currentBots.end(), bot), _currentBots.end());
     _currentBotSet.erase(bot);
@@ -2184,6 +2216,7 @@ void RandomPlayerbotMgr::OnPlayerLoginError(uint32 bot)
 
 Player* RandomPlayerbotMgr::GetRandomPlayer()
 {
+    std::lock_guard<std::mutex> lock(_playersMutex);
     if (_players.empty())
         return nullptr;
 
@@ -2199,9 +2232,20 @@ Player* RandomPlayerbotMgr::GetPlayer(uint32 playerGuid)
 void RandomPlayerbotMgr::PrintStats(uint32 requesterGuid)
 {
     (void)requesterGuid;
+    uint32 trackedBotCount = 0;
+    {
+        std::lock_guard<std::recursive_mutex> stateLock(_stateMutex);
+        trackedBotCount = static_cast<uint32>(_currentBots.size());
+    }
+    uint32 realPlayerCount = 0;
+    {
+        std::lock_guard<std::mutex> lock(_playersMutex);
+        realPlayerCount = static_cast<uint32>(_players.size());
+    }
+
     TC_LOG_INFO("playerbots", "Random bot stats: online=%u tracked=%u realPlayers=%u loading=%u activity=%.2f%%",
-        static_cast<uint32>(playerBots.size()), static_cast<uint32>(_currentBots.size()),
-        static_cast<uint32>(_players.size()), static_cast<uint32>(botLoading.size()), getActivityPercentage());
+        GetPlayerbotsCount(), trackedBotCount, realPlayerCount, static_cast<uint32>(GetBotLoadingCount()),
+        getActivityPercentage());
 }
 
 double RandomPlayerbotMgr::GetBuyMultiplier(Player* bot)
@@ -2307,7 +2351,7 @@ void RandomPlayerbotMgr::LogPlayerLocation()
         return;
     _logPlayerLocationTimer = now;
 
-    for (Player* player : _players)
+    for (Player* player : GetPlayers())
     {
         if (!player || !player->IsInWorld())
             continue;
@@ -2330,7 +2374,8 @@ void RandomPlayerbotMgr::DelayedFacingFix()
         return;
     _delayedFacingFixTimer = now;
 
-    for (PlayerBotMap::const_iterator itr = GetPlayerBotsBegin(); itr != GetPlayerBotsEnd(); ++itr)
+    PlayerBotMap bots = GetPlayerBotsSnapshot();
+    for (PlayerBotMap::const_iterator itr = bots.begin(); itr != bots.end(); ++itr)
     {
         Player* const bot = itr->second;
         if (!bot || !bot->IsInWorld() || bot->HasUnitState(UNIT_STATE_IN_FLIGHT) || bot->HasUnitState(UNIT_STATE_CASTING))
@@ -2374,6 +2419,7 @@ void RandomPlayerbotMgr::MirrorAh()
 
 void RandomPlayerbotMgr::MovePlayerBot(uint32 guid, PlayerbotHolder* newHolder)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     if (!newHolder || newHolder == this)
         return;
 
@@ -2389,6 +2435,7 @@ void RandomPlayerbotMgr::MovePlayerBot(uint32 guid, PlayerbotHolder* newHolder)
 
 bool RandomPlayerbotMgr::AddRandomBot(uint32 bot)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     if (GetPlayerBot(bot))
         return true;
 
@@ -2411,7 +2458,7 @@ bool RandomPlayerbotMgr::AddRandomBot(uint32 bot)
     SetEventValue(bot, "update", 1, urand(sPlayerbotAIConfig->minRandomBotReviveTime, sPlayerbotAIConfig->maxRandomBotReviveTime));
     ScheduleChangeStrategy(bot);
 
-    if (botLoading.find(guid) == botLoading.end())
+    if (!IsBotLoading(guid))
         AddPlayerBot(guid, 0);
 
     return true;
@@ -2482,6 +2529,7 @@ void RandomPlayerbotMgr::PrepareAddclassCache()
 
 void RandomPlayerbotMgr::PrepareTeleportCache()
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     uint32 zone_count = 0, farm_spot_count = 0, city_count = 0;
     QueryResult results = WorldDatabase.PQuery("SELECT ZoneId, ZoneTyp, MinLevel, MaxLevel, TeamsDisabled, MapId, MinPlayers, MaxPlayers FROM playerbot_farming_zone");
     if (results)
@@ -2731,9 +2779,9 @@ void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
     {
         constexpr float nearPlayerTeleportRadius = 120.0f;
         std::vector<Player*> candidates;
-        candidates.reserve(_players.size());
+        candidates.reserve(GetPlayers().size());
 
-        for (Player* player : _players)
+        for (Player* player : GetPlayers())
         {
             if (!player || player == bot || !player->IsInWorld() || player->IsBeingTeleported() || !player->IsAlive())
                 continue;
@@ -2756,7 +2804,8 @@ void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
                 sPlayerbotAIConfig->randomBotTeleportNearPlayerMaxAmountRadius > 0.0f)
             {
                 uint32 nearbyBots = 0;
-                for (PlayerBotMap::const_iterator itr = GetPlayerBotsBegin(); itr != GetPlayerBotsEnd(); ++itr)
+                PlayerBotMap bots = GetPlayerBotsSnapshot();
+                for (PlayerBotMap::const_iterator itr = bots.begin(); itr != bots.end(); ++itr)
                 {
                     Player* const rb = itr->second;
                     if (!rb || rb == bot || !rb->IsInWorld() || rb->IsBeingTeleported())
@@ -2864,6 +2913,7 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot)
 std::vector<std::pair<uint32, uint32>> RandomPlayerbotMgr::RpgLocationsNear(WorldLocation pos,
     std::map<uint32, std::map<uint32, std::vector<std::string>>> const& areaNames, uint32 radius)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     std::vector<std::pair<uint32, uint32>> results;
     float minDist = std::numeric_limits<float>::max();
     WorldPosition areaPos(pos);
@@ -2921,6 +2971,7 @@ std::vector<std::pair<uint32, uint32>> RandomPlayerbotMgr::RpgLocationsNear(Worl
 
 void RandomPlayerbotMgr::RandomTeleportForRpg(Player* bot, bool activeOnly)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     if (!bot)
         return;
 
@@ -2962,8 +3013,8 @@ void RandomPlayerbotMgr::RandomTeleportForRpg(Player* bot, bool activeOnly)
     };
 
     std::vector<Player*> activePlayers;
-    activePlayers.reserve(_players.size());
-    for (Player* player : _players)
+    activePlayers.reserve(GetPlayers().size());
+    for (Player* player : GetPlayers())
     {
         if (!player || player == bot || !player->IsInWorld() || player->IsBeingTeleported() || !player->IsAlive())
             continue;
@@ -3050,6 +3101,7 @@ void RandomPlayerbotMgr::RandomTeleportForRpg(Player* bot, bool activeOnly)
 
 uint32 RandomPlayerbotMgr::GetZoneLevel(uint16 mapId, float teleX, float teleY, float teleZ)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     uint32 result = 0;
 
     for (farm_zone const& zone : _farm_cache_data)
@@ -3087,6 +3139,7 @@ uint32 RandomPlayerbotMgr::GetZoneLevel(uint16 mapId, float teleX, float teleY, 
 
 void RandomPlayerbotMgr::PrintTeleportCache()
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     uint32 zoneCount = static_cast<uint32>(_farm_cache_data.size());
     uint32 cityCount = static_cast<uint32>(_city_cache_data.size());
     uint32 spotCount = 0;
@@ -3099,6 +3152,7 @@ void RandomPlayerbotMgr::PrintTeleportCache()
 
 RandomPlayerbotMgr::city const* RandomPlayerbotMgr::GetCityForPlayer(Player* player)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     if (_city_cache_data.empty()) return nullptr;
 
     std::mt19937 gen(std::chrono::system_clock::now().time_since_epoch().count());
@@ -3122,6 +3176,7 @@ RandomPlayerbotMgr::city const* RandomPlayerbotMgr::GetCityForPlayer(Player* pla
 
 RandomPlayerbotMgr::farm_spot const* RandomPlayerbotMgr::GetFarmZoneForPlayer(Player* player)
 {
+    std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     if (_farm_cache_data.empty()) return nullptr;
 
     std::mt19937 gen(std::chrono::system_clock::now().time_since_epoch().count());
@@ -3141,13 +3196,14 @@ RandomPlayerbotMgr::farm_spot const* RandomPlayerbotMgr::GetFarmZoneForPlayer(Pl
         if (zone.max_player != 0)
         {
             uint32 playercount = 0;
-            for (const auto& _internal_player : _players)
+            for (const auto& _internal_player : GetPlayers())
             {
                 if (_internal_player && _internal_player->IsInWorld() && !_internal_player->IsBeingTeleported() && _internal_player->GetZoneId() == zone.zone_id && _internal_player != player)
                     ++playercount;
             }
 
-            for (PlayerBotMap::const_iterator itr = GetPlayerBotsBegin(); itr != GetPlayerBotsEnd(); ++itr)
+            PlayerBotMap bots = GetPlayerBotsSnapshot();
+            for (PlayerBotMap::const_iterator itr = bots.begin(); itr != bots.end(); ++itr)
             {
                 Player* const bot = itr->second;
                 if (!bot || bot == player || !bot->IsInWorld() || bot->IsBeingTeleported()

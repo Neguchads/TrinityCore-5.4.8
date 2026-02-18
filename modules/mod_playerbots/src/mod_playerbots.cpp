@@ -771,7 +771,9 @@ public:
     {
         if (PlayerbotAI* botAI = GET_PLAYERBOT_AI(player))
         {
-            botAI->UpdateAI(diff);
+            uint32 const targetDiff = sRandomPlayerbotMgr->HasPlayers() ? sPlayerbotAIConfig->diffWithPlayer : sPlayerbotAIConfig->diffEmpty;
+            bool const minimal = sWorld->GetUpdateTime() > targetDiff;
+            botAI->UpdateAI(diff, minimal);
         }
 
         if (PlayerbotMgr* playerbotMgr = GET_PLAYERBOT_MGR(player))
