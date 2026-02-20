@@ -18,6 +18,7 @@
 #include "TravelNode.h"
 
 #include <algorithm>
+#include <cmath>
 #include <iomanip>
 #include <regex>
 
@@ -2319,10 +2320,27 @@ void TravelNodeMap::saveNodeStore()
 
     std::unordered_map<TravelNode*, uint32> saveNodes;
     std::vector<TravelNode*> anodes = TravelNodeMap::instance().getNodes();
+    uint32 skippedNodes = 0;
+    uint32 skippedLinks = 0;
+    uint32 skippedPoints = 0;
+
+    auto isFinite = [](float v) { return std::isfinite(static_cast<double>(v)); };
 
     for (uint32 i = 0; i < anodes.size(); i++)
     {
         TravelNode* node = anodes[i];
+        float const nodeX = node->getX();
+        float const nodeY = node->getY();
+        float const nodeZ = node->getZ();
+
+        if (!isFinite(nodeX) || !isFinite(nodeY) || !isFinite(nodeZ))
+        {
+            ++skippedNodes;
+            TC_LOG_WARN("playerbots",
+                        "Skipping travel node {} due to non-finite coordinates ({}, {}, {})",
+                        i, nodeX, nodeY, nodeZ);
+            continue;
+        }
 
         std::string name = node->getName();
         WorldDatabase.EscapeString(name);
@@ -2331,8 +2349,8 @@ void TravelNodeMap::saveNodeStore()
         query.setf(std::ios::fixed);
         query << std::setprecision(6);
         query << "INSERT INTO playerbots_travelnode (id, name, map_id, x, y, z, linked) VALUES (";
-        query << i << ", '" << name << "', " << node->getMapId() << ", " << node->getX() << ", " << node->getY()
-              << ", " << node->getZ() << ", " << (node->isLinked() ? 1 : 0) << ")";
+        query << i << ", '" << name << "', " << node->getMapId() << ", " << nodeX << ", " << nodeY << ", " << nodeZ
+              << ", " << (node->isLinked() ? 1 : 0) << ")";
         WorldDatabase.ExecuteOrAppend(trans, query.str().c_str());
 
         saveNodes.insert(std::make_pair(node, i));
@@ -2345,10 +2363,30 @@ void TravelNodeMap::saveNodeStore()
         for (uint32 i = 0; i < anodes.size(); i++)
         {
             TravelNode* node = anodes[i];
+            if (saveNodes.find(node) == saveNodes.end())
+                continue;
 
             for (auto& link : *node->getLinks())
             {
                 TravelNodePath* path = link.second;
+                auto toNodeIt = saveNodes.find(link.first);
+                if (toNodeIt == saveNodes.end())
+                {
+                    ++skippedLinks;
+                    continue;
+                }
+
+                float const distance = path->getDistance();
+                float const swimDistance = path->getSwimDistance();
+                float const extraCost = path->getExtraCost();
+                if (!isFinite(distance) || !isFinite(swimDistance) || !isFinite(extraCost))
+                {
+                    ++skippedLinks;
+                    TC_LOG_WARN("playerbots",
+                                "Skipping travel link {} -> {} due to non-finite values (distance={}, swim={}, extra={})",
+                                i, toNodeIt->second, distance, swimDistance, extraCost);
+                    continue;
+                }
 
                 std::ostringstream linkQuery;
                 linkQuery.setf(std::ios::fixed);
@@ -2356,9 +2394,9 @@ void TravelNodeMap::saveNodeStore()
                 linkQuery << "INSERT INTO playerbots_travelnode_link (node_id, to_node_id, type, object, distance, "
                              "swim_distance, extra_cost, calculated, max_creature_0, max_creature_1, max_creature_2) "
                              "VALUES (";
-                linkQuery << i << ", " << saveNodes.find(link.first)->second << ", "
+                linkQuery << i << ", " << toNodeIt->second << ", "
                           << static_cast<uint32>(path->getPathType()) << ", " << path->getPathObject() << ", "
-                          << path->getDistance() << ", " << path->getSwimDistance() << ", " << path->getExtraCost()
+                          << distance << ", " << swimDistance << ", " << extraCost
                           << ", " << (path->getCalculated() ? 1 : 0) << ", "
                           << static_cast<uint32>(path->getMaxLevelCreature()[0]) << ", "
                           << static_cast<uint32>(path->getMaxLevelCreature()[1]) << ", "
@@ -2376,9 +2414,14 @@ void TravelNodeMap::saveNodeStore()
                     std::ostringstream pathQuery;
                     pathQuery.setf(std::ios::fixed);
                     pathQuery << std::setprecision(6);
+                    if (!isFinite(point.getX()) || !isFinite(point.getY()) || !isFinite(point.getZ()))
+                    {
+                        ++skippedPoints;
+                        continue;
+                    }
                     pathQuery << "INSERT INTO playerbots_travelnode_path (node_id, to_node_id, nr, map_id, x, y, z) "
                                  "VALUES (";
-                    pathQuery << i << ", " << saveNodes.find(link.first)->second << ", " << j << ", "
+                    pathQuery << i << ", " << toNodeIt->second << ", " << j << ", "
                               << point.getMapId() << ", " << point.getX() << ", " << point.getY() << ", " << point.getZ()
                               << ")";
                     WorldDatabase.ExecuteOrAppend(trans, pathQuery.str().c_str());
@@ -2392,6 +2435,11 @@ void TravelNodeMap::saveNodeStore()
     }
 
     WorldDatabase.CommitTransaction(trans);
+
+    if (skippedNodes || skippedLinks || skippedPoints)
+        TC_LOG_WARN("playerbots",
+                    "Travel node store skipped invalid values (nodes: {}, links: {}, path points: {}).",
+                    skippedNodes, skippedLinks, skippedPoints);
 }
 
 void TravelNodeMap::loadNodeStore()
