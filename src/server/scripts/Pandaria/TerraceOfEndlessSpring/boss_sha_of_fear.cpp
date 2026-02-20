@@ -459,7 +459,7 @@ class boss_sha_of_fear : public CreatureScript
                 {
                     if (newPandaMap.size() > 1)
                         std::advance(itr, std::rand() % (newPandaMap.size() - 1));
-                    
+
                     if (itr != newPandaMap.cend())
                     {
                         for (std::unordered_map<BowmanData*, uint32>::const_iterator finder = pandaMap.begin(); finder != pandaMap.end(); ++finder)
@@ -619,7 +619,7 @@ class boss_sha_of_fear : public CreatureScript
                 {
                     case NPC_YANG_GUOSHI:
                     case NPC_CHENG_KANG:
-                    case NPC_JINLUN_KUN:               
+                    case NPC_JINLUN_KUN:
                         for (std::unordered_map<BowmanData*, uint32>::iterator itr = pandaMap.begin(); itr != pandaMap.end(); ++itr)
                             if (itr->first->entry == summon->GetEntry())
                                 itr->first->active = false;
@@ -631,7 +631,7 @@ class boss_sha_of_fear : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -1150,7 +1150,7 @@ class npc_dread_spawn : public CreatureScript
 
         struct npc_dread_spawnAI : public ScriptedAI
         {
-            npc_dread_spawnAI(Creature* creature) : ScriptedAI(creature) 
+            npc_dread_spawnAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
@@ -1288,7 +1288,6 @@ class spell_champion_of_light : public SpellScriptLoader
             }
         };
 
-
         class spell_champion_of_light_Spellcript : public SpellScript
         {
             PrepareSpellScript(spell_champion_of_light_Spellcript);
@@ -1412,7 +1411,6 @@ class spell_breath_of_fear_fear : public SpellScriptLoader
                 OnEffectHitTarget += SpellEffectFn(spell_breath_of_fear_fear_SpellScript::HandleFearEff, EFFECT_0, SPELL_EFFECT_APPLY_AURA);
             }
         };
-
 
         SpellScript* GetSpellScript() const override
         {
@@ -1549,7 +1547,7 @@ class spell_ominous_caclke_target : public SpellScript
                 if (caster->ToCreature()->AI())
                     caster->ToCreature()->AI()->DoAction(ACTION_BERSERK);
             }
-            
+
         }
     }
 
@@ -1583,7 +1581,6 @@ class spell_ominous_caclke_target : public SpellScript
         OnEffectHitTarget += SpellEffectFn(spell_ominous_caclke_target::ApplyMorph, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
     }
 };
-
 
 // Cheng Kang 61042, Yang Guoshi 61038, Jinlun Kun 61046
 class npc_sha_of_fear_bowman : public CreatureScript
@@ -1668,7 +1665,7 @@ class npc_sha_of_fear_bowman : public CreatureScript
                     me->SetReactState(REACT_AGGRESSIVE);
                     me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                     me->setActive(true);
-                    
+
                     if (Creature* pTerrace = GetClosestCreatureWithEntry(me, NPC_RETURN_TO_TERRACE, 30.f))
                     {
                         pTerrace->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
@@ -2113,7 +2110,7 @@ class spell_sha_waterspout : public SpellScriptLoader
                 targets.remove_if(TankSpecTargetSelector());
                 targets.remove_if(MeeleSpecTargetSelector());
                 targets.remove_if([=](WorldObject* target) { return target && target->ToPlayer() && target->ToPlayer()->HasAura(SPELL_CHAMPION_OF_THE_LIGHT); });
-                
+
             }
 
             void Register() override
@@ -2241,7 +2238,7 @@ class spell_transfer_light : public SpellScript
         if (Unit* caster = GetCaster())
             if (Player* target = ObjectAccessor::GetPlayer(*caster, caster->GetTarget()))
                 if (target->IsAlive())
-                    return SPELL_CAST_OK;;
+                    return SPELL_CAST_OK;
 
         return SPELL_FAILED_SPELL_UNAVAILABLE;
     }
@@ -2434,7 +2431,6 @@ class spell_sha_of_fear_dread_spray_fear : public AuraScript
         OnEffectApply += AuraEffectApplyFn(spell_sha_of_fear_dread_spray_fear::OnApply, EFFECT_0, SPELL_AURA_MOD_FEAR, AURA_EFFECT_HANDLE_REAL);
     }
 };
-
 
 void AddSC_boss_sha_of_fear()
 {

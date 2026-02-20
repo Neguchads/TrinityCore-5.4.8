@@ -170,7 +170,7 @@ class boss_high_prophet_barim : public CreatureScript
                     GetCreatureListWithEntryInGrid(creatures, me, NPC_REPENTANCE_MIRROR, 1000.0f);
                     for (std::list<Creature*>::iterator iter = creatures.begin(); iter != creatures.end(); ++iter)
                          (*iter)->AI()->DoAction(ACTION_REPENTANCE_DONE);
-                        
+
                     events.ScheduleEvent(EVENT_REPENTANCE, 1500, 0, PHASE_REPENTANCE);
                 }
             }
@@ -213,7 +213,7 @@ class boss_high_prophet_barim : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL_PLAYER);
             }
 
@@ -494,7 +494,7 @@ class npc_blaze_of_the_heavens : public CreatureScript
             void UpdateAI(uint32 diff) override
             {
                 if (Birth)
-                { 
+                {
                     if (uiBirthTimer <= diff)
                     {
                         switch (uiBirthPhase)

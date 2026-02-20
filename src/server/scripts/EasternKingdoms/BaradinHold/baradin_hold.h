@@ -38,7 +38,7 @@ enum Data
 {
     DATA_ARGALOTH   = 0,
     DATA_OCCUTHAR   = 1,
-    DATA_ALIZABAL   = 2,   
+    DATA_ALIZABAL   = 2,
 };
 
 template<class AI>

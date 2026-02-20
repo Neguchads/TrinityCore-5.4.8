@@ -63,7 +63,7 @@ class go_time_lost_shrine_ti : public GameObjectScript
 
         void OnLootStateChanged(GameObject* go, uint32 state, Unit* unit) override
         {
-            if (!unit || state != GO_ACTIVATED || unit->GetTypeId() != TYPEID_PLAYER)
+            if (!unit || state != GO_ACTIVATED || !unit->IsPlayer())
                 return;
 
             go->SetFlag(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_INTERACT_COND);
@@ -665,7 +665,7 @@ class npc_timeless_yaks : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 switch (me->GetEntry())
                 {
                     case 73160:
@@ -806,7 +806,7 @@ class npc_timeless_cranes : public CreatureScript
                 events.Reset();
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 events.ScheduleEvent(EVENT_GUST_OF_WIND, 8 * IN_MILLISECONDS);
                 events.ScheduleEvent(EVENT_HEALING_SONG, 15 * IN_MILLISECONDS);
@@ -1316,7 +1316,7 @@ class npc_timeless_spirits : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 switch (me->GetEntry())
                 {
                     case 73162:
@@ -1562,7 +1562,7 @@ class npc_timeless_dragons : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (me->GetEntry())
@@ -1708,7 +1708,7 @@ class npc_ordos_minions : public CreatureScript
                             ExecuteTargetEvent(SPELL_GREATER_PYROBLAST, 1.5 * IN_MILLISECONDS, EVENT_GREAT_PYRO, eventId);
                             break;
                         }
-                        
+
                         case RARE_ARCHIEREUS_OF_FLAME_CLOAK:
                         {
                             ExecuteTargetEvent(SPELL_CAUTERIZE, 35 * IN_MILLISECONDS, EVENT_CAUTERIZE, eventId, PRIORITY_SELF);
@@ -1832,7 +1832,7 @@ class npc_damp_shamblers : public CreatureScript
                             uiMurkyCloudTimer = 20*IN_MILLISECONDS;
                         }
                         else uiMurkyCloudTimer -= diff;
-                        
+
                         if (uiRenewingMistsTimer <= diff)
                         {
                             me->CastSpell(me, SPELL_RENEWING_MISTS);
@@ -1851,7 +1851,7 @@ class npc_damp_shamblers : public CreatureScript
                             uiMurkyCloudTimer = 20*IN_MILLISECONDS;
                         }
                         else uiMurkyCloudTimer -= diff;
-                        
+
                         if (uiRenewingMistsTimer <= diff)
                         {
                             me->CastSpell(me, SPELL_RENEWING_MISTS);
@@ -1870,7 +1870,7 @@ class npc_damp_shamblers : public CreatureScript
                             uiMurkyCloudTimer = 20*IN_MILLISECONDS;
                         }
                         else uiMurkyCloudTimer -= diff;
-                        
+
                         if (uiRenewingMistsTimer <= diff)
                         {
                             me->CastSpell(me, SPELL_RENEWING_MISTS);
@@ -3580,7 +3580,7 @@ struct npc_highwind_albatross : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (attacker->GetTypeId() != TYPEID_PLAYER)
+        if (!(attacker->IsPlayer()))
             return;
 
         if (damage > me->GetHealth())
@@ -3726,7 +3726,7 @@ class npc_zarhym_1 : public CreatureScript
             {
                 if (intro)
                     return;
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
                 if (!me->IsWithinDistInMap(who, 15.0f, false))
                     return;
@@ -3863,7 +3863,7 @@ struct npc_dread_ship_vazuvius : public ScriptedAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() != TYPEID_PLAYER)
+        if (!(who->IsPlayer()))
             return;
 
         if (me->IsWithinDist(who, 7.0f))
@@ -4112,7 +4112,7 @@ class go_zarhyms_body : public GameObjectScript
 
         void OnLootStateChanged(GameObject* go, uint32 state, Unit* unit) override
         {
-            if (!unit || state != GO_ACTIVATED || unit->GetTypeId() != TYPEID_PLAYER)
+            if (!unit || state != GO_ACTIVATED || !unit->IsPlayer())
                 return;
 
             auto group = unit->ToPlayer()->GetGroup();
@@ -4183,7 +4183,7 @@ class go_timeless_chest : public GameObjectScript
 
         void OnLootStateChanged(GameObject* go, uint32 state, Unit* unit) override
         {
-            if (!unit || state != GO_ACTIVATED || unit->GetTypeId() != TYPEID_PLAYER)
+            if (!unit || state != GO_ACTIVATED || !unit->IsPlayer())
                 return;
 
             Player* player = unit->ToPlayer();
@@ -4535,7 +4535,7 @@ class spell_bloody_coin_proc : public AuraScript
         if (eventInfo.GetActionTarget()->HasAura(149624))
             return false;
 
-        return eventInfo.GetProcTarget()->GetTypeId() == TYPEID_PLAYER;
+        return eventInfo.GetProcTarget()->IsPlayer();
     }
 
     void Register()
@@ -4551,7 +4551,7 @@ class spell_censer_of_eternal_agony : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetOwner()->IsPlayer();
     }
 
     void HandleApply(AuraEffect const*, AuraEffectHandleModes)

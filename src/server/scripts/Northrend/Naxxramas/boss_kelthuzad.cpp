@@ -245,7 +245,7 @@ const Position PosWeavers[MAX_WEAVERS] =
 };
 
 // predicate function to select not charmed target
-struct NotCharmedTargetSelector 
+struct NotCharmedTargetSelector
 {
     NotCharmedTargetSelector() { }
 
@@ -606,7 +606,7 @@ public:
                             {
                                 Unit* const target = (*itr)->getTarget();
 
-                                if (target->GetTypeId() == TYPEID_PLAYER
+                                if (target->IsPlayer()
                                         && target->GetPowerType() == POWER_MANA
                                         && target->GetPower(POWER_MANA))
                                 {

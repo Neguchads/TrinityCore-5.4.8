@@ -89,7 +89,7 @@ enum miscData
     SPELL_MECHANO_KICK                          = 133169,
     SPELL_SHOCK_FIELD_EFF                       = 133156, // damage aura
     SPELL_SHOCK_FIELD_SELECTOR                  = 133159,
-    SPELL_SHOCK_FIELD_UNK                       = 133150, 
+    SPELL_SHOCK_FIELD_UNK                       = 133150,
     SPELL_SHOCK_FIELD_AT                        = 133065,
     SPELL_ELECTRIC_DYNAMITE_EFF                 = 133576,
     SPELL_SHRINK_RAY_AFTERMATH                  = 133306,
@@ -389,9 +389,9 @@ struct brawlers_guild_encounter_typeAI : public ScriptedAI
         }
     }
 
-    void KilledUnit(Unit* victim) override 
+    void KilledUnit(Unit* victim) override
     {
-        if (victim->GetTypeId() == TYPEID_PLAYER)
+        if (victim->IsPlayer())
         {
             summons.DespawnAll();
 
@@ -904,7 +904,7 @@ class npc_brawlers_guild_brawlgar_arena_grunt : public CreatureScript
             }
 
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
 
@@ -944,7 +944,7 @@ class npc_brawlers_guild_brawlgar_arena_grunt : public CreatureScript
 
             TaskScheduler scheduler;
             uint32 queueYell;
-    
+
             void Reset() override
             {
                 DoCast(me, SPELL_GUARD_AREATRIGGER);
@@ -2643,7 +2643,7 @@ struct npc_brawlers_guild_crush : public brawlers_guild_encounter_typeAI
 // Leona Earthwind 68377
 struct npc_brawlers_guild_leona_earthwind : public brawlers_guild_encounter_typeAI
 {
-    npc_brawlers_guild_leona_earthwind(Creature* creature) : brawlers_guild_encounter_typeAI(creature) 
+    npc_brawlers_guild_leona_earthwind(Creature* creature) : brawlers_guild_encounter_typeAI(creature)
     {
         SetCombatMovement(false);
     }
@@ -2746,7 +2746,7 @@ struct npc_brawlers_guild_dominika_the_illusionist : public brawlers_guild_encou
             summon->SetInCombatWith(target);
             target->SetInCombatWith(summon);
             summon->AddThreat(target, 0.0f);
-            
+
             if (summon->AI())
                 summon->AI()->AttackStart(target);
         }
@@ -3024,7 +3024,7 @@ struct npc_brawlers_shock_field : public brawlers_miscAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -3769,7 +3769,7 @@ struct npc_brawlers_guild_unguloxx : public brawlers_guild_encounter_typeAI
 // Max Megablast, Bo Bobble 67488, 67487
 struct npc_brawlers_guild_gg_ingeenering : public brawlers_guild_encounter_typeAI
 {
-    npc_brawlers_guild_gg_ingeenering(Creature* creature) : brawlers_guild_encounter_typeAI(creature) 
+    npc_brawlers_guild_gg_ingeenering(Creature* creature) : brawlers_guild_encounter_typeAI(creature)
     {
         hasinit = false;
     }
@@ -4491,7 +4491,7 @@ struct npc_brawlers_guild_grandpa_grumplefloot : public brawlers_guild_encounter
 // Blingtron 3000 70740
 struct npc_brawlers_guild_blingtron_3000 : public brawlers_guild_encounter_typeAI
 {
-    npc_brawlers_guild_blingtron_3000(Creature* creature) : brawlers_guild_encounter_typeAI(creature) 
+    npc_brawlers_guild_blingtron_3000(Creature* creature) : brawlers_guild_encounter_typeAI(creature)
     {
         hasInit = false;
     }
@@ -4648,7 +4648,7 @@ struct npc_brawlers_guild_gnomish_tesla_coil : public ScriptedAI
         clicker->CastSpell(me, SPELL_OVERCHARGING_TESLA_COIL_VISUAL, false);
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -5002,7 +5002,7 @@ class spell_brawlers_guild_conjure_unstable_mines : public AuraScript
 };
 
 // We should select mines between battletron and player, it`ll work like ur spell missle throw her (nice logic)
-class UnstableMinesProcPredicate 
+class UnstableMinesProcPredicate
 {
     public:
         UnstableMinesProcPredicate(Unit* const m_caster, Unit* const m_target) : _caster(m_caster), _target(m_target) { }
@@ -5266,7 +5266,7 @@ class spell_brawlers_guild_overcharged : public SpellScript
 
     void FilterDamageTarget(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
     }
 
     void Register() override

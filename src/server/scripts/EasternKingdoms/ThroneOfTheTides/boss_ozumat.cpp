@@ -51,7 +51,7 @@ enum Spells
     SPELL_BLIGHT_OF_OZUMAT_AOE_DMG      = 83608,
     SPELL_TIDAL_SURGE                   = 76133,
     SPELL_CLEAR_TIDAL_SURGE             = 83909,
-        
+
     // Vicious Mindslasher
     SPELL_BRAIN_SPIKE                   = 83915,
     SPELL_VEIL_OF_SHADOW                = 83926,
@@ -64,7 +64,7 @@ enum Spells
     SPELL_ENTANGLING_GRASP              = 83463,
 
     SPELL_ENCOUNTER_COMPLETE            = 95673,
-}; 
+};
 
 enum Events
 {
@@ -111,7 +111,7 @@ enum Achievement
     SPELL_KILL_OZUMAT   = 95673,
 };
 
-const Position spawnPos[5] = 
+const Position spawnPos[5] =
 {
     {-142.48f, 950.78f, 231.05f, 1.88f},
     {-126.62f, 1015.55f, 230.37f, 4.48f},
@@ -270,8 +270,8 @@ class npc_neptulon : public CreatureScript
                 if (instance)
                 {
                     // Achievement
-                    instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_KILL_OZUMAT, 0, me); 
-                    
+                    instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_KILL_OZUMAT, 0, me);
+
                     // Guild Achievement
                     Map::PlayerList const &PlayerList = instance->instance->GetPlayers();
                     if (!PlayerList.isEmpty())
@@ -287,7 +287,7 @@ class npc_neptulon : public CreatureScript
                                     }
                         }
                     }
-                    instance->UpdateEncounterState(ENCOUNTER_CREDIT_CAST_SPELL, SPELL_ENCOUNTER_COMPLETE, me); 
+                    instance->UpdateEncounterState(ENCOUNTER_CREDIT_CAST_SPELL, SPELL_ENCOUNTER_COMPLETE, me);
                     instance->SetBossState(DATA_OZUMAT, DONE);
                 }
                 EnterEvadeMode();
@@ -602,7 +602,7 @@ class npc_vicious_mindslasher : public CreatureScript
                             events.ScheduleEvent(EVENT_SHADOW_BOLT, 2000);
                             break;
                     }
-                }            
+                }
                 DoMeleeAttackIfReady();
             }
         };
@@ -661,7 +661,7 @@ class npc_unyielding_behemoth : public CreatureScript
                             events.ScheduleEvent(EVENT_BLIGHT_SPRAY, urand(15000, 23000));
                             break;
                     }
-                }            
+                }
                 DoMeleeAttackIfReady();
             }
         };

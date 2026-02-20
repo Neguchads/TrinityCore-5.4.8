@@ -131,14 +131,14 @@ enum Yells
     SAY_DEATH               = 6,
     EMOTE_TYMPANIC          = 8,
     EMOTE_HEART             = 9,
-    
+
     // XS-013 Scrapbot
     EMOTE_REPAIR            = 0
 };
 
-enum AchievementCredits 
-{ 
-    ACHIEV_MUST_DECONSTRUCT_FASTER = 21027 
+enum AchievementCredits
+{
+    ACHIEV_MUST_DECONSTRUCT_FASTER = 21027
 };
 
 enum Events
@@ -151,8 +151,8 @@ enum Events
     EVENT_DISPOSE_HEART,
     EVENT_ENRAGE,
     EVENT_ENTER_HARD_MODE,
-    EVENT_ARCING_SMASH, 
-    EVENT_TRAMPLE, 
+    EVENT_ARCING_SMASH,
+    EVENT_TRAMPLE,
     EVENT_UPPERCUT,
 };
 
@@ -174,10 +174,10 @@ enum Timers
     TIMER_UPPERCUT             = 7000,
 };
 
-enum XT002Phase 
-{ 
-    PHASE_ONE = 1, 
-    PHASE_TWO 
+enum XT002Phase
+{
+    PHASE_ONE = 1,
+    PHASE_TWO
 };
 
 #define HEART_VEHICLE_SEAT 0
@@ -274,7 +274,7 @@ class boss_xt002 : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -422,7 +422,7 @@ class boss_xt002 : public CreatureScript
 
                 phase = PHASE_ONE;
                 events.SetPhase(PHASE_ONE);
-                
+
                 events.RescheduleEvent(EVENT_SEARING_LIGHT, TIMER_SEARING_LIGHT / 2, 0, PHASE_ONE);
                 events.RescheduleEvent(EVENT_GRAVITY_BOMB, TIMER_GRAVITY_BOMB, 0, PHASE_ONE);
                 events.RescheduleEvent(EVENT_TYMPANIC_TANTRUM, urand(TIMER_TYMPANIC_TANTRUM_MIN, TIMER_TYMPANIC_TANTRUM_MAX), 0, PHASE_ONE);
@@ -488,7 +488,7 @@ class boss_xt002 : public CreatureScript
 class npc_xt002_heart : public CreatureScript
 {
     public:
-        npc_xt002_heart() : CreatureScript("npc_xt002_heart") { }        
+        npc_xt002_heart() : CreatureScript("npc_xt002_heart") { }
 
         struct npc_xt002_heartAI : public ScriptedAI
         {
@@ -555,7 +555,7 @@ class npc_xt002_heart : public CreatureScript
 class npc_scrapbot : public CreatureScript
 {
     public:
-        npc_scrapbot() : CreatureScript("npc_scrapbot") { }        
+        npc_scrapbot() : CreatureScript("npc_scrapbot") { }
 
         struct npc_scrapbotAI : public ScriptedAI
         {
@@ -671,7 +671,7 @@ class npc_pummeller : public CreatureScript
                                 DoCast(me->GetVictim(), SPELL_UPPERCUT);
                                 events.ScheduleEvent(EVENT_UPPERCUT, TIMER_UPPERCUT);
                                 break;
-                        }                        
+                        }
                     }
                 }
 
@@ -692,7 +692,7 @@ class npc_pummeller : public CreatureScript
 class npc_boombot : public CreatureScript
 {
     public:
-        npc_boombot() : CreatureScript("npc_boombot") { }        
+        npc_boombot() : CreatureScript("npc_boombot") { }
 
         struct npc_boombotAI : public ScriptedAI
         {
@@ -835,7 +835,7 @@ class npc_life_spark : public CreatureScript
                     shockTimer = TIMER_SHOCK;
                 }
                 else shockTimer -= diff;
-                
+
                 DoMeleeAttackIfReady();
             }
 
@@ -981,7 +981,7 @@ class spell_xt002_gravity_bomb_aura : public SpellScriptLoader
         }
 };
 
-class BombTargetSelector 
+class BombTargetSelector
 {
     public:
         BombTargetSelector(Creature* me, Unit const* victim) : _me(me), _victim(victim) { }
@@ -1011,7 +1011,7 @@ class spell_xt002_gravity_bomb_aura_target : public SpellScriptLoader
             bool Load() override
             {
                 _target = nullptr;
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void FilterTargets(std::list<WorldObject*>& targets)
@@ -1206,7 +1206,7 @@ class spell_xt002_tympanic_tantrum : public SpellScriptLoader
             {
                 targets.remove_if (PlayerOrPetCheck());
             }
-            
+
             void HandleDamageCalc(SpellEffIndex effIndex)
             {
                 if (Unit* target = GetHitUnit())

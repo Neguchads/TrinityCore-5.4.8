@@ -199,7 +199,7 @@ class boss_alakir : public CreatureScript
                 me->SetFloatValue(UNIT_FIELD_COMBAT_REACH, 45);
 
                 Map::PlayerList const& PlayerList = instance->instance->GetPlayers();
-                for (Map::PlayerList::const_iterator i = PlayerList.begin(); i != PlayerList.end(); ++i)                            
+                for (Map::PlayerList::const_iterator i = PlayerList.begin(); i != PlayerList.end(); ++i)
                 {
                     if (Player* plr = i->GetSource())
                     {
@@ -377,7 +377,7 @@ class boss_alakir : public CreatureScript
                     floor->SetGoState(GO_STATE_ACTIVE);
 
                 Map::PlayerList const& players = instance->instance->GetPlayers();
-                for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)                            
+                for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
                 {
                     if (Player* player = itr->GetSource())
                     {
@@ -395,9 +395,9 @@ class boss_alakir : public CreatureScript
             void JustEngagedWith(Unit* /*who*/) override
             {
                 _JustEngagedWith();
-                
+
                 Talk(SAY_AGGRO);
-                
+
                 SetPhase(PHASE_ONE);
                 persistentEvents.Reset();
                 persistentEvents.ScheduleEvent(EVENT_BERSERK, 10 * MINUTE * IN_MILLISECONDS);
@@ -471,7 +471,7 @@ class boss_alakir : public CreatureScript
                         {
                             bool found = false;
                             Map::PlayerList const& players = instance->instance->GetPlayers();
-                            for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)                            
+                            for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
                             {
                                 if (Player* player = itr->GetSource())
                                 {
@@ -487,7 +487,7 @@ class boss_alakir : public CreatureScript
                                     }
                                 }
                             }
-                            
+
                             persistentEvents.ScheduleEvent(EVENT_CHECK_POSITION, 1000);
                             if (found)
                                 persistentEvents.CancelEvent(EVENT_EVADE);
@@ -624,7 +624,7 @@ class boss_alakir : public CreatureScript
                         case EVENT_EXIT_VEHICLES:
                         {
                             Map::PlayerList const& players = instance->instance->GetPlayers();
-                            for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)                            
+                            for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
                             {
                                 if (Player* player = itr->GetSource())
                                 {
@@ -786,7 +786,7 @@ class npc_lightning_strike_trigger : public CreatureScript
             void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)

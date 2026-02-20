@@ -18,7 +18,7 @@
 #include "ScriptPCH.h"
 #include "zulgurub.h"
 
-static std::vector<DoorData> const doordata = 
+static std::vector<DoorData> const doordata =
 {
     {GO_VENOXIS_EXIT,              DATA_VENOXIS,                DOOR_TYPE_ROOM,     BOUNDARY_NONE},
     {GO_MANDOKIR_EXIT1,            DATA_MANDOKIR,               DOOR_TYPE_ROOM,     BOUNDARY_NONE},
@@ -118,7 +118,7 @@ class instance_zulgurub : public InstanceMapScript
                         break;
                 }
             }
-            
+
             void OnGameObjectCreate(GameObject* go) override
             {
                 switch (go->GetEntry())
@@ -209,7 +209,7 @@ class instance_zulgurub : public InstanceMapScript
                             ObjectList* units = GetWorldObjectsInDist(summoner, 50);
                             for (ObjectList::const_iterator itr = units->begin(); itr != units->end(); ++itr)
                             {
-                                if (!(*itr) || (*itr)->GetTypeId() != TYPEID_UNIT)
+                                if (!(*itr) || !(*itr)->IsCreature())
                                     continue;
 
                                 Creature* nearby = (*itr)->ToCreature();

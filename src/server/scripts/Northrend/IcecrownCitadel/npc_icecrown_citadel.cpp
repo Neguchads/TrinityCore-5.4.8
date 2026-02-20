@@ -483,7 +483,7 @@ class npc_nerubar_broodkeeper_icc : public CreatureScript
                 switch (events.ExecuteEvent())
                 {
                     case EVENT_WEB_WRAP:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [](Unit* u) { return u->GetTypeId() == TYPEID_PLAYER && !u->HasAura(SPELL_WEB_WRAP) && !u->HasAura(SPELL_WEB_WRAP_STUN); }))
+                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [](Unit* u) { return u->IsPlayer() && !u->HasAura(SPELL_WEB_WRAP) && !u->HasAura(SPELL_WEB_WRAP_STUN); }))
                             DoCast(target, SPELL_WEB_WRAP);
                         events.ScheduleEvent(EVENT_WEB_WRAP, urand(5000, 8000));
                         break;

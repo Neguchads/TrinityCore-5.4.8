@@ -256,7 +256,7 @@ class boss_teron_gorefiend : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!Intro && who->GetTypeId() == TYPEID_PLAYER && who->isTargetableForAttack() && me->IsHostileTo(who) && who->isInAccessiblePlaceFor(me))
+                if (!Intro && who->IsPlayer() && who->isTargetableForAttack() && me->IsHostileTo(who) && who->isInAccessiblePlaceFor(me))
                 {
                     if (me->IsWithinDistInMap(who, VISIBLE_RANGE) && me->IsWithinLOSInMap(who))
                     {
@@ -471,7 +471,7 @@ class boss_teron_gorefiend : public CreatureScript
                     if (!target)
                        target = me->GetVictim();
 
-                    if (target && target->IsAlive() && target->GetTypeId() == TYPEID_PLAYER)
+                    if (target && target->IsAlive() && target->IsPlayer())
                     {
                         DoCast(target, SPELL_SHADOW_OF_DEATH);
                         GhostGUID = target->GetGUID();

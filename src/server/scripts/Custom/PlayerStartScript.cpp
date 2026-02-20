@@ -582,8 +582,6 @@ public: player_start_spells() : PlayerScript("player_start_spells") { }
               player->SaveToDB();
               player->RemoveAtLoginFlag(AT_LOGIN_FIRST);
 
-
-
           //}
       }
 };

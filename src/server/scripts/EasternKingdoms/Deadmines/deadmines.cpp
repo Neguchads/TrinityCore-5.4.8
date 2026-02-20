@@ -35,7 +35,7 @@ Position deadmines_locs[] =
 enum Adds
 {
     // quest
-    NPC_EDWIN_CANCLEEF_1    = 42697, 
+    NPC_EDWIN_CANCLEEF_1    = 42697,
     NPC_ALLIANCE_ROGUE      = 42700,
     NPC_VANESSA_VANCLEEF_1  = 42371, // little
 };
@@ -84,14 +84,14 @@ class go_deadmines_teleport : public GameObjectScript
             if (InstanceScript* instance = go->GetInstanceScript())
             {
                 if (instance->GetBossState(DATA_GLUBTOK) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться ко входу." : "Teleport to entrance.", GOSSIP_SENDER_DEADMINES_PORT, 0);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂºÃÂ¾ ÃÂ²Ã‘â€¦ÃÂ¾ÃÂ´Ã‘Æ’." : "Teleport to entrance.", GOSSIP_SENDER_DEADMINES_PORT, 0);
 
                 if (instance->GetBossState(DATA_ADMIRAL) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться в потайную бухту." : "Teleport to Ironclad Cove.", GOSSIP_SENDER_DEADMINES_PORT, 3);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂ² ÃÂ¿ÃÂ¾Ã‘â€šÃÂ°ÃÂ¹ÃÂ½Ã‘Æ’Ã‘Å½ ÃÂ±Ã‘Æ’Ã‘â€¦Ã‘â€šÃ‘Æ’." : "Teleport to Ironclad Cove.", GOSSIP_SENDER_DEADMINES_PORT, 3);
                 else if (instance->GetBossState(DATA_FOEREAPER) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться в гоблинский цех." : "Teleport to The Foundry.", GOSSIP_SENDER_DEADMINES_PORT, 2);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂ² ÃÂ³ÃÂ¾ÃÂ±ÃÂ»ÃÂ¸ÃÂ½Ã‘ÂÃÂºÃÂ¸ÃÂ¹ Ã‘â€ ÃÂµÃ‘â€¦." : "Teleport to The Foundry.", GOSSIP_SENDER_DEADMINES_PORT, 2);
                 else if (instance->GetBossState(DATA_HELIX) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться в мачтовую мастерскую." : "Teleport to The Mast Room.", GOSSIP_SENDER_DEADMINES_PORT, 1);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂ² ÃÂ¼ÃÂ°Ã‘â€¡Ã‘â€šÃÂ¾ÃÂ²Ã‘Æ’Ã‘Å½ ÃÂ¼ÃÂ°Ã‘ÂÃ‘â€šÃÂµÃ‘â‚¬Ã‘ÂÃÂºÃ‘Æ’Ã‘Å½." : "Teleport to The Mast Room.", GOSSIP_SENDER_DEADMINES_PORT, 1);
             }
 
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(go), go->GetGUID());

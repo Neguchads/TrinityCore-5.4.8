@@ -184,8 +184,8 @@ class boss_thok_the_bloodthirsty : public CreatureScript
 
         struct boss_thok_the_bloodthirstyAI : public BossAI
         {
-            boss_thok_the_bloodthirstyAI(Creature* creature) : BossAI(creature, DATA_THOK_THE_BLOODTHIRSTY) 
-            { 
+            boss_thok_the_bloodthirstyAI(Creature* creature) : BossAI(creature, DATA_THOK_THE_BLOODTHIRSTY)
+            {
                 me->setActive(true);
                 hasInitialize = false;
             }
@@ -571,7 +571,7 @@ class boss_thok_the_bloodthirsty : public CreatureScript
                         helper->CastSpell(helper, SPELL_MEAT_EXPLOSION_2, true);
 
                         if (IsHeroic())
-                            DoCast(me, SPELL_MENDING); // heal self 
+                            DoCast(me, SPELL_MENDING); // heal self
 
                         //helper->CastSpell(helper, SPELL_CHOMP, true);
                     }
@@ -877,7 +877,7 @@ class boss_thok_the_bloodthirsty : public CreatureScript
 // Korkron Jailer 71658
 struct npc_korkron_jailer : public ScriptedAI
 {
-    npc_korkron_jailer(Creature* creature) : ScriptedAI(creature) 
+    npc_korkron_jailer(Creature* creature) : ScriptedAI(creature)
     {
         hasTriggered = false;
         hasClicked   = false;
@@ -887,7 +887,7 @@ struct npc_korkron_jailer : public ScriptedAI
     bool hasTriggered;
     bool hasClicked;
 
-    void Reset() override 
+    void Reset() override
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
         events.Reset();
@@ -992,7 +992,7 @@ struct helpers_baseAI : public ScriptedAI
 
             // Set our helpers to combat with us
             uint32 helperEntry = invDevourType.find(me->GetEntry())->second[2];
-            
+
             std::list<Creature*> helpersList;
             GetCreatureListWithEntryInGrid(helpersList, me, helperEntry, 100.0f);
 
@@ -1062,8 +1062,8 @@ struct npc_thok_helper_base : public helpers_baseAI
 // Akolik 71742
 struct npc_akolik : public helpers_baseAI
 {
-    npc_akolik(Creature* creature) : helpers_baseAI(creature) 
-    { 
+    npc_akolik(Creature* creature) : helpers_baseAI(creature)
+    {
         SetCombatMovement(false);
     }
 
@@ -1100,7 +1100,7 @@ struct npc_soo_waterspeaker_gorai : public helpers_baseAI
 // Montak 71763
 struct npc_montak : public helpers_baseAI
 {
-    npc_montak(Creature* creature) : helpers_baseAI(creature) 
+    npc_montak(Creature* creature) : helpers_baseAI(creature)
     {
         SetCombatMovement(false);
     }
@@ -1241,8 +1241,8 @@ struct npc_thok_captive_cave_bat : public ScriptedAI
         me->GetMap()->CreatureRelocation(me, me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY(), me->GetHomePosition().GetPositionZ(), me->GetHomePosition().GetOrientation());
     }
 
-    void UpdateAI(uint32 diff) override 
-    { 
+    void UpdateAI(uint32 diff) override
+    {
         scheduler.Update(diff);
 
         if (!UpdateVictim())
@@ -1344,7 +1344,7 @@ struct npc_thok_starved_yeti : public ScriptedAI
 // Monstrous Gastropod 73164
 struct npc_thok_monstrous_gastropod : public ScriptedAI
 {
-    npc_thok_monstrous_gastropod(Creature* creature) : ScriptedAI(creature) 
+    npc_thok_monstrous_gastropod(Creature* creature) : ScriptedAI(creature)
     {
         hasTriggered = false;
     }
@@ -2321,7 +2321,7 @@ class spell_thok_deafening_screech : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
     }
 
     void Register() override
@@ -2442,7 +2442,7 @@ class spell_thok_fearsome_roar : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
     }
 
     void Register() override

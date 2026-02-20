@@ -25,7 +25,7 @@
 
 #define MAX_ENCOUNTER 7
 
-static std::vector<DoorData> const doordata = 
+static std::vector<DoorData> const doordata =
 {
     {GO_BRIDGE_OF_RHYOLITH,  DATA_RHYOLITH,  DOOR_TYPE_ROOM,        BOUNDARY_NONE},
     {GO_FIRE_WALL_BALEROC,   DATA_BALEROC,   DOOR_TYPE_ROOM,        BOUNDARY_NONE},

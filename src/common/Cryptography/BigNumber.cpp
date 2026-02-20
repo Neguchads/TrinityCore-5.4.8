@@ -260,4 +260,3 @@ char * BigNumber::AsDecStr() const
 {
     return BN_bn2dec(_bn);
 }
-

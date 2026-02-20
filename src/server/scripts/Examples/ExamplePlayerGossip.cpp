@@ -25,7 +25,7 @@
 
 class example_PlayerGossip : public PlayerScript
 {
-public: 
+public:
     example_PlayerGossip() : PlayerScript("example_PlayerGossip") {}
 
     void OnLevelChanged(Player* player, uint8 /*oldlevel*/) override            // Any hook here

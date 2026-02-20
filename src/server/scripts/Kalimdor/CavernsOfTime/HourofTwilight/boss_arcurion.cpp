@@ -59,7 +59,7 @@ enum Adds
 };
 
 #define MAX_SERVITOR 6
-const Position servitorPos[MAX_SERVITOR] = 
+const Position servitorPos[MAX_SERVITOR] =
 {
     { 4810.14f, 31.5191f, 104.593f, 2.3692f  },
     { 4831.26f, 64.6198f, 108.553f, 3.28342f },
@@ -137,7 +137,7 @@ class boss_arcurion : public CreatureScript
 
                 if (instance)
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me);
-                
+
                 SendThrallInCombat();
             }
 
@@ -158,7 +158,7 @@ class boss_arcurion : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -399,7 +399,6 @@ class spell_arcurion_icy_boulder : public SpellScriptLoader
             return new spell_arcurion_icy_boulder_SpellScript();
         }
 };
-
 
 void AddSC_boss_arcurion()
 {

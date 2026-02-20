@@ -100,7 +100,7 @@ class boss_lilian_voss : public CreatureScript
 
             void InitializeAI() override
             {
-                SetEquipmentSlots(false, LilianSword, LilianSword, EQUIP_NO_CHANGE);;
+                SetEquipmentSlots(false, LilianSword, LilianSword, EQUIP_NO_CHANGE);
                 me->SetFaction(1665);
                 SetCombatMovement(false);
                 Reset();
@@ -321,7 +321,6 @@ class boss_lilian_voss : public CreatureScript
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
-
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -380,7 +379,7 @@ class npc_lilian_soul : public CreatureScript
 
             void Reset() override { }
 
-            void IsSummonedBy(Unit* summoner) override 
+            void IsSummonedBy(Unit* summoner) override
             {
                 SetEquipmentSlots(false, LilianSword, LilianSword, EQUIP_NO_CHANGE);
                 DoZoneInCombat();
@@ -394,7 +393,7 @@ class npc_lilian_soul : public CreatureScript
                     me->Attack(itr, true);
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 if (actionId == ACTION_REMOVE_LILIAN_SOUL)
                     me->DespawnOrUnsummon();
@@ -506,7 +505,7 @@ class TargetNotPlayer
         TargetNotPlayer() { }
         bool operator()(WorldObject* object)
         {
-            if (object->GetTypeId() != TYPEID_PLAYER)
+            if (!(object->IsPlayer()))
                 return true;
             else
                 return false;

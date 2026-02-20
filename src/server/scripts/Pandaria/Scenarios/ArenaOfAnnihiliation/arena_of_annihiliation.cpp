@@ -100,7 +100,7 @@ class npc_arena_of_annihiliation_gurgthock : public CreatureScript
             EventMap nonCombatEvents;
             bool intro;
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 intro = false;
                 instance = me->GetInstanceScript();
@@ -108,7 +108,7 @@ class npc_arena_of_annihiliation_gurgthock : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (instance && !intro && who && who->GetTypeId() == TYPEID_PLAYER) // npc have both location, include scenario, need check before activate
+                if (instance && !intro && who && who->IsPlayer()) // npc have both location, include scenario, need check before activate
                 {
                     intro = true;
                     Talk(TALK_INTRO_1);
@@ -185,7 +185,7 @@ class npc_arena_of_annihiliation_scar_shell : public CreatureScript
                 events.ScheduleEvent(EVENT_STONE_SPIN, 20 * IN_MILLISECONDS);
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -682,7 +682,7 @@ class npc_arena_of_annihiliation_flame_wall : public CreatureScript
                 me->SetReactState(REACT_PASSIVE);
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 events.ScheduleEvent(EVENT_MOVE, 200);
             }

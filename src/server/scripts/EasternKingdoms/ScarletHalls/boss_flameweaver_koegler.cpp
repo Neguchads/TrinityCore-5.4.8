@@ -119,7 +119,7 @@ class boss_flameweaver_koegler : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!Intro && who && who->GetTypeId() == TYPEID_PLAYER)
+                if (!Intro && who && who->IsPlayer())
                 {
                     Intro = true;
                     Talk(TALK_INTRO);
@@ -366,7 +366,7 @@ class spell_koegler_book_burner : public SpellScriptLoader
                 if (!target || !caster)
                     return;
 
-                if (target->GetTypeId() == TYPEID_PLAYER)
+                if (target->IsPlayer())
                     return;
 
                 if (!target->HasAura(SPELL_BURNING_BOOKS))

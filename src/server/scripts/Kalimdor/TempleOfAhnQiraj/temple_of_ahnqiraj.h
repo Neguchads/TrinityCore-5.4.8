@@ -69,4 +69,3 @@ enum GameObjects
 };
 
 #endif // DEF_TEMPLE_OF_AHNQIRAJ_H
-

@@ -146,7 +146,7 @@ class focusedLightningPredicate
                         return false;
                 }
 
-                if (target->GetTypeId() == TYPEID_PLAYER)
+                if (target->IsPlayer())
                     return false;
 
                 return true;
@@ -155,7 +155,7 @@ class focusedLightningPredicate
         }
 };
 
-static const Position aWaterPos[4] = 
+static const Position aWaterPos[4] =
 {
     { 5864.490f, 6290.628f, 124.03f, 5.51f },
     { 5917.633f, 6289.476f, 124.03f, 3.93f },
@@ -202,7 +202,7 @@ class boss_jinrokh : public CreatureScript
 
         struct boss_jinrokhAI : public BossAI
         {
-            boss_jinrokhAI(Creature* creature) : BossAI(creature, DATA_JINROKH) 
+            boss_jinrokhAI(Creature* creature) : BossAI(creature, DATA_JINROKH)
             {
                 if (instance && instance->GetData(DATA_JINROKH_EVENT) != DONE)
                     if (Creature* stormCaller = me->SummonCreature(NPC_ZANDALARI_STORM_CALLER, stormCallerSumPos, TEMPSUMMON_MANUAL_DESPAWN))
@@ -320,7 +320,7 @@ class boss_jinrokh : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 
@@ -1033,7 +1033,7 @@ class spell_thundering_throw : public SpellScript
                         target->AI()->DoAction(ACTION_DESTROYED);
                         target->AI()->SetGUID(caster->GetGUID());
                     }
-                    
+
                 }
             }
         }
@@ -1128,7 +1128,7 @@ class npc_jinrokh_statue : public CreatureScript
 
         struct npc_jinrokh_statueAI : public ScriptedAI
         {
-            npc_jinrokh_statueAI(Creature* creature) : ScriptedAI(creature) 
+            npc_jinrokh_statueAI(Creature* creature) : ScriptedAI(creature)
             {
                 statueGuid = ObjectGuid::Empty;
                 statueData = 0;
@@ -1165,7 +1165,7 @@ class npc_jinrokh_statue : public CreatureScript
                 }
 
             }
-            
+
             void HandleStatue(bool active)
             {
                 if (GameObject* pStatue = ObjectAccessor::GetGameObject(*me, statueGuid))
@@ -1212,7 +1212,7 @@ class npc_jinrokh_statue : public CreatureScript
                         me->RemoveAllAuras();
                         events.Reset();
                         SetData(DATA_STATUE_DESTROYED, 0);
-                    
+
                         if (Creature* pWaters = GetClosestCreatureWithEntry(me, NPC_CONDUCTIVE_WATER, 100.f))
                             pWaters->DespawnOrUnsummon();
                         break;
@@ -1378,7 +1378,7 @@ class npc_lightning_storm_bunny : public CreatureScript
 
         struct npc_lightning_storm_bunnyAI : public ScriptedAI
         {
-            npc_lightning_storm_bunnyAI(Creature* creature) : ScriptedAI(creature) 
+            npc_lightning_storm_bunnyAI(Creature* creature) : ScriptedAI(creature)
             {
                 SetCombatMovement(false); // // no idea why it happened...
             }
@@ -1467,7 +1467,7 @@ class ConductiveWaterDummyPredicate
 {
     public:
         ConductiveWaterDummyPredicate() { }
-    
+
         bool operator()(WorldObject* target) const
         {
             if (target && target->ToPlayer())
@@ -1657,7 +1657,7 @@ class spell_ionization_aura : public AuraScript
             {
                 int32 bp = GetSpellInfo()->Effects[EFFECT_0].BasePoints;
                 jinrokh->CastCustomSpell(owner, SPELL_IONIZATION_PROC, &bp, 0, 0, true);
-                
+
                 if (owner->HasAura(SPELL_FLUIDITY))
                     owner->CastCustomSpell(owner, SPELL_IONIZATION_DAMAGES_CONDUCTION, &bp, 0, 0, true);
             }

@@ -24,7 +24,7 @@
 enum spells
 {
     // Amber-Shaper Unsok
-    SPELL_MOLTEN_AMBER            = 122004, // triggered 122005 in 1y 
+    SPELL_MOLTEN_AMBER            = 122004, // triggered 122005 in 1y
     SPELL_AMBER_SCALPEL           = 121994, // triggered 121995 in 3y
     SPELL_BURNING_AMBER           = 122503, // after living amber death
     SPELL_PARASITIC_GROWTH        = 121949,
@@ -51,7 +51,7 @@ enum spells
     SPELL_AMBER_EXPLOSION_M       = 122398,
     SPELL_MASSIVE_STOMP           = 122408, // damage and knockback
     SPELL_FLING                   = 122413, // take and pull active tank
-    SPELL_FLING_PULL              = 122420, 
+    SPELL_FLING_PULL              = 122420,
     SPELL_FLING_VISUAL_KICK       = 122419,
     SPELL_FLING_DUMMY             = 122418, // pick up
     SPELL_FLING_DAMAGE            = 122457, // damage and stun after fling
@@ -253,7 +253,7 @@ class boss_amber_shaper_unsok : public CreatureScript
                 return 0;
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -309,7 +309,7 @@ class boss_amber_shaper_unsok : public CreatureScript
                 }
             }
 
-            void DamageTaken(Unit* attacker, uint32& damage) override 
+            void DamageTaken(Unit* attacker, uint32& damage) override
             {
                 // blizzlike, while casting scalpel - not break phase
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -322,8 +322,8 @@ class boss_amber_shaper_unsok : public CreatureScript
                 }
             }
 
-            void KilledUnit(Unit* /*victim*/) override 
-            { 
+            void KilledUnit(Unit* /*victim*/) override
+            {
                 Talk(SAY_SLAY);
             }
 
@@ -459,7 +459,7 @@ class boss_amber_shaper_unsok : public CreatureScript
                         itr->AI()->DoAction(action);
                 }
 
-                struct ReshapeLifeSecondTankPredicate 
+                struct ReshapeLifeSecondTankPredicate
                 {
                     public:
                         ReshapeLifeSecondTankPredicate(Creature const* me) : _me(me) { }
@@ -584,7 +584,7 @@ class npc_amber_monstrosity : public CreatureScript
                 }
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 if (actionId == ACTION_GREATEST_CREATION)
                     events.ScheduleEvent(EVENT_FLING_PULL, 3 * IN_MILLISECONDS);
@@ -671,7 +671,7 @@ class npc_burning_amber_stalker : public CreatureScript
                 }
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -868,7 +868,7 @@ class npc_living_amber : public CreatureScript
             npc_living_amberAI(Creature* creature) : ScriptedAI(creature) { }
             EventMap events;
 
-            void IsSummonedBy(Unit* summoner) override 
+            void IsSummonedBy(Unit* summoner) override
             {
                 me->CastSpell(me, SPELL_CORROSIVE_AURA, false);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
@@ -925,14 +925,14 @@ class npc_amber_pool_stalker : public CreatureScript
             InstanceScript* instance;
             uint32 delay;
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 delay = 0;
                 instance = me->GetInstanceScript();
                 nonCombatEvents.ScheduleEvent(EVENT_COANGULATE_AMBER, urand(1500, 5500));
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -987,7 +987,7 @@ class npc_amber_pool_stalker : public CreatureScript
                 return Globules.size();
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 nonCombatEvents.Update(diff);
 
@@ -1483,7 +1483,7 @@ struct PlayerTargetSelector
 {
     bool operator ()(WorldObject const* object) const
     {
-        if (object->GetTypeId() == TYPEID_PLAYER)
+        if (object->IsPlayer())
             return false;
         return true;
     }

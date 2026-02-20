@@ -229,7 +229,7 @@ class npc_cfk_shado_pan_initiate : public CreatureScript
 
             InstanceScript* instance;
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 instance = me->GetInstanceScript();
                 me->SetFaction(1665);
@@ -326,7 +326,7 @@ class npc_cfk_jin_ironfist : public CreatureScript
                 }
             }
 
-            void MovementInform(uint32 type, uint32 pointId) override 
+            void MovementInform(uint32 type, uint32 pointId) override
             {
                 if (pointId == EVENT_JUMP)
                     me->CastSpell(me, SPELL_RAIN_OF_SHA, false);
@@ -392,14 +392,14 @@ class npc_cfk_jin_ironfist : public CreatureScript
             }
 
             private:
-                struct FlyingKickPredicate 
+                struct FlyingKickPredicate
                 {
                     public:
                         FlyingKickPredicate(Creature const* me) : _me(me) { }
 
                         bool operator()(Unit const* target) const
                         {
-                            return target && target->GetTypeId() == TYPEID_PLAYER && target->GetDistance2d(_me) > 8.0f;
+                            return target && target->IsPlayer() && target->GetDistance2d(_me) > 8.0f;
                         }
 
                     private:
@@ -430,7 +430,7 @@ class npc_cfk_pool_of_life : public CreatureScript
 
             EventMap nonCombatEvents;
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 if (instance && instance->GetData(DATA_POOL_OF_LIFE) == IN_PROGRESS)
                     me->AI()->DoAction(ACTION_CHAPTER_TWO_BEGIN);
@@ -496,7 +496,7 @@ class npc_cfk_pool_of_life : public CreatureScript
                     me->SummonCreature(NPC_ESSENCE_OF_HATE, GetInitiatePosition(me, me->GetGUID(), 10.5f, Trinity::Containers::SelectRandomContainerElement(CircleOri)));
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 nonCombatEvents.Update(diff);
 
@@ -600,7 +600,7 @@ class npc_cfk_crypt_guardian_hall : public CreatureScript
                             break;
                     }
                 }
-                
+
                 if (Unit* vict = me->GetVictim())
                     if (!me->IsWithinMeleeRange(vict, 8.0f))
                         me->CastSpell(vict, SPELL_GUARDIANS_CHAIN, false);
@@ -674,7 +674,7 @@ class npc_cfk_crypt_guardian_vault : public CreatureScript
 
                     if (me->GetDBTableGUIDLow() == 544025)
                         nonCombatEvents.ScheduleEvent(EVENT_REACH_POS, me->GetSplineDuration());
-                    
+
                 }
             }
 
@@ -934,7 +934,7 @@ class npc_cfk_sha_spirit : public CreatureScript
                 me->SetSpeed(MOVE_RUN, 1.69f);
             }
 
-            void UpdateAI(uint32 /*diff*/) override 
+            void UpdateAI(uint32 /*diff*/) override
             {
                 if (me->FindNearestPlayer(8.5f) && !HasTriggered)
                 {
@@ -1288,7 +1288,6 @@ class spell_cfk_hate_periodic : public AuraScript
         }
     }
 
-
     private:
         bool hasFirstTrigger;
 
@@ -1359,7 +1358,7 @@ class AreaTrigger_at_crypt_quilen_trap : public AreaTriggerScript
                 Quilen->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_PACIFIED);
                 Quilen->RemoveAura(SPELL_STONE_FORM);
 
-                Quilen->Attack(player, true);;
+                Quilen->Attack(player, true);
                 Quilen->GetMotionMaster()->MoveChase(player);
             }
 

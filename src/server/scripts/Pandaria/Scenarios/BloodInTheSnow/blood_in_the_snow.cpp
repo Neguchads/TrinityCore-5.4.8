@@ -252,7 +252,7 @@ struct npc_bloodsnow_varian_wrynn : public ScriptedAI
 // Mountainer Grimbolt 70801
 struct npc_bloodsnow_mountainer_grimbolt : public ScriptedAI
 {
-    npc_bloodsnow_mountainer_grimbolt(Creature* creature) : ScriptedAI(creature) 
+    npc_bloodsnow_mountainer_grimbolt(Creature* creature) : ScriptedAI(creature)
     {
         hasTriggered = false;
     }
@@ -388,8 +388,8 @@ struct npc_bloodsnow_scout_stonebeard : public ScriptedAI
 // Frostmane Flesh-Eater 70746
 struct npc_bloodsnow_frostmane_flesh_eater : public customCreatureAI
 {
-    npc_bloodsnow_frostmane_flesh_eater(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_bloodsnow_frostmane_flesh_eater(Creature* creature) : customCreatureAI(creature)
+    {
         scoutGUID = ObjectGuid::Empty;
     }
 
@@ -442,7 +442,7 @@ struct npc_bloodsnow_frostmane_flesh_eater : public customCreatureAI
 // Frostmane Headhunter 70473
 struct npc_bloodsnow_frostmane_headhunter : public customCreatureAI
 {
-    npc_bloodsnow_frostmane_headhunter(Creature* creature) : customCreatureAI(creature) 
+    npc_bloodsnow_frostmane_headhunter(Creature* creature) : customCreatureAI(creature)
     {
         scoutGUID = ObjectGuid::Empty;
     }
@@ -526,7 +526,7 @@ struct npc_bloodsnow_frostmane_headhunter : public customCreatureAI
 // Frostmane Snowstalker 70463
 struct npc_bloodsnow_frostmane_snowstalker : public customCreatureAI
 {
-    npc_bloodsnow_frostmane_snowstalker(Creature* creature) : customCreatureAI(creature) 
+    npc_bloodsnow_frostmane_snowstalker(Creature* creature) : customCreatureAI(creature)
     {
         scoutGUID = ObjectGuid::Empty;
     }
@@ -610,7 +610,7 @@ struct npc_bloodsnow_frostmane_snowstalker : public customCreatureAI
 // Frostmane Berserker 70471
 struct npc_bloodsnow_frostmane_berserker : public customCreatureAI
 {
-    npc_bloodsnow_frostmane_berserker(Creature* creature) : customCreatureAI(creature) 
+    npc_bloodsnow_frostmane_berserker(Creature* creature) : customCreatureAI(creature)
     {
         scoutGUID = ObjectGuid::Empty;
     }
@@ -643,7 +643,7 @@ struct npc_bloodsnow_frostmane_berserker : public customCreatureAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(65) && attacker && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(65) && attacker && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -670,7 +670,7 @@ struct npc_bloodsnow_frostmane_berserker : public customCreatureAI
 // Frostmane Bonechiller 70465, Bonechiller Barafu 70468
 struct npc_bloodsnow_frostmane_bonechiller : public customCreatureAI
 {
-    npc_bloodsnow_frostmane_bonechiller(Creature* creature) : customCreatureAI(creature) 
+    npc_bloodsnow_frostmane_bonechiller(Creature* creature) : customCreatureAI(creature)
     {
         scoutGUID = ObjectGuid::Empty;
     }
@@ -720,7 +720,7 @@ struct npc_bloodsnow_frostmane_bonechiller : public customCreatureAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(65) && attacker && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(65) && attacker && !attacker->IsPlayer())
             damage = 0;
 
         if (HealthBelowPct(50) && !hasElementalTriggered)
@@ -870,7 +870,7 @@ struct npc_bloodsnow_hekima_the_wise : public customCreatureAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(65) && attacker && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(65) && attacker && !attacker->IsPlayer())
             damage = 0;
 
         if (!hasYell1 && HealthBelowPct(60))
@@ -954,7 +954,7 @@ struct npc_bloodsnow_hekima_the_wise : public customCreatureAI
 // Frostmane Witch Doctor 70464
 struct npc_bloodsnow_frostmane_witch_doctor : public customCreatureAI
 {
-    npc_bloodsnow_frostmane_witch_doctor(Creature* creature) : customCreatureAI(creature) 
+    npc_bloodsnow_frostmane_witch_doctor(Creature* creature) : customCreatureAI(creature)
     {
         scoutGUID = ObjectGuid::Empty;
     }
@@ -1091,7 +1091,7 @@ struct npc_bloodsnow_shimmerweed_basket : public customCreatureAI
 // Scout Boldbrew 70744
 struct npc_bloodsnow_scout_boldbrew : public customCreatureAI
 {
-    npc_bloodsnow_scout_boldbrew(Creature* creature) : customCreatureAI(creature) 
+    npc_bloodsnow_scout_boldbrew(Creature* creature) : customCreatureAI(creature)
     {
         prisonersCount = 0;
         delay = 0;
@@ -1155,7 +1155,7 @@ struct npc_bloodsnow_scout_boldbrew : public customCreatureAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }

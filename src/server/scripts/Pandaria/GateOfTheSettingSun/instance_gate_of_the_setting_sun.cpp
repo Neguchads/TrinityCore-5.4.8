@@ -689,4 +689,3 @@ void AddSC_instance_gate_of_the_setting_sun()
 {
     new instance_gate_of_the_setting_sun();
 }
-

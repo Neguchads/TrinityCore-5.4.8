@@ -182,7 +182,7 @@ bool HasCorrectRangeForNoise(Creature* me, float x, float y, float z, std::list<
     return m_available;
 }
 
-// like converter from degrees to rad 
+// like converter from degrees to rad
 float CalculateRealEquation(float angle)
 {
     return (float)(angle / M_PI_DEGREES)*(M_PI);
@@ -195,7 +195,6 @@ class boss_zorlok : public CreatureScript
 {
     public:
         boss_zorlok() : CreatureScript("boss_zorlok") { }
-    
 
         struct boss_zorlokAI : public BossAI
         {
@@ -582,7 +581,7 @@ class boss_zorlok : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY_01 + urand(0, 1));
             }
 
@@ -991,17 +990,17 @@ class boss_zorlok : public CreatureScript
                             y = me->GetPositionY() + frand(-NoiseMod * 2.5f * 1, NoiseMod * 2.5f * 1);
                             me->CastSpell(x, y, me->GetPositionZ(), SPELL_MISSILE_NOISE_CANC, false);
 
-                            PredNoise.push_back({ x, y, me->GetPositionZ(), me->GetOrientation() }); // save pos 
+                            PredNoise.push_back({ x, y, me->GetPositionZ(), me->GetOrientation() }); // save pos
 
                             uint8 count = IsHeroic() ? 5 : 4;
 
                             for (int i = 2; i < count; ++i)
                             {
-                                do 
+                                do
                                 {
                                     x = me->GetPositionX() + frand(-NoiseMod * 2.5f * i, NoiseMod * 2.5f * i); // less random spawn in melee zone
                                     y = me->GetPositionY() + frand(-NoiseMod * 2.5f * i, NoiseMod * 2.5f * i);
-                                } 
+                                }
                                 // then check if our planned pos not in wall/texture or not beside prev noise cancelling.
                                 // now we`ll check each used position over current.
                                 while (!HasCorrectRangeForNoise(me, x, y, me->GetPositionZ(), PredNoise, me->GetGUID()));
@@ -1174,7 +1173,7 @@ class npc_sonic_ring : public CreatureScript
                 if (Unit* zorlok = summoner)
                 {
                     float zorOri = me->GetOrientation();
-                    
+
                     // If needed, reset orientation into valid range [0, M_PI * 2]
                     me->SetFacingTo(Position::NormalizeOrientation(zorOri));
 
@@ -1212,7 +1211,7 @@ class npc_sonic_ring : public CreatureScript
                 * on x-axis, for instance), and/or to apply negatives values (if orientation is pi, we're moving backwards, so the x-value decreases,
                 * while if orientation is 0.0, we're moving forwards, and so, the x-value increases, but we're still on the same axis).
                 */
-                
+
                 float pointX = 0, pointY = 0;
                 GetPositionWithDistInOrientation(me, 80.0f, orientation, pointX, pointY);
 
@@ -1252,7 +1251,7 @@ class npc_zorlok_echo_of_power : public CreatureScript
 
         struct npc_zorlok_echo_of_powerAI : public ScriptedAI
         {
-            npc_zorlok_echo_of_powerAI(Creature* creature) : ScriptedAI(creature) 
+            npc_zorlok_echo_of_powerAI(Creature* creature) : ScriptedAI(creature)
             {
                 instance = me->GetInstanceScript();
 
@@ -1569,7 +1568,6 @@ class spell_inhale : public SpellScriptLoader
             return new spell_inhale_SpellScript();
         }
 };
-    
 
 // Attenuation - 122440
 class spell_attenuation : public SpellScriptLoader
@@ -1797,7 +1795,7 @@ class spell_pheromones_of_zeal : public SpellScriptLoader
 
 };
 
-class ExhaleTargetFilter 
+class ExhaleTargetFilter
 {
     public:
         explicit ExhaleTargetFilter(Unit* caster) : _caster(caster) { }
@@ -1877,7 +1875,6 @@ class spell_zorlok_exhale : public SpellScriptLoader
             return new spell_zorlok_exhale_SpellScript();
         }
 };
-    
 
 // Exhale (damage): 122760
 class spell_zorlok_exhale_damage : public SpellScriptLoader
@@ -1911,7 +1908,7 @@ class spell_zorlok_exhale_damage : public SpellScriptLoader
                     if ((*itr) == currentTarget)
                         continue;
 
-                    if ((*itr)->GetTypeId() != TYPEID_PLAYER || !(*itr)->IsInBetween(caster, currentTarget))
+                    if (!((*itr)->IsPlayer() || !(*itr)->IsInBetween(caster, currentTarget)))
                         targets.remove(*itr);
                 }
             }

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include <string>
 #include <iostream>
 
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
             src = argv[1];
         if (argc > 2)
             dest = argv[2];
-    }    
+    }
 
     std::cout << "using " << src << " as source directory and writing output to " << dest << std::endl;
 

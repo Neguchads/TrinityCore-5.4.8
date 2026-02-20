@@ -120,7 +120,7 @@ public:
         {
             if (!me->GetVictim() && !EventActive && Spell->Id == SPELL_LUNCH)
             {
-                if (Caster->GetTypeId() == TYPEID_PLAYER)
+                if (Caster->IsPlayer())
                     PlayerGUID = Caster->GetGUID();
 
                 if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
@@ -220,7 +220,7 @@ struct npc_fledgling_brave : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (attacker->GetTypeId() != TYPEID_PLAYER && !HealthAbovePct(85))
+        if (!(attacker->IsPlayer() && !HealthAbovePct(85)))
             damage = 0;
     }
 
@@ -264,7 +264,7 @@ struct npc_bristleback_invader : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (attacker->GetTypeId() != TYPEID_PLAYER && !HealthAbovePct(85))
+        if (!(attacker->IsPlayer() && !HealthAbovePct(85)))
             damage = 0;
     }
 

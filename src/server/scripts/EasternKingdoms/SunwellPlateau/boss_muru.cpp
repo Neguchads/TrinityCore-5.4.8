@@ -574,7 +574,6 @@ class npc_void_sentinel : public CreatureScript
         }
 };
 
-
 class npc_blackhole : public CreatureScript
 {
     public:
@@ -636,7 +635,7 @@ class npc_blackhole : public CreatureScript
                             {
                                 if (temp->GetPositionZ() > 73 && Victim)
                                     AttackStart(Victim);
-                            } 
+                            }
                             else
                                 return;
                     }

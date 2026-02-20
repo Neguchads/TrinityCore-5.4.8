@@ -118,7 +118,7 @@ class boss_lockmaw : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->setActive(true);
             }
-            
+
             void Reset() override
             {
                 _Reset();
@@ -824,6 +824,6 @@ void AddSC_boss_lockmaw_augh()
     new npc_augh_whirlwind();
     new npc_augh_dragons_breath();
     new boss_augh();
-    
+
     new spell_dust_flail();
 }

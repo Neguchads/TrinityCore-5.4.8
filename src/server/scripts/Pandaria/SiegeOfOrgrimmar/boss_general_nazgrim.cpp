@@ -25,7 +25,7 @@ enum Spells
     SPELL_BATTLE_STANCE           = 143589,
     SPELL_BERSERKER_STANCE        = 143594,
     SPELL_DEFENSIVE_STANCE        = 143593,
-                                  
+
     SPELL_BONECRACKER             = 143638,
     SPELL_COOLING_OFF             = 143484,
     SPELL_HEROIC_SHOCKWAVE        = 143716,
@@ -182,7 +182,7 @@ class boss_general_nazgrim : public CreatureScript
 
         struct boss_general_nazgrimAI : public BossAI
         {
-            boss_general_nazgrimAI(Creature* creature) : BossAI(creature, DATA_GENERAL_NAZGRIM) 
+            boss_general_nazgrimAI(Creature* creature) : BossAI(creature, DATA_GENERAL_NAZGRIM)
             {
                 me->setActive(true);
                 hasIntroDone = false;
@@ -592,7 +592,7 @@ class boss_general_nazgrim : public CreatureScript
                     std::vector<uint32> korkronPosList = { 0, 1, 2, 3, 4 };
                     std::random_device rd;
                     std::mt19937 g(rd());
-                    std::shuffle(korkronPosList.begin(), korkronPosList.end(), g);                    
+                    std::shuffle(korkronPosList.begin(), korkronPosList.end(), g);
                     korkronPosList.resize(4);
 
                     if (IsHeroic())
@@ -1575,7 +1575,7 @@ class spell_nazgrim_heroic_shockwave : public SpellScript
 };
 
 // TARGET_UNIT_CONE_UNK_130 working wrong
-class AftershockPredicate 
+class AftershockPredicate
 {
     public:
         AftershockPredicate(Unit* const m_caster) : _caster(m_caster) { }
@@ -1598,7 +1598,7 @@ class AftershockPredicate
 
             return fabs(sin(angle)) * _caster->GetExactDist2d(target->GetPositionX(), target->GetPositionY()) >= width;
         }
-    
+
     private:
         Unit const* _caster;
         float x, y;

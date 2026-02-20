@@ -216,15 +216,15 @@ class boss_murozond : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
             void CompleteEncounter()
             {
                 // Achievement
-                instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_KILL_MUROZOND, 0, me); 
-                    
+                instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_KILL_MUROZOND, 0, me);
+
                 // Guild Achievement
                 Map::PlayerList const &PlayerList = instance->instance->GetPlayers();
                 if (!PlayerList.isEmpty())
@@ -240,8 +240,8 @@ class boss_murozond : public CreatureScript
                                 }
                     }
                 }
-                instance->UpdateEncounterState(ENCOUNTER_CREDIT_CAST_SPELL, SPELL_KILL_MUROZOND, me); 
-                
+                instance->UpdateEncounterState(ENCOUNTER_CREDIT_CAST_SPELL, SPELL_KILL_MUROZOND, me);
+
                 if (GameObject* go = ObjectAccessor::GetGameObject(*me, instance->GetGuidData(DATA_HOURGLASS)))
                     go->SetFlag(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_INTERACT_COND);
 
@@ -356,7 +356,7 @@ class boss_murozond : public CreatureScript
             {
                 //std::list<Creature*> mirrorList;
                 //me->GetCreatureListWithEntryInGrid(mirrorList, NPC_MIRROR, 500.0f);
-                
+
                 //if (mirrorList.empty())
                 //    return;
 
@@ -404,7 +404,7 @@ class npc_murozond_mirror_image : public CreatureScript
 
         struct npc_murozond_mirror_imageAI : public ScriptedAI
         {
-            npc_murozond_mirror_imageAI(Creature* creature) : ScriptedAI(creature) 
+            npc_murozond_mirror_imageAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
                 me->SetReactState(REACT_PASSIVE);
@@ -425,7 +425,7 @@ class npc_murozond_mirror_image : public CreatureScript
             void IsSummonedBy(Unit* summoner) override
             {
                 if (summoner && summoner->IsAlive() && summoner->IsInWorld())
-                    if (summoner->GetTypeId() == TYPEID_PLAYER)
+                    if (summoner->IsPlayer())
                         m_owner = summoner->ToPlayer();
             }
 

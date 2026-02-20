@@ -25,7 +25,7 @@ enum OondastaSpellData
     SPELL_CRUSH                             = 137504,
     SPELL_ALPHA_MALE                        = 138391,
     SPELL_ALPHA_MALE_EFF                    = 138390, // set increased threat for tanks
-    SPELL_FRILL_BLAST                       = 137505, // channeled 
+    SPELL_FRILL_BLAST                       = 137505, // channeled
     SPELL_GROWING_FURY                      = 137502,
     SPELL_PIERCING_ROAR                     = 137457,
     SPELL_SPIRITFIRE_BEAM                   = 137508, // 99 chains lol
@@ -95,7 +95,7 @@ class boss_oondasta : public CreatureScript
                 });
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 if (Creature* dohaman = me->FindNearestCreature(NPC_DOHAMAN_THE_BEAST_LORD, 150.0f, true))
                     dohaman->AI()->Talk(TALK_INTRO);
@@ -125,7 +125,7 @@ class boss_oondasta : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     //Talk(TALK_SLAY);
                     return;
             }
@@ -172,20 +172,20 @@ class boss_oondasta : public CreatureScript
                         case EVENT_CRUSH:
                             if (Unit* vict = me->GetVictim())
                                 DoCast(vict, SPELL_CRUSH);
-                        
+
                             events.ScheduleEvent(EVENT_CRUSH, 30s);
                             break;
                         case EVENT_FRILL_BLAST:
                             if (Unit* target = me->GetVictim())
                                 targetGUID = target->GetGUID();
-                        
+
                             me->PrepareChanneledCast(me->GetOrientation(), SPELL_FRILL_BLAST);
-                        
+
                             me->m_Events.Schedule(2500, [this]()
                             {
                                 me->RemoveChanneledCast(targetGUID);
                             });
-                        
+
                             events.ScheduleEvent(EVENT_FRILL_BLAST, randtime(25s, 30s));
                             break;
                         case EVENT_PIERCING_ROAR:

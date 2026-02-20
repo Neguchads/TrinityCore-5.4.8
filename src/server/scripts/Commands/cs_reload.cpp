@@ -44,11 +44,6 @@ EndScriptData */
 #include "WardenCheckMgr.h"
 #include "WaypointManager.h"
 #include "WordFilterMgr.h"
-#ifdef ELUNA
-#include "LuaEngine.h"
-#include "HookMgr.h"
-extern void StartEluna(bool restart);
-#endif
 
 class reload_commandscript : public CommandScript
 {
@@ -346,14 +341,6 @@ public:
         sMapMgr->InitializeVisibilityDistanceInfo();
         handler->SendGlobalGMSysMessage("World config settings reloaded.");
 
-#ifdef ELUNA  
-		if (sWorld->getBoolConfig(CONFIG_BOOL_ELUNA_ENABLED))
-		{
-			StartEluna(true);
-			handler->SendGlobalGMSysMessage("Eluna lua engine reloaded.");
-		}
-#endif
-
         return true;
     }
 
@@ -595,7 +582,7 @@ public:
         sObjectMgr->LoadCreatureMovementOverrides();
         handler->SendGlobalGMSysMessage("DB table `creature_movement_override` reloaded.");
         return true;
-    }    
+    }
 
     static bool HandleReloadLootTemplatesDisenchantCommand(ChatHandler* handler, char const* /*args*/)
     {
@@ -1176,7 +1163,6 @@ public:
         return true;
     }
 
-
     static bool HandleReloadPhaseDefinitionsCommand(ChatHandler* handler, char const* /*args*/)
     {
         TC_LOG_INFO("misc", "Reloading phase_definitions table...");
@@ -1209,7 +1195,6 @@ public:
         handler->SendGlobalGMSysMessage("Table creature_loot_currency reloaded.");
         return true;
     }
-
 
     static bool HandleReloadGOCollisionCommand(ChatHandler* handler, char const* args)
     {

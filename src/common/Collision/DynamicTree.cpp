@@ -333,7 +333,6 @@ void DynamicMapTree::getAreaAndLiquidData(float x, float y, float z, uint32 phas
     }
 }
 
-
 bool DynamicMapTree::GetIntersectionTime(const uint32 phasemask, const G3D::Ray& ray, const G3D::Vector3& endPos, float& maxDist) const
 {
     float distance = maxDist;

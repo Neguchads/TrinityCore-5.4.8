@@ -26,7 +26,7 @@
 enum eSpells
 {
     // Raigonn
-    SPELL_IMPERVIOUS_CARAPACE       = 107118,   
+    SPELL_IMPERVIOUS_CARAPACE       = 107118,
     SPELL_BATTERING_HEADBUTT_EMOTE  = 118685,
     SPELL_BATTERING_HEADBUTT        = 111671,
     SPELL_BATTERING_HEADBUTT_STUN   = 130772,
@@ -122,7 +122,7 @@ class boss_raigonn : public CreatureScript
 
                 me->GetMap()->SetWorldState(WORLDSTATE_MANTID_SWARM, 1);
             }
-            
+
             void DamageTaken(Unit* /*attacker*/, uint32& damage) override
             {
                 if (instance->GetBossState(DATA_RIMOK) == DONE)
@@ -184,7 +184,7 @@ class boss_raigonn : public CreatureScript
                     me->CastStop();
                     me->StopMoving();
                     me->SetReactState(REACT_AGGRESSIVE);
-                    
+
                     events.Reset();
                     chargeEvents.Reset();
                     Phase = PHASE_VULNERABILITY;
@@ -344,7 +344,7 @@ class boss_raigonn : public CreatureScript
                         case EVENT_STOMP:
                             me->CastSpell(me, SPELL_STOMP, false);
                             break;
-                    }  
+                    }
                 }
 
                 if (Phase == PHASE_VULNERABILITY)
@@ -424,7 +424,7 @@ class npc_raigonn_weak_spot : public CreatureScript
         };
 
         CreatureAI* GetAI(Creature* creature) const override
-        { 
+        {
             return new npc_raigonn_weak_spotAI(creature);
         }
 };

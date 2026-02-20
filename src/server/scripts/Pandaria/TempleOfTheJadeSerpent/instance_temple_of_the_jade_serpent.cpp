@@ -509,7 +509,7 @@ class instance_temple_of_jade_serpent : public InstanceMapScript
                         {
                             trialDefeated++;
                             if (trialDefeated == 2)
-                            {                     
+                            {
                                 SetBossState(DATA_LOREWALKER, DONE);
                                 SetData(DATA_LOREWALKER, DONE);
                             }

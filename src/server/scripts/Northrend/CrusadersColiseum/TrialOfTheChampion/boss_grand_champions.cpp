@@ -779,7 +779,7 @@ class spell_ride_vehicle_toc5 : public SpellScriptLoader
 
             SpellCastResult CheckRequirement()
             {
-                if (GetCaster()->GetTypeId() != TYPEID_PLAYER)
+                if (!(GetCaster()->IsPlayer()))
                     return SPELL_FAILED_DONT_REPORT;
 
                 if (GetExplTargetUnit() && GetExplTargetUnit()->ToCreature())

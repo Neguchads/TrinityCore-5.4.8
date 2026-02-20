@@ -82,7 +82,7 @@ class boss_sha_of_violence : public CreatureScript
                 for (auto&& itr : invPrisonedShaType)
                     me->SummonCreature(itr.first, itr.second, TEMPSUMMON_MANUAL_DESPAWN);
             }
-             
+
             void JustEngagedWith(Unit* who) override
             {
                 _JustEngagedWith();
@@ -125,7 +125,7 @@ class boss_sha_of_violence : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 
@@ -338,7 +338,7 @@ class SmokeBladesTargetSelector
     public:
         bool operator()(WorldObject* object) const
         {
-            if (object->GetTypeId() == TYPEID_PLAYER && !object->ToPlayer()->HasAura(SPELL_SMOKE_BLADES))
+            if (object->IsPlayer() && !object->ToPlayer()->HasAura(SPELL_SMOKE_BLADES))
                 return false;
 
             return true;
@@ -366,7 +366,7 @@ class spell_sv_smoke_blades : public SpellScriptLoader
             PrepareAuraScript(spell_sv_smoke_blades_AuraScript);
 
             void HanleOnProc(AuraEffect const* aurEff, ProcEventInfo& eventInfo)
-            {      
+            {
                 if (auto const caster = eventInfo.GetActor())
                 {
                     if (auto const smoke = caster->GetAura(aurEff->GetId()))

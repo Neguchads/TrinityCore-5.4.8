@@ -509,7 +509,6 @@ class AreaTrigger_at_uncle_gao : public AreaTriggerScript
         }
 };
 
-
 void AddSC_instance_stormstout_brewery()
 {
     new instance_stormstout_brewery();

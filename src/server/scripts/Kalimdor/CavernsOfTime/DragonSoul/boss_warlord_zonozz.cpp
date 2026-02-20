@@ -123,7 +123,7 @@ enum MiscData
 };
 
 const Position centerPos = { -1769.329956f, -1916.869995f, -226.28f, 0.0f };
-const Position tentaclePos[14] = 
+const Position tentaclePos[14] =
 {
     { -1702.57f,     -1884.71f,     -221.513f, 3.63029f  },
     { -1801.84f,     -1851.69f,     -221.436f, 5.2709f   },
@@ -151,7 +151,7 @@ class boss_warlord_zonozz: public CreatureScript
         struct boss_warlord_zonozzAI : public BossAI
         {
             boss_warlord_zonozzAI(Creature* creature) : BossAI(creature, DATA_ZONOZZ)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -186,7 +186,7 @@ class boss_warlord_zonozz: public CreatureScript
                 if (bIntro)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (!me->IsWithinDistInMap(who, 100.0f, false))
@@ -265,7 +265,7 @@ class boss_warlord_zonozz: public CreatureScript
                             DoCastAOE(SPELL_BLACK_BLOOD_OF_GORATH, true);
                         break;
                     default:
-                        break;                            
+                        break;
                 }
             }
 
@@ -282,7 +282,7 @@ class boss_warlord_zonozz: public CreatureScript
                         instance->DoRemoveAuraFromStackOnPlayers(SPELL_BLACK_BLOOD_OF_GORATH);
                         break;
                     default:
-                        break;                            
+                        break;
                 }
             }
 
@@ -291,7 +291,7 @@ class boss_warlord_zonozz: public CreatureScript
                 if (type == DATA_ACHIEVE)
                     me->GetMap()->SetWorldState(WORLDSTATE_PING_PONG_CHAMPION, 1);
                 else if (type == DATA_VOID)
-                {   
+                {
                     me->CastCustomSpell(SPELL_VOID_DIFFUSION_DEBUFF, SPELLVALUE_AURA_STACK, data, me, true);
                     me->RemoveAura(SPELL_FOCUSED_ANGER);
                     events.CancelEvent(EVENT_DISRUPTING_SHADOWS);
@@ -313,7 +313,7 @@ class boss_warlord_zonozz: public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                 {
                     Talk(SAY_KILL);
                     DoCastAOE(SPELL_ZONOZZ_WHISPER_KILL, true);
@@ -387,7 +387,7 @@ class boss_warlord_zonozz: public CreatureScript
                             {
                                 case RAID_DIFFICULTY_10MAN_NORMAL:
                                     SpawnRandomTentacles(4, 0, 0);
-                                    break;                                    
+                                    break;
                                 case RAID_DIFFICULTY_25MAN_NORMAL:
                                     SpawnRandomTentacles(8, 0, 0);
                                     break;
@@ -439,10 +439,10 @@ class boss_warlord_zonozz: public CreatureScript
 
                 for (uint8 i = 0; i < max_eyes; ++i)
                     me->SummonCreature(NPC_EYE_OF_GORATH, tentaclePos[i], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 3000);
-                
+
                 for (uint8 i = 8; i < (8 + max_flails); ++i)
                     me->SummonCreature(NPC_FLAIL_OF_GORATH, tentaclePos[i], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 3000);
-                
+
                 for (uint8 i = 12; i < (12 + max_claws); ++i)
                     me->SummonCreature(NPC_CLAW_OF_GORATH, tentaclePos[i], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 3000);
             }
@@ -484,7 +484,7 @@ class npc_warlord_zonozz_void_of_the_unmaking : public CreatureScript
                 events.ScheduleEvent(EVENT_CHECK_DISTANCE, 5000);
                 events.ScheduleEvent(EVENT_CONTINUE, 5000);
             }
- 
+
             void DamageTaken(Unit* /*attacker*/, uint32& damage) override
             {
                 damage = 0;
@@ -544,7 +544,7 @@ class npc_warlord_zonozz_void_of_the_unmaking : public CreatureScript
                                             if (Creature* pZonozz = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_ZONOZZ)))
                                                 pZonozz->AI()->SetData(DATA_ACHIEVE, 1);
                                 }
-                                
+
                                 me->RemoveAura(SPELL_VOID_OF_THE_UNMAKING_VISUAL);
                                 bAura = false;
                                 DoCastAOE(SPELL_VOID_DIFFUSION_DMG);
@@ -555,7 +555,7 @@ class npc_warlord_zonozz_void_of_the_unmaking : public CreatureScript
                                     ang = me->GetOrientation();
 
                                 _MovePosition(200.0f, ang + M_PI);
-                                
+
                                 //me->GetMotionMaster()->MovePoint(POINT_VOID, pos);
                                 events.ScheduleEvent(EVENT_UPDATE_AURA, 4000);
                                 events.ScheduleEvent(EVENT_CHECK_DISTANCE, 4000);

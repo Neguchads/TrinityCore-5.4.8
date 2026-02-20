@@ -32,9 +32,9 @@ enum Spells
     SPELL_ECK_SPRING_2                            = 55837  // Eck leaps at a distant target.
 };
 
-static Position EckSpawnPoint = 
-{ 
-    1643.877930f, 936.278015f, 107.204948f, 0.668432f 
+static Position EckSpawnPoint =
+{
+    1643.877930f, 936.278015f, 107.204948f, 0.668432f
 };
 
 class boss_eck : public CreatureScript
@@ -98,7 +98,7 @@ class boss_eck : public CreatureScript
                 if (uiSpringTimer <= diff)
                 {
                     Unit* target = SelectTarget(SELECT_TARGET_RANDOM,1);
-                    if (target && target->GetTypeId() == TYPEID_PLAYER)
+                    if (target && target->IsPlayer())
                     {
                         DoCast(target, RAND(SPELL_ECK_SPRING_1, SPELL_ECK_SPRING_2));
                         uiSpringTimer = urand(5 * IN_MILLISECONDS,10 * IN_MILLISECONDS);
@@ -162,10 +162,10 @@ class npc_ruins_dweller : public CreatureScript
                 {
                     if (!me->FindNearestCreature(NPC_ECK, RANGE_ECK, true))
                     {
-                        instance->SetData64(DATA_RUIN_DWELLER_DIED, me->GetGUID());  
+                        instance->SetData64(DATA_RUIN_DWELLER_DIED, me->GetGUID());
                         if (instance->GetData(DATA_ALIVE_RUIN_DWELLERS) == 0)
                             me->SummonCreature(NPC_ECK, EckSpawnPoint, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
-                    }            
+                    }
                 }
             }
         };

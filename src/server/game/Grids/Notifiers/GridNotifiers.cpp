@@ -166,7 +166,7 @@ void MessageDistDeliverer::Visit(PlayerMapType &m)
         {
             if (target->GetExactDist2dSq(i_source) > i_distSq)
                 continue;
-        }        
+        }
 
         // Send packet to all who are sharing the player's vision
         if (target->HasSharedVision())
@@ -245,7 +245,7 @@ void MessageDistDeliverer::Visit(DynamicObjectMapType &m)
 void
 MessageDistDeliverer::VisitObject(Player* player)
 {
-    if (!i_ownTeamOnly || (i_source.GetTypeId() == TYPEID_PLAYER && player->GetTeam() == ((Player&)i_source).GetTeam()))
+    if (!i_ownTeamOnly || (i_source.IsPlayer() && player->GetTeam() == ((Player&)i_source).GetTeam()))
     {
         SendPacket(player);
     }

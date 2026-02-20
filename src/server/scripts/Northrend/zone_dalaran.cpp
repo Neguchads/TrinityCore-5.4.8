@@ -370,14 +370,13 @@ private:
     ObjectGuid _summonGUID;
 };
 
-
 /*######
 # npc_zidormi_dalaran  31848
 ######*/
 
 enum ZidormiDalaranText
 {
-    ZIDORMI_DALARAN_GOSSIP_MENUID  =  10131,  
+    ZIDORMI_DALARAN_GOSSIP_MENUID  =  10131,
     ZIDORMI_DALARAN_GOSSIP_OPID_0  =  0,     // Take me to the Caverns of Time.
 };
 
@@ -402,7 +401,7 @@ struct npc_zidormi_dalaran : public ScriptedAI
         SendGossipMenuFor(player, 14065, me->GetGUID());
         return true;
     }
-}; 
+};
 
 void AddSC_dalaran()
 {

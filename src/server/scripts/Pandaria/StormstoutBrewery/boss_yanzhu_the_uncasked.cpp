@@ -2161,7 +2161,6 @@ class spell_brew_finale_wheat_effect : public SpellScriptLoader
                 dest.Relocate(newPos);
             }
 
-
             void Register() override
             {
                 OnDestinationTargetSelect += SpellDestinationTargetSelectFn(spell_brew_finale_wheat_effect_SpellScript::SelectTargets, EFFECT_0, TARGET_DEST_DEST_RANDOM);

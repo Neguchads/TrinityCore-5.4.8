@@ -23,7 +23,7 @@
 
 #define BOSS_NIUZAO 0
 
-const float _chargePos[5][3] = 
+const float _chargePos[5][3] =
 {
     { -740.79f, -5019.06f, -6.277f },
     { -740.41f, -4962.37f, -6.277f },
@@ -87,7 +87,7 @@ class boss_niuzao : public CreatureScript
 
         struct boss_niuzaoAI : public ScriptedAI
         {
-            boss_niuzaoAI(Creature* creature) : ScriptedAI(creature), summons(me) 
+            boss_niuzaoAI(Creature* creature) : ScriptedAI(creature), summons(me)
             {
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE); // prisma
             }
@@ -241,7 +241,7 @@ class boss_niuzao : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
                         return;
             }

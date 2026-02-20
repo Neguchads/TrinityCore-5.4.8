@@ -69,7 +69,7 @@ GmTicket::GmTicket() : _lastModifiedTime(0), _completed(false), _escalatedStatus
 _openedByGmStatus(GMTICKET_OPENEDBYGM_STATUS_NOT_OPENED), _needResponse(false){ }
 
 GmTicket::GmTicket(Player* player) : TicketInfo(player), _lastModifiedTime(time(NULL)),
-_completed(false), _escalatedStatus(TICKET_UNASSIGNED),_openedByGmStatus(GMTICKET_OPENEDBYGM_STATUS_NOT_OPENED), 
+_completed(false), _escalatedStatus(TICKET_UNASSIGNED),_openedByGmStatus(GMTICKET_OPENEDBYGM_STATUS_NOT_OPENED),
 _needResponse(false)
 {
     _ticketId = sTicketMgr->GenerateGmTicketId();

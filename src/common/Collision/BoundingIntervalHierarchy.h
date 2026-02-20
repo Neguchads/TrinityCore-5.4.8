@@ -168,7 +168,8 @@ class TC_COMMON_API BIH
             int stackPos = 0;
             int node = 0;
 
-            while (true) {
+            while (true)
+            {
                 while (true)
                 {
                     uint32 tn = tree[node];
@@ -188,13 +189,15 @@ class TC_COMMON_API BIH
                             int back = offset + offsetBack3[axis];
                             node = back;
                             // ray passes through far node only
-                            if (tf < intervalMin) {
+                            if (tf < intervalMin)
+                            {
                                 intervalMin = (tb >= intervalMin) ? tb : intervalMin;
                                 continue;
                             }
                             node = offset + offsetFront3[axis]; // front
                             // ray passes through near node only
-                            if (tb > intervalMax) {
+                            if (tb > intervalMax)
+                            {
                                 intervalMax = (tf <= intervalMax) ? tf : intervalMax;
                                 continue;
                             }
@@ -212,7 +215,8 @@ class TC_COMMON_API BIH
                         {
                             // leaf - test some objects
                             int n = tree[node + 1];
-                            while (n > 0) {
+                            while (n > 0)
+                            {
                                 bool hit = intersectCallback(r, objects[offset], maxDist, stopAtFirst);
                                 if (stopAtFirst && hit) return;
                                 --n;
@@ -282,12 +286,14 @@ class TC_COMMON_API BIH
                             int right = offset + 3;
                             node = right;
                             // point is in right node only
-                            if (tl < p[axis]) {
+                            if (tl < p[axis])
+                            {
                                 continue;
                             }
                             node = offset; // left
                             // point is in left node only
-                            if (tr > p[axis]) {
+                            if (tr > p[axis])
+                            {
                                 continue;
                             }
                             // point is in both nodes
@@ -300,7 +306,8 @@ class TC_COMMON_API BIH
                         {
                             // leaf - test some objects
                             int n = tree[node + 1];
-                            while (n > 0) {
+                            while (n > 0)
+                            {
                                 intersectCallback(p, objects[offset]); // !!!
                                 --n;
                                 ++offset;

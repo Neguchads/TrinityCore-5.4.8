@@ -71,11 +71,11 @@ struct LootGroupInvalidSelector
                 if (++foundDuplicates == _loot.maxDuplicates)
                     return true;
 
-        if (_loot.containerItemTemplate && _loot.containerItemTemplate->FlagsCu & ITEM_FLAGS_CU_LOOT_GROUP_CHECK_COND)
+        if (_loot.containerItemTemplate && _loot.containerItemTemplate->FlagsCu&ITEM_FLAGS_CU_LOOT_GROUP_CHECK_COND)
             if (!sConditionMgr->IsObjectMeetToConditions(_player, item->conditions))
                 return true;
 
-        if (_loot.containerItemTemplate && _loot.containerItemTemplate->FlagsCu & ITEM_FLAGS_CU_CHECK_PLAYER_SPEC)
+        if (_loot.containerItemTemplate && _loot.containerItemTemplate->FlagsCu&ITEM_FLAGS_CU_CHECK_PLAYER_SPEC)
             if (ItemTemplate const* proto = sObjectMgr->GetItemTemplate(item->itemid))
                 if (!_player->IsItemFitToSpecialization(proto))
                     return true;
@@ -427,7 +427,7 @@ LootItem::LootItem(LootStoreItem const& li)
     {
         ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemid);
         freeforall  = proto && (proto->Flags & ITEM_PROTO_FLAG_PARTY_LOOT);
-        follow_loot_rules = proto && (proto->FlagsCu & ITEM_FLAGS_CU_FOLLOW_LOOT_RULES);
+        follow_loot_rules = proto && (proto->FlagsCu&ITEM_FLAGS_CU_FOLLOW_LOOT_RULES);
         needs_quest = li.needs_quest;
         randomSuffix = GenerateEnchSuffixFactor(itemid);
         randomPropertyId = Item::GenerateItemRandomPropertyId(itemid);
@@ -462,7 +462,7 @@ bool LootItem::AllowedForPlayer(Player const* player, Object* lootedObject) cons
         return false;
 
     WorldObject const* lootedWorldObject = nullptr;
-    if (lootedObject && lootedObject->GetTypeId() != TYPEID_ITEM && lootedObject->GetTypeId() != TYPEID_CONTAINER)
+    if (lootedObject && !lootedObject->IsItem() && lootedObject->GetTypeId() != TYPEID_CONTAINER)
         lootedWorldObject = static_cast<WorldObject const*>(lootedObject);
 
     if (lootedWorldObject)
@@ -489,7 +489,7 @@ bool LootItem::AllowedForPlayer(Player const* player, Object* lootedObject) cons
             return false;
 
         // check quest requirements
-        if (!(pProto->FlagsCu & ITEM_FLAGS_CU_IGNORE_QUEST_STATUS) && ((needs_quest || (pProto->StartQuest && player->GetQuestStatus(pProto->StartQuest) != QUEST_STATUS_NONE)) && !player->HasQuestForItem(itemid)))
+        if (!(pProto->FlagsCu&ITEM_FLAGS_CU_IGNORE_QUEST_STATUS) && ((needs_quest || (pProto->StartQuest && player->GetQuestStatus(pProto->StartQuest) != QUEST_STATUS_NONE)) && !player->HasQuestForItem(itemid)))
             return false;
 
         if (lootedObject && pProto->Quality > ITEM_QUALITY_UNCOMMON)
@@ -838,7 +838,7 @@ bool Loot::CanItemBeLooted(Player* player, LootStoreItem const& item, uint32& mi
                 auto const* itemTemplate = sObjectMgr->GetItemTemplate(sourceEntry);
                 if (!itemTemplate)
                     return false;
-                if (itemTemplate->FlagsCu & ITEM_FLAGS_CU_VENDOR)
+                if (itemTemplate->FlagsCu&ITEM_FLAGS_CU_VENDOR)
                     return false;
 
                 if (item.itemid == 94289)
@@ -2294,7 +2294,7 @@ bool LootTemplate::ProcessScriptedLoot(Loot& loot, Player* player) const
     if (loot.GetSource())
     {
         // Pandaria Herbs. Must drop at least 20 herbs
-        if (loot.GetSource()->GetTypeId() == TYPEID_ITEM && loot.GetSource()->GetEntry() == 89610)
+        if (loot.GetSource()->IsItem() && loot.GetSource()->GetEntry() == 89610)
         {
             auto herbs = Entries;
             int32 totalCount = 0;
@@ -2465,7 +2465,7 @@ void LoadLootTemplates_Item()
     // remove real entries and check existence loot
     ItemTemplateContainer const* its = sObjectMgr->GetItemTemplateStore();
     for (ItemTemplateContainer::const_iterator itr = its->begin(); itr != its->end(); ++itr)
-        if (lootIdSet.find(itr->second.ItemId) != lootIdSet.end() && itr->second.Flags & ITEM_FLAG_HAS_LOOT)
+        if (lootIdSet.find(itr->second.ItemId) != lootIdSet.end() && itr->second.Flags&ITEM_FLAG_HAS_LOOT)
             lootIdSet.erase(itr->second.ItemId);
 
     // output error for any still listed (not referenced from appropriate table) ids

@@ -270,7 +270,7 @@ class boss_devourer_of_souls : public CreatureScript
 
             void SpellHitTarget(Unit* /*target*/, SpellInfo const* spell) override
             {
-                if (spell->Id == SPELL_PHANTOM_BLAST/* && (target->GetTypeId() == TYPEID_PLAYER)*/)
+                if (spell->Id == SPELL_PHANTOM_BLAST/* && (target->IsPlayer())*/)
                 {
                     me->GetMap()->SetWorldState(WORLDSTATE_THREE_FACED, 0);
                     wasCasting = false;
@@ -401,7 +401,7 @@ class npc_unleashed_soul : public CreatureScript
 
         struct npc_unleashed_soulAI : public ScriptedAI
         {
-            npc_unleashed_soulAI(Creature* creature) : ScriptedAI(creature) 
+            npc_unleashed_soulAI(Creature* creature) : ScriptedAI(creature)
             {
                 instance = creature->GetInstanceScript();
             }

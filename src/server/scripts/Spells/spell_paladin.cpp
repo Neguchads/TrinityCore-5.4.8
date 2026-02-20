@@ -138,7 +138,7 @@ enum PaladinSpells
     SPELL_PALADIN_DIVINE_CRUSADER                = 144595,
     SPELL_PALADIN_BLESSING_OF_THE_GUARDIANS      = 144581,
     SPELL_PALADIN_T16_PROTECTION_2P_BONUS        = 144580,
-    SPELL_PALADIN_T16_PROTECTION_4P_BONUS        = 144566, 
+    SPELL_PALADIN_T16_PROTECTION_4P_BONUS        = 144566,
     SPELL_PALADIN_SHIELD_OF_GLORY                = 138242,
     SPELL_PALADIN_HOLY_POWER_ENERGIZE            = 138248,
     SPELL_PALADIN_CENSURE                        = 31803,
@@ -580,7 +580,7 @@ class spell_pal_ardent_defender : public SpellScriptLoader
             {
                 healPct = GetSpellInfo()->Effects[EFFECT_1].CalcValue();
                 absorbPct = GetSpellInfo()->Effects[EFFECT_0].CalcValue();
-                return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+                return GetUnitOwner()->IsPlayer();
             }
 
             void CalculateAmount(AuraEffect const* /*aurEff*/, float& amount, bool& /*canBeRecalculated*/)
@@ -791,7 +791,7 @@ class spell_pal_righteous_defense : public SpellScriptLoader
             SpellCastResult CheckCast()
             {
                 Unit* caster = GetCaster();
-                if (caster->GetTypeId() != TYPEID_PLAYER)
+                if (!(caster->IsPlayer()))
                     return SPELL_FAILED_DONT_REPORT;
 
                 if (Unit* target = GetExplTargetUnit())
@@ -846,7 +846,6 @@ class spell_pal_crusader_strike : public SpellScript
         OnEffectHitTarget += SpellEffectFn(spell_pal_crusader_strike::HandleEnergize, EFFECT_2, SPELL_EFFECT_ENERGIZE);
     }
 };
-
 
 // 42463 - Seal of Truth
 class spell_pal_seal_of_truth_hotfix : public SpellScript
@@ -1259,7 +1258,7 @@ class spell_pal_inquisition : public SpellScript
     }
 };
 
-// 85222 - Light of Dawn 
+// 85222 - Light of Dawn
 class spell_pal_light_of_dawn : public spell_smart_heal
 {
     PrepareSpellScript(spell_pal_light_of_dawn);
@@ -1314,7 +1313,7 @@ class spell_pal_execution_sentence : public SpellScript
     }
 };
 
-// 114916 - Execution Sentence, 114917 - Stay of Execution 
+// 114916 - Execution Sentence, 114917 - Stay of Execution
 class spell_pal_execution_sentence_effect : public AuraScript
 {
     PrepareAuraScript(spell_pal_execution_sentence_effect);
@@ -1533,7 +1532,7 @@ class spell_pal_eternal_flame : public SpellScript
     void HandleHit()
     {
         bool freeCast = GetCaster()->HasAura(SPELL_PALADIN_DIVINE_PURPOSE) || GetCaster()->HasAura(SPELL_PALADIN_BASTION_OF_POWER);
-        
+
         int32 holyPower = freeCast ? 3 : GetCaster()->GetPower(POWER_HOLY_POWER) + 1;
         holyPower = std::min(3, holyPower);
 
@@ -1761,7 +1760,7 @@ class spell_pal_lay_on_hands : public SpellScript
     }
 };
 
-// 88263 - Hammer of the Righteous 
+// 88263 - Hammer of the Righteous
 class spell_pal_glyph_of_hammer_of_the_righteous : public SpellScript
 {
     PrepareSpellScript(spell_pal_glyph_of_hammer_of_the_righteous);
@@ -1982,7 +1981,7 @@ class spell_pal_beacon_of_light : public AuraScript
         Unit* beaconTarget = list->front()->GetUnitOwner();
         Unit* healTarget = eventInfo.GetActionTarget();
 
-        static std::map<uint32, int32> const map = 
+        static std::map<uint32, int32> const map =
         {
             { 635,      100 }, // Holy Light
             { 82327,    15  }, // Holy Radiance
@@ -2173,7 +2172,7 @@ class spell_pal_avenging_wrath : public AuraScript
     void InitEffects(uint32& effMask)
     {
         Unit* paladin = GetCaster();
-        if (paladin && paladin->GetTypeId() == TYPEID_PLAYER)
+        if (paladin && paladin->IsPlayer())
         {
             if (paladin->ToPlayer()->GetTalentSpecialization() != SPEC_PALADIN_RETRIBUTION)
                 effMask &= ~(1 << EFFECT_2);
@@ -2196,7 +2195,7 @@ class spell_pal_sanctified_wrath : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     void InitEffects(uint32& effMask)
@@ -2228,7 +2227,7 @@ class spell_pal_sanctified_wrath : public AuraScript
 class spell_pal_glyph_of_double_jeopardy : public AuraScript
 {
     PrepareAuraScript(spell_pal_glyph_of_double_jeopardy);
-    
+
     uint64 lastTargetGuid = 0;
 
     void HandleApply(AuraEffect const*, AuraEffectHandleModes)

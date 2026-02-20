@@ -174,8 +174,7 @@ class instance_scholomance : public InstanceMapScript
                 ScheduleChallengeTimeUpdate(diff);
             }
 
-
-            void SetData(uint32 type, uint32 data) override 
+            void SetData(uint32 type, uint32 data) override
             {
                 m_auiEncounter[type] = data;
                 SaveToDB();

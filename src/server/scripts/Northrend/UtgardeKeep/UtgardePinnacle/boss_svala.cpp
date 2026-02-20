@@ -110,7 +110,7 @@ class boss_svala : public CreatureScript
         struct boss_svalaAI : public ScriptedAI
         {
             ObjectGuid uiDoodadMirror;
-        
+
             boss_svalaAI(Creature* creature) : ScriptedAI(creature)
             {
                 instance = creature->GetInstanceScript();
@@ -162,7 +162,7 @@ class boss_svala : public CreatureScript
                         if (GameObject* go = GameObject::GetGameObject(*me, uiDoodadMirror))
                             go->Use(me);
                     }
-                
+
                 }
             }
 
@@ -214,7 +214,7 @@ class boss_svala : public CreatureScript
                                 ++uiIntroPhase;
                                 uiIntroTimer = 12 * IN_MILLISECONDS;
                             }
-                            else 
+                            else
                                Reset();
                             break;
                         case 5:
@@ -297,7 +297,7 @@ class boss_svala_sorrowgrave : public CreatureScript
             {
                 instance = creature->GetInstanceScript();
             }
-        
+
             bool bFlames;
             bool bMove;
 
@@ -315,7 +315,7 @@ class boss_svala_sorrowgrave : public CreatureScript
             CombatPhase Phase;
 
             SummonList summons;
-        
+
             InstanceScript* instance;
 
             void Reset() override
@@ -332,7 +332,7 @@ class boss_svala_sorrowgrave : public CreatureScript
                 uiFlamesCount = 0;
                 uiHealthAmountModifier = 1;
                 uiMoveTimer = 23 * IN_MILLISECONDS;
-            
+
                 bFlames = false;
                 bMove = true;
 
@@ -351,7 +351,7 @@ class boss_svala_sorrowgrave : public CreatureScript
 
                 if (instance)
                     instance->SetData(DATA_SVALA_SORROWGRAVE_EVENT, IN_PROGRESS);
-                
+
                 if (GameObject* go = GameObject::GetGameObject(*me, uiDoodadMirror))
                     go->ResetDoorOrButton();
             }
@@ -365,7 +365,7 @@ class boss_svala_sorrowgrave : public CreatureScript
             {
                 summons.Despawn(summon);
             }
-        
+
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_RITUAL_OF_THE_SWORD_TARGETING)
@@ -434,7 +434,7 @@ class boss_svala_sorrowgrave : public CreatureScript
 
                             if (uiFlamesCount < 3)
                             {
-                                if (Creature* pBrazier = Creature::GetCreature(*me, RAND(uiFlameBrazier_1, uiFlameBrazier_2))) 
+                                if (Creature* pBrazier = Creature::GetCreature(*me, RAND(uiFlameBrazier_1, uiFlameBrazier_2)))
                                 {
                                     if (IsHeroic()) // find correct spell
                                     {
@@ -448,7 +448,7 @@ class boss_svala_sorrowgrave : public CreatureScript
                                 ++uiFlamesCount;
                             }
                             else
-                            { 
+                            {
                                 bFlames = false;
                                 uiCallFlamesTimer = urand(8 * IN_MILLISECONDS, 12 * IN_MILLISECONDS);
                                 uiFlamesCount = 0;

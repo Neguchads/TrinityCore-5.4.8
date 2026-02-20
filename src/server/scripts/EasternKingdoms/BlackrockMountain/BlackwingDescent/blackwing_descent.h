@@ -20,7 +20,7 @@
 
 enum Data
 {
-    DATA_MAGMAW                     = 0, 
+    DATA_MAGMAW                     = 0,
     DATA_OMNOTRON                   = 1,
     DATA_MALORIAK                   = 2,
     DATA_CHIMAERON                  = 3,
@@ -44,17 +44,17 @@ enum Creatures
     NPC_MAGMAW                      = 41570,
     NPC_MAGMAW_HEAD                 = 42347,
     NPC_OMNOTRON                    = 42186,
-    NPC_ARCANOTRON                  = 42166, 
-    NPC_ELECTRON                    = 42179, 
-    NPC_MAGMATRON                   = 42178, 
-    NPC_TOXITRON                    = 42180, 
+    NPC_ARCANOTRON                  = 42166,
+    NPC_ELECTRON                    = 42179,
+    NPC_MAGMATRON                   = 42178,
+    NPC_TOXITRON                    = 42180,
     NPC_MALORIAK                    = 41378,
     NPC_ATRAMEDES                   = 41442,
-    NPC_CHIMAERON                   = 43296, 
-    NPC_BILE_O_TRON_800             = 44418, 
+    NPC_CHIMAERON                   = 43296,
+    NPC_BILE_O_TRON_800             = 44418,
 
-    NPC_NEFARIAN                    = 41376, 
-    NPC_ONYXIA                      = 41270, 
+    NPC_NEFARIAN                    = 41376,
+    NPC_ONYXIA                      = 41270,
 
     NPC_LORD_VICTOR_NEFARIAN        = 41379,
     NPC_LORD_VICTOR_NEFARIUS_HEROIC = 49226,

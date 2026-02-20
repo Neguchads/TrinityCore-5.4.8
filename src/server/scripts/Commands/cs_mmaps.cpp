@@ -73,7 +73,7 @@ public:
             { "enable",         SEC_GAMEMASTER,     false, mmapEnableCommandTable           },
             { "disable",        SEC_GAMEMASTER,     false, mmapDisableCommandTable          },
             { "visualize",      SEC_GAMEMASTER,     false, &HandleMmapVisualizeCommand,     },
-            
+
         };
 
         static std::vector<ChatCommand> commandTable =
@@ -500,7 +500,7 @@ public:
         handler->PSendSysMessage("Disabled pathfinding globally (not saved in config)");
         return true;
     }
-    
+
     static bool HandleMmapVisualizeCommand(ChatHandler* handler, char const* args)
     {
         Unit* target = handler->getSelectedUnit();

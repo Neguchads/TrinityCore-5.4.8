@@ -156,14 +156,14 @@ class boss_jammalan_prophet : public CreatureScript
             }
 
             private:
-                struct CasterPredicate 
+                struct CasterPredicate
                 {
                     public:
                         CasterPredicate(Creature const* me) : _me(me) { }
 
                         bool operator()(Unit const* target) const
                         {
-                            return target && target->GetTypeId() == TYPEID_PLAYER && target->GetDistance2d(_me) > 6.0f;
+                            return target && target->IsPlayer() && target->GetDistance2d(_me) > 6.0f;
                         }
 
                     private:

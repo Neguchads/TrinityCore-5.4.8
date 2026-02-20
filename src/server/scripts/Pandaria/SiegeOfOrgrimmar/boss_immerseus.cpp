@@ -102,7 +102,7 @@ enum Spells
 
     // Phase 1 + Phase 2 (General).
     SPELL_SEEPING_SHA           = 143281, // Create Areatrigger 1016 (around Immerseus). 40 yards diameter, base water visual.
-    SPELL_SEEPING_SHA_EFF       = 143286, // Coming into contact with the Seeping Sha that surrounds Immerseus inflicts 97500 to 102500 Shadow damage and knocks players back. 
+    SPELL_SEEPING_SHA_EFF       = 143286, // Coming into contact with the Seeping Sha that surrounds Immerseus inflicts 97500 to 102500 Shadow damage and knocks players back.
 
     SPELL_BERSERK               =  64238, // Berserk, Enrage, Bye - Bye or, simply put, a wipe. :)
 
@@ -384,7 +384,7 @@ class boss_immerseus : public CreatureScript
                     {
                         phase = PHASE_IMMERSEUS_NORMAL;
                         int32 powersRemaining = me->GetPower(POWER_ENERGY) - corruptionToRemove;
-                        
+
                         if (IsHeroic())
                             summons.DespawnEntry(NPC_SHA_POOL);
 
@@ -636,12 +636,11 @@ class boss_immerseus : public CreatureScript
                             if (phase == PHASE_IMMERSEUS_NORMAL)
                             {
                                 Talk(ANN_SWIRL);
-                                
 
                                 if (Unit* target = me->GetVictim())
                                     targetGUID = target->GetGUID();
-                                
-                                scheduler  // Should wait a few seconds on the postision before casting spell 
+
+                                scheduler  // Should wait a few seconds on the postision before casting spell
                                     .Schedule(Milliseconds(2000), [this](TaskContext context)
                                 {
                                     DoCast(me, SPELL_SWIRL_SPRAY, true);
@@ -768,7 +767,7 @@ struct npc_swirl_immerseus : public ScriptedAI
         {
             case ACTION_START_INTRO:
                 DoCast(me, SPELL_SWIRL_SPRAY_AT);
-            
+
                 scheduler
                     .Schedule(Milliseconds(100), [this](TaskContext context)
                 {
@@ -784,7 +783,7 @@ struct npc_swirl_immerseus : public ScriptedAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -827,7 +826,7 @@ struct npc_swirl_target_immerseus : public ScriptedAI
 // Sha Puddle 71603
 struct npc_sha_puddle_immerseus : public ScriptedAI
 {
-    npc_sha_puddle_immerseus(Creature* creature) : ScriptedAI(creature) 
+    npc_sha_puddle_immerseus(Creature* creature) : ScriptedAI(creature)
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
         me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_FEAR, true);
@@ -892,7 +891,7 @@ struct npc_sha_puddle_immerseus : public ScriptedAI
 // Contaminated Puddle 71604
 struct npc_contaminated_puddle_immerseus : public ScriptedAI
 {
-    npc_contaminated_puddle_immerseus(Creature* creature) : ScriptedAI(creature) 
+    npc_contaminated_puddle_immerseus(Creature* creature) : ScriptedAI(creature)
     {
         me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_INCREASE_HEALTH, true);
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
@@ -978,7 +977,7 @@ struct npc_tears_of_the_vale : public ScriptedAI
             immerseus->AI()->SetData(TYPE_NO_MORE_TEARS, 1);
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
 
@@ -1133,7 +1132,7 @@ class spell_immerseus_congealing : public AuraScript
         // Calculate correct stacks count (+1 for every 10% health healed).
         uint8 stackCount = floor(caster->GetHealthPct() / 10);
 
-        // Should not add anything if stacks should be 0. 
+        // Should not add anything if stacks should be 0.
         if (stackCount < 1)
             return;
 

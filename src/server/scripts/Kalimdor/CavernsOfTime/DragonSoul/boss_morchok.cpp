@@ -78,7 +78,7 @@ enum Events
     EVENT_CHECK_PLAYERS         = 10,
     EVENT_CONTINUE_1            = 11,
     EVENT_UPDATE_HEALTH         = 12,
-}; 
+};
 
 enum Adds
 {
@@ -108,7 +108,7 @@ class boss_morchok: public CreatureScript
         struct boss_morchokAI : public BossAI
         {
             boss_morchokAI(Creature* creature) : BossAI(creature, DATA_MORCHOK)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -128,7 +128,7 @@ class boss_morchok: public CreatureScript
             void Reset() override
             {
                 _Reset();
-                
+
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_DANGER);
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_WARNING);
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_SAFE);
@@ -144,7 +144,7 @@ class boss_morchok: public CreatureScript
                 bFirstStomp = false;
                 bFirstCrystal = false;
                 pKohcrom = NULL;
-                
+
                 me->GetMap()->SetWorldState(WORLDSTATE_DONT_STAND_SO_CLOSE_TO_ME, 1);
                 me->SetObjectScale(1.0f);
             }
@@ -218,7 +218,7 @@ class boss_morchok: public CreatureScript
             }
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -533,7 +533,7 @@ class npc_morchok_kohcrom: public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
- 
+
                 events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -611,7 +611,7 @@ class npc_morchok_resonating_crystal : public CreatureScript
                 SetCombatMovement(false);
             }
 
-            EventMap events; 
+            EventMap events;
 
             void Reset() override { }
 
@@ -643,7 +643,7 @@ class npc_morchok_resonating_crystal : public CreatureScript
 };
 
 class spell_morchok_target_selected : public SpellScriptLoader
-{ 
+{
     public:
         spell_morchok_target_selected() : SpellScriptLoader("spell_morchok_target_selected") { }
 
@@ -697,15 +697,15 @@ class spell_morchok_target_selected : public SpellScriptLoader
                 else
                 {
                     float dist = GetCaster()->GetDistance(GetHitUnit());
-                    if (dist > 30.0f) 
+                    if (dist > 30.0f)
                         GetCaster()->CastSpell(GetHitUnit(), SPELL_DANGER, true);
-                    else if (dist > 15.0f) 
+                    else if (dist > 15.0f)
                         GetCaster()->CastSpell(GetHitUnit(), SPELL_WARNING, true);
-                    else 
+                    else
                         GetCaster()->CastSpell(GetHitUnit(), SPELL_SAFE, true);
                 }
             }
-        
+
             void Register() override
             {
                 OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_morchok_target_selected_SpellScript::FilterTargets, EFFECT_1, TARGET_UNIT_DEST_AREA_ENEMY);
@@ -740,7 +740,7 @@ class spell_morchok_target_selected : public SpellScriptLoader
 
 class spell_morchok_resonating_crystal_dmg : public SpellScriptLoader
 {
-   
+
     public:
         spell_morchok_resonating_crystal_dmg() : SpellScriptLoader("spell_morchok_resonating_crystal_dmg") { }
 
@@ -857,7 +857,7 @@ class spell_morchok_black_blood_of_the_earth : public SpellScriptLoader
 
 class spell_morchok_black_blood_of_the_earth_dmg : public SpellScriptLoader
 {
-   
+
     public:
         spell_morchok_black_blood_of_the_earth_dmg() : SpellScriptLoader("spell_morchok_black_blood_of_the_earth_dmg") { }
 
@@ -910,7 +910,7 @@ class spell_morchok_black_blood_of_the_earth_dmg : public SpellScriptLoader
             {
                 public:
                     DistanceCheck(Unit* searcher, float distance) : _searcher(searcher), _distance(distance) { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
                         return (_searcher->GetDistance2d(unit) > _distance);
@@ -925,7 +925,7 @@ class spell_morchok_black_blood_of_the_earth_dmg : public SpellScriptLoader
             {
                 public:
                     WallCheck(Unit* searcher, GameObject* go) : _searcher(searcher), _go(go) { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
                         return (_go->IsInBetween(_searcher, unit, 4.0f));

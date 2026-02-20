@@ -33,7 +33,7 @@ enum ScriptTexts
 // emote 337598
 enum Spells
 {
-    SPELL_FIRESTORM             = 99605,  // on start 
+    SPELL_FIRESTORM             = 99605,  // on start
     SPELL_FIRESTORM_H           = 100744, // in heroic mode instead of molting
     SPELL_BLAZING_CLAW          = 99843,  // while molting or after third phase
     SPELL_FIERY_VORTEX          = 99793,  // big vortex in center of room
@@ -153,7 +153,7 @@ enum Events
     EVENT_FLIGHT            = 5,
     EVENT_IGNITION          = 6,
     EVENT_BURN              = 7,
-    EVENT_HARSH_WIND        = 8, 
+    EVENT_HARSH_WIND        = 8,
     EVENT_CLAWSHAPER        = 9,
     EVENT_INITIATE          = 10,
     EVENT_EGGS              = 11,
@@ -209,7 +209,7 @@ const Position volcanofirePos[11] =
     { -104.593f, -274.393f, 56.534f, 2.304f},
 };
 
-const Position featherPos[8] = 
+const Position featherPos[8] =
 {
     { -19.28f, -270.51f, 53.82f, 0.0f},
     { -27.45f, -277.81f, 53.77f, 0.0f},
@@ -221,7 +221,7 @@ const Position featherPos[8] =
     { -27.19f, -272.30f, 54.19f, 0.0f}
 };
 
-const Position flyPos[13] = 
+const Position flyPos[13] =
 {
     {  9.61f,  -310.33f, 132.0f, 4.2f  },
     {  9.61f,  -310.33f, 62.6f,  2.96f },
@@ -246,14 +246,14 @@ Position const initiatePos[8] =
     { -39.70f, -351.33f, 69.51f, 1.67f },
     { -86.34f, -330.48f, 71.04f, 0.89f },
     { -90.80f, -237.90f, 73.95f, 5.72f },
-      
+
     { -17.45f, -260.86f, 50.0f,  3.7f  },
     { -38.51f, -320.45f, 52.0f,  1.67f },
     { -67.34f, -304.72f, 52.0f,  0.94f },
     { -71.76f, -256.38f, 53.0f,  5.72f }
 };
 
-Position const wormPos[4] = 
+Position const wormPos[4] =
 {
     { -24.179f, -311.185f, 51.12f, 1.0f },
     { -75.952f, -296.170f, 51.57f, 4.0f },
@@ -268,18 +268,18 @@ const Position broodmotherPos[6] =
 
     { -32.901f, -272.019f, 105.0f,  0.0f    }, // left egg pos z+5
     {  46.930f, -207.560f, 90.000f, 0.0f    }, // right egg pos z+5
-    
+
     { -44.463f, -285.802f, 105.0f,  0.0f    }, // left bird point to despawn
     { -28.813f, -378.088f, 90.371f, 0.0f    }  // right bird point to despawn
 };
 
-const Position eggPos[2] = 
+const Position eggPos[2] =
 {
     { -28.71f, -280.05f, 50.8f, 5.52f },
     { -48.13f, -307.21f, 50.8f, 5.76f }
 };
 
-const Position meteorPos[7] = 
+const Position meteorPos[7] =
 {
     {  11.45f, -278.35f, 53.f,  0.0f },
     {  11.41f, -230.67f, 58.f,  0.0f },
@@ -338,7 +338,7 @@ class boss_alysrazor : public CreatureScript
             }
 
             void Reset() override
-            { 
+            {
                 _Reset();
                 DespawnGameObjects();
                 DespawnCreatures(NPC_MOLTEN_METEOR_2);
@@ -422,7 +422,7 @@ class boss_alysrazor : public CreatureScript
 
                 if (curPoint >= 13)
                     curPoint = 1;
-                
+
                 events.ScheduleEvent(EVENT_FLIGHT, 1);
             }
 
@@ -437,7 +437,7 @@ class boss_alysrazor : public CreatureScript
                 RemoveEncounterAuras();
                 Talk(SAY_AGGRO);
                 events.ScheduleEvent(EVENT_BERSERK, 6 * MINUTE * IN_MILLISECONDS);
-                
+
                 for (uint8 i = 0; i < 11; ++i)
                     me->SummonCreature(NPC_VOLCANO_FIRE_BUNNY, volcanofirePos[i]);
 
@@ -476,7 +476,6 @@ class boss_alysrazor : public CreatureScript
                     events.ScheduleEvent(EVENT_BROODMOTHER, 60000);
                     events.ScheduleEvent(EVENT_VORTEX, 200000);
                 }
-                
 
                 DoZoneInCombat();
                 instance->SetBossState(DATA_ALYSRAZOR, IN_PROGRESS);
@@ -501,7 +500,7 @@ class boss_alysrazor : public CreatureScript
 
                 AddSmoulderingAura(me);
             }
-            
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_KILL);
@@ -533,7 +532,7 @@ class boss_alysrazor : public CreatureScript
                     DoCast(me, SPELL_MOLTING_2, true);
                     me->AttackStop();
                     me->SetReactState(REACT_PASSIVE);
-                    
+
                     std::list<Creature*> creatureList;
                     me->GetCreatureListWithEntryInGrid(creatureList, NPC_DULL_PYRESHELL_FOCUS, 300.0f);
                     if (!creatureList.empty())
@@ -576,7 +575,6 @@ class boss_alysrazor : public CreatureScript
                 }
 
                 events.Update(diff);
-
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
@@ -629,7 +627,7 @@ class boss_alysrazor : public CreatureScript
                             }
                             events.ScheduleEvent(EVENT_INITIATE, 30000);
                             break;
-                        } 
+                        }
                         case EVENT_BROODMOTHER:
                             //me->SummonCreature(NPC_BLAZING_BROODMOTHER_1, broodmotherPos[0]);
                             //me->SummonCreature(NPC_BLAZING_BROODMOTHER_2, broodmotherPos[1]);
@@ -738,7 +736,7 @@ class boss_alysrazor : public CreatureScript
                 phase = 2;
                 circle = 0;
                 Talk(SAY_SKIES);
-                
+
                 DespawnGameObjects();
                 DespawnCreatures(NPC_MOLTEN_METEOR_2);
 
@@ -789,7 +787,7 @@ class boss_alysrazor : public CreatureScript
         {
             return GetInstanceAI<boss_alysrazorAI>(creature);
         }
-}; 
+};
 
 class npc_alysrazor_blazing_power : public CreatureScript
 {
@@ -838,7 +836,7 @@ class npc_alysrazor_incindiary_cloud : public CreatureScript
 
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
-                if (target->GetTypeId() == TYPEID_PLAYER && spell->Id == 99427)
+                if (target->IsPlayer() && spell->Id == 99427)
                     me->GetMap()->SetWorldState(WORLDSTATE_DO_A_BARREL_CLOUD, 0);
             }
         };
@@ -964,7 +962,7 @@ class npc_alysrazor_fiery_tornado : public CreatureScript
 
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
-                if (target->GetTypeId() == TYPEID_PLAYER && spell->Id == 99816)
+                if (target->IsPlayer() && spell->Id == 99816)
                     me->GetMap()->SetWorldState(WORLDSTATE_DO_A_BARREL_FIERY_TORNADO, 0);
             }
 
@@ -1058,7 +1056,7 @@ class npc_alysrazor_blazing_talon_initiate : public CreatureScript
                     return;
 
                 if (pointId == POINT_INITIATE_1)
-                { 
+                {
                     me->SetReactState(REACT_AGGRESSIVE);
                     DoCast(me, (urand(0, 1) ? SPELL_FIREHAWK_TRANSFORM_M : SPELL_FIREHAWK_TRANSFORM_F));
 
@@ -1117,7 +1115,7 @@ class npc_alysrazor_brushfire : public CreatureScript
 
         struct npc_alysrazor_brushfireAI : public ScriptedAI
         {
-            npc_alysrazor_brushfireAI(Creature* creature) : ScriptedAI(creature) 
+            npc_alysrazor_brushfireAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetReactState(REACT_PASSIVE);
                 started = false;
@@ -1142,7 +1140,7 @@ class npc_alysrazor_brushfire : public CreatureScript
 
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
-                if (target->GetTypeId() == TYPEID_PLAYER && spell->Id == 98885)
+                if (target->IsPlayer() && spell->Id == 98885)
                     me->GetMap()->SetWorldState(WORLDSTATE_DO_A_BARREL_BRUSHFIRE, 0);
             }
 
@@ -1213,7 +1211,7 @@ class npc_alysrazor_blazing_talon_clawshaper : public CreatureScript
                     return;
 
                 if (pointId == POINT_CLAWSHAPER_1)
-                { 
+                {
                     me->SetReactState(REACT_AGGRESSIVE);
                     DoCast(me, SPELL_FIREHAWK_CLAWSHAPPER);
                     me->GetMotionMaster()->MoveFall();
@@ -1293,7 +1291,7 @@ class npc_alysrazor_blazing_broodmother : public CreatureScript
 
         struct npc_alysrazor_blazing_broodmotherAI : public ScriptedAI
         {
-            npc_alysrazor_blazing_broodmotherAI(Creature* creature) : ScriptedAI(creature) 
+            npc_alysrazor_blazing_broodmotherAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetReactState(REACT_PASSIVE);
             }
@@ -1364,7 +1362,7 @@ class npc_alysrazor_molten_egg : public CreatureScript
 
         struct npc_alysrazor_molten_eggAI : public ScriptedAI
         {
-            npc_alysrazor_molten_eggAI(Creature* creature) : ScriptedAI(creature) 
+            npc_alysrazor_molten_eggAI(Creature* creature) : ScriptedAI(creature)
             {
                 SetCombatMovement(false);
                 started = false;
@@ -1420,7 +1418,7 @@ class npc_alysrazor_voracious_hatchling : public CreatureScript // 53509
 
         struct npc_alysrazor_voracious_hatchlingAI : public ScriptedAI
         {
-            npc_alysrazor_voracious_hatchlingAI(Creature* creature) : ScriptedAI(creature) 
+            npc_alysrazor_voracious_hatchlingAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
@@ -1442,7 +1440,7 @@ class npc_alysrazor_voracious_hatchling : public CreatureScript // 53509
             void IsSummonedBy(Unit* /*summoner*/) override
             {
                 me->ModifyAuraState(AURA_STATE_UNKNOWN22, true);
-                
+
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
 
@@ -1492,7 +1490,7 @@ class npc_alysrazor_voracious_hatchling : public CreatureScript // 53509
                             if (Creature* pWorm = me->FindNearestCreature(NPC_PLUMP_LAVA_WORM, 5.0f, true))
                             {
                                 pWorm->DespawnOrUnsummon();
-                                
+
                                 DoCast(me, SPELL_SETIATED, true);
 
                                 if (me->HasAura(SPELL_HUNGRY))
@@ -1560,7 +1558,7 @@ class npc_alysrazor_plump_lava_worm : public CreatureScript
 
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
-                if (target->GetTypeId() == TYPEID_PLAYER && spell->Id == 99336)
+                if (target->IsPlayer() && spell->Id == 99336)
                     me->GetMap()->SetWorldState(WORLDSTATE_DO_A_BARREL_LAVA_SPEW, 0);
             }
 
@@ -1800,7 +1798,7 @@ class spell_alysrazor_harsh_winds : public SpellScriptLoader
             {
                 public:
                     PositionCheck(Unit* caster) : _caster(caster) { }
-        
+
                     bool operator()(WorldObject* unit)
                     {
                        return (_caster->GetDistance2d(unit) <= 60.0f);
@@ -1882,7 +1880,7 @@ class spell_alysrazor_molten_feather_script : public SpellScriptLoader
                 if (!GetCaster() || !GetHitUnit())
                     return;
 
-                if (GetHitUnit()->GetTypeId() != TYPEID_PLAYER)
+                if (!(GetHitUnit()->IsPlayer()))
                     return;
 
                 uint32 auraId = 0;
@@ -1983,7 +1981,7 @@ class spell_alysrazor_firestorm : public SpellScriptLoader
 
                 std::list<GameObject*> blockList;
                 GetCaster()->GetGameObjectListWithEntryInGrid(blockList, GO_MOLTEN_METEOR, 100.0f);
-                
+
                 if (blockList.empty())
                     return;
 
@@ -2000,7 +1998,7 @@ class spell_alysrazor_firestorm : public SpellScriptLoader
             {
                 public:
                     PositionCheck(Unit* caster, std::list<GameObject*> blist) : _caster(caster), _blockList(blist) { }
-        
+
                     bool operator()(WorldObject* unit)
                     {
                         for (std::list<GameObject*>::const_iterator itr = _blockList.begin(); itr != _blockList.end(); ++itr)
@@ -2031,7 +2029,7 @@ void AddSC_boss_alysrazor()
     new npc_alysrazor_incindiary_cloud();
     new npc_alysrazor_fiery_vortex();
     new npc_alysrazor_fiery_tornado();
-    new npc_alysrazor_blazing_talon_initiate(); 
+    new npc_alysrazor_blazing_talon_initiate();
     new npc_alysrazor_brushfire();
     new npc_alysrazor_blazing_talon_clawshaper();
     new npc_alysrazor_blazing_broodmother();

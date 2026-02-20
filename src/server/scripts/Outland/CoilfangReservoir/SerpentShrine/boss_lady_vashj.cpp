@@ -69,8 +69,6 @@ enum LadyVashj
 #define SPOREBAT_Z                  77.176567f
 #define SPOREBAT_O                  5.223932f
 
-
-
 #define TEXT_NOT_INITIALIZED          "Instance script not initialized"
 #define TEXT_ALREADY_DEACTIVATED      "Already deactivated"
 
@@ -604,7 +602,6 @@ public:
 
         void MoveInLineOfSight(Unit* /*who*/) override { }
 
-
         void UpdateAI(uint32 diff) override
         {
             if (!instance)
@@ -843,7 +840,6 @@ public:
 
         void MoveInLineOfSight(Unit* /*who*/) override { }
 
-
         void UpdateAI(uint32 diff) override
         {
             if (!instance)
@@ -928,9 +924,9 @@ public:
                 player->DestroyItemCount(31088, 1, true);
                 return true;
             }
-            else if (targets.GetUnitTarget()->GetTypeId() == TYPEID_UNIT)
+            else if (targets.GetUnitTarget()->IsCreature())
                 return false;
-            else if (targets.GetUnitTarget()->GetTypeId() == TYPEID_PLAYER)
+            else if (targets.GetUnitTarget()->IsPlayer())
             {
                 player->DestroyItemCount(31088, 1, true);
                 player->CastSpell(targets.GetUnitTarget(), 38134, true);

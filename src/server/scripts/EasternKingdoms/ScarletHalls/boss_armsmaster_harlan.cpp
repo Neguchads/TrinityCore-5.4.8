@@ -175,7 +175,7 @@ class boss_armsmaster_harlan : public CreatureScript
                 events.ScheduleEvent(EVENT_HEROIC_LEAP, 25000);
             }
 
-            void DamageTaken(Unit* /*attacker*/, uint32& damage) override 
+            void DamageTaken(Unit* /*attacker*/, uint32& damage) override
             {
                 if (!bers && HealthBelowPct(50))
                 {

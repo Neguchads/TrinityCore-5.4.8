@@ -20,14 +20,14 @@
 
 enum Spells
 {
-    SPELL_BERSERK                   = 47008, 
-    SPELL_SEARING_SHADOW            = 96913, 
+    SPELL_BERSERK                   = 47008,
+    SPELL_SEARING_SHADOW            = 96913,
 
     SPELL_FOCUSED_FIRE              = 96872,
     SPELL_FOCUSED_FIRE_DUMMY        = 96886,
     SPELL_FOCUSED_FIRE_1            = 96884,
 
-    SPELL_EYE_OF_OCCUTHAR           = 96920, 
+    SPELL_EYE_OF_OCCUTHAR           = 96920,
     SPELL_EYE_OF_OCCUTHAR_VEHICLE   = 96932,
 
     SPELL_EYE_OF_OCCUTHAR_DMG       = 96942,
@@ -56,7 +56,7 @@ class boss_occuthar : public CreatureScript
 
         struct boss_occutharAI : public BossAI
         {
-            boss_occutharAI(Creature* creature) : BossAI(creature, DATA_OCCUTHAR) 
+            boss_occutharAI(Creature* creature) : BossAI(creature, DATA_OCCUTHAR)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
@@ -75,7 +75,7 @@ class boss_occuthar : public CreatureScript
             void Reset() override
             {
                 _Reset();
-                
+
                 events.Reset();
             }
 
@@ -89,7 +89,7 @@ class boss_occuthar : public CreatureScript
                 events.ScheduleEvent(EVENT_BERSERK, 300000);
                 events.ScheduleEvent(EVENT_EYE_OF_OCCUTHAR, 59000);
                 events.ScheduleEvent(EVENT_FOCUSED_FIRE, 26000);
-                events.ScheduleEvent(EVENT_SEARING_SHADOWS, 24000); 
+                events.ScheduleEvent(EVENT_SEARING_SHADOWS, 24000);
                 instance->SetBossState(DATA_OCCUTHAR, IN_PROGRESS);
             }
 
@@ -236,9 +236,9 @@ class spell_occuthar_eye_of_occuthar : public SpellScriptLoader
                     return;
 
                 GetCaster()->CastSpell(GetCaster(), SPELL_EYE_OF_OCCUTHAR_VEHICLE, true);
-                
+
                 if (Creature* pEye = GetCaster()->SummonCreature(NPC_EYE_OF_OCCUTHAR, GetCaster()->GetPositionX(), GetCaster()->GetPositionY(), GetCaster()->GetPositionZ(), GetCaster()->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN, 11000))
-                    pEye->CastSpell(GetCaster(), SPELL_EYE_OF_OCCUTHAR_DMG, true); 
+                    pEye->CastSpell(GetCaster(), SPELL_EYE_OF_OCCUTHAR_DMG, true);
             }
 
             void Register() override

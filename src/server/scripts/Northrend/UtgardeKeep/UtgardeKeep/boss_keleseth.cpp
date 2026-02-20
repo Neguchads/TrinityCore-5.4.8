@@ -165,7 +165,7 @@ class boss_keleseth : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() != TYPEID_PLAYER)
+                if (!(victim->IsPlayer()))
                     return;
 
                 Talk(SAY_KILL);
@@ -216,7 +216,7 @@ class boss_keleseth : public CreatureScript
                 if (ShadowboltTimer <= diff)
                 {
                     Unit* target = SelectTarget(SELECT_TARGET_TOPAGGRO, 0);
-                    if (target && target->IsAlive() && target->GetTypeId() == TYPEID_PLAYER)
+                    if (target && target->IsAlive() && target->IsPlayer())
                         me->CastSpell(target, DUNGEON_MODE(SPELL_SHADOWBOLT, SPELL_SHADOWBOLT_HEROIC), true);
                     ShadowboltTimer = 10000;
                 } else ShadowboltTimer -= diff;
@@ -297,7 +297,7 @@ class npc_vrykul_skeleton : public CreatureScript
             }
 
             void JustEngagedWith(Unit* /*who*/) override { }
-            
+
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
                 if (attacker->GetGUID() == me->GetGUID())

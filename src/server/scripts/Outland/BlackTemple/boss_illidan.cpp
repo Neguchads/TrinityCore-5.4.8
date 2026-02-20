@@ -332,7 +332,7 @@ class npc_flame_of_azzinoth : public CreatureScript
 
         struct flame_of_azzinothAI : public ScriptedAI
         {
-            flame_of_azzinothAI(Creature* creature) : ScriptedAI(creature) 
+            flame_of_azzinothAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->ApplySpellImmune(0, IMMUNITY_ID, 40611, true); // Blaze (damage self)
             }
@@ -535,7 +535,7 @@ class boss_illidan_stormrage : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() != TYPEID_PLAYER)
+                if (!(victim->IsPlayer()))
                     return;
 
                 Talk(SAY_ILLIDAN_KILL);
@@ -1759,7 +1759,8 @@ class npc_akama_illidan : public CreatureScript
                         case PHASE_CHANNEL:
                             if (JustCreated)
                                 HandleChannelSequence();
-                            else{
+                            else
+                            {
                                 EnterPhase(PHASE_WALK);
                             }
                             break;
@@ -2036,7 +2037,7 @@ class npc_cage_trap_trigger : public CreatureScript
                 if (!Active)
                     return;
 
-                if (who && (who->GetTypeId() != TYPEID_PLAYER))
+                if (who && !(who->IsPlayer()))
                 {
                     if (who->GetEntry() == ILLIDAN_STORMRAGE) // Check if who is Illidan
                     {
@@ -2129,7 +2130,7 @@ class npc_shadow_demon : public CreatureScript
             {
                 if (!UpdateVictim()) return;
 
-                if (me->GetVictim()->GetTypeId() != TYPEID_PLAYER) return; // Only cast the below on players.
+                if (!(me->GetVictim()->IsPlayer())) return; // Only cast the below on players.
 
                 if (!me->GetVictim()->HasAura(SPELL_PARALYZE))
                 {

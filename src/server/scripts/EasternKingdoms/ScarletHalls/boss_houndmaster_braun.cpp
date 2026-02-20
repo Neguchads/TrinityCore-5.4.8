@@ -152,11 +152,11 @@ class boss_houndmaster_braun : public CreatureScript
 
             void DamageTaken(Unit* /*attacker*/, uint32& damage) override
             {
-                if (HealthBelowPct(50) && !GetRage) 
-                { 
-                    me->CastSpell(me, SPELL_BLOODY_RAGE, false); 
-                    GetRage = true; 
-                    Talk(TALK_DOGFAIL); 
+                if (HealthBelowPct(50) && !GetRage)
+                {
+                    me->CastSpell(me, SPELL_BLOODY_RAGE, false);
+                    GetRage = true;
+                    Talk(TALK_DOGFAIL);
                 }
 
                 if (HealthBelowPct(15) && !Scenario)
@@ -180,7 +180,7 @@ class boss_houndmaster_braun : public CreatureScript
                     || (Phase == 3 && HealthBelowPct(60)))
                 {
                     Phase++;
-                }            
+                }
             }
 
             void HandleSendActionOnHounds(uint32 actionId)
@@ -261,7 +261,7 @@ class npc_obediend_hound : public CreatureScript
 
             void IsSummonedBy(Unit* summoner) override { }
 
-            void Reset() override 
+            void Reset() override
             {
                 me->SetReactState(REACT_PASSIVE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
@@ -291,7 +291,7 @@ class npc_obediend_hound : public CreatureScript
                 me->GetMap()->SetWorldState(WORLDSTATE_HUMANE_SOCIETY, 0);
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -332,7 +332,7 @@ class npc_obediend_hound : public CreatureScript
                 }
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
 
@@ -347,7 +347,7 @@ class npc_obediend_hound : public CreatureScript
 
                         events.ScheduleEvent(EVENT_RAKE, 3500);
                     }
-                   
+
                 DoMeleeAttackIfReady();
             }
 
@@ -378,7 +378,7 @@ class spell_bloody_mess : public SpellScriptLoader
 
                 if (!caster || !target)
                     return;
-        
+
                 std::list<Player*> PlayersInArea;
                 GetPlayerListInGrid(PlayersInArea, caster, 100.0f);
 
@@ -432,7 +432,7 @@ class spell_crushing_leap_visual : public SpellScriptLoader
 void AddSC_boss_houndmaster_braun()
 {
     new boss_houndmaster_braun();
-    new npc_obediend_hound(); 
+    new npc_obediend_hound();
     new spell_bloody_mess();
     new spell_crushing_leap_visual();
 }

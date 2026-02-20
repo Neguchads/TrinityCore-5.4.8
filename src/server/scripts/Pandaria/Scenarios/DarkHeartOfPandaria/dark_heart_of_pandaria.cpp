@@ -287,22 +287,22 @@ class npc_darkheart_grizzle_gearslip : public CreatureScript
 {
     public:
         npc_darkheart_grizzle_gearslip() : CreatureScript("npc_darkheart_grizzle_gearslip") { }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             creature->AI()->DoAction(ACTION_START_INTRO);
             player->CLOSE_GOSSIP_MENU();
             return true;
         }
-    
+
         struct npc_darkheart_grizzle_gearslipAI : public ScriptedAI
         {
             npc_darkheart_grizzle_gearslipAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             TaskScheduler scheduler;
             uint32 delay;
             float x, y;
-    
+
             void InitializeAI() override
             {
                 delay = 0;
@@ -331,16 +331,16 @@ class npc_darkheart_grizzle_gearslip : public CreatureScript
                     case ACTION_START_INTRO:
                         me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                         Talk(TALK_INTRO);
-                    
+
                         if (me->GetInstanceScript())
                             me->GetInstanceScript()->SetData(STEP_TALK_WITH_LEADER, DONE);
-                    
+
                         delay = 0;
                         scheduler.Schedule(Milliseconds(delay += 5500), [this](TaskContext context)
                         {
                             Talk(TALK_SPECIAL_1);
                         });
-                    
+
                         scheduler.Schedule(Milliseconds(delay += 8000), [this](TaskContext context)
                         {
                             Talk(TALK_SPECIAL_2);
@@ -378,13 +378,13 @@ class npc_darkheart_grizzle_gearslip : public CreatureScript
                         break;
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_darkheart_grizzle_gearslipAI(creature);
@@ -433,40 +433,40 @@ class npc_darkheart_crafty_the_ambitious : public CreatureScript
 {
     public:
         npc_darkheart_crafty_the_ambitious() : CreatureScript("npc_darkheart_crafty_the_ambitious") { }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             creature->AI()->DoAction(ACTION_START_INTRO);
             player->CLOSE_GOSSIP_MENU();
             return true;
         }
-    
+
         struct npc_darkheart_crafty_the_ambitiousAI : public ScriptedAI
         {
             npc_darkheart_crafty_the_ambitiousAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             TaskScheduler scheduler;
             uint32 delay;
-    
+
             void InitializeAI() override
             {
                 delay = 0;
                 me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             }
-    
+
             void DoAction(int32 actionId) override
             {
                 if (actionId == ACTION_START_INTRO)
                 {
                     me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     Talk(TALK_INTRO);
-    
+
                     delay = 0;
                     scheduler.Schedule(Milliseconds(delay += 5500), [this](TaskContext context)
                     {
                         Talk(TALK_SPECIAL_1);
                     });
-    
+
                     scheduler.Schedule(Milliseconds(delay += 9000), [this](TaskContext context)
                     {
                         Talk(TALK_SPECIAL_2);
@@ -531,13 +531,13 @@ class npc_darkheart_crafty_the_ambitious : public CreatureScript
                     });
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_darkheart_crafty_the_ambitiousAI(creature);

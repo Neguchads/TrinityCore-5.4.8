@@ -181,7 +181,7 @@ std::vector<SpawnData> RightSpawns[WAVE_COUNT] =
     }
 };
 
-static const Position bombsPos[] = 
+static const Position bombsPos[] =
 {
     { 1621.851f, 5411.984f, 138.73839f, 6.125f },
     { 1621.851f, 5408.082f, 138.74924f, 6.126f },
@@ -308,7 +308,7 @@ class npc_yang_ironclaw : public CreatureScript
             uint32 _textId;
     };
 
-    enum 
+    enum
     {
         EVENT_START_EVENT       = 1,
         EVENT_CALL_FIRST_WAVE,
@@ -454,7 +454,6 @@ class npc_yang_ironclaw : public CreatureScript
                 bombCnt = 0;
 
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CARRYING_CAUSTIC_TAR);
-
 
                 std::list<Creature*> cList;
                 me->GetCreatureListWithEntryInGrid(cList, NPC_BARREL_TARGET, 500.0f);
@@ -765,7 +764,6 @@ class npc_yang_ironclaw : public CreatureScript
         }
 };
 
-
 class npc_sikthik_warden : public CreatureScript
 {
     public:
@@ -790,7 +788,7 @@ class npc_sikthik_warden : public CreatureScript
 
 static const Position PATH_POINTS[] =
 {
-    
+
     {1511.885f, 5378.232f, 138.95970f, 4.761f},
     {1512.162f, 5372.485f, 139.08124f, 4.765f},
     {1512.879f, 5359.946f, 146.22418f, 4.816f},
@@ -852,7 +850,7 @@ struct npc_vojak_addAI : public ScriptedAI
             addCounter = (data >> 8) & 0xFF;
             waveNumber = data & 0xFF;
             uint32 entry = me->GetEntry();
-            
+
             TRIGGER_TIMER = ADD_STEP_DELAY + addCounter * ADD_STEP_DELAY + (leftSideAdd ? 0 : RIGHT_SIDE_DELAY);
         }
     }
@@ -871,7 +869,7 @@ struct npc_vojak_addAI : public ScriptedAI
                     me->GetRandomPoint(itr, 5.0f, x, y, z);
                     init.Path().push_back(G3D::Vector3(x, y, z));
                 }
-                
+
                 init.SetSmooth();
                 init.SetUncompressed();
                 init.Launch();
@@ -934,7 +932,6 @@ class boss_commander_vojak : public CreatureScript
 
     public:
         boss_commander_vojak() : CreatureScript("boss_commander_vojak") { }
-
 
         struct boss_commander_vojakAI : public ScriptedAI
         {
@@ -1098,7 +1095,7 @@ enum HelperData
 
 };
 
-static const Position helperPositions[2][3] = 
+static const Position helperPositions[2][3] =
 {
     // SIDE_LEFT
     {
@@ -1114,7 +1111,7 @@ static const Position helperPositions[2][3] =
     }
 };
 
-enum 
+enum
 {
     SPELL_GRAB_BARREL           = 120405, // condition target keg, triggers SPELL_KEG_ENTER_VEHICLE
     SPELL_KEG_ENTER_VEHICLE     = 120402,
@@ -1357,7 +1354,7 @@ class spell_barrel_assignment : public SpellScriptLoader
 /*
     Koz:
     This is the script for Mantid Tar Keg
-    We handle respawn on wipe aswell as 
+    We handle respawn on wipe aswell as
     jumping after delivery here.
 */
 

@@ -22,7 +22,7 @@
 
 #define GOSSIP_SENDER_SHADOWFANG_PORT 33
 
-Position shadowfang_keep_locs[] = 
+Position shadowfang_keep_locs[] =
 {
     { -224.482f, 2199.782f, 79.761f, 0.376793f },
     { -254.083f, 2283.067f, 74.9995f, 2.481768f },
@@ -730,7 +730,7 @@ struct shadowfang_follower_typeAI : public ScriptedAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (!Intro && who && who->GetTypeId() == TYPEID_PLAYER && me->GetPositionZ() < 82.47f && me->GetPositionZ() > 79.23f)
+        if (!Intro && who && who->IsPlayer() && me->GetPositionZ() < 82.47f && me->GetPositionZ() > 79.23f)
         {
             Intro = true;
             Talk(TALK_INTRO);
@@ -751,7 +751,7 @@ class npc_commander_belmont : public CreatureScript
         {
             npc_commander_belmontAI(Creature* creature) : shadowfang_follower_typeAI(creature) { }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -1504,7 +1504,7 @@ class npc_dread_scryer : public CreatureScript
             return new npc_dread_scryerAI(creature);
         }
 };
-        
+
 class npc_haunted_stable_hand_portal : public CreatureScript
 {
     public:
@@ -1517,13 +1517,13 @@ class npc_haunted_stable_hand_portal : public CreatureScript
             if (InstanceScript* instance = creature->GetInstanceScript())
             {
                 if (instance->GetBossState(DATA_VALDEN) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться в нижнюю обсерваторию." : "Teleport to Lower Observatory.", GOSSIP_SENDER_SHADOWFANG_PORT, 3);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂ² ÃÂ½ÃÂ¸ÃÂ¶ÃÂ½Ã‘Å½Ã‘Å½ ÃÂ¾ÃÂ±Ã‘ÂÃÂµÃ‘â‚¬ÃÂ²ÃÂ°Ã‘â€šÃÂ¾Ã‘â‚¬ÃÂ¸Ã‘Å½." : "Teleport to Lower Observatory.", GOSSIP_SENDER_SHADOWFANG_PORT, 3);
                 else if (instance->GetBossState(DATA_SPRINGVALE) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться во внутренний двор." : "Teleport to The Courtyard.", GOSSIP_SENDER_SHADOWFANG_PORT, 2);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂ²ÃÂ¾ ÃÂ²ÃÂ½Ã‘Æ’Ã‘â€šÃ‘â‚¬ÃÂµÃÂ½ÃÂ½ÃÂ¸ÃÂ¹ ÃÂ´ÃÂ²ÃÂ¾Ã‘â‚¬." : "Teleport to The Courtyard.", GOSSIP_SENDER_SHADOWFANG_PORT, 2);
                 else if (instance->GetBossState(DATA_SILVERLAINE) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться в обеденный зал." : "Teleport to Dining Hall.", GOSSIP_SENDER_SHADOWFANG_PORT, 1);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂ² ÃÂ¾ÃÂ±ÃÂµÃÂ´ÃÂµÃÂ½ÃÂ½Ã‘â€¹ÃÂ¹ ÃÂ·ÃÂ°ÃÂ»." : "Teleport to Dining Hall.", GOSSIP_SENDER_SHADOWFANG_PORT, 1);
                 else if (instance->GetBossState(DATA_ASHBURY) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться во внутренний двор." : "Teleport to The Courtyard.", GOSSIP_SENDER_SHADOWFANG_PORT, 0);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂ²ÃÂ¾ ÃÂ²ÃÂ½Ã‘Æ’Ã‘â€šÃ‘â‚¬ÃÂµÃÂ½ÃÂ½ÃÂ¸ÃÂ¹ ÃÂ´ÃÂ²ÃÂ¾Ã‘â‚¬." : "Teleport to The Courtyard.", GOSSIP_SENDER_SHADOWFANG_PORT, 0);
             }
 
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());

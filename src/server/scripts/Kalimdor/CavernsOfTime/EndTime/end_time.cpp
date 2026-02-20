@@ -90,7 +90,7 @@ enum Events
     // Infinite Warden
     EVENT_VOID_SHIELD       = 3,
     EVENT_VOID_STRIKE       = 4,
-    
+
     // Infinite Suppressor
     EVENT_ARCANE_WAVE       = 5,
     EVENT_TEMPORAL_VORTEX   = 6,
@@ -107,7 +107,7 @@ enum Adds
     NPC_TIME_TWISTED_SEER       = 54553,
     NPC_CALL_FLAMES             = 54585, // temp
     NPC_UNDYING_FLAME           = 54550,
-    
+
     NPC_TIME_TWISTED_FOOTMAN    = 54687,
     NPC_TIME_TWISTED_PRIEST     = 54690,
     NPC_FOUNTAIN_OF_LIGHT       = 54795, // temp
@@ -649,7 +649,7 @@ class npc_end_time_time_twisted_sorceress : public CreatureScript
         }
 };
 
-class BlinkPredicate 
+class BlinkPredicate
 {
     public:
         BlinkPredicate(Unit* const m_caster) : _caster(m_caster) { }

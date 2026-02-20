@@ -146,7 +146,7 @@ class npc_aysa_wind_temple_escort : public CreatureScript
 {
     public:
         npc_aysa_wind_temple_escort() : CreatureScript("npc_aysa_wind_temple_escort") { }
-        
+
         struct npc_aysa_wind_temple_escortAI : public npc_escortAI
         {
             enum
@@ -187,7 +187,7 @@ class npc_aysa_wind_temple_escort : public CreatureScript
                     case 10:
                     {
                         auto const summoner = me->ToTempSummon()->GetSummoner();
-                        if (summoner && summoner->GetTypeId() == TYPEID_PLAYER)
+                        if (summoner && summoner->IsPlayer())
                         {
                             auto const player = summoner->ToPlayer();
 
@@ -853,7 +853,7 @@ class npc_shang_xi_air_balloon : public CreatureScript
                     case 12:
                     {
                         auto const passenger = me->GetVehicleKit()->GetPassenger(0);
-                        if (passenger && passenger->GetTypeId() == TYPEID_PLAYER)
+                        if (passenger && passenger->IsPlayer())
                         {
                             passenger->ToPlayer()->KilledMonsterCredit(55939);
                             passenger->AddAura(50550, passenger);
@@ -1032,7 +1032,7 @@ class npc_shang_xi_air_balloon : public CreatureScript
 
             void PassengerBoarded(Unit* passenger, int8 seatId, bool apply) override
             {
-                if (seatId != 0 || passenger->GetTypeId() != TYPEID_PLAYER)
+                if (seatId != 0 || !passenger->IsPlayer())
                     return;
 
                 if (apply)
@@ -1092,7 +1092,7 @@ class spell_monkey_wisdom : public SpellScriptLoader
                     if (bct)
                         baseText = bct->GetText(loc_idx, _player->GetGender());
 
-                    target->TextEmote(baseText.c_str(), nullptr); 
+                    target->TextEmote(baseText.c_str(), nullptr);
                 }
             }
 
@@ -1147,7 +1147,7 @@ public:
 
         void MoveInLineOfSight(Unit* who) override
         {
-            if (justSpeaking || who->GetTypeId() != TYPEID_PLAYER || who->IsOnVehicle())
+            if (justSpeaking || !who->IsPlayer() || who->IsOnVehicle())
                 return;
 
             GuidSet::iterator itr = m_player_for_event.find(who->GetGUID());
@@ -1162,7 +1162,7 @@ public:
             justSpeaking = true;
             _events.ScheduleEvent(EVENT_1, 10000);
             sCreatureTextMgr->SendChat(me, 0);
-            
+
         }
 
         void UpdateAI(uint32 diff) override
@@ -1273,11 +1273,11 @@ public:
             EVENT_SHEN_ZI_SU_TALK_1 = 21, //17:25:58.000
             EVENT_SHEN_ZI_SU_TALK_2 = 22, //17:26:12.000
             EVENT_SHEN_ZI_SU_TALK_3 = 23, //17:26:25.000
-            EVENT_SHEN_ZI_SU_TALK_4 = 24, //17:26:47.000 
+            EVENT_SHEN_ZI_SU_TALK_4 = 24, //17:26:47.000
             EVENT_SHEN_ZI_SU_TALK_5 = 25, //17:27:09.000
         };
 
-        void InitTalking(Player* player) 
+        void InitTalking(Player* player)
         {
             me->GetMap()->LoadGrid(865.222f, 4986.84f); //voice
             me->GetMap()->LoadGrid(868.356f, 4631.19f); //head
@@ -1296,7 +1296,7 @@ public:
             events.ScheduleEvent(EVENT_SHEN_ZI_SU_TALK_2, t += 14000);   //17:26:12.000
             events.ScheduleEvent(EVENT_SHEN_ZI_SU_TALK_3, t += 13000);   //17:26:25.000
             events.ScheduleEvent(EVENT_AISA_TALK_5, t += 15000);         //17:26:40.000
-            events.ScheduleEvent(EVENT_SHEN_ZI_SU_TALK_4, t += 7000);    //17:26:47.000 
+            events.ScheduleEvent(EVENT_SHEN_ZI_SU_TALK_4, t += 7000);    //17:26:47.000
             events.ScheduleEvent(EVENT_AISA_TALK_6, t += 15000);         //17:27:02.000
             events.ScheduleEvent(EVENT_SHEN_ZI_SU_TALK_5, t += 7000);    //17:27:09.000
             events.ScheduleEvent(EVENT_FIREPAW_TALK_3, t += 7000);       //17:27:16.000
@@ -1313,7 +1313,7 @@ public:
         {
             if (!apply)
             {
-                if (passenger->GetTypeId() == TYPEID_PLAYER)
+                if (passenger->IsPlayer())
                 {
                     me->DespawnOrUnsummon(1000);
                     me->CastSpell(passenger, 45472, true);
@@ -1334,7 +1334,7 @@ public:
                 }
             }
 
-            if (passenger->GetTypeId() != TYPEID_PLAYER)
+            if (!(passenger->IsPlayer()))
             {
                 passenger->m_invisibilityDetect.AddFlag(INVISIBILITY_UNK5);
                 passenger->m_invisibilityDetect.AddValue(INVISIBILITY_UNK5, 999);

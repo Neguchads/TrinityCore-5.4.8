@@ -71,7 +71,7 @@ const Position PipelineEntrace[2] =
     { 1995.047f, -5503.350f, -244.5230f, 5.14f }, // dest entrance
 };
 
-const Position ConveyorWeaponsPoints[2] = 
+const Position ConveyorWeaponsPoints[2] =
 {
     { 1962.337f, -5452.712f, -303.0483f, 5.305801f }, // deactivated weap
     { 1935.752f, -5739.543f, -302.9146f, 2.146755f }, // activated weap
@@ -611,7 +611,7 @@ enum eCreatures
     NPC_VEREESA_WINDRUNNER              = 73910,
     NPC_ROPE                            = 73920,
     NPC_ANTI_AIR_CANNON                 = 72408,
-    
+
     // Iron Juggernaut
     NPC_IRON_JUGGERNAUT                 = 71466,
     NPC_CRAWLER_MINE                    = 72050,
@@ -1238,7 +1238,6 @@ enum iGameObjects
     NPC_CRATE_OF_PANDAREN_RELIC_6      = 222693, // healer role
     NPC_CRATE_OF_PANDAREN_RELIC_7      = 222692, // tank role
     NPC_CRATE_OF_PANDAREN_RELIC_8      = 221878, // healer role
-
 
     // Thok Bloodthirsty
     GO_REX_DOOR                        = 223222,

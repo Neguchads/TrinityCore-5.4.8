@@ -89,7 +89,6 @@ struct QuestObjective;
 
 #define VISIBLE_RANGE       166.0f                          //MAX visible range (size of grid)
 
-
 /*
     @todo Add more script type classes.
 
@@ -1069,7 +1068,7 @@ public: /* ServerScript */
     void OnUnknownPacketReceive(WorldSocket* socket, WorldPacket packet);
 
   public: /* WorldScript */
-  
+
       void OnOpenStateChange(bool open);
       void OnBeforeConfigLoad(bool reload);
       void OnConfigLoad(bool reload);

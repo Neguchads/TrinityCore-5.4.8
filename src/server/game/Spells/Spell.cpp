@@ -6868,7 +6868,7 @@ SpellCastResult Spell::CheckCast(bool strict)
             {
                 if (m_targets.GetUnitTarget())
                 {
-                    if (m_targets.GetUnitTarget()->GetTypeId() != TYPEID_PLAYER)
+                    if (!(m_targets.GetUnitTarget()->IsPlayer()))
                         return SPELL_FAILED_BAD_TARGETS;
                     if (m_targets.GetUnitTarget()->GetPetGUID())
                         return SPELL_FAILED_ALREADY_HAVE_SUMMON;
@@ -9516,7 +9516,7 @@ void MissileData::Update(uint32 currentTime, Unit* caster, AuraEffect const * ef
     m_currentDist += dist;
     m_currentPos.m_positionX += dist * std::cos(angle);
     m_currentPos.m_positionY += dist * std::sin(angle);
-    // Just raw approximating ¯\_(ツ)_/¯
+    // Just raw approximating ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯\_(ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾)_/ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯
     m_currentPos.m_positionZ += dist / m_calculatedDist * (m_destPos.GetPositionZ() - m_srcPos.GetPositionZ());
 
     if (m_reversed)

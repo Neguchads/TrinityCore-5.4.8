@@ -89,7 +89,7 @@ namespace Trinity::Impl::Readline
         // vec = Trinity::ChatCommands::GetAutoCompletionsFor(CliHandler(nullptr,nullptr), text);
         // return ::rl_completion_matches(text, &cli_unpack_vector);
 
-        return ::rl_completion_matches((char*)text, &command_finder);  
+        return ::rl_completion_matches((char*)text, &command_finder);
     }
 
     int cli_hook_func()

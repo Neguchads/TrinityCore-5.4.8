@@ -67,7 +67,7 @@ enum ScriptedTextIllidan1
 
     SAY_ILLIDAN_1_AGGRO_1       = 10, // Death to the Legion!
     SAY_ILLIDAN_1_AGGRO_2       = 8,  // My blades hunger.
-    
+
     SAY_ILLIDAN_1_CRYSTAL_1     = 32, // Destroy the crystal so we can move on.
     SAY_ILLIDAN_1_CRYSTAL_2     = 33, // Smash the crystal. We need to move.
     SAY_ILLIDAN_1_CRYSTAL_3     = 34, // Destroy the portal energy focus!
@@ -433,7 +433,7 @@ enum GameObjects
     GO_PORTAL_ENERGY_FOCUS_3    = 209448,
 };
 
-const Position illidan1Pos[] = 
+const Position illidan1Pos[] =
 {
     { 3194.18f, -4893.46f, 194.35f, 0 }, // 00 INTRO
     { 3209.33f, -4895.08f, 194.34f, 0 }, // 01 MOVE_3
@@ -488,7 +488,7 @@ const Position illidan1Pos[] =
     { 3409.17f, -5193.60f, 183.91f, 0 }, // 50 OUTRO_DESPAWN
 };
 
-const Position illidan2Pos[10] = 
+const Position illidan2Pos[10] =
 {
     {3159.834961f, -5572.989746f, 18.292067f, 0.0f},
     {3168.384766f, -5581.995605f, 18.055605f, 0.0f},
@@ -552,7 +552,7 @@ class npc_well_of_eternity_nozdormu : public CreatureScript
                 if (instance->GetData(DATA_EVENT_NOZDORMU) == DONE)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (who->ToPlayer()->isBeingLoaded() || who->ToPlayer()->IsBeingTeleported())
@@ -865,7 +865,7 @@ class npc_well_of_eternity_illidan_1 : public CreatureScript
         {
             player->PlayerTalkClass->ClearMenus();
             player->CLOSE_GOSSIP_MENU();
-            
+
             if (InstanceScript* instance = creature->GetInstanceScript())
             {
                 if (instance->GetBossState(DATA_PEROTHARN) == DONE)
@@ -944,7 +944,7 @@ class npc_well_of_eternity_illidan_1 : public CreatureScript
                 if (bTalk || !instance)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (me->GetDistance(who) > 40.0f)
@@ -1486,7 +1486,7 @@ class npc_well_of_eternity_legion_demon_preevent : CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER || who->GetTypeId() == TYPEID_UNIT && who->GetCharmerOrOwner() && who->GetCharmerOrOwner()->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer() || who->IsCreature() && who->GetCharmerOrOwner() && who->GetCharmerOrOwner()->IsPlayer())
                 {
                     if (Player* player = who->ToPlayer())
                         if (player->IsGameMaster())
@@ -1582,7 +1582,7 @@ class npc_well_of_eternity_legion_demon_preevent : CreatureScript
                     me->DespawnOrUnsummon();
                     return;
                 }
-                
+
                 Position position(GetWaypoint(waypointIndex));
                 OffsetPathPosition(position, waypointIndex);
                 me->GetMotionMaster()->MovePoint(waypointIndex, position);
@@ -1613,7 +1613,7 @@ class npc_well_of_eternity_legion_demon_preevent : CreatureScript
                 float angle = position.GetOrientation();
                 float dist = 8.94f;
                 LegionDemonFormationPosition p = pos;
-                
+
                 // Stairs case, to avoid flying and dropping through floor
                 if (index > 0 && index < 5)
                     if (p == FORMATION_LEGION_DEMON_FORE_LEFT || p == FORMATION_LEGION_DEMON_BACK_LEFT || p == FORMATION_LEGION_DEMON_MID_LEFT)
@@ -1627,7 +1627,7 @@ class npc_well_of_eternity_legion_demon_preevent : CreatureScript
                         p = FORMATION_LEGION_DEMON_MID_RIGHT;
                     else if (p == FORMATION_LEGION_DEMON_BACK_LEFT || p == FORMATION_LEGION_DEMON_MID_RIGHT)
                         p = FORMATION_LEGION_DEMON_MID_LEFT;
-                
+
                 switch (p)
                 {
                     case FORMATION_LEGION_DEMON_FORE_LEFT:
@@ -1713,7 +1713,7 @@ class npc_well_of_eternity_guardian_demon : CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER || who->GetTypeId() == TYPEID_UNIT && who->GetCharmerOrOwner() && who->GetCharmerOrOwner()->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer() || who->IsCreature() && who->GetCharmerOrOwner() && who->GetCharmerOrOwner()->IsPlayer())
                 {
                     if (Player* player = who->ToPlayer())
                         if (player->IsGameMaster())
@@ -2146,7 +2146,7 @@ class npc_well_of_eternity_portal_trash : public CreatureScript
                 events.ScheduleEvent(EVENT_PERIODIC_SPELL, isArcanist ? 1 : urand(5000, 7500));
                 if (isArcanist)
                     me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
-                
+
                 if (me->GetDBTableGUIDLow() != GUID_INTRO_TRASH_1 && me->GetDBTableGUIDLow() != GUID_INTRO_TRASH_2 && me->GetDBTableGUIDLow() != GUID_INTRO_TRASH_3)
                     DoCastAOE(SPELL_AGGRO_ILLIDAN, true);
             }
@@ -2167,7 +2167,7 @@ class npc_well_of_eternity_portal_trash : public CreatureScript
                 if (me->IsInCombat())
                     return;
 
-                if (who->GetTypeId() == TYPEID_PLAYER || who->GetTypeId() == TYPEID_UNIT && who->GetCharmerOrOwner() && who->GetCharmerOrOwner()->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer() || who->IsCreature() && who->GetCharmerOrOwner() && who->GetCharmerOrOwner()->IsPlayer())
                 {
                     if (Player* player = who->ToPlayer())
                         if (player->IsGameMaster())
@@ -2221,7 +2221,7 @@ class npc_well_of_eternity_portal_trash : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -3094,7 +3094,7 @@ class npc_well_of_eternity_illidan_2 : public CreatureScript
                 if (bTalk || !instance)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (me->GetDistance(who) > 10.0f)
@@ -3105,7 +3105,7 @@ class npc_well_of_eternity_illidan_2 : public CreatureScript
 
                 if (instance)
                     TrashEvaded(me);
-                
+
                 bTalk = true;
 
                 Talk(SAY_ILLIDAN_2_INTRO_1);
@@ -3164,7 +3164,7 @@ class npc_well_of_eternity_illidan_2 : public CreatureScript
                 if (action == ACTION_DOOMGUARD_DIED)
                 {
                     doomguards++;
-                    
+
                     if (doomguards >= MAX_DOOMGUARDS && !bMove)
                     {
                         bMove = true;
@@ -3225,7 +3225,7 @@ class npc_well_of_eternity_illidan_2 : public CreatureScript
                             events.ScheduleEvent(EVENT_ILLIDAN_INTRO_2_3, 9000);
                             break;
                         case EVENT_ILLIDAN_INTRO_2_3:
-                            Talk(SAY_ILLIDAN_2_INTRO_3); 
+                            Talk(SAY_ILLIDAN_2_INTRO_3);
                             events.ScheduleEvent(EVENT_TYRANDE_INTRO_2, 5000);
                             break;
                         case EVENT_TYRANDE_INTRO_2:
@@ -3241,7 +3241,7 @@ class npc_well_of_eternity_illidan_2 : public CreatureScript
                             Talk(SAY_ILLIDAN_2_DEMONS);
                             me->GetMotionMaster()->MovePoint(POINT_ILLIDAN_2_1, illidan2Pos[curPoint]);
                             break;
-                        case EVENT_ILLIDAN_MOVE_2_2: 
+                        case EVENT_ILLIDAN_MOVE_2_2:
                             if (Creature* pTyrande = me->FindNearestCreature(NPC_TYRANDE, 100.0f))
                                 pTyrande->AI()->DoAction(ACTION_TYRANDE_MOVE_1);
                             me->GetMotionMaster()->MovePoint(POINT_ILLIDAN_2_2, illidan2Pos[curPoint]);
@@ -3559,7 +3559,7 @@ class npc_well_of_eternity_abyssal_doombringer : public CreatureScript
                     {
                         DoCastAOE(SPELL_ABYSSAL_FLAMES);
                         events.ScheduleEvent(EVENT_ABYSSAL_FLAMES, 3000);
-                    }  
+                    }
                 }
 
                 DoMeleeAttackIfReady();
@@ -3618,14 +3618,14 @@ void AddSC_well_of_eternity()
     new spell_well_of_eternity_shadow_walk();
     new spell_well_of_eternity_shadowcloak_illidan();
     new spell_well_of_eternity_fel_crystal_arc();
-    
+
     // Pre Queen Azshara
     new npc_well_of_eternity_eternal_champion();
     new npc_well_of_eternity_eye_of_legion();
     new npc_well_of_eternity_enchanted_highmistress();
     new npc_well_of_eternity_royal_handmaiden();
     new npc_well_of_eternity_doomguard_annihilator();
-     
+
     // Pre Mannoroth
     new npc_well_of_eternity_illidan_2();
     new npc_well_of_eternity_tyrande();

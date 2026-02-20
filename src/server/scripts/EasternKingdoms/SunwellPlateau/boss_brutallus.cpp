@@ -388,13 +388,11 @@ class boss_brutallus : public CreatureScript
             bool fightingPlayers = false;
         };
 
-
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_brutallusAI(creature);
         }
 };
-
 
 void AddSC_boss_brutallus()
 {

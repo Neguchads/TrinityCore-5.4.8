@@ -21,7 +21,7 @@
 // position for Jaina and Sylvanas
 Position const EventLeaderPos2   = { 1054.368f, 107.14620f, 628.4467f, 0.0f };
 
-// Slaves For Alliance and Horde. Martin Victus and Gorkun Ironskull 
+// Slaves For Alliance and Horde. Martin Victus and Gorkun Ironskull
 const uint32 NpcSlaveAlliance[3] = { 37591, 37572, 37575 };
 const uint32 NpcSlaveHorde[3]    = { 37592, 37578, 37579 };
 

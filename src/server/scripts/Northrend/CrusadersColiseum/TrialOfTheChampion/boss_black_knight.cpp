@@ -446,7 +446,7 @@ class npc_risen_ghoul : public CreatureScript
 
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
-                if (spell->Id == SPELL_EXPLODE && target->GetTypeId() == TYPEID_PLAYER)
+                if (spell->Id == SPELL_EXPLODE && target->IsPlayer())
                     me->GetMap()->SetWorldState(WORLDSTATE_I_VE_HAD_WORSE, 1);
             }
 

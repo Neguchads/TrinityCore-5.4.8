@@ -130,7 +130,7 @@ class npc_ashtongue_channeler : public CreatureScript
 
             ObjectGuid ShadeGUID;
 
-            void Reset() override 
+            void Reset() override
             {
                 me->setActive(true);
             }

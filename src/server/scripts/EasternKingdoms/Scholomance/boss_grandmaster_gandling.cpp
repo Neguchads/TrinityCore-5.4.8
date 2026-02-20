@@ -84,7 +84,7 @@ class boss_grandmaster_gandling : public CreatureScript
 
             void InitializeAI() override
             {
-                SetEquipmentSlots(false, GandlingStaff, 0, EQUIP_NO_CHANGE); 
+                SetEquipmentSlots(false, GandlingStaff, 0, EQUIP_NO_CHANGE);
                 me->CastSpell(me, SPELL_COSMETIC_CAST, false);
                 SetCombatMovement(false);
             }
@@ -143,7 +143,7 @@ class boss_grandmaster_gandling : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 

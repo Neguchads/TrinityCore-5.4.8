@@ -17,7 +17,7 @@
 
 #include "ScriptPCH.h"
 #include "grim_batol.h"
-    
+
 enum Creatures
 {
     NPC_ASCENDED_FLAMESEEKER         = 39415,
@@ -56,7 +56,6 @@ enum Creatures
     NPC_TWILIGHT_WYRMCALLER          = 39873,
     NPC_TWISTED_VISAGE               = 41040,
 
-    
     NPC_FARSEER_THOORANU             = 50385,
     NPC_VELASTRASZA                  = 50390,
     NPC_BALEFLAME                    = 50387,
@@ -80,13 +79,13 @@ enum Spells
     // ascended waterlasher
     SPELL_FOCUSED_GAYSER             = 76797,
     SPELL_ABSORB_THUNDER             = 76095,
-    SPELL_LIGHTNING_CLOUD            = 76097, 
+    SPELL_LIGHTNING_CLOUD            = 76097,
     SPELL_LIGHTNING_STRIKE_DMG       = 76101,
     SPELL_WATER_SPOUT                = 76794,
 
     // ascended windwalker
-    SPELL_ABSORB_WATER               = 76029, 
-    SPELL_WATER_INFUSIED_BLADES      = 76036, 
+    SPELL_ABSORB_WATER               = 76029,
+    SPELL_WATER_INFUSIED_BLADES      = 76036,
     SPELL_TSUNAMI                    = 76045,
     SPELL_WINDWALK                   = 76557,
 
@@ -114,7 +113,7 @@ enum Spells
     SPELL_BLAZING_TWILIGHT_SHIELD    = 76314,
     SPELL_BLAZE                      = 76327,
     SPELL_CORRUPTED_FLAME            = 76332,
-    
+
     // crimsonborne warlord
     SPELL_DISARMING_BLAZE            = 76679,
     SPELL_EMPOWERING_TWILIGHT        = 76685,
@@ -144,7 +143,7 @@ enum Spells
     SPELL_CHAINED_MIND               = 76711,
     SPELL_DECEITFUL_BLAST            = 76715,
 
-    // twilight drake                
+    // twilight drake
     SPELL_TWILIGHT_BREATH            = 76817,
 
     // twilight earthshaper
@@ -161,15 +160,15 @@ enum Spells
     // twilight firecatcher
     SPELL_MOLTEN_BLAST               = 76765,
     SPELL_FLAME_CONDUIT              = 76766,
-    SPELL_FLAME_CONDUIT_DMG          = 76768, 
+    SPELL_FLAME_CONDUIT_DMG          = 76768,
     SPELL_SUMMON_BURNING_EMBER       = 74551,
 
     // twilight shadow weaver
     SPELL_SHADOW_BOLT                = 76416,
-    SPELL_SHADOW_WEAVE_SCRIPT        = 90673, 
+    SPELL_SHADOW_WEAVE_SCRIPT        = 90673,
     SPELL_SHADOW_WEAVE_DUMMY         = 90674,
-    SPELL_SHADOW_WEAVE_DMG           = 90678, 
-    SPELL_SUMMON_FELHUNTER           = 76418, 
+    SPELL_SHADOW_WEAVE_DMG           = 90678,
+    SPELL_SUMMON_FELHUNTER           = 76418,
     SPELL_SPELL_LOCK                 = 40953, // heroic?
 
     // twilight stormbreaker
@@ -189,7 +188,7 @@ enum Spells
     SPELL_POLYMORPH                  = 76826,
 
     // twilight wyrmcaller
-    SPELL_FEED_PET                   = 76816, 
+    SPELL_FEED_PET                   = 76816,
 };
 
 enum Events
@@ -1008,7 +1007,7 @@ class npc_faceless_corruptor : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
             }
-            
+
             EventMap events;
 
             void Reset() override
@@ -1078,7 +1077,6 @@ class npc_trogg_dweller : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-
 
                 events.Update(diff);
 
@@ -1183,7 +1181,7 @@ class npc_twilight_beguiler : public CreatureScript
             {
                 events.ScheduleEvent(EVENT_CHAINED_MIND, urand(5000, 9000));
                 events.ScheduleEvent(EVENT_DECEITFUL_BLAST, urand(2000, 4000));
-                
+
             }
 
             void UpdateAI(uint32 diff) override
@@ -1341,7 +1339,7 @@ class npc_twilight_enforcer : public CreatureScript
         struct npc_twilight_enforcerAI : public ScriptedAI
         {
             npc_twilight_enforcerAI(Creature* creature) : ScriptedAI(creature) { }
-            
+
             EventMap events;
 
             void Reset() override
@@ -1652,7 +1650,7 @@ class npc_twilight_wyrmcaller : public CreatureScript
             {
                 summons.Summon(summon);
             }
-            
+
             void SummonedCreatureDespawn(Creature* summon) override
             {
                 summons.Despawn(summon);
@@ -1822,7 +1820,7 @@ class spell_twilight_enforcer_meat_grinder : public SpellScriptLoader
 
                 GetCaster()->CastSpell(GetCaster(), SPELL_DIZZY, true);
             }
-            
+
             void Register() override
             {
                 OnEffectRemove += AuraEffectRemoveFn(spell_twilight_enforcer_meat_grinder_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
@@ -1862,7 +1860,6 @@ class npc_battered_red_drake : public CreatureScript
             return GetInstanceAI<npc_battered_red_drakeAI>(creature);
         }
 };
-
 
 class spell_twilight_shadow_weaver_shadow_weave : public SpellScriptLoader
 {

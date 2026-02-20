@@ -180,7 +180,7 @@ public:
 
             if (me->IsSummon())
                 if (Unit* summoner = me->ToTempSummon()->GetSummoner())
-                    if (summoner->GetTypeId() == TYPEID_PLAYER)
+                    if (summoner->IsPlayer())
                         summonerGUID = summoner->GetGUID();
 
             if (!summonerGUID)
@@ -210,9 +210,9 @@ public:
 ######*/
 
 #define GOSSIP_RAZAEL_REPORT_EN "High Executor Anselm wants a report on the situation."
-#define GOSSIP_RAZAEL_REPORT_RU "Верховный палач Ансельм желает выслушать твой доклад о текущей ситуации."
+#define GOSSIP_RAZAEL_REPORT_RU "Ãâ€™ÃÂµÃ‘â‚¬Ã‘â€¦ÃÂ¾ÃÂ²ÃÂ½Ã‘â€¹ÃÂ¹ ÃÂ¿ÃÂ°ÃÂ»ÃÂ°Ã‘â€¡ ÃÂÃÂ½Ã‘ÂÃÂµÃÂ»Ã‘Å’ÃÂ¼ ÃÂ¶ÃÂµÃÂ»ÃÂ°ÃÂµÃ‘â€š ÃÂ²Ã‘â€¹Ã‘ÂÃÂ»Ã‘Æ’Ã‘Ë†ÃÂ°Ã‘â€šÃ‘Å’ Ã‘â€šÃÂ²ÃÂ¾ÃÂ¹ ÃÂ´ÃÂ¾ÃÂºÃÂ»ÃÂ°ÃÂ´ ÃÂ¾ Ã‘â€šÃÂµÃÂºÃ‘Æ’Ã‘â€°ÃÂµÃÂ¹ Ã‘ÂÃÂ¸Ã‘â€šÃ‘Æ’ÃÂ°Ã‘â€ ÃÂ¸ÃÂ¸."
 #define GOSSIP_LYANA_REPORT_EN "High Executor Anselm requests your report."
-#define GOSSIP_LYANA_REPORT_RU "Верховный палач Ансельм ждет твоего отчета."
+#define GOSSIP_LYANA_REPORT_RU "Ãâ€™ÃÂµÃ‘â‚¬Ã‘â€¦ÃÂ¾ÃÂ²ÃÂ½Ã‘â€¹ÃÂ¹ ÃÂ¿ÃÂ°ÃÂ»ÃÂ°Ã‘â€¡ ÃÂÃÂ½Ã‘ÂÃÂµÃÂ»Ã‘Å’ÃÂ¼ ÃÂ¶ÃÂ´ÃÂµÃ‘â€š Ã‘â€šÃÂ²ÃÂ¾ÃÂµÃÂ³ÃÂ¾ ÃÂ¾Ã‘â€šÃ‘â€¡ÃÂµÃ‘â€šÃÂ°."
 
 enum RazaelAndLyanaData
 {

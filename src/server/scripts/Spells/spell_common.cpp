@@ -293,7 +293,7 @@ class spell_common_combo_point_delayed : public SpellScript
 // 109822 - Nick of Time
 // 109825 - Nick of Time
 // 113828 - Healing Touch
-// 117895 - Eminence (Statue), 
+// 117895 - Eminence (Statue),
 // 126890 - Eminence
 // 124988 - Nature's Vigil
 // 138302 - Golden Apparition
@@ -567,7 +567,7 @@ class spell_common_spell_slow_players : public AuraScript
 
     void CalculateAmount(AuraEffect const*, float& amount, bool&)
     {
-        if (GetOwner()->GetTypeId() == TYPEID_PLAYER)
+        if (GetOwner()->IsPlayer())
             amount = -10.0f;
     }
 

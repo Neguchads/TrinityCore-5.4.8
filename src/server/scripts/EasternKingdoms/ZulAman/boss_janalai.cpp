@@ -73,7 +73,7 @@ const int area_dy = 51;
 
 const Position posJanalai = {-33.93f, 1149.27f, 19.0f, 0.0f};
 
-const Position posFireWall[4] = 
+const Position posFireWall[4] =
 {
     {-33.89f, 1122.81f, 18.80f, 1.58f},
     {-10.28f, 1149.97f, 18.80f, 3.14f},
@@ -81,7 +81,7 @@ const Position posFireWall[4] =
     {-53.62f, 1150.03f, 18.80f, 0.00f}
 };
 
-const Position posHatchersWay[2][5] = 
+const Position posHatchersWay[2][5] =
 {
     {
         {-87.46f, 1170.09f, 6.0f, 0.0f},
@@ -229,7 +229,7 @@ class boss_janalai : public CreatureScript
                     return;
 
                 EnterEvadeIfOutOfCombatArea(diff);
-                
+
                 if (me->HealthBelowPct(35) && !bEnraged)
                 {
                     bEnraged = true;
@@ -488,7 +488,7 @@ class npc_janalai_hatchling : public CreatureScript
                 //me->SetUnitMovementFlags(MOVEMENTFLAG_DISABLE_GRAVITY);
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 events.ScheduleEvent(EVENT_FLAMEBUFFET, urand(7000, 15000));
             }
@@ -532,7 +532,7 @@ class spell_janalai_flame_breath : public SpellScriptLoader
         class spell_janalai_flame_breath_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_janalai_flame_breath_AuraScript);
-            
+
             bool Load() override
             {
                 count = 0;

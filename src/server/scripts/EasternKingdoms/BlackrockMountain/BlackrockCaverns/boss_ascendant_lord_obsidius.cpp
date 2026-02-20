@@ -18,7 +18,7 @@
 #include "ScriptPCH.h"
 #include "blackrock_caverns.h"
 
-//todo: сделать спелл трансформации
+//todo: Ã‘ÂÃÂ´ÃÂµÃÂ»ÃÂ°Ã‘â€šÃ‘Å’ Ã‘ÂÃÂ¿ÃÂµÃÂ»ÃÂ» Ã‘â€šÃ‘â‚¬ÃÂ°ÃÂ½Ã‘ÂÃ‘â€žÃÂ¾Ã‘â‚¬ÃÂ¼ÃÂ°Ã‘â€ ÃÂ¸ÃÂ¸
 
 enum ScriptTexts
 {
@@ -50,7 +50,7 @@ enum Adds
     NPC_SHADOW_OF_OBSIDIUS  = 40817,
 };
 
-const Position shadowofobsidiusPos[3] = 
+const Position shadowofobsidiusPos[3] =
 {
     {328.19f, 561.97f, 66.0f, 4.50f},
     {335.24f, 556.08f, 66.0f, 1.64f},
@@ -60,7 +60,7 @@ class boss_ascendant_lord_obsidius : public CreatureScript
 {
     public:
         boss_ascendant_lord_obsidius() : CreatureScript("boss_ascendant_lord_obsidius") { }
-     
+
         struct boss_ascendant_lord_obsidiusAI : public BossAI
         {
             boss_ascendant_lord_obsidiusAI(Creature* creature) : BossAI(creature, DATA_ASCENDANT_LORD_OBSIDIUS)
@@ -107,7 +107,7 @@ class boss_ascendant_lord_obsidius : public CreatureScript
                 if (instance)
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
             }
-     
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_KILL);
@@ -167,7 +167,7 @@ class boss_ascendant_lord_obsidius : public CreatureScript
             private:
                 Creature* shadows[3];
         };
-     
+
         CreatureAI* GetAI(Creature* creature) const
         {
             return GetInstanceAI<boss_ascendant_lord_obsidiusAI>(creature);
@@ -181,19 +181,19 @@ class npc_shadow_of_obsidius : public CreatureScript
 
         struct npc_shadow_of_obsidiusAI : public ScriptedAI
         {
-            npc_shadow_of_obsidiusAI(Creature* creature) : ScriptedAI(creature) 
+            npc_shadow_of_obsidiusAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
             }
 
             EventMap events;
-            
+
             void Reset() override
             {
                 DoCast(me, SPELL_TWITCHY);
                 DoCast(me, SPELL_SHADOW_OF_OBSIDIUS);
-            }   
+            }
 
             void JustEngagedWith(Unit* attacker) override
             {

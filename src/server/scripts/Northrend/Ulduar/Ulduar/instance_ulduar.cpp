@@ -325,7 +325,7 @@ class instance_ulduar : public InstanceMapScript
                     TempSummon* algalon = instance->SummonCreature(NPC_ALGALON, AlgalonLandPos);
                     algalon->AI()->DoAction(_algalonTimer && _algalonTimer <= 60 ? ACTION_INIT_ALGALON : ACTION_INIT_ALGALON_FIRST);
                 }
-                
+
                 // Keepers at Observation Ring
                 if (GetBossState(BOSS_FREYA) == DONE && _summonObservationRingKeeper[0] && !KeeperGUIDs[0])
                 {
@@ -922,7 +922,7 @@ class instance_ulduar : public InstanceMapScript
             void OnUnitDeath(Unit* unit) override
             {
                 // Champion / Conqueror of Ulduar
-                if (unit->GetTypeId() == TYPEID_PLAYER)
+                if (unit->IsPlayer())
                 {
                     for (uint8 i = 0; i < BOSS_ALGALON; i++)
                     {
@@ -933,7 +933,7 @@ class instance_ulduar : public InstanceMapScript
                         }
                     }
                 }
-            
+
                 Creature* creature = unit->ToCreature();
                 if (!creature)
                     return;
@@ -1431,16 +1431,16 @@ class instance_ulduar : public InstanceMapScript
                     // Mimiron
                     case BOSS_MIMIRON:
                         return MimironGUID;
-                    case DATA_LEVIATHAN_MK_II: 
+                    case DATA_LEVIATHAN_MK_II:
                         return LeviathanMKIIGUID;
-                    case DATA_VX_001: 
+                    case DATA_VX_001:
                         return VX001GUID;
-                    case DATA_AERIAL_UNIT: 
+                    case DATA_AERIAL_UNIT:
                         return AerialUnitGUID;
 
                     case BOSS_VEZAX:
                         return VezaxGUID;
-                        
+
                     // Yogg-Saron
                     case BOSS_YOGG_SARON:
                         return YoggSaronGUID;
@@ -1615,7 +1615,7 @@ class instance_ulduar : public InstanceMapScript
                 //return InstanceScript::CheckAchievementCriteriaMeet(criteriaId, source, target, miscvalue1);
                 return false;
             }
-            
+
             bool CheckRequiredBosses(uint32 bossId, Player const* player = nullptr) const override
             {
                 switch (bossId)
@@ -1727,7 +1727,7 @@ class instance_ulduar : public InstanceMapScript
                             DoUpdateWorldState(WORLD_STATE_ALGALON_DESPAWN_TIMER, _algalonTimer);
                         }
                     }
-                    
+
                     for (uint8 i = 0; i < 4; ++i)
                     {
                         loadStream >> tempState;

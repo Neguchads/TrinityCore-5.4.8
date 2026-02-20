@@ -187,7 +187,7 @@ class boss_shade_of_aran : public CreatureScript
                 {
                     Unit* target = Unit::GetUnit(*me, itr->getUnitGuid());
                     // only on alive players
-                    if (target && target->IsAlive() && target->GetTypeId() == TYPEID_PLAYER)
+                    if (target && target->IsAlive() && target->IsPlayer())
                         targets.push_back(target);
                 }
 

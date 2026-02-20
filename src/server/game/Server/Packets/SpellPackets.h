@@ -28,7 +28,7 @@ namespace WorldPackets
 {
     namespace Spells
     {
-        
+
         class ClearTarget final : public ServerPacket
         {
         public:
@@ -38,7 +38,6 @@ namespace WorldPackets
 
             ObjectGuid Guid;
         };
-
 
     }
 }

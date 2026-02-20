@@ -330,7 +330,7 @@ class boss_grand_empress_shekzeer : public CreatureScript
                 }
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -378,7 +378,7 @@ class boss_grand_empress_shekzeer : public CreatureScript
                 }
             }
 
-            void DamageTaken(Unit* attacker, uint32& damage) override 
+            void DamageTaken(Unit* attacker, uint32& damage) override
             {
                 if (HealthBelowPct(30) && _phases == FIRST_PHASE)
                 {
@@ -449,7 +449,7 @@ class boss_grand_empress_shekzeer : public CreatureScript
                                     instance->SetData(DATA_SHEKZEER, SPECIAL);
                             });
                         }
-                        else 
+                        else
                             nonCombatEvents.ScheduleEvent(EVENT_INTRO, 100);
                     }
                     break;
@@ -710,11 +710,11 @@ struct royal_guards_typeAI : public ScriptedAI
         instance = me->GetInstanceScript();
     }
 
-    void JustDied(Unit* /*killer*/) override 
+    void JustDied(Unit* /*killer*/) override
     {
         if (Creature* Shekzeer = ObjectAccessor::GetCreature(*me, instance ? instance->GetGuidData(DATA_SHEKZEER) : ObjectGuid::Empty))
             Shekzeer->AI()->DoAction(ACTION_ROYAL_GUARDIAN_DIE);
-    } 
+    }
 };
 
 // Set`thik Windblade 64453
@@ -887,9 +887,9 @@ class npc_korthik_reaver : public CreatureScript
         {
             npc_korthik_reaverAI(Creature* creature) : royal_guards_typeAI(creature) { }
 
-            void IsSummonedBy(Unit* summoner) override 
+            void IsSummonedBy(Unit* summoner) override
             {
-                SetEquipmentSlots(false, MELJARAK_2H_WEAPON, 0, EQUIP_NO_CHANGE); 
+                SetEquipmentSlots(false, MELJARAK_2H_WEAPON, 0, EQUIP_NO_CHANGE);
 
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 200.0f, true))
                 {
@@ -973,19 +973,19 @@ class npc_dissonance_field : public CreatureScript
             EventMap events;
             bool toBeDespawned = false;
 
-            void IsSummonedBy(Unit* summoner) override 
-            { 
+            void IsSummonedBy(Unit* summoner) override
+            {
                 me->setRegeneratingHealth(false);
                 me->SetMaxHealth(200000);
                 me->SetHealth(200000);
-                me->CastSpell(me, SPELL_DISSONANCE_FIELD, false); 
+                me->CastSpell(me, SPELL_DISSONANCE_FIELD, false);
                 me->SetReactState(REACT_PASSIVE);
                 me->AttackStop();
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                 me->AddUnitState(UNIT_STATE_CANNOT_TURN);
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 if (actionId == ACTION_SHA_AGGRO)
                     events.ScheduleEvent(EVENT_INTRO, 1500);
@@ -1032,11 +1032,11 @@ class npc_sha_of_fear_shekzeer : public CreatureScript
             EventMap nonCombatEvents;
             InstanceScript* instance;
 
-            void IsSummonedBy(Unit* summoner) override 
+            void IsSummonedBy(Unit* summoner) override
             {
                 instance = me->GetInstanceScript();
                 me->SetCanFly(true);
-                me->SetDisableGravity(true); 
+                me->SetDisableGravity(true);
                 me->SetReactState(REACT_PASSIVE);
                 me->AttackStop();
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
@@ -1044,7 +1044,7 @@ class npc_sha_of_fear_shekzeer : public CreatureScript
 
             void JustDied(Unit* /*killer*/) override { }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -1105,7 +1105,7 @@ class npc_sha_of_fear_shekzeer : public CreatureScript
 // Heart of Fear 63445
 struct npc_heart_of_fear : public ScriptedAI
 {
-    npc_heart_of_fear(Creature* creature) : ScriptedAI(creature) 
+    npc_heart_of_fear(Creature* creature) : ScriptedAI(creature)
     {
         SetCombatMovement(false);
     }

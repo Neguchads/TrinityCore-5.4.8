@@ -129,7 +129,7 @@ class instance_battle_on_the_high_seas : public InstanceMapScript
                 }
             }
 
-            void OnGameObjectCreate(GameObject* go) override 
+            void OnGameObjectCreate(GameObject* go) override
             {
                 switch (go->GetEntry())
                 {
@@ -177,7 +177,7 @@ class instance_battle_on_the_high_seas : public InstanceMapScript
                             if (Creature* transportCannon = instance->GetCreature(itr))
                                 transportCannon->SetVisible(false);
                         }
-                        
+
                         // Summon new wave on next ship
                         if (Creature* hordeCaptain = instance->GetCreature(GetGuidData(NPC_HORDE_CAPTAIN)))
                         {

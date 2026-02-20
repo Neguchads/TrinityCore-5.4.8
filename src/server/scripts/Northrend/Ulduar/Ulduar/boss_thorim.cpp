@@ -279,7 +279,7 @@ struct BerserkSelector
 {
     bool operator() (WorldObject* unit)
     {
-        if (unit->GetTypeId() != TYPEID_PLAYER)
+        if (!(unit->IsPlayer()))
         {
             for (uint8 i = 0; i < 8; i++)
                 if (unit->GetEntry() == ArenaAddEntries[i])
@@ -514,7 +514,7 @@ class boss_thorim : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -571,7 +571,6 @@ class boss_thorim : public CreatureScript
                     me->m_Events.Schedule(delay +=  9500, [this]() { Talk(SAY_END_NORMAL_2); });
                     me->m_Events.Schedule(delay += 12000, [this]() { Talk(SAY_END_NORMAL_3); });
                 }
-
 
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_AURA_OF_CELERITY);
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_AURA_OF_CELERITY_VIS);
@@ -653,7 +652,7 @@ class boss_thorim : public CreatureScript
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (spell->Id == 62466)
-                    if (target->GetTypeId() == TYPEID_PLAYER)
+                    if (target->IsPlayer())
                     {
                         me->GetMap()->SetWorldState(WORLDSTATE_DONT_STAND_IN_LIGHTNING, 0);
                         doNotStandInTheLighting = false;
@@ -1604,7 +1603,6 @@ class npc_runic_smash : public CreatureScript
             private:
                 uint32 ExplodeTimer;
         };
-
 
         CreatureAI* GetAI(Creature* creature) const override
         {

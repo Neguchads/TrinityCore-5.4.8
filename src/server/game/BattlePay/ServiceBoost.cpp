@@ -128,7 +128,7 @@ void CharacterBooster::_GetCharBoostItems(PreparedItemsMap& itemsToMail, Prepare
         case SPEC_WARLOCK_DESTRUCTION:
             itemsToMail.emplace(0, 82590);
             break;
-    }  
+    }
 
     if (m_charBoostInfo.allianceFaction)
         itemsToMail.emplace(1, 25472);
@@ -169,7 +169,6 @@ void CharacterBooster::SendCharBoostPacket(PreparedItemsMap items) const
     data.WriteByteSeq(guid[1]);
     data.WriteByteSeq(guid[3]);
     data.WriteByteSeq(guid[4]);
-
 
     GetSession()->SendPacket(&data);
 }

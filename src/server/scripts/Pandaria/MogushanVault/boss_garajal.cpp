@@ -28,7 +28,7 @@ enum eSpells
     SPELL_BANISHMENT                                = 116272,
     SPELL_SOUL_CUT_SUICIDE                          = 116278,
     SPELL_SOUL_CUT_DAMAGE                           = 117337,
-                                                    
+
     SPELL_TAP_THE_SPIRIT_WORLD                      = 117002, // Only cosmetic
     SPELL_CHANNEL_SPIRIT_TOTEM                      = 116833, // Only cosmetic
     SPELL_STRONG_MOJO                               = 115964, // Only cosmetic
@@ -39,40 +39,40 @@ enum eSpells
     SPELL_COSMETIC_SUMMON                           = 118086, // Only cosmetic - Tiki mask
     SPELL_SOUL_CUTTER_COSMETIC                      = 120677, // Only cosmetic - Tiki mask too
     SPELL_SUMMON_MINION                             = 118087,
-                                                    
-    // attaques ombreuses                           
+
+    // attaques ombreuses
     SPELL_RIGHT_CROSS                               = 117215,
     SPELL_LEFT_HOOK                                 = 117218,
     SPELL_HAMMER_FIST                               = 117219,
     SPELL_SWEEPING_KICK                             = 117222,
-                                                    
+
     SPELL_FRENESIE                                  = 117752,
-                                                    
-    // Shadowy Minion                               
+
+    // Shadowy Minion
     SPELL_SHADOW_BOLT                               = 122118,
     SPELL_SPIRITUAL_GRASP                           = 118421,
     SPELL_SPIRITUAL_GRASP_EFF                       = 115982,
-                                                    
-    // Misc                                         
+
+    // Misc
     SPELL_CLONE                                     = 119051,
     SPELL_CLONE_VISUAL                              = 119053,
     SPELL_LIFE_FRAGILE_THREAD                       = 116227,
     SPELL_CROSSED_OVER                              = 116161, // Todo : virer le summon
     SPELL_REVITALIZED_SPIRIT                        = 120717,
     SPELL_COSMETIC_RED_AURA                         = 118265,
-                                                    
+
     SPELL_FRAIL_SOUL                                = 117723, // Heroic
     SPELL_SOUL_EXPLOSION                            = 120639,
     SPELL_ROOT_FOR_EVER                             = 31366,
-                                                    
-    // Death Event                                  
+
+    // Death Event
     SPELL_RELEASE_SPIRIT                            = 118580, // Summon Gara'jal Ghost
     SPELL_SPIRIT_HOVER                              = 75333,
     SPELL_GHOST_VISUAL                              = 91218,
     SPELL_SPIRITUAL_PORTAL                          = 118581, // Summon Spiritual Portal
     SPELL_VISUAL_PORTAL                             = 118661, // Portal Visual
-                                                    
-    // Enrage                                       
+
+    // Enrage
     SPELL_FINAL_DESTINATION                         = 118469,
     SPELL_INSTANTLY_DEATH                           = 118443,
 
@@ -108,22 +108,22 @@ enum eEvents
     EVENT_SUMMON_SHADOWY_MINION                     = 3,
     EVENT_VOODOO_DOLL                               = 4,
     EVENT_BANISHMENT                                = 5,
-                                                    
-    // Shadowy Minion                               
+
+    // Shadowy Minion
     EVENT_SHADOW_BOLT                               = 6,
     EVENT_SPIRITUAL_GRASP                           = 7,
-                                                    
-    // Gara'Jal Ghost                               
+
+    // Gara'Jal Ghost
     EVENT_GROWTH                                    = 8,
     EVENT_TALK_DEATH                                = 9,
     EVENT_SUMMON_PORTAL                             = 10,
     EVENT_DISAPPEAR                                 = 11,
-                                                    
-    // Enrage                                       
+
+    // Enrage
     EVENT_FINAL_DESTINATION                         = 12,
     EVENT_SOUL_EXPLOSION                            = 13,
-                                                    
-    // Wyvern                                       
+
+    // Wyvern
     EVENT_ESCORT                                    = 14,
 
     // Misc
@@ -163,7 +163,7 @@ class VoodooTargetSelector
         }
 };
 
-Position const soulCutterPos[3] = 
+Position const soulCutterPos[3] =
 {
     {4253.181152f, 1341.662354f, 454.153503f, 6.265248f},
     {4294.578613f, 1357.740356f, 454.153656f, 4.777716f},
@@ -203,7 +203,7 @@ class boss_garajal : public CreatureScript
                         me->SetReactState(REACT_PASSIVE);
                         intro = false;
                         me->SetHomePosition(GarajalHomePos.GetPositionX(), GarajalHomePos.GetPositionY(), GarajalHomePos.GetPositionZ(), GarajalHomePos.GetOrientation());
-                        break; 
+                        break;
                 }
 
                 InitializeShadowySpells();
@@ -345,7 +345,7 @@ class boss_garajal : public CreatureScript
                 if (type == EFFECT_MOTION_TYPE && pointId == EVENT_JUMP)
                 {
                     me->SetReactState(REACT_AGGRESSIVE);
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);    
+                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
 
                     // Remove All bombs in area if they not were explosive
                     std::list<Creature*> ExplosiveBombs;
@@ -355,7 +355,7 @@ class boss_garajal : public CreatureScript
                         itr->DespawnOrUnsummon();
                 }
             }
-     
+
             void EnterEvadeMode() override
             {
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_VOODOO_DOLL_VISUAL);
@@ -377,7 +377,7 @@ class boss_garajal : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 
@@ -419,7 +419,7 @@ class boss_garajal : public CreatureScript
                         me->EnterVehicle(Wyvern, 0);
                         Wyvern->AI()->DoAction(ACTION_FLY_IN_CENTER);
                     }
-                        
+
                 }
                 if (!UpdateVictim())
                     return;
@@ -553,7 +553,7 @@ class boss_garajal : public CreatureScript
                 DoMeleeAttackIfReady();
                 EnterEvadeIfOutOfCombatArea(diff, 45.0f);
             }
-            private:  
+            private:
                 void InitializeShadowySpells()
                 {
                     shadowySpells.push_back(SPELL_RIGHT_CROSS);
@@ -1108,7 +1108,7 @@ class spell_soul_back : public SpellScriptLoader
                     if (target->GetMap()->IsHeroic())
                         target->AddAura(SPELL_FRAIL_SOUL, target);
 
-                    // Todo : Jump le joueur lяПН ou яПНtait son corps
+                    // Todo : Jump le joueur lÃ‘ÂÃÅ¸ÃÂ ou Ã‘ÂÃÅ¸ÃÂtait son corps
                 }
             }
 
@@ -1231,7 +1231,7 @@ class spell_activate_artifact : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_UNIT;
+        return GetOwner()->IsCreature();
     }
 
     void HandleApply(AuraEffect const*, AuraEffectHandleModes)

@@ -100,7 +100,6 @@ const uint32 auiStanceSpells[5] =
     SPELL_REPLACE_STAND_SHOUT
 };
 
-
 const uint32 auiRetireSpells[3] =
 {
     SPELL_REPLACE_STAND_CRY,
@@ -207,7 +206,7 @@ class npc_xian_the_weaponmaster_trigger : public CreatureScript
                 // as we will need the actual rand value for later, we initialize it here
                 uint32 m_uiRand = urand(0, 2);
                 // Which boss will talk next
-                uint32 m_uiNewBoss = aBosses[m_uiRand].m_uiBoss;;
+                uint32 m_uiNewBoss = aBosses[m_uiRand].m_uiBoss;
 
                 while (m_uiNewBoss == m_uiLastBoss)
                 {
@@ -705,7 +704,7 @@ class npc_adepts : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER && who->GetAreaId() == 6471
+                if (who->IsPlayer() && who->GetAreaId() == 6471
                         && status != STATUS_ATTACK_GRUNTS
                         && me->GetDistance2d(who) < 2.0f
                         && who->isInFront(me)
@@ -1495,7 +1494,7 @@ class npc_glintrok_scout_2 : public CreatureScript
                 if (m_bHasCalledMobs)
                     return;
 
-                if (who && who->GetTypeId() == TYPEID_PLAYER && who->GetDistance(me) < 15.0f)
+                if (who && who->IsPlayer() && who->GetDistance(me) < 15.0f)
                 {
                     m_bHasCalledMobs = true;
                     me->SetOrientation(M_PI);
@@ -2048,7 +2047,7 @@ struct NotPlayerCheck final
 {
     bool operator ()(WorldObject const* target) const
     {
-        return target && target->GetTypeId() != TYPEID_PLAYER;
+        return target && !target->IsPlayer();
     }
 };
 

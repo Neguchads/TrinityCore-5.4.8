@@ -138,7 +138,7 @@ struct npc_high_seas_cannoneer : public customCreatureAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(85) && attacker && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(85) && attacker && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -258,7 +258,7 @@ struct npc_high_seas_swashbuckler : public customCreatureAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(85) && attacker && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(85) && attacker && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -353,8 +353,8 @@ struct npc_high_seas_cannon_exploder : public ScriptedAI
 // Admiral Hagman 71436
 struct npc_high_seas_admiral_hagman : public ScriptedAI
 {
-    npc_high_seas_admiral_hagman(Creature* creature) : ScriptedAI(creature), summons(me) 
-    { 
+    npc_high_seas_admiral_hagman(Creature* creature) : ScriptedAI(creature), summons(me)
+    {
         isFirstWave = true;
         isSecondWave = false;
     }
@@ -378,7 +378,7 @@ struct npc_high_seas_admiral_hagman : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(65) && attacker && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(65) && attacker && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -522,7 +522,7 @@ struct npc_high_seas_horde_captain : public customCreatureAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(65) && attacker && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(65) && attacker && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -614,7 +614,7 @@ struct npc_high_seas_horde_captain : public customCreatureAI
 // Horde Squalsharper 71367
 struct npc_high_seas_horde_squalsharper : public customCreatureAI
 {
-    npc_high_seas_horde_squalsharper(Creature* creature) : customCreatureAI(creature) 
+    npc_high_seas_horde_squalsharper(Creature* creature) : customCreatureAI(creature)
     {
         SetCombatMovement(false);
     }
@@ -632,7 +632,7 @@ struct npc_high_seas_horde_squalsharper : public customCreatureAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(85) && attacker && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(85) && attacker && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -849,7 +849,7 @@ struct npc_high_seas_fuse : public ScriptedAI
         });
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -881,7 +881,7 @@ struct npc_high_seas_triad_of_lieutenants : public customCreatureAI
     void JustEngagedWith(Unit* /*who*/) override
     {
         events.ScheduleEvent(EVENT_THROW_BOMB, 4 * IN_MILLISECONDS);
-        
+
         switch (me->GetEntry())
         {
             case NPC_LIEUTENANT_FUSEBLAST:

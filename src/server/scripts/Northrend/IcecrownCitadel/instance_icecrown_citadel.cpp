@@ -557,7 +557,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                             return GetBossState(DATA_GUNSHIP_EVENT) != DONE ? entry : 0;
                         return 0;
                     case NPC_SE_HIGH_OVERLORD_SAURFANG:
-                        return TeamInInstance == ALLIANCE ? NPC_SE_MURADIN_BRONZEBEARD : NPC_SE_HIGH_OVERLORD_SAURFANG;                        
+                        return TeamInInstance == ALLIANCE ? NPC_SE_MURADIN_BRONZEBEARD : NPC_SE_HIGH_OVERLORD_SAURFANG;
                     default:
                         break;
                 }
@@ -1483,7 +1483,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                 RemoveIccBuff(target);
 
                 bool alliance = false;
-                if (target->GetTypeId() == TYPEID_PLAYER)
+                if (target->IsPlayer())
                     alliance = target->ToPlayer()->GetTeam() == ALLIANCE;
                 else if (Player* owner = target->GetCharmerOrOwnerPlayerOrPlayerItself())
                     alliance = owner->GetTeam() == ALLIANCE;
@@ -1879,7 +1879,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                     }
                     case EVENT_LICH_KING_WHISPER:
                         instance->LoadGrid(-123.963997f, 2211.560059f);
-                        if (source && source->GetTypeId() == TYPEID_PLAYER)
+                        if (source && source->IsPlayer())
                             if (Creature* lich = instance->GetCreature(LightsHammerTheLichKingGUID))
                                 lich->AI()->Talk(5, source);
                         break;

@@ -134,4 +134,3 @@ const std::vector<uint32> CitizenType
 };
 
 #endif
-

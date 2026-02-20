@@ -110,7 +110,7 @@ enum Spells
     SPELL_TOUCH_OF_YSHAARJ_PLAYER         = 145599, // Periodical cast
     SPELL_EMP_TOUCH_OF_YSHAARJ_PLAYER_EFF = 145175,
     SPELL_TOUCH_OF_YSHAARJ_PLAYER_EFF     = 145071,
-    SPELL_FINAL_HORDE                     = 149978, // for HC 
+    SPELL_FINAL_HORDE                     = 149978, // for HC
     SPELL_FINALE_ALLIANCE                 = 149979,
     SPELL_FINALE_HORDE_SHARED             = 147301, // for another difficulty
     SPELL_FINALE_ALLIANCE_SHARED          = 147302,
@@ -371,10 +371,10 @@ class TouchYshaarjAI : public PlayerAI
             }
         }
 
-        void UpdateAI(uint32 diff) override 
+        void UpdateAI(uint32 diff) override
         {
             playerEvents.Update(diff);
-    
+
             while (uint32 eventId = playerEvents.ExecuteEvent())
             {
                 if (eventId == EVENT_TOUCH_OF_YSHAARJ_PLAYER)
@@ -409,7 +409,7 @@ class boss_garrosh_hellscream : public CreatureScript
 
         struct boss_garrosh_hellscreamAI : public BossAI
         {
-            boss_garrosh_hellscreamAI(Creature* creature) : BossAI(creature, DATA_GARROSH_HELLSCREAM) 
+            boss_garrosh_hellscreamAI(Creature* creature) : BossAI(creature, DATA_GARROSH_HELLSCREAM)
             {
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_HEALING_PCT, true);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_PACIFIED);
@@ -602,7 +602,7 @@ class boss_garrosh_hellscream : public CreatureScript
             void DamageTaken(Unit* /*attacker*/, uint32& damage) override
             {
                 if (phase == PHASE_MY_WORLD && lastPhaseTriggered) // no case any
-                    return; 
+                    return;
 
                 // In Period when Garrosh Switch between phases (interract to heart)
                 if (sPhase && damage >= me->GetHealth())
@@ -766,7 +766,7 @@ class boss_garrosh_hellscream : public CreatureScript
             }
 
             void SummonedCreatureDies(Creature* summon, Unit* /*killer*/) override
-            { 
+            {
                 if (std::find(realmMinionGUIDs.begin(), realmMinionGUIDs.end(), summon->GetGUID()) != realmMinionGUIDs.end())
                     realmMinionGUIDs.erase(std::find(realmMinionGUIDs.begin(), realmMinionGUIDs.end(), summon->GetGUID()));
 
@@ -792,7 +792,7 @@ class boss_garrosh_hellscream : public CreatureScript
                         me->SetMaxPower(POWER_ENERGY, 100);
                         me->SetPower(POWER_ENERGY, 0);
                         DoCast(me, SPELL_NON_REGENERATE_POWER, true);
-                        
+
                         if (Is25ManRaid() && IsHeroic())
                             me->SetHealth(1757632000); // temp
                         else
@@ -1466,7 +1466,7 @@ struct soo_garrosh_guards_typeAI : public ScriptedAI
 // Siege Engineer 71984
 struct npc_siege_engineer : public soo_garrosh_guards_typeAI
 {
-    npc_siege_engineer(Creature* creature) : soo_garrosh_guards_typeAI(creature) 
+    npc_siege_engineer(Creature* creature) : soo_garrosh_guards_typeAI(creature)
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
     }
@@ -1492,7 +1492,7 @@ struct npc_siege_engineer : public soo_garrosh_guards_typeAI
 // Kor`kron Warbringer 71979
 struct npc_korkron_warbringer : public soo_garrosh_guards_typeAI
 {
-    npc_korkron_warbringer(Creature* creature) : soo_garrosh_guards_typeAI(creature) 
+    npc_korkron_warbringer(Creature* creature) : soo_garrosh_guards_typeAI(creature)
     {
         hasAffectCombat = false;
         me->AddUnitState(UNIT_STATE_IGNORE_PATHFINDING);
@@ -1556,8 +1556,8 @@ struct npc_korkron_warbringer : public soo_garrosh_guards_typeAI
 // Wolf Rider Farseer 71983
 struct npc_wolf_rider_farseer : public soo_garrosh_guards_typeAI
 {
-    npc_wolf_rider_farseer(Creature* creature) : soo_garrosh_guards_typeAI(creature) 
-    { 
+    npc_wolf_rider_farseer(Creature* creature) : soo_garrosh_guards_typeAI(creature)
+    {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
         hasAffectCombat = false;
         me->AddUnitState(UNIT_STATE_IGNORE_PATHFINDING);
@@ -3421,7 +3421,7 @@ class spell_garrosh_blood_frenzied_selector : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && (target->GetTypeId() != TYPEID_PLAYER || hasTargetFixated(target->GetGUID())); });
+        targets.remove_if([=](WorldObject* target) { return target && !(target->IsPlayer() || hasTargetFixated(target->GetGUID())); });
 
         if (targets.empty())
             return;
@@ -3523,7 +3523,7 @@ class spell_garrosh_annihilate : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
     }
 
     void Register() override

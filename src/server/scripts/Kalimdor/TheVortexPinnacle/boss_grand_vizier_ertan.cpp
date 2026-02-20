@@ -54,7 +54,7 @@ class boss_grand_vizier_ertan : public CreatureScript
 {
     public:
         boss_grand_vizier_ertan() : CreatureScript("boss_grand_vizier_ertan") { }
-    
+
         struct boss_grand_vizier_ertanAI : public BossAI
         {
             boss_grand_vizier_ertanAI(Creature* creature) : BossAI(creature, DATA_ERTAN)
@@ -119,7 +119,7 @@ class boss_grand_vizier_ertan : public CreatureScript
 
             void KilledUnit(Unit* /*victim*/) override
             {
-                Talk(SAY_KILL);                
+                Talk(SAY_KILL);
             }
 
             void JustDied(Unit* /*killer*/) override
@@ -154,7 +154,7 @@ class boss_grand_vizier_ertan : public CreatureScript
                         case EVENT_LIGHTNING_BOLT:
                             if (Unit* target = me->GetVictim())
                                 DoCast(target, SPELL_LIGHTNING_BOLT);
-                        
+
                             events.ScheduleEvent(EVENT_LIGHTNING_BOLT, 2000);
                             break;
                         case EVENT_CALL_VORTEX:

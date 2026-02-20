@@ -20,7 +20,7 @@
 
 #define MAX_ENCOUNTER 6
 
-static std::vector<DoorData> doordata = 
+static std::vector<DoorData> doordata =
 {
     {GO_AKILZON_EXIT,           DATA_AKILZON,            DOOR_TYPE_ROOM,     BOUNDARY_NONE},
     {GO_HALAZZI_ENTRANCE,       DATA_HALAZZI,            DOOR_TYPE_ROOM,     BOUNDARY_NONE},
@@ -36,7 +36,7 @@ class instance_zulaman : public InstanceMapScript
 
         struct instance_zulaman_InstanceMapScript : public InstanceScript
         {
-            instance_zulaman_InstanceMapScript(Map* map) : InstanceScript(map) 
+            instance_zulaman_InstanceMapScript(Map* map) : InstanceScript(map)
             {
                 SetBossNumber(MAX_ENCOUNTER);
                 LoadDoorData(doordata);
@@ -136,7 +136,7 @@ class instance_zulaman : public InstanceMapScript
                         AddDoor(go, true);
                         break;
                     case GO_MALACRASS_ENTRANCE:
-                        HexLordGateGUID = go->GetGUID(); 
+                        HexLordGateGUID = go->GetGUID();
                         if (GetBossesDone() >= 2)
                             HandleGameObject(HexLordGateGUID, true, go);
                         break;
@@ -254,7 +254,7 @@ class instance_zulaman : public InstanceMapScript
                         return uiVendor1;
                     case DATA_VENDOR_2:
                         return uiVendor2;
-                    default: 
+                    default:
                         return 0;
                 }
             }
@@ -272,7 +272,7 @@ class instance_zulaman : public InstanceMapScript
                         {
                             DoUpdateWorldState(3104, 1);
                             DoUpdateWorldState(3106, QuestMinute);
-                        } 
+                        }
                         else
                         {
                             DoUpdateWorldState(3104, 0);
@@ -289,7 +289,7 @@ class instance_zulaman : public InstanceMapScript
                                     _hostages[i].state = 2;
                                 }
                             }
-                                    
+
                         }
 
                     }
@@ -389,4 +389,3 @@ void AddSC_instance_zulaman()
 {
     new instance_zulaman();
 }
-

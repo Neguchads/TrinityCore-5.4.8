@@ -39,7 +39,7 @@ enum Spells
     SPELL_DEATH_GRIP_AOE                = 101397,
     SPELL_DEATH_GRIP                    = 101987,
     SPELL_SUMMON_GHOULS                 = 102603, // before combat
-    SPELL_TELEPORT                      = 101398, 
+    SPELL_TELEPORT                      = 101398,
     SPELL_CALL_OF_THE_HIGHBORNE         = 100686, // immune
     SPELL_CALL_OF_THE_HIGHBORNE_1       = 100867, // visual spawn ghouls
     SPELL_CALL_OF_THE_HIGHBORNE_2       = 105766, // visual back ghouls
@@ -182,7 +182,7 @@ class boss_echo_of_sylvanas : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -231,7 +231,7 @@ class boss_echo_of_sylvanas : public CreatureScript
                             {
                                 _prev->CastSpell(summon, SPELL_WRACKING_PAIN_ANY, true);
                                 _prev->GetAI()->SetGUID(summon->GetGUID(), DATA_GUID);
-                                        
+
                             }
                             _prev = summon;
                             if (i == 0)
@@ -248,7 +248,7 @@ class boss_echo_of_sylvanas : public CreatureScript
                     }
                 }
             }
-            
+
             bool IsPlayerOutOfBounds(Player* player)
             {
                 if (!player || !player->IsInWorld() || !player->IsAlive())
@@ -507,7 +507,7 @@ class npc_echo_of_sylvanas_risen_ghoul : public CreatureScript
                 me->SetFloatValue(UNIT_FIELD_BOUNDING_RADIUS, 5.0f);
                 me->SetFloatValue(UNIT_FIELD_COMBAT_REACH, 5.0f);
             }
- 
+
             void JustDied(Unit* /*killer*/) override
             {
                 me->RemoveAura(SPELL_WRACKING_PAIN_ANY);
@@ -532,7 +532,7 @@ class npc_echo_of_sylvanas_risen_ghoul : public CreatureScript
                 }
                 events.ScheduleEvent(EVENT_MOVE_GHOUL, 2000);
             }
-            
+
             void SetGUID(ObjectGuid guid, int32 type) override
             {
                 if (type == DATA_GUID)

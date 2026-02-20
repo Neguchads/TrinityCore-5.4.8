@@ -50,7 +50,7 @@ class boss_aeonaxx : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 DoMeleeAttackIfReady();
             }
         };

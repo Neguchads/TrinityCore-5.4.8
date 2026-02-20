@@ -202,7 +202,7 @@ class boss_wushoolay : public CreatureScript
                             ObjectList* units = GetWorldObjectsInDist(me, 13);
                             for (ObjectList::const_iterator itr = units->begin(); itr != units->end(); ++itr)
                             {
-                                if (!(*itr) || (*itr)->GetTypeId() != TYPEID_PLAYER)
+                                if (!(*itr) || !(*itr)->IsPlayer())
                                     continue;
 
                                 if (Player* nearby = (*itr)->ToPlayer())
@@ -216,7 +216,7 @@ class boss_wushoolay : public CreatureScript
                         break;
                 }
             }
-            
+
             ObjectList* GetWorldObjectsInDist(WorldObject* obj, float dist)
             {
                 ObjectList* targets = new ObjectList();

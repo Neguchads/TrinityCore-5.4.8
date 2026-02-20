@@ -347,7 +347,6 @@ private:
     uint32 chuckMugTimer;
 };
 
-
 void AddSC_boss_coren_direbrew()
 {
     new npc_coren_direbrew();

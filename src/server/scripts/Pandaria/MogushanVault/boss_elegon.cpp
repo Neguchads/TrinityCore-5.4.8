@@ -228,7 +228,6 @@ enum AchievementWorldStates
     WORLD_STATE_STRAIGHT_SIX = 12649,
 };
 
-
 // Set values in reset of mob_empyreal_focus
 ObjectGuid empyrealFocus[6] =
 {
@@ -512,7 +511,7 @@ class boss_elegon : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 
@@ -601,7 +600,7 @@ class boss_elegon : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!who || who->GetTypeId() != TYPEID_PLAYER)
+                if (!who || !who->IsPlayer())
                     return;
 
                 if (who->HasAura(SPELL_TOUCH_OF_THE_TITANS) || who->HasAura(SPELL_TOUCH_OF_TITANS_VISUAL) || who->HasAura(SPELL_OVERCHARGED_AURA))
@@ -1053,7 +1052,7 @@ class npc_empyreal_focus : public CreatureScript
                         break;
                     case EVENT_APPEAR_WALL_OF_LIGHTNING:
                     {
-                        me->CastSpell(me, SPELL_FOCUS_LIGHT_AREATRIGGER, true);                        
+                        me->CastSpell(me, SPELL_FOCUS_LIGHT_AREATRIGGER, true);
                         me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
 
                         Position pos = me->GetPosition();
@@ -1067,28 +1066,28 @@ class npc_empyreal_focus : public CreatureScript
                                 switch (i)
                                 {
                                 case 0:
-                                    empyrealFocus[1] = me->GetGUID();//����
+                                    empyrealFocus[1] = me->GetGUID();//ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½
                                     break;
                                 case 1:
-                                    empyrealFocus[3] = me->GetGUID();//����
+                                    empyrealFocus[3] = me->GetGUID();//ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½
                                     break;
                                 case 2:
-                                    empyrealFocus[5] = me->GetGUID();//����
+                                    empyrealFocus[5] = me->GetGUID();//ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½
                                     break;
                                 case 3:
-                                    empyrealFocus[4] = me->GetGUID();//����
+                                    empyrealFocus[4] = me->GetGUID();//ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½
                                     break;
                                 case 4:
-                                    empyrealFocus[2] = me->GetGUID();//�ϱ�
+                                    empyrealFocus[2] = me->GetGUID();//ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂÃ‚Â±ÃƒÂ¯Ã‚Â¿Ã‚Â½
                                     break;
                                 case 5:
-                                    empyrealFocus[0] = me->GetGUID();  //����
+                                    empyrealFocus[0] = me->GetGUID();  //ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½ÃƒÂ¯Ã‚Â¿Ã‚Â½
                                     break;
                                 }
 
                                 break;
                             }
-                        }        
+                        }
 
                         if (Creature* elegon = instance->instance->GetCreature(instance->GetGuidData(NPC_ELEGON)))
                         {
@@ -1116,8 +1115,8 @@ class npc_empyreal_focus : public CreatureScript
                                     empyrealfocus03->CastSpell(empyrealfocus02, 116598, true);
                                 }
                             }
-                        }                        
-                        
+                        }
+
                     }
                         break;
                     default:
@@ -1936,7 +1935,7 @@ struct PlayerTargetSelector
 {
     bool operator ()(WorldObject const* object) const
     {
-        if (object->GetTypeId() == TYPEID_PLAYER)
+        if (object->IsPlayer())
             return false;
 
         return true;
@@ -2011,7 +2010,7 @@ class spell_grasping_energy_tendrils : public SpellScriptLoader
         }
 };
 
-class TotalAnnihilationPredicate 
+class TotalAnnihilationPredicate
 {
     public:
         TotalAnnihilationPredicate(Unit* const m_caster) : _caster(m_caster) { }
@@ -2221,7 +2220,7 @@ public:
                         if (elegon->GetExactDist2d(GetCaster()) < 42.7f)
                         {
                             if (target->HasAura(117878))
-                                SetHitDamage(GetHitDamage());                                
+                                SetHitDamage(GetHitDamage());
                             else
                                 SetHitDamage(0);
                         }

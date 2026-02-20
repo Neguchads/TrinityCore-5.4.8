@@ -238,7 +238,6 @@ class go_najentus_spine : public GameObjectScript
         }
 };
 
-
 void AddSC_boss_najentus()
 {
     new boss_najentus();

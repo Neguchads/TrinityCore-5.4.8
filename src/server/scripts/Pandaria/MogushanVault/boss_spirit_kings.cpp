@@ -331,7 +331,6 @@ class boss_spirit_kings_controller : public CreatureScript
 
                             spiritKingsSeq.pop_back();
                         }
-                        
 
                         for (uint32 i = 1; i < 4; ++i)
                             spiritKingsEntry[i] = instance->GetData(DATA_SPIRIT_KINGS_STATE + i);
@@ -509,7 +508,7 @@ class boss_spirit_kings_controller : public CreatureScript
                 }
             }
 
-            void JustDied(Unit* /*killer*/) override 
+            void JustDied(Unit* /*killer*/) override
             {
                 _JustDied();
 
@@ -945,7 +944,7 @@ class boss_spirit_kings : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                 {
                     switch (me->GetEntry())
                     {
@@ -976,7 +975,7 @@ class boss_spirit_kings : public CreatureScript
                             if (Creature* controler = GetControler())
                             {
                                 me->CastSpell(me, SPELL_FLANKING_ORDERS, false);
-                                
+
                                 // In heroic could be 2 waves
                                 uint8 count = IsHeroic() ? 2 : 1;
 
@@ -1217,13 +1216,13 @@ class boss_spirit_kings : public CreatureScript
             }
 
             private:
-                struct PillagePredicate 
+                struct PillagePredicate
                 {
                     public:
                         PillagePredicate(Creature const* me) : _me(me) { }
                         bool operator()(Unit const* target) const
                         {
-                            return target && target->GetTypeId() == TYPEID_PLAYER && target->GetExactDist2d(_me) > 20.5f;
+                            return target && target->IsPlayer() && target->GetExactDist2d(_me) > 20.5f;
                         }
 
                     private:

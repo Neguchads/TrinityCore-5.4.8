@@ -76,7 +76,7 @@ enum Adds
 };
 
 enum Events
-{   
+{
     EVENT_ADDS_1                = 1,
     EVENT_ADDS_2                = 2,
     EVENT_ADDS_3                = 3,
@@ -98,7 +98,7 @@ enum Actions
     ACTION_ATTACK   = 1,
 };
 
-const Position addsPos[6] = 
+const Position addsPos[6] =
 {
     {3453.030029f, -5282.740234f, 230.04f, 4.45f}, // fire 1
     {3443.540039f, -5280.370117f, 230.04f, 4.66f}, // frost 1
@@ -180,10 +180,10 @@ class boss_queen_azshara : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
-            
+
             void SpellHit(Unit* /*caster*/, SpellInfo const* spellInfo) override
             {
                 if (Spell* spell = me->GetCurrentSpell(CURRENT_GENERIC_SPELL))
@@ -209,7 +209,7 @@ class boss_queen_azshara : public CreatureScript
                     summon->GetEntry() == NPC_ENCHANTED_MAGUS_ARCANE ||
                     summon->GetEntry() == NPC_ENCHANTED_MAGUS_FROST)
                     addsCount++;
-                
+
                 if ((addsCount == 2) || (addsCount == 4))
                     events.ScheduleEvent(EVENT_ADDS_1, 6000);
                 else if (addsCount == 6)
@@ -262,7 +262,7 @@ class boss_queen_azshara : public CreatureScript
                             events.ScheduleEvent(EVENT_TOTAL_OBEDIENCE, urand(10000, 20000));
                             break;
                         case EVENT_END:
-                        {    
+                        {
                             instance->DoKilledMonsterKredit(QUEST_THE_VAINGLORIOUS, 54853, ObjectGuid::Empty);
 
                             instance->SetBossState(DATA_AZSHARA, DONE);
@@ -328,7 +328,7 @@ class npc_queen_azshara_enchanted_magus : public CreatureScript
                     }
                 }
             }
-        
+
             /*void MovementInform(uint32 type, uint32 pointId) override
             {
                 if (me->GetEntry() == NPC_ENCHANTED_MAGUS_FROST && data == EVENT_CHARGE)
@@ -388,9 +388,9 @@ class npc_queen_azshara_enchanted_magus : public CreatureScript
                             {
                                 Creature* pStalker1 = me->SummonCreature(NPC_HAMMER_OF_DIVINITY_2, target->GetPositionX(), target->GetPositionY(), target->GetPositionZ(), target->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN, 20000);
                                 Creature* pStalker2 = me->SummonCreature(NPC_HAMMER_OF_DIVINITY_1, target->GetPositionX(), target->GetPositionY(), target->GetPositionZ() + 30.0f, target->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN, 20000);
-                                
+
                                 if (pStalker1 && pStalker2)
-                                    pStalker2->GetMotionMaster()->MovePoint(0, pStalker1->GetPositionX(), pStalker1->GetPositionY(), pStalker1->GetPositionZ()); 
+                                    pStalker2->GetMotionMaster()->MovePoint(0, pStalker1->GetPositionX(), pStalker1->GetPositionY(), pStalker1->GetPositionZ());
                             }
                             events.ScheduleEvent(EVENT_ARCANE_BOMB, urand(18000, 25000));
                             break;
@@ -423,7 +423,7 @@ class npc_queen_azshara_hammer_of_divinity : public CreatureScript
             npc_queen_azshara_hammer_of_divinityAI(Creature* creature) : ScriptedAI(creature)
             {
                 bDespawn = false;
-                me->SetSpeed(MOVE_RUN, 0.1f, true); 
+                me->SetSpeed(MOVE_RUN, 0.1f, true);
                 me->SetCanFly(true);
                 me->SetDisableGravity(true);
                 SetCombatMovement(false);
@@ -461,7 +461,7 @@ class spell_queen_azshara_coldflame : public SpellScriptLoader
         class spell_queen_azshara_coldflame_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_queen_azshara_coldflame_AuraScript);
-            
+
             bool Load() override
             {
                 count = 0;
@@ -472,7 +472,7 @@ class spell_queen_azshara_coldflame : public SpellScriptLoader
             {
                 if (!GetCaster())
                     return;
-                
+
                 count++;
 
                 if (count > 11)
@@ -523,7 +523,6 @@ class spell_queen_azshara_arcane_bomb : public SpellScriptLoader
                 OnEffectHit += SpellEffectFn(spell_queen_azshara_arcane_bomb_SpellScript::ChangeSummonPos, EFFECT_0, SPELL_EFFECT_SUMMON);
             }
         };
-
 
         SpellScript* GetSpellScript() const override
         {

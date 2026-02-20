@@ -23,10 +23,10 @@ enum ScriptTexts
     SAY_AGGRO    = 0,
     SAY_KILL     = 1,
     SAY_DEATH    = 2,
-    SAY_BLITZ    = 3,    
+    SAY_BLITZ    = 3,
     SAY_ADDS     = 4,
-    SAY_EVENT_1  = 5,    
-    SAY_EVENT_2  = 6,    
+    SAY_EVENT_1  = 5,
+    SAY_EVENT_2  = 6,
 };
 
 enum Spells
@@ -131,7 +131,7 @@ class boss_general_umbriss : public CreatureScript
             {
                 Talk(SAY_KILL);
             }
-            
+
             void JustSummoned(Creature* summon) override
             {
                 summons.Summon(summon);
@@ -185,7 +185,7 @@ class boss_general_umbriss : public CreatureScript
                         case EVENT_GROUND_SIEGE:
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, 0.0f, true))
                             {
-                                if (Creature* stalker = me->SummonCreature(NPC_GROUND_SIEGE_STALKER, 
+                                if (Creature* stalker = me->SummonCreature(NPC_GROUND_SIEGE_STALKER,
                                     target->GetPositionX(),
                                     target->GetPositionY(),
                                     target->GetPositionZ(),

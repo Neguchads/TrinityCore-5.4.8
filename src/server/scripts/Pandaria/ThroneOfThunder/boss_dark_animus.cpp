@@ -132,7 +132,7 @@ class boss_dark_animus : public CreatureScript
 
         struct boss_dark_animusAI : public BossAI
         {
-            boss_dark_animusAI(Creature* creature) : BossAI(creature, DATA_DARK_ANIMUS) 
+            boss_dark_animusAI(Creature* creature) : BossAI(creature, DATA_DARK_ANIMUS)
             {
                 me->setActive(true);
             }
@@ -399,14 +399,14 @@ class npc_anima_orb : public CreatureScript
                 Reset();
 
                 // Init golem setup cuz sometimes we have issue with visibility initialize in instance script (12 broken instead 13)
-                // delay for init 
+                // delay for init
                 me->m_Events.Schedule(1500, [this]()
                 {
                     if (instance)
                         instance->SetData(GOLEM_DATA, DONE);
                 });
             }
-            
+
             void Reset() override
             {
                 if (instance && instance->GetBossState(DATA_DARK_ANIMUS) == DONE)
@@ -537,7 +537,7 @@ class npc_anima_orb : public CreatureScript
                 }
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
             }
@@ -681,7 +681,7 @@ struct golemsBaseAI : public ScriptedAI
                 DoZoneInCombat(me, 200.0f);
             });
         }
-        
+
         if (gainAbility)
             return;
 
@@ -1660,7 +1660,7 @@ class cond_anima_transfusion : public ConditionScript
 {
     public:
         cond_anima_transfusion() : ConditionScript("cond_anima_transfusion") { }
-    
+
         bool OnConditionCheck(Condition const* cond, ConditionSourceInfo& source) override
         {
             if (source.mConditionTargets[0] && source.mConditionTargets[1])
@@ -1668,7 +1668,7 @@ class cond_anima_transfusion : public ConditionScript
                     if (Creature* target = source.mConditionTargets[0]->ToCreature())
                         if (target->AI()->GetData(TYPE_ANIMA_ENERGY) + caster->AI()->GetData(TYPE_ANIMA_ENERGY) <= (uint32)target->GetMaxPower(POWER_ENERGY))
                             return true;
-    
+
             return false;
         }
 };

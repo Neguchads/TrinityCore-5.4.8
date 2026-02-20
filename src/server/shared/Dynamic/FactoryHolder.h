@@ -56,4 +56,3 @@ class Permissible
         virtual int Permit(T const*) const = 0;
 };
 #endif
-

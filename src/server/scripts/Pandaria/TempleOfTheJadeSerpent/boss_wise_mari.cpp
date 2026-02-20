@@ -184,12 +184,12 @@ class boss_wase_mari : public CreatureScript
                     if (Creature* stalker = me->SummonCreature(NPC_WISE_STALKER, me->GetPositionX(), me->GetPositionY(), me->GetPositionY(), TEMPSUMMON_MANUAL_DESPAWN))
                         if (stalker->IsAIEnabled)
                             stalker->AI()->DoAction(1);
-                    
+
             }
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_KILL_PLAYER);
             }
 
@@ -699,7 +699,7 @@ class CorruptedWatersTargetSelector
 
         bool operator()(WorldObject* object)
         {
-            if (object->GetTypeId() == TYPEID_PLAYER)
+            if (object->IsPlayer())
             {
                 if (Player* plr = object->ToPlayer())
                 {

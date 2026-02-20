@@ -970,7 +970,7 @@ struct npc_amalgamated_hubris : public customCreatureAI
 // Zeal 72661
 struct npc_zeal : public customCreatureAI
 {
-    npc_zeal(Creature* creature) : customCreatureAI(creature) 
+    npc_zeal(Creature* creature) : customCreatureAI(creature)
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
         hasVanityNotAlive = false;
@@ -1397,9 +1397,9 @@ struct npc_siege_of_orgrimmar_voljin : public customCreatureAI
             {
                 if (hasPreEventInit)
                     break;
-                
+
                 hasPreEventInit = true;
-                
+
                 // Warrios Leader (hasn`t any way to filter him)
                 std::list<Creature*> tempLeaderList;
                 GetCreatureListWithEntryInGrid(darkSpearWarriorsList, me, NPC_DARKSPEAR_WARRIOR, 70.0f);
@@ -1476,7 +1476,7 @@ struct npc_siege_of_orgrimmar_voljin : public customCreatureAI
             case ACTION_IRON_JUGGERNAUT_COMBAT_INIT:
                 if (hasCombatInit)
                     break;
-            
+
                 hasCombatInit = true;
 
                 Talk(TALK_SPECIAL_1);
@@ -1651,7 +1651,7 @@ struct npc_siege_of_orgrimmar_korkron_grunt_gates : public customCreatureAI
 // Aysa Cloudsinger 72438
 struct npc_siege_of_orgrimmar_aysa_cloudsinger : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_aysa_cloudsinger(Creature* creature) : customCreatureAI(creature) 
+    npc_siege_of_orgrimmar_aysa_cloudsinger(Creature* creature) : customCreatureAI(creature)
     {
         hasTriggered      = false;
         hasKomakTriggered = false;
@@ -1676,7 +1676,7 @@ struct npc_siege_of_orgrimmar_aysa_cloudsinger : public customCreatureAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() == TYPEID_PLAYER && !hasTriggered && me->GetExactDist2d(who) <= 20.0f)
+        if (who->IsPlayer() && !hasTriggered && me->GetExactDist2d(who) <= 20.0f)
         {
             hasTriggered = true;
             Talk(TALK_INTRO);
@@ -1725,7 +1725,7 @@ struct npc_siege_of_orgrimmar_aysa_cloudsinger : public customCreatureAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -2007,7 +2007,7 @@ struct npc_siege_of_orgrimmar_treasure_guard : public customCreatureAI
 // Overseer Komak 72455
 struct npc_overseer_komak : public customCreatureAI
 {
-    npc_overseer_komak(Creature* creature) : customCreatureAI(creature) 
+    npc_overseer_komak(Creature* creature) : customCreatureAI(creature)
     {
         hasTriggered = false;
     }
@@ -2020,7 +2020,7 @@ struct npc_overseer_komak : public customCreatureAI
         events.Reset();
     }
 
-    void JustEngagedWith(Unit* who) override 
+    void JustEngagedWith(Unit* who) override
     {
         DoCast(who, SPELL_CHARGE);
 
@@ -2152,12 +2152,12 @@ struct npc_siege_of_orgrimmar_mokvar_the_treasurer : public customCreatureAI
 // Cage Prisoner 72486, 72640
 struct npc_siege_of_orgrimmar_cage_prisoner : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_cage_prisoner(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_siege_of_orgrimmar_cage_prisoner(Creature* creature) : customCreatureAI(creature)
+    {
         me->Respawn();
         hasIntro = false;
     }
-    
+
     TaskScheduler scheduler;
     bool hasIntro;
 
@@ -2267,7 +2267,7 @@ struct npc_siege_of_orgrimmar_korkron_shadowmage : public customCreatureAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (attacker && attacker->GetTypeId() != TYPEID_PLAYER && HealthBelowPct(70))
+        if (attacker && !attacker->IsPlayer() && HealthBelowPct(70))
             damage = 0;
     }
 
@@ -2486,8 +2486,8 @@ struct npc_siege_of_orgrimmar_overlord_runthak : public customCreatureAI
 // Hellscream Demolisher 72194
 struct npc_siege_of_orgrimmar_hellscream_demolisher : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_hellscream_demolisher(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_siege_of_orgrimmar_hellscream_demolisher(Creature* creature) : customCreatureAI(creature)
+    {
         SetCombatMovement(false);
     }
 
@@ -2535,8 +2535,8 @@ struct npc_siege_of_orgrimmar_hellscream_demolisher : public customCreatureAI
 // Groldar 72145
 struct npc_siege_of_orgrimmar_groldar : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_groldar(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_siege_of_orgrimmar_groldar(Creature* creature) : customCreatureAI(creature)
+    {
         hasTriggered = false;
     }
 
@@ -2587,7 +2587,7 @@ struct npc_siege_of_orgrimmar_doomlord : public customCreatureAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (attacker && attacker->GetTypeId() != TYPEID_PLAYER && HealthBelowPct(70))
+        if (attacker && !attacker->IsPlayer() && HealthBelowPct(70))
             damage = 0;
     }
 
@@ -2785,7 +2785,7 @@ struct npc_siege_of_orgrimmar_korkron_gunner : public customCreatureAI
 // Korkron Dark Farseer 72770
 struct npc_siege_of_orgrimmar_korkron_dark_farseer : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_korkron_dark_farseer(Creature* creature) : customCreatureAI(creature) 
+    npc_siege_of_orgrimmar_korkron_dark_farseer(Creature* creature) : customCreatureAI(creature)
     {
         hasYell = false;
     }
@@ -2887,7 +2887,7 @@ struct npc_siege_of_orgrimmar_korkron_dark_farseer : public customCreatureAI
 // Korkron Dark Wolf 72768
 struct npc_siege_of_orgrimmar_korkron_dark_wolf : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_korkron_dark_wolf(Creature* creature) : customCreatureAI(creature) 
+    npc_siege_of_orgrimmar_korkron_dark_wolf(Creature* creature) : customCreatureAI(creature)
     {
         x = 0.0f; y = 0.0f; z = me->GetHomePosition().GetPositionZ();
         GetPositionWithDistInOrientation(me, 55.0f, me->GetOrientation(), x, y);
@@ -3331,8 +3331,8 @@ struct npc_korkron_iron_sentinel : public customCreatureAI
 // Korkron Gunner RP event 74158
 struct npc_siege_of_orgrimmar_korkron_gunner_rp_event : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_korkron_gunner_rp_event(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_siege_of_orgrimmar_korkron_gunner_rp_event(Creature* creature) : customCreatureAI(creature)
+    {
         hasTriggeredRP = false;
         SetCombatMovement(false);
     }
@@ -3441,7 +3441,7 @@ struct npc_war_master_kragg : public customCreatureAI
 // Thresher Turret 73742
 struct npc_siege_of_orgrimmar_thresher_turret : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_thresher_turret(Creature* creature) : customCreatureAI(creature) 
+    npc_siege_of_orgrimmar_thresher_turret(Creature* creature) : customCreatureAI(creature)
     {
         SetCombatMovement(false);
     }
@@ -3621,7 +3621,7 @@ struct npc_siege_of_orgrimmar_starved_yeti : public ScriptedAI
 // Aggron 72981
 struct npc_siege_of_orgrimmar_aggron : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_aggron(Creature* creature) : customCreatureAI(creature) 
+    npc_siege_of_orgrimmar_aggron(Creature* creature) : customCreatureAI(creature)
     {
         if (me->GetInstanceScript() && me->GetInstanceScript()->GetData(DATA_SIEGECRAFTER_PRE_EVENT) != DONE)
             me->Respawn(); // server crash case
@@ -3669,8 +3669,8 @@ struct npc_siege_of_orgrimmar_aggron : public customCreatureAI
 // Blackfuse Korkron Overseer 73098
 struct npc_siege_of_orgrimmar_blackfuse_korkron_overseer : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_blackfuse_korkron_overseer(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_siege_of_orgrimmar_blackfuse_korkron_overseer(Creature* creature) : customCreatureAI(creature)
+    {
         if (me->GetInstanceScript() && me->GetInstanceScript()->GetData(DATA_SIEGECRAFTER_PRE_EVENT) != DONE)
             me->Respawn(); // server crash case
     }
@@ -3718,7 +3718,7 @@ struct npc_siege_of_orgrimmar_blackfuse_korkron_overseer : public customCreature
 // Blackfuse Sellsword 73091
 struct npc_siege_of_orgrimmar_blackfuse_sellsword : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_blackfuse_sellsword(Creature* creature) : customCreatureAI(creature) 
+    npc_siege_of_orgrimmar_blackfuse_sellsword(Creature* creature) : customCreatureAI(creature)
     {
         if (me->GetInstanceScript() && me->GetInstanceScript()->GetData(DATA_SIEGECRAFTER_PRE_EVENT) != DONE)
             me->Respawn(); // server crash case
@@ -3773,8 +3773,8 @@ struct npc_siege_of_orgrimmar_blackfuse_sellsword : public customCreatureAI
 // Blackfuse Engineer 73095
 struct npc_siege_of_orgrimmar_blackfuse_engineer : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_blackfuse_engineer(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_siege_of_orgrimmar_blackfuse_engineer(Creature* creature) : customCreatureAI(creature)
+    {
         if (me->GetInstanceScript() && me->GetInstanceScript()->GetData(DATA_SIEGECRAFTER_PRE_EVENT) != DONE)
             me->Respawn(); // server crash case
     }
@@ -3847,7 +3847,7 @@ struct npc_siege_of_orgrimmar_blackfuse_engineer : public customCreatureAI
 // Gorodan 72964
 struct npc_siege_of_orgrimmar_gorodan : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_gorodan(Creature* creature) : customCreatureAI(creature) 
+    npc_siege_of_orgrimmar_gorodan(Creature* creature) : customCreatureAI(creature)
     {
         if (me->GetInstanceScript() && me->GetInstanceScript()->GetData(DATA_SIEGECRAFTER_PRE_EVENT) != DONE)
             me->Respawn(); // server crash case
@@ -3924,8 +3924,8 @@ struct npc_siege_of_orgrimmar_gorodan : public customCreatureAI
 // Shanna Sparkfizz 72986
 struct npc_siege_of_orgrimmar_shanna_sparkfizz : public customCreatureAI
 {
-    npc_siege_of_orgrimmar_shanna_sparkfizz(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_siege_of_orgrimmar_shanna_sparkfizz(Creature* creature) : customCreatureAI(creature)
+    {
         if (me->GetInstanceScript() && me->GetInstanceScript()->GetData(DATA_SIEGECRAFTER_PRE_EVENT) != DONE)
             me->Respawn(); // server crash case
 
@@ -4434,7 +4434,7 @@ struct npc_siege_of_orgrimmar_blood_of_yshaarj_trigger : public customCreatureAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -4861,7 +4861,7 @@ struct npc_siege_of_orgrimmar_korkron_prisoners : public ScriptedAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
 
@@ -4929,7 +4929,7 @@ class go_siege_of_orgrimmar_korkron_cage : public GameObjectScript
     public:
         go_siege_of_orgrimmar_korkron_cage() : GameObjectScript("go_siege_of_orgrimmar_korkron_cage") { }
 
-        void OnGameObjectStateChanged(GameObject* go, uint32 state) 
+        void OnGameObjectStateChanged(GameObject* go, uint32 state)
         {
             if (state != GO_STATE_ACTIVE)
                 return;
@@ -4990,18 +4990,18 @@ class spell_aqueous_defender_vortex : public SpellScript
     }
 };
 
-class VortexPredicate 
+class VortexPredicate
 {
     public:
         VortexPredicate(Unit* const m_caster) : _caster(m_caster) { }
-    
+
         bool operator()(WorldObject* object)
         {
             return object && object->ToUnit() && _caster->GetExactDist2d(object->ToUnit()) < 8.5f;
-    
+
             return false;
         }
-    
+
     private:
         Unit const* _caster;
 };
@@ -5208,7 +5208,7 @@ class spell_dragonmaw_tidal_wave : public SpellScript
     void FilterTargets(std::list<WorldObject*>& targets)
     {
         targets.remove_if([=](WorldObject* target) { return target && target->ToPlayer() && !GetCaster()->HasInArc(M_PI / 3, target); });
-        
+
         if (!targets.empty())
             copyTargets.push_back(targets.front());
     }
@@ -5437,7 +5437,7 @@ class spell_siege_of_orgrimmar_call_reinforcements : public SpellScript
     }
 };
 
-// Cannon Blast 146390 
+// Cannon Blast 146390
 class spell_siege_of_orgrimmar_cannon_blast : public SpellScript
 {
     PrepareSpellScript(spell_siege_of_orgrimmar_cannon_blast);
@@ -5767,7 +5767,7 @@ class spell_siege_of_orgrimmar_ground_slam : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
     }
 
     void Register() override
@@ -6020,12 +6020,12 @@ class AreaTrigger_at_siege_of_orgrimmar_corrupted_waters : public AreaTriggerScr
 {
     public:
         AreaTrigger_at_siege_of_orgrimmar_corrupted_waters() : AreaTriggerScript("AreaTrigger_at_siege_of_orgrimmar_corrupted_waters") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             if (Creature* lorewalkerCho = ObjectAccessor::GetCreature(*player, player->GetInstanceScript() ? player->GetInstanceScript()->GetGuidData(NPC_LOREWALKER_CHO) : ObjectGuid::Empty))
                 lorewalkerCho->AI()->DoAction(ACTION_UNDER_TORMENTED);
-    
+
             return false;
         }
 };
@@ -6035,7 +6035,7 @@ class AreaTrigger_at_soo_vault_of_yshaarj_entrance : public AreaTriggerScript
 {
     public:
         AreaTrigger_at_soo_vault_of_yshaarj_entrance() : AreaTriggerScript("AreaTrigger_at_soo_vault_of_yshaarj_entrance") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (Creature* norushen = ObjectAccessor::GetCreature(*player, player->GetInstanceScript() ? player->GetInstanceScript()->GetGuidData(NPC_NORUSHEN) : ObjectGuid::Empty))
@@ -6259,7 +6259,7 @@ class AreaTrigger_at_soo_forward_korkron_cage_prisoners : public AreaTriggerScri
         {
             if (Creature* cagePrisoner = ObjectAccessor::GetCreature(*player, player->GetInstanceScript() ? player->GetInstanceScript()->GetGuidData(NPC_DOYODA) : ObjectGuid::Empty))
                 cagePrisoner->AI()->DoAction(ACTION_CAGE_PRISONERS_INTRO);
-    
+
             return true;
         }
 };

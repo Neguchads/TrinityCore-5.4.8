@@ -104,7 +104,7 @@ class boss_loken : public CreatureScript
             {
                 ScriptedAI::MoveInLineOfSight(who);
 
-                if (!introDone && who->GetTypeId() == TYPEID_PLAYER && me->GetExactDist2d(who) <= 75.0f && who->GetPositionZ() >= 50.0f)
+                if (!introDone && who->IsPlayer() && me->GetExactDist2d(who) <= 75.0f && who->GetPositionZ() >= 50.0f)
                 {
                     introDone = true;
                     Talk(SAY_INTRO_1);
@@ -125,12 +125,12 @@ class boss_loken : public CreatureScript
             void JustEngagedWith(Unit* /*who*/) override
             {
                 Talk(SAY_AGGRO);
-               
+
                 if (instance)
                 {
                     instance->SetData(TYPE_LOKEN, IN_PROGRESS);
                     //instance->DoStartTimedAchievement(CRITERIA_START_TYPE_EVENT, ACHIEV_TIMELY_DEATH_START_EVENT);
-                   
+
                     if (instance->GetData(TYPE_IONAR) != DONE)
                     {
                         Map* map = me->GetMap();
@@ -139,7 +139,7 @@ class boss_loken : public CreatureScript
                             Map::PlayerList const& PlayerList = map->GetPlayers();
                             if (PlayerList.isEmpty())
                                 return;
-     
+
                             float fDist = 0;
                             for (auto&& ref : PlayerList)
                                 if (Player* player = ref.GetSource())
@@ -162,7 +162,7 @@ class boss_loken : public CreatureScript
 
                 AchievementEntry const* AchievTimelyDeath = sAchievementStore.LookupEntry(ACHIEV_TIMELY_DEATH_START_EVENT);
                 Map* map = me->GetMap();
-                            
+
                 if (IsHeroic() && AchievTimer < 120000 && map && map->IsDungeon() && AchievTimelyDeath)
                 {
                     for (auto&& ref : map->GetPlayers())

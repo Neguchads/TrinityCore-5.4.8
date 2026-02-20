@@ -730,7 +730,7 @@ struct npc_ragefire_detonator : public ScriptedAI
         {
             itr->RemoveAllAuras();
             itr->CastSpell(itr, SPELL_FUSE, true);
-            
+
             if (Creature* bomb = me->FindNearestCreature(NPC_BOMB, 50.0f, true))
             {
                 itr->GetMotionMaster()->MovePoint(0, *bomb);
@@ -751,8 +751,8 @@ struct npc_ragefire_detonator : public ScriptedAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
-    { 
+    void UpdateAI(uint32 diff) override
+    {
         scheduler.Update(diff);
     };
 };
@@ -760,8 +760,8 @@ struct npc_ragefire_detonator : public ScriptedAI
 // Dark Shaman Xorenth 70683
 struct npc_ragefire_dark_shaman_xorenth : public customCreatureAI
 {
-    npc_ragefire_dark_shaman_xorenth(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_ragefire_dark_shaman_xorenth(Creature* creature) : customCreatureAI(creature)
+    {
         korkronDied = 0;
         delay = 0;
         x = 0.0f; y = 0.0f;
@@ -1191,7 +1191,7 @@ struct npc_ragefire_bring_items : public ScriptedAI
 // Overseer Elaglo 71030
 struct npc_ragefire_overseer_elaglo : public customCreatureAI
 {
-    npc_ragefire_overseer_elaglo(Creature* creature) : customCreatureAI(creature) 
+    npc_ragefire_overseer_elaglo(Creature* creature) : customCreatureAI(creature)
     {
         x = 0.0f; y = 0.0f;
     }

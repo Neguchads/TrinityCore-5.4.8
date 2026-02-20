@@ -524,8 +524,8 @@ enum Creatures
     NPC_SILVER_COVENANT_SPELLBLOW      = 69624,
     NPC_SHANBU_VEREESA                 = 69615,
     NPC_SHANBU_JAINA                   = 69616,
-                                       
-    // Horde                           
+
+    // Horde
     NPC_SUNREAVER_CAPTAIN              = 70352,
     NPC_SUNREAVER_PYROMANCER           = 70351,
     NPC_LORTHEMAR_THERON               = 67990,

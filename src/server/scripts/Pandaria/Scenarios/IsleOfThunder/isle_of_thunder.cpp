@@ -46,8 +46,8 @@ enum Spells
     SPELL_ARCANITAL_BARRIER       = 140662,
     SPELL_ARCANITAL_BARRIER_EFF   = 140661,
     SPELL_BERSERKER_RUSH          = 140079,
-                                  
-    /*Tear Down This Wall*/       
+
+    /*Tear Down This Wall*/
     SPELL_LAUNCH_INTRO_SCENE      = 137570,
     SPELL_LAUNCH_WALL_SCENE       = 137490,
     SPELL_WALL_EXPLOSIVE          = 137525,
@@ -407,7 +407,7 @@ class npc_shaolmara_lady_jaina : public CreatureScript
 // Player Covenant Hippogryph 70234
 struct npc_shaolmara_player_covenant_hippogryph : public ScriptedAI
 {
-    npc_shaolmara_player_covenant_hippogryph(Creature* creature) : ScriptedAI(creature) 
+    npc_shaolmara_player_covenant_hippogryph(Creature* creature) : ScriptedAI(creature)
     {
         me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
         me->SetSpeed(MOVE_RUN, 3.35f);
@@ -701,12 +701,12 @@ struct npc_shaolmara_vereesa_windrunner : public ScriptedAI
                 case EVENT_MISC: // Scheduler not schedule anymore...
                     if (Creature* arcanital = me->SummonCreature(NPC_ARCANITAL_MARAKAH, arcanitalAnkiPoint, TEMPSUMMON_TIMED_DESPAWN, 5 * IN_MILLISECONDS))
                         arcanital->AI()->Talk(TALK_SPECIAL_3);
-                
+
                     events.ScheduleEvent(EVENT_MISC + 1, 4.5 * IN_MILLISECONDS);
                     break;
                 case EVENT_MISC + 1:
                     Talk(TALK_SPECIAL_15);
-                
+
                     me->SummonCreature(NPC_ANKI, ankiSpawnPoint, TEMPSUMMON_MANUAL_DESPAWN);
                     break;
                 case EVENT_MISC + 2:
@@ -1038,7 +1038,7 @@ struct npc_shaolmara_anki : public customCreatureAI
 // Beastcaller Pakutesh 69532
 struct npc_shaolmara_beastcaller_pakutesh : public customCreatureAI
 {
-    npc_shaolmara_beastcaller_pakutesh(Creature* creature) : customCreatureAI(creature) 
+    npc_shaolmara_beastcaller_pakutesh(Creature* creature) : customCreatureAI(creature)
     {
         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED | UNIT_FLAG_IMMUNE_TO_PC);
     }
@@ -1092,10 +1092,10 @@ struct barricadeBaseAI : public customCreatureAI
             case ACTION_BARRICADE_ASSAULT:
                 me->SetVisible(true);
                 me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);
-            
+
                 if (me->GetEntry() == NPC_ZANDALARI_BARRICADE_A || me->GetEntry() == NPC_ZANDALARI_BARRICADE_H)
                     me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);
-            
+
                 if (me->GetEntry() == NPC_ZEBTULA_SPEARANGER)
                 {
                     SetCombatMovement(false);
@@ -1139,7 +1139,7 @@ struct npc_shaolmara_zebtula_stoneshield : public barricadeBaseAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(75) && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(75) && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -1186,7 +1186,7 @@ struct npc_shaolmara_zandalari_barricade : public barricadeBaseAI
         me->DisappearAndDie();
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         events.Update(diff);
 
@@ -1884,15 +1884,15 @@ class npc_teardown_scout_captain_elsia : public CreatureScript
 
         struct npc_teardown_scout_captain_elsiaAI : public ScriptedAI
         {
-            npc_teardown_scout_captain_elsiaAI(Creature* creature) : ScriptedAI(creature) 
+            npc_teardown_scout_captain_elsiaAI(Creature* creature) : ScriptedAI(creature)
             {
                 if (!me->GetDBTableGUIDLow())
                     me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             }
-    
+
             TaskScheduler scheduler;
             uint32 delay;
-    
+
             void DoAction(int32 actionId) override
             {
                 switch (actionId)
@@ -1900,14 +1900,14 @@ class npc_teardown_scout_captain_elsia : public CreatureScript
                     case ACTION_START_INTRO:
                     {
                         me->GetMotionMaster()->MovePoint(0, tearDownElsiaIntro);
-                    
+
                         delay = me->GetSplineDuration();
                         scheduler
                             .Schedule(Milliseconds(delay), [this](TaskContext context)
                         {
                             Talk(TALK_INTRO);
                         });
-                    
+
                         scheduler
                             .Schedule(Milliseconds(delay += 6 * IN_MILLISECONDS), [this](TaskContext context)
                         {
@@ -1968,13 +1968,13 @@ class npc_teardown_scout_captain_elsia : public CreatureScript
                     }
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_teardown_scout_captain_elsiaAI(creature);
@@ -1984,7 +1984,7 @@ class npc_teardown_scout_captain_elsia : public CreatureScript
 // Heavy Explosives 69606
 struct npc_teardown_heavy_explosives : public ScriptedAI
 {
-    npc_teardown_heavy_explosives(Creature* creature) : ScriptedAI(creature) 
+    npc_teardown_heavy_explosives(Creature* creature) : ScriptedAI(creature)
     {
         me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
     }
@@ -2019,7 +2019,7 @@ struct npc_teardown_heavy_explosives : public ScriptedAI
         });
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -2365,7 +2365,7 @@ struct npc_teardown_covenant_leader : public barricadeBaseAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(75) && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(75) && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -2617,7 +2617,7 @@ struct npc_beastmaster_horaki : public customCreatureAI
         {
             case ACTION_START_INTRO:
                 me->SetVisible(true);
-            
+
                 Talk(TALK_INTRO);
                 break;
             case ACTION_FLY_FALL:
@@ -2861,7 +2861,7 @@ struct npc_thunderwing_to_skies : public customCreatureAI
             case ACTION_START_INTRO:
             {
                 Movement::MoveSplineInit init(me);
-            
+
                 bool hasHorde = me->GetInstanceScript() && me->GetInstanceScript()->GetData64(FACTION_DATA);
 
                 if (hasHorde)
@@ -2874,11 +2874,11 @@ struct npc_thunderwing_to_skies : public customCreatureAI
                     for (auto&& itr : toSkiesAlliancePath)
                         init.Path().push_back(G3D::Vector3(itr.GetPositionX(), itr.GetPositionY(), itr.GetPositionZ()));
                 }
-            
+
                 init.SetFly();
                 init.SetUncompressed();
                 init.Launch();
-            
+
                 scheduler
                     .Schedule(Milliseconds(me->GetSplineDuration()), [this](TaskContext context)
                 {
@@ -2888,10 +2888,10 @@ struct npc_thunderwing_to_skies : public customCreatureAI
                     me->StopMoving();
 
                     Movement::MoveSplineInit newInit(me);
-            
+
                     for (auto&& itr : cycleFlyPath)
                         newInit.Path().push_back(G3D::Vector3(itr.GetPositionX(), itr.GetPositionY(), itr.GetPositionZ()));
-            
+
                     newInit.SetFly();
                     newInit.SetCyclic();
                     newInit.SetUncompressed();
@@ -3030,10 +3030,10 @@ struct npc_zandlari_beastcaller_to_skies : public customCreatureAI
             me->GetInstanceScript()->SetData(STEP_INTERCEPTION, IN_PROGRESS);
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
-    } 
+    }
 };
 
 // Taoshi 69810
@@ -3041,36 +3041,36 @@ class npc_taoshi_to_skies : public CreatureScript
 {
     public:
         npc_taoshi_to_skies() : CreatureScript("npc_taoshi_to_skies") { }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
-    
+
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "I`m ready", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-    
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
-    
+
             if (action == GOSSIP_ACTION_INFO_DEF + 1)
                 creature->AI()->DoAction(ACTION_BREAK_THE_WALL);
-    
+
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
-    
+
         struct npc_taoshi_to_skiesAI : public customCreatureAI
         {
             npc_taoshi_to_skiesAI(Creature* creature) : customCreatureAI(creature) { }
-    
+
             TaskScheduler scheduler;
-    
+
             void InitializeAI() override
             {
                 if (me->GetPositionZ() < 45.0f)
@@ -3092,7 +3092,7 @@ class npc_taoshi_to_skies : public CreatureScript
                     me->GetMotionMaster()->MoveJump(taoshiJump[0], 20.0f, 15.0f, EVENT_JUMP);
                 }
             }
-    
+
             void MovementInform(uint32 type, uint32 pointId) override
             {
                 switch (pointId)
@@ -3135,13 +3135,13 @@ class npc_taoshi_to_skies : public CreatureScript
                     });
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_taoshi_to_skiesAI(creature);
@@ -3201,7 +3201,7 @@ struct npc_taoshi_stormsea_landing : public customCreatureAI
                 {
                     Talk(TALK_SPECIAL_3);
                 });
-            
+
                 scheduler
                     .Schedule(Seconds(10), [this](TaskContext context)
                 {
@@ -3217,13 +3217,13 @@ struct npc_taoshi_stormsea_landing : public customCreatureAI
                 {
                     Talk(TALK_SPECIAL_6);
                 });
-            
+
                 scheduler
                     .Schedule(Milliseconds(delay += 4200), [this](TaskContext context)
                 {
                     Talk(TALK_SPECIAL_7);
                 });
-            
+
                 scheduler
                     .Schedule(Milliseconds(delay += 4900), [this](TaskContext context)
                 {
@@ -3421,7 +3421,7 @@ struct npc_taoshi_stormsea_landing_ship : public customCreatureAI
                 me->SetVisible(true);
                 DoCast(me, SPELL_INFILT_STORMSEA_LANDING, true);
                 Talk(TALK_INTRO);
-            
+
                 scheduler
                     .Schedule(Milliseconds(4500), [this](TaskContext context)
                 {
@@ -3975,30 +3975,30 @@ class npc_stormsea_landing_taoshi_queue : public CreatureScript
 {
     public:
         npc_stormsea_landing_taoshi_queue() : CreatureScript("npc_stormsea_landing_taoshi_queue") { }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
-    
+
             if (action == GOSSIP_ACTION_INFO_DEF + 1)
             {
                 lfg::LfgDungeonSet scenario = { LFG_DUNGEON_STORMSEA_LANDING };
                 sLFGMgr->JoinLfg(player, lfg::PLAYER_ROLE_DAMAGE, scenario, "");
             }
-    
+
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
-    
+
             if (player->GetQuestStatus(QUEST_A_BOLT_IDEA_A) == QUEST_STATUS_INCOMPLETE || player->GetQuestStatus(QUEST_DECISIVE_ACTION_H) == QUEST_STATUS_INCOMPLETE)
                 player->ADD_GOSSIP_ITEM_DB(player->GetDefaultGossipMenuForSource(creature), 0, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-    
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
@@ -4671,9 +4671,9 @@ struct shanbuAssaultBaseAI : public customCreatureAI
         }
     }
 
-    void AttackStart(Unit* target) override 
+    void AttackStart(Unit* target) override
     {
-        if (!target || target->GetTypeId() == TYPEID_PLAYER || target->GetEntry() == NPC_SUNREAVER_MAGUS)
+        if (!target || target->IsPlayer() || target->GetEntry() == NPC_SUNREAVER_MAGUS)
             return;
 
         me->Attack(target, true);
@@ -4701,31 +4701,31 @@ class npc_shanbu_fall_elsia : public CreatureScript
 {
     public:
         npc_shanbu_fall_elsia() : CreatureScript("npc_shanbu_fall_elsia") { }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
-    
+
             if (action == GOSSIP_ACTION_INFO_DEF + 1)
                 creature->AI()->DoAction(ACTION_START_ASSAULT);
-    
+
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
-    
+
             if (!creature->GetDBTableGUIDLow())
                 player->ADD_GOSSIP_ITEM_DB(player->GetDefaultGossipMenuForSource(creature), 0, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-    
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
-    
+
         struct npc_shanbu_fall_elsiaAI : public shanbuAssaultBaseAI
         {
             npc_shanbu_fall_elsiaAI(Creature* creature) : shanbuAssaultBaseAI(creature) { }
@@ -4744,13 +4744,13 @@ class npc_shanbu_fall_elsia : public CreatureScript
                 ScriptedAI::EnterEvadeMode();
                 me->GetMotionMaster()->MoveTargetedHome();
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_shanbu_fall_elsiaAI(creature);
@@ -4799,7 +4799,7 @@ struct npc_shanbu_palace_gatekeeper : public customCreatureAI
             me->GetInstanceScript()->SetData(STEP_KILL_THE_GUARDS, IN_PROGRESS);
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         if (!UpdateVictim())
             return;
@@ -5058,7 +5058,7 @@ class npc_wrathion_thunder_forge : public CreatureScript
 {
     public:
         npc_wrathion_thunder_forge() : CreatureScript("npc_wrathion_thunder_forge") { }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
@@ -5079,12 +5079,12 @@ class npc_wrathion_thunder_forge : public CreatureScript
                     break;
                 }
             }
-    
+
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
@@ -5099,7 +5099,7 @@ class npc_wrathion_thunder_forge : public CreatureScript
             }
             else if (player->GetQuestStatus(QUEST_THE_THUNDER_FORGE) == QUEST_STATUS_INCOMPLETE)
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "I`m ready!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
-    
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
@@ -5111,7 +5111,7 @@ class npc_wrathion_thunder_forge : public CreatureScript
 
             return false;
         }
-    
+
         struct npc_wrathion_thunder_forgeAI : public ScriptedAI
         {
             npc_wrathion_thunder_forgeAI(Creature* creature) : ScriptedAI(creature) { }
@@ -5141,18 +5141,18 @@ class npc_wrathion_thunder_forge : public CreatureScript
                     {
                         me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                         Talk(TALK_INTRO);
-                    
+
                         if (instance)
                             instance->SetData(STEP_TALK_WITH_WRATHION, DONE);
-                    
+
                         Movement::MoveSplineInit init(me);
-                    
+
                         for (auto&& itr : WrathionCruciblePath)
                             init.Path().push_back(G3D::Vector3(itr.GetPositionX(), itr.GetPositionY(), itr.GetPositionZ()));
-                    
+
                         init.SetWalk(true);
                         init.Launch();
-                    
+
                         scheduler
                             .Schedule(Milliseconds(me->GetSplineDuration()), [this](TaskContext context)
                         {
@@ -5161,7 +5161,7 @@ class npc_wrathion_thunder_forge : public CreatureScript
                             if (GameObject* moguCrucible = ObjectAccessor::GetGameObject(*me, instance ? instance->GetGuidData(GO_MOGU_CRUCIBLE) : ObjectGuid::Empty))
                                 moguCrucible->RemoveFlag(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_NOT_SELECTABLE);
                         });
-                    
+
                         break;
                     }
                     case ACTION_FORGE_INFLUSION:
@@ -5329,13 +5329,13 @@ class npc_wrathion_thunder_forge : public CreatureScript
                         break;
                 }
             }
-    
-            void UpdateAI(uint32 diff) override 
+
+            void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_wrathion_thunder_forgeAI(creature);
@@ -5403,7 +5403,7 @@ struct npc_thunder_forge_shado_pan_warrior : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(45) && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(45) && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -5578,7 +5578,7 @@ struct npc_forgemaster_vulkon : public customCreatureAI
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
         // Allow to death from creature if player que as healer
-        if (HealthBelowPct(45) && attacker->GetTypeId() != TYPEID_PLAYER && me->GetInstanceScript() && !me->GetInstanceScript()->GetData(ROLE_DATA))
+        if (HealthBelowPct(45) && !attacker->IsPlayer() && me->GetInstanceScript() && !me->GetInstanceScript()->GetData(ROLE_DATA))
             damage = 0;
     }
 
@@ -5638,7 +5638,7 @@ struct npc_thunder_forge_shanze_warrior : public customCreatureAI
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
         // Allow to death from creature if player que as healer
-        if (HealthBelowPct(45) && attacker->GetTypeId() != TYPEID_PLAYER && me->GetInstanceScript() && !me->GetInstanceScript()->GetData(ROLE_DATA))
+        if (HealthBelowPct(45) && !attacker->IsPlayer() && me->GetInstanceScript() && !me->GetInstanceScript()->GetData(ROLE_DATA))
             damage = 0;
     }
 
@@ -5697,7 +5697,7 @@ struct npc_thunder_forge_shanze_pyromancer : public customCreatureAI
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
         // Allow to death from creature if player que as healer
-        if (HealthBelowPct(45) && attacker->GetTypeId() != TYPEID_PLAYER && me->GetInstanceScript() && !me->GetInstanceScript()->GetData(ROLE_DATA))
+        if (HealthBelowPct(45) && !attacker->IsPlayer() && me->GetInstanceScript() && !me->GetInstanceScript()->GetData(ROLE_DATA))
             damage = 0;
     }
 
@@ -5881,7 +5881,7 @@ struct npc_sha_almagmation : public customCreatureAI
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
         // Allow to death from creature if player que as healer
-        if (HealthBelowPct(45) && attacker->GetTypeId() != TYPEID_PLAYER && me->GetInstanceScript() && !me->GetInstanceScript()->GetData(ROLE_DATA))
+        if (HealthBelowPct(45) && !attacker->IsPlayer() && me->GetInstanceScript() && !me->GetInstanceScript()->GetData(ROLE_DATA))
             damage = 0;
     }
 
@@ -5958,7 +5958,7 @@ struct npc_thunder_forge_celestial_defender : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(45) && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(45) && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -6043,7 +6043,7 @@ struct npc_thunder_forge_celestial_blacksmith : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(45) && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(45) && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -6058,7 +6058,7 @@ class go_teardown_heavy_explosives : public GameObjectScript
 {
     public:
         go_teardown_heavy_explosives() : GameObjectScript("go_teardown_heavy_explosives") { }
-    
+
         bool OnGossipHello(Player* player, GameObject* go) override
         {
             go->SetFlag(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_INTERACT_COND);
@@ -6075,14 +6075,14 @@ class go_thunder_forge_mogu_crucible : public GameObjectScript
 {
     public:
         go_thunder_forge_mogu_crucible() : GameObjectScript("go_thunder_forge_mogu_crucible") { }
-    
+
         bool OnGossipHello(Player* player, GameObject* go) override
         {
             go->SetFlag(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_INTERACT_COND);
-    
+
             if (player->GetInstanceScript())
                 player->GetInstanceScript()->SetData(STEP_FORGED_FROM_TRILLIUM, DONE);
-    
+
             return true;
         }
 };
@@ -6092,7 +6092,7 @@ class go_thunder_forge_anvil : public GameObjectScript
 {
     public:
         go_thunder_forge_anvil() : GameObjectScript("go_thunder_forge_anvil") { }
-    
+
         bool OnGossipHello(Player* player, GameObject* go) override
         {
             if (go->GetInstanceScript())
@@ -6102,7 +6102,7 @@ class go_thunder_forge_anvil : public GameObjectScript
                 if (Creature* anvil = ObjectAccessor::GetCreature(*go, go->GetInstanceScript() ? go->GetInstanceScript()->GetGuidData(NPC_THUNDER_FORGE_2) : ObjectGuid::Empty))
                     anvil->CastSpell(anvil, SPELL_THUNDER_SURGE, true);
             }
-    
+
             return true;
         }
 };
@@ -6585,18 +6585,18 @@ class scene_isle_of_thunder_tear_down_wall_intro : public SceneScript
 {
     public:
         scene_isle_of_thunder_tear_down_wall_intro() : SceneScript("scene_isle_of_thunder_tear_down_wall_intro") { }
-    
+
         void OnSceneStart(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             player->NearTeleportTo(tearDownPastIntro.GetPositionX(), tearDownPastIntro.GetPositionY(), tearDownPastIntro.GetPositionZ(), tearDownPastIntro.GetOrientation());
         }
-    
+
         void OnSceneComplete(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             if (Creature* elsia = ObjectAccessor::GetCreature(*player, player->GetInstanceScript() ? player->GetInstanceScript()->GetGuidData(NPC_TEARDOWN_SCOUT_CAPTAIN_ELSIA) : ObjectGuid::Empty))
                 elsia->AI()->DoAction(ACTION_START_INTRO);
         }
-    
+
         void OnSceneCancel(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             if (Creature* elsia = ObjectAccessor::GetCreature(*player, player->GetInstanceScript() ? player->GetInstanceScript()->GetGuidData(NPC_TEARDOWN_SCOUT_CAPTAIN_ELSIA) : ObjectGuid::Empty))
@@ -6609,13 +6609,13 @@ class scene_isle_of_thunder_tear_down_wall_explosive : public SceneScript
 {
     public:
         scene_isle_of_thunder_tear_down_wall_explosive() : SceneScript("scene_isle_of_thunder_tear_down_wall_explosive") { }
-    
+
         void OnSceneComplete(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             if (player->GetInstanceScript())
                 player->GetInstanceScript()->SetData(STEP_KILL_WARGOD_ALCHUKLA, IN_PROGRESS);
         }
-    
+
         void OnSceneCancel(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             if (player->GetInstanceScript())
@@ -6628,7 +6628,7 @@ class AreaTrigger_at_thunder_forge_to_skies : public AreaTriggerScript
 {
     public:
         AreaTrigger_at_thunder_forge_to_skies() : AreaTriggerScript("AreaTrigger_at_thunder_forge_to_skies") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             if (player->GetInstanceScript() && player->GetInstanceScript()->GetData(STEP_WAS_YOURS_BECOME_MINE) != DONE)
@@ -6639,7 +6639,7 @@ class AreaTrigger_at_thunder_forge_to_skies : public AreaTriggerScript
                 if (Creature* taoshi = player->FindNearestCreature(NPC_TAOSHI_CAVE, 200.0f, true))
                     taoshi->DespawnOrUnsummon();
             }
-    
+
             return false;
         }
 };
@@ -6649,12 +6649,12 @@ class AreaTrigger_at_shanbu_fall : public AreaTriggerScript
 {
     public:
         AreaTrigger_at_shanbu_fall() : AreaTriggerScript("AreaTrigger_at_shanbu_fall") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             if (player->GetInstanceScript() && player->GetInstanceScript()->GetData(STEP_BLOODY_CROSSROAD) < IN_PROGRESS && player->GetInstanceScript()->GetData64(PHASE_DATA) == SCENARIO_FALL_OF_SHANBU)
                 player->GetInstanceScript()->SetData(STEP_BLOODY_CROSSROAD, IN_PROGRESS);
-    
+
             return false;
         }
 };
@@ -6664,7 +6664,7 @@ class cond_mark_of_taoshi : public ConditionScript
 {
     public:
         cond_mark_of_taoshi() : ConditionScript("cond_mark_of_taoshi") { }
-    
+
         bool OnConditionCheck(Condition const* cond, ConditionSourceInfo& source) override
         {
             return source.mConditionTargets[0] && source.mConditionTargets[0]->ToCreature() && source.mConditionTargets[0]->ToCreature()->HasAura(SPELL_MARK_OF_TAOSHI);

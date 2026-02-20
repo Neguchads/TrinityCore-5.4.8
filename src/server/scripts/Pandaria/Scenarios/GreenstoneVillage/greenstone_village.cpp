@@ -76,7 +76,7 @@ class npc_greenstone_village_owner : public CreatureScript
             EVENT_DEFEAT     = 2,
             EVENT_SPECIAL_1  = 3,
             EVENT_SPECIAL_2  = 4,
-        };                  
+        };
 
         struct npc_greenstone_village_ownerAI : public ScriptedAI
         {
@@ -107,7 +107,6 @@ class npc_greenstone_village_owner : public CreatureScript
 
                 Reset();
             }
-
 
             void DoAction(int32 actionId) override
             {
@@ -158,7 +157,7 @@ class npc_greenstone_village_owner : public CreatureScript
 
                                 if (instance && me->GetEntry() != NPC_LA_THE_GENTLE)
                                     instance->SendScenarioProgressUpdate(CriteriaProgressData(invVillagerCriteriaType.find(me->GetEntry())->second, 1, instance->GetScenarioGUID(), time(NULL), 0, 0));
-                                
+
                                 switch (me->GetEntry())
                                 {
                                     case NPC_GRACEFUL_SWAN:
@@ -174,7 +173,7 @@ class npc_greenstone_village_owner : public CreatureScript
                                 if (instance)
                                     instance->SetData(DATA_RESCUE_VILLAGE, instance->GetData(DATA_RESCUE_VILLAGE) + 1);
                             }
-                            else 
+                            else
                                 nonCombatEvents.ScheduleEvent(EVENT_DEFEAT, 1 * IN_MILLISECONDS);
                             break;
                         case EVENT_SPECIAL_1:
@@ -960,7 +959,7 @@ class npc_greenstone_vengeful_hui : public CreatureScript
             void JustSummoned(Creature* summon) override
             {
                 summons.Summon(summon);
-                
+
                 if (Unit* target = me->getAttackerForHelper())
                     summon->AI()->AttackStart(target);
             }
@@ -1220,13 +1219,13 @@ class AreaTrigger_at_greenstone_village : public AreaTriggerScript
                     case AT_BEFORE_SWAN:
                         m_owner = ObjectAccessor::GetCreature(*player, instance->GetGuidData(NPC_GRACEFUL_SWAN));
                         break;
-                    case AT_BEFORE_RINJI: 
+                    case AT_BEFORE_RINJI:
                         m_owner = ObjectAccessor::GetCreature(*player, instance->GetGuidData(NPC_SCRIBE_RINJI));
                         break;
                 }
 
                 if (m_owner && m_owner->AI())
-                    m_owner->AI()->DoAction(ACTION_TALK);          
+                    m_owner->AI()->DoAction(ACTION_TALK);
             }
 
             return false;

@@ -25,11 +25,11 @@ class instance_secret_ingridient : public InstanceMapScript
 {
     public:
         instance_secret_ingridient() : InstanceMapScript("instance_secret_ingridient", 1157) { }
-    
+
         struct instance_secret_ingridient_InstanceMapScript : public InstanceScript
         {
             instance_secret_ingridient_InstanceMapScript(Map* map) : InstanceScript(map) { }
-    
+
             EventMap events;
             uint32 m_auiEncounter[2];
             uint32 chapterOne, chapterTwo;
@@ -56,7 +56,7 @@ class instance_secret_ingridient : public InstanceMapScript
 
                 events.Reset();
             }
-    
+
             void OnPlayerEnter(Player* player) override
             {
                 playerGUID = player->GetGUID();
@@ -193,7 +193,7 @@ class instance_secret_ingridient : public InstanceMapScript
 
                 return true;
             }
-    
+
             std::string GetSaveData() override
             {
                 OUT_SAVE_INST_DATA;
@@ -231,7 +231,7 @@ class instance_secret_ingridient : public InstanceMapScript
                     SetData(DATA_NOODLE_TIME, chapterTwo);
                 }
                 else OUT_LOAD_INST_DATA_FAIL;
-    
+
                 OUT_LOAD_INST_DATA_COMPLETE;
             }
         };

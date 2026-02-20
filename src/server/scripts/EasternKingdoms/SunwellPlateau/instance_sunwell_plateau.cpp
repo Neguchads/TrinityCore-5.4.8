@@ -341,7 +341,6 @@ class instance_sunwell_plateau : public InstanceMapScript
         }
 };
 
-
 void AddSC_instance_sunwell_plateau()
 {
     new instance_sunwell_plateau();

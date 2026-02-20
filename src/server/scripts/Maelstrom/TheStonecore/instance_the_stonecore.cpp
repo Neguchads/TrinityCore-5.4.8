@@ -205,7 +205,7 @@ class instance_the_stonecore : public InstanceMapScript
 
                     if (HasManastormEventDone)
                         SetData(DATA_CORBORUS, SPECIAL);
-                } 
+                }
                 else OUT_LOAD_INST_DATA_FAIL;
 
                 OUT_LOAD_INST_DATA_COMPLETE;

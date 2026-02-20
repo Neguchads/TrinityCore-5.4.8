@@ -157,7 +157,7 @@ public:
 
         void OnUnitDeath(Unit* unit) override
         {
-            if (unit->GetTypeId() != TYPEID_PLAYER)
+            if (!(unit->IsPlayer()))
                 return;
 
             // Player continues to be moving after death no matter if spline will be cleared along with all movements,

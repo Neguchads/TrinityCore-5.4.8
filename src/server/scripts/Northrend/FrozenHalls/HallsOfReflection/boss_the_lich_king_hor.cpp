@@ -98,7 +98,7 @@ class boss_lich_king_hor : public CreatureScript
                 if (NonFight)
                     return;
 
-                if (instance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS || who->GetTypeId() == TYPEID_PLAYER)
+                if (instance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS || who->IsPlayer())
                     return;
 
                 ScriptedAI::AttackStart(who);
@@ -122,7 +122,7 @@ class boss_lich_king_hor : public CreatureScript
 
             bool CanAIAttack(Unit const* who) const override
             {
-                return who->GetTypeId() == TYPEID_UNIT && (who->GetEntry() == NPC_JAINA_OUTRO || who->GetEntry() == NPC_SYLVANAS_OUTRO);
+                return who->IsCreature() && (who->GetEntry() == NPC_JAINA_OUTRO || who->GetEntry() == NPC_SYLVANAS_OUTRO);
             }
 
             void DamageTaken(Unit* /*attacker*/, uint32& damage) override
@@ -465,7 +465,7 @@ class npc_raging_gnoul : public CreatureScript
                             DoCast(target, SPELL_GNOUL_JUMP);
                         }
                     }
-                } 
+                }
                 else if (instance->GetData(DATA_LICHKING_EVENT) == NOT_STARTED)
                     me->DespawnOrUnsummon();
 

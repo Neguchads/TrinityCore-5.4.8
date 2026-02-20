@@ -872,7 +872,7 @@ class boss_mimiron : public CreatureScript
                         {
                             _isSelfRepairing[DATA_LEVIATHAN_MK_II] = true;
                             _mapMutex.unlock();
-                        }                        
+                        }
                         BotAliveCheck();
                         break;
                     case DO_LEVIATHAN_SELF_REPAIR_END:
@@ -880,14 +880,14 @@ class boss_mimiron : public CreatureScript
                         {
                             _isSelfRepairing[DATA_LEVIATHAN_MK_II] = false;
                             _mapMutex.unlock();
-                        } 
+                        }
                         break;
                     case DO_VX001_SELF_REPAIR_START:
                         if (_mapMutex.try_lock())
                         {
                             _isSelfRepairing[DATA_VX_001] = true;
                             _mapMutex.unlock();
-                        }                         
+                        }
                         BotAliveCheck();
                         break;
                     case DO_VX001_SELF_REPAIR_END:
@@ -895,14 +895,14 @@ class boss_mimiron : public CreatureScript
                         {
                             _isSelfRepairing[DATA_VX_001] = false;
                             _mapMutex.unlock();
-                        }                         
+                        }
                         break;
                     case DO_AERIAL_SELF_REPAIR_START:
                         if (_mapMutex.try_lock())
                         {
                             _isSelfRepairing[DATA_AERIAL_UNIT] = true;
                             _mapMutex.unlock();
-                        }                        
+                        }
                         BotAliveCheck();
                         break;
                     case DO_AERIAL_SELF_REPAIR_END:
@@ -910,7 +910,7 @@ class boss_mimiron : public CreatureScript
                         {
                             _isSelfRepairing[DATA_AERIAL_UNIT] = false;
                             _mapMutex.unlock();
-                        }                         
+                        }
                         break;
                     // Achiev
                     case DATA_AVOIDED_ROCKET_STRIKES:
@@ -1853,7 +1853,7 @@ class boss_aerial_unit : public CreatureScript
 
                 if (_gotMimironHardMode)
                     DoCast(me, SPELL_EMERGENCY_MODE, true);
-                
+
                 _events.ScheduleEvent(EVENT_PLASMA_BALL, 1*IN_MILLISECONDS);
                 _events.ScheduleEvent(EVENT_SUMMON_JUNK_BOT,    10 * IN_MILLISECONDS, 0, PHASE_AERIAL_SOLO__GLOBAL_3);
                 _events.ScheduleEvent(EVENT_SUMMON_FIRE_BOT,     2 * IN_MILLISECONDS, 0, PHASE_AERIAL_SOLO__GLOBAL_3);
@@ -1896,7 +1896,7 @@ class boss_aerial_unit : public CreatureScript
                         }
                         break;
                     case DO_AERIAL_ASSEMBLED:
-                        me->SetHealth( (me->GetMaxHealth() >> 1) );               // Once again, re-assemble and repairing share some stuff, so the fallthrough is intended!                        
+                        me->SetHealth( (me->GetMaxHealth() >> 1) );               // Once again, re-assemble and repairing share some stuff, so the fallthrough is intended!
                     case DO_AERIAL_SELF_REPAIR_END:
                         if (_gotMimironHardMode)
                             if (!me->HasAura(SPELL_EMERGENCY_MODE))
@@ -2015,7 +2015,7 @@ class boss_aerial_unit : public CreatureScript
                     switch (_phase)
                     {
                         case PHASE_AERIAL_SOLO__GLOBAL_3:
-                            me->SetHealth(me->GetMaxHealth()); 
+                            me->SetHealth(me->GetMaxHealth());
                             if (Creature* Mimiron = ObjectAccessor::GetCreature(*me, instance->GetGuidData(BOSS_MIMIRON)))
                                 Mimiron->AI()->DoAction(DO_ACTIVATE_V0L7R0N);
                             break;

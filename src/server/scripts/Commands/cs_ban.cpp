@@ -52,14 +52,14 @@ public:
             { "account",        SEC_GAMEMASTER,  true,   &HandleBanListAccountCommand,       },
             { "character",      SEC_GAMEMASTER,  true,   &HandleBanListCharacterCommand,     },
             { "ip",             SEC_GAMEMASTER,  true,   &HandleBanListIPCommand,            },
-            
+
         };
         static std::vector<ChatCommand> baninfoCommandTable =
         {
             { "account",        SEC_GAMEMASTER,  true,   &HandleBanInfoAccountCommand,       },
             { "character",      SEC_GAMEMASTER,  true,   &HandleBanInfoCharacterCommand,     },
             { "ip",             SEC_GAMEMASTER,  true,   &HandleBanInfoIPCommand,            },
-            
+
         };
         static std::vector<ChatCommand> banCommandTable =
         {
@@ -232,7 +232,7 @@ public:
                     stringID = LANG_ANNOUNCE_ACCOUNT_BANNED;
                     break;
                 case BAN_CHARACTER:
-                    // stringID = LANG_ANNOUNCE_CHARACTER_BANNED; 
+                    // stringID = LANG_ANNOUNCE_CHARACTER_BANNED;
                     showAnnounce = false;
                     break;
                 case BAN_IP:
@@ -388,7 +388,6 @@ public:
         handler->PSendSysMessage(LANG_BANINFO_IPENTRY,
             fields[0].GetCString(), fields[1].GetCString(), permanent ? handler->GetTrinityString(LANG_BANINFO_NEVER) : fields[2].GetCString(),
             permanent ? handler->GetTrinityString(LANG_BANINFO_INFINITE) : secsToTimeString(fields[3].GetUInt64(), true).c_str(), fields[4].GetCString(), fields[5].GetCString());
-
 
         return true;
     }

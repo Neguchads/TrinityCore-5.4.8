@@ -17,7 +17,7 @@
 
 #include "ScriptPCH.h"
 #include "Containers.h"
-#include "dragon_soul.h" 
+#include "dragon_soul.h"
 
 // 109192 105211
 
@@ -55,7 +55,7 @@ enum Spells
     SPELL_TWILIGHT_INSTABILITY_DMG          = 106375,
     SPELL_UNSTABLE_MONSTROSITY_DUMMY_1      = 106390, // prevents from casting those auras for 4 secs
     SPELL_UNSTABLE_MONSTROSITY_DUMMY_2      = 106381, // ? 8/6 secs in normal/heroic
-    
+
     SPELL_TWILIGHT_SHIFT_AOE                = 106369,
     SPELL_TWILIGHT_SHIFT                    = 106368,
     SPELL_HEROIC_WILL_AOE                   = 105554,
@@ -78,7 +78,7 @@ enum Spells
 
     SPELL_TWILIGHT_BURST                    = 106415,
     SPELL_TWILIGHT_ERUPTION                 = 106388,
-    
+
     SPELL_LAST_DEFENDER_OF_AZEROTH          = 106182, // scale + force cast 110327
     SPELL_LAST_DEFENDER_OF_AZEROTH_DUMMY    = 110327,
     SPELL_LAST_DEFENDER_OF_AZEROTH_SCRIPT   = 106218, // ?
@@ -158,7 +158,7 @@ class boss_ultraxion: public CreatureScript
         struct boss_ultraxionAI : public BossAI
         {
             boss_ultraxionAI(Creature* creature) : BossAI(creature, DATA_ULTRAXION)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -180,7 +180,7 @@ class boss_ultraxion: public CreatureScript
             void Reset() override
             {
                 _Reset();
-                
+
                 RemoveEncounterAuras();
                 DeleteGameObjects(GO_GIFT_OF_LIFE);
                 DeleteGameObjects(GO_ESSENCE_OF_DREAMS);
@@ -352,7 +352,7 @@ class boss_ultraxion: public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -411,7 +411,7 @@ class boss_ultraxion: public CreatureScript
                                 pThrall->AI()->Talk(SAY_THRALL_START); // SAY_ULTRAXION
                                 pThrall->AI()->Talk(ANN_THRALL_LAST_DEFENDER);
                                 pThrall->CastSpell(pThrall, SPELL_LAST_DEFENDER_OF_AZEROTH, true);
-                            }                            
+                            }
                             break;
                         case EVENT_ALEXSTRASZA:
                             if (Creature* pAlextrasza = me->FindNearestCreature(NPC_ALEXSTRASZA_THE_LIFE_BINDER, 300.0f))
@@ -571,7 +571,7 @@ class spell_ultraxion_twilight_instability : public SpellScriptLoader
         class spell_ultraxion_twilight_instability_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_ultraxion_twilight_instability_SpellScript);
-            
+
             void FilterTargets(std::list<WorldObject*>& targets)
             {
                 if (!GetCaster())
@@ -602,7 +602,7 @@ class spell_ultraxion_twilight_instability : public SpellScriptLoader
             {
                 public:
                     AuraCheck(uint32 spellId, bool present) : _spellId(spellId), _present(present) { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
                         if (!unit->ToUnit())
@@ -667,7 +667,7 @@ class spell_ultraxion_hour_of_twilight_dmg : public SpellScriptLoader
                     if (Creature* pUltraxion = GetCaster()->ToCreature())
                         pUltraxion->AI()->DoAction(ACTION_TWILIGHT_ERUPTION);
             }
-            
+
             void FilterTargetsDarkness(std::list<WorldObject*>& targets)
             {
                 if (!GetCaster())
@@ -698,7 +698,7 @@ class spell_ultraxion_hour_of_twilight_dmg : public SpellScriptLoader
             {
                 public:
                     AuraCheck(uint32 spellId, bool present) : _spellId(spellId), _present(present) { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
                         if (!unit->ToUnit())
@@ -706,7 +706,7 @@ class spell_ultraxion_hour_of_twilight_dmg : public SpellScriptLoader
 
                         if (_present)
                             return unit->ToUnit()->HasAura(_spellId);
-                        else 
+                        else
                             return !unit->ToUnit()->HasAura(_spellId);
                     }
 
@@ -746,7 +746,7 @@ class spell_ultraxion_fading_light : public SpellScriptLoader
             void OnRemove(AuraEffect const* aurEff, AuraEffectHandleModes /*mode*/)
             {
                 if (GetTarget())
-                {    
+                {
                     if (InstanceScript* instance = GetTarget()->GetInstanceScript())
                         if (instance->GetBossState(DATA_ULTRAXION) != IN_PROGRESS)
                             return;
@@ -793,11 +793,11 @@ class spell_ultraxion_fading_light : public SpellScriptLoader
                     case RAID_DIFFICULTY_25MAN_HEROIC: min_players = 6; break;
                     default: min_players = 1; break;
                 }
-                    
+
                 if (targets.size() > min_players)
                     Trinity::Containers::RandomResizeList(targets, min_players);
             }
-           
+
             void Register() override
             {
                 if (m_scriptSpellId == 109075 ||
@@ -812,10 +812,10 @@ class spell_ultraxion_fading_light : public SpellScriptLoader
             {
                 public:
                     DPSCheck() { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
-                        if (unit->GetTypeId() != TYPEID_PLAYER)
+                        if (!(unit->IsPlayer()))
                             return true;
 
                         switch (unit->ToPlayer()->GetTalentSpecialization(unit->ToPlayer()->GetActiveSpec()))
@@ -867,7 +867,7 @@ class spell_ultraxion_last_defender_of_azeroth : public SpellScriptLoader
 
                 targets.remove_if(TankCheck());
             }
-           
+
             void Register() override
             {
                 OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_ultraxion_last_defender_of_azeroth_SpellScript::FilterTargets, EFFECT_0, TARGET_UNIT_SRC_AREA_ENTRY);
@@ -879,10 +879,10 @@ class spell_ultraxion_last_defender_of_azeroth : public SpellScriptLoader
             {
                 public:
                     TankCheck() { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
-                        if (unit->GetTypeId() != TYPEID_PLAYER)
+                        if (!(unit->IsPlayer()))
                             return true;
 
                         switch (unit->ToPlayer()->GetTalentSpecialization(unit->ToPlayer()->GetActiveSpec()))
@@ -927,7 +927,7 @@ class spell_ultraxion_last_defender_of_azeroth_dummy : public SpellScriptLoader
                 if (!GetCaster() || !GetHitUnit())
                     return;
 
-                if (GetHitUnit()->GetTypeId() != TYPEID_PLAYER)
+                if (!(GetHitUnit()->IsPlayer()))
                     return;
 
                 switch (GetHitUnit()->ToPlayer()->GetTalentSpecialization(GetHitUnit()->ToPlayer()->GetActiveSpec()))
@@ -946,7 +946,7 @@ class spell_ultraxion_last_defender_of_azeroth_dummy : public SpellScriptLoader
                         break;
                 }
             }
-           
+
             void Register() override
             {
                 OnEffectHitTarget += SpellEffectFn(spell_ultraxion_last_defender_of_azeroth_dummy_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
@@ -999,7 +999,7 @@ class spell_ultraxion_time_loop : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+                return GetUnitOwner()->IsPlayer();
             }
 
             void CalculateAmount(AuraEffect const* /*aurEff*/, float& amount, bool& /*canBeRecalculated*/)

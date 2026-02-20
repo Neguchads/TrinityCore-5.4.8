@@ -101,7 +101,7 @@ void WorldDatabaseConnection::DoPrepareStatements()
 }
 
 WorldDatabaseConnection::WorldDatabaseConnection(MySQLConnectionInfo& connInfo, ConnectionFlags connectionFlags) : MySQLConnection(connInfo, connectionFlags)
-{    
+{
 }
 
 WorldDatabaseConnection::~WorldDatabaseConnection()

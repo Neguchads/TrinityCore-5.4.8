@@ -467,7 +467,7 @@ class instance_halls_of_reflection : public InstanceMapScript
                     case DATA_SUMMONS:
                         if (data == 0)
                             --uiSummons;
-                        else 
+                        else
                             uiSummons = data;
                         data = NOT_STARTED;
                         break;

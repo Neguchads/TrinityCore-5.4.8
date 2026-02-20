@@ -123,7 +123,7 @@ class boss_commander_durand : public CreatureScript
                     instance->SetData(BOSS_DURAND, DONE);
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
 
-                    // Quest Ender 
+                    // Quest Ender
                     if (Creature* HoodedCrusader = ObjectAccessor::GetCreature(*me, instance->GetGuidData(NPC_HOODED_CRUSADER_OUTRO)))
                     {
                         HoodedCrusader->SetVisible(true);
@@ -244,12 +244,12 @@ class boss_commander_durand : public CreatureScript
                         case EVENT_DASHING_STRIKE:
                             if (_dashingcount < 6)
                             {
-                                if (!_dashingcheck) 
-                                { 
-                                    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE); 
+                                if (!_dashingcheck)
+                                {
+                                    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                                     DoCast(me, SPELL_DASHING_STRIKE_INVISIBLE);
-                                    _dashingcheck = true; 
-                                    Talk(DURAND_TALK_SLAY); 
+                                    _dashingcheck = true;
+                                    Talk(DURAND_TALK_SLAY);
                                 }
                                 _dashingcount++;
                                 if (Unit* player = SelectTarget(SELECT_TARGET_RANDOM))
@@ -329,7 +329,7 @@ class boss_high_inqusitior_whitemane : public CreatureScript
                 }
             }
 
-            void DamageTaken(Unit* /*attacker*/, uint32& damage) override  
+            void DamageTaken(Unit* /*attacker*/, uint32& damage) override
             {
                 if (InRessurection && damage >= me->GetHealth())
                     damage = 0;
@@ -565,7 +565,7 @@ class spell_sc_mass_ressurection : public SpellScript
     {
         targets.remove_if([=](WorldObject const* target)
         {
-            if (target->GetTypeId() != TYPEID_UNIT)
+            if (!(target->IsCreature()))
                 return true;
 
             switch (target->GetEntry())

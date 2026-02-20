@@ -277,7 +277,7 @@ class instance_arena_of_annihiliation : public InstanceMapScript
                 return true;
             }
 
-            void Update(uint32 diff) override 
+            void Update(uint32 diff) override
             {
                 events.Update(diff);
 

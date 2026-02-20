@@ -556,7 +556,7 @@ class instance_dragon_soul : public InstanceMapScript
                     case DATA_GREATER_CACHE_10H:   return uiGreaterCacheofTheAspects[2];
                     case DATA_GREATER_CACHE_25H:   return uiGreaterCacheofTheAspects[3];
                     case DATA_ELEM_FRAGMENT_10N:   return uiElementiumFragment[0];
-                    case DATA_ELEM_FRAGMENT_25N:   return uiElementiumFragment[1]; 
+                    case DATA_ELEM_FRAGMENT_25N:   return uiElementiumFragment[1];
                     case DATA_ELEM_FRAGMENT_10H:   return uiElementiumFragment[2];
                     case DATA_ELEM_FRAGMENT_25H:   return uiElementiumFragment[3];
                     case DATA_DRAGON_SOUL_EVENT:   return uiDeathwingEvent;
@@ -566,7 +566,7 @@ class instance_dragon_soul : public InstanceMapScript
             }
 
             void SetData(uint32 type, uint32 data) override
-            {   
+            {
                 switch (type)
                 {
                     case DATA_OPEN_PORTAL_TO_EYE:
@@ -699,7 +699,7 @@ class instance_dragon_soul : public InstanceMapScript
                         break;
                 }
             }
-            
+
             uint32 GetData(uint32 type) const override
             {
                 switch (type)
@@ -767,7 +767,7 @@ class instance_dragon_soul : public InstanceMapScript
 
                 return true;
             }
-            
+
             void UpdatePortals()
             {
                 if (GetBossState(DATA_MORCHOK) == DONE)
@@ -833,25 +833,25 @@ class instance_dragon_soul : public InstanceMapScript
                             tmpState = NOT_STARTED;
                         SetBossState(i, EncounterState(tmpState));
                     }
-                    
+
                     uint32 tmpEvent;
                     loadStream >> tmpEvent;
-                    if (tmpEvent != DONE) 
+                    if (tmpEvent != DONE)
                         tmpEvent = NOT_STARTED;
                     uiOpenPortalEvent = ObjectGuid(uint64(tmpEvent));
 
                     loadStream >> tmpEvent;
-                    if (tmpEvent != DONE) 
+                    if (tmpEvent != DONE)
                         tmpEvent = NOT_STARTED;
                     bHagaraEvent = tmpEvent;
 
                     loadStream >> tmpEvent;
-                    if (tmpEvent != DONE) 
+                    if (tmpEvent != DONE)
                         tmpEvent = NOT_STARTED;
                     uiDragonSoulEvent = tmpEvent;
 
                     loadStream >> tmpEvent;
-                    if (tmpEvent != DONE) 
+                    if (tmpEvent != DONE)
                         tmpEvent = NOT_STARTED;
                     uiUltraxionTrash = tmpEvent;
                 } else OUT_LOAD_INST_DATA_FAIL;
@@ -867,7 +867,7 @@ class instance_dragon_soul : public InstanceMapScript
             {
                 return isLfr && isFallOfDeathwing;
             }
-            
+
             bool CheckAchievementCriteriaMeet(uint32 criteria_id, Player const* /*source*/, Unit const* /*target*/, uint32 /*miscvalue1*/) override
             {
                 switch (criteria_id)
@@ -1151,7 +1151,7 @@ class instance_dragon_soul : public InstanceMapScript
                 uint32 uiUltraxionTrash;
                 uint8 uiDragonsCount;
                 uint32 uiDelayedChestData;
-               
+
                 bool isLfr;
                 bool lfrSectionFound;
                 bool isFallOfDeathwing;

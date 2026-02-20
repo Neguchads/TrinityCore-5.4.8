@@ -80,7 +80,7 @@ enum Data
 enum Creatures
 {
     NPC_BARREL_OF_ORANGES        = 71054,
-    
+
     // Alliance
     NPC_LIEUTENANT_PARKER        = 71326,
     NPC_ALLIANCE_CANNONEER       = 69194,

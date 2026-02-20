@@ -129,26 +129,26 @@ class npc_black_harvest_akama : public CreatureScript
 {
     public:
         npc_black_harvest_akama() : CreatureScript("npc_black_harvest_akama") { }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
-    
+
             if (action == GOSSIP_ACTION_INFO_DEF + 1 && creature->GetInstanceScript())
                 creature->GetInstanceScript()->SetData(STEP_SEARCH_FOR_SIGNS, DONE);
-    
+
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
-    
+
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Show me a path!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-    
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
@@ -156,13 +156,13 @@ class npc_black_harvest_akama : public CreatureScript
         struct npc_black_harvest_akamaAI : public ScriptedAI
         {
             npc_black_harvest_akamaAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             TaskScheduler scheduler;
             InstanceScript* instance;
             bool hasTriggered;
             uint32 delay;
             float x, y;
-    
+
             void Reset() override
             {
                 me->SetSpeed(MOVE_RUN, 1.8f);
@@ -172,27 +172,27 @@ class npc_black_harvest_akama : public CreatureScript
                 x = 0.0f; y = 0.0f;
                 instance = me->GetInstanceScript();
             }
-    
+
             void MoveInLineOfSight(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER && !hasTriggered)
+                if (who->IsPlayer() && !hasTriggered)
                 {
                     hasTriggered = true;
-    
+
                     if (instance)
                         instance->SetData(STEP_ENTER_THE_BLACK_TEMPLE, DONE);
-    
+
                     // Move to Sap Position
                     Movement::MoveSplineInit init(me);
-    
+
                     for (auto&& itr : akamaScrollPath)
                         init.Path().push_back(G3D::Vector3(itr.GetPositionX(), itr.GetPositionY(), itr.GetPositionZ()));
-    
+
                     init.SetUncompressed();
                     init.Launch();
                 }
 
-                if (who->GetTypeId() == TYPEID_PLAYER && instance && instance->GetData(STEP_DEFEAT_ESSENCE_OF_ORDER) == DONE && instance->GetData(STEP_ESCAPE_SHRINE_OF_LOST_SOULS) != DONE)
+                if (who->IsPlayer() && instance && instance->GetData(STEP_DEFEAT_ESSENCE_OF_ORDER) == DONE && instance->GetData(STEP_ESCAPE_SHRINE_OF_LOST_SOULS) != DONE)
                 {
                     me->StopMoving();
                     Talk(TALK_SPECIAL_8);
@@ -214,7 +214,7 @@ class npc_black_harvest_akama : public CreatureScript
                     });
                 }
             }
-    
+
             void DoAction(int32 actionId) override
             {
                 switch (actionId)
@@ -331,13 +331,13 @@ class npc_black_harvest_akama : public CreatureScript
                         break;
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_black_harvest_akamaAI(creature);
@@ -378,7 +378,7 @@ struct npc_black_harvest_essence_of_order : public customCreatureAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() == TYPEID_PLAYER && !hasTriggered && me->GetInstanceScript() && me->GetInstanceScript()->GetData(STEP_FOLLOW_AKAMA) == DONE)
+        if (who->IsPlayer() && !hasTriggered && me->GetInstanceScript() && me->GetInstanceScript()->GetData(STEP_FOLLOW_AKAMA) == DONE)
         {
             hasTriggered = true;
 
@@ -394,7 +394,7 @@ struct npc_black_harvest_essence_of_order : public customCreatureAI
             case ACTION_START_INTRO:
                 me->SetVisible(true);
                 me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);
-            
+
                 Talk(TALK_INTRO);
                 break;
             case ACTION_INIT_FLAME:
@@ -455,14 +455,14 @@ struct demon_baseAI : public customCreatureAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() == TYPEID_PLAYER && me->GetEntry() == NPC_UNBOUND_SHIVARRA &&
+        if (who->IsPlayer() && me->GetEntry() == NPC_UNBOUND_SHIVARRA &&
             me->GetInstanceScript() && me->GetInstanceScript()->GetData(STEP_ESCAPE_SHRINE_OF_LOST_SOULS) == DONE && me->GetInstanceScript()->GetData(STEP_PLUNDER_THE_DEN_OF_MORTAL_DELIGHTS) != DONE)
             me->GetInstanceScript()->SetData(STEP_PLUNDER_THE_DEN_OF_MORTAL_DELIGHTS, DONE);
     }
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (HealthBelowPct(65) && attacker->GetTypeId() != TYPEID_PLAYER)
+        if (HealthBelowPct(65) && !attacker->IsPlayer())
             damage = 0;
     }
 
@@ -867,7 +867,7 @@ struct npc_black_harvest_ashtongue_primalist : public customCreatureAI
 // Kanrethad Ebonlocke 69964
 struct npc_black_harvest_kanrethad_ebonlocke : public customCreatureAI
 {
-    npc_black_harvest_kanrethad_ebonlocke(Creature* creature) : customCreatureAI(creature) 
+    npc_black_harvest_kanrethad_ebonlocke(Creature* creature) : customCreatureAI(creature)
     {
         SetCombatMovement(false);
     }
@@ -903,7 +903,7 @@ struct npc_black_harvest_kanrethad_ebonlocke : public customCreatureAI
             .Schedule(Milliseconds(delay += 9800), [this](TaskContext context)
         {
             Talk(TALK_SPECIAL_2);
-            
+
             if (Player* target = ObjectAccessor::GetPlayer(*me, instance ? instance->GetGuidData(PLAYER_DATA) : ObjectGuid::Empty))
                 me->SetFacingTo(me->GetAngle(target));
         });
@@ -1106,7 +1106,7 @@ struct npc_black_harvest_black_temple_top_credit : public ScriptedAI
             jubeka->AI()->Talk(TALK_SPECIAL_2);
 
         summonerGUID = summoner->GetGUID();
-        if (summoner->GetTypeId() != TYPEID_PLAYER)
+        if (!(summoner->IsPlayer()))
             return;
 
         summoner->ToPlayer()->LearnSpell(SPELL_CODEX_OF_XERATTH, false);
@@ -1161,7 +1161,6 @@ struct npc_black_harvest_black_temple_top_credit : public ScriptedAI
         {
             if (Unit* owner = ObjectAccessor::GetUnit(*me, summonerGUID))
                 owner->ExitVehicle();
-
 
             me->DespawnOrUnsummon();
         });
@@ -1221,7 +1220,7 @@ struct npc_black_harvest_demonic_soulwell : public customCreatureAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() == TYPEID_PLAYER && me->GetInstanceScript() && 
+        if (who->IsPlayer() && me->GetInstanceScript() &&
             me->GetInstanceScript()->GetData(STEP_PLUNDER_THE_DEN_OF_MORTAL_DELIGHTS) == DONE && me->GetInstanceScript()->GetData(STEP_HEAD_OF_THE_TEMPLE_SUMMIT) != DONE)
         {
             me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
@@ -1312,7 +1311,7 @@ class go_black_harvest_illidari_scroll : public GameObjectScript
 {
     public:
         go_black_harvest_illidari_scroll() : GameObjectScript("go_black_harvest_illidari_scroll") { }
-    
+
         void OnLootStateChanged(GameObject* go, uint32 state, Unit* unit) override
         {
             if (state == GO_ACTIVATED && unit)
@@ -1461,17 +1460,17 @@ class scene_memory_of_relicvary : public SceneScript
 {
     public:
         scene_memory_of_relicvary() : SceneScript("scene_memory_of_relicvary") { }
-    
+
         void OnSceneComplete(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             CreditScene(player);
         }
-    
+
         void OnSceneCancel(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             CreditScene(player);
         }
-    
+
         void CreditScene(Player* player)
         {
             if (player->GetInstanceScript())

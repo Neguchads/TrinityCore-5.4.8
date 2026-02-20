@@ -94,7 +94,7 @@ enum ConditionTypes
     CONDITION_SCENARIO_STEP            = 54,                   // ScenarioStepId         0              0                  true if player is at scenario with current step equal to ScenarioStepID
     CONDITION_SCENE_IN_PROGRESS        = 55,                   // SceneScriptPackageId   0              0                  true if player is playing a scene with ScriptPackageId equal to given value
     CONDITION_PLAYER_CONDITION         = 56,                   // PlayerConditionId      0              0                  true if player satisfies PlayerCondition
-    
+
     CONDITION_SAI_PHASE                = 101,                  // phase            0              0                  true if object sai phase = value1
     CONDITION_PLAYER_SPEC              = 102,                  // spec             0              0                  true if player spec = value1
     CONDITION_CURRENCY_SEASON          = 103,                  // currency         count          0                  true if player spec = value1
@@ -165,7 +165,7 @@ enum ConditionSourceType
     CONDITION_SOURCE_TYPE_PHASE_DEFINITION               = 25, // only 4.3.4
     CONDITION_SOURCE_TYPE_PHASE                          = 26,
     CONDITION_SOURCE_TYPE_GRAVEYARD                      = 27,
-    CONDITION_SOURCE_TYPE_AREATRIGGER                    = 28, // only master (this refers to dynamically spawned areatriggers, not the ones from AreaTrigger.dbc/db2)    
+    CONDITION_SOURCE_TYPE_AREATRIGGER                    = 28, // only master (this refers to dynamically spawned areatriggers, not the ones from AreaTrigger.dbc/db2)
     CONDITION_SOURCE_TYPE_TERRAIN_SWAP                   = 29,
     CONDITION_SOURCE_TYPE_AREATRIGGER_CLIENT_TRIGGERED   = 30,
 
@@ -294,7 +294,6 @@ class TC_GAME_API ConditionMgr
         bool IsObjectMeetingSmartEventConditions(int32 entryOrGuid, uint32 eventId, uint32 sourceType, Unit* unit, WorldObject* baseObject) const;
         bool IsObjectMeetingVendorItemConditions(uint32 creatureId, uint32 itemId, Player* player, Creature* vendor) const;
 
-
         void RegisterVehicleAI(VehicleAIBase* ai) { m_vehicleAIs.insert(ai); }
         void UnregisterVehicleAI(VehicleAIBase* ai) { m_vehicleAIs.erase(ai); }
 
@@ -306,7 +305,7 @@ class TC_GAME_API ConditionMgr
             bool HasConditionValue3;
         };
         static char const* const StaticSourceTypeData[CONDITION_SOURCE_TYPE_MAX];
-        static ConditionTypeInfo const StaticConditionTypeData[CONDITION_MAX];        
+        static ConditionTypeInfo const StaticConditionTypeData[CONDITION_MAX];
 
     private:
         bool isSourceTypeValid(Condition* cond) const;

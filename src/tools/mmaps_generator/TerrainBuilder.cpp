@@ -334,7 +334,7 @@ namespace MMAP
                 if (fread(liquid_entry, sizeof(liquid_entry), 1, mapFile) != 1)
                     printf("TerrainBuilder::loadMap: Failed to read some data expected 1, read 0\n");
                 if (fread(liquid_flags, sizeof(liquid_flags), 1, mapFile) != 1)
-                    printf("TerrainBuilder::loadMap: Failed to read some data expected 1, read 0\n");                
+                    printf("TerrainBuilder::loadMap: Failed to read some data expected 1, read 0\n");
             }
             else
             {
@@ -351,7 +351,7 @@ namespace MMAP
                     printf("TerrainBuilder::loadMap: Failed to read some data expected 1, read 0\n");
                     delete[] liquid_map;
                     liquid_map = nullptr;
-                }                
+                }
             }
 
             int count = meshData.liquidVerts.size() / 3;
@@ -410,7 +410,7 @@ namespace MMAP
                     ltriangles.append(indices[2] + count);
                     ltriangles.append(indices[1] + count);
                     ltriangles.append(indices[0] + count);
-                }                
+                }
             }
         }
 

@@ -83,7 +83,7 @@ enum Spells
     SPELL_SUPERCHARGE_CONDUITS_KNOCKBACK         = 138032,
     SPELL_SUPERCHARGE_CONDUITS                   = 137146,
     SPELL_SUPERCHARGE_CONDUITS_2                 = 137150,
-                                                 
+
     // Misc | Cosmetic
     SPELL_DISPLACE                               = 136948, // teleport
     SPELL_COSMETIC_TELEPORT_EAST                 = 139102,
@@ -178,7 +178,7 @@ enum Phases
     PHASE_LORD_OF_THUNDER,
 };
 
-const std::vector<uint32> conduitsEntry = 
+const std::vector<uint32> conduitsEntry =
 {
     NPC_STATIC_SHOCK_CONDUIT,
     NPC_BOUNCING_BOLT_CONDUIT,
@@ -286,7 +286,7 @@ class boss_lei_shen : public CreatureScript
 {
     public:
         boss_lei_shen() : CreatureScript("boss_lei_shen") { }
-    
+
         struct boss_lei_shenAI : public BossAI
         {
             boss_lei_shenAI(Creature* creature) : BossAI(creature, DATA_LEI_SHEN) { }
@@ -321,11 +321,11 @@ class boss_lei_shen : public CreatureScript
 
                 berserkEvents.ScheduleEvent(EVENT_REMOVE_INACTIVITY, 2 * IN_MILLISECONDS); // scheduler stuck here...
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 _JustEngagedWith();
-    
+
                 if (instance)
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me);
 
@@ -339,16 +339,16 @@ class boss_lei_shen : public CreatureScript
                 HandleSendActionToConduits(ACTION_INIT_CONDUIT_FRAMES);
                 phaseId = PHASE_DEFAULT;
             }
-    
+
             void EnterEvadeMode() override
             {
                 _EnterEvadeMode();
                 BossAI::EnterEvadeMode();
-    
+
                 if (instance)
                 {
                     instance->DoRemoveBloodLustDebuffSpellOnPlayers();
-    
+
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
                     instance->SetBossState(DATA_LEI_SHEN, FAIL);
                     instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CONDUIT_LEVEL);
@@ -422,15 +422,15 @@ class boss_lei_shen : public CreatureScript
                         Talk(TALK_SUPERCHARGED_ANN);
 
                         me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                    
+
                         // Deactivate visual station
                         if (GameObject* overchargedStation = ObjectAccessor::GetGameObject(*me, instance ? instance->GetGuidData(GO_CHARGING_STATION) : ObjectGuid::Empty))
                             overchargedStation->SetGoState(GO_STATE_READY);
-                    
+
                         // Remove Collision
                         if (GameObject* discCollision = ObjectAccessor::GetGameObject(*me, instance ? instance->GetGuidData(GO_THUNDER_KING_DISC_COLLISION) : ObjectGuid::Empty))
                             discCollision->Delete();
-                    
+
                         // Deactivate Visual Floors
                         for (auto&& itr : invConduitFloorType)
                             if (GameObject* myFloor = ObjectAccessor::GetGameObject(*me, instance ? instance->GetGuidData(itr.second) : ObjectGuid::Empty))
@@ -439,10 +439,10 @@ class boss_lei_shen : public CreatureScript
                         // Remove Additional Events
                         for (auto&& itr : invConduitGrantType)
                             events.CancelEvent(itr.second);
-                    
+
                         // Select Conduit with max power and override him
                         std::map <uint32, uint32> conduitsDict;
-                    
+
                         for (auto&& itr : conduitsEntry)
                             if (Creature* conduit = ObjectAccessor::GetCreature(*me, instance ? instance->GetGuidData(itr) : ObjectGuid::Empty))
                                 conduitsDict.insert(std::pair<uint32, uint32>(conduit->AI()->GetData(TYPE_CONDUIT_LEVEL) * 100 + conduit->AI()->GetData(TYPE_CONDUIT_LEVEL_POWER), conduit->GetEntry()));
@@ -463,7 +463,7 @@ class boss_lei_shen : public CreatureScript
                             // get this
                             if (IsHeroic())
                             {
-                                auto spellKey = invConduitType.find(overrideConduit->GetEntry())->second; 
+                                auto spellKey = invConduitType.find(overrideConduit->GetEntry())->second;
                                 stealedConduit.push_back(invConduitGrantType.find(spellKey)->second);
 
                                 for (auto&& itr : stealedConduit)
@@ -473,9 +473,9 @@ class boss_lei_shen : public CreatureScript
 
                         // Discharge Conduit Additional Level and Reset Power
                         HandleSendActionToConduits(ACTION_RESET_CONDUIT_LEVEL);
-                    
-                        DoCast(me, SPELL_CONDUIT_LEVEL_OVERRIDE, true);               
-                        
+
+                        DoCast(me, SPELL_CONDUIT_LEVEL_OVERRIDE, true);
+
                         scheduler
                             .SetValidator([this] { return instance && instance->GetBossState(DATA_LEI_SHEN) == IN_PROGRESS; })
                             .Schedule(Milliseconds(3000), [this](TaskContext context)
@@ -621,7 +621,7 @@ class boss_lei_shen : public CreatureScript
                     }
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
@@ -642,9 +642,9 @@ class boss_lei_shen : public CreatureScript
 
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
@@ -730,7 +730,7 @@ class boss_lei_shen : public CreatureScript
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
                 EnterEvadeIfOutOfCombatArea(diff, 170.0f);
             }
@@ -755,7 +755,7 @@ class boss_lei_shen : public CreatureScript
                     return 0;
                 }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_lei_shenAI(creature);
@@ -783,7 +783,7 @@ struct npc_thunderstruck : public ScriptedAI
 // Electric conduit 68398, 68698, 68697, 68696
 struct npc_electric_conduit : public ScriptedAI
 {
-    npc_electric_conduit(Creature* creature) : ScriptedAI(creature) 
+    npc_electric_conduit(Creature* creature) : ScriptedAI(creature)
     {
         instance = me->GetInstanceScript();
     }
@@ -963,7 +963,7 @@ struct npc_electric_conduit : public ScriptedAI
         return 0;
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -1012,7 +1012,7 @@ struct npc_ball_lightning : public ScriptedAI
         me->DisappearAndDie();
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -1291,7 +1291,7 @@ class spell_thunderstruck_selector : public SpellScript
             pList.remove_if(TankSpecTargetSelector());
             pList.remove_if(MeeleSpecTargetSelector());
 
-            // if we have enough players without tanks, meelee and affected by aura 
+            // if we have enough players without tanks, meelee and affected by aura
             if (!pList.empty())
             {
                 targets.clear();
@@ -1383,7 +1383,7 @@ class spell_crashing_thunder_selector : public SpellScript
             // Remove whole exclude tanks and meele
             pList.remove_if(CasterSpecTargetSelector());
 
-            // if we have enough players without tanks, meelee and affected by aura 
+            // if we have enough players without tanks, meelee and affected by aura
             if (pList.size() >= 3)
             {
                 targets.clear();
@@ -1432,7 +1432,7 @@ class spell_lightning_whip_selector : public SpellScript
             // Remove tanks
             pList.remove_if(TankSpecTargetSelector());
 
-            // if we have enough players without tanks, meelee and affected by aura 
+            // if we have enough players without tanks, meelee and affected by aura
             if (!pList.empty())
             {
                 targets.clear();
@@ -2513,7 +2513,7 @@ class AreaTrigger_in_quadrant_lei_shen : public AreaTriggerScript
 {
     public:
         AreaTrigger_in_quadrant_lei_shen() : AreaTriggerScript("AreaTrigger_in_quadrant_lei_shen") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             if (!player->HasAura(invQuadrantSideType.find(trigger->ID)->second))
@@ -2524,7 +2524,7 @@ class AreaTrigger_in_quadrant_lei_shen : public AreaTriggerScript
 
                 player->CastSpell(player, invQuadrantSideType.find(trigger->ID)->second, true);
             }
-    
+
             return false;
         }
 };
@@ -2535,7 +2535,7 @@ class AreaTrigger_down_lei_shen : public AreaTriggerScript
 {
     public:
         AreaTrigger_down_lei_shen() : AreaTriggerScript("AreaTrigger_down_lei_shen") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             player->Kill(player);

@@ -194,7 +194,6 @@ enum AchievmentInfo
     DATA_HAS_FED_ON_TEARS       = 30043005,
 };
 
-
 Position const BrannIntroSpawnPos = { 1676.277f, -162.5308f, 427.3326f, 3.235537f };
 Position const BrannIntroWaypoint[MAX_BRANN_WAYPOINTS_INTRO] =
 {
@@ -334,7 +333,7 @@ class boss_algalon_the_observer : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                 {
                     _fedOnTears = true;
                     if (!_hasYelled && !_fightWon)
@@ -859,7 +858,7 @@ class npc_living_constellation : public CreatureScript
 
             void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
-                if (spell->Id != SPELL_CONSTELLATION_PHASE_EFFECT || caster->GetTypeId() != TYPEID_UNIT)
+                if (spell->Id != SPELL_CONSTELLATION_PHASE_EFFECT || !caster->IsCreature())
                     return;
 
                 me->DespawnOrUnsummon(0);

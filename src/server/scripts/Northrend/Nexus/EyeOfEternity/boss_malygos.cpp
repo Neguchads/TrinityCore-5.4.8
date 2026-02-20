@@ -306,7 +306,7 @@ enum AreaIds
 enum MiscData
 {
     // Lights
-    LIGHT_DEFAULT                    = 1773,    
+    LIGHT_DEFAULT                    = 1773,
     LIGHT_OBSCURE_SPACE              = 1822,
     LIGHT_CHANGE_DIMENSIONS          = 1823,
     LIGHT_ARCANE_RUNES               = 1824,
@@ -633,7 +633,7 @@ public:
 
         void KilledUnit(Unit* victim) override
         {
-            if (victim->GetTypeId() != TYPEID_PLAYER)
+            if (!(victim->IsPlayer()))
                 return;
 
             if (!_killSpamFilter)
@@ -967,7 +967,7 @@ public:
                                 {
                                     if (Unit* passenger = drakeVehicle->GetPassenger(0))
                                     {
-                                        if (passenger->GetTypeId() == TYPEID_PLAYER)
+                                        if (passenger->IsPlayer())
                                         {
                                             Talk(EMOTE_SURGE_OF_POWER_WARNING_P3, passenger);
                                             DoCast(tempSurgeTarget, SPELL_SURGE_OF_POWER_PHASE_3_10, true);
@@ -1205,17 +1205,17 @@ public:
         {
             if (apply)
             {
-                if (unit->GetTypeId() == TYPEID_UNIT)
+                if (unit->IsCreature())
                 {
                     unit->CastSpell(unit, SPELL_TELEPORT_VISUAL_ONLY);
                     unit->ToCreature()->SetInCombatWithZone();
                 }
-                else if (unit->GetTypeId() == TYPEID_PLAYER)
+                else if (unit->IsPlayer())
                     me->SetDisableGravity(true);
             }
             else if (!apply)
             {
-                if (unit->GetTypeId() != TYPEID_PLAYER)
+                if (!(unit->IsPlayer()))
                 {
 
                     me->SetHomePosition(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation());
@@ -1223,7 +1223,7 @@ public:
                     me->SetDisableGravity(false);
                     me->SetCanFly(false);
                 }
-                else if (unit->GetTypeId() == TYPEID_PLAYER)
+                else if (unit->IsPlayer())
                 {
                     me->SetDisableGravity(false);
                     me->SetCanFly(false);
@@ -1245,7 +1245,7 @@ public:
         void DoAction(int32 /*action*/) override
         {
             if (Vehicle* vehicleTemp = me->GetVehicleKit())
-                if (vehicleTemp->GetPassenger(0) && vehicleTemp->GetPassenger(0)->GetTypeId() == TYPEID_PLAYER)
+                if (vehicleTemp->GetPassenger(0) && vehicleTemp->GetPassenger(0)->IsPlayer())
                 {
                     vehicleTemp->RemoveAllPassengers();
                     me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
@@ -1266,7 +1266,7 @@ public:
             }
             else if (Vehicle* hoverDisk = me->GetVehicleKit())
                 if (Unit* lordPassenger = hoverDisk->GetPassenger(0))
-                    if (lordPassenger->GetTypeId() == TYPEID_UNIT)
+                    if (lordPassenger->IsCreature())
                         lordPassenger->ToCreature()->AI()->DoAction(ACTION_SET_DISK_VICTIM_CHASE);
         }
 
@@ -1311,7 +1311,7 @@ public:
         {
             if (apply)
             {
-                if (unit->GetTypeId() == TYPEID_UNIT)
+                if (unit->IsCreature())
                     unit->CastSpell(unit, SPELL_TELEPORT_VISUAL_ONLY);
             }
             else if (!apply)
@@ -1668,7 +1668,7 @@ class spell_malygos_portal_beam : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             bool Validate(SpellInfo const* /*spell*/) override
@@ -1715,7 +1715,7 @@ class spell_malygos_random_portal : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void HandleDummy(SpellEffIndex /*effIndex*/)
@@ -1750,7 +1750,7 @@ class IsCreatureVehicleCheck
         bool operator()(WorldObject* obj)
         {
             if (Unit* unit = obj->ToUnit())
-                if (unit->GetTypeId() == TYPEID_UNIT && unit->GetVehicleKit())
+                if (unit->IsCreature() && unit->GetVehicleKit())
                     return _isVehicle;
 
             return !_isVehicle;
@@ -1771,7 +1771,7 @@ class spell_malygos_arcane_storm : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             bool Validate(SpellInfo const* /*spell*/) override
@@ -1831,7 +1831,7 @@ public:
 
         bool Load() override
         {
-            return GetCaster()->GetTypeId() == TYPEID_UNIT;
+            return GetCaster()->IsCreature();
         }
 
         void HandleScript(SpellEffIndex /*effIndex*/)
@@ -1868,7 +1868,7 @@ class spell_malygos_vortex_visual : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             bool Validate(SpellInfo const* /*spell*/) override
@@ -1947,7 +1947,7 @@ class spell_arcane_overload : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void ResizeEffectRadiusTargetChecker(std::list<WorldObject*>& targets)
@@ -1980,7 +1980,7 @@ class spell_nexus_lord_align_disk_aggro : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void HandleScript(SpellEffIndex /*effIndex*/)
@@ -2031,7 +2031,7 @@ class spell_scion_of_eternity_arcane_barrage : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT && GetCaster()->GetInstanceScript() != NULL;
+                return GetCaster()->IsCreature() && GetCaster()->GetInstanceScript() != NULL;
             }
 
             void FilterMeleeHoverDiskPassangers(std::list<WorldObject*>& targets)
@@ -2115,7 +2115,7 @@ class spell_malygos_destroy_platform_channel : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             bool Validate(SpellInfo const* /*spell*/) override
@@ -2157,7 +2157,7 @@ class spell_alexstrasza_bunny_destroy_platform_boom_visual : public SpellScriptL
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             bool Validate(SpellInfo const* /*spell*/) override
@@ -2197,7 +2197,7 @@ class spell_alexstrasza_bunny_destroy_platform_event : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void HandleSendEvent(SpellEffIndex /*effIndex*/)
@@ -2237,7 +2237,7 @@ class spell_wyrmrest_skytalon_summon_red_dragon_buddy : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void ChangeSummonPos(SpellEffIndex /*effIndex*/)
@@ -2273,7 +2273,7 @@ class spell_wyrmrest_skytalon_ride_red_dragon_buddy_trigger : public SpellScript
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void HandleScript(SpellEffIndex /*effIndex*/)
@@ -2305,7 +2305,7 @@ class spell_malygos_surge_of_power_warning_selector_25 : public SpellScriptLoade
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             bool Validate(SpellInfo const* /*spell*/) override
@@ -2337,7 +2337,7 @@ class spell_malygos_surge_of_power_warning_selector_25 : public SpellScriptLoade
 
                     if (Vehicle* vehicle = target->GetVehicleKit())
                         if (Unit* passenger = vehicle->GetPassenger(0))
-                            if (passenger->GetTypeId() == TYPEID_PLAYER)
+                            if (passenger->IsPlayer())
                                 caster->AI()->Talk(EMOTE_SURGE_OF_POWER_WARNING_P3, passenger);
                 }
             }
@@ -2371,7 +2371,7 @@ class spell_malygos_surge_of_power_25 : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void FilterTargets(std::list<WorldObject*>& targets)
@@ -2422,7 +2422,7 @@ class spell_alexstrasza_gift_beam : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             bool Validate(SpellInfo const* /*spell*/) override
@@ -2469,7 +2469,7 @@ class spell_alexstrasza_gift_beam_visual : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void OnApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)

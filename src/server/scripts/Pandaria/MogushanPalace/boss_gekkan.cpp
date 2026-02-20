@@ -138,7 +138,7 @@ class boss_gekkan : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (who && who->GetTypeId() == TYPEID_PLAYER && !m_bYelled)
+                if (who && who->IsPlayer() && !m_bYelled)
                 {
                     Talk(TALK_INTRO);
                     m_bYelled = true;

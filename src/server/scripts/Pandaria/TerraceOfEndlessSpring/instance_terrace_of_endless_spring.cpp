@@ -327,7 +327,7 @@ class instance_terrace_of_endless_spring : public InstanceMapScript
                                 c->AI()->DoAction(ACTION_LEISHI_INTRO);
                             }
                             break;
-                        case 5: // 
+                        case 5: //
                             if (GameObject* pVortexWall = instance->GetGameObject(wallOfCouncilsVortexGuid))
                             {
                                 pVortexWall->SetGoState(GO_STATE_ACTIVE);
@@ -483,7 +483,7 @@ class instance_terrace_of_endless_spring : public InstanceMapScript
                                     for (auto &aItr : animatedList)
                                         if (Creature* AnimatedProtector = instance->GetCreature(aItr))
                                             AnimatedProtector->SetVisible(true);
-                                
+
                                     if (Creature* pReflection = instance->GetCreature(leiShiReflectionGuid))
                                     {
                                         if (pReflection->AI())
@@ -557,7 +557,6 @@ class instance_terrace_of_endless_spring : public InstanceMapScript
                         if (m_auiEncounter[i] == IN_PROGRESS)                // Do not load an encounter as "In Progress" - reset it instead.
                             m_auiEncounter[i] = NOT_STARTED;
 
-
                     if (m_auiEncounter[TYPE_PROTECTORS] == DONE)
                     {
                         if (m_auiEncounter[TYPE_TSULONG] == DONE)
@@ -587,7 +586,7 @@ class instance_terrace_of_endless_spring : public InstanceMapScript
                         m_mEvents.ScheduleEvent(9, 200); // Activate return to terrace;
                 }
                 else OUT_LOAD_INST_DATA_FAIL;
-                
+
                 OUT_LOAD_INST_DATA_COMPLETE;
             }
 

@@ -265,4 +265,3 @@ void AddSC_instance_arcatraz()
 {
     new instance_arcatraz;
 }
-

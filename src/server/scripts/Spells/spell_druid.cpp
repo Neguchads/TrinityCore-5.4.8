@@ -737,7 +737,7 @@ class spell_dru_soul_swap : public SpellScriptLoader
         }
 };
 
-// 112970 - Demonic Circle: Teleport 
+// 112970 - Demonic Circle: Teleport
 class spell_dru_demonic_circle_teleport : public SpellScript
 {
     PrepareSpellScript(spell_dru_demonic_circle_teleport);
@@ -968,7 +968,7 @@ class spell_dru_cenarion_ward : public SpellScriptLoader
 {
     public:
         spell_dru_cenarion_ward() : SpellScriptLoader("spell_dru_cenarion_ward") { }
-        
+
         class aura_impl : public AuraScript
         {
             PrepareAuraScript(aura_impl);
@@ -1199,7 +1199,7 @@ class spell_dru_mark_of_the_wild : public SpellScriptLoader
             void HandleOnHit()
             {
                 Unit* caster = GetCaster();
-                if (caster && caster->GetTypeId() == TYPEID_PLAYER)
+                if (caster && caster->IsPlayer())
                 {
                     caster->AddAura(SPELL_DRUID_MARK_OF_THE_WILD, caster);
 
@@ -1905,7 +1905,7 @@ class spell_dru_glyph_of_omens : public SpellScript
 
     bool Load() override
     {
-        return  GetCaster()->GetTypeId() == TYPEID_PLAYER && GetCaster()->HasAura(SPELL_DRUID_GLYPH_OF_OMENS);
+        return  GetCaster()->IsPlayer() && GetCaster()->HasAura(SPELL_DRUID_GLYPH_OF_OMENS);
     }
 
     void HandleCast()
@@ -1981,7 +1981,7 @@ class spell_dru_t10_restoration_4p_bonus : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void FilterTargets(std::list<WorldObject*>& targets)
@@ -1996,7 +1996,7 @@ class spell_dru_t10_restoration_4p_bonus : public SpellScriptLoader
                     targets.remove(GetExplTargetUnit());
                     std::list<Unit*> tempTargets;
                     for (std::list<WorldObject*>::const_iterator itr = targets.begin(); itr != targets.end(); ++itr)
-                        if ((*itr)->GetTypeId() == TYPEID_PLAYER && GetCaster()->IsInRaidWith((*itr)->ToUnit()))
+                        if ((*itr)->IsPlayer() && GetCaster()->IsInRaidWith((*itr)->ToUnit()))
                             tempTargets.push_back((*itr)->ToUnit());
 
                     if (tempTargets.empty())
@@ -2036,7 +2036,7 @@ class spell_dru_swift_flight_passive : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void CalculateAmount(AuraEffect const* /*aurEff*/, float& amount, bool& /*canBeRecalculated*/)
@@ -2165,12 +2165,13 @@ class spell_dru_yseras_gift : public SpellScriptLoader
                 PreventDefaultAction();
 
                 auto const caster = GetCaster();
-                if (!caster || caster->isDead() || caster->GetTypeId() != TYPEID_PLAYER)
+                if (!caster || caster->isDead() || !caster->IsPlayer())
                     return;
 
                 uint32 spellId = YSERAS_GIFT_HEAL_SELF;
 
-                if (caster->GetHealth() == caster->GetMaxHealth()) {
+                if (caster->GetHealth() == caster->GetMaxHealth())
+                {
                     // No point in casting anything if character is not in group
                     if (!caster->ToPlayer()->GetGroup())
                         return;
@@ -2521,7 +2522,7 @@ class spell_dru_wild_growth_heal : public AuraScript
     }
 };
 
-// 5185 - Healing Touch 
+// 5185 - Healing Touch
 class spell_dru_healing_touch_dream_of_cenarius : public SpellScript
 {
     PrepareSpellScript(spell_dru_healing_touch_dream_of_cenarius);
@@ -2793,7 +2794,7 @@ class spell_dru_wild_mushroom_bloom : public spell_dru_wild_mushroom_action
     }
 };
 
-// 102792 - Wild Mushroom: Bloom 
+// 102792 - Wild Mushroom: Bloom
 class spell_dru_wild_mushroom_heal : public SpellScript
 {
     PrepareSpellScript(spell_dru_wild_mushroom_heal);
@@ -2803,7 +2804,7 @@ class spell_dru_wild_mushroom_heal : public SpellScript
     void SelectTagets(std::list<WorldObject*>& targets)
     {
         targets.remove_if([=](WorldObject* target)
-        { 
+        {
             float x, y, z;
             GetExplTargetDest()->GetPosition(x, y, z);
             if (!target->IsWithinLOS(x, y, z))
@@ -3031,7 +3032,7 @@ class sat_druid_ursols_vortex : public IAreaTriggerAura
 
         if (!target->HasAura(SPELL_DRUID_URSOLS_VORTEX_JUMP_DEST) && !m_duringRemoveFromWorld)
             if (auto spellInfo = sSpellMgr->GetSpellInfo(SPELL_DRUID_URSOLS_VORTEX_JUMP_DEST))
-                if (!immunedToKnockback && !target->IsImmunedToSpell(spellInfo, MAX_EFFECT_MASK) && 
+                if (!immunedToKnockback && !target->IsImmunedToSpell(spellInfo, MAX_EFFECT_MASK) &&
                     !target->IsImmunedToDamage(spellInfo) && !GetCaster()->MagicSpellHitResult(target, spellInfo)) // Self casted
                     target->CastSpell(*GetTarget(), SPELL_DRUID_URSOLS_VORTEX_JUMP_DEST, true);
 
@@ -3079,7 +3080,7 @@ class spell_dru_heart_of_the_wild : public AuraScript
     }
 };
 
-// 768 - Cat Form, 5487 - Bear Form 
+// 768 - Cat Form, 5487 - Bear Form
 class spell_dru_heart_of_the_wild_bonus : public AuraScript
 {
     PrepareAuraScript(spell_dru_heart_of_the_wild_bonus);
@@ -3385,7 +3386,7 @@ class spell_dru_soul_of_the_forest_mangle : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER &&
+        return GetCaster()->IsPlayer() &&
             GetCaster()->ToPlayer()->GetTalentSpecialization() == SPEC_DRUID_GUARDIAN;
     }
 
@@ -3421,7 +3422,7 @@ class spell_dru_soul_of_the_forest_feral : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER &&
+        return GetCaster()->IsPlayer() &&
             GetCaster()->ToPlayer()->GetTalentSpecialization() == SPEC_DRUID_FERAL;
     }
 
@@ -4196,7 +4197,7 @@ class spell_dru_symbiosis : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     SpellCastResult CheckCast()
@@ -4609,7 +4610,7 @@ class spell_dru_glyph_of_the_predator : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetOwner()->IsPlayer();
     }
 
     void HandleApply(AuraEffect const*, AuraEffectHandleModes)

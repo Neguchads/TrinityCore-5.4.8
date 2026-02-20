@@ -384,7 +384,6 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         // some calls like isInWater should not use vmaps due to processor power
         // can return INVALID_HEIGHT if under z+2 z coord not found height
 
-
         void GetFullTerrainStatusForPosition(uint32 phaseMask, float x, float y, float z, PositionFullTerrainStatus& data, uint8 reqLiquidType, float collisionHeight) const;
         ZLiquidStatus GetLiquidStatus(uint32 phaseMask, float x, float y, float z, uint8 ReqLiquidType, LiquidData* data = nullptr, float collisionHeight = 2.03128f) const; // DEFAULT_COLLISION_HEIGHT in Object.h
 
@@ -433,7 +432,7 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         bool IsRaidOrHeroicDungeon() const { return IsRaid() || (IsNonRaidDungeon() && i_spawnMode == DUNGEON_DIFFICULTY_HEROIC); }
         bool IsHeroic() const { return (IsRaid() && (i_spawnMode == RAID_DIFFICULTY_10MAN_HEROIC || i_spawnMode == RAID_DIFFICULTY_25MAN_HEROIC) ||
             IsNonRaidDungeon() && (i_spawnMode == DUNGEON_DIFFICULTY_HEROIC || IsChallengeDungeon()) || IsScenario() && i_spawnMode == SCENARIO_DIFFICULTY_HEROIC); } // Heroic Raids, Dungeons, Scenarios.
-        bool Is25ManRaid() const { return IsRaid() && (i_spawnMode == RAID_DIFFICULTY_25MAN_NORMAL || i_spawnMode == RAID_DIFFICULTY_25MAN_HEROIC || 
+        bool Is25ManRaid() const { return IsRaid() && (i_spawnMode == RAID_DIFFICULTY_25MAN_NORMAL || i_spawnMode == RAID_DIFFICULTY_25MAN_HEROIC ||
             i_spawnMode == RAID_DIFFICULTY_25MAN_LFR); }   // Raids 25 man Normal, Heroic and LFR.
         bool Is40ManRaid() const { return IsRaid() && i_spawnMode == RAID_DIFFICULTY_40MAN; } // 40 man Raid.
         bool IsScenario() const { return i_mapEntry && i_mapEntry->IsScenario(); }
@@ -559,7 +558,7 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         float GetGameObjectFloor(uint32 phasemask, float x, float y, float z, float maxSearchDist = DEFAULT_HEIGHT_SEARCH) const
         {
             return _dynamicTree.getHeight(x, y, z, maxSearchDist, phasemask);
-        }        
+        }
         bool getObjectHitPos(uint32 phasemask, float x1, float y1, float z1, float x2, float y2, float z2, float& rx, float &ry, float& rz, float modifyDist);
 
         virtual uint32 GetOwnerGuildId(uint32 /*team*/ = TEAM_OTHER) const { return 0; }

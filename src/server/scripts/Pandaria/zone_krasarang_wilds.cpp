@@ -540,7 +540,7 @@ class npc_despondent_warden_of_zhu : public CreatureScript
                 if (auraRecastTimer)
                     return;
 
-                if (spell->Id == SPELL_APPLY_MASK && caster->GetTypeId() == TYPEID_PLAYER)
+                if (spell->Id == SPELL_APPLY_MASK && caster->IsPlayer())
                 {
                     Position pos = me->GetPosition();
 
@@ -1342,7 +1342,7 @@ struct npc_sha_of_despair : public ScriptedAI
             summon->RemoveChanneledCast(target->GetGUID());
     }
 
-    void JustDied(Unit* /*killer*/) override 
+    void JustDied(Unit* /*killer*/) override
     {
         summons.DespawnAll();
     }
@@ -1883,7 +1883,7 @@ struct npc_high_marshal_twinbraid : public customCreatureAI
         events.ScheduleEvent(EVENT_EXPLOSIVES_PLUNGER, randtime(15s, 20s));
     }
 
-    void JustDied(Unit* /*killer*/) override 
+    void JustDied(Unit* /*killer*/) override
     {
         Talk(TALK_SPECIAL_2);
         DoCastAOE(SPELL_TWINBRAID_KILLCREDIT);
@@ -2579,7 +2579,7 @@ struct npc_frenzied_reef_shark : public VehicleAI
     {
         VehicleAI::OnSpellClick(clicker, result);
 
-        if (clicker->GetTypeId() != TYPEID_PLAYER)
+        if (!(clicker->IsPlayer()))
             return;
 
         if (clicker->ToPlayer()->GetQuestStatus(QUEST_JUMPING_THE_SHARK) != QUEST_STATUS_INCOMPLETE)

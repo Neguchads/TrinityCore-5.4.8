@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "model.h"
 #include "dbcfile.h"
 #include "adtfile.h"
@@ -28,7 +28,7 @@
 bool ExtractSingleModel(std::string& fname)
 {
     if (fname.length() < 4)
-        return false;    
+        return false;
 
     std::string extension = fname.substr(fname.length() - 4, 4);
     if (extension == ".mdx" || extension == ".MDX" || extension == ".mdl" || extension == ".MDL")
@@ -36,7 +36,7 @@ bool ExtractSingleModel(std::string& fname)
         // replace .mdx -> .m2
         fname.erase(fname.length()-2,2);
         fname.append("2");
-    }    
+    }
 
     std::string originalName = fname;
 

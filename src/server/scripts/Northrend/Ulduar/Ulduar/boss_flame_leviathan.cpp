@@ -188,7 +188,7 @@ Position const FreyaBeacons[FREYA_SPAWNS] =
     {185.62f, 54.78f, 409.81f, 0.0f},
 };
 
-struct FlameLeviathanPursuedTargetSelector 
+struct FlameLeviathanPursuedTargetSelector
 {
     bool operator() (WorldObject* target)
     {
@@ -928,7 +928,7 @@ class boss_flame_leviathan_defense_cannon : public CreatureScript
 
             bool CanAIAttack(Unit const* who) const override
             {
-                if (who->GetTypeId() != TYPEID_PLAYER || !who->GetVehicle() || who->GetVehicleBase()->GetEntry() == NPC_LEVIATHAN_SEATS)
+                if (!(who->IsPlayer() || !who->GetVehicle() || who->GetVehicleBase()->GetEntry() == NPC_LEVIATHAN_SEATS))
                     return false;
                 return true;
             }
@@ -957,7 +957,7 @@ class boss_flame_leviathan_defense_turret : public CreatureScript
 
             bool CanAIAttack(Unit const* who) const override
             {
-                if (who->GetTypeId() != TYPEID_PLAYER || !who->GetVehicle() || who->GetVehicleBase()->GetEntry() != NPC_LEVIATHAN_SEATS)
+                if (!(who->IsPlayer() || !who->GetVehicle() || who->GetVehicleBase()->GetEntry() != NPC_LEVIATHAN_SEATS))
                     return false;
                 return true;
             }
@@ -1017,7 +1017,7 @@ class boss_flame_leviathan_safety_container : public CreatureScript
                 //z = me->GetMap()->GetHeight(/*me->GetPhaseMask(),*/ x, y, z);
                 //me->GetMotionMaster()->MovePoint(0, x, y, z);
                 //me->SetPosition(x, y, z, 0);
-                //me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                //me->RemoveNpcFlag( UNIT_FLAG_NOT_SELECTABLE);
             }
 
             void UpdateAI(uint32 /*diff*/) override { }
@@ -1082,7 +1082,7 @@ class npc_mechanolift : public CreatureScript
 
             void PassengerBoarded(Unit* passenger, int8 seatId, bool apply) override
             {
-                if (passenger->GetTypeId() == TYPEID_UNIT && passenger->GetEntry() == NPC_CONTAINER && !apply)
+                if (passenger->IsCreature() && passenger->GetEntry() == NPC_CONTAINER && !apply)
                     passenger->ToCreature()->DespawnOrUnsummon(1);
             }
 
@@ -1974,7 +1974,7 @@ class spell_pursue : public SpellScriptLoader
 
                 caster->AI()->AttackStart(target);    // Chase target
 
-                if (target->GetTypeId() == TYPEID_PLAYER)
+                if (target->IsPlayer())
                     caster->AI()->Talk(EMOTE_PURSUE, target);
                 else if (Vehicle* vehicle = target->GetVehicleKit())
                 {
@@ -2145,7 +2145,7 @@ class spell_leviathan_tower_buff : public SpellScriptLoader
 
             bool CheckAreaTarget(Unit* target)
             {
-                return target->GetTypeId() == TYPEID_UNIT && (target->GetEntry() == NPC_LEVIATHAN || target->GetEntry() == NPC_ORBITAL_SUPPORT);
+                return target->IsCreature() && (target->GetEntry() == NPC_LEVIATHAN || target->GetEntry() == NPC_ORBITAL_SUPPORT);
             }
 
             void Register() override

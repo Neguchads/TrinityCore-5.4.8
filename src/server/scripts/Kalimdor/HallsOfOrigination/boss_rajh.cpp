@@ -24,7 +24,7 @@
 enum Spells
 {
     // Rajh
-    SPELL_SUN_STRIKE                    = 73872, 
+    SPELL_SUN_STRIKE                    = 73872,
     SPELL_SUN_STRIKE_DMG                = 73874,
     //SPELL_INFERNO_LEAP                = 87647, // Value: 32375 to 37625
     //SPELL_INFERNO_LEAP_2              = 89876, // Value: 120250 to 139750
@@ -45,7 +45,7 @@ enum Texts
     SAY_DEATH    = 0,
     SAY_AGGRO    = 1,
     SAY_ENERGIZE = 2,
-    SAY_KILL     = 3, 
+    SAY_KILL     = 3,
 };
 
 const Position pointcenter = {-319.68f, 193.42f, 343.94f, 4.76f};

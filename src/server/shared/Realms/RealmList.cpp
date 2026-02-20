@@ -121,7 +121,7 @@ void RealmList::UpdateRealm(RealmHandle const& id, uint32 build, std::string con
 void RealmList::UpdateRealms(boost::system::error_code const& error)
 {
     if (error)
-        return;    
+        return;
 
     TC_LOG_INFO("server.authserver", "Updating Realm List...");
 
@@ -146,7 +146,7 @@ void RealmList::UpdateRealms(boost::system::error_code const& error)
             std::string name                  = fields[1].GetString();
             std::string externalAddressString = fields[2].GetString();
             std::string localAddressString    = fields[3].GetString();
-            std::string localSubmaskString    = fields[4].GetString();           
+            std::string localSubmaskString    = fields[4].GetString();
             uint16 port                       = fields[5].GetUInt16();
 
             Optional<boost::asio::ip::tcp::endpoint> externalAddress = _resolver->Resolve(boost::asio::ip::tcp::v4(), externalAddressString, "");
@@ -185,7 +185,7 @@ void RealmList::UpdateRealms(boost::system::error_code const& error)
             RealmHandle id{ realmId };
 
             UpdateRealm(id, build, name, externalAddress->address(), localAddress->address(), localSubmask->address(), port, icon, flag,
-                timezone, (allowedSecurityLevel <= SEC_ADMINISTRATOR ? AccountTypes(allowedSecurityLevel) : SEC_ADMINISTRATOR), pop);            
+                timezone, (allowedSecurityLevel <= SEC_ADMINISTRATOR ? AccountTypes(allowedSecurityLevel) : SEC_ADMINISTRATOR), pop);
             if (!existingRealms.count(id))
             {
                 TC_LOG_INFO("server.authserver", "Added realm \"%s\" at %s:%u.", name.c_str(), externalAddressString.c_str(), port);
@@ -208,7 +208,7 @@ void RealmList::UpdateRealms(boost::system::error_code const& error)
     {
         _updateTimer->expires_after(std::chrono::seconds(_updateInterval));
         _updateTimer->async_wait(std::bind(&RealmList::UpdateRealms, this, std::placeholders::_1));
-    }    
+    }
 }
 
 Realm const* RealmList::GetRealm(RealmHandle const& id) const

@@ -98,7 +98,7 @@ class spell_gen_pet_calculate : public SpellScriptLoader
 
             bool Load() override
             {
-                if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+                if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                     return false;
                 return true;
             }
@@ -232,7 +232,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             _tempBonus = 0;
             return true;
@@ -369,7 +369,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             _tempBonus = 0;
             return true;
@@ -482,7 +482,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -548,7 +548,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -588,7 +588,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -663,7 +663,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -736,7 +736,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -787,7 +787,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -824,7 +824,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -1009,7 +1009,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -1096,7 +1096,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -1183,7 +1183,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -1264,7 +1264,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -1335,7 +1335,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -1375,11 +1375,11 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
-        
+
         void CalculateAmountDamageDone(AuraEffect const* /* aurEff */, float& amount, bool& /*canBeRecalculated*/)
         {
             if (!GetCaster() || !GetCaster()->GetOwner())
@@ -1416,7 +1416,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -1460,7 +1460,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             _tempHealth = 0;
             return true;
@@ -1564,7 +1564,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -1607,7 +1607,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }
@@ -1670,7 +1670,7 @@ public:
 
         bool Load() override
         {
-            if (!GetCaster() || !GetCaster()->GetOwner() || GetCaster()->GetOwner()->GetTypeId() != TYPEID_PLAYER)
+            if (!GetCaster() || !GetCaster()->GetOwner() || !GetCaster()->GetOwner()->IsPlayer())
                 return false;
             return true;
         }

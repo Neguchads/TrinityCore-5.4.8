@@ -916,7 +916,7 @@ class boss_kaelthas : public CreatureScript
                                         for (i = threatlist.begin(); i != threatlist.end(); ++i)
                                         {
                                             Unit* unit = Unit::GetUnit(*me, (*i)->getUnitGuid());
-                                            if (unit && (unit->GetTypeId() == TYPEID_PLAYER))
+                                            if (unit && (unit->IsPlayer()))
                                             {
                                                 //Use work around packet to prevent player from being dropped from combat
                                                 DoTeleportPlayer(unit, afGravityPos[0], afGravityPos[1], afGravityPos[2], unit->GetOrientation());
@@ -1443,7 +1443,6 @@ class npc_kael_flamestrike : public CreatureScript
 
             void MoveInLineOfSight(Unit* /*who*/) override { }
 
-
             void JustEngagedWith(Unit* /*who*/) override { }
 
             void UpdateAI(uint32 diff) override
@@ -1555,7 +1554,6 @@ class npc_phoenix_egg_tk : public CreatureScript
 
             //ignore any
             void MoveInLineOfSight(Unit* /*who*/) override { }
-
 
             void AttackStart(Unit* who) override
             {

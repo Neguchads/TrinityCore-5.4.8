@@ -278,7 +278,7 @@ class spell_monk_chi_wave_target_selector : public spell_smart_heal
 {
     PrepareSpellScript(spell_monk_chi_wave_target_selector);
 
-    int32 m_counter = 0; 
+    int32 m_counter = 0;
 
     void SelectTarget(std::list<WorldObject*>& targets)
     {
@@ -380,7 +380,7 @@ class spell_monk_grapple_weapon : public SpellScriptLoader
                                 }
                             }
                         }
-                        else if (target->GetTypeId() == TYPEID_UNIT)
+                        else if (target->IsCreature())
                         {
                             if (target->GetLevel() > _player->GetLevel())
                             {
@@ -415,7 +415,6 @@ class spell_monk_grapple_weapon : public SpellScriptLoader
             return new spell_monk_grapple_weapon_SpellScript();
         }
 };
-
 
 // 101643 - Transcendence
 class spell_monk_transcendence : public SpellScript
@@ -608,7 +607,6 @@ class spell_monk_diffuse_magic : public SpellScript
     }
 };
 
-
 // Zen Flight - 125883
 class spell_monk_zen_flight_check : public SpellScript
 {
@@ -667,7 +665,7 @@ class aura_monk_glyph_of_zen_flight : public AuraScript
     }
 };
 
-// 122470 - Touch of Karma 
+// 122470 - Touch of Karma
 class spell_monk_touch_of_karma : public AuraScript
 {
     PrepareAuraScript(spell_monk_touch_of_karma);
@@ -1431,7 +1429,7 @@ class spell_monk_s_e_f_aura : public AuraScript
                 return true;
             case 100784: // Blackout Kick
                 return true;
-            case 116847: // Rushing Jade Wind 
+            case 116847: // Rushing Jade Wind
                 return true;
             case 107428: // Rising Sun Kick
                 return true;
@@ -1642,8 +1640,6 @@ class spell_monk_s_e_f : public SpellScript
     }
 };
 
-
-
 // 69680, 69792, 69791
 struct npc_monk_s_e_f_spirit : public ScriptedAI
 {
@@ -1660,7 +1656,6 @@ struct npc_monk_s_e_f_spirit : public ScriptedAI
         SPELL_FIXATE_AND_SCALIN = 138130,
         POINT_ATTACK_START      = 1000,
     };
-
 
     ObjectGuid victimGuid = ObjectGuid::Empty;
     TaskScheduler scheduler;
@@ -1691,7 +1686,6 @@ struct npc_monk_s_e_f_spirit : public ScriptedAI
                     AcquireTarget();
             });
     }
-
 
     void SetGUID(ObjectGuid guid, int32) override
     {
@@ -1784,7 +1778,7 @@ struct npc_monk_s_e_f_spirit : public ScriptedAI
         me->DespawnOrUnsummon();
     }
 
-    void EnterEvadeMode() override 
+    void EnterEvadeMode() override
     {
         if (state == State::Attacking && me->IsAlive())
             DoDespawn();
@@ -2235,7 +2229,7 @@ class spell_monk_purifying_brew : public SpellScript
     }
 };
 
-// 115072 - Expel Harm 
+// 115072 - Expel Harm
 class spell_monk_expel_harm : public spell_monk_specific_damage
 {
     PrepareSpellScript(spell_monk_expel_harm);
@@ -2437,7 +2431,7 @@ class spell_monk_fortifying_brew : public AuraScript
     }
 };
 
-// 128938 - Brewing: Elusive Brew 
+// 128938 - Brewing: Elusive Brew
 class spell_monk_brewing_elusive_brew : public AuraScript
 {
     PrepareAuraScript(spell_monk_brewing_elusive_brew);
@@ -2613,7 +2607,7 @@ class spell_monk_fists_of_fury_stun : public SpellScript
 
     void RemoveInvalidTargets(std::list<WorldObject*>& targets)
     {
-        if (GetCaster()->GetTypeId() != TYPEID_PLAYER)
+        if (!(GetCaster()->IsPlayer()))
             targets.clear();
         else
             targets.remove_if(Trinity::UnitAuraCheck(true, GetSpellInfo()->Id));
@@ -2646,7 +2640,7 @@ class spell_monk_adaptation : public AuraScript
     }
 };
 
-// 117959 - Crackling Jade Lightning 
+// 117959 - Crackling Jade Lightning
 class spell_monk_crackling_jade_lightning_knockback : public AuraScript
 {
     PrepareAuraScript(spell_monk_crackling_jade_lightning_knockback);
@@ -2811,7 +2805,7 @@ protected:
     }
 };
 
-// 123980 - Brewing: Tigereye Brew 
+// 123980 - Brewing: Tigereye Brew
 class spell_monk_brewing_tigereye_brew : public spell_monk_proc_chi_consumer
 {
     void DoProc() override
@@ -3197,7 +3191,7 @@ class spell_monk_soothing_mist_tirgger : public AuraScript
     }
 };
 
-// 125950 - Soothing Mist 
+// 125950 - Soothing Mist
 class spell_monk_soothing_mist_statue : public AuraScript
 {
     PrepareAuraScript(spell_monk_soothing_mist_statue);
@@ -3215,7 +3209,7 @@ class spell_monk_soothing_mist_statue : public AuraScript
     }
 };
 
-// 125962 - Soothing Mist <Statue> Trigger 
+// 125962 - Soothing Mist <Statue> Trigger
 class spell_monk_soothing_mist_statue_trigger : public SpellScript
 {
     PrepareSpellScript(spell_monk_soothing_mist_statue_trigger);
@@ -3241,7 +3235,7 @@ class spell_monk_soothing_mist_statue_trigger : public SpellScript
     }
 };
 
-// 119611 - Renewing Mist 
+// 119611 - Renewing Mist
 class spell_monk_renewing_mist : public AuraScript
 {
     PrepareAuraScript(spell_monk_renewing_mist);
@@ -3601,11 +3595,11 @@ class spell_monk_thunder_focus_tea : public SpellScript
                 AddTriggerFlag(TRIGGERED_CAST_DIRECTLY);
         return true;
     }
-    
+
     void Register() override { }
 };
 
-// 122464 - Dematerialize 
+// 122464 - Dematerialize
 class spell_monk_dematerialize : public AuraScript
 {
     PrepareAuraScript(spell_monk_dematerialize);
@@ -3959,7 +3953,7 @@ class spell_monk_provoke : public SpellScript
         Unit* target = GetExplTargetUnit();
         if (!target)
             return SPELL_FAILED_NO_VALID_TARGETS;
-        else if (target->GetTypeId() == TYPEID_PLAYER)
+        else if (target->IsPlayer())
             return SPELL_FAILED_TARGET_IS_PLAYER;
         else if (!target->IsWithinLOSInMap(GetCaster()))
             return SPELL_FAILED_LINE_OF_SIGHT;
@@ -4004,7 +3998,7 @@ class spell_monk_provoke_effect : public SpellScript
     }
 };
 
-// 116849 - Life Cocoon 
+// 116849 - Life Cocoon
 class spell_monk_life_cocoon : public SpellScript
 {
     PrepareSpellScript(spell_monk_life_cocoon);
@@ -4059,7 +4053,7 @@ class spell_monk_touch_of_death : public SpellScript
             }
             else
             {
-                if (target->GetTypeId() != TYPEID_UNIT) // Impossible?...
+                if (!(target->IsCreature())) // Impossible?...
                     return SPELL_FAILED_BAD_TARGETS;
                 if (target->ToCreature()->IsDungeonBoss() || target->GetHealth() > GetCaster()->GetHealth())
                     return SPELL_FAILED_BAD_TARGETS;
@@ -4072,7 +4066,7 @@ class spell_monk_touch_of_death : public SpellScript
     void HandleHit()
     {
         if (GetHitResult() != SPELL_MISS_IMMUNE) // Is redirect by warrior possible?
-            SetHitDamage(GetHitUnit()->GetTypeId() == TYPEID_PLAYER ? GetHitUnit()->GetMaxHealth() : GetCaster()->GetMaxHealth());
+            SetHitDamage(GetHitUnit()->IsPlayer() ? GetHitUnit()->GetMaxHealth() : GetCaster()->GetMaxHealth());
     }
 
     void Register() override
@@ -4157,7 +4151,7 @@ class spell_monk_restless_pursuit : public SpellScript
     }
 };
 
-// 119611 - Renewing Mist 
+// 119611 - Renewing Mist
 class spell_monk_mana_tea_dispel : public AuraScript
 {
     PrepareAuraScript(spell_monk_mana_tea_dispel);
@@ -4815,7 +4809,7 @@ class spell_monk_weapon_override_driver : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     void CalculateAmount(AuraEffect const*, float&, bool&)
@@ -4884,7 +4878,7 @@ class spell_monk_touch_of_death_expel_harm_notification_driver : public AuraScri
     bool Load() override
     {
         touchOfDeath = sSpellMgr->GetSpellInfo(SPELL_MONK_TOUCH_OF_DEATH);
-        return touchOfDeath != nullptr && GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return touchOfDeath != nullptr && GetOwner()->IsPlayer();
     }
 
     void HandleProc(ProcEventInfo& eventInfo)
@@ -5130,7 +5124,7 @@ class sat_monk_glyph_of_flying_serpent_kick : public IAreaTriggerOnce
         {
             if (GetCaster()->IsValidAttackTarget(unit, sSpellMgr->GetSpellInfo(SPELL_MONK_FLYING_SERPENT_KICK_AOE)))
             {
-                if (unit->IsInDist(path.front().x, path.front().y, path.front().z, 2 + unit->GetObjectSize()) && 
+                if (unit->IsInDist(path.front().x, path.front().y, path.front().z, 2 + unit->GetObjectSize()) &&
                     !GetCaster()->HasInArc(M_PI, unit) && !GetAreaTrigger()->HasInArc(M_PI, unit))
                     return false;
 

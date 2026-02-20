@@ -102,7 +102,7 @@ class boss_wrath_scryer_soccothrates : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SD_SLAY);
             }
 
@@ -136,7 +136,7 @@ class boss_wrath_scryer_soccothrates : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (intro && who && who->GetTypeId() == TYPEID_PLAYER)
+                if (intro && who && who->IsPlayer())
                 {
                     intro = true;
                     Talk(TALK_CONVERSATION_TO_DALLIAH_1);
@@ -265,14 +265,14 @@ class boss_wrath_scryer_soccothrates : public CreatureScript
             }
 
             private:
-                struct FelrushPredicate 
+                struct FelrushPredicate
                 {
                     public:
                         FelrushPredicate(Creature const* me) : _me(me) { }
 
                         bool operator()(Unit const* target) const
                         {
-                            return target && target->GetTypeId() == TYPEID_PLAYER && target->GetExactDist2d(_me) > 6.0f;
+                            return target && target->IsPlayer() && target->GetExactDist2d(_me) > 6.0f;
                         }
 
                     private:
@@ -327,7 +327,7 @@ class npc_scryer_felfire : public CreatureScript
                 }
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
 

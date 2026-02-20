@@ -210,7 +210,7 @@ struct npc_stormwind_infantry : public ScriptedAI
 
     void DamageTaken(Unit* who, uint32& damage) override
     {
-        if (who->GetTypeId() == TYPEID_PLAYER)
+        if (who->IsPlayer())
         {
             me->GetThreatManager().resetAllAggro();
             who->AddThreat(me, 1.0f);
@@ -272,7 +272,7 @@ struct npc_blackrock_battle_worg : public ScriptedAI
 
     void DamageTaken(Unit* who, uint32& damage) override
     {
-        if (who->GetTypeId() == TYPEID_PLAYER)
+        if (who->IsPlayer())
         {
             me->GetThreatManager().resetAllAggro();
             who->AddThreat(me, 1.0f);
@@ -361,7 +361,7 @@ struct npc_brother_paxton : public ScriptedAI
     {
         if (me->GetDistance(p_Who) < 15.0f)
         {
-            if (p_Who && p_Who->GetTypeId() == TYPEID_PLAYER && !p_Who->HasAura(ElwynnForest::SPELL_FORTITUDE) && !_cooldown)
+            if (p_Who && p_Who->IsPlayer() && !p_Who->HasAura(ElwynnForest::SPELL_FORTITUDE) && !_cooldown)
             {
                if (roll_chance_i(30))
                {
@@ -916,7 +916,7 @@ class npc_ayisa_jojo_alliance_way_quest : public CreatureScript
                     {
                         follow = false;
                     });
-                    
+
                     me->m_Events.Schedule(delay += 6000, 2, [this]()
                     {
                         Talk(SAY_INTRO);
@@ -932,7 +932,7 @@ class npc_ayisa_jojo_alliance_way_quest : public CreatureScript
                         Talk(SAY_SPECIAL_2);
                     });
                 }
-                
+
                 if (me->GetEntry() == NPC_JO_JO_ALLIANCE_WAY)
                 {
                     delay = 0;

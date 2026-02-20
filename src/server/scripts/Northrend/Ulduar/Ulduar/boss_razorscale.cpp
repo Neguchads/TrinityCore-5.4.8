@@ -328,7 +328,7 @@ class boss_razorscale_controller : public CreatureScript
                             if (GameObject* Harpoon = me->SummonGameObject(GO_RAZOR_HARPOON_1, PosHarpoon[0].GetPositionX(), PosHarpoon[0].GetPositionY(), PosHarpoon[0].GetPositionZ(), 4.790f, { }, 180000))
                             {
                                 if (GameObject* BrokenHarpoon = Harpoon->FindNearestGameObject(GO_RAZOR_BROKEN_HARPOON, 5.0f)) //only nearest broken harpoon
-                                    BrokenHarpoon->RemoveFromWorld();                                  
+                                    BrokenHarpoon->RemoveFromWorld();
                                 events.ScheduleEvent(EVENT_BUILD_HARPOON_2, 20000);
                                 events.CancelEvent(EVENT_BUILD_HARPOON_1);
                             }
@@ -717,7 +717,7 @@ class npc_expedition_commander : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!Greet && me->IsWithinDistInMap(who, 10.0f) && who->GetTypeId() == TYPEID_PLAYER)
+                if (!Greet && me->IsWithinDistInMap(who, 10.0f) && who->IsPlayer())
                 {
                     Talk(SAY_GREET);
                     Greet = true;
@@ -842,7 +842,7 @@ class npc_expedition_commander : public CreatureScript
             {
                 player->PrepareGossipMenu(creature);
 
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Мы готовы помочь!" : "Activate Harpoons!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF);
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ“Ã‘â€¹ ÃÂ³ÃÂ¾Ã‘â€šÃÂ¾ÃÂ²Ã‘â€¹ ÃÂ¿ÃÂ¾ÃÂ¼ÃÂ¾Ã‘â€¡Ã‘Å’!" : "Activate Harpoons!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF);
                 player->SEND_GOSSIP_MENU(13853, creature->GetGUID());
             }
             else
@@ -877,7 +877,7 @@ class npc_mole_machine_trigger : public CreatureScript
                 events.ScheduleEvent(EVENT_SUMMON_NPC, 6000);
                 events.ScheduleEvent(EVENT_DISSAPPEAR, 10000);
             }
-            
+
             void DoAction(int32 /*action*/) override
             {
                 summons.DespawnAll();
@@ -886,7 +886,7 @@ class npc_mole_machine_trigger : public CreatureScript
             void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
-                
+
                 while (uint32 event = events.ExecuteEvent())
                 {
                     switch (event)
@@ -905,7 +905,7 @@ class npc_mole_machine_trigger : public CreatureScript
                             {
                                 case SPELL_SUMMON_IRON_DWARVES:
                                     // Emulator for DoCast(SPELL_SUMMON_IRON_DWARVES); -> SpellScript did not work!
-                                    for (uint8 n = 0; n < urand(1, 2); ++n) 
+                                    for (uint8 n = 0; n < urand(1, 2); ++n)
                                         me->CastSpell(me, SPELL_SUMMON_IRON_DWARF_GUARDIAN, false);
                                     me->CastSpell(me, SPELL_SUMMON_IRON_DWARF_WATCHER, false);
                                     break;
@@ -918,7 +918,7 @@ class npc_mole_machine_trigger : public CreatureScript
                         case EVENT_DISSAPPEAR:
                             if (GameObject* molemachine = me->FindNearestGameObject(GO_MOLE_MACHINE, 1))
                                 molemachine->Delete();
-                            
+
                             me->DisappearAndDie();
                             break;
                     }
@@ -930,7 +930,7 @@ class npc_mole_machine_trigger : public CreatureScript
                 summons.Summon(summoned);
                 summoned->AI()->DoZoneInCombat();
             }
-            
+
             private:
                 SummonList summons;
                 EventMap events;
@@ -980,7 +980,7 @@ class npc_razorscale_harpoon_fire_state : public CreatureScript
         struct npc_razorscale_harpoon_fire_stateAI : public ScriptedAI
         {
             npc_razorscale_harpoon_fire_stateAI(Creature* creature) : ScriptedAI(creature)
-            { 
+            {
                 SetCombatMovement(false);
             }
 

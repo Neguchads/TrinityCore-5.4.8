@@ -330,7 +330,7 @@ public:
     {
         Unit* unit = handler->getSelectedUnit();
         Player* player = NULL;
-        if (!unit || (unit->GetTypeId() != TYPEID_PLAYER))
+        if (!unit || !(unit->IsPlayer()))
             player = handler->GetSession()->GetPlayer();
         else
             player = unit->ToPlayer();
@@ -1330,7 +1330,7 @@ public:
 
         updateIndex = atoi(index);
         //check updateIndex
-        if (unit->GetTypeId() == TYPEID_PLAYER)
+        if (unit->IsPlayer())
         {
             if (updateIndex >= PLAYER_END)
                 return true;
@@ -1417,7 +1417,7 @@ public:
                 target->SetExtraUnitMovementFlags(moveFlagsExtra);
             }
 
-            if (target->GetTypeId() != TYPEID_PLAYER)
+            if (!(target->IsPlayer()))
                 target->DestroyForNearbyPlayers();  // Force new SMSG_UPDATE_OBJECT:CreateObject
             else
             {
@@ -1470,7 +1470,7 @@ public:
     {
         Unit* unit = handler->getSelectedUnit();
         Player* player = handler->GetSession()->GetPlayer();
-        if (unit && unit->GetTypeId() == TYPEID_PLAYER)
+        if (unit && unit->IsPlayer())
             player = unit->ToPlayer();
 
         player->GetPhaseMgr().SendDebugReportToPlayer(handler->GetSession()->GetPlayer());

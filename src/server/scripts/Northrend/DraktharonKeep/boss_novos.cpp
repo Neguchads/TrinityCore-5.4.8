@@ -155,7 +155,7 @@ class boss_novos : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -168,7 +168,7 @@ class boss_novos : public CreatureScript
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_DESPAWN_CRYSTAL_HANDLERS)
-                    if (target->GetTypeId() == TYPEID_UNIT)
+                    if (target->IsCreature())
                         target->ToCreature()->DespawnOrUnsummon();
             }
 
@@ -230,7 +230,7 @@ class boss_novos : public CreatureScript
             {
                 BossAI::MoveInLineOfSight(who);
 
-                if (me->GetMap()->GetWorldState(WORLDSTATE_OH_NOVOS) == 0 || !who || who->GetTypeId() != TYPEID_UNIT || who->GetPositionY() < MAX_Y_COORD_OH_NOVOS)
+                if (me->GetMap()->GetWorldState(WORLDSTATE_OH_NOVOS) == 0 || !who || !who->IsCreature() || who->GetPositionY() < MAX_Y_COORD_OH_NOVOS)
                     return;
 
                 uint32 entry = who->GetEntry();
@@ -576,7 +576,7 @@ class spell_summon_crystal_handler : public SpellScriptLoader
             {
                 if (Unit* caster = GetCaster())
                 {
-                    if (caster->GetTypeId() == TYPEID_UNIT && caster->IsAIEnabled)
+                    if (caster->IsCreature() && caster->IsAIEnabled)
                     {
                         Position const& dest = crystalHandlerSummonPositions[caster->ToCreature()->AI()->GetData(0) % 2];
                         pos._position.m_positionX += dest.GetPositionX() - caster->GetPositionX();

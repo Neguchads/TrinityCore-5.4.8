@@ -20,7 +20,7 @@
 #include "DatabaseEnv.h"
 #include "Chat.h"
 
-enum BattlePayTokenTrinityStrings 
+enum BattlePayTokenTrinityStrings
 {
     BATTLEPAY_TOKEN_TRINITYSTRING_SUCCESS                             = 30007,    // Thanks for helping the Pandaria 5.4.8 project, you just received donate coins: %f
     BATTLEPAY_TOKEN_TRINITYSTRING_ERR_NOTENOUGH                       = 30008,    // You do not have the necessary token.
@@ -49,7 +49,7 @@ public:
     {
         if (player->IsInCombat() || player->InArena() || player->InBattleground())
         {
-            ChatHandler(player->GetSession()).PSendSysMessage(player->GetSession()->GetTrinityString(BATTLEPAY_TOKEN_TRINITYSTRING_ERR_INBATTLE));  
+            ChatHandler(player->GetSession()).PSendSysMessage(player->GetSession()->GetTrinityString(BATTLEPAY_TOKEN_TRINITYSTRING_ERR_INBATTLE));
         }
         else if (!sWorld->getBoolConfig(CONFIG_WOW_TOKEN))
         {

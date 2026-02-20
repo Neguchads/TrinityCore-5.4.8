@@ -200,7 +200,6 @@ class instance_azjol_nerub : public InstanceMapScript
                 }
             }
 
-
             ObjectGuid GetGuidData(uint32 type) const override
             {
                 switch (type)

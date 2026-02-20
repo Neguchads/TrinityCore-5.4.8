@@ -19,7 +19,7 @@
 #include "deadmines.h"
 #include "Vehicle.h"
 
-// todo: ����������� ������ �������, ������� ������� �����
+// todo: Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½, Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
 
 enum ScriptTexts
 {
@@ -82,7 +82,7 @@ const Position lumberingoafPos[3] =
 {
     {-301.93f, -516.32f, 51.71f, 2.03f},
     {-289.98f, -528.06f, 49.75f, 1.59f},
-    {-289.67f, -488.46f, 49.80f, 1.54f} 
+    {-289.67f, -488.46f, 49.80f, 1.54f}
 };
 
 const Position helixcrewPos[4] =
@@ -124,8 +124,8 @@ class boss_helix_gearbreaker : public CreatureScript
                 me->setActive(true);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
             }
-            
-            void Reset() override 
+
+            void Reset() override
             {
                 _Reset();
 
@@ -170,7 +170,7 @@ class boss_helix_gearbreaker : public CreatureScript
             {
                 Talk(SAY_KILL);
             }
-            
+
             void JustDied(Unit* /*killer*/) override
             {
                 _JustDied();
@@ -217,7 +217,7 @@ class boss_helix_gearbreaker : public CreatureScript
                         case EVENT_STICKY_BOMB:
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 0.0f, true))
                             {
-                                me->SummonCreature(NPC_STICKY_BOMB, 
+                                me->SummonCreature(NPC_STICKY_BOMB,
                                     target->GetPositionX(),
                                     target->GetPositionY(),
                                     target->GetPositionZ(),
@@ -287,7 +287,7 @@ class npc_lumbering_oaf : public CreatureScript
                 me->SetStandState(UNIT_STAND_STATE_STAND);
                 me->SetReactState(REACT_AGGRESSIVE);
             }
-     
+
             void DoAction(int32 action) override
             {
                 switch (action)
@@ -472,7 +472,7 @@ class npc_sticky_bomb : public CreatureScript
                 SetCombatMovement(false);
                 canBoom = false;
             }
-     
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 events.ScheduleEvent(EVENT_ARMING_YELLOW, 1000);
@@ -484,7 +484,7 @@ class npc_sticky_bomb : public CreatureScript
 
                 for (ThreatContainer::StorageType::const_iterator i = threatlist.begin(); i != threatlist.end(); ++i)
                     if (Unit* target = ObjectAccessor::GetUnit((*me), (*i)->getUnitGuid()))
-                        if (target->GetTypeId() == TYPEID_PLAYER && me->GetExactDist2dSq(target) < 4 && !target->GetVehicle())
+                        if (target->IsPlayer() && me->GetExactDist2dSq(target) < 4 && !target->GetVehicle())
                             return target->GetGUID();
 
                 return ObjectGuid::Empty;
@@ -554,7 +554,7 @@ class npc_helix_crew : public CreatureScript
 
         struct npc_helix_crewAI : public ScriptedAI
         {
-            npc_helix_crewAI(Creature* creature) : ScriptedAI(creature), summons(me) 
+            npc_helix_crewAI(Creature* creature) : ScriptedAI(creature), summons(me)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
@@ -577,7 +577,7 @@ class npc_helix_crew : public CreatureScript
                 summons.DespawnAll();
                 SetCombatMovement(false);
             }
-     
+
             void JustSummoned(Creature* summon) override
             {
                 summons.Summon(summon);
@@ -631,7 +631,6 @@ class spell_helix_chest_bomb : public SpellScriptLoader
     public:
         spell_helix_chest_bomb() : SpellScriptLoader("spell_helix_chest_bomb") { }
 
-
         class spell_helix_chest_bomb_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_helix_chest_bomb_AuraScript)
@@ -659,11 +658,9 @@ class spell_helix_force_player_to_ride_oaf : public SpellScriptLoader
     public:
         spell_helix_force_player_to_ride_oaf() : SpellScriptLoader("spell_helix_force_player_to_ride_oaf") { }
 
-
         class spell_helix_force_player_to_ride_oaf_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_helix_force_player_to_ride_oaf_SpellScript);
-
 
             void HandleScript(SpellEffIndex /*effIndex*/)
             {

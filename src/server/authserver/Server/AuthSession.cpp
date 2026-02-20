@@ -186,7 +186,7 @@ std::unordered_map<uint8, AuthHandler> AuthSession::InitHandlers()
     handlers[REALM_LIST]               = { STATUS_AUTHED,    REALM_LIST_PACKET_SIZE,            &AuthSession::HandleRealmList };
     // handlers[XFER_ACCEPT]               = { STATUS_CHALLENGE,    1,             &AuthSession::HandleXferAccept };
     // handlers[XFER_RESUME]               = { STATUS_CHALLENGE,    9,             &AuthSession::HandleXferResume };
-    // handlers[XFER_CANCEL]               = { STATUS_CHALLENGE,    1,             &AuthSession::HandleXferCancel };   
+    // handlers[XFER_CANCEL]               = { STATUS_CHALLENGE,    1,             &AuthSession::HandleXferCancel };
     return handlers;
 }
 
@@ -195,10 +195,10 @@ std::unordered_map<uint8, AuthHandler> const Handlers = AuthSession::InitHandler
 void AccountInfo::LoadResult(Field* fields)
 {
 
-    //          0                1        2       3          4        5     6         7            8             9                                                                10                           
-    // SELECT a.sha_pass_hash, a.id, a.locked, a.last_ip, aa.gmlevel, a.v, a.s, a.lock_country, a.failed_logins, ab.unbandate > UNIX_TIMESTAMP() OR ab.unbandate = ab.bandate, ab.unbandate = ab.bandate 
+    //          0                1        2       3          4        5     6         7            8             9                                                                10
+    // SELECT a.sha_pass_hash, a.id, a.locked, a.last_ip, aa.gmlevel, a.v, a.s, a.lock_country, a.failed_logins, ab.unbandate > UNIX_TIMESTAMP() OR ab.unbandate = ab.bandate, ab.unbandate = ab.bandate
     // FROM account a LEFT JOIN account_access aa ON (a.id = aa.id) LEFT JOIN account_banned ab ON ab.id = a.id AND ab.active = 1 WHERE a.username = ?
-    
+
     rI = fields[0].GetString();
     Id = fields[1].GetUInt32();
     //Login = fields[1].GetString();
@@ -343,7 +343,7 @@ void AuthSession::SetVSFields(const std::string& rI, const std::string& login)
 {
     BigNumber s, v, g, N;
     N.SetHexStr("894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7");
-    g.SetDword(7);    
+    g.SetDword(7);
     s.SetRand(s_BYTE_SIZE * 8);
 
     BigNumber I;

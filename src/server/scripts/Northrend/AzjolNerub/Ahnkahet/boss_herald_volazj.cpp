@@ -279,7 +279,7 @@ class boss_volazj : public CreatureScript
                 {
                     case SPELL_INSANITY:
                         // Not good target or too many players
-                        if (target->GetTypeId() != TYPEID_PLAYER || insanityHandled > 4)
+                        if (!(target->IsPlayer() || insanityHandled > 4))
                             return;
 
                         // First target - start channel visual and set self as unnattackable

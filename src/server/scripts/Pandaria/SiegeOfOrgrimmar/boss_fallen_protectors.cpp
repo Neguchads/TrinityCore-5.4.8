@@ -54,7 +54,7 @@ enum Yells
     TALK_SUN_DESPERATE,
     TALK_SUN_BOND_OF_GOLDEN_LOTUS,
     TALK_SUN_BOND_OF_GOLDEN_LOTUS_ANN,
-    TALK_SUN_CALAMITY, 
+    TALK_SUN_CALAMITY,
     TALK_SUN_ANNOUNCE_CALAMITY,
 
     // He
@@ -164,7 +164,7 @@ enum Spells
     // Embodied Sorrow
     SPELL_INFERNO_STRIKE           = 143962, // Dummy for damage increase on Effect 0, Damage on effect 1. Damage split between targets in 8 yards.
 
-    // Embodied Gloom 
+    // Embodied Gloom
     SPELL_CORRUPTION_SHOCK         = 143958, // Dummy on Effect 0 for SPELL_CORRUPTION_SHOCK_MISSILE (2, 5, 4, 10 targets).
     SPELL_CORRUPTION_SHOCK_MISSILE = 144020, // Triggers SPELL_CORRUPTION_SHOCK_DAMAGE at location.
     SPELL_CORRUPTION_SHOCK_DAMAGE  = 144018, // Damage.
@@ -181,7 +181,7 @@ enum Spells
     SPELL_SHADOW_WEAKNESS          = 144176,
     SPELL_SHADOW_WEAKNESS_TRANSFER = 144081, // Dummy on Effect 0 to apply a stack of SPELL_SHADOW_WEAKNESS on all players when using SPELL_MARK_OF_ANGUISH_TRANSFER.
 
-    // Manifest Emotions � Embodied Despair and Embodied Desperation focus their negative emotions, creating Sha manifestations which attack players. 
+    // Manifest Emotions Ã¯Â¿Â½ Embodied Despair and Embodied Desperation focus their negative emotions, creating Sha manifestations which attack players.
     // Any damage taken by these manifested emotions will also be suffered by the creature that spawned them.
 
     // Embodied Despair
@@ -226,7 +226,7 @@ enum Events
     // Embodied Sorrow
     EVENT_INFERNO_STRIKE,                    // Every 9.5 seconds.
 
-    // Embodied Gloom 
+    // Embodied Gloom
     EVENT_CORRUPTION_SHOCK_CHAIN,            // Shock -> Chain HEROIC!
 
     // Embodied Despair
@@ -277,7 +277,7 @@ class boss_rook_stonetoe : public CreatureScript
 
         struct boss_rook_stonetoeAI : public BossAI
         {
-            boss_rook_stonetoeAI(Creature* creature) : BossAI(creature, DATA_FALLEN_PROTECTORS) 
+            boss_rook_stonetoeAI(Creature* creature) : BossAI(creature, DATA_FALLEN_PROTECTORS)
             {
                 eventComplete = false;
             }
@@ -424,7 +424,7 @@ class boss_rook_stonetoe : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                /*if (victim->GetTypeId() == TYPEID_PLAYER)
+                /*if (victim->IsPlayer())
                     Talk(ROOK_SAY_KILL);*/
             }
 
@@ -593,7 +593,6 @@ class boss_rook_stonetoe : public CreatureScript
                             for (auto&& itr : invRookDespairType)
                                 if (Creature* rookSpirits = me->SummonCreature(itr.first, fallenProtectorsCenterPos.GetPositionX() + frand(-2.0f, 2.0f), fallenProtectorsCenterPos.GetPositionY() + frand(-2.0f, 2.0f), 450.5f, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 1000))
                                     rookSpirits->GetMotionMaster()->MoveJump(itr.second.GetPositionX(), itr.second.GetPositionY(), itr.second.GetPositionZ(), 15.0f, 15.0f, EVENT_JUMP);
-
 
                             scheduler
                                 .Schedule(Seconds(2), [this](TaskContext context)
@@ -1066,7 +1065,7 @@ class boss_sun_tenderheart : public CreatureScript
 
         struct boss_sun_tenderheartAI : public BossAI
         {
-            boss_sun_tenderheartAI(Creature* creature) : BossAI(creature, DATA_FALLEN_PROTECTORS) 
+            boss_sun_tenderheartAI(Creature* creature) : BossAI(creature, DATA_FALLEN_PROTECTORS)
             {
                 SetCombatMovement(false);
             }
@@ -1188,7 +1187,7 @@ class boss_sun_tenderheart : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                /*if (victim->GetTypeId() == TYPEID_PLAYER)
+                /*if (victim->IsPlayer())
                     Talk(SUN_SAY_KILL);*/
             }
 
@@ -1453,7 +1452,7 @@ struct npc_embodied_misery : public ScriptedAI
         summonerEntry = summoner->GetEntry();
     }
 
-    void Reset() override 
+    void Reset() override
     {
         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED | UNIT_FLAG_IMMUNE_TO_PC);
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
@@ -1562,7 +1561,7 @@ struct npc_embodied_sorrow : public ScriptedAI
         summonerEntry = summoner->GetEntry();
     }
 
-    void Reset() override 
+    void Reset() override
     {
         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED | UNIT_FLAG_IMMUNE_TO_PC);
         SetCombatMovement(false);
@@ -1672,7 +1671,7 @@ struct npc_embodied_gloom : public ScriptedAI
         summonerEntry = summoner->GetEntry();
     }
 
-    void Reset() override 
+    void Reset() override
     {
         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED | UNIT_FLAG_IMMUNE_TO_PC);
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
@@ -1790,7 +1789,7 @@ struct npc_embodied_gloom : public ScriptedAI
                     }
                     events.ScheduleEvent(EVENT_CORRUPTION_SHOCK_CHAIN, 3 * IN_MILLISECONDS);
                     break;
-                
+
                 default: break;
             }
         }
@@ -1887,7 +1886,7 @@ struct npc_embodied_despair : public ScriptedAI
     SummonList summons;
     EventMap events;
 
-    void Reset() override 
+    void Reset() override
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
@@ -2009,7 +2008,7 @@ struct npc_embodied_desperation : public ScriptedAI
                     DoCast(me, SPELL_MANIFEST_DESPERATION);
                     events.ScheduleEvent(EVENT_MANIFEST_DESPERATION, urand(5000, 7000));
                     break;
-                
+
                 default: break;
             }
         }
@@ -2133,7 +2132,7 @@ class spell_rook_corrupted_brew : public SpellScript
             if (GetCaster()->GetMap()->IsHeroic())
             {
                 uint32 power = GetCaster()->GetAura(SPELL_CORRUPTED_BREW_OVERPOWER) ? GetCaster()->GetAura(SPELL_CORRUPTED_BREW_OVERPOWER)->GetStackAmount() : 0;
-                
+
                 if (power > 7)
                     power = 7;
 
@@ -2294,7 +2293,7 @@ class spell_he_gouge : public SpellScript
         if (target->isInFront(caster, 2.5f))
         {
             caster->CastSpell(target, SPELL_HE_GOUGE_DMG_STUN, true);
-            
+
             if (caster->ToCreature())
             {
                 if (Unit* fixateTarget = caster->ToCreature()->AI()->SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankSpecTargetSelector()))
@@ -3147,7 +3146,7 @@ class spell_rook_corruptiong_chain_eff : public SpellScript
 
     void HandleDummy(SpellEffIndex effIndex)
     {
-        if (GetHitUnit() && GetHitUnit()->GetTypeId() != TYPEID_PLAYER)
+        if (GetHitUnit() && !GetHitUnit()->IsPlayer())
             SetHitDamage(0);
     }
 
@@ -3164,7 +3163,7 @@ class spell_rook_vengeful_strikes : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
     }
 
     void Register() override

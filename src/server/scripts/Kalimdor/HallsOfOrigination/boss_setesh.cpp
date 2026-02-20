@@ -33,7 +33,7 @@ enum Spells
     //SPELL_CHAOS_BLAST         = 76681,
     //SPELL_SEED_OF_CHAOS       = 76870,
     //SPELL_SUMMON_CHAOS_SEED   = 76888,
-    
+
     // Void Sentinel
     SPELL_VOID_BARRIER          = 76959,
     SPELL_CHARGED_FISTS         = 77238,
@@ -230,7 +230,7 @@ class npc_setesh_chaos_portal : public CreatureScript
             void SeteshSummon(SeteshSummonTypes type)
             {
                 if (Creature* pSetesh = instance->instance->GetCreature(instance->GetGuidData(DATA_SETESH)))
-                {    
+                {
                     switch (type)
                     {
                         case SETESH_SUMMON_WURM:
@@ -299,7 +299,7 @@ class npc_setesh_chaos_portal : public CreatureScript
                             break;
                         case EVENT_SUMMON_12:
                             SeteshSummon(SETESH_SUMMON_SEEKER);
-                            events.ScheduleEvent(EVENT_SUMMON_15, 15000);   
+                            events.ScheduleEvent(EVENT_SUMMON_15, 15000);
                             break;
                         case EVENT_SUMMON_15:
                             if (IsHeroic())
@@ -347,7 +347,7 @@ class npc_setesh_void_sentinel : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -405,7 +405,7 @@ class npc_setesh_void_seeker : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                    
+
                 events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

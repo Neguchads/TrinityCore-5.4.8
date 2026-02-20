@@ -460,7 +460,7 @@ class boss_ancient_regail : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_REGAIL_SLAY);
             }
 
@@ -785,7 +785,7 @@ class boss_ancient_asani : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_ASANI_SLAY);
             }
 
@@ -947,7 +947,6 @@ class boss_ancient_asani : public CreatureScript
                                 DoCast(target, SPELL_WATER_BOLT);
                             else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 59.0f, true))
                                 DoCast(target, SPELL_WATER_BOLT);
-
 
                             events.ScheduleEvent(EVENT_WATER_BOLT, 1000);
                             break;
@@ -1111,7 +1110,7 @@ class boss_protector_kaolan : public CreatureScript
             /*
             void MoveInLineOfSight(Unit* who) override
             {
-                if (IntroDone(instance, me) && !introDone && who->GetTypeId() == TYPEID_PLAYER)
+                if (IntroDone(instance, me) && !introDone && who->IsPlayer())
                 {
                     Talk(TALK_INTRO);
                     introDone = true;
@@ -1120,7 +1119,7 @@ class boss_protector_kaolan : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_KAOLAN_SLAY);
             }
 

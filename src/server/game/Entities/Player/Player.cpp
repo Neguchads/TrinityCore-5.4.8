@@ -12696,7 +12696,7 @@ InventoryResult Player::CanUseItem(ItemTemplate const* proto) const
         if (proto->HolidayId && !IsHolidayActive((HolidayIds)proto->HolidayId))
             return EQUIP_ERR_CLIENT_LOCKED_OUT;
 
-        if (proto->FlagsCu & ITEM_FLAGS_CU_EQUIP_DISABLE)
+        if (proto->FlagsCu&ITEM_FLAGS_CU_EQUIP_DISABLE)
             return EQUIP_ERR_CANT_EQUIP_EVER;
 
         return EQUIP_ERR_OK;
@@ -12963,7 +12963,7 @@ Item* Player::_StoreItem(uint16 pos, Item* pItem, uint32 count, bool clone, bool
         if (pItem->GetTemplate()->Bonding == BIND_ON_ACQUIRE ||
             pItem->GetTemplate()->Bonding == BIND_QUEST ||
             (pItem->GetTemplate()->Bonding == BIND_ON_EQUIP && IsBagPos(pos)) ||
-            pItem->GetTemplate()->FlagsCu & ITEM_FLAGS_CU_EQUIP_DISABLE)
+            pItem->GetTemplate()->FlagsCu&ITEM_FLAGS_CU_EQUIP_DISABLE)
             pItem->SetBinding(true);
 
         Bag* pBag = (bag == INVENTORY_SLOT_BAG_0) ? NULL : GetBagByPos(bag);
@@ -13005,7 +13005,7 @@ Item* Player::_StoreItem(uint16 pos, Item* pItem, uint32 count, bool clone, bool
         if (pItem2->GetTemplate()->Bonding == BIND_ON_ACQUIRE ||
             pItem2->GetTemplate()->Bonding == BIND_QUEST ||
             (pItem2->GetTemplate()->Bonding == BIND_ON_EQUIP && IsBagPos(pos)) ||
-            pItem->GetTemplate()->FlagsCu & ITEM_FLAGS_CU_EQUIP_DISABLE)
+            pItem->GetTemplate()->FlagsCu&ITEM_FLAGS_CU_EQUIP_DISABLE)
             pItem2->SetBinding(true);
 
         pItem2->SetCount(pItem2->GetCount() + count);
@@ -13497,7 +13497,7 @@ void Player::DestroyItem(uint8 bag, uint8 slot, bool update)
         // Delete rolled money / loot from db.
         // MUST be done before RemoveFromWorld() or GetTemplate() fails
         if (ItemTemplate const* pTmp = pItem->GetTemplate())
-            if (pTmp->Flags & ITEM_FLAG_HAS_LOOT)
+            if (pTmp->Flags&ITEM_FLAG_HAS_LOOT)
                 pItem->ItemContainerDeleteLootMoneyAndLootItemsFromDB();
 
         if (IsInWorld() && update)
@@ -14550,7 +14550,7 @@ void Player::UpdateItemDuration(uint32 time, bool realtimeonly)
         Item* item = *itr;
         ++itr;                                              // current element can be erased in UpdateDuration
 
-        if (!realtimeonly || item->GetTemplate()->FlagsCu & ITEM_FLAGS_CU_DURATION_REAL_TIME)
+        if (!realtimeonly || item->GetTemplate()->FlagsCu&ITEM_FLAGS_CU_DURATION_REAL_TIME)
             item->UpdateDuration(this, time);
     }
 }
@@ -31136,7 +31136,7 @@ bool Player::IsItemFitToSpecialization(ItemTemplate const* proto) const
         return false;
 
     // Also checks only in lua version of a function. I am not aware of the details.
-    if (proto->Flags & ITEM_FLAG_UNK22)
+    if (proto->Flags&ITEM_FLAG_UNK22)
         return true;
 
     uint32 spec = GetLootSpecialization();

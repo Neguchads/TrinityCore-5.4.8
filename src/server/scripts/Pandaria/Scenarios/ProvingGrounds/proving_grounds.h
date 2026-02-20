@@ -44,7 +44,7 @@ enum Data
     DATA_SELECT_A_TRIAL,
     DATA_PREPARE_TO_TRIAL,
     DATA_TRIAL,
-    
+
     // Misc
     PLAYER_DATA,
     TRIAL_DATA,
@@ -64,7 +64,7 @@ enum Creatures
     NPC_NADAGA_SOULWEAVER               = 73328,
     NPC_XUEN                            = 71820,
 
-    // Ally for Healer Trial     
+    // Ally for Healer Trial
     NPC_SOOLI_THE_SURVIVALIST           = 72220, // dps
     NPC_OTO_THE_PROTECTOR               = 72218, // tank
     NPC_KAVAN_THE_ARCANIST              = 72221, // dps

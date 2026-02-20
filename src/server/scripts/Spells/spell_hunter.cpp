@@ -444,7 +444,7 @@ class spell_hun_focus_fire : public SpellScriptLoader
             SpellCastResult CheckFrenzy()
             {
                 Unit* const caster = GetCaster();
-                if (!caster || caster->GetTypeId() != TYPEID_PLAYER)
+                if (!caster || !caster->IsPlayer())
                     return SPELL_FAILED_DONT_REPORT;
 
                 Pet* const pet = caster->ToPlayer()->GetPet();
@@ -470,7 +470,7 @@ class spell_hun_focus_fire : public SpellScriptLoader
             bool Load() override
             {
                 Unit const* const caster = GetCaster();
-                if (!caster || caster->GetTypeId() != TYPEID_PLAYER)
+                if (!caster || !caster->IsPlayer())
                     return false;
 
                 Pet const* const pet = caster->ToPlayer()->GetPet();
@@ -851,7 +851,7 @@ class spell_hun_scatter_shot : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void HandleDummy(SpellEffIndex /*effIndex*/)
@@ -1542,7 +1542,7 @@ class spell_hunt_kill_command : public SpellScript
 
     SpellCastResult CheckCast()
     {
-        if (GetCaster()->GetTypeId() != TYPEID_PLAYER)
+        if (!(GetCaster()->IsPlayer()))
             return SPELL_FAILED_DONT_REPORT;
 
         Pet* pet = GetCaster()->ToPlayer()->GetPet();
@@ -1647,7 +1647,7 @@ class spell_hunt_camouflage_driver : public AuraScript
     {
         if (hunter->IsInCombat())
             SetDuration(6000);
-            
+
         std::vector<Unit*> v = { hunter };
         if (Pet* pet = hunter->GetPet())
             v.push_back(pet);
@@ -2283,7 +2283,7 @@ class spell_hunt_mastery_master_of_the_beasts : public AuraScript
     }
 };
 
-// 53397 - Invigoration 
+// 53397 - Invigoration
 class spell_hunt_invigoration : public AuraScript
 {
     PrepareAuraScript(spell_hunt_invigoration);
@@ -2787,7 +2787,7 @@ class spell_hunt_dissmiss_pet : public SpellScript
 
     SpellCastResult CheckCast()
     {
-        // http://us.battle.net/wow/en/game/patch-notes/5-4-2 
+        // http://us.battle.net/wow/en/game/patch-notes/5-4-2
         // Dismiss Pet can no longer be used while in an Arena match.
         if (Battleground* bg = GetCaster()->GetBattlegorund())
             if (bg->IsArena() && bg->GetStatus() == STATUS_IN_PROGRESS)
@@ -2977,7 +2977,7 @@ class spell_hunt_glyph_of_distracting_shot_taunt : public AuraScript
 
     void HandleApply(AuraEffect const*, AuraEffectHandleModes)
     {
-        if (GetTarget()->GetTypeId() != TYPEID_UNIT)
+        if (!(GetTarget()->IsCreature()))
             return;
 
         Unit* hunter = GetCaster();
@@ -3205,7 +3205,7 @@ class spell_hunt_t16_2p_bonus : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetOwner()->IsPlayer();
     }
 
     void HandleProc(ProcEventInfo& eventInfo)

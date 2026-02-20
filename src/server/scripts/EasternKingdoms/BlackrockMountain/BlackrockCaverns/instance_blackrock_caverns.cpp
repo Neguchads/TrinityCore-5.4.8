@@ -27,8 +27,8 @@ class instance_blackrock_caverns : public InstanceMapScript
 
         struct instance_blackrock_cavernsInstanceMapScript : public InstanceScript
         {
-            instance_blackrock_cavernsInstanceMapScript(InstanceMap* map) : InstanceScript(map) 
-            { 
+            instance_blackrock_cavernsInstanceMapScript(InstanceMap* map) : InstanceScript(map)
+            {
                 SetBossNumber(MAX_ENCOUNTER);
 
                  uiRomoggGUID = ObjectGuid::Empty;
@@ -187,7 +187,7 @@ class instance_blackrock_caverns : public InstanceMapScript
                     }
                     loadStream >> archaeologyQuestAura;
                 }
-                else 
+                else
                     OUT_LOAD_INST_DATA_FAIL;
 
                 OUT_LOAD_INST_DATA_COMPLETE;

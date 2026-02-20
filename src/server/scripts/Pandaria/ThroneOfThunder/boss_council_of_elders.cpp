@@ -138,13 +138,13 @@ enum eSpells
     SPELL_MARKED_SOUL                       = 137359, // Shadowed Loa Spirit / Player ? Force Loa to follow player
     SPELL_SHADOWED_GIFT                     = 137390, // Instantly kills player (Shadowed Loa Spirit)
     SPELL_SHADOWED_TIME_OUT                 = 137398, // Dummy visual for blizz
-    
+
     // Visuals
     SPELL_GARA_JALS_SOUL                    = 136423, // NPC Visual
     SPELL_BLESSED_TRANSFORMATION            = 137181, // NPC Visual
     SPELL_SHADOWED_TRANSFORMATION           = 137271, // NPC Visual
     SPELL_GARAJAL_GHOST                     = 000000, // TBF
-    
+
     // Shared
     SPELL_ZERO_POWER                        = 72242,
     SPELL_PERMANENT_FEIGN_DEATH             = 70628,
@@ -196,12 +196,11 @@ enum eEvents
     EVENT_QUICKSAND_PERIODIC, // This only handles apply of the Quicksand damages aura, which handle the rooting by itself
     EVENT_TRY_MERGE,          // Try merge event is used to merge Quicksand when they are summoend by others Quicksand (only scheduled once)
     EVENT_ACTIVATE_SAND,
-    
+
     // Garajal
     EVENT_SUMMON_SOUL,
     EVENT_REPOSSSESS,
 };
-
 
 enum eActions
 {
@@ -234,7 +233,6 @@ enum eActions
     ACTION_CREATE_LIVING_SAND               = 12,
 };
 
-
 enum eMotions
 {
     // Gara'jal
@@ -253,14 +251,12 @@ enum eMotions
     POINT_MIDDLE                            = 6653, // Point representing the middle point on the line formed by the two Twisted Fate
 };
 
-
 enum eHelperStatus
 {
     STATUS_RESET                            = 0,
     STATUS_PROGRESS                         = 1,
     STATUS_DONE                             = 2,
 };
-
 
 enum eDatas
 {
@@ -274,7 +270,6 @@ enum eDatas
     DATA_DAMAGES_PAST_SEC                   = 7, // Accessor to get the amount of damages Kazrajin received in the last second
     DATA_RECKLESS_CHARGE_HIT                = 8,
 };
-
 
 enum eTalks
 {
@@ -320,9 +315,9 @@ static Creature* GetBossByEntry(uint32 entry, WorldObject* source)
         case NPC_COUNCIL_KAZRAJIN:
             return ObjectAccessor::GetCreature(*source, source->GetInstanceScript() ? source->GetInstanceScript()->GetGuidData(NPC_COUNCIL_KAZRAJIN) : ObjectGuid::Empty);
         case NPC_COUNCIL_SUL_THE_SANDCRAWLER:
-            return ObjectAccessor::GetCreature(*source, source->GetInstanceScript() ? source->GetInstanceScript()->GetGuidData(NPC_COUNCIL_SUL_THE_SANDCRAWLER) : ObjectGuid::Empty);;
+            return ObjectAccessor::GetCreature(*source, source->GetInstanceScript() ? source->GetInstanceScript()->GetGuidData(NPC_COUNCIL_SUL_THE_SANDCRAWLER) : ObjectGuid::Empty);
         case NPC_COUNCIL_HIGH_PRIESTESS_MARLI:
-            return ObjectAccessor::GetCreature(*source, source->GetInstanceScript() ? source->GetInstanceScript()->GetGuidData(NPC_COUNCIL_HIGH_PRIESTESS_MARLI) : ObjectGuid::Empty);;
+            return ObjectAccessor::GetCreature(*source, source->GetInstanceScript() ? source->GetInstanceScript()->GetGuidData(NPC_COUNCIL_HIGH_PRIESTESS_MARLI) : ObjectGuid::Empty);
         default:
             return NULL;
     }
@@ -394,7 +389,7 @@ class boss_council_of_elders_baseAI : public ScriptedAI
         }
 
         // Override JustEngagedWith to send the DoAction to the helper
-        void JustEngagedWith(Unit* /*who*/) override 
+        void JustEngagedWith(Unit* /*who*/) override
         {
             instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me);
 
@@ -445,7 +440,7 @@ class boss_council_of_elders_baseAI : public ScriptedAI
         }
 
         // Override DoAction for the generic actions
-        void DoAction(int32 actionId) override 
+        void DoAction(int32 actionId) override
         {
             switch (actionId)
             {
@@ -539,7 +534,7 @@ class boss_council_of_elders_baseAI : public ScriptedAI
 
             instance->UpdateEncounterState(ENCOUNTER_CREDIT_KILL_CREATURE, NPC_GARA_JAL, me);
         }
-    
+
         void JustDied(Unit* killer) override
         {
             instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
@@ -575,7 +570,7 @@ class boss_council_of_elders_baseAI : public ScriptedAI
                 }
             }
         }
-    
+
         void KilledUnit(Unit* /*victim*/) override
         {
             switch (me->GetEntry())
@@ -624,7 +619,7 @@ class boss_council_of_elders_baseAI : public ScriptedAI
                     return false;
             }
         }
-    
+
         uint32 GetData(uint32 type) const override
         {
             switch (type)
@@ -664,7 +659,7 @@ class boss_council_of_elders_baseAI : public ScriptedAI
             darkPowerEvents.Reset();
             darkPowerEvents.ScheduleEvent(EVENT_DARK_POWER, 1000);
         }
-    
+
         uint32 GetPowerTimer() const
         {
             if (Aura* pLingeringPresence = me->GetAura(SPELL_LINGERING_PRESENCE))
@@ -1191,7 +1186,6 @@ class boss_high_priestess_marli : public CreatureScript
                                         DoCast(me, SPELL_BLESSED_LOA_SPIRIT);
                                         events.ScheduleEvent(EVENT_BLESSED_LOA_SPIRIT, urand(20, 28) * IN_MILLISECONDS);
 
-
                                         // Get out of the loop and break again; this way, we do not schedule
                                         // the event if there is no other boss than Mar'li alive.
                                         break;
@@ -1302,7 +1296,7 @@ class npc_garajal : public CreatureScript
 {
     public:
         npc_garajal() : CreatureScript("npc_garajal") { }
-        
+
         struct npc_garajal_AI : public BossAI
         {
             npc_garajal_AI(Creature* creature) : BossAI(creature, DATA_COUNCIL_OF_ELDERS)
@@ -1322,7 +1316,7 @@ class npc_garajal : public CreatureScript
             bool introDone, atEvade;
             bool allowAchiev;
 
-            void Reset() override 
+            void Reset() override
             {
                 atEvade = false;
                 allowAchiev = true;
@@ -1602,7 +1596,7 @@ class npc_garajal : public CreatureScript
                 return false;
             }
         };
-        
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_garajal_AI(creature);
@@ -1650,7 +1644,7 @@ struct npc_council_reckless_charge : public ScriptedAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -1692,7 +1686,7 @@ struct npc_garajals_soul : public ScriptedAI
             std::vector<uint64> buf(possessedTargets.begin(), possessedTargets.end());
             std::random_device rd;
             std::mt19937 g(rd());
-            std::shuffle(buf.begin(), buf.end(), g);            
+            std::shuffle(buf.begin(), buf.end(), g);
             possessedTargets.clear();
             std::copy(buf.begin(), buf.end(), std::inserter(possessedTargets, possessedTargets.begin()));
 
@@ -1754,7 +1748,7 @@ struct npc_garajals_soul : public ScriptedAI
                 // Set Garajal visible again
                 DoCast(SPELL_LINGERING_PRESENCE);
                 me->ExitVehicle();
-            
+
                 // In Heroic, each time Garajal is forced out of a councillor, he leaves
                 // a Soul Fragment behind. (In fact there is no npc summoned, just a spell
                 // cast).
@@ -1768,7 +1762,7 @@ struct npc_garajals_soul : public ScriptedAI
                     if (Creature* pGarajal = ObjectAccessor::GetCreature(*me, instance ? instance->GetGuidData(DATA_COUNCIL_OF_ELDERS) : ObjectGuid::Empty))
                         pGarajal->CastSpell(pGarajal, SPELL_SOUL_FRAGMENT_SELECTOR, true);
                 }
-            
+
                 fragmentCounter++;
                 // Select a new councillor
                 HandlePossessedIntoLeader();
@@ -1810,7 +1804,7 @@ class npc_living_sand : public CreatureScript
             void Reset() override { }
 
             void EnterEvadeMode() override { }
-            
+
             void Initialize()
             {
                 me->RemoveAurasDueToSpell(SPELL_FORTIFIED);
@@ -1894,7 +1888,7 @@ class npc_living_sand : public CreatureScript
 
                 DoMeleeAttackIfReady();
             }
-            
+
             void DamageTaken(Unit* /*attacker*/, uint32& damage) override
             {
                 if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE))
@@ -1924,7 +1918,7 @@ class npc_living_sand : public CreatureScript
 // Blessed Loa Spirit 69480, 69491, 69492
 struct npc_blessed_loa_spirit : public ScriptedAI
 {
-    npc_blessed_loa_spirit(Creature* creature) : ScriptedAI(creature), instance(creature->GetInstanceScript()) 
+    npc_blessed_loa_spirit(Creature* creature) : ScriptedAI(creature), instance(creature->GetInstanceScript())
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
         me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_ROOT, true);
@@ -2194,7 +2188,7 @@ struct npc_twisted_fate : public ScriptedAI
             summoner->CastSpell(summoner, SPELL_TWISTED_FATE_CLONE_SECOND, true);
             DoCast(me, SPELL_TWISTED_FATE_VISUAL, true);
             DoCast(me, SPELL_TWISTED_FATE_PERIODIC, true);
-            
+
             if (Creature* secondCopy = me->FindNearestCreature(NPC_TWISTED_FATE_FIRST, 150.0f, true))
             {
                 copyGUID = secondCopy->GetGUID();
@@ -2228,7 +2222,7 @@ struct npc_twisted_fate : public ScriptedAI
     protected:
         InstanceScript* instance;
         ObjectGuid uiOtherTwistedFateGuid; // Guid of the other twisted fate
-    
+
         // Boolean to control whenever we are in the linked phase or not,
         // and used to compute correctly the amount of damages of the
         // SPELL_TWISTED_FATE_DAMAGES.
@@ -2451,11 +2445,11 @@ class spell_malakk_frostbite_selector : public SpellScript
     }
 };
 
-class FrostbitePredicate 
+class FrostbitePredicate
 {
     public:
         FrostbitePredicate(Creature* const m_caster) : _caster(m_caster) { }
-    
+
         bool operator()(WorldObject* object)
         {
             return object && object->ToUnit() && object->ToUnit()->GetGUID() == _caster->AI()->GetGUID();
@@ -2852,7 +2846,7 @@ class spell_quicksand_periodic : public SpellScriptLoader
         {
             return new spell_quicksand_periodic_AuraScript();
         }
-}; 
+};
 
 // Entrapped
 class spell_quicksand_entrapped : public SpellScriptLoader
@@ -3075,7 +3069,7 @@ class spell_marli_twisted_fate_damages : public SpellScriptLoader
                             // The max amount is 250000, but it reduces the father the twisted fates are from
                             // each other. Let's say the maximum dist between them is 55 yards. If we want this
                             // to be pseudo linear, we'll say that with each yard between the twisted fates, we'll
-                            // reduce this amount by 100 / 55. 
+                            // reduce this amount by 100 / 55.
                             float fDist = pOwner->GetExactDist2d(pTwistedFateTarget);
                             ruiAmount = 250000 - CalculatePct(250000, fDist * 100 / 55);
                         }
@@ -3100,11 +3094,11 @@ class spell_dark_power : public SpellScriptLoader
 {
     public:
         spell_dark_power() : SpellScriptLoader("spell_dark_power") { }
-        
+
         class spell_dark_power_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_dark_power_SpellScript)
-            
+
             void HandleHitTarget(SpellEffIndex eEffectIndex)
             {
                 if (Unit* unit = GetCaster())
@@ -3131,7 +3125,7 @@ class spell_dark_power : public SpellScriptLoader
                 OnEffectHitTarget += SpellEffectFn(spell_dark_power_SpellScript::HandleHitTarget, EFFECT_0, SPELL_EFFECT_SCHOOL_DAMAGE);
             }
         };
-        
+
         SpellScript* GetSpellScript() const override
         {
             return new spell_dark_power_SpellScript();
@@ -3437,13 +3431,13 @@ class AreaTrigger_behind_council_of_elders : public AreaTriggerScript
 {
     public:
         AreaTrigger_behind_council_of_elders() : AreaTriggerScript("AreaTrigger_behind_council_of_elders") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if (Creature* garajalCouncil = ObjectAccessor::GetCreature(*player, instance->GetGuidData(DATA_COUNCIL_OF_ELDERS)))
                     garajalCouncil->AI()->DoAction(ACTION_COUNCIL_INTRO);
-    
+
             return false;
         }
 };
@@ -3492,4 +3486,3 @@ void AddSC_boss_council_of_elders()
     new atrigger_script<sat_reckless_charge>("sat_reckless_charge");
     new AreaTrigger_behind_council_of_elders();
 }
-

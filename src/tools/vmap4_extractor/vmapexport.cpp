@@ -240,7 +240,6 @@ void LoadCommonMPQFiles(uint32 build)
     printf("\n");
 }
 
-
 // Local testing functions
 
 bool FileExists(char const* file)
@@ -273,12 +272,12 @@ void ReadLiquidTypeTableDBC()
     {   // Use misc.mpq
         printf(localMPQ, "%s/Data/%s/locale-%s.MPQ", input_path);
     }
-    
+
     if (!SFileOpenArchive(localMPQ, 0, MPQ_OPEN_READ_ONLY, &localeFile))
     {
         exit(1);
     }
-    
+
     printf("Read LiquidType.dbc file...");
 
     HANDLE dbcFile;
@@ -343,7 +342,7 @@ bool ExtractSingleWmo(std::string& fname)
     char szLocalFile[1024];
     char* plain_name = GetPlainName(&fname[0]);
     fixnamen(plain_name, strlen(plain_name));
-    fixname2(plain_name, strlen(plain_name));    
+    fixname2(plain_name, strlen(plain_name));
     sprintf(szLocalFile, "%s/%s", szWorkDirWmo, plain_name);
 
     if (FileExists(szLocalFile))
@@ -404,7 +403,7 @@ bool ExtractSingleWmo(std::string& fname)
             }
 
             if (fgroup.ShouldSkip(&froot))
-                continue;            
+                continue;
 
             Wmo_nVertices += fgroup.ConvertToVMAPGroupWmo(output, preciseVectorData);
             ++groupCount;
@@ -425,7 +424,7 @@ bool ExtractSingleWmo(std::string& fname)
     fseek(output, 8, SEEK_SET); // store the correct no of vertices
     fwrite(&Wmo_nVertices,sizeof(int),1,output);
     // store the correct no of groups
-    fwrite(&groupCount, sizeof(uint32), 1, output);    
+    fwrite(&groupCount, sizeof(uint32), 1, output);
     fclose(output);
 
     // Delete the extracted file in the case of an error
@@ -536,7 +535,6 @@ bool processArgv(int argc, char ** argv, char const*versionString)
 
     return result;
 }
-
 
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 // Main

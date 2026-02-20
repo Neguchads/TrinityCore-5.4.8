@@ -162,7 +162,7 @@ enum eQuest
     QUEST_SOUL_OF_THE_HORDE              = 32432,
     QUEST_TEST_OF_VALOR_A                = 32474,
     QUEST_TEST_OF_VALOR_H                = 32476,
-    
+
     // Landing
     QUEST_LIONS_LANDING                  = 32109,
     QUEST_DOMINATION_POINT               = 32108,
@@ -247,8 +247,8 @@ enum Spells
     SPELL_COSMETIC_FLAME                   = 130950, // used on gem
     SPELL_DEATH_AND_DECAY                  = 126723,
     SPELL_GROWTH                           = 126622,
-                                           
-    // 5.1                                 
+
+    // 5.1
     SPELL_LIONS_LANDING_CINEMATIC          = 135953,
     SPELL_DOMINATION_POINT_CINEMATIC       = 135955,
 
@@ -290,8 +290,8 @@ enum Spells
     // 5.4
     SPELL_LEGENDARY_FINALE                 = 146397,
     SPELL_WRATHION_ESSENCE                 = 146428,
-                                           
-    // Misc                                
+
+    // Misc
     SPELL_LEGEND_IN_THE_MAKING_SCENE_A     = 126670,
     SPELL_LEGEND_IN_THE_MAKING_SCENE_H     = 126671,
     SPELL_MASSONS_FOLLY_FINALE_EVENT       = 126713,
@@ -427,7 +427,7 @@ enum ePhases
     PHASE_GIFT_OF_THE_BLACK_PRINCE = 10,
 };
 
-const std::map<uint32, uint32> invZoneChallengeType = 
+const std::map<uint32, uint32> invZoneChallengeType =
 {
     { 5785, SPELL_YULON_SCENE                  },
     { 5841, SPELL_SUMMON_WRATHION_TIGER_TEMPLE },
@@ -972,12 +972,12 @@ class npc_wrathion_thunder_king : public CreatureScript
 {
     public:
         npc_wrathion_thunder_king() : CreatureScript("npc_wrathion_thunder_king") { }
-    
+
         bool OnQuestAccept(Player* player, Creature* creature, Quest const* quest) override
         {
             if (quest->GetQuestId() == QUEST_THUNDER_FORGE)
                 player->KilledMonsterCredit(NPC_UNLOCK_FORGE_CREDIT);
-    
+
             return false;
         }
 };
@@ -1221,7 +1221,7 @@ struct npc_wrathion_suen_celestial : public ScriptedAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -1636,7 +1636,7 @@ struct npc_wrathion_xuen_challenge : public customCreatureAI
 
     void KilledUnit(Unit* victim) override
     {
-        if (victim->GetTypeId() == TYPEID_PLAYER)
+        if (victim->IsPlayer())
         {
             scheduler
                 .Schedule(Milliseconds(1000), [this](TaskContext context)
@@ -1745,7 +1745,7 @@ struct npc_neltharions_tear : public ScriptedAI
 
     void KilledUnit(Unit* victim) override
     {
-        if (victim->GetTypeId() == TYPEID_PLAYER)
+        if (victim->IsPlayer())
         {
             if (Creature* wrathion = ObjectAccessor::GetCreature(*me, summonerGUID))
                 wrathion->AI()->KilledUnit(victim);
@@ -1983,7 +1983,7 @@ struct npc_wrathion_cloak_achieve : public ScriptedAI
         });
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -1994,7 +1994,7 @@ class npc_wrathion_at_massons_folly : public CreatureScript
 {
     public:
         npc_wrathion_at_massons_folly() : CreatureScript("npc_wrathion_at_massons_folly") { }
-    
+
         bool OnQuestAccept(Player* player, Creature* creature, Quest const* quest) override
         {
             if (quest->GetQuestId() == QUEST_CLOAK_OF_VIRTUE)
@@ -2006,10 +2006,10 @@ class npc_wrathion_at_massons_folly : public CreatureScript
         struct npc_wrathion_at_massons_follyAI : public ScriptedAI
         {
             npc_wrathion_at_massons_follyAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             void UpdateAI(uint32 /*diff*/) override { }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_wrathion_at_massons_follyAI(creature);
@@ -2043,26 +2043,26 @@ class npc_wrathion_pandaren_legend : public CreatureScript
 {
     public:
         npc_wrathion_pandaren_legend() : CreatureScript("npc_wrathion_pandaren_legend") { }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
-    
+
             if (player->GetQuestStatus(QUEST_A_PANDAREN_LEGEND) == QUEST_STATUS_INCOMPLETE)
                 player->CastSpell(player, SPELL_LEGENDARY_FINALE, true);
-    
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
-    
+
         struct npc_wrathion_pandaren_legendAI : public ScriptedAI
         {
             npc_wrathion_pandaren_legendAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             void IsSummonedBy(Unit* summoner) override { }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_wrathion_pandaren_legendAI(creature);
@@ -2130,7 +2130,7 @@ struct npc_willy_wilder : public ScriptedAI
         Talk(TALK_SPECIAL_1);
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
 
@@ -2209,7 +2209,7 @@ class spell_summon_wrathion_celestials : public AuraScript
     }
 };
 
-// Reign of Fire 141510 
+// Reign of Fire 141510
 class spell_wrathion_reign_of_fire : public AuraScript
 {
     PrepareAuraScript(spell_wrathion_reign_of_fire);
@@ -2233,18 +2233,18 @@ class spell_wrathion_reign_of_fire : public AuraScript
     }
 };
 
-class BlindsidePredicate 
+class BlindsidePredicate
 {
     public:
         BlindsidePredicate(Unit* const m_caster) : _caster(m_caster) { }
-    
+
         bool operator()(WorldObject* object)
         {
             return object && object->ToUnit() && !_caster->isInBack(object->ToUnit());
-    
+
             return false;
         }
-    
+
     private:
         Unit const* _caster;
 };
@@ -2292,7 +2292,7 @@ class spell_legendary_wrathion_essence : public SpellScript
         if (Player* caster = GetCaster()->ToPlayer())
         {
             uint32 cloackId = 0;
-            
+
             for (auto&& itr : invCloakType)
             {
                 if (caster->HasItemCount(itr.first, 1))
@@ -2517,17 +2517,17 @@ class scene_wrathion_crown_of_the_heavens : public SceneScript
 {
     public:
         scene_wrathion_crown_of_the_heavens() : SceneScript("scene_wrathion_crown_of_the_heavens") { }
-    
+
         void OnSceneComplete(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             CreditScene(player);
         }
-    
+
         void OnSceneCancel(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             CreditScene(player);
         }
-    
+
         void CreditScene(Player* player)
         {
             player->CastSpell(player, SPELL_EVENT_CLEANUP, true);
@@ -2538,17 +2538,17 @@ class scene_wrathion_serpent_celestial_scene : public SceneScript
 {
     public:
         scene_wrathion_serpent_celestial_scene() : SceneScript("scene_wrathion_serpent_celestial_scene") { }
-    
+
         void OnSceneComplete(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             CreditScene(player);
         }
-    
+
         void OnSceneCancel(Player* player, uint32 /*sceneInstanceID*/, SceneTemplate const* /*sceneTemplate*/) override
         {
             CreditScene(player);
         }
-    
+
         void CreditScene(Player* player)
         {
             player->KilledMonsterCredit(NPC_YULONG_CREDIT);

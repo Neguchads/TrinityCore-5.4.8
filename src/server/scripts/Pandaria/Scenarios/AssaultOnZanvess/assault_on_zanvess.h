@@ -120,8 +120,8 @@ enum eCreatures
     NPC_KORKRON_INFILTRATOR    = 68141,
     NPC_KORKRON_PRIEST         = 68142,
     NPC_SQUAD_LEADER_BOSH      = 68143,
-                               
-    // Triggers                
+
+    // Triggers
     NPC_SHIELD_CHANNEL_POINT   = 68105,
     NPC_SLG_GENERIC_MOP        = 63420,
     NPC_SCENARIO_CONTROLLER    = 67272,

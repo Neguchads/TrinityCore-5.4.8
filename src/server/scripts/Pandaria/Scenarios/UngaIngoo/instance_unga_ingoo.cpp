@@ -167,7 +167,7 @@ class instance_unga_ingoo : public InstanceMapScript
                 }
             }
 
-            void OnGameObjectCreate(GameObject* go) override 
+            void OnGameObjectCreate(GameObject* go) override
             {
                 switch (go->GetEntry())
                 {

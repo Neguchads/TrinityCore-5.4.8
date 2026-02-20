@@ -44,42 +44,42 @@ class boss_kri : public CreatureScript
 {
     public:
         boss_kri() : CreatureScript("boss_kri") { }
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_kriAI(creature);
         }
-    
+
         struct boss_kriAI : public ScriptedAI
         {
             boss_kriAI(Creature* creature) : ScriptedAI(creature)
             {
                 instance = creature->GetInstanceScript();
             }
-    
+
             InstanceScript* instance;
-    
+
             uint32 Cleave_Timer;
             uint32 ToxicVolley_Timer;
             uint32 Check_Timer;
-    
+
             bool VemDead;
             bool Death;
-    
+
             void Reset() override
             {
                 Cleave_Timer = urand(4000, 8000);
                 ToxicVolley_Timer = urand(6000, 12000);
                 Check_Timer = 2000;
-    
+
                 VemDead = false;
                 Death = false;
             }
-    
+
             void JustEngagedWith(Unit* /*who*/) override
             {
             }
-    
+
             void JustDied(Unit* /*killer*/) override
             {
                 if (instance)
@@ -87,7 +87,7 @@ class boss_kri : public CreatureScript
                     if (instance->GetData(DATA_BUG_TRIO_DEATH) < 2)
                                                                     // Unlootable if death
                         me->RemoveFlag(OBJECT_FIELD_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
-    
+
                     instance->SetData(DATA_BUG_TRIO_DEATH, 1);
                 }
             }
@@ -96,27 +96,27 @@ class boss_kri : public CreatureScript
                 //Return since we have no target
                 if (!UpdateVictim())
                     return;
-    
+
                 //Cleave_Timer
                 if (Cleave_Timer <= diff)
                 {
                     DoCastVictim(SPELL_CLEAVE);
                     Cleave_Timer = urand(5000, 12000);
                 } else Cleave_Timer -= diff;
-    
+
                 //ToxicVolley_Timer
                 if (ToxicVolley_Timer <= diff)
                 {
                     DoCastVictim(SPELL_TOXIC_VOLLEY);
                     ToxicVolley_Timer = urand(10000, 15000);
                 } else ToxicVolley_Timer -= diff;
-    
+
                 if (!HealthAbovePct(5) && !Death)
                 {
                     DoCastVictim(SPELL_POISON_CLOUD);
                     Death = true;
                 }
-    
+
                 if (!VemDead)
                 {
                     //Checking if Vem is dead. If yes we will enrage.
@@ -130,46 +130,46 @@ class boss_kri : public CreatureScript
                         Check_Timer = 2000;
                     } else Check_Timer -=diff;
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
-        };   
+        };
 };
 
 class boss_vem : public CreatureScript
 {
     public:
         boss_vem() : CreatureScript("boss_vem") { }
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_vemAI(creature);
         }
-    
+
         struct boss_vemAI : public ScriptedAI
         {
             boss_vemAI(Creature* creature) : ScriptedAI(creature)
             {
                 instance = creature->GetInstanceScript();
             }
-    
+
             InstanceScript* instance;
-    
+
             uint32 Charge_Timer;
             uint32 KnockBack_Timer;
             uint32 Enrage_Timer;
-    
+
             bool Enraged;
-    
+
             void Reset() override
             {
                 Charge_Timer = urand(15000, 27000);
                 KnockBack_Timer = urand(8000, 20000);
                 Enrage_Timer = 120000;
-    
+
                 Enraged = false;
             }
-    
+
             void JustDied(Unit* /*killer*/) override
             {
                 if (instance)
@@ -181,15 +181,15 @@ class boss_vem : public CreatureScript
                     instance->SetData(DATA_BUG_TRIO_DEATH, 1);
                 }
             }
-    
+
             void JustEngagedWith(Unit* /*who*/) override { }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 //Return since we have no target
                 if (!UpdateVictim())
                     return;
-    
+
                 //Charge_Timer
                 if (Charge_Timer <= diff)
                 {
@@ -201,10 +201,10 @@ class boss_vem : public CreatureScript
                         //me->SendMonsterMove(target->GetPositionX(), target->GetPositionY(), target->GetPositionZ(), 0, true, 1);
                         AttackStart(target);
                     }
-    
+
                     Charge_Timer = urand(8000, 16000);
                 } else Charge_Timer -= diff;
-    
+
                 //KnockBack_Timer
                 if (KnockBack_Timer <= diff)
                 {
@@ -213,53 +213,53 @@ class boss_vem : public CreatureScript
                         DoModifyThreatPercent(me->GetVictim(), -80);
                     KnockBack_Timer = urand(15000, 25000);
                 } else KnockBack_Timer -= diff;
-    
+
                 //Enrage_Timer
                 if (!Enraged && Enrage_Timer <= diff)
                 {
                     DoCast(me, SPELL_ENRAGE);
                     Enraged = true;
                 } else Charge_Timer -= diff;
-    
+
                 DoMeleeAttackIfReady();
             }
-        };  
+        };
 };
 
 class boss_yauj : public CreatureScript
 {
     public:
         boss_yauj() : CreatureScript("boss_yauj") { }
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_yaujAI(creature);
         }
-    
+
         struct boss_yaujAI : public ScriptedAI
         {
             boss_yaujAI(Creature* creature) : ScriptedAI(creature)
             {
                 instance = creature->GetInstanceScript();
             }
-    
+
             InstanceScript* instance;
-    
+
             uint32 Heal_Timer;
             uint32 Fear_Timer;
             uint32 Check_Timer;
-    
+
             bool VemDead;
-    
+
             void Reset() override
             {
                 Heal_Timer = urand(25000, 40000);
                 Fear_Timer = urand(12000, 24000);
                 Check_Timer = 2000;
-    
+
                 VemDead = false;
             }
-    
+
             void JustDied(Unit* /*killer*/) override
             {
                 if (instance)
@@ -269,7 +269,7 @@ class boss_yauj : public CreatureScript
                         me->RemoveFlag(OBJECT_FIELD_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
                     instance->SetData(DATA_BUG_TRIO_DEATH, 1);
                 }
-    
+
                 for (uint8 i = 0; i < 10; ++i)
                 {
                     if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
@@ -279,15 +279,15 @@ class boss_yauj : public CreatureScript
                     }
                 }
             }
-    
+
             void JustEngagedWith(Unit* /*who*/) override { }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 //Return since we have no target
                 if (!UpdateVictim())
                     return;
-    
+
                 //Fear_Timer
                 if (Fear_Timer <= diff)
                 {
@@ -295,7 +295,7 @@ class boss_yauj : public CreatureScript
                     DoResetThreat();
                     Fear_Timer = 20000;
                 } else Fear_Timer -= diff;
-    
+
                 //Casting Heal to other twins or herself.
                 if (Heal_Timer <= diff)
                 {
@@ -303,7 +303,7 @@ class boss_yauj : public CreatureScript
                     {
                         Unit* pKri = Unit::GetUnit(*me, instance->GetGuidData(DATA_KRI));
                         Unit* pVem = Unit::GetUnit(*me, instance->GetGuidData(DATA_VEM));
-    
+
                         switch (urand(0, 2))
                         {
                             case 0:
@@ -319,10 +319,10 @@ class boss_yauj : public CreatureScript
                                 break;
                         }
                     }
-    
+
                     Heal_Timer = 15000+rand()%15000;
                 } else Heal_Timer -= diff;
-    
+
                 //Checking if Vem is dead. If yes we will enrage.
                 if (Check_Timer <= diff)
                 {
@@ -339,7 +339,7 @@ class boss_yauj : public CreatureScript
                     }
                     Check_Timer = 2000;
                 } else Check_Timer -= diff;
-    
+
                 DoMeleeAttackIfReady();
             }
         };

@@ -68,5 +68,5 @@ target_link_libraries(database
 
 # Generate precompiled header
 if (USE_COREPCH)
-  target_precompile_headers(database PRIVATE ${database_STAT_PCH_HDR}) 
+  target_precompile_headers(database PRIVATE ${database_STAT_PCH_HDR})
 endif ()

@@ -36,10 +36,10 @@ enum Spells
     // Deathwing
     SPELL_ROLL_CONTROL              = 105036, // check aura
     SPELL_ROLL_CONTROL_AOE_1        = 104621, // triggered by check aura
-    SPELL_ROLL_CONTROL_FORCE        = 105740, // 
+    SPELL_ROLL_CONTROL_FORCE        = 105740, //
     SPELL_ROLL_CONTROL_AOE_2        = 105777, // triggered by force spell
     SPELL_ROLL_CONTROL_AOE_3        = 105773, // ?
-    SPELL_SUMMON_SLIME_AOE          = 105537, // 
+    SPELL_SUMMON_SLIME_AOE          = 105537, //
     SPELL_SUMMON_SLIME              = 104999, // cast on spawner
 
     // Corruption
@@ -142,7 +142,7 @@ enum RollStage
     ROLLING_RIGHT       = 6,
 };
 
-const Position corruptionPos[8] = 
+const Position corruptionPos[8] =
 {
     { -13868.6f, -13667.3f, 262.836f, 0.0698132f }, // left 1
     { -13841.1f, -13666.9f, 262.795f, 3.01942f   }, // right 1
@@ -193,15 +193,15 @@ class npc_spine_of_deathwing_deathwing : public CreatureScript
                         StartBattle();
                         break;
                     case ACTION_ROLL_LEFT:
-                        if (rollStage == ROLL_NONE) 
+                        if (rollStage == ROLL_NONE)
                             rollStage = ROLL_PRE_LEFT_1;
                         break;
                     case ACTION_ROLL_RIGHT:
-                        if (rollStage == ROLL_NONE) 
+                        if (rollStage == ROLL_NONE)
                             rollStage = ROLL_PRE_RIGHT_1;
                         break;
                     case ACTION_ROLL_NONE:
-                        rollStage = ROLL_NONE; 
+                        rollStage = ROLL_NONE;
                         break;
                 }
             }
@@ -385,7 +385,7 @@ class npc_spine_of_deathwing_deathwing : public CreatureScript
                             }
                             break;
                     }
-                } 
+                }
             }
 
         private:
@@ -447,7 +447,7 @@ class npc_spine_of_deathwing_deathwing : public CreatureScript
                                     players->TeleportTo(967, customPos[0].GetPositionX(), customPos[0].GetPositionY(), customPos[0].GetPositionZ(), customPos[0].GetOrientation());
                     }
                 }
-                
+
                 if (despawn)
                     me->DespawnOrUnsummon(2000);
             }
@@ -552,7 +552,7 @@ class npc_spine_of_deathwing_corruption : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
-                
+
                 me->SetReactState(REACT_PASSIVE);
                 damageCounter = 0;
                 isGrip = false;
@@ -609,7 +609,7 @@ class npc_spine_of_deathwing_corruption : public CreatureScript
                     }
                 }
                 me->SummonCreature(NPC_SPAWNER, *me);
-                    
+
                 me->DespawnOrUnsummon(2000);
             }
 
@@ -687,7 +687,7 @@ class npc_spine_of_deathwing_hideous_amalgamation : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
-                
+
                 isExplode = false;
 
                 me->SetPowerType(POWER_ALTERNATE_POWER);
@@ -883,7 +883,7 @@ class npc_spine_of_deathwing_corrupted_blood : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
-                
+
                 isDead = false;
             }
 
@@ -988,7 +988,7 @@ class npc_spine_of_deathwing_burning_tendons : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
-                
+
                 me->SetReactState(REACT_PASSIVE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
                 isOpened = false;
@@ -1048,7 +1048,7 @@ class npc_spine_of_deathwing_burning_tendons : public CreatureScript
                 me->DespawnOrUnsummon(1000);
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
 
@@ -1163,7 +1163,7 @@ class spell_spine_of_deathwing_searing_plasma_aoe : public SpellScriptLoader
 
                 if (targets.empty())
                     return;
-                
+
                 Trinity::Containers::RandomResizeList(targets, 1);
             }
 
@@ -1244,7 +1244,7 @@ class spell_spine_of_deathwing_absorb_blood : public SpellScriptLoader
                             pBlood->RemoveAura(SPELL_RESIDUE);
                             pBlood->DespawnOrUnsummon(1000);
                             pAmalgamation->AI()->DoAction(ACTION_ABSORB_BLOOD);
-                        }                 
+                        }
                 }
             }
 
@@ -1364,7 +1364,7 @@ class spell_spine_of_deathwing_blood_corruption : public SpellScriptLoader
                         target = owner;
 
                     if (target)
-                    {   
+                    {
                         if (Aura* aur = owner->AddAura(GetId() == SPELL_BLOOD_CORRUPTION_EARTH ? SPELL_BLOOD_CORRUPTION_EARTH : (roll_chance_i(GetCharges() * 20) ? SPELL_BLOOD_CORRUPTION_EARTH : SPELL_BLOOD_CORRUPTION_DEATH), target))
                         {
                             aur->SetDuration(cur_duration);

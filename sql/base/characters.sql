@@ -1232,7 +1232,6 @@ CREATE TABLE `executed_services` (
 
 /*Data for the table `executed_services` */
 
-
 /*Table structure for table `game_event_condition_save` */
 
 DROP TABLE IF EXISTS `game_event_condition_save`;

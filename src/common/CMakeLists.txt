@@ -55,8 +55,8 @@ set(common_STAT_SRCS
   ${sources_Debugging}
   ${sources_Hacks}
   ${sources_IPLocation}
-  ${sources_Logging} 
-  ${sources_Threading} 
+  ${sources_Logging}
+  ${sources_Threading}
   ${sources_Utilities}
   ${sources_localdir}
 )
@@ -81,7 +81,7 @@ target_include_directories(common
     ${CMAKE_CURRENT_SOURCE_DIR}/Containers/Utilities
     ${CMAKE_CURRENT_SOURCE_DIR}/Configuration
     ${CMAKE_CURRENT_SOURCE_DIR}/Cryptography
-    ${CMAKE_CURRENT_SOURCE_DIR}/Cryptography/Authentication  
+    ${CMAKE_CURRENT_SOURCE_DIR}/Cryptography/Authentication
     ${CMAKE_CURRENT_SOURCE_DIR}/Debugging
     ${CMAKE_CURRENT_SOURCE_DIR}/Hacks
     ${CMAKE_CURRENT_SOURCE_DIR}/IPLocation
@@ -104,12 +104,12 @@ target_link_libraries(common
     g3dlib
     Detour
     utf8cpp
-    jemalloc    
+    jemalloc
 )
 
 add_dependencies(common revision_data.h)
 
 # Generate precompiled header
 if (USE_COREPCH)
-  target_precompile_headers(common PRIVATE ${common_STAT_PCH_HDR}) 
+  target_precompile_headers(common PRIVATE ${common_STAT_PCH_HDR})
 endif ()

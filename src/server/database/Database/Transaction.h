@@ -52,7 +52,7 @@ class TC_DATABASE_API TransactionBase
         TransactionBase(TransactionBase const&) = delete;
         TransactionBase(TransactionBase &&) noexcept = default;
         TransactionBase& operator=(TransactionBase const&) = delete;
-        TransactionBase& operator=(TransactionBase &&) noexcept = default;        
+        TransactionBase& operator=(TransactionBase &&) noexcept = default;
         virtual ~TransactionBase() { Cleanup(); }
 
         void Append(char const* sql);

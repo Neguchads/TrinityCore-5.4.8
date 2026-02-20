@@ -44,7 +44,7 @@ const Position PlayerVehPos     = { -2119.15f, 184.444f, 422.24f, 1.64f   }; // 
 
 const Position TayakStormPoints[2] =
 {
-    { -2119.072f, 379.372f, 422.162f, 4.703f }, // 20 - 10% TP point 
+    { -2119.072f, 379.372f, 422.162f, 4.703f }, // 20 - 10% TP point
     { -2119.072f, 184.985f, 422.162f, 1.585f }  // 10 -  0% TP point
 };
 
@@ -355,10 +355,10 @@ enum eCreature
     NPC_ZARTHIK_ZEALOT                  = 63035,
     NPC_KORTHIK_SWARMER                 = 64357,
     NPC_SETTHIK_GUSTWING                = 63592,
-    NPC_KORTHIK_SWARMGUARD              = 64916, 
+    NPC_KORTHIK_SWARMGUARD              = 64916,
     NPC_SRATHIK_AMBERCALLER             = 64917,
     NPC_KORTHIK_FLESHRENDER             = 64902,
-    NPC_SRATHIK_POOL_TENDER             = 63570, 
+    NPC_SRATHIK_POOL_TENDER             = 63570,
     NPC_AMBER_RIDDEN_MUSHAN             = 63568, // script
     NPC_AMBER_GROWTH                    = 64132, // script for muchan
     NPC_AMBER_SEARSTRING                = 63569,

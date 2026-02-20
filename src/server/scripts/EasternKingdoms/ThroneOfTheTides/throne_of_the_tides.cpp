@@ -54,7 +54,7 @@ enum Creatures
     NPC_TEMPEST_WITCH                       = 40634,
 };
 
-const Position eventPos[7] = 
+const Position eventPos[7] =
 {
     {-121.93f, 807.15f, 797.19f, 3.13f},
     {-122.00f, 799.22f, 797.13f, 3.13f},

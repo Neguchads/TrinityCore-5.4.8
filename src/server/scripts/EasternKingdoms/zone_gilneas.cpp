@@ -365,7 +365,6 @@ Position const worgenRuntCathedralPath4[runtCathedralPathSize4] =
     { -1639.006f, 1478.586f, 65.77306f },
 };
 
-
 uint32 const runtCathedralPathSize5 = 9;
 
 Position const worgenRuntCathedralPath5[runtCathedralPathSize5] =
@@ -1152,7 +1151,7 @@ public:
 
 struct npc_gilnean_mastiff : public ScriptedAI
 {
-    npc_gilnean_mastiff(Creature* creature) : ScriptedAI(creature) 
+    npc_gilnean_mastiff(Creature* creature) : ScriptedAI(creature)
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_ATTACK_LURKER, true);
     }
@@ -1408,7 +1407,7 @@ public:
 
         void PassengerBoarded(Unit* who, int8 /*seatId*/, bool apply) override
         {
-            if (who->GetTypeId() == TYPEID_PLAYER)
+            if (who->IsPlayer())
             {
                 _playerSeated = true;
 
@@ -1419,7 +1418,7 @@ public:
                     me->SetSpeed(MOVE_RUN, 1.3f, true);
                 }
             }
-            else 
+            else
             {
                 if (apply)
                 {
@@ -1904,7 +1903,7 @@ struct npc_chance_the_cat : public ScriptedAI
 
     void SpellHit(Unit* caster, SpellInfo const* spell) override
     {
-        if (spell->Id == SPELL_CATCH_CAT && caster->GetTypeId() == TYPEID_PLAYER)
+        if (spell->Id == SPELL_CATCH_CAT && caster->IsPlayer())
         {
             me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
 
@@ -2028,7 +2027,7 @@ struct npc_mountain_horse_summoned : public ScriptedAI
                     {
                         if (Unit* owner = me->GetCharmerOrOwner())
                         {
-                            if (owner->GetTypeId() == TYPEID_PLAYER)
+                            if (owner->IsPlayer())
                                 owner->ToPlayer()->KilledMonsterCredit(QUEST_CREDIT_HORSE);
                         }
                         events.CancelEvent(EVENT_CHECK_LORNA);
@@ -2066,7 +2065,7 @@ class spell_gilneas_test_telescope : public SpellScript
     {
         if (Unit* caster = GetCaster())
         {
-            if (caster->GetTypeId() == TYPEID_PLAYER)
+            if (caster->IsPlayer())
             {
                 caster->PlayDirectSound(MUSIC_ENTRY_TELESCOPE, caster->ToPlayer());
                 caster->ToPlayer()->SendCinematicStart(PLAY_CINEMATIC_TELESCOPE);
@@ -2241,7 +2240,7 @@ struct npc_koroth_the_hillbreaker : public ScriptedAI
         {
             case ACTION_START_KOROTH_EVENT:
                 Talk(SAY_KOROTH_THE_HILLBREAKER_1);
-				me->GetMotionMaster()->MoveSplinePath(KorothPath[0], KorothPathLenght, false, true, 0.f, false, false);
+                me->GetMotionMaster()->MoveSplinePath(KorothPath[0], KorothPathLenght, false, true, 0.f, false, false);
                 //TalkWithDelay(me->GetSplineDuration(), SAY_KOROTH_THE_HILLBREAKER_2);
                 m_events.ScheduleEvent(EVENT_KOROTH_THE_HILLBREAKER_2, me->GetSplineDuration());
 
@@ -2255,7 +2254,7 @@ struct npc_koroth_the_hillbreaker : public ScriptedAI
 
     void UpdateAI(uint32 const diff) override
     {
-        
+
        m_events.Update(diff);
 
         while (uint32 eventId = m_events.ExecuteEvent())

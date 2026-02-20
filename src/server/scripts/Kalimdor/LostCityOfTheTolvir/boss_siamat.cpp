@@ -131,7 +131,7 @@ class boss_siamat : public CreatureScript
                 uiStaticShockId = 0;
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
             }
-            
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 _JustEngagedWith();
@@ -174,7 +174,7 @@ class boss_siamat : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                 Talk(SAY_KILL_PLAYER);
             }
 

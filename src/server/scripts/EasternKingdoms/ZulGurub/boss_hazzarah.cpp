@@ -259,7 +259,7 @@ class boss_hazzarah : public CreatureScript
                 ObjectList* units = GetWorldObjectsInDist(me, 100);
                 for (ObjectList::const_iterator itr = units->begin(); itr != units->end(); ++itr)
                 {
-                    if (!(*itr) || (*itr)->GetTypeId() != TYPEID_PLAYER)
+                    if (!(*itr) || !(*itr)->IsPlayer())
                         continue;
 
                     if (Player* nearby = (*itr)->ToPlayer())

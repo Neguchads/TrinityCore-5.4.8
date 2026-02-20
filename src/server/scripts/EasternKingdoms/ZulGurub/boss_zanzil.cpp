@@ -58,7 +58,7 @@ enum Adds
     NPC_ZANZIL_TOXIC_GAS    = 52062,
 };
 
-const Position berserkerPos[3] = 
+const Position berserkerPos[3] =
 {
     {-11603.59f, -1233.59f, 81.40f, 5.20f},
     {-11545.00f, -1240.56f, 81.55f, 3.92f},
@@ -72,7 +72,6 @@ const Position zombiePos[4] =
     {-11586.93f, -1331.94f, 79.50f, 0.0f},
     {-11617.71f, -1315.54f, 79.40f, 0.0f}
 };
-
 
 class boss_zanzil : public CreatureScript
 {
@@ -111,20 +110,20 @@ class boss_zanzil : public CreatureScript
                 events.ScheduleEvent(EVENT_ZANZIL_FIRE, 6000);
                 events.ScheduleEvent(urand(0, 1)? EVENT_CAST_ZOMBIE: EVENT_CAST_BERSERK, 30000);
                 DoZoneInCombat();
-                instance->SetBossState(DATA_ZANZIL, IN_PROGRESS); 
+                instance->SetBossState(DATA_ZANZIL, IN_PROGRESS);
             }
 
             void JustDied(Unit* /*killer*/) override
             {
                 _JustDied();
                 Talk(SAY_DEATH);
-            }   
-            
+            }
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_KILL);
             }
-            
+
             void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL))
@@ -143,7 +142,7 @@ class boss_zanzil : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -198,7 +197,7 @@ class npc_zanzil_berserker : public CreatureScript
 
         struct npc_zanzil_berserkerAI : public ScriptedAI
         {
-            npc_zanzil_berserkerAI(Creature* creature) : ScriptedAI(creature) 
+            npc_zanzil_berserkerAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
@@ -215,7 +214,7 @@ class npc_zanzil_berserker : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
                 me->SetSpeed(MOVE_RUN, 0.5f);
             }
-            
+
             bool bSpell;
             uint32 spellTimer;
             uint32 pursuitTimer;
@@ -227,7 +226,7 @@ class npc_zanzil_berserker : public CreatureScript
                 pursuitTimer = 3000;
                 me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_IMMUNE_TO_PC);
             }
-            
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
@@ -312,7 +311,7 @@ class spell_zanzil_fire : public SpellScriptLoader
         class spell_zanzil_fire_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_zanzil_fire_AuraScript);
-            
+
             bool Load() override
             {
                 count = 0;

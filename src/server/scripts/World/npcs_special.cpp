@@ -1575,7 +1575,6 @@ public:
         void AttackStart(Unit* /*who*/) override { }
         void MoveInLineOfSight(Unit* /*who*/) override { }
 
-
         void UpdateAI(uint32 diff) override
         {
             if (ExplosionTimer <= diff)
@@ -2501,8 +2500,6 @@ public:
     };
 };
 
-
-
 struct npc_stone_statue : public ScriptedAI
 {
     npc_stone_statue(Creature* creature) : ScriptedAI(creature)
@@ -2535,7 +2532,7 @@ struct npc_sky_lantern : public ScriptedAI
 
     void IsSummonedBy(Unit* summoner) override
     {
-        if (summoner->GetTypeId() == TYPEID_PLAYER)
+        if (summoner->IsPlayer())
         {
             me->IsInEvadeMode();
             DoCast(summoner, SPELL_KITE_STRING);
@@ -2621,7 +2618,7 @@ struct npc_visual_sparring : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (attacker->GetTypeId() != TYPEID_PLAYER && !HealthAbovePct(85))
+        if (!(attacker->IsPlayer() && !HealthAbovePct(85)))
             damage = 0;
     }
 };
@@ -2650,7 +2647,7 @@ struct npc_abominated_greench : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& /*damage*/) override
     {
-        if (attacker->GetTypeId() == TYPEID_PLAYER)
+        if (attacker->IsPlayer())
             if (eligiblePlayers.find(attacker->GetGUID()) == eligiblePlayers.end())
                 eligiblePlayers.insert(attacker->GetGUID());
     }
@@ -3297,7 +3294,7 @@ struct npc_pandaren_firework_launcher : public ScriptedAI
         });
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }

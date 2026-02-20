@@ -20,7 +20,7 @@
 #include "ScriptPCH.h"
 #include "Vehicle.h"
 
-// todo: починить spell_flaming_fixate
+// todo: ÃÂ¿ÃÂ¾Ã‘â€¡ÃÂ¸ÃÂ½ÃÂ¸Ã‘â€šÃ‘Å’ spell_flaming_fixate
 
 enum ScriptTexts
 {
@@ -30,8 +30,8 @@ enum ScriptTexts
     SAY_DEATH                          = 3,
     SAY_ADDS                           = 4,
     SAY_VALIONA                        = 5,
-                                       
-    // valiona                         
+
+    // valiona
     SAY_ENTER                          = 0,
     SAY_LEAVE                          = 1,
 };
@@ -169,7 +169,7 @@ class boss_drahga_shadowburner : public CreatureScript
                 if (Player* itr = me->FindNearestPlayer(80.0f))
                     me->AI()->AttackStart(itr);
             }
-            
+
             void JustDied(Unit* /*killer*/) override
             {
                 _JustDied();
@@ -182,7 +182,7 @@ class boss_drahga_shadowburner : public CreatureScript
             }
 
             void KilledUnit(Unit* /*victim*/) override
-            {                
+            {
                 Talk(SAY_KILL);
             }
 
@@ -435,9 +435,9 @@ class npc_invocation_of_flame_stalker : public CreatureScript
             {
                 instance = creature->GetInstanceScript();
             }
-            
+
             InstanceScript* instance;
-            
+
             void JustSummoned(Creature* summon) override
             {
                 switch (summon->GetEntry())
@@ -478,7 +478,7 @@ class npc_invoked_flaming_spirit : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
                 instance = creature->GetInstanceScript();
             }
-            
+
             InstanceScript* instance;
 
             void Reset() override

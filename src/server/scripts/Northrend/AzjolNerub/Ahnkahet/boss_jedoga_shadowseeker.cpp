@@ -160,7 +160,7 @@ class boss_jedoga_shadowseeker : public CreatureScript
                     //GetCreatureListWithEntryInGrid(lUnitList, me, NPC_TWILIGHT_VOLUNTEER, 100.0f);
                     //if (!lUnitList.empty())
                     //    for (auto&& creature : lUnitList)
-                    //        creature->ForcedDespawn(); 
+                    //        creature->ForcedDespawn();
                 }
                 MoveUp();
 
@@ -171,7 +171,7 @@ class boss_jedoga_shadowseeker : public CreatureScript
 
             void JustEngagedWith(Unit* who) override
             {
-                if (!instance || (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == NPC_JEDOGA_CONTROLLER))
+                if (!instance || (who->IsCreature() && who->GetEntry() == NPC_JEDOGA_CONTROLLER))
                     return;
 
                 Talk(TEXT_AGGRO);
@@ -185,7 +185,7 @@ class boss_jedoga_shadowseeker : public CreatureScript
 
             void AttackStart(Unit* who) override
             {
-                if (!who || (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == NPC_JEDOGA_CONTROLLER))
+                if (!who || (who->IsCreature() && who->GetEntry() == NPC_JEDOGA_CONTROLLER))
                     return;
 
                 ScriptedAI::AttackStart(who);
@@ -193,7 +193,7 @@ class boss_jedoga_shadowseeker : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (!victim || victim->GetTypeId() != TYPEID_PLAYER)
+                if (!victim || !victim->IsPlayer())
                     return;
 
                 Talk(TEXT_SLAY);
@@ -209,10 +209,10 @@ class boss_jedoga_shadowseeker : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!instance || !who || (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == NPC_JEDOGA_CONTROLLER))
+                if (!instance || !who || (who->IsCreature() && who->GetEntry() == NPC_JEDOGA_CONTROLLER))
                     return;
 
-                if (!bPreDone && who->GetTypeId() == TYPEID_PLAYER && me->GetDistance(who) < 100.0f)
+                if (!bPreDone && who->IsPlayer() && me->GetDistance(who) < 100.0f)
                 {
                     Talk(TEXT_PREACHING);
                     bPreDone = true;
@@ -341,7 +341,7 @@ class boss_jedoga_shadowseeker : public CreatureScript
                 if (instance->GetData(DATA_JEDOGA_SHADOWSEEKER_EVENT) != IN_PROGRESS && instance->GetData(DATA_ALL_INITIAND_DEAD))
                     MoveDown();
 
-                if (bOpFerok && !bOnGround && !bCanDown) 
+                if (bOpFerok && !bOnGround && !bCanDown)
                     Opfern();
 
                 if (bOpFerokFail && !bOnGround && !bCanDown)
@@ -459,7 +459,7 @@ class npc_jedoga_initiand : public CreatureScript
                         if (!CAST_AI(boss_jedoga_shadowseeker::boss_jedoga_shadowseekerAI, boss->AI())->bOpFerok)
                             CAST_AI(boss_jedoga_shadowseeker::boss_jedoga_shadowseekerAI, boss->AI())->bOpFerokFail = true;
 
-                        if (killer->GetTypeId() == TYPEID_PLAYER)
+                        if (killer->IsPlayer())
                             me->GetMap()->SetWorldState(WORLD_STATE_VOLUNTEER_WORK, 0);
                     }
 
@@ -467,7 +467,7 @@ class npc_jedoga_initiand : public CreatureScript
 
                     bWalking = false;
                 }
-                if (killer->GetTypeId() == TYPEID_PLAYER)
+                if (killer->IsPlayer())
                     instance->SetData64(DATA_PL_JEDOGA_TARGET, killer->GetGUID());
             }
 

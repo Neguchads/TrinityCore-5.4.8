@@ -71,7 +71,6 @@ struct file_MVER
     uint32 ver;
 };
 
-
 class FileLoader{
     uint8  *data;
     uint32  data_size;

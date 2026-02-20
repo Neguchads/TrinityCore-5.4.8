@@ -57,7 +57,7 @@ class spell_spicy_explosion : public SpellScriptLoader
 
             void SelectTargets(std::list<WorldObject*>&targets)
             {
-                targets.remove_if([=](WorldObject* obj) { return  obj && obj->GetTypeId() == TYPEID_PLAYER; });
+                targets.remove_if([=](WorldObject* obj) { return  obj && obj->IsPlayer(); });
             }
 
             void OnAfterCast()
@@ -264,7 +264,7 @@ class npc_auntie_stormstout : public CreatureScript
                         break;
                     case 2:
                         events.ScheduleEvent(EVENT_TALK_3, 4500);
-                        break;        
+                        break;
                     case 3:
                         events.ScheduleEvent(EVENT_TALK_4, 7000);
                         break;
@@ -319,7 +319,6 @@ class npc_auntie_stormstout : public CreatureScript
             return new npc_auntie_stormstoutAI(creature);
         }
 };
-
 
 class npc_aqua_dancer : public CreatureScript
 {
@@ -705,7 +704,7 @@ class npc_hozen_bouncer : public CreatureScript
                             talk += 2;
                             break;
                     }
-                    
+
                 }
             }
         };

@@ -162,7 +162,7 @@ class boss_xin_the_weaponmaster : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!m_bHasYelled && who && who->GetTypeId() == TYPEID_PLAYER)
+                if (!m_bHasYelled && who && who->IsPlayer())
                 {
                     m_bHasYelled = true;
                     Talk(TALK_INTRO);
@@ -223,7 +223,6 @@ class boss_xin_the_weaponmaster : public CreatureScript
                         creature->AI()->EnterEvadeMode();
                 }
             }
-
 
             bool DoActivateSwordLaunchers()
             {
@@ -773,7 +772,7 @@ class npc_faintly_glowing_gem : public CreatureScript
                         itr->RemoveAura(SPELL_BLADES_1);
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -807,7 +806,7 @@ class npc_faintly_glowing_gem : public CreatureScript
                     Xin->AI()->DoAction(ACTION_ACTIVATE_BUTTON);
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
 
@@ -911,13 +910,13 @@ class npc_mp_quilen_guardian : public CreatureScript
             }
 
         private:
-            struct LeapingRushPredicate 
+            struct LeapingRushPredicate
             {
                 public:
                     LeapingRushPredicate(Creature const* me) : _me(me) { }
                     bool operator()(Unit const* target) const
                     {
-                        return target && target->GetTypeId() == TYPEID_PLAYER && target->GetDistance2d(_me) > 5.0f;
+                        return target && target->IsPlayer() && target->GetDistance2d(_me) > 5.0f;
                     }
 
                 private:

@@ -1562,7 +1562,7 @@ class npc_ai_li_skymirror : public CreatureScript
             EventMap events;
 
             void Reset() override
-            { 
+            {
                 events.Reset();
 
                 events.ScheduleEvent(EVENT_CHI_BURST,                  8000);
@@ -2488,7 +2488,7 @@ class spell_item_living_amber : public SpellScriptLoader
             void HandleDummy(SpellEffIndex /*effIndex*/)
             {
                 auto target = GetHitUnit();
-                if (!target || target->GetTypeId() != TYPEID_UNIT || GetCaster()->GetTypeId() != TYPEID_PLAYER)
+                if (!target || !target->IsCreature() || !GetCaster()->IsPlayer())
                     return;
 
                 auto player = GetCaster()->ToPlayer();
@@ -3187,7 +3187,7 @@ class spell_empress_gambit_quest : public AuraScript
     }
 };
 
-// Zorlok Shout 131201 
+// Zorlok Shout 131201
 class spell_zorlok_shout : public SpellScript
 {
     PrepareSpellScript(spell_zorlok_shout);
@@ -3322,7 +3322,7 @@ struct npc_dread_waster_dread_lurker : public customCreatureAI
         events.ScheduleEvent(EVENT_DREAD_CLAW_2, 4 * IN_MILLISECONDS);
     }
 
-    void JustDied(Unit* killer) override 
+    void JustDied(Unit* killer) override
     {
         if (killer->ToPlayer())
             killer->ToPlayer()->CastSpell(killer->ToPlayer(), SPELL_GATHER_SHADE_10, true);

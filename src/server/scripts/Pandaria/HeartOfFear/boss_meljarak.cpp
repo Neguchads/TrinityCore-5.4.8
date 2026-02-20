@@ -331,7 +331,7 @@ class boss_wind_lord_meljarak : public CreatureScript
                     return;
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -537,10 +537,10 @@ class boss_wind_lord_meljarak : public CreatureScript
                 void ResetSwarm()
                 {
                     std::list <Creature*> Swarm = GetSwarmList();
-                    
+
                     for (auto&& itr : Swarm)
                         itr->DespawnOrUnsummon();
-                    
+
                 }
 
                 void SpawnSwarm()
@@ -656,7 +656,7 @@ class npc_meljarak_swarm : public CreatureScript
             uint32 timer, wp;
             bool triggeredDeath;
 
-            void Reset() override 
+            void Reset() override
             {
                 events.Reset();
                 triggeredDeath = false;
@@ -773,7 +773,7 @@ class npc_meljarak_swarm : public CreatureScript
                     Swarm->AI()->DoAction(ACTION_SET_SPAWN_SWARM);
             }
 
-            void DamageTaken(Unit* attacker, uint32& damage) override 
+            void DamageTaken(Unit* attacker, uint32& damage) override
             {
                 if (damage >= me->GetHealth() && !triggeredDeath)
                 {
@@ -912,7 +912,7 @@ class npc_whirling_blade_stalker : public CreatureScript
             std::list <uint32> whirlingBladeAffected;
             float x, y, dist;
 
-            void IsSummonedBy(Unit* summoner) override 
+            void IsSummonedBy(Unit* summoner) override
             {
                 me->SetSpeed(MOVE_RUN, 2.65f);
                 me->SetSpeed(MOVE_WALK, 2.65f);
@@ -1226,7 +1226,7 @@ class npc_swarm_spawner_heroic : public CreatureScript
                         case EVENT_SPAWN_ZARTHIK:
                             for (uint8 i = 0; i < 3; i++)
                                 me->SummonCreature(SwarmType, me->GetPositionX() + frand(-2.0f, 2.0f), me->GetPositionY() + frand(-8.0f, 8.0f), me->GetPositionZ(), TEMPSUMMON_MANUAL_DESPAWN);
-                            
+
                             Launched = false;
 
                             // Send new frame for group
@@ -1448,16 +1448,16 @@ class spell_meljarak_amber_prison : public SpellScript
     }
 };
 
-class MendingPredicate 
+class MendingPredicate
 {
     public:
         MendingPredicate(const uint32 entry) : _entry(entry) { }
-    
+
         bool operator()(WorldObject* object)
         {
             return object && object->GetEntry() != _entry;
         }
-    
+
     private:
         const uint32 _entry;
 };
@@ -1624,7 +1624,7 @@ class spell_meljarak_wind_bomb : public SpellScript
     }
 };
 
-class WhirlingBladePredicate 
+class WhirlingBladePredicate
 {
     public:
         WhirlingBladePredicate(Creature* const m_caster) : _caster(m_caster) { }

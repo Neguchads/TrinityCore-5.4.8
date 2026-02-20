@@ -116,7 +116,7 @@ class instance_isle_of_thunder : public InstanceMapScript
             std::list<ObjectGuid> shanbuAssaultGUIDs;
             std::list<ObjectGuid> zandalariTrapGUIDs;
             std::list<ObjectGuid> palaceGuardGUIDs;
-    
+
             void Initialize() override
             {
                 vereesaGUID = ObjectGuid::Empty;
@@ -267,8 +267,8 @@ class instance_isle_of_thunder : public InstanceMapScript
                     }
                 }
             }
-    
-            void OnCreatureCreate(Creature* creature) override 
+
+            void OnCreatureCreate(Creature* creature) override
             {
                 if (!teamInstance)
                 {
@@ -667,7 +667,7 @@ class instance_isle_of_thunder : public InstanceMapScript
                                 if (Player* player = itr.GetSource())
                                     sScenarioMgr->SendScenarioState(player, 1126, 1, 0, GetGuidData(FACTION_DATA) ? CRITERIA_TREE_ID_ZEBTULA_2 : CRITERIA_TREE_ID_SHAOLMARA_2, GetGuidData(FACTION_DATA) ? SCENARIO_ID_ZEBTULA : SCENARIO_ID_SHAOLMARA);
                         }
-                    
+
                         step1 = data;
                         break;
                     case STEP_SURVIVE_THE_AMBUSH:

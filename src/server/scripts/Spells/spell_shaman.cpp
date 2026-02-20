@@ -1218,7 +1218,7 @@ class spell_sha_lighting_shield : public AuraScript
     }
 };
 
-// 974 - Earth Shield 
+// 974 - Earth Shield
 class spell_sha_earth_shield : public AuraScript
 {
     PrepareAuraScript(spell_sha_earth_shield);
@@ -1621,7 +1621,7 @@ class spell_sha_hp_based_totem : public SpellScript
     {
         SetEffectValue(GetCaster()->CountPctFromMaxHealth(10));
     }
- 
+
     void Register() override
     {
         OnEffectHit += SpellEffectFn(spell_sha_hp_based_totem::CalculateHealth, EFFECT_0, SPELL_EFFECT_SUMMON);
@@ -1674,7 +1674,7 @@ class spell_sha_spirit_link : public SpellScript
 
     void SelectTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([](WorldObject const* target) { return target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([](WorldObject const* target) { return !target->IsPlayer(); });
         for (auto&& it : targets)
             if (Unit* target = it->ToUnit())
                 m_expectedHealthPct += target->GetHealthPct();
@@ -1701,7 +1701,7 @@ class spell_sha_spirit_link : public SpellScript
     }
 };
 
-// 2062 - Earth Elemental Totem, 2894 - Fire Elemental Totem 
+// 2062 - Earth Elemental Totem, 2894 - Fire Elemental Totem
 class spell_sha_elemental_totem_summon : public SpellScript
 {
     PrepareSpellScript(spell_sha_elemental_totem_summon);
@@ -2258,7 +2258,7 @@ class spell_sha_flametongue_weapon : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     void HandleProc(AuraEffect const* eff, ProcEventInfo& eventInfo)
@@ -2347,7 +2347,7 @@ class spell_sha_glyph_of_flame_shock : public AuraScript
 
     void HandleProc(AuraEffect const* eff, ProcEventInfo& eventInfo)
     {
-        PreventDefaultAction(); // "Not existing spell" spam 
+        PreventDefaultAction(); // "Not existing spell" spam
 
         int32 damage = eventInfo.GetDamageWithoutResilience();
         int32 heal = CalculatePct(damage, eff->GetAmount());
@@ -2486,7 +2486,7 @@ class spell_sha_stormlash_totem : public AuraScript
 
     bool CheckProc(ProcEventInfo& eventInfo)
     {
-        // If it�s periodic damage, it doesn�t Stormlash, unless it�s Mind Flay, Malefic Grasp, or Drain Soul.
+        // If itÃ¯Â¿Â½s periodic damage, it doesnÃ¯Â¿Â½t Stormlash, unless itÃ¯Â¿Â½s Mind Flay, Malefic Grasp, or Drain Soul.
         if (eventInfo.GetTypeMask() & PROC_FLAG_DONE_PERIODIC)
             if (!eventInfo.GetSpellInfo()->IsChanneled())
                 return false;
@@ -2498,7 +2498,7 @@ class spell_sha_stormlash_totem : public AuraScript
         if (actor->IsPet() && actor->ToPet()->IsTemporary())
             return false;
 
-        return actor->GetTypeId() == TYPEID_PLAYER || actor->IsPet() || actor->HasUnitTypeMask(UNIT_MASK_CONTROLABLE_GUARDIAN);
+        return actor->IsPlayer() || actor->IsPet() || actor->HasUnitTypeMask(UNIT_MASK_CONTROLABLE_GUARDIAN);
     }
 
     void HandleProc(ProcEventInfo& eventInfo)
@@ -2782,7 +2782,7 @@ struct npc_sha_spiritwalker_champion : public PassiveAI
         me->SetPower(POWER_MANA, me->GetMaxPower(POWER_MANA));
     }
 
-    void EnterEvadeMode() override 
+    void EnterEvadeMode() override
     {
         Unit* owner = me->GetCharmerOrOwner();
         if (owner && !me->HasUnitState(UNIT_STATE_FOLLOW))
@@ -2936,7 +2936,7 @@ struct npc_sha_earth_elemental : public ScriptedAI
             if (Unit* target = me->GetVictim())
                 if (target->GetThreatManager().getCurrentVictim())
                     if (Unit* tank = target->GetThreatManager().getCurrentVictim()->getTarget())
-                        if (tank->GetTypeId() == TYPEID_PLAYER && tank->ToPlayer()->GetRoleForGroup() == ROLES_TANK)
+                        if (tank->IsPlayer() && tank->ToPlayer()->GetRoleForGroup() == ROLES_TANK)
                             return;
 
             DoCastVictim(SPELL_SHAMAN_ANGEREDEARTH);
@@ -3178,7 +3178,7 @@ struct
 {
     uint32 Entry;
     uint32 Spell;
-} ElementalFamiliar[] = 
+} ElementalFamiliar[] =
 {
     { 73556, 148105 },  // Earth
     { 73559, 148111 },  // Water

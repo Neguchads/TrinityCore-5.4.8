@@ -86,7 +86,7 @@ class spell_jungle_torch_catch : public SpellScript
     }
 };
 
-enum 
+enum
 {
     SPELL_RIBBON_POLE_PERIODIC_VISUAL = 45406
 };

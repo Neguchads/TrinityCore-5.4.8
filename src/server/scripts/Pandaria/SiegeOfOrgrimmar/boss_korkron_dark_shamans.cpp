@@ -20,16 +20,16 @@
 #include "siege_of_orgrimmar.h"
 
 enum Spells
-{                          
-    /*Haromm*/                 
+{
+    /*Haromm*/
     SPELL_FROSTSTORM_STRIKE    = 144215,
     SPELL_TOXIC_MIST           = 144089,
     SPELL_TOXICITY             = 144107,
     SPEll_FOUL_STREAM          = 144090,
     SPELL_ASHEN_WALL           = 144070,
     SPELL_ASHEN_WALL_SUMM      = 144071,
-                               
-    /*Kardris*/                
+
+    /*Kardris*/
     SPELL_FROSTSTORM_BOLT      = 144214,
     SPELL_FOUL_GEYSER          = 143990,
     SPELL_FOUL_GEYSER_MISSLE   = 143992,
@@ -129,7 +129,7 @@ class boss_earthbreaker_haromm : public CreatureScript
 
         struct boss_earthbreaker_harommAI : public BossAI
         {
-            boss_earthbreaker_harommAI(Creature* creature) : BossAI(creature, DATA_KORKRON_DARK_SHAMANS)  
+            boss_earthbreaker_harommAI(Creature* creature) : BossAI(creature, DATA_KORKRON_DARK_SHAMANS)
             {
                 me->setActive(true);
             }
@@ -333,7 +333,7 @@ class boss_earthbreaker_haromm : public CreatureScript
                 }
 
                 // Finish Encounter
-                if (attacker->GetTypeId() == TYPEID_PLAYER && damage >= me->GetHealth() && !hasDie)
+                if (attacker->IsPlayer() && damage >= me->GetHealth() && !hasDie)
                 {
                     hasDie = true;
 
@@ -463,7 +463,7 @@ class boss_wavebinder_kardris : public CreatureScript
 
         struct boss_wavebinder_kardrisAI : public ScriptedAI
         {
-            boss_wavebinder_kardrisAI(Creature* creature) : ScriptedAI(creature), summons(me) 
+            boss_wavebinder_kardrisAI(Creature* creature) : ScriptedAI(creature), summons(me)
             {
                 me->setActive(true);
                 instance = me->GetInstanceScript();
@@ -573,7 +573,7 @@ class boss_wavebinder_kardris : public CreatureScript
                 }
 
                 // Finish Encounter
-                if (attacker->GetTypeId() == TYPEID_PLAYER && damage >= me->GetHealth() && !hasDie)
+                if (attacker->IsPlayer() && damage >= me->GetHealth() && !hasDie)
                 {
                     hasDie = true;
 
@@ -1002,8 +1002,8 @@ struct npc_dark_shamans_falling_ash : public ScriptedAI
 // Ashen Elemental 71827
 struct npc_dark_shamans_ashen_elemental : public ScriptedAI
 {
-    npc_dark_shamans_ashen_elemental(Creature* creature) : ScriptedAI(creature) 
-    { 
+    npc_dark_shamans_ashen_elemental(Creature* creature) : ScriptedAI(creature)
+    {
         SetCombatMovement(false);
     }
 
@@ -1054,7 +1054,7 @@ struct npc_dark_shamans_iron_tomb : public ScriptedAI
         });
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }

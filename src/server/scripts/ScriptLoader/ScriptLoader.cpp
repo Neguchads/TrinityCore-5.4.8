@@ -1842,7 +1842,6 @@ void AddNorthrendScripts()
 #endif
 }
 
-
 void AddMaelstromScripts()
 {
 #ifdef SCRIPTS
@@ -1864,7 +1863,6 @@ void AddMaelstromScripts()
 extern void AddModulesScripts();
 
 #endif // USE_MODULES
-
 
 void AddEventScripts()
 {

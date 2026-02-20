@@ -78,7 +78,7 @@ namespace MMAP
         m_bigBaseUnit        (bigBaseUnit),
         m_mapid              (mapid),
         m_totalTiles         (0u),
-        m_totalTilesProcessed(0u),        
+        m_totalTilesProcessed(0u),
         m_rcContext          (nullptr),
         _cancelationToken    (false)
     {
@@ -194,7 +194,7 @@ namespace MMAP
                 for (uint32 i = minX; i <= maxX; ++i)
                     for (uint32 j = minY; j <= maxY; ++j)
                         if (tiles->insert(StaticMapTree::packTileID(i, j)).second)
-                            count++;                
+                            count++;
             }
 
             // // For transport maps we're only interested in cells covering coordinates -1 to 1, which happen to be 31 and 32 when offset
@@ -420,7 +420,7 @@ namespace MMAP
         // build navmesh tile
         // build navmesh tile
         TileBuilder tileBuilder = TileBuilder(this, m_skipLiquid, m_bigBaseUnit, m_debugOutput);
-        tileBuilder.buildMoveMapTile(mapId, tileX, tileY, data, bmin, bmax, navMesh);        
+        tileBuilder.buildMoveMapTile(mapId, tileX, tileY, data, bmin, bmax, navMesh);
         //buildMoveMapTile(mapId, tileX, tileY, data, bmin, bmax, navMesh);
         fclose(file);
     }
@@ -443,7 +443,7 @@ namespace MMAP
 
         _cancelationToken = true;
 
-        _queue.Cancel();        
+        _queue.Cancel();
     }
 
     /**************************************************************************/
@@ -877,7 +877,7 @@ namespace MMAP
                 //printf("%sNo vertices to build tile!              \n", tileString);
                 continue;
             }
-            if (!params.polyCount || !params.polys) 
+            if (!params.polyCount || !params.polys)
             {
                 // we have flat tiles with no actual geometry - don't build those, its useless
                 // drop tiles with only exact count - some tiles may have geometry while having less tiles
@@ -976,7 +976,7 @@ namespace MMAP
     bool MapBuilder::shouldSkipMap(uint32 mapID) const
     {
         if (m_mapid >= 0)
-            return static_cast<uint32>(m_mapid) != mapID;        
+            return static_cast<uint32>(m_mapid) != mapID;
 
         if (m_skipContinents)
             if (isContinentMap(mapID))
@@ -996,7 +996,7 @@ namespace MMAP
                 case 605:   // development_nonweighted.wdt
                 case 606:   // QA_DVD.wdt
                 case 651:   // ElevatorSpawnTest.wdt
-                case 1060:  // LevelDesignLand-DevOnly.wdt                    
+                case 1060:  // LevelDesignLand-DevOnly.wdt
                     return true;
                 default:
                     if (isTransportMap(mapID))
@@ -1020,7 +1020,7 @@ namespace MMAP
                 case 968:   // Rated Eye of the Storm
                 case 998:   // Temple of Kotmogu
                 case 1010:  // CTF3
-                case 1105:  // Deepwind Gorge                    
+                case 1105:  // Deepwind Gorge
                     return true;
                 default:
                     break;
@@ -1033,7 +1033,7 @@ namespace MMAP
                 case 562:   // Blade's Edge Arena
                 case 572:   // Ruins of Lordaeron
                 case 617:   // Dalaran Sewers
-                case 618:   // The Ring of Valor                  
+                case 618:   // The Ring of Valor
                     return true;
                 default:
                     break;
@@ -1089,7 +1089,7 @@ namespace MMAP
             case 763:
             case 765:
             case 766:
-            case 767:                
+            case 767:
                 return true;
             default:
                 return false;
@@ -1115,8 +1115,6 @@ namespace MMAP
     // {
     //     return transportMaps.find(mapID) != transportMaps.end();
     // }
-
-
 
     /**************************************************************************/
     bool TileBuilder::shouldSkipTile(uint32 mapID, uint32 tileX, uint32 tileY) const

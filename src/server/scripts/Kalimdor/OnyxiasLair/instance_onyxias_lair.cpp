@@ -84,7 +84,7 @@ public:
                     if (Creature* temp = go->SummonCreature(NPC_WHELP, goPos, TEMPSUMMON_CORPSE_DESPAWN))
                     {
                         temp->SetInCombatWithZone();
-                        
+
                         if (onyxiaLiftoffTimer) // calculate only if fly phase
                             if (++manyWhelpsCounter == 50)
                                 instance->SetWorldState(WORLD_STATE_MANY_WHELPS, 1);

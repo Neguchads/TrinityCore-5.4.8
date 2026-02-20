@@ -125,7 +125,7 @@ class npc_sergeant_bly : public CreatureScript
 
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
-                if (attacker->GetTypeId() != TYPEID_PLAYER && HealthBelowPct(40))
+                if (!(attacker->IsPlayer() && HealthBelowPct(40)))
                     damage = 0;
             }
 
@@ -288,7 +288,7 @@ class npc_weegli_blastfuse : public CreatureScript
 
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
-                if (attacker->GetTypeId() != TYPEID_PLAYER && HealthBelowPct(40))
+                if (!(attacker->IsPlayer() && HealthBelowPct(40)))
                     damage = 0;
             }
 
@@ -429,7 +429,7 @@ class npc_sandfury_executioner : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 

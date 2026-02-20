@@ -94,7 +94,7 @@ public:
         {
             /// Force the player to spawn corpse scarabs via spell, @todo Check percent chance for scarabs, 20% at the moment
             if (!(rand()%5))
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     victim->CastSpell(victim, SPELL_SUMMON_CORPSE_SCARABS_PLR, true, NULL, NULL, me->GetGUID());
 
             Talk(SAY_SLAY);
@@ -123,7 +123,7 @@ public:
         void MoveInLineOfSight(Unit* who) override
 
         {
-            if (!hasTaunted && me->IsWithinDistInMap(who, 60.0f) && who->GetTypeId() == TYPEID_PLAYER)
+            if (!hasTaunted && me->IsWithinDistInMap(who, 60.0f) && who->IsPlayer())
             {
                 Talk(SAY_GREET);
                 hasTaunted = true;

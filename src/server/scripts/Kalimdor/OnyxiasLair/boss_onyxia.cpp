@@ -281,7 +281,7 @@ public:
                 (spell->Id >= 21135 && spell->Id <= 21139) ||
                 (spell->Id >= 22191 && spell->Id <= 22202) ||
                 (spell->Id >= 22267 && spell->Id <= 22268)) &&
-                (target->GetTypeId() == TYPEID_PLAYER))
+                (target->IsPlayer()))
             {
                 me->GetMap()->SetWorldState(WORLD_STATE_SHE_DEEP_BREATHS_MORE, 0);
             }

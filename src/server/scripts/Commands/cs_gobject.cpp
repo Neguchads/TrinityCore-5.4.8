@@ -62,7 +62,7 @@ public:
             { "turn",       SEC_GAMEMASTER, false,  &HandleGameObjectTurnCommand,       },
             { "add",        SEC_GAMEMASTER, false,  gobjectAddCommandTable              },
             { "set",        SEC_GAMEMASTER, false,  gobjectSetCommandTable              },
-            
+
         };
         static std::vector<ChatCommand> commandTable =
         {
@@ -204,7 +204,6 @@ public:
         float y = player->GetPositionY();
         float z = player->GetPositionZ();
         float ang = player->GetOrientation();
-
 
         uint32 objectId = atoi(id);
 

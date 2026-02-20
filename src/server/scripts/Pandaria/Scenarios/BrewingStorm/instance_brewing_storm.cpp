@@ -88,7 +88,7 @@ class instance_brewing_storm : public InstanceMapScript
                     case NPC_THUNDERPAW_INITIATE:
                         villagerGUIDs.push_back(creature->GetGUID());
                         break;
-                }        
+                }
             }
 
             void SetData(uint32 type, uint32 data) override

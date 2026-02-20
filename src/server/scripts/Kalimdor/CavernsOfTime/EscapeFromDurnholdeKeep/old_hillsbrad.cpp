@@ -94,8 +94,6 @@ struct npc_erozion : public ScriptedAI
     }
 };
 
-
-
 /*######
 ## npc_thrall_old_hillsbrad
 ######*/

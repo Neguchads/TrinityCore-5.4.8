@@ -152,7 +152,7 @@ class boss_taldaram : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                                        
+
                 if (uiPhaseTimer <= diff)
                 {
                     switch (Phase)
@@ -244,7 +244,7 @@ class boss_taldaram : public CreatureScript
                                 {
                                     target = Unit::GetUnit(*me, threat->getUnitGuid());
                                     // exclude pets & totems
-                                    if (target && target->GetTypeId() == TYPEID_PLAYER && target->IsAlive())
+                                    if (target && target->IsPlayer() && target->IsAlive())
                                         target_list.push_back(target);
                                     target = NULL;
                                 }
@@ -299,7 +299,7 @@ class boss_taldaram : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() != TYPEID_PLAYER)
+                if (!(victim->IsPlayer()))
                     return;
 
                 Unit* pEmbraceTarget = GetEmbraceTarget();

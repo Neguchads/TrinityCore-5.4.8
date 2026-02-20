@@ -17,7 +17,7 @@
 
 #include "Common.h"
 
-char const* localeNames[TOTAL_LOCALES] = 
+char const* localeNames[TOTAL_LOCALES] =
 {
   "enUS",
   "koKR",
@@ -41,4 +41,3 @@ LocaleConstant GetLocaleByName(const std::string& name)
 
     return LOCALE_enUS;                                     // including enGB case
 }
-

@@ -98,7 +98,7 @@ class instance_well_of_eternity : public InstanceMapScript
                         break;
                     default:
                         break;
-                }                
+                }
             }
 
             void OnGameObjectCreate(GameObject* go) override
@@ -280,7 +280,7 @@ class instance_well_of_eternity : public InstanceMapScript
                 std::string str_data;
 
                 std::ostringstream saveStream;
-                saveStream << "W o E " << GetBossSaveData() 
+                saveStream << "W o E " << GetBossSaveData()
                     << uiEventNozdormu << " " << uiEventDemon << " " << uiEventIllidan1 << " " << uiEventDemon2 << " ";
 
                 str_data = saveStream.str();
@@ -326,7 +326,7 @@ class instance_well_of_eternity : public InstanceMapScript
                     uint32 tmpEvent3;
                     loadStream >> tmpEvent3;
                     uiEventIllidan1 = ((tmpEvent3 != DONE) ? NOT_STARTED : DONE);
-                    
+
                     uint32 tmpEvent4;
                     loadStream >> tmpEvent4;
                     uiEventDemon2 = ((tmpEvent4 != DONE) ? NOT_STARTED : DONE);
@@ -347,7 +347,7 @@ class instance_well_of_eternity : public InstanceMapScript
                 ObjectGuid uiVarothenGUID;
                 ObjectGuid uiMannorothGUID;
                 ObjectGuid uiFireWallStalker;
-                
+
                 ObjectGuid uiRoyalCacheGUID;
                 ObjectGuid uiMinorCacheGUID;
                 ObjectGuid uiCourtyardDoor1GUID;
@@ -355,7 +355,7 @@ class instance_well_of_eternity : public InstanceMapScript
                 std::vector<ObjectGuid> uiSecondDemonDoors;
                 std::vector<ObjectGuid> uiAfterPerotharnDoors;
                 std::vector<ObjectGuid> uiPerotharnDoors;
-               
+
                 bool uiBlockedPathLeft;
                 bool uiBlockedPathRight;
                 bool uiBlockedPathForward;

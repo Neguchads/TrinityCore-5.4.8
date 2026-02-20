@@ -471,7 +471,7 @@ class boss_stone_guard_controller : public CreatureScript
                             if (Creature* sGuardian = ObjectAccessor::GetCreature(*me, instance->GetGuidData(prevPetrifiedGuardian)))
                                 if (sGuardian->IsAlive() && sGuardian->IsInCombat())
                                     sGuardian->AI()->DoAction(ACTION_PETRIFICATION);
- 
+
                         }
                         break;
                     }
@@ -482,7 +482,7 @@ class boss_stone_guard_controller : public CreatureScript
                             DoAction(ACTION_EVADE);
                             petrified = true;
                         }
-                        else 
+                        else
                             if (HasAnyPlayerIsPetrified() && petrified)
                                 if (instance)
                                     instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_TOTALY_PETRIFIED);
@@ -585,7 +585,7 @@ class boss_generic_guardian : public CreatureScript
 
         struct boss_generic_guardianAI : public BossAI
         {
-            boss_generic_guardianAI(Creature* creature) : BossAI(creature, DATA_STONE_GUARD), summons(creature) 
+            boss_generic_guardianAI(Creature* creature) : BossAI(creature, DATA_STONE_GUARD), summons(creature)
             {
                 me->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_REGENERATE_POWER);
             }

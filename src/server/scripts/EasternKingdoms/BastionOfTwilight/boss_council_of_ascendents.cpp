@@ -19,8 +19,8 @@
 #include "Spell.h"
 #include "bastion_of_twilight.h"
 
-// ����������� � �������� electric instability, lava seed, liquid ice
-// ����� �������� ��� avity crash
+// Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ electric instability, lava seed, liquid ice
+// Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ avity crash
 
 enum FeludiusScriptText
 {
@@ -71,7 +71,7 @@ enum Spells
     SPELL_HEART_OF_ICE                 = 82665,
     SPELL_ICY_REPRISAL                 = 82817,
     SPELL_HYDROLANCE                   = 82752,
-    SPELL_GLACIATE                     = 82746, 
+    SPELL_GLACIATE                     = 82746,
     SPELL_FROZEN                       = 82772,
     SPELL_WATER_BOMB_AURA              = 77349,
     SPELL_WATER_BOMB_SUMMON            = 77347,
@@ -167,10 +167,10 @@ enum Events
     EVENT_LIGHTNING_ROD                 = 17,
     EVENT_CHAIN_LIGHTNING               = 18,
     EVENT_THUNDERSHOCK                  = 19,
-    EVENT_PHASE_3_1                     = 20, // �������
-    EVENT_PHASE_3_2                     = 21, // �������
-    EVENT_PHASE_3_3                     = 22, // �������
-    EVENT_PHASE_3_4                     = 23, // �������
+    EVENT_PHASE_3_1                     = 20, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    EVENT_PHASE_3_2                     = 21, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    EVENT_PHASE_3_3                     = 22, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    EVENT_PHASE_3_4                     = 23, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
     EVENT_CRYOGENIC_AURA                = 24,
     EVENT_LAVA_SEED                     = 25,
     EVENT_GRAVITY_CRUSH                 = 26,
@@ -200,7 +200,7 @@ enum Adds
     NPC_VIOLENT_CYCLONE                     = 44747,
     NPC_LIQUID_ICE                          = 45452,
     NPC_ASCENDANT_COUNCIL_PLUME_STALKER     = 45420,
-    NPC_ASCENDANT_COUNCIL_TARGET_STALKER    = 44553,    //���������, ������ ���
+    NPC_ASCENDANT_COUNCIL_TARGET_STALKER    = 44553,    //Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½, Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
     NPC_ASCENDANT_COUNCIL_CONTROLLER        = 43691,
     NPC_GRAVITY_CRUSH                       = 45476,
     NPC_FLAME_STRIKE                        = 49432,
@@ -218,26 +218,26 @@ enum Actions
     ACTION_ELEMENTARY_ACHIEV,
 };
 
-const Position councilPos[4] = 
+const Position councilPos[4] =
 {
-    { -1053.54f, -564.38f, 835.02f, 5.81f }, // ��������
-    { -1054.04f, -600.60f, 835.03f, 0.42f }, // �����
-    { -1057.89f, -653.51f, 877.70f, 0.79f }, // �����
-    { -1057.93f, -533.38f, 877.68f, 5.47f }, // ���������
+    { -1053.54f, -564.38f, 835.02f, 5.81f }, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    { -1054.04f, -600.60f, 835.03f, 0.42f }, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    { -1057.89f, -653.51f, 877.70f, 0.79f }, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    { -1057.93f, -533.38f, 877.68f, 5.47f }, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
 };
 
-const Position groundPos[7] = 
+const Position groundPos[7] =
 {
-    { -1038.45f, -590.60f, 831.98f, 6.04f }, // �� 2� ���� ���� ������� �����
-    { -1034.61f, -571.70f, 831.90f, 6.04f }, // �� 2� ���� ���� ������� ���������
-    { -1008.42f, -571.32f, 831.90f, 4.71f }, // �� 3� ���� �������� ����� ���������
-    { -995.92f, -582.68f, 831.90f, 3.18f  }, // �� 3� ���� �������� ����� ������
-    { -1008.75f, -594.82f, 831.90f, 1.52f }, // �� 3� ���� �������� ����� ������
-    { -1020.88f, -582.67f, 831.90f, 0.0f  }, // �� 3� ���� �������� ����� ���������
-    { -1008.58f, -582.97f, 831.90f, 6.23f }, // �� 3� ���� ����� ������ �����������
+    { -1038.45f, -590.60f, 831.98f, 6.04f }, // Ã¯Â¿Â½Ã¯Â¿Â½ 2Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    { -1034.61f, -571.70f, 831.90f, 6.04f }, // Ã¯Â¿Â½Ã¯Â¿Â½ 2Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    { -1008.42f, -571.32f, 831.90f, 4.71f }, // Ã¯Â¿Â½Ã¯Â¿Â½ 3Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    { -995.92f, -582.68f, 831.90f, 3.18f  }, // Ã¯Â¿Â½Ã¯Â¿Â½ 3Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    { -1008.75f, -594.82f, 831.90f, 1.52f }, // Ã¯Â¿Â½Ã¯Â¿Â½ 3Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    { -1020.88f, -582.67f, 831.90f, 0.0f  }, // Ã¯Â¿Â½Ã¯Â¿Â½ 3Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    { -1008.58f, -582.97f, 831.90f, 6.23f }, // Ã¯Â¿Â½Ã¯Â¿Â½ 3Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
 };
 
-const Position randomPos[34] = 
+const Position randomPos[34] =
 {
     { -976.85f,  -596.94f, 831.90f, 4.42f },
     { -985.56f,  -607.92f, 831.90f, 3.61f },
@@ -425,10 +425,10 @@ class boss_feludius : public CreatureScript
                 {
                     DoAction(ACTION_PHASE_2);
                     if (Creature* _ignacious = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_IGNACIOUS)))
-                        _ignacious->AI()->DoAction(ACTION_PHASE_2);    
+                        _ignacious->AI()->DoAction(ACTION_PHASE_2);
                     return;
                 }
-                    
+
                 events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -513,7 +513,7 @@ class boss_ignacious : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
-            
+
             EventMap events;
             SummonList summons;
             bool bPhaseTwo;
@@ -669,7 +669,7 @@ class boss_ignacious : public CreatureScript
                             {
                                 _monstrocity->SetHealth(_health);
                                 _monstrocity->LowerPlayerDamageReq(me->GetMaxHealth());
-                                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM))    
+                                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM))
                                     _monstrocity->AI()->AttackStart(target);
                             }
                             break;
@@ -735,7 +735,7 @@ class boss_ignacious : public CreatureScript
 
                             if (Creature* pInfernoLeap = me->SummonCreature(NPC_INFERNO_LEAP, jumppos))
                                 pInfernoLeap->GetMotionMaster()->MovePoint(1001, me->GetVictim()->GetPositionX(), me->GetVictim()->GetPositionY(), me->GetVictim()->GetPositionZ());
-                            
+
                             DoCast(me->GetVictim(), SPELL_INFERNO_RUSH);
                             break;
                         }
@@ -791,7 +791,7 @@ class boss_arion : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
-            
+
             EventMap events;
             SummonList summons;
             bool bPhaseThree;
@@ -980,7 +980,7 @@ class boss_terrastra: public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
-            
+
             EventMap events;
             SummonList summons;
             bool bPhaseThree;
@@ -1158,7 +1158,7 @@ class boss_elementium_monstrosity : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
-            
+
             EventMap events;
             SummonList summons;
             uint32 singleIceLiquidCount;
@@ -1270,7 +1270,7 @@ class boss_elementium_monstrosity : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-            
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1303,7 +1303,6 @@ class boss_elementium_monstrosity : public CreatureScript
             }
         };
 };
-
 
 class npc_violent_cyclone : public CreatureScript
 {
@@ -1354,13 +1353,13 @@ class npc_bt_gravity_well : public CreatureScript
             {
                 events.ScheduleEvent(EVENT_GRAVITY_WELL_DMG, 3000);
                 DoCast(me, SPELL_GRAVITY_WELL_DUMMY);
-                
+
             }
 
             void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1598,7 +1597,7 @@ class npc_ascendant_council_plume_stalker : public CreatureScript
             void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1646,7 +1645,7 @@ class npc_eruption_target : public CreatureScript
             void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1712,7 +1711,7 @@ class spell_ignis_rising_flames : public SpellScriptLoader
 {
     public:
         spell_ignis_rising_flames() : SpellScriptLoader("spell_ignis_rising_flames") { }
- 
+
         class spell_ignis_rising_flames_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_ignis_rising_flames_AuraScript)
@@ -1724,13 +1723,13 @@ class spell_ignis_rising_flames : public SpellScriptLoader
 
                 GetCaster()->CastSpell(GetCaster(), SPELL_RISING_FLAMES_BUFF, true);
             }
- 
+
             void Register() override
             {
                 OnEffectPeriodic += AuraEffectPeriodicFn(spell_ignis_rising_flames_AuraScript::OnPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_TRIGGER_SPELL);
             }
         };
- 
+
         AuraScript* GetAuraScript() const override
         {
             return new spell_ignis_rising_flames_AuraScript();
@@ -1749,7 +1748,7 @@ class spell_ignacious_inferno_rush: public SpellScriptLoader
             void HandleScript()
             {
                 if (!GetHitUnit())
-                    return; 
+                    return;
 
                 GetHitUnit()->RemoveAurasDueToSpell(SPELL_WATERLOGGED);
             }
@@ -1779,7 +1778,7 @@ class spell_arion_lashing_winds : public SpellScriptLoader
             {
                 if (!GetCaster() || !GetHitUnit())
                     return;
-                
+
                 GetCaster()->CastSpell(GetHitUnit(), SPELL_SWIRLING_WINDS, true);
             }
 
@@ -1974,7 +1973,7 @@ class spell_terrastra_harden_skin : public SpellScriptLoader
             {
                 dmgInfo.ModifyDamage(-(int32)(dmgInfo.GetDamage()/2));
             }
-            
+
             void Register() override
             {
                 OnEffectRemove += AuraEffectApplyFn(spell_terrastra_harden_skin_AuraScript::OnRemove, EFFECT_1, SPELL_AURA_SCHOOL_ABSORB, AURA_EFFECT_HANDLE_REAL);
@@ -1992,7 +1991,7 @@ class spell_monstrosity_cryogenic_aura : public SpellScriptLoader
 {
     public:
         spell_monstrosity_cryogenic_aura() : SpellScriptLoader("spell_monstrosity_cryogenic_aura") { }
- 
+
         class spell_monstrosity_cryogenic_aura_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_monstrosity_cryogenic_aura_AuraScript)
@@ -2014,13 +2013,13 @@ class spell_monstrosity_cryogenic_aura : public SpellScriptLoader
                     GetCaster()->GetPositionZ(),
                     0.0f);
             }
- 
+
             void Register() override
             {
                 OnEffectPeriodic += AuraEffectPeriodicFn(spell_monstrosity_cryogenic_aura_AuraScript::OnPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DUMMY);
             }
         };
- 
+
         AuraScript* GetAuraScript() const override
         {
             return new spell_monstrosity_cryogenic_aura_AuraScript();
@@ -2044,7 +2043,7 @@ class spell_elemental_statis : public SpellScriptLoader
                 GetTarget()->RemoveAurasDueToSpell(SPELL_SWIRLING_WINDS);
                 GetTarget()->RemoveAurasDueToSpell(SPELL_GROUNDED);
             }
-            
+
             void Register() override
             {
                 OnEffectApply += AuraEffectApplyFn(spell_elemental_statis_AuraScript::OnApply, EFFECT_0, SPELL_AURA_MOD_STUN, AURA_EFFECT_HANDLE_REAL);

@@ -326,7 +326,7 @@ class npc_argent_crusader : public CreatureScript
 
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
-                if (attacker->GetTypeId() != TYPEID_PLAYER && HealthBelowPct(40))
+                if (!(attacker->IsPlayer() && HealthBelowPct(40)))
                     damage = 0;
             }
         };

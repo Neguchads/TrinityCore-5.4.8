@@ -60,4 +60,3 @@ AI* GetShadowLabyrinthAI(Creature* creature)
 }
 
 #endif // SHADOW_LABYRINTH_H_
-

@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS `ai_playerbot_guild_names` (
   `name_id` mediumint(8) NOT NULL AUTO_INCREMENT UNIQUE,
   `name` varchar(24) NOT NULL UNIQUE,
   PRIMARY KEY (`name_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='PlayerbotAI guild names';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='PlayerbotAI guild names';
 
 INSERT IGNORE INTO `ai_playerbot_guild_names` (`name_id`, `name`) VALUES
 (NULL, 'Black Guard'),

@@ -33,7 +33,6 @@ enum Spells
 
     SPELL_CONJURE_MYSTERY_TOXIN_1       = 93695,
     SPELL_CONJURE_MYSTERY_TOXIN_2       = 93563,
-    
 
     SPELL_CONJURE_MYSTERY_PERIODIC      = 93562,
 
@@ -95,7 +94,7 @@ class boss_lord_valden : public CreatureScript
                 me->HandleEmoteCommand(EMOTE_STATE_USE_STANDING);
                 bRed = false;
             }
-            
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 _JustEngagedWith();

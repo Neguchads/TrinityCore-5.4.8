@@ -18,7 +18,7 @@
 #include "grim_batol.h"
 #include "ScriptPCH.h"
 
-//todo: реализовать адов и mighty stomp
+//todo: Ã‘â‚¬ÃÂµÃÂ°ÃÂ»ÃÂ¸ÃÂ·ÃÂ¾ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ°ÃÂ´ÃÂ¾ÃÂ² ÃÂ¸ mighty stomp
 
 enum ScriptTexts
 {
@@ -32,9 +32,9 @@ enum ScriptTexts
 
 enum Equipment
 {
-    EQUIPMENT_ID_SHIELD    = 40400, 
-    EQUIPMENT_ID_SWORD     = 65094, 
-    EQUIPMENT_ID_MACE      = 65090,  
+    EQUIPMENT_ID_SHIELD    = 40400,
+    EQUIPMENT_ID_SWORD     = 65094,
+    EQUIPMENT_ID_MACE      = 65090,
 };
 
 enum Spells
@@ -49,13 +49,13 @@ enum Spells
     SPELL_BURNING_SHIELD          = 90819,
     SPELL_PERSONAL_PHALANX        = 74908,
     SPELL_FLAMING_ARROW           = 45101,
-    SPELL_FLAMING_ARROW_VISUAL    = 74944, 
+    SPELL_FLAMING_ARROW_VISUAL    = 74944,
     SPELL_CAVE_IN_DUMMY           = 74987,
     SPELL_CAVE_IN                 = 74990,
     SPELL_CAVE_IN_DMG             = 74986,
     SPELL_FIRE_PATCH_AURA         = 90752,
     SPELL_LAVA_PATCH_DMG          = 90754,
-    
+
 };
 
 enum Adds
@@ -81,7 +81,6 @@ enum Others
     ACTION_DUAL_BLADES         = 2,
     ACTION_SHIELD              = 3,
 };
-
 
 const Position  twilightarcherPos[13] =
 {
@@ -143,7 +142,7 @@ class boss_forgemaster_throngus : public CreatureScript
                 Talk(SAY_AGGRO);
                 events.ScheduleEvent(EVENT_PICK_WEAPON, 10000);
             }
-            
+
             void JustDied(Unit* /*killer*/) override
             {
                 _JustDied();
@@ -229,8 +228,6 @@ class boss_forgemaster_throngus : public CreatureScript
         }
 };
 
-
-
 class npc_throngus_fire_patch : public CreatureScript
 {
     public:
@@ -284,7 +281,7 @@ class spell_throngus_pick_weapon : public SpellScriptLoader
                     case 2:
                         GetCaster()->GetAI()->DoAction(ACTION_SHIELD);
                         break;
-                }                
+                }
             }
 
             void Register() override

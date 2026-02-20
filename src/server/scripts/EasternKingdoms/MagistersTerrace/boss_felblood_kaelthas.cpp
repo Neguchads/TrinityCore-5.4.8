@@ -39,7 +39,6 @@ enum Says
     SAY_DEATH                   = 6
 };
 
-
 enum Spells
 {
     // Phase 1 spells
@@ -68,15 +67,12 @@ enum Spells
     SPELL_POWER_FEEDBACK          = 44233                 // Stuns him, making him take 50% more damage for 10 seconds. Cast after Gravity Lapse
 };
 
-
-
 enum Creatures
 {
     CREATURE_PHOENIX              = 24674,
     CREATURE_PHOENIX_EGG          = 24675,
     CREATURE_ARCANE_SPHERE        = 24708
 };
-
 
 /** Locations **/
 float KaelLocations[3][2]=
@@ -221,7 +217,7 @@ public:
             for (i = threatlist.begin(); i != threatlist.end(); ++i)
             {
                 Unit* unit = Unit::GetUnit(*me, (*i)->getUnitGuid());
-                if (unit && (unit->GetTypeId() == TYPEID_PLAYER))
+                if (unit && (unit->IsPlayer()))
                     unit->CastSpell(unit, SPELL_TELEPORT_CENTER, true);
             }
             DoCast(me, SPELL_TELEPORT_CENTER, true);
@@ -234,7 +230,7 @@ public:
             for (i = threatlist.begin(); i != threatlist.end(); ++i)
             {
                 Unit* unit = Unit::GetUnit(*me, (*i)->getUnitGuid());
-                if (unit && (unit->GetTypeId() == TYPEID_PLAYER))
+                if (unit && (unit->IsPlayer()))
                     // Knockback into the air
                     unit->CastSpell(unit, SPELL_GRAVITY_LAPSE_DOT, true, 0, 0, me->GetGUID());
             }
@@ -247,7 +243,7 @@ public:
             for (i = threatlist.begin(); i != threatlist.end(); ++i)
             {
                 Unit* unit = Unit::GetUnit(*me, (*i)->getUnitGuid());
-                if (unit && (unit->GetTypeId() == TYPEID_PLAYER))
+                if (unit && (unit->IsPlayer()))
                 {
                     // Also needs an exception in spell system.
                     unit->CastSpell(unit, SPELL_GRAVITY_LAPSE_FLY, true, 0, 0, me->GetGUID());
@@ -266,7 +262,7 @@ public:
             for (i = threatlist.begin(); i != threatlist.end(); ++i)
             {
                 Unit* unit = Unit::GetUnit(*me, (*i)->getUnitGuid());
-                if (unit && (unit->GetTypeId() == TYPEID_PLAYER))
+                if (unit && (unit->IsPlayer()))
                 {
                     unit->RemoveAurasDueToSpell(SPELL_GRAVITY_LAPSE_FLY);
                     unit->RemoveAurasDueToSpell(SPELL_GRAVITY_LAPSE_DOT);
@@ -608,7 +604,6 @@ public:
 
         void JustEngagedWith(Unit* /*who*/) override { }
         void MoveInLineOfSight(Unit* /*who*/) override { }
-
 
         void UpdateAI(uint32 diff) override
         {

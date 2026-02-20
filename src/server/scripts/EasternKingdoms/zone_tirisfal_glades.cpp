@@ -1329,7 +1329,7 @@ struct npc_vile_fin_puddlejumper : public ScriptedAI
     }
 
     void DamageTaken(Unit* attacker, uint32& damage) override
-    { 
+    {
         if (Player* player = attacker->ToPlayer())
         {
             if (me->GetHealthPct() <= 15.0f)
@@ -1490,7 +1490,7 @@ struct npc_captured_vile_fin_puddlejumper : public ScriptedAI
     }
 
     void IsSummonedBy(Unit* summoner) override
-    { 
+    {
         if (Player* player = summoner->ToPlayer())
         {
             m_playerGUID = player->GetGUID();

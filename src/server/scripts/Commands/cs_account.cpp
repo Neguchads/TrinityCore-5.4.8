@@ -41,7 +41,7 @@ public:
         static std::vector<ChatCommand> accountSetSecTable =
         {
             { "email",          SEC_ADMINISTRATOR,      true,  &HandleAccountSetEmailCommand        },
-        };      
+        };
         static std::vector<ChatCommand> accountLockCommandTable =
         {
             { "country",        SEC_ADMINISTRATOR,      true,   &HandleAccountLockCountryCommand    },
@@ -68,7 +68,7 @@ public:
             { "boost",          SEC_ADMINISTRATOR,      true,  &HandleAccountBoostCommand,          },
             { "",               SEC_ADMINISTRATOR,      false, &HandleAccountCommand,               },
         };
-        static std::vector<ChatCommand> commandTable = 
+        static std::vector<ChatCommand> commandTable =
         {
             { "account",        SEC_ADMINISTRATOR,      true,  accountCommandTable                  },
         };
@@ -297,7 +297,7 @@ public:
             LoginDatabase.Execute(stmt);
             return true;
         }
-        
+
         handler->SendSysMessage(LANG_USE_BOL);
         handler->SetSentErrorMessage(true);
         return false;
@@ -346,9 +346,8 @@ public:
 
         handler->SendSysMessage(LANG_USE_BOL);
         handler->SetSentErrorMessage(true);
-        return false;        
+        return false;
     }
-
 
     static bool HandleAccountEmailCommand(ChatHandler* handler, char const* args)
     {
@@ -408,7 +407,6 @@ public:
                 handler->GetSession()->GetPlayer()->GetName().c_str(), handler->GetSession()->GetPlayer()->GetGUID().GetCounter());
             return false;
         }
-
 
         AccountOpResult result = AccountMgr::ChangeEmail(handler->GetSession()->GetAccountId(), std::string(email));
         switch (result)

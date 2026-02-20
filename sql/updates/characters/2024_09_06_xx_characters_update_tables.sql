@@ -16,5 +16,5 @@ CREATE TABLE IF NOT EXISTS `updates_include` (
 
 DELETE FROM `updates_include`;
 INSERT INTO `updates_include` (`path`, `state`) VALUES
-	('$/sql/updates/characters', 'RELEASED'),
-	('$/sql/archive/characters', 'ARCHIVED');
+    ('$/sql/updates/characters', 'RELEASED'),
+    ('$/sql/archive/characters', 'ARCHIVED');

@@ -263,7 +263,7 @@ enum Actions
 
 /*
     Players start the encounter with 75 points of Corruption. While at this level of Corruption they will inflict 50% less damage to the Amalgam of Corruption.
-    When players reach 0 points of Corruption remaining, they become Purified and will inflict 25% more damage to the Amalgam. 
+    When players reach 0 points of Corruption remaining, they become Purified and will inflict 25% more damage to the Amalgam.
     With each 25 corruption their damage decreases by 25%.
 */
 enum CorruptionLevels
@@ -1327,11 +1327,11 @@ struct npc_greater_corruption : public ScriptedAI
                 case EVENT_DISHEARTENING_LAUGH:
                     DoCast(me, SPELL_DISHEARTENING_LAUGH);
                     events.ScheduleEvent(EVENT_DISHEARTENING_LAUGH, urand(12000, 14000));
-                    break;         
+                    break;
                 case EVENT_LINGERING_CORRUPTION:
                     DoCast(me, SPELL_LINGERING_CORRUPTION);
                     events.ScheduleEvent(EVENT_LINGERING_CORRUPTION, urand(16500, 18500));
-                    break;           
+                    break;
                 case EVENT_BOTTOMLESS_PIT:
                     DoCast(me, SPELL_BOTTOMLESS_PIT_DUMMY);
                     events.ScheduleEvent(EVENT_LINGERING_CORRUPTION, urand(25000, 30000));
@@ -1692,7 +1692,7 @@ struct npc_purifying_light_orb : public ScriptedAI
 // Test of Reliance Helpers 72000, 71996, 71995
 struct npc_test_of_reliance_helpers : public customCreatureAI
 {
-    npc_test_of_reliance_helpers(Creature* creature) : customCreatureAI(creature) 
+    npc_test_of_reliance_helpers(Creature* creature) : customCreatureAI(creature)
     {
         if (me->GetEntry() == NPC_SUN_TENDERHEART_GC)
             SetCombatMovement(false);
@@ -1848,7 +1848,7 @@ class spell_amalgam_icy_fear : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
     }
 
     void Register() override
@@ -1973,7 +1973,7 @@ class spell_test_realm_amalgam : public AuraScript
                 case ROLES_DEFAULT:
                 {
                     target->CastSpell(target, SPELL_SPAWN_MANIF_L, true);
-                
+
                     uint32 altPower = target->GetPower(POWER_ALTERNATE_POWER);
                     // Calculate and spawn Essences of Corruption.
 
@@ -2042,19 +2042,19 @@ class spell_blind_hatred_periodic : public AuraScript
     }
 };
 
-class BlindHatredPredicate 
+class BlindHatredPredicate
 {
     public:
         BlindHatredPredicate(Unit* const m_caster) : _caster(m_caster) { }
-    
+
         bool operator()(WorldObject* object)
         {
             if (Creature* blindHatred = _caster->FindNearestCreature(NPC_BLIND_HATRED, 100.0f, true))
                 return object && object->ToPlayer() && (!object->ToPlayer()->IsInBetween(_caster, blindHatred, 2.5f) || object->ToPlayer()->HasAura(SPELL_PURIFIED_DMG_IMMUNE) || !blindHatred->AI()->GetData(TYPE_BLIND_HATRED));
-    
+
             return false;
         }
-    
+
     private:
         Unit const* _caster;
 };
@@ -2151,11 +2151,11 @@ class spell_manifestation_unleash_corruption : public SpellScript
 };
 
 // we should hit only our owner in same phase with another challengers
-class TrialPhasePredicate 
+class TrialPhasePredicate
 {
     public:
         TrialPhasePredicate(Creature* const m_caster) : _caster(m_caster) { }
-    
+
         bool operator()(WorldObject* object)
         {
             if (object && object->ToPlayer() && _caster->AI()->GetGUID() == object->ToPlayer()->GetGUID())
@@ -2163,7 +2163,7 @@ class TrialPhasePredicate
 
             return true;
         }
-    
+
     private:
         Creature const* _caster;
 };
@@ -2224,7 +2224,7 @@ class spell_norushen_lingering_corruption : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target->GetEntry() != NPC_SUN_TENDERHEART_GC && target->GetEntry() != NPC_LEVEN_DAWNBLADE_GC && target->GetEntry() != NPC_ROOK_STONETOE_GC 
+        targets.remove_if([=](WorldObject* target) { return target->GetEntry() != NPC_SUN_TENDERHEART_GC && target->GetEntry() != NPC_LEVEN_DAWNBLADE_GC && target->GetEntry() != NPC_ROOK_STONETOE_GC
             || GetCaster() && GetCaster()->ToCreature() && target && target->ToPlayer() && GetCaster()->ToCreature()->AI()->GetGUID() != target->ToPlayer()->GetGUID(); });
 
         if (targets.size() > 1)

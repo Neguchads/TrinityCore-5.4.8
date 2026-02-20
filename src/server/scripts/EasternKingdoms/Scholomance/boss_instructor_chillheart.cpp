@@ -221,7 +221,7 @@ class boss_instructor_chillheart : public CreatureScript
                 }
             }
 
-            void DamageTaken(Unit* /*attacker*/, uint32& damage) override 
+            void DamageTaken(Unit* /*attacker*/, uint32& damage) override
             {
                 if (canDie)
                     damage = 0;
@@ -256,7 +256,6 @@ class boss_instructor_chillheart : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-
 
                 while (uint32 eventId = events.ExecuteEvent())
                 {
@@ -311,7 +310,7 @@ class npc_instructor_chillhearts_phylactery : public CreatureScript
 
             void IsSummonedBy(Unit* summoner) override { }
 
-            void Reset() override 
+            void Reset() override
             {
                 me->SetReactState(REACT_PASSIVE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
@@ -320,8 +319,8 @@ class npc_instructor_chillhearts_phylactery : public CreatureScript
                 nonCombatEvents.ScheduleEvent(EVENT_COSMETIC, 2 * IN_MILLISECONDS);
             }
 
-            void InitializeAI() override 
-            { 
+            void InitializeAI() override
+            {
                 Reset();
             }
 
@@ -346,7 +345,7 @@ class npc_instructor_chillhearts_phylactery : public CreatureScript
                         itr->CastSpell(me, SPELL_COSMETIC_SHADOW_CHANNEL, false);
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 if (actionId == ACTION_ACTIVATE)
                 {
@@ -364,7 +363,7 @@ class npc_instructor_chillhearts_phylactery : public CreatureScript
 
             void JustEngagedWith(Unit* /*who*/) override { }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 nonCombatEvents.Update(diff);
 
@@ -409,7 +408,7 @@ class npc_ice_wall_stalker : public CreatureScript
                 summon->DespawnOrUnsummon(7000);
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -488,9 +487,9 @@ class npc_magical_tomes : public CreatureScript
 
             EventMap events;
 
-            void IsSummonedBy(Unit* summoner) override 
-            { 
-                me->SetReactState(REACT_PASSIVE); 
+            void IsSummonedBy(Unit* summoner) override
+            {
+                me->SetReactState(REACT_PASSIVE);
                 DoZoneInCombat();
                 me->SetCanFly(true);
                 me->SetDisableGravity(true);
@@ -537,7 +536,7 @@ class npc_magical_tomes : public CreatureScript
 
             void InitializeAI() override { }
 
-            void JustSummoned(Creature* summon) override 
+            void JustSummoned(Creature* summon) override
             {
                 switch (summon->GetEntry())
                 {
@@ -556,7 +555,7 @@ class npc_magical_tomes : public CreatureScript
 
             void DoAction(int32 /*actionId*/) override { }
 
-            void DamageTaken(Unit* /*attacker*/, uint32& damage) override 
+            void DamageTaken(Unit* /*attacker*/, uint32& damage) override
             {
                 damage = 0;
             }
@@ -585,7 +584,7 @@ class npc_magical_tomes : public CreatureScript
                 }
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
 

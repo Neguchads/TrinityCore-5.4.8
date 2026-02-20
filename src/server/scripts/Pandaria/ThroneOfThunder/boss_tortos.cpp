@@ -323,7 +323,7 @@ class boss_tortos : public CreatureScript
                             }
                         }
                     }
-                    
+
                     if (!m_growingFuryCooldown)
                     {
                         events.ScheduleEvent(EVENT_GROWING_FURY, 1500);
@@ -364,7 +364,7 @@ class boss_tortos : public CreatureScript
                     EnterEvadeMode();
                     return;
                 }
-                
+
                 energyRegen.Update(diff);
 
                 while (uint32 eventId = energyRegen.ExecuteEvent())
@@ -902,7 +902,7 @@ class spell_drain_the_weak : public AuraScript
                 if ((int32)target->GetHealth() < sSpellMgr->GetSpellInfo(SPELL_DRAIN_THE_WEAK_A, target->GetMap()->GetDifficulty())->Effects[0].BasePoints)
                 {
                     owner->CastSpell(target, SPELL_DRAIN_THE_WEAK_DMG, true);
-                    
+
                     // Heal
                     if (SpellInfo const* sInfo = sSpellMgr->GetSpellInfo(SPELL_DRAIN_THE_WEAK_HEAL, target->GetMap()->GetDifficulty()))
                     {
@@ -929,7 +929,7 @@ class spell_crystall_shell_proc : public AuraScript
     {
         if (Unit* victim = eventInfo.GetProcTarget())
         {
-            if (victim->GetTypeId() != TYPEID_PLAYER)
+            if (!(victim->IsPlayer()))
                 return;
 
             GetUnitOwner()->CastSpell(victim, SPELL_CRYSTAL_SHELL_MOD_ABS, true);
@@ -1192,7 +1192,7 @@ class sat_waterspout : public SpellAreaTriggerScript
 
                 if (!player)
                     return false;
-                
+
                 if (player->HasAura(SPELL_WATERSPOUT_TRIGGER))
                     return false;
 

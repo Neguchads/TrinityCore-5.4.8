@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License along
 * with this program. If not, see <http://www.gnu.org/licenses/>.
 */
- 
+
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
 #include "ulduar.h"
@@ -33,14 +33,14 @@ enum Spells
     SPELL_FLAME_CANNON      = 62395
 };
 
-struct RangeCheck 
+struct RangeCheck
 {
     RangeCheck(Unit* base, float min, float max) : __base(base), __mindist(min), __maxdist(max) { }
 
     bool operator()(Unit* const other) const
     {
         float dist = __base->GetDistance(other->GetPositionX(), other->GetPositionY(), other->GetPositionZ());
-        if ( dist >= __mindist && dist <= __maxdist)
+        if (dist >= __mindist && dist <= __maxdist)
             return true;
         return false;
     }
@@ -68,7 +68,7 @@ class npc_ironwork_cannon : public CreatureScript
 
             void JustEngagedWith(Unit* who) override
             {
-                if (who->GetTypeId() != TYPEID_PLAYER && !who->IsVehicle())
+                if (!(who->IsPlayer() && !who->IsVehicle()))
                    _EnterEvadeMode();
 
                 events.ScheduleEvent(EVENT_CHECK_AVAILABLE, 5*IN_MILLISECONDS);
@@ -83,7 +83,7 @@ class npc_ironwork_cannon : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (me->IsWithinDistInMap(who, 100.0f) && !me->IsInCombat() && (who->GetTypeId() == TYPEID_PLAYER || who->IsVehicle()))
+                if (me->IsWithinDistInMap(who, 100.0f) && !me->IsInCombat() && (who->IsPlayer() || who->IsVehicle()))
                     me->AI()->AttackStart(who);
             }
 

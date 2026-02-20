@@ -27,7 +27,6 @@
 
 #include <mutex>
 
-
 class Transport;
 struct TransportCreatureProto;
 

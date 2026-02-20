@@ -182,4 +182,3 @@ namespace Trinity
     }
 }
 #endif
-

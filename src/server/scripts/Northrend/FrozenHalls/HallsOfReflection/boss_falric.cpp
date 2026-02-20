@@ -17,7 +17,7 @@
 
  /* ScriptData
  SDName: boss_falric
- SD%Complete: 
+ SD%Complete:
  SDCategory: Halls of Reflection
  EndScriptData */
 

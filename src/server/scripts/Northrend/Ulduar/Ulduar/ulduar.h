@@ -56,7 +56,7 @@ enum UlduarNPCs
     NPC_RHYDIAN                             = 33696,
     NPC_KEEPER_UNIT                         = 33721,
     NPC_NORGANNON                           = 33686,
-    NPC_BRONZEBEARD_RADIO                   = 34054,    
+    NPC_BRONZEBEARD_RADIO                   = 34054,
     NPC_LOREKEEPER                          = 33686, // Hard mode starter
     NPC_BRANN_BRONZBEARD                    = 33579,
     NPC_DELORAH                             = 33701,
@@ -115,7 +115,7 @@ enum UlduarNPCs
     NPC_STEELBREAKER                        = 32867,
     NPC_MOLGEIM                             = 32927,
     NPC_BRUNDIR                             = 32857,
-    
+
     // Kologarn
     NPC_KOLOGARN                            = 32930,
     NPC_FOCUSED_EYEBEAM                     = 33632,
@@ -127,7 +127,7 @@ enum UlduarNPCs
     NPC_ARM_SWEEP_STALKER                   = 33661,
 
     NPC_AURIAYA                             = 33515,
-    
+
     // Thorim
     NPC_THORIM                              = 32865,
     NPC_JORMUNGAR_BEHEMOTH                  = 32882,
@@ -668,7 +668,7 @@ class PlayerOrPetCheck
     public:
         bool operator()(WorldObject* object) const
         {
-            if (object->GetTypeId() != TYPEID_PLAYER)
+            if (!(object->IsPlayer()))
                 if (!object->ToCreature()->IsPet())
                     return true;
 
@@ -681,7 +681,7 @@ class NoPlayerOrPetCheck
     public:
         bool operator() (WorldObject* object) const
         {
-            if (object->GetTypeId() != TYPEID_PLAYER)
+            if (!(object->IsPlayer()))
                 if (!object->ToCreature()->IsPet())
                     return false;
 

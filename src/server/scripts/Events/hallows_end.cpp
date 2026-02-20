@@ -336,7 +336,7 @@ struct npc_hallowend : public ScriptedAI
             return;
         EventProgress = true;
         TimerDuration = 400 * IN_MILLISECONDS;
-        for (uint8 j = 0; j < PostionEventoHallowends[AreaFire].Area_Count; j++) 
+        for (uint8 j = 0; j < PostionEventoHallowends[AreaFire].Area_Count; j++)
             PostionEventoHallowends[AreaFire + j].AlreadyFired = false;
         for (uint8 i = 0; i < 2; i++)
             SaidPhrase[i] = false;
@@ -379,15 +379,15 @@ struct npc_hallowend : public ScriptedAI
                     Fires.DoAction(NPC_SHADE_OF_THE_HORSEMAN, ACTION_SAY_1);
                     SaidPhrase[0] = true;
                 } else TimerDuration -= diff;
-            else 
+            else
                 if (!SaidPhrase[1])
                     if (TimerDuration <= 130*IN_MILLISECONDS)
                     {
                         Fires.DoAction(NPC_SHADE_OF_THE_HORSEMAN, ACTION_SAY_2);
                         SaidPhrase[1] = true;
-                    } else 
+                    } else
                         TimerDuration -= diff;
-                else 
+                else
                     if (TimerDuration <= diff)
                     {
                         EventEnd();
@@ -551,7 +551,7 @@ struct npc_headless_horseman_fire : public ScriptedAI
                 curRangoFire--;
                 me->AddAura(RangoFire[curRangoFire], me);
             }
-            else 
+            else
             {
                 if (me->IsSummon())
                     if (Unit* eventKeeper =  me->ToTempSummon()->GetSummoner())
@@ -581,7 +581,7 @@ struct npc_headless_horseman_fire : public ScriptedAI
                 if (!RateFire)
                     if (Unit * Owner = me->ToTempSummon()->GetSummoner())
                         RateFire = Owner->ToCreature()->AI()->GetData(0);
-                    else 
+                    else
                         return;
                 if (!RateFire)
                     return;
@@ -771,14 +771,14 @@ struct npc_shade_of_the_horseman : public ScriptedAI
         if (id == 0)
             me->SetVisible(true);
 
-        if (WaypointsShadeOfTheHorsemans[PointFisrtArea + PointCur].CastPoint) 
+        if (WaypointsShadeOfTheHorsemans[PointFisrtArea + PointCur].CastPoint)
         {
             CreateFires();
             Talk(HORSEMAN_INTRO_1);
         }
 
         PointCur++;
-        if (WaypointsShadeOfTheHorsemans[PointFisrtArea + PointCur].area != area) 
+        if (WaypointsShadeOfTheHorsemans[PointFisrtArea + PointCur].area != area)
         {
             MovementFinished = true;
             me->SetVisible(false);

@@ -85,7 +85,7 @@ class boss_rattlegore : public CreatureScript
                 me->GetMap()->SetWorldState(WORLDSTATE_RATTLE_NO_MORE, 1);
             }
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 me->SetDisplayId(11686); // invisible
                 me->SetReactState(REACT_PASSIVE);
@@ -170,7 +170,7 @@ class boss_rattlegore : public CreatureScript
                 if (actionId == ACTION_INTRO)
                     nonCombatEvents.ScheduleEvent(EVENT_CHECK_BONEWEAVER, 1000);
             }
-        
+
             void MovementInform(uint32 /*type*/, uint32 /*pointId*/) override { }
 
             void DamageTaken(Unit* /*attacker*/, uint32& /*damage*/) override { }

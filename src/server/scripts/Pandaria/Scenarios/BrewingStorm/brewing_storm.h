@@ -91,8 +91,8 @@ enum eCreature
     NPC_VILETONGUE_RAIDER           = 58737,
     NPC_VILETONGUE_DECIMATOR        = 71353,
     NPC_BOROKHULA_THE_DESTROYER     = 58739,
-                                    
-    /*Triggers*/                    
+
+    /*Triggers*/
     NPC_LIGHTNING_TARGET_BUNNY      = 70097,
     NPC_LIGHTNING_TARGET_BUNNY_2    = 38821,
     NPC_LIGHTNING_ROD               = 58869,

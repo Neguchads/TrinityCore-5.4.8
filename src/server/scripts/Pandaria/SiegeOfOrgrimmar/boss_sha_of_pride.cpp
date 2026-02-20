@@ -171,7 +171,7 @@ enum Spells
     SPELL_BANISHMENT_TELEPORT      = 148705, // Teleport visual and effect.
 
     // Unstable Corruption
-    SPELL_RIFT_OF_CORRUPTION_DUMMY = 147183, // Effect 0 - Periodic Dummy for Spawn Effect. The Sha's energy tears open Rifts of Corruption every 8 sec. 
+    SPELL_RIFT_OF_CORRUPTION_DUMMY = 147183, // Effect 0 - Periodic Dummy for Spawn Effect. The Sha's energy tears open Rifts of Corruption every 8 sec.
     SPELL_RIFT_OF_CORRUPTION_VIS   = 147186, // NPC visual. Also 147210 & 147211.
     SPELL_RIFT_OF_CORRUPTION_SPAWN = 147199, // Spawn effect.
     SPELL_RIFT_OF_CORRUPTION_AT    = 147205,
@@ -412,7 +412,7 @@ class boss_sha_of_pride : public CreatureScript
 
         struct boss_sha_of_prideAI : public BossAI
         {
-            boss_sha_of_prideAI(Creature* creature) : BossAI(creature, DATA_SHA_OF_PRIDE) 
+            boss_sha_of_prideAI(Creature* creature) : BossAI(creature, DATA_SHA_OF_PRIDE)
             {
                 me->setActive(true);
                 SetCombatMovement(false);
@@ -511,7 +511,7 @@ class boss_sha_of_pride : public CreatureScript
                         events.ScheduleEvent(EVENT_INTRO_1, 100);
                         break;
                     case ACTION_CALCULATE_PRISON_VALUE:
-                        SetEmptyPrisonSpellId(); // no way to call in GetData() 
+                        SetEmptyPrisonSpellId(); // no way to call in GetData()
                         break;
                     case ACTION_SWELLING_PRIDE_EXECUTE:
                         HandleExecuteSwellingPride();
@@ -521,7 +521,7 @@ class boss_sha_of_pride : public CreatureScript
                         events.CancelEvent(EVENT_IMPRISON);
                         events.CancelEvent(EVENT_SELF_REFLECTION);
                         events.CancelEvent(EVENT_MANIFESTATION);
-                        
+
                         events.ScheduleEvent(EVENT_IMPRISON, 42 * IN_MILLISECONDS);
                         events.ScheduleEvent(EVENT_SELF_REFLECTION, 16 * IN_MILLISECONDS);
                         events.ScheduleEvent(EVENT_MANIFESTATION, 51 * IN_MILLISECONDS);
@@ -557,7 +557,7 @@ class boss_sha_of_pride : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_SHA_OF_PRIDE_KILL);
             }
 
@@ -1053,11 +1053,9 @@ class spell_sha_of_pride_swelling_pride : public SpellScript
 
                 if (power > 99 && !itr->HasAura(SPELL_OVERCOME_CHARMED)) // Overcome Charm
                     caster->CastSpell(itr, SPELL_OVERCOME_CHARMED, true);
-                
+
                 if (!itr->HasAura(SPELL_OVERCOME_CHARMED))
                     itr->SetUInt64Value(UNIT_FIELD_CHARMED_BY, 71734);
-
-                    
 
                 // Gain Power after effect
                 if (!itr->HasAura(SPELL_GIFT_OF_THE_TITANS_DPS) && !itr->HasAura(SPELL_GIFT_OF_THE_TITANS_HEAL))
@@ -1115,7 +1113,7 @@ class spell_sha_of_pride_projection_explode : public SpellScript
     }
 };
 
-// Aura of Pride 146818 
+// Aura of Pride 146818
 class spell_sha_of_pride_aura_of_pride : public SpellScript
 {
     PrepareSpellScript(spell_sha_of_pride_aura_of_pride);
@@ -1331,7 +1329,7 @@ class spell_sha_of_pride_mocking_blast : public SpellScript
             if (!target->HasAura(SPELL_GIFT_OF_THE_TITANS_DPS) && !target->HasAura(SPELL_GIFT_OF_THE_TITANS_HEAL))
             {
                 target->SetPower(POWER_ALTERNATE_POWER, target->GetPower(POWER_ALTERNATE_POWER) + 5);
-                
+
                 if (Creature* norushen = ObjectAccessor::GetCreature(*target, target->GetInstanceScript() ? target->GetInstanceScript()->GetGuidData(NPC_NORUSHEN_2) : ObjectGuid::Empty))
                     if (norushen->IsAlive())
                         target->GetMap()->SetWorldState(WORLDSTATE_SHALLOW_YOUR_PRIDE, 0);
@@ -1703,13 +1701,13 @@ class spell_sha_of_pride_corrupted_prison : public AuraScript
         {
             // move arc to range 0.. 2*pi
             arc = Position::NormalizeOrientation(arc);
-    
+
             float angle = facing; // go inf
             float secondAngle = caster->GetAngle(obj);
-    
+
             // move angle to range -pi ... +pi
             angle = Position::NormalizeOrientation(angle);
-    
+
             float lborder = -1 * (arc / border);                        // in range -pi..0
             float rborder = (arc / border);                             // in range 0..pi
 

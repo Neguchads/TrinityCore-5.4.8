@@ -180,7 +180,7 @@ class boss_ook_ook : public CreatureScript
                     events.ScheduleEvent(EVENT_BARREL_TOSS, 1000);
             }
 
-            float GetNeededHealthPercent() 
+            float GetNeededHealthPercent()
             {
                 if (me->GetAura(SPELL_GOING_BANANAS))
                     return (90 - ((me->GetAura(SPELL_GOING_BANANAS)->GetStackAmount()) * 30)); // 90, 60 and 30%

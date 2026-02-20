@@ -121,7 +121,7 @@ class boss_trollgore : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_UNIT)
+                if (who->IsCreature())
                 {
                     switch (who->GetEntry())
                     {
@@ -170,7 +170,7 @@ class boss_trollgore : public CreatureScript
                     return;
 
                 // Don't use spells on event NPCs
-                if (me->GetVictim() && me->GetVictim()->GetTypeId() == TYPEID_UNIT)
+                if (me->GetVictim() && me->GetVictim()->IsCreature())
                 {
                     switch (me->GetVictim()->GetEntry())
                     {
@@ -251,7 +251,7 @@ class boss_trollgore : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL, victim);
             }
 

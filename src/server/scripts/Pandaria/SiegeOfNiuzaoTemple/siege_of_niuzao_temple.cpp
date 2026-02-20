@@ -66,7 +66,6 @@ class npc_sikthik_guardian : public CreatureScript
         }
 };
 
-
 class npc_sikthik_amber_weaver : public CreatureScript
 {
     enum Spells
@@ -153,7 +152,7 @@ class npc_sikthik_amber_weaver : public CreatureScript
 // Resin weaving - 121114
 class spell_resin_weaving : public SpellScriptLoader
 {
-    enum 
+    enum
     {
         SPELL_ENCASED_IN_RESIN          = 121116
     };

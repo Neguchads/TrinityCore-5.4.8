@@ -17,7 +17,7 @@
 
 /* ScriptData
 SDName: Boss General Bjarngrim
-SD% Complete: 70% 
+SD% Complete: 70%
 SDComment: Waypoint needed, we expect boss to always have 2x Stormforged Lieutenant following
 SDCategory: Halls of Lightning
 EndScriptData */

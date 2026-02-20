@@ -138,7 +138,7 @@ void LoginDatabaseConnection::DoPrepareStatements()
 
     // Custom Reward
     PrepareStatement(LOGIN_UPD_BATTLEPAY_VP_COINS, "UPDATE account SET vp = vp + ? WHERE id = ?;", CONNECTION_SYNCH);
-    
+
     // WoW-Token
     PrepareStatement(LOGIN_INS_WOW_TOKEN, "INSERT INTO wow_token (accountId, characterGuid, realm, coins) VALUES (?, ?, ?, ?)", CONNECTION_SYNCH);
 
@@ -147,7 +147,7 @@ void LoginDatabaseConnection::DoPrepareStatements()
 }
 
 LoginDatabaseConnection::LoginDatabaseConnection(MySQLConnectionInfo& connInfo, ConnectionFlags connectionFlags) : MySQLConnection(connInfo, connectionFlags)
-{    
+{
 }
 
 LoginDatabaseConnection::~LoginDatabaseConnection()

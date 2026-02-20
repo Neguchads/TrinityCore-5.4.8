@@ -370,7 +370,7 @@ struct npc_little_patience_king_varian_wrynn : public ScriptedAI
             case ACTION_SCARGASH_SLAIN:
                 me->SetVisible(true);
                 me->GetMotionMaster()->MovePoint(0, varianOuterPos);
-                
+
                 delay = me->GetSplineDuration();
                 scheduler
                     .Schedule(Milliseconds(delay), [this](TaskContext context)
@@ -530,7 +530,7 @@ struct little_patience_assaulterAI : public customCreatureAI
 
     void AttackStart(Unit* target) override
     {
-        if (target && target->GetTypeId() != TYPEID_PLAYER)
+        if (target && !target->IsPlayer())
             return;
 
         if (me->Attack(target, true))

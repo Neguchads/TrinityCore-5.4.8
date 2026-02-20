@@ -18,7 +18,7 @@
 #include "ScriptPCH.h"
 #include "blackrock_caverns.h"
 
-//todo: реализовать касты щенков, берсерк при убийстве ранти, взрыв magma split
+//todo: Ã‘â‚¬ÃÂµÃÂ°ÃÂ»ÃÂ¸ÃÂ·ÃÂ¾ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂºÃÂ°Ã‘ÂÃ‘â€šÃ‘â€¹ Ã‘â€°ÃÂµÃÂ½ÃÂºÃÂ¾ÃÂ², ÃÂ±ÃÂµÃ‘â‚¬Ã‘ÂÃÂµÃ‘â‚¬ÃÂº ÃÂ¿Ã‘â‚¬ÃÂ¸ Ã‘Æ’ÃÂ±ÃÂ¸ÃÂ¹Ã‘ÂÃ‘â€šÃÂ²ÃÂµ Ã‘â‚¬ÃÂ°ÃÂ½Ã‘â€šÃÂ¸, ÃÂ²ÃÂ·Ã‘â‚¬Ã‘â€¹ÃÂ² magma split
 enum Spells
 {
     SPELL_BERSERK                  = 82395,
@@ -44,7 +44,7 @@ enum Adds
     NPC_RUNTY                      = 40015,
 };
 
-const Position pupsPos[2] = 
+const Position pupsPos[2] =
 {
     { 116.70f, 572.05f, 76.45f, 0.04f },
     { 119.81f, 588.90f, 76.35f, 6.22f }
@@ -54,7 +54,7 @@ class boss_beauty : public CreatureScript
 {
     public:
         boss_beauty() : CreatureScript("boss_beauty") { }
-     
+
         struct boss_beautyAI : public BossAI
         {
             boss_beautyAI(Creature* creature) : BossAI(creature, DATA_BEAUTY)
@@ -105,7 +105,7 @@ class boss_beauty : public CreatureScript
             {
                 summons.Despawn(summon);
             }
-     
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
@@ -121,7 +121,7 @@ class boss_beauty : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -159,7 +159,7 @@ class boss_beauty : public CreatureScript
             return GetInstanceAI<boss_beautyAI>(creature);
         }
 };
- 
+
 void AddSC_boss_beauty()
 {
     new boss_beauty();

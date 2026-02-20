@@ -1240,7 +1240,6 @@ public:
                     }
                 }
 
-
                 if (match && locale < TOTAL_LOCALES)
                 {
                     if (maxResults && counter == maxResults)

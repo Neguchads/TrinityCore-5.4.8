@@ -37,7 +37,6 @@
 #pragma pack(push, 1)
 #endif
 
-
 struct AnimKitEntry
 {
     uint32      ID;                                         // 0
@@ -801,7 +800,6 @@ struct ChrPowerTypesEntry
    uint32 classId;                                             // 1
    uint32 power;                                               // 2
 };
-
 
 struct ChrSpecializationEntry
 {
@@ -1657,7 +1655,6 @@ struct ItemSetEntry
     uint32    required_skill_id;                            // 35       m_requiredSkill
     uint32    required_skill_value;                         // 36       m_requiredSkillRank
 };
-
 
 // ItemSpec.dbc
 struct ItemSpecEntry

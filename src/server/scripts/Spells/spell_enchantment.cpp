@@ -22,14 +22,14 @@
 #include "ScriptMgr.h"
 #include "SpellScript.h"
 
- // 118333 - Dancing Steel, 142531 - Bloody Dancing Steel 
+ // 118333 - Dancing Steel, 142531 - Bloody Dancing Steel
 class spell_ench_dancing_steel : public AuraScript
 {
     PrepareAuraScript(spell_ench_dancing_steel);
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetOwner()->IsPlayer();
     }
 
     void HandleProc(ProcEventInfo& eventInfo)
@@ -64,7 +64,7 @@ class spell_ench_windsong : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetOwner()->IsPlayer();
     }
 
     void HandleProc(ProcEventInfo& eventInfo)

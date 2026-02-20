@@ -102,7 +102,7 @@ enum Spells
     // Anim Bone Warriors
     SPELL_NO_REGEN                      = 78725,
     SPELL_NO_REGEN2                     = 72242,
-    SPELL_EMPOWER                       = 79329, 
+    SPELL_EMPOWER                       = 79329,
     SPELL_HURL_BONE                     = 81586,
     SPELL_DIE_VISUAL                    = 70628,
 
@@ -191,7 +191,7 @@ enum Npc
 {
     NPC_NEFARIAN_INTRO                  = 41379,
     NPC_CHROMATIC_PROTO                 = 41948,
-    NPC_ANIM_BONE_WARR                  = 41918, 
+    NPC_ANIM_BONE_WARR                  = 41918,
     MOB_SHADOWBLAZE                     = 42596,
     NPC_INVISIBLE_STALKER               = 42844,
     NPC_INVISIBLE_STALKER_FLOATING      = 42098,
@@ -1123,7 +1123,7 @@ class npc_animated_bone_warrior : public CreatureScript
 
         struct npc_animated_bone_warriorAI : public ScriptedAI
         {
-            npc_animated_bone_warriorAI(Creature* creature) : ScriptedAI(creature) 
+            npc_animated_bone_warriorAI(Creature* creature) : ScriptedAI(creature)
             {
                 ASSERT(creature->GetVehicleKit());
                 creature->SetPower(POWER_ENERGY, 100);

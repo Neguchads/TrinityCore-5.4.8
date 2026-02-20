@@ -206,7 +206,7 @@ public:
             { "delete",          SEC_ADMINISTRATOR,  false,  npcDeleteCommandTable               },
             { "follow",          SEC_ADMINISTRATOR,  false,  npcFollowCommandTable               },
             { "set",             SEC_ADMINISTRATOR,  false,  npcSetCommandTable                  },
-            
+
         };
         static std::vector<ChatCommand> commandTable =
         {
@@ -268,7 +268,7 @@ public:
             data.movementType = 0;
             data.npcflag = 0;
             data.npcflag2 = 0;
-            data.spawntimesecs = 120; // ¯\_(ツ)_/¯
+            data.spawntimesecs = 120; // Ãƒâ€šÃ‚Â¯\_(ÃƒÂ£Ã†â€™Ã¢â‚¬Å¾)_/Ãƒâ€šÃ‚Â¯
             data.spawntimesecs = 0;
 
             Creature* creature = trans->CreateNPCPassenger(guid, &data);
@@ -453,7 +453,7 @@ public:
             return false;
 
         Unit* unit = handler->getSelectedUnit();
-        if (!unit || unit->GetTypeId() != TYPEID_UNIT)
+        if (!unit || !unit->IsCreature())
         {
             handler->SendSysMessage(LANG_SELECT_CREATURE);
             handler->SetSentErrorMessage(true);

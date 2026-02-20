@@ -24,7 +24,7 @@ class instance_thunder_king_citadel : public InstanceMapScript
 {
     public:
         instance_thunder_king_citadel() : InstanceMapScript("instance_thunder_king_citadel", 1135) { }
-    
+
         struct instance_thunder_king_citadel_InstanceScript : public InstanceScript
         {
             uint32 step1;
@@ -38,9 +38,9 @@ class instance_thunder_king_citadel : public InstanceMapScript
             std::list<ObjectGuid> secondDoorPackGUIDs;
             std::list<ObjectGuid> burialThroveGUIDs;
             bool hasGoldenChestAchieved;
-    
+
             instance_thunder_king_citadel_InstanceScript(Map* map) : InstanceScript(map) { }
-    
+
             void Initialize() override
             {
                 step1            = 0;
@@ -67,8 +67,8 @@ class instance_thunder_king_citadel : public InstanceMapScript
                 if (GetData(DATA_SPEAK_WITH_TAOSHI) == DONE)
                     player->CastSpell(player, 140000, true);
             }
-    
-            void OnCreatureCreate(Creature* creature) override 
+
+            void OnCreatureCreate(Creature* creature) override
             {
                 if (creature->GetEntry() == NPC_CLOUD_TILE_TRAP_BUNNY)
                 {
@@ -76,9 +76,9 @@ class instance_thunder_king_citadel : public InstanceMapScript
                     creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);
                 }
             }
-    
-            void OnGameObjectCreate(GameObject* go) override 
-            { 
+
+            void OnGameObjectCreate(GameObject* go) override
+            {
                 switch (go->GetEntry())
                 {
                     case GO_ANCIENT_GATE:
@@ -97,15 +97,15 @@ class instance_thunder_king_citadel : public InstanceMapScript
                         break;
                 }
             }
-    
+
             bool SetBossState(uint32 type, EncounterState state) override
             {
                 if (!InstanceScript::SetBossState(type, state))
                     return false;
-    
+
                 return true;
             }
-    
+
             void SetData(uint32 type, uint32 data) override
             {
                 switch (type)
@@ -157,7 +157,7 @@ class instance_thunder_king_citadel : public InstanceMapScript
                 if (data == DONE || data == SPECIAL)
                     SaveToDB();
             }
-    
+
             uint32 GetData(uint32 type) const override
             {
                 switch (type)
@@ -174,7 +174,7 @@ class instance_thunder_king_citadel : public InstanceMapScript
 
                 return 0;
             }
-    
+
             ObjectGuid GetGuidData(uint32 type) const override
             {
                 switch (type)
@@ -187,18 +187,18 @@ class instance_thunder_king_citadel : public InstanceMapScript
 
                 return ObjectGuid::Empty;
             }
-    
+
             std::string GetSaveData() override
             {
                 OUT_SAVE_INST_DATA;
-    
+
                 std::ostringstream saveStream;
                 saveStream << "T K C " << step1 << ' ' << step2 << ' ' << timeData;
-    
+
                 OUT_SAVE_INST_DATA_COMPLETE;
                 return saveStream.str();
             }
-    
+
             void Load(char const* in) override
             {
                 if (!in)
@@ -206,14 +206,14 @@ class instance_thunder_king_citadel : public InstanceMapScript
                     OUT_LOAD_INST_DATA_FAIL;
                     return;
                 }
-    
+
                 OUT_LOAD_INST_DATA(in);
-    
+
                 char dataHead1, dataHead2, dataHead3;
-    
+
                 std::istringstream loadStream(in);
                 loadStream >> dataHead1 >> dataHead2 >> dataHead3;
-    
+
                 if (dataHead1 == 'T' && dataHead2 == 'K' && dataHead3 == 'C')
                 {
                     uint32 tmpState;
@@ -228,11 +228,11 @@ class instance_thunder_king_citadel : public InstanceMapScript
                     SetData(TIME_DATA, timeData);
                 }
                 else OUT_LOAD_INST_DATA_FAIL;
-    
+
                 OUT_LOAD_INST_DATA_COMPLETE;
             }
         };
-    
+
         InstanceScript* GetInstanceScript(InstanceMap* map) const override
         {
             return new instance_thunder_king_citadel_InstanceScript(map);

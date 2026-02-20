@@ -57,7 +57,6 @@ enum NPCTEXTS
     JAINA_RETREAT_ALLIANCE_BASE    = 5
 };
 
-
 #define ITEM_TEAR_OF_GODDESS        24494
 
 #define GOSSIP_ITEM_GM1             "[GM] Toggle Debug Timers"

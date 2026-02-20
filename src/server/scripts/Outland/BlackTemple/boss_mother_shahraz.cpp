@@ -160,7 +160,7 @@ class boss_mother_shahraz : public CreatureScript
                 for (uint8 i = 0; i < 3; ++i)
                 {
                     Unit* unit = SelectTarget(SELECT_TARGET_RANDOM, 1, 300, true);
-                    if (unit && unit->IsAlive() && (unit->GetTypeId() == TYPEID_PLAYER) && !unit->HasAura(SPELL_SABER_LASH_IMM,0))
+                    if (unit && unit->IsAlive() && (unit->IsPlayer()) && !unit->HasAura(SPELL_SABER_LASH_IMM,0))
                     {
                         TargetGUID[i] = unit->GetGUID();
                         unit->CastSpell(unit, SPELL_TELEPORT_VISUAL, true);

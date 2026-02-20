@@ -261,4 +261,3 @@ void AddSC_instance_magtheridons_lair()
 {
     new instance_magtheridons_lair();
 }
-

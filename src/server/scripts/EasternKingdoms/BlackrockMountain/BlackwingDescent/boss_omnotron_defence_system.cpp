@@ -52,7 +52,7 @@ enum Spells
     SPELL_RECHARGE_ORANGE                           = 78698, // Magmatron
     SPELL_RECHARGE_PURPLE                           = 78699, // Arcanotron
     SPELL_RECHARGE_GREEN                            = 78700, // Toxitron
-    
+
     // Arcanotron
     SPELL_POWER_CONVERSION                          = 79729,
     SPELL_ARCANE_ANNIHILATOR                        = 79710,
@@ -73,7 +73,7 @@ enum Spells
     SPELL_ACQUIRING_TARGET                          = 79501,
     SPELL_FLAMETHROWER                              = 79504,
     SPELL_INSENERATION_SECURITY_MISSURE             = 79023,
-    SPELL_INSENERATION_SECURITY_MISSURE_AOE         = 79035, 
+    SPELL_INSENERATION_SECURITY_MISSURE_AOE         = 79035,
 
     // Toxitron
     SPELL_POISON_SOAKED_SHELL                       = 79835,
@@ -89,12 +89,12 @@ enum Summons_and_auras
     SPELL_OVERCHARGED_POWER_GENERATOR_AOE           = 91858,
     SPELL_ARCANE_BLOWBACK                           = 91879,
     SPELL_OVERCHARGE                                = 91881,
-    
+
     SPELL_CHEMICAL_CLOUD_AOE_A                      = 80163,
     SPELL_CHEMICAL_CLOUD_AOE_A_AOE                  = 80164,
     SPELL_CHEMICAL_CLOUD_AOE_B                      = 80162,
     SPELL_CHEMICAL_CLOUD_AOE_B_AOE                  = 80161,
-   
+
     SPELL_FIXATE                                    = 80094,
     SPELL_POISON_BOMB                               = 80092,
 
@@ -148,7 +148,7 @@ class boss_omnotron : public CreatureScript
                 current = 0;
                 me->SetReactState(REACT_PASSIVE);
             }
-            
+
             InstanceScript* instance;
             ObjectGuid m_uiGuids[4];
             uint8 current;
@@ -171,25 +171,25 @@ class boss_omnotron : public CreatureScript
                 if (Creature* arcanotron = Unit::GetCreature(*me, instance->GetGuidData(DATA_ARCANOTRON)))
                 {
                     m_uiGuids[0] = arcanotron->GetGUID();
-                    instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, arcanotron); 
+                    instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, arcanotron);
                     DoZoneInCombat(arcanotron);
                 }
                 if (Creature* electron = Unit::GetCreature(*me, instance->GetGuidData(DATA_ELECTRON)))
                 {
                     m_uiGuids[1] = electron->GetGUID();
-                    instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, electron); 
+                    instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, electron);
                     DoZoneInCombat(electron);
                 }
                 if (Creature* magmatron = Unit::GetCreature(*me, instance->GetGuidData(DATA_MAGMATRON)))
                 {
                     m_uiGuids[2] = magmatron->GetGUID();
-                    instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, magmatron); 
+                    instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, magmatron);
                     DoZoneInCombat(magmatron);
                 }
                 if (Creature* toxitron = Unit::GetCreature(*me, instance->GetGuidData(DATA_TOXITRON)))
                 {
                     m_uiGuids[3] = toxitron->GetGUID();
-                    instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, toxitron); 
+                    instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, toxitron);
                     DoZoneInCombat(toxitron);
                 }
             }
@@ -310,7 +310,7 @@ class boss_arcanotron : public CreatureScript
             void Reset() override
             {
                 _Reset();
-                
+
                 stage = 0;
 
                 me->SetFloatValue(UNIT_FIELD_BOUNDING_RADIUS, 5);
@@ -321,7 +321,7 @@ class boss_arcanotron : public CreatureScript
                 me->SetMaxPower(POWER_ENERGY, 100);
                 me->SetPower(POWER_ENERGY, 100);
                 me->SetHealth(me->GetMaxHealth());
-                DoCast(me, SPELL_ZERO_POWER, true); 
+                DoCast(me, SPELL_ZERO_POWER, true);
             }
 
             void SpellHit(Unit* caster, SpellInfo const* spell) override
@@ -366,7 +366,7 @@ class boss_arcanotron : public CreatureScript
                         if (pNefarius->IsAIEnabled)
                             pNefarius->AI()->DoAction(ACTION_OMNOTRON_INTRO);
             }
-            
+
             void JustDied(Unit* killer) override
             {
                 _JustDied();
@@ -406,7 +406,7 @@ class boss_arcanotron : public CreatureScript
                     return;
 
                 if (instance->GetData(DATA_HEALTH_OMNOTRON_SHARED) != 0)
-                    me->SetHealth(instance->GetData(DATA_HEALTH_OMNOTRON_SHARED));        
+                    me->SetHealth(instance->GetData(DATA_HEALTH_OMNOTRON_SHARED));
 
                 if (stage == 0)
                     return;
@@ -446,7 +446,7 @@ class boss_arcanotron : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -512,7 +512,7 @@ class boss_electron : public CreatureScript
             void Reset() override
             {
                 _Reset();
-                
+
                 stage = 0;
 
                 me->SetFloatValue(UNIT_FIELD_BOUNDING_RADIUS, 5);
@@ -523,7 +523,7 @@ class boss_electron : public CreatureScript
                 me->SetMaxPower(POWER_ENERGY, 100);
                 me->SetPower(POWER_ENERGY, 100);
                 me->SetHealth(me->GetMaxHealth());
-                DoCast(me, SPELL_ZERO_POWER, true); 
+                DoCast(me, SPELL_ZERO_POWER, true);
             }
 
             void JustReachedHome() override
@@ -551,7 +551,7 @@ class boss_electron : public CreatureScript
                 events.ScheduleEvent(EVENT_ELECTRICAL_DISCHARGE, 6000);
                 instance->SetData(DATA_HEALTH_OMNOTRON_SHARED, me->GetMaxHealth());
             }
-            
+
             void JustDied(Unit* killer) override
             {
                 _JustDied();
@@ -584,7 +584,7 @@ class boss_electron : public CreatureScript
                     return;
 
                 if (instance->GetData(DATA_HEALTH_OMNOTRON_SHARED) != 0)
-                    me->SetHealth(instance->GetData(DATA_HEALTH_OMNOTRON_SHARED));        
+                    me->SetHealth(instance->GetData(DATA_HEALTH_OMNOTRON_SHARED));
 
                 if (stage == 0)
                     return;
@@ -624,7 +624,7 @@ class boss_electron : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -685,7 +685,7 @@ class boss_magmatron : public CreatureScript
                 me->SetMaxPower(POWER_ENERGY, 100);
                 me->SetPower(POWER_ENERGY, 100);
                 me->SetHealth(me->GetMaxHealth());
-                DoCast(me, SPELL_ZERO_POWER, true); 
+                DoCast(me, SPELL_ZERO_POWER, true);
             }
 
             void JustReachedHome() override
@@ -713,7 +713,7 @@ class boss_magmatron : public CreatureScript
                 //events.ScheduleEvent(EVENT_ACQUIRING_TARGET, 25000);
                 instance->SetData(DATA_HEALTH_OMNOTRON_SHARED, me->GetMaxHealth());
             }
-            
+
             void JustDied(Unit* killer) override
             {
                 _JustDied();
@@ -745,7 +745,7 @@ class boss_magmatron : public CreatureScript
                     return;
 
                 if (instance->GetData(DATA_HEALTH_OMNOTRON_SHARED) != 0)
-                    me->SetHealth(instance->GetData(DATA_HEALTH_OMNOTRON_SHARED));        
+                    me->SetHealth(instance->GetData(DATA_HEALTH_OMNOTRON_SHARED));
 
                 if (stage == 0)
                     return;
@@ -785,7 +785,7 @@ class boss_magmatron : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -857,7 +857,7 @@ class boss_toxitron : public CreatureScript
                 me->SetMaxPower(POWER_ENERGY, 100);
                 me->SetPower(POWER_ENERGY, 100);
                 me->SetHealth(me->GetMaxHealth());
-                DoCast(me, SPELL_ZERO_POWER, true); 
+                DoCast(me, SPELL_ZERO_POWER, true);
             }
 
             void JustReachedHome() override
@@ -932,7 +932,7 @@ class boss_toxitron : public CreatureScript
                     return;
 
                 if (instance->GetData(DATA_HEALTH_OMNOTRON_SHARED) != 0)
-                    me->SetHealth(instance->GetData(DATA_HEALTH_OMNOTRON_SHARED));        
+                    me->SetHealth(instance->GetData(DATA_HEALTH_OMNOTRON_SHARED));
 
                 if (stage == 0)
                     return;
@@ -972,7 +972,7 @@ class boss_toxitron : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1014,7 +1014,7 @@ class npc_poison_bomb : public CreatureScript
             npc_poison_bombAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
-                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);    
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_ROOT, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_STUN, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_FEAR, true);
@@ -1118,7 +1118,7 @@ class npc_power_generator : public CreatureScript
             void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_OVERCHARGE)
-                    events.ScheduleEvent(EVENT_OVERCHARGED, 2000);                
+                    events.ScheduleEvent(EVENT_OVERCHARGED, 2000);
             }
 
             void UpdateAI(uint32 diff) override
@@ -1227,8 +1227,8 @@ class spell_magmatron_flamethrower : public SpellScriptLoader
 
             void Register() override
             {
-                OnEffectPeriodic += AuraEffectPeriodicFn(spell_magmatron_flamethrower_AuraScript::OnPereodic, EFFECT_0, SPELL_AURA_PERIODIC_TRIGGER_SPELL); 
-            } 
+                OnEffectPeriodic += AuraEffectPeriodicFn(spell_magmatron_flamethrower_AuraScript::OnPereodic, EFFECT_0, SPELL_AURA_PERIODIC_TRIGGER_SPELL);
+            }
         };
 
         AuraScript* GetAuraScript() const override
@@ -1254,7 +1254,7 @@ class spell_magmatron_barrier : public SpellScriptLoader
                 if (GetTargetApplication()->GetRemoveMode() == AURA_REMOVE_BY_ENEMY_SPELL)
                     GetTarget()->CastSpell(GetTarget(), SPELL_BACKDRAFT, true);
             }
-            
+
             void Register() override
             {
                 OnEffectRemove += AuraEffectRemoveFn(spell_magmatron_barrier_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_SCHOOL_ABSORB, AURA_EFFECT_HANDLE_REAL);

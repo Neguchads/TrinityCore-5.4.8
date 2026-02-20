@@ -19,10 +19,10 @@
 #include"Spell.h"
 #include"bastion_of_twilight.h"
 
-// todo: ����������� � entry ����� � orders
-// todo: ����������� ���������� absorb fire, absorb shadow
-// todo: ������� ������ ������
-// todo: ����������� � ��������� fester blood
+// todo: Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½ entry Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½ orders
+// todo: Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ absorb fire, absorb shadow
+// todo: Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+// todo: Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ fester blood
 
 enum ScriptTexts
 {
@@ -111,7 +111,7 @@ enum Adds
     NPC_FIRE_PORTAL_2           = 47020,
     NPC_FIRE_ELEMENTAL_2        = 47017,
     NPC_SHADOW_PORTAL_1         = 43603,
-    NPC_SHADOW_LORD_1           = 43592, 
+    NPC_SHADOW_LORD_1           = 43592,
     NPC_SHADOW_PORTAL_2         = 47019,
     NPC_SHADOW_LORD_2           = 47016,
     NPC_CORRUPTING_ADHERENT     = 43622,
@@ -159,7 +159,7 @@ enum DoCorruptionTypes
     CORRUPTION_CLEAR       = 2,
 };
 
-const Position corruptionPos = {-1162.15f, -799.06f, 836.0f, 0.0f}; 
+const Position corruptionPos = {-1162.15f, -799.06f, 836.0f, 0.0f};
 
 template <class C> typename C::value_type const& SelectRandomContainerElement(C const& container)
 {
@@ -179,7 +179,7 @@ void AddCorruption(Unit* player, uint32 value)
 
     if (newvalue > 30)
         player->GetMap()->SetWorldState(WORLDSTATE_ABYSS_WILL_GAZE_BACK_INTO_YOU, 0);
-    
+
     if (oldvalue < 100 && newvalue > 99)
     {
         if (!player->HasAura(SPELL_CORRUPTION_ABSOLUTE) &&
@@ -239,8 +239,8 @@ class boss_chogall : public CreatureScript
             SummonList summons;
             bool bPhase2;
             uint8 uiOrder; // 0 | 1
-            
-            void Reset() override 
+
+            void Reset() override
             {
                 _Reset();
 
@@ -302,7 +302,7 @@ class boss_chogall : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 if (me->HealthBelowPct(25) && !bPhase2)
                 {
                     bPhase2 = true;
@@ -338,7 +338,7 @@ class boss_chogall : public CreatureScript
                         case EVENT_CONVERSION:
                             Talk(SAY_CONVERSION);
                             me->CastCustomSpell(SPELL_CONVERSION, SPELLVALUE_MAX_TARGETS, RAID_MODE(2, 3, 4, 6), 0, false);
-                            events.ScheduleEvent(EVENT_CONVERSION, urand(35000, 37000)); 
+                            events.ScheduleEvent(EVENT_CONVERSION, urand(35000, 37000));
                             break;
                         case EVENT_ORDERS:
                             switch (uiOrder)
@@ -938,7 +938,7 @@ class npc_chogall_corrupting_adherent : public CreatureScript
                 events.ScheduleEvent(EVENT_CORRUPTING_CRASH, urand(5000, 8000));
             }
 
-            void Reset() override 
+            void Reset() override
             {
                 events.Reset();
             }
@@ -1409,7 +1409,7 @@ class spell_chogall_worshipping : public SpellScriptLoader
                 if (!GetTarget())
                     return;
 
-                if (GetTarget()->GetTypeId() == TYPEID_PLAYER)
+                if (GetTarget()->IsPlayer())
                     GetTarget()->ToPlayer()->SetClientControl(GetTarget(), 0);
             }
 
@@ -1418,15 +1418,15 @@ class spell_chogall_worshipping : public SpellScriptLoader
                 if (!GetTarget())
                     return;
 
-                if (GetTarget()->GetTypeId() == TYPEID_PLAYER)
+                if (GetTarget()->IsPlayer())
                     GetTarget()->ToPlayer()->SetClientControl(GetTarget(), 1);
             }
-            
+
             void Register() override
             {
                 OnEffectApply += AuraEffectApplyFn(spell_chogall_worshipping_AuraScript::OnApply, EFFECT_1, SPELL_AURA_MOD_FACTION, AURA_EFFECT_HANDLE_REAL);
                 OnEffectRemove += AuraEffectRemoveFn(spell_chogall_worshipping_AuraScript::OnRemove, EFFECT_1, SPELL_AURA_MOD_FACTION, AURA_EFFECT_HANDLE_REAL);
-            
+
             }
         };
 

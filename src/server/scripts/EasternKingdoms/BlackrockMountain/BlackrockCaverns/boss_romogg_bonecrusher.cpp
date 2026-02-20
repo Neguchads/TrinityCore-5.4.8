@@ -40,13 +40,13 @@ enum Spells
     SPELL_CHAINS_OF_WOE_TELE_0                  = 75464,
     SPELL_CHAINS_OF_WOE_ROOT                    = 82192,
 };
- 
+
 enum Adds
 {
     NPC_QUAKE                                   = 40401,
     NPC_CHAINS_OF_WOE                           = 40447,
     NPC_ANGERED_EARTH                           = 50376,
-}; 
+};
 
 enum Events
 {
@@ -60,18 +60,18 @@ enum Actions
 {
     ACTION_REMOVE_SKULLCRACKER = 0,
 };
- 
+
 class boss_romogg_bonecrusher : public CreatureScript
 {
     public:
         boss_romogg_bonecrusher() : CreatureScript("boss_romogg_bonecrusher") { }
-     
+
         struct boss_romogg_bonecrusherAI : public BossAI
         {
             boss_romogg_bonecrusherAI(Creature* creature) : BossAI(creature, DATA_ROMOGG)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
-                me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);   
+                me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->setActive(true);
             }
 
@@ -99,7 +99,7 @@ class boss_romogg_bonecrusher : public CreatureScript
                 if (type == TYPE_KILLED_ANGERED_EARTH && ++killedEarth > 9)
                     me->GetMap()->SetWorldState(WORLDSTATE_CRUSHING_BONES_AND_CRACKING_SKULLS, 1);
             }
-     
+
             void JustSummoned(Creature* summon) override
             {
                 summons.Summon(summon);
@@ -119,7 +119,7 @@ class boss_romogg_bonecrusher : public CreatureScript
                         summon->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);
                         summon->CastSpell(summon, SPELL_CHAINS_OF_WOE_0, true);
                         break;
-                }        
+                }
             }
 
             void DoAction(int32 actionId) override
@@ -157,7 +157,7 @@ class boss_romogg_bonecrusher : public CreatureScript
                     instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CHAINS_OF_WOE_ROOT);
                 }
             }
-     
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_KILL);
@@ -184,8 +184,8 @@ class boss_romogg_bonecrusher : public CreatureScript
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
-                    return; 
-     
+                    return;
+
                 if (me->GetDistance(me->GetHomePosition()) > 60.0f)
                 {
                     EnterEvadeMode();
@@ -196,7 +196,7 @@ class boss_romogg_bonecrusher : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -220,7 +220,7 @@ class boss_romogg_bonecrusher : public CreatureScript
                     }
                 }
 
-                DoMeleeAttackIfReady();  
+                DoMeleeAttackIfReady();
             }
 
             private:

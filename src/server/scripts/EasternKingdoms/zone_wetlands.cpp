@@ -26,5 +26,5 @@ EndScriptData */
 EndContentData */
 
 void AddSC_wetlands()
-{ 
+{
 }

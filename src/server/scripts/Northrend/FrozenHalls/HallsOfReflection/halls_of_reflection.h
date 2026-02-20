@@ -153,7 +153,7 @@ enum InstanceSpells
     SPELL_ACHIEV_CHECK                          = 72830,
 };
 
-const Position OutroSpawns[2] = 
+const Position OutroSpawns[2] =
 {
     {5564.25f, 2274.69f, 733.01f, 3.93f}, // Lich King
     {5556.27f, 2266.28f, 733.01f, 0.8f},  // Jaina/Sylvana

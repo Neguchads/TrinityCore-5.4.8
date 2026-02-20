@@ -243,7 +243,7 @@ public:
                         if (someplayer)
                         {
                             Unit* u = Unit::GetUnit(*me, someplayer);
-                            if (u && u->GetTypeId() == TYPEID_PLAYER)
+                            if (u && u->IsPlayer())
                                 Talk(EMOTE_START, u);
                         }
                         Event_Timer = 60000;
@@ -773,7 +773,7 @@ public:
 
         void JustEngagedWith(Unit* who) override
         {
-            if (who->GetTypeId() == TYPEID_PLAYER)
+            if (who->IsPlayer())
                 PlayerGUID = who->GetGUID();
         }
 

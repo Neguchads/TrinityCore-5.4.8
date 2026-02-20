@@ -20,7 +20,7 @@
 
 enum ScriptTexts
 {
-    SAY_AGGRO   = 4, 
+    SAY_AGGRO   = 4,
     SAY_BEAR    = 6,
     SAY_TROLL   = 7,
     SAY_SURGE   = 5,

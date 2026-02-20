@@ -21,8 +21,8 @@
 
 enum Spells
 {
-    SPELL_TELEPORT_TO_START                 = 107934, 
-    SPELL_TELEPORT_TO_AZSHARA_PALACE        = 107979, 
+    SPELL_TELEPORT_TO_START                 = 107934,
+    SPELL_TELEPORT_TO_AZSHARA_PALACE        = 107979,
     SPELL_TELEPORT_TO_WELL_OF_ETERNITY      = 107691,
 };
 
@@ -47,22 +47,22 @@ class go_well_of_eternity_teleport : public GameObjectScript
 
             if (InstanceScript* instance = go->GetInstanceScript())
             {
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Телепорт ко входу в сад.":"Teleport to Start.", GOSSIP_SENDER_MAIN, START_TELEPORT);
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÂ¢ÃÂµÃÂ»ÃÂµÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€š ÃÂºÃÂ¾ ÃÂ²Ã‘â€¦ÃÂ¾ÃÂ´Ã‘Æ’ ÃÂ² Ã‘ÂÃÂ°ÃÂ´.":"Teleport to Start.", GOSSIP_SENDER_MAIN, START_TELEPORT);
 
                 if (player->IsGameMaster())
                 {
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Перенестись во дворец Азшары.": "Teleport to Azshara's Palace.", GOSSIP_SENDER_MAIN, AZSHARA_TELEPORT);
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Перенестись в Источник Вечности.": "Teleport to Well of Eternity.", GOSSIP_SENDER_MAIN, WOE_TELEPORT);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¸ÃÂµÃ‘â‚¬ÃÂµÃÂ½ÃÂµÃ‘ÂÃ‘â€šÃÂ¸Ã‘ÂÃ‘Å’ ÃÂ²ÃÂ¾ ÃÂ´ÃÂ²ÃÂ¾Ã‘â‚¬ÃÂµÃ‘â€  ÃÂÃÂ·Ã‘Ë†ÃÂ°Ã‘â‚¬Ã‘â€¹.": "Teleport to Azshara's Palace.", GOSSIP_SENDER_MAIN, AZSHARA_TELEPORT);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¸ÃÂµÃ‘â‚¬ÃÂµÃÂ½ÃÂµÃ‘ÂÃ‘â€šÃÂ¸Ã‘ÂÃ‘Å’ ÃÂ² ÃËœÃ‘ÂÃ‘â€šÃÂ¾Ã‘â€¡ÃÂ½ÃÂ¸ÃÂº Ãâ€™ÃÂµÃ‘â€¡ÃÂ½ÃÂ¾Ã‘ÂÃ‘â€šÃÂ¸.": "Teleport to Well of Eternity.", GOSSIP_SENDER_MAIN, WOE_TELEPORT);
                 }
                 else
                 {
                     if (instance->GetBossState(DATA_PEROTHARN) == DONE)
-                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Перенестись во дворец Азшары.": "Teleport to Azshara's Palace.", GOSSIP_SENDER_MAIN, AZSHARA_TELEPORT);
+                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¸ÃÂµÃ‘â‚¬ÃÂµÃÂ½ÃÂµÃ‘ÂÃ‘â€šÃÂ¸Ã‘ÂÃ‘Å’ ÃÂ²ÃÂ¾ ÃÂ´ÃÂ²ÃÂ¾Ã‘â‚¬ÃÂµÃ‘â€  ÃÂÃÂ·Ã‘Ë†ÃÂ°Ã‘â‚¬Ã‘â€¹.": "Teleport to Azshara's Palace.", GOSSIP_SENDER_MAIN, AZSHARA_TELEPORT);
                     if (instance->GetBossState(DATA_AZSHARA) == DONE)
-                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Перенестись в Источник Вечности.": "Teleport to Well of Eternity.", GOSSIP_SENDER_MAIN, WOE_TELEPORT);
+                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¸ÃÂµÃ‘â‚¬ÃÂµÃÂ½ÃÂµÃ‘ÂÃ‘â€šÃÂ¸Ã‘ÂÃ‘Å’ ÃÂ² ÃËœÃ‘ÂÃ‘â€šÃÂ¾Ã‘â€¡ÃÂ½ÃÂ¸ÃÂº Ãâ€™ÃÂµÃ‘â€¡ÃÂ½ÃÂ¾Ã‘ÂÃ‘â€šÃÂ¸.": "Teleport to Well of Eternity.", GOSSIP_SENDER_MAIN, WOE_TELEPORT);
                 }
             }
-        
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(go), go->GetGUID());
             return true;
         }
@@ -76,8 +76,8 @@ class go_well_of_eternity_teleport : public GameObjectScript
             InstanceScript* instance = player->GetInstanceScript();
             if (!instance)
                 return true;
-            
-            switch (action) 
+
+            switch (action)
             {
                 case START_TELEPORT:
                     player->CastSpell(player, SPELL_TELEPORT_TO_START, true);
@@ -92,9 +92,9 @@ class go_well_of_eternity_teleport : public GameObjectScript
                     player->CLOSE_GOSSIP_MENU();
                     break;
             }
-            
+
             return true;
-        }    
+        }
 };
 
 void AddSC_well_of_eternity_teleport()

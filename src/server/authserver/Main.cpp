@@ -257,7 +257,7 @@ bool StartDB()
     if (!loader.Load())
         return false;
 
-    TC_LOG_INFO("server.authserver", "Started auth database connection pool.");        
+    TC_LOG_INFO("server.authserver", "Started auth database connection pool.");
 
     // // NOTE: While authserver is singlethreaded you should keep synch_threads == 1. Increasing it is just silly since only 1 will be used ever.
     // if (!LoginDatabase.Open(dbstring, uint8(worker_threads), uint8(synch_threads)))

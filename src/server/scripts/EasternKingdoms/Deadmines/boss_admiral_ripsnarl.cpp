@@ -36,7 +36,7 @@ enum Spells
     SPELL_RIPSNARLS_FOG_AURA            = 89247,
     SPELL_RIPSNARL_ACHIEVEMENT          = 95647,
     SPELL_RIPSNARL_CANCEL_ACHIEVEMENT   = 95648,
-    
+
     SPELL_FOG_1                         = 88768,
     SPELL_FOG_2                         = 88755,
 
@@ -64,7 +64,7 @@ enum Spells
 
 enum Adds
 {
-    NPC_VAPOR   = 47714, 
+    NPC_VAPOR   = 47714,
     NPC_DUMMY_2 = 45979, // 88755
     NPC_DUMMY_1 = 47242, // 88768
 };
@@ -83,7 +83,7 @@ enum Events
 
 #define ACTION_COALESCE 1
 
-const Position dummyPos[38] = 
+const Position dummyPos[38] =
 {
     {-62.6927f, -814.031f, 41.3843f},
     {-67.6128f, -814.219f, 40.944f },
@@ -182,7 +182,7 @@ class boss_admiral_ripsnarl : public CreatureScript
                         (*itr)->RemoveAurasDueToSpell(SPELL_FOG_2);
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 _JustEngagedWith();
 
@@ -202,7 +202,7 @@ class boss_admiral_ripsnarl : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -280,7 +280,7 @@ class boss_admiral_ripsnarl : public CreatureScript
                             me->SetReactState(REACT_AGGRESSIVE);
                             if (IsHeroic())
                                 events.ScheduleEvent(EVENT_GO_FOR_THE_THROAT, urand(5000, 10000));
-                            
+
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 0.0f, true))
                             {
                                 AttackStart(target);
@@ -312,7 +312,7 @@ class boss_admiral_ripsnarl : public CreatureScript
                 me->SetReactState(REACT_PASSIVE);
                 events.CancelEvent(EVENT_GO_FOR_THE_THROAT);
                 me->SetVisible(false);
-                
+
                 DoResetThreat();
 
                 me->RemoveAurasDueToSpell(SPELL_THRIST_OF_BLOOD_AURA);
@@ -337,7 +337,7 @@ class npc_admiral_ripsnarl_vapor : public CreatureScript
         struct npc_admiral_ripsnarl_vaporAI : public ScriptedAI
         {
             npc_admiral_ripsnarl_vaporAI(Creature* creature) : ScriptedAI(creature)  { }
-     
+
             void Reset() override
             {
                 events.Reset();

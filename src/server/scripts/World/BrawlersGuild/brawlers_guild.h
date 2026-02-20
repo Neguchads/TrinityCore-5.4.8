@@ -71,21 +71,21 @@ enum eCreatures
 {
     NPC_BIZMO                    = 68323, // Aliance (using like queue controller)
     NPC_BOSS_BAZZELFLANGE        = 67260, // Horde
-                                 
-    // Rank 1                    
+
+    // Rank 1
     NPC_BRUCE                    = 67262,
     NPC_VIAN_THE_VOLATILE        = 67579,
     NPC_GOREDOME                 = 68257,
     NPC_DUNGEON_MASTER_VISHAS    = 67572,
-                                 
-    // Rank 2                    
+
+    // Rank 2
     NPC_DIPPY                    = 68255,
     NPC_KIRRAWK                  = 67269,
     NPC_RIDDOH                   = 67524, // vehicle for 67525
     NPC_FRAN                     = 67525,
     NPC_KING_KULAKA              = 68254,
-                                 
-    // Rank 3                    
+
+    // Rank 3
     NPC_BLAT                     = 67594,
     NPC_SANORIAK                 = 67268,
     NPC_IXX                      = 68253,

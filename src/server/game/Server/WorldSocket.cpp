@@ -130,7 +130,7 @@ void WorldSocket::CheckIpCallback(PreparedQueryResult result)
 
     _packetBuffer.Resize(2 + ClientConnectionInitialize.length() + 1);
 
-    AsyncReadWithCallback(&WorldSocket::InitializeHandler);    
+    AsyncReadWithCallback(&WorldSocket::InitializeHandler);
 
     MessageBuffer initializer;
     ServerPktHeader header(ServerConnectionInitialize.size(), 0, false);
@@ -270,7 +270,7 @@ void WorldSocket::ReadHandler()
     MessageBuffer& packet = GetReadBuffer();
     while (packet.GetActiveSize() > 0)
     {
-        
+
         if (_headerBuffer.GetRemainingSpace() > 0)
         {
             // need to receive the header
@@ -331,9 +331,9 @@ bool WorldSocket::ReadHeaderHandler()
 
     if (_authCrypt.IsInitialized())
     {
-        
+
         uint8* uintHeader = (uint8*)_headerBuffer.GetReadPointer();
-        _authCrypt.DecryptRecv(uintHeader, sizeof(WorldClientPktHeader)); 
+        _authCrypt.DecryptRecv(uintHeader, sizeof(WorldClientPktHeader));
         WorldClientPktHeader* header = reinterpret_cast<WorldClientPktHeader*>(_headerBuffer.GetReadPointer());
 
         uint32 value = *(uint32*)uintHeader;
@@ -347,15 +347,15 @@ bool WorldSocket::ReadHeaderHandler()
         // }
         //OpcodeClient opcode = static_cast<OpcodeClient>(PacketFilter::DropHighBytes(header->cmd));
         _packetBuffer.Resize(header->size);
-        
+
     }
     else
     {
 
         ClientPktHeader* header = reinterpret_cast<ClientPktHeader*>(_headerBuffer.GetReadPointer());
         // EndianConvertReverse(header->size);
-        // EndianConvert(header->cmd);       
-        
+        // EndianConvert(header->cmd);
+
         // if ((header->size < 4) || (header->size > 10240))
         // {
         //     Player* _player = _worldSession ? _worldSession->GetPlayer() : nullptr; // Removed this because it crashes the server if the player disconnects right before the log
@@ -444,7 +444,6 @@ uint32 WorldSocket::CompressPacket(uint8* buffer, WorldPacket const& packet)
     return bufferSize - _compressionStream->avail_out;
 }
 
-
 struct AuthSession
 {
     uint8 digest[20];
@@ -478,10 +477,10 @@ struct AccountInfo
 
     explicit AccountInfo(Field* fields)
     {
-        //         0          1       2            3         4                5           6         7          8           9        10         11      12                                                            13     14        15          16                   17                     18               
+        //         0          1       2            3         4                5           6         7          8           9        10         11      12                                                            13     14        15          16                   17                     18
         // SELECT a.id, a.sessionkey, a.last_ip, a.locked, a.lock_country, a.expansion, a.mutetime, a.locale, a.recruiter, a.os, a.flags, aa.gmlevel, ab.unbandate > UNIX_TIMESTAMP() OR ab.unbandate = ab.bandate, r.id, abo.id, am.muted_by, am.mute_reason, am.public_channels_only, m.mute_timer FROM account a LEFT JOIN account r ON a.id = r.recruiter LEFT JOIN account_access aa ON a.id = aa.id AND aa.RealmID IN (-1, ?) LEFT JOIN account_banned ab ON a.id = ab.id AND ab.active = 1 LEFT JOIN account_boost abo ON a.id=abo.id AND abo.realmid IN (-1, ?) LEFT JOIN mute_active m ON m.realmid = ? AND m.account = a.id LEFT JOIN account_muted am ON m.mute_id = am.id AND m.realmid = am.realmid WHERE a.username = ?
         Id = fields[0].GetUInt32();
-        SessionKey = HexStrToByteArray<SESSION_KEY_LENGTH>(std::string_view(fields[1].GetString())); 
+        SessionKey = HexStrToByteArray<SESSION_KEY_LENGTH>(std::string_view(fields[1].GetString()));
         LastIP = fields[2].GetString();
         IsLockedToIP = fields[3].GetBool();
         LockCountry = fields[4].GetString();
@@ -530,10 +529,10 @@ WorldSocket::ReadDataHandlerResult WorldSocket::ReadDataHandler()
             LogOpcodeText(opcode, sessionGuard);
             WorldPackets::Auth::Ping ping(std::move(packet));
             if (!ping.ReadNoThrow())
-            {   
+            {
                 TC_LOG_ERROR("network", "WorldSocket::ReadDataHandler(): client %s sent malformed CMSG_PING", GetRemoteIpAddress().to_string().c_str());
                 return ReadDataHandlerResult::Error;
-            } 
+            }
             if (!HandlePing(ping))
                 return ReadDataHandlerResult::Error;
             return ReadDataHandlerResult::Ok;
@@ -579,7 +578,7 @@ WorldSocket::ReadDataHandlerResult WorldSocket::ReadDataHandler()
             // }
             HandleAuthContinuedSession(packet);
             return ReadDataHandlerResult::WaitingForQuery;
-        }            
+        }
         case CMSG_KEEP_ALIVE: // todo: handle this packet in the same way of CMSG_TIME_SYNC_RESP
             sessionGuard.lock();
             LogOpcodeText(opcode, sessionGuard);
@@ -637,7 +636,7 @@ WorldSocket::ReadDataHandlerResult WorldSocket::ReadDataHandler()
 
     // Copy the packet to the heap before enqueuing
     _worldSession->QueuePacket(packetToQueue);
-   
+
     return ReadDataHandlerResult::Ok;
 
 }
@@ -874,7 +873,6 @@ void WorldSocket::HandleAuthSessionCallback(std::shared_ptr<AuthSession> authSes
     //     _worldSession->InitWarden(account.SessionKey, account.OS);
 
     //_queryProcessor.AddCallback(_worldSession->LoadPermissionsAsync().WithPreparedCallback(std::bind(&WorldSocket::LoadSessionPermissionsCallback, this, std::placeholders::_1)));
-    
 
     // Stop if the account is not found
     if (!result)
@@ -956,7 +954,6 @@ void WorldSocket::HandleAuthSessionCallback(std::shared_ptr<AuthSession> authSes
     if (IpLocationRecord const* location = sIPLocation->GetLocationRecord(address))
         _ipCountry = location->CountryCode;
 
-
     TC_LOG_DEBUG("network", "WorldSocket::HandleAuthSession: Client '%s' authenticated successfully from %s.",
         authSession->Account.c_str(),
         address.c_str());
@@ -992,10 +989,9 @@ void WorldSocket::HandleAuthSessionCallback(std::shared_ptr<AuthSession> authSes
     // Sleep this Network thread for
     // uint32 sleepTime = sWorld->getIntConfig(CONFIG_SESSION_ADD_DELAY);
     // std::this_thread::sleep_for(Microseconds(sleepTime));
-    
 
     //_queryProcessor.AddCallback(_worldSession->LoadPermissionsAsync().WithPreparedCallback(std::bind(&WorldSocket::LoadSessionPermissionsCallback, this, std::placeholders::_1)));
-    
+
     AsyncRead();
 }
 
@@ -1077,7 +1073,7 @@ void WorldSocket::HandleAuthContinuedSessionCallback(WorldSession::ConnectToKey 
     Field* fields = result->Fetch();
     std::string login = fields[0].GetString();
 
-    ::SessionKey SessionKey = HexStrToByteArray<SESSION_KEY_LENGTH>(std::string_view(fields[1].GetString())); 
+    ::SessionKey SessionKey = HexStrToByteArray<SESSION_KEY_LENGTH>(std::string_view(fields[1].GetString()));
     _authCrypt.Init(SessionKey);
 
     uint8 t[4] = { 0x00,0x00,0x00,0x00 };

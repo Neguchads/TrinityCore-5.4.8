@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License along
 * with this program. If not, see <http://www.gnu.org/licenses/>.
 */
- 
+
 #include "TileAssembler.h"
 #include "MapTree.h"
 #include "BoundingIntervalHierarchy.h"
@@ -202,7 +202,7 @@ namespace VMAP
         //cleanup:
         for (std::pair<uint32 const, MapSpawns*>& map_iter : mapData)
             delete map_iter.second;
-        
+
         return success;
     }
 
@@ -237,7 +237,7 @@ namespace VMAP
                 printf("spawning Map %d\n", mapID);
                 mapData[mapID] = current = new MapSpawns();
             }
-            else 
+            else
                 current = map_iter->second;
 
             current->UniqueEntries.emplace(pair<uint32, ModelSpawn>(spawn.ID, spawn));
@@ -285,9 +285,9 @@ namespace VMAP
             {
                 Vector3 v = modelPosition.transform(vertices[i]);
 
-                if (boundEmpty) 
+                if (boundEmpty)
                 {
-                    modelBound = AABox(v, v); 
+                    modelBound = AABox(v, v);
                     boundEmpty = false;
                 }
                 else
@@ -308,7 +308,7 @@ namespace VMAP
         float pos_z;
         short material;
     };
-#pragma pack(pop)    
+#pragma pack(pop)
     //=================================================================
     bool TileAssembler::convertRawFile(const std::string& pModelFilename)
     {
@@ -530,7 +530,7 @@ namespace VMAP
                 liquid = new WmoLiquid(0, 0, Vector3::zero(), liquidType);
                 liquid->GetHeightStorage()[0] = bounds.high().z;
             }
-        }        
+        }
 
         return true;
     }

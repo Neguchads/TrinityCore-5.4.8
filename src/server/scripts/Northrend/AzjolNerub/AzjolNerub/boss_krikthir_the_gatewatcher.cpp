@@ -75,7 +75,6 @@ enum
     WORLD_STATE_WATCH_HIM_DIE = 5818,
 };
 
-
 const Position SpawnPoint[] =
 {
     { 566.164f, 682.087f, 769.079f, 2.21657f  },
@@ -197,7 +196,7 @@ class boss_krik_thir : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() != TYPEID_PLAYER)
+                if (!(victim->IsPlayer()))
                     return;
 
                 Talk(SAY_SLAY);
@@ -416,7 +415,7 @@ class npc_watcher_gashra : public CreatureScript
                 {
                     if (me->HasUnitState(UNIT_STATE_CASTING))
                         return;
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* t) { return t->GetTypeId() == TYPEID_PLAYER && me->IsWithinCombatRange(t, 40.0f) && !t->HasAura(SPELL_WEB_WRAP) && !t->HasAura(SPELL_WEB_WRAP_STUN); }))
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* t) { return t->IsPlayer() && me->IsWithinCombatRange(t, 40.0f) && !t->HasAura(SPELL_WEB_WRAP) && !t->HasAura(SPELL_WEB_WRAP_STUN); }))
                         DoCast(target, SPELL_WEB_WRAP);
                     uiWebWrapTimer = 17 * IN_MILLISECONDS;
                 } else uiWebWrapTimer -= diff;
@@ -473,7 +472,7 @@ class npc_watcher_narjil : public CreatureScript
                 {
                     if (me->HasUnitState(UNIT_STATE_CASTING))
                         return;
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* t) { return t->GetTypeId() == TYPEID_PLAYER && me->IsWithinCombatRange(t, 40.0f) && !t->HasAura(SPELL_WEB_WRAP) && !t->HasAura(SPELL_WEB_WRAP_STUN); }))
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* t) { return t->IsPlayer() && me->IsWithinCombatRange(t, 40.0f) && !t->HasAura(SPELL_WEB_WRAP) && !t->HasAura(SPELL_WEB_WRAP_STUN); }))
                         DoCast(target, SPELL_WEB_WRAP);
                     uiWebWrapTimer = 15 * IN_MILLISECONDS;
                 } else uiWebWrapTimer -= diff;
@@ -538,7 +537,7 @@ class npc_watcher_silthik : public CreatureScript
                 {
                     if (me->HasUnitState(UNIT_STATE_CASTING))
                         return;
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* t) { return t->GetTypeId() == TYPEID_PLAYER && me->IsWithinCombatRange(t, 40.0f) && !t->HasAura(SPELL_WEB_WRAP) && !t->HasAura(SPELL_WEB_WRAP_STUN); }))
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* t) { return t->IsPlayer() && me->IsWithinCombatRange(t, 40.0f) && !t->HasAura(SPELL_WEB_WRAP) && !t->HasAura(SPELL_WEB_WRAP_STUN); }))
                         DoCast(target, SPELL_WEB_WRAP);
 
                     uiWebWrapTimer = 15 * IN_MILLISECONDS;

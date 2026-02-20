@@ -51,7 +51,6 @@ enum CreaturesIds
     NPC_KASHA               = 52945,
     NPC_KASHA_CORPSE        = 52946,
 
-
     // Event npcs
     NPC_FOREST_FROG         = 24396,
     NPC_HARALD              = 52915, // Vendor 1
@@ -83,7 +82,7 @@ enum GameObjectsIds
     GO_MALACRASS_ENTRANCE   = 186305,
     GO_MALACRASS_EXIT       = 186306,
     GO_DAAKARA_EXIT         = 186859,
-    
+
     GO_HAZLEK_CAGE          = 187377,
     GO_HAZLEK_TRUNK         = 186648,
 
@@ -116,4 +115,3 @@ CreatureAI* GetInstanceAI(Creature* creature)
 }
 
 #endif
-

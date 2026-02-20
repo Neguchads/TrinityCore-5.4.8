@@ -237,7 +237,7 @@ class instance_little_patience : public InstanceMapScript
                         if (Creature* chiJi = instance->GetCreature(GetGuidData(NPC_CHI_JI + 1)))
                         {
                             chiJi->SetVisible(true);
-                            
+
                             // Back to my temple!
                             Movement::MoveSplineInit init(chiJi);
                             for (auto&& itr : chiJiTemplePath)

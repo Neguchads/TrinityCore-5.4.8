@@ -335,7 +335,7 @@ class instance_black_temple : public InstanceMapScript
                             HandleGameObject(MotherDoor, true);
                         // m_auiEncounter[6] = data; break;
                         if (m_auiEncounter[6] != DONE)
-                            m_auiEncounter[6] = data; 
+                            m_auiEncounter[6] = data;
 
                         break;
                     case DATA_ILLIDARI_COUNCIL_EVENT:
@@ -354,7 +354,7 @@ class instance_black_temple : public InstanceMapScript
                             m_auiEncounter[7] = data;
 
                         break;
-                    case DATA_ILLIDAN_STORMRAGE_EVENT: 
+                    case DATA_ILLIDAN_STORMRAGE_EVENT:
                         // m_auiEncounter[8] = data; break;
                         if (m_auiEncounter[8] != DONE)
                             m_auiEncounter[8] = data;
@@ -504,7 +504,6 @@ class instance_black_temple : public InstanceMapScript
             return new instance_black_temple_InstanceMapScript(map);
         }
 };
-
 
 void AddSC_instance_black_temple()
 {

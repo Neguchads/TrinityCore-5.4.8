@@ -43,7 +43,7 @@ struct npc_secret_ing_sungshin_iron_paw : public ScriptedAI
     bool firstEaten;
     std::map <uint32, uint32> waitingQueue;
 
-    void Reset() override 
+    void Reset() override
     {
         isTraining = true;
         firstSeat = true;
@@ -226,7 +226,7 @@ struct npc_secret_ing_sungshin_iron_paw : public ScriptedAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -235,8 +235,8 @@ struct npc_secret_ing_sungshin_iron_paw : public ScriptedAI
 // Noodle Stand 72952
 struct npc_secret_ing_noodle_stand : public ScriptedAI
 {
-    npc_secret_ing_noodle_stand(Creature* creature) : ScriptedAI(creature) 
-    { 
+    npc_secret_ing_noodle_stand(Creature* creature) : ScriptedAI(creature)
+    {
         hasUse = false;
     }
 
@@ -250,7 +250,7 @@ struct npc_secret_ing_noodle_stand : public ScriptedAI
         summonerGUID = summoner->GetGUID();
     }
 
-    void Reset() override 
+    void Reset() override
     {
         if (hasUse) // in case if player leave vehicle
             return;
@@ -306,7 +306,7 @@ struct npc_secret_ing_scholar : public ScriptedAI
                 {
                     passenger->ExitVehicle();
                     passenger->SetVisible(false);
-                    
+
                     if (passenger->ToCreature())
                         passenger->ToCreature()->DespawnOrUnsummon(1000);
 
@@ -468,8 +468,8 @@ struct npc_secret_ing_scholar : public ScriptedAI
 // Seat 72928
 struct npc_secret_ing_seat : public ScriptedAI
 {
-    npc_secret_ing_seat(Creature* creature) : ScriptedAI(creature) 
-    { 
+    npc_secret_ing_seat(Creature* creature) : ScriptedAI(creature)
+    {
         hasRotate = false;
     }
 

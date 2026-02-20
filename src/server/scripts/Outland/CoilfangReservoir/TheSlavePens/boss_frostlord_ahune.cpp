@@ -613,7 +613,7 @@ class spell_ahune_slippery_floor : public SpellScript
     {
         if (Unit* target = GetHitUnit())
         {
-            if (target->GetTypeId() == TYPEID_PLAYER && target->isMoving())
+            if (target->IsPlayer() && target->isMoving())
             {
                 target->CastSpell(target, SPELL_SLIP, true);
                 target->CastSpell(target, SPELL_YOU_SLIPPED, true);

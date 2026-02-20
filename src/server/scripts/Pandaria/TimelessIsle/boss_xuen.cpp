@@ -83,7 +83,7 @@ class boss_xuen : public CreatureScript
 
         struct boss_xuenAI : public ScriptedAI
         {
-            boss_xuenAI(Creature* creature) : ScriptedAI(creature), summons(me) 
+            boss_xuenAI(Creature* creature) : ScriptedAI(creature), summons(me)
             {
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE); // prisma
             }
@@ -181,7 +181,7 @@ class boss_xuen : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                 {
                     Talk(SAY_KILL);
                     return;
@@ -270,7 +270,7 @@ class boss_xuen : public CreatureScript
                         case EVENT_SPECTRAL_SWIPES:
                         {
                             DoCast(SPELL_SPECTRAL_SWIPE);
-                            events.ScheduleEvent(EVENT_SPECTRAL_SWIPES, urand(10000, 15000)); 
+                            events.ScheduleEvent(EVENT_SPECTRAL_SWIPES, urand(10000, 15000));
                             break;
                         }
                         case EVENT_AGILITY_SELF_BUFF:
@@ -315,7 +315,6 @@ class boss_xuen : public CreatureScript
                 DoMeleeAttackIfReady();
             }
         };
-
 
         CreatureAI* GetAI(Creature* creature) const override
         {

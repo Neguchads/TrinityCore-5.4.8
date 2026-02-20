@@ -367,7 +367,7 @@ class boss_alythess : public CreatureScript
             uint32 enrageTimer;
             bool sisterDeath;
             bool enraged;
-            
+
             void Reset() override
             {
                 enraged = false;

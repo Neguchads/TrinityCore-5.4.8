@@ -25,7 +25,7 @@
 
 #define CHAPTERS 5
 
-const Position TzuPath[CHAPTERS-3] = 
+const Position TzuPath[CHAPTERS-3] =
 {
     { 1937.24f, -1865.01f, 203.31f, 5.46f },
     { 1951.65f, -1880.72f, 202.69f, 5.46f }

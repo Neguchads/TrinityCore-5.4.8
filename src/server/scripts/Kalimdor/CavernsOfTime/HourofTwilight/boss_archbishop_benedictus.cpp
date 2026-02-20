@@ -168,8 +168,8 @@ class boss_archbishop_benedictus : public CreatureScript
                 CanMove = false;
             }
 
-            void IsSummonedBy(Unit* /*summoner*/) override 
-            { 
+            void IsSummonedBy(Unit* /*summoner*/) override
+            {
                 me->SetReactState(REACT_PASSIVE);
                 me->SetFaction(35);
                 me->GetMotionMaster()->MovePoint(0, BenedictusWayPoint);
@@ -439,7 +439,7 @@ class npc_archbishop_benedictus_purifying_light : public CreatureScript
             void IsSummonedBy(Unit* /*summoner*/) override
             {
                 me->SetReactState(REACT_PASSIVE);
-                me->SetCanFly(true); 
+                me->SetCanFly(true);
                 me->SetDisableGravity(true);
                 switch (me->GetEntry())
                 {
@@ -450,7 +450,7 @@ class npc_archbishop_benedictus_purifying_light : public CreatureScript
                         nonCombatEvents.ScheduleEvent(EVENT_TWILIGHT_BLAST, 2000);
                         break;
                     default:
-                        break; 
+                        break;
                 }
             }
 
@@ -566,7 +566,7 @@ class npc_twilight_light_wave : public CreatureScript
                                 me->CastSpell(itr, SPELL_WAVE_OF_LIGHT_DMG, false);
                                 break;
                         }
-                        
+
             }
 
             void UpdateAI(uint32 diff) override
@@ -644,7 +644,6 @@ class spell_light_wall_cosmetic : public SpellScriptLoader
         class spell_light_wall_cosmetic_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_light_wall_cosmetic_SpellScript);
-
 
             void FilterTargets(std::list<WorldObject*>& targets)
             {

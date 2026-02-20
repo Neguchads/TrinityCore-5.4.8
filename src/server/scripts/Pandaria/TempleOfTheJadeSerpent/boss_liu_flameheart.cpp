@@ -95,8 +95,8 @@ class boss_liu_flameheart : public CreatureScript
             {
                 me->setActive(true);
                 Talk(TALK_INTRO);
-                me->CastSpell(me, SPELL_POSSESSED_BY_SHA, false);           
-                me->CastSpell(me, SPELL_DUST_VISUAL, false);     
+                me->CastSpell(me, SPELL_POSSESSED_BY_SHA, false);
+                me->CastSpell(me, SPELL_DUST_VISUAL, false);
                 status = PHASE_1;
                 inCombat = false;
                 me->SetReactState(REACT_AGGRESSIVE);
@@ -107,12 +107,12 @@ class boss_liu_flameheart : public CreatureScript
                 inCombat = false;
                 me->SetReactState(REACT_AGGRESSIVE);
                 events.Reset();
-                status = PHASE_1;     
+                status = PHASE_1;
             }
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_KILL);
             }
 
@@ -121,7 +121,7 @@ class boss_liu_flameheart : public CreatureScript
                 if (!inCombat)
                 {
                     inCombat = true;
-                    
+
                     _JustEngagedWith();
                     Talk(TALK_AGGRO);
                     events.ScheduleEvent(EVENT_SERPENT_STRIKE, 5000);
@@ -178,7 +178,7 @@ class boss_liu_flameheart : public CreatureScript
                     me->CastSpell(me, SPELL_JADE_ESSENCE, false);
                     events.Reset();
                     events.ScheduleEvent(EVENT_JADE_SERPENT_STRIKE, 5000);
-                    events.ScheduleEvent(EVENT_JADE_SERPENT_KICK, 10000);              
+                    events.ScheduleEvent(EVENT_JADE_SERPENT_KICK, 10000);
                 }
 
                 if (me->GetHealthPct() <= 30.f && status == PHASE_2)
@@ -189,7 +189,7 @@ class boss_liu_flameheart : public CreatureScript
                     events.ScheduleEvent(EVENT_SUMMON_YULON, 500);
 
                     if (instance)
-                        instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);             
+                        instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
                 }
             }
 
@@ -536,7 +536,7 @@ class npc_minion_of_doubt : public CreatureScript
 
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
-                if (attacker->GetTypeId() == TYPEID_UNIT && !attacker->ToCreature()->IsPet())
+                if (attacker->IsCreature() && !attacker->ToCreature()->IsPet())
                 {
                     if (me->GetHealth() < me->GetMaxHealth() || me->GetHealth() <= damage)
                     {
@@ -545,7 +545,7 @@ class npc_minion_of_doubt : public CreatureScript
                     }
                 }
 
-                if (attacker->GetTypeId() == TYPEID_PLAYER && !playerCombatInit)
+                if (attacker->IsPlayer() && !playerCombatInit)
                 {
                     playerCombatInit = true;
                     events.ScheduleEvent(EVENT_SHADOW_OF_DOUBT, urand(2.5 * IN_MILLISECONDS, 8 * IN_MILLISECONDS));
@@ -561,8 +561,8 @@ class npc_minion_of_doubt : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER && me->IsWithinDistInMap(who, 15.0f) &&
-                    (me->IsInCombat() && me->GetVictim() && me->GetVictim()->GetTypeId() != TYPEID_PLAYER) ||
+                if (who->IsPlayer() && me->IsWithinDistInMap(who, 15.0f) &&
+                    (me->IsInCombat() && me->GetVictim() && !me->GetVictim()->IsPlayer()) ||
                     !me->IsInCombat())
                    {
                        if ((me->GetAreaId() == 6118 || me->GetAreaId() == 5956) && !targeted) // fix aggro through bridge and spam 122527
@@ -644,7 +644,7 @@ class npc_lesser_sha : public CreatureScript
 
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
-                if (attacker->GetTypeId() == TYPEID_UNIT && !attacker->ToCreature()->IsPet())
+                if (attacker->IsCreature() && !attacker->ToCreature()->IsPet())
                 {
                     if (me->GetHealth() < me->GetMaxHealth() || me->GetHealth() <= damage)
                     {
@@ -656,8 +656,8 @@ class npc_lesser_sha : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER && me->IsWithinDistInMap(who, 15.0f) && 
-                    (me->IsInCombat() && me->GetVictim() && me->GetVictim()->GetTypeId() != TYPEID_PLAYER) ||
+                if (who->IsPlayer() && me->IsWithinDistInMap(who, 15.0f) &&
+                    (me->IsInCombat() && me->GetVictim() && !me->GetVictim()->IsPlayer()) ||
                     !me->IsInCombat())
                 {
                     if ((me->GetAreaId() == 6118 || me->GetAreaId() == 5956) && !targeted) // fix aggro through bridge and spam 122527
@@ -676,7 +676,7 @@ class npc_lesser_sha : public CreatureScript
                     return;
 
                 events.Update(diff);
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     if (eventId == EVENT_SHA_SCREECH)
@@ -741,7 +741,7 @@ class npc_lie_flameheart_trash_base_ai : public CreatureScript
 
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
-                if (attacker->GetTypeId() == TYPEID_UNIT && !attacker->ToCreature()->IsPet())
+                if (attacker->IsCreature() && !attacker->ToCreature()->IsPet())
                 {
                     if (me->GetHealth() < me->GetMaxHealth() || me->GetHealth() <= damage)
                     {

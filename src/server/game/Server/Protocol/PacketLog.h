@@ -37,7 +37,7 @@ class TC_GAME_API PacketLog
         PacketLog();
         ~PacketLog();
         std::mutex _logPacketLock;
-        std::once_flag _initializeFlag;        
+        std::once_flag _initializeFlag;
 
     public:
         static PacketLog* instance();

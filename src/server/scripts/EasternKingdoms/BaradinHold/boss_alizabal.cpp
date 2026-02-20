@@ -23,7 +23,7 @@ enum ScriptTexts
     SAY_AGGRO           = 0,
     SAY_DEATH           = 1,
     SAY_INTRO           = 2,
-    SAY_WIPE            = 3, 
+    SAY_WIPE            = 3,
     SAY_KILL            = 4,
     SAY_SEETHING_HATE   = 5,
     SAY_SKEWER          = 6,
@@ -60,7 +60,7 @@ class boss_alizabal : public CreatureScript
 
         struct boss_alizabalAI : public BossAI
         {
-            boss_alizabalAI(Creature* creature) : BossAI(creature, DATA_ALIZABAL) 
+            boss_alizabalAI(Creature* creature) : BossAI(creature, DATA_ALIZABAL)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
@@ -83,7 +83,7 @@ class boss_alizabal : public CreatureScript
             void Reset() override
             {
                 _Reset();
-                
+
                 events.Reset();
             }
 
@@ -129,7 +129,7 @@ class boss_alizabal : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 

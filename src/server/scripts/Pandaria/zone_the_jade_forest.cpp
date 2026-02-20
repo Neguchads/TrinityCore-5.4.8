@@ -144,7 +144,6 @@ class npc_shadow_of_doubt : public CreatureScript
 
                 events.Update(diff);
 
-
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -2820,7 +2819,7 @@ struct npc_windward_nest_trigger : public ScriptedAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == NPC_WINDWARD_HATCHLING)
+        if (who->IsCreature() && who->GetEntry() == NPC_WINDWARD_HATCHLING)
         {
             if (who->GetDistance(me) > 5.0f)
                 return;
@@ -3051,7 +3050,7 @@ class spell_q30063 : public SpellScriptLoader
 
             void OnPeriodic(AuraEffect const* /*aurEff*/)
             {
-                if (GetCaster()->GetTypeId() == TYPEID_PLAYER)
+                if (GetCaster()->IsPlayer())
                     if (Player* player = GetCaster()->ToPlayer())
                         player->Whisper(sCreatureTextMgr->GetLocalizedChatString(NPC_ELDER_SAGE_STORM_SING, 0, urand(0, 7), Gender(player->GetGender()), player->GetSession()->GetSessionDbLocaleIndex()).c_str(), LANG_UNIVERSAL, player);
             }
@@ -3336,7 +3335,7 @@ class npc_wounded_pilot : public CreatureScript
 
             void HealReceived(Unit* healer, uint32& heal) override
             {
-                if (healer->GetTypeId() == TYPEID_PLAYER)
+                if (healer->IsPlayer())
                 {
                     if (healer->ToPlayer()->GetQuestStatus(QUEST_CRITICAL_CONDITION) != QUEST_STATUS_INCOMPLETE)
                     {
@@ -3553,7 +3552,7 @@ struct npc_sam_the_wise : public customCreatureAI
             hasDefeat = true;
             events.Reset();
             me->PrepareChanneledCast(me->GetOrientation());
-            
+
             // unk 122
             std::list<Player*> targets;
             GetPlayerListInGrid(targets, me, 50.0f);
@@ -3735,7 +3734,7 @@ class npc_lorewalker_cho_stones_could_speak : public CreatureScript
         {
             if (quest->GetQuestId() == QUEST_PEERING_INTO_THE_PAST)
                 player->SummonCreature(NPC_CHO_PEERING_INTO_PAST, *creature, TEMPSUMMON_TIMED_DESPAWN, 120 * IN_MILLISECONDS);
-    
+
             return false;
         }
 
@@ -4063,7 +4062,6 @@ struct npc_prince_anduin_decision : public customCreatureAI
                         lina->DespawnOrUnsummon(lina->GetSplineDuration());
                     }
                 });
-
 
                 // Send controll to Sally
                 if (Creature* sally = ObjectAccessor::GetCreature(*me, getCreatureGuidByPlayer(NPC_SULLY)))
@@ -4798,7 +4796,7 @@ struct npc_jade_forest_instant_message_camera_bunny : public ScriptedAI
         });
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }

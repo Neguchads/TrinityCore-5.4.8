@@ -59,7 +59,7 @@ class boss_corborus : public CreatureScript
         struct boss_corborusAI : public BossAI
         {
             boss_corborusAI(Creature* creature) : BossAI(creature, DATA_CORBORUS), summons(me)
-            { 
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -88,7 +88,7 @@ class boss_corborus : public CreatureScript
 
                 stage = 0;
                 me->RemoveAurasDueToSpell(SPELL_SUBMERGE);
-                me->RemoveFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);    
+                me->RemoveFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
                 events.Reset();
                 summons.DespawnAll();
             }
@@ -185,7 +185,7 @@ class boss_corborus : public CreatureScript
                                 {
                                     barragePos = target->GetPosition();
                                     events.ScheduleEvent(EVENT_CRYSTAL_BARRAGE_H, 4000);
-                                }    
+                                }
                             }
                             events.ScheduleEvent(EVENT_CRYSTAL_BARRAGE, 15000);
                             break;
@@ -197,7 +197,7 @@ class boss_corborus : public CreatureScript
                                     barragePos.GetPositionY(),
                                     barragePos.GetPositionZ(),
                                     SPELL_CRYSTAL_BARRAGE_SUM, true);
-                            }  
+                            }
                             break;
                         case EVENT_SUBMERGE:
                             me->RemoveAllAuras();

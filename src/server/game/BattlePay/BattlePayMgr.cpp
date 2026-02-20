@@ -29,7 +29,6 @@
 
 #pragma execution_character_set("UTF-8")
 
-
 BattlePayMgr::BattlePayMgr() : m_enabled(false), m_currency(BATTLE_PAY_CURRENCY_BETA)
 {
     m_purchase = new PurchaseInfo();
@@ -470,7 +469,7 @@ void BattlePayMgr::UpdatePointsBalance(WorldSession* session, uint64 points)
     {
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_BATTLEPAY_DECREMENT_COINS);
         stmt->setUInt32(0, points);
-        stmt->setUInt32(1, session->GetAccountId());    
+        stmt->setUInt32(1, session->GetAccountId());
         LoginDatabase.Query(stmt);
     }
 }
@@ -801,7 +800,7 @@ void BattlePayMgr::SendBattlePayProductList(WorldSession* session)
         data << uint32(entry->GroupId);
         data << uint32(entry->ProductId);
     }
-    
+
     data << uint32(GetStoreCurrency());
     data << uint32(BATTLE_PAY_STATUS_OK);
 
@@ -900,7 +899,6 @@ void BattlePayMgr::SendBattlePayDistributionUpdate(WorldSession* session, uint32
     data.WriteByteSeq(guid2[3]);
     data.WriteByteSeq(guid2[2]);
 
-
     session->SendPacket(&data);
 }
 
@@ -951,7 +949,7 @@ void BattlePayMgr::SendBattlePayPurchaseUpdate(PurchaseInfo* purchase)
             validPurchase = false;
 
         uint32 serverToken = irand(1, 999999); // temp solution
-        
+
         uint64 price = product->Price * BATTLE_PAY_CURRENCY_PRECISION;
         float discount = float(product->Discount) / 100;
         uint64 currentPrice = price - (price * discount);
@@ -971,7 +969,7 @@ void BattlePayMgr::SendBattlePayPurchaseUpdate(PurchaseInfo* purchase)
             bool confirmBalance = HasPointsBalance(purchase->GetSession(), (currentPrice));
             if (!confirmBalance)
                 validPurchase = false;
-        }        
+        }
 
         if (!validPurchase)
             sBattlePayMgr->AddQuenedPurchaseResponse(new PurchaseInfo(purchase->GetSession(), purchase->SelectedPlayer, purchase->PurchaseId, purchase->ProductId, BATTLE_PAY_PURCHASE_STATUS_ALLOWED_TO_BUY, BATTLE_PAY_RESULT_SHOP_ERROR, purchase->ClientToken, 0, false), 200, true);
@@ -1070,7 +1068,7 @@ void BattlePayMgr::SendBattlePayPurchaseUpdate(PurchaseInfo* purchase)
         UpdatePointsBalance(purchase->GetSession(), (currentPrice));
 
         RegisterPurchase(purchase, itemid, currentPrice);
-        
+
         SendBattlePayPurchaseUpdate(new PurchaseInfo(purchase->GetSession(), purchase->SelectedPlayer, purchase->PurchaseId, purchase->ProductId, BATTLE_PAY_PURCHASE_STATUS_BUYED, BATTLE_PAY_RESULT_OK, purchase->ClientToken, purchase->ServerToken, true));
     }
 }

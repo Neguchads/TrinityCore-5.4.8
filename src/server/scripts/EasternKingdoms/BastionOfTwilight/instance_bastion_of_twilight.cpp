@@ -20,7 +20,7 @@
 
 #define MAX_ENCOUNTER 5
 
-static std::vector<DoorData> const doordata = 
+static std::vector<DoorData> const doordata =
 {
     {DOOR_HALFUS_ENTRANCE,  DATA_HALFUS,            DOOR_TYPE_ROOM,     BOUNDARY_NONE},
     {DOOR_HALFUS_EXIT,      DATA_HALFUS,            DOOR_TYPE_PASSAGE,  BOUNDARY_NONE},
@@ -144,7 +144,7 @@ class instance_bastion_of_twilight : public InstanceMapScript
 
             void OnUnitDeath(Unit* unit) override
             {
-                if (unit->GetTypeId() == TYPEID_PLAYER && GetBossState(DATA_SINESTRA) == IN_PROGRESS)
+                if (unit->IsPlayer() && GetBossState(DATA_SINESTRA) == IN_PROGRESS)
                 {
                     if (playerDied == 0)
                     {
@@ -279,7 +279,7 @@ class instance_bastion_of_twilight : public InstanceMapScript
             {
                 if (player && player->IsGameMaster())
                     return true;
-            
+
                 switch (bossId)
                 {
                     case DATA_VALIONA_THERALION:
@@ -298,7 +298,7 @@ class instance_bastion_of_twilight : public InstanceMapScript
                         if (GetBossState(DATA_CHOGALL) != DONE)
                             return false;
                         break;
-                    default:   
+                    default:
                         break;
                 }
                 return true;
@@ -363,9 +363,8 @@ class instance_bastion_of_twilight : public InstanceMapScript
 
                     loadStream >> playerDied;
 
-
-                } 
-                else 
+                }
+                else
                     OUT_LOAD_INST_DATA_FAIL;
 
                 OUT_LOAD_INST_DATA_COMPLETE;

@@ -25,30 +25,30 @@ enum ScholoEvents
     EVENT_CAST_REND_FLESH                  = 100,
     EVENT_CAST_SHADOW_INCINERATION         = 101,
 
-    // acolyte                             
+    // acolyte
     EVENT_CAST_SPIRIT_BARRAGE              = 102,
     EVENT_CAST_UNBOUND                     = 103,
     EVENT_CAST_SHADOW_BOLT                 = 104,
     EVENT_CAST_SHATTER_SOUL                = 105,
 
-    // Risen Guard                         
+    // Risen Guard
     EVENT_IMPALE                           = 106,
     EVENT_UNHOLY_WEAPON                    = 107,
 
-    // Candleflickring mages               
+    // Candleflickring mages
     EVENT_FLICKERING_FLAME                 = 108,
     EVENT_SKIN_LIKE_WAX                    = 109,
 
-    // Bored Student                       
+    // Bored Student
     EVENT_FIRE_BREATH                      = 110,
     EVENT_SHADOW_NOVA                      = 111,
 
-    // Professor Slate                     
+    // Professor Slate
     EVENT_TOXIC_POTION                     = 112,
     EVENT_POTION_BRUTE_FORCE               = 113,
     EVENT_BRUTISH_FORCE                    = 114,
 
-    // BoneWeaver                          
+    // BoneWeaver
     EVENT_BONE_SHARDS                      = 115,
     EVENT_SUMMON_WOVEN_BONEGUARD           = 116,
 
@@ -123,7 +123,7 @@ enum Spells
 #define REND_FLESH_INTERVAL urand(10000, 16000)
 #define SHADOW_INCINERATION_INTERVAL 6500
 // Acolyte
-//#define UNBOUND_INTERVAL 
+//#define UNBOUND_INTERVAL
 #define SHADOW_BOLT_INTERVAL 6000
 #define SHATTER_SOUL_INTERVAL urand(14000, 20000)
 
@@ -213,7 +213,7 @@ class npc_boneweaver : public CreatureScript
                 nonCombatEvents.ScheduleEvent(EVENT_SUMMON_WOVEN_BONEGUARD, 3000);
             }
 
-            void JustSummoned(Creature* summon) override 
+            void JustSummoned(Creature* summon) override
             {
                 if (Creature* Lilian = GetClosestCreatureWithEntry(me, NPC_LILIAN_VOSS, 60.0f, true))
                     summon->GetMotionMaster()->MoveChase(Lilian);
@@ -488,7 +488,7 @@ class npc_shatter_soul_fragment : public CreatureScript
                 me->DespawnOrUnsummon(8000);
             }
 
-            void IsSummonedBy(Unit* summoner) override 
+            void IsSummonedBy(Unit* summoner) override
             {
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
@@ -735,7 +735,7 @@ class npc_scholomance_flesh_horror : public CreatureScript
                 VehPos = 0;
             }
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 VehPos = 0;
             }
@@ -755,11 +755,11 @@ class npc_scholomance_flesh_horror : public CreatureScript
                     if (Creature* graft = ObjectAccessor::GetCreature(*me, itr))
                         if (graft->IsAlive()) // we need check once
                             return false;
-                
+
                 return true;
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 Position pos = me->GetRandomNearPosition(8.0f);
 

@@ -1014,7 +1014,7 @@ class instance_siege_of_orgrimmar : public InstanceMapScript
                     SetData(DATA_BEACH_CANNONS_COUNT, GetData(DATA_BEACH_CANNONS_COUNT) + 1);
             }
 
-            void OnGameObjectCreate(GameObject* go) override 
+            void OnGameObjectCreate(GameObject* go) override
             {
                 switch (go->GetEntry())
                 {
@@ -1339,7 +1339,7 @@ class instance_siege_of_orgrimmar : public InstanceMapScript
                                 for (auto&& itr : boxesGUIDs)
                                 {
                                     if (GameObject* spoil = instance->GetGameObject(itr))
-                                    { 
+                                    {
                                         spoil->SetGoState(GO_STATE_READY);
                                         spoil->RemoveFlag(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_IN_USE);
                                         spoil->SetFlag(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_INTERACT_COND | GO_FLAG_NOT_SELECTABLE);
@@ -1384,7 +1384,7 @@ class instance_siege_of_orgrimmar : public InstanceMapScript
                 return true;
             }
 
-            void SetData(uint32 type, uint32 data) override 
+            void SetData(uint32 type, uint32 data) override
             {
                 switch (type)
                 {

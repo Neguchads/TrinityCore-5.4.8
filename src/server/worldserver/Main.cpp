@@ -74,7 +74,6 @@ namespace fs = boost::filesystem;
 # define _TRINITY_CORE_CONFIG  "worldserver.conf"
 #endif
 
-
 #ifdef _WIN32
 #include "ServiceWin32.h"
 char serviceName[] = "worldserver";
@@ -129,7 +128,7 @@ variables_map GetConsoleArguments(int argc, char** argv, fs::path& configFile, s
 extern int main(int argc, char** argv)
 {
     // Trinity::Impl::CurrentServerProcessHolder::_type = SERVER_PROCESS_WORLDSERVER;
-    signal(SIGABRT, &Trinity::AbortHandler);    
+    signal(SIGABRT, &Trinity::AbortHandler);
 
     ///- Command line parsing to get the configuration file name
     auto configFile = fs::absolute(_TRINITY_CORE_CONFIG);
@@ -672,7 +671,8 @@ variables_map GetConsoleArguments(int argc, char** argv, fs::path& configFile, s
         std::cerr << e.what() << "\n";
     }
 
-    if (vm.count("help")) {
+    if (vm.count("help"))
+    {
         std::cout << all << "\n";
     }
     else if (vm.count("version"))

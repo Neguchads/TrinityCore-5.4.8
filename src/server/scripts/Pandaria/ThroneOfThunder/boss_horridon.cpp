@@ -33,7 +33,7 @@ enum eSpells
     // Charge
     SPELL_CHARGE                            = 136769,
     SPELL_CHARGE_SWIPE                      = 136770,
-    
+
     // Dire Call
     SPELL_DIRE_CALL                         = 137458, // Launch everything
     SPELL_SUMMON_DIREHORN_SPIRIT_SELECTOR   = 140947,
@@ -53,13 +53,13 @@ enum eSpells
 
     // Gurubashi
     SPELL_RENDING_CHARGE                    = 136653, // Bloodlord
-    SPELL_RENDING_CHARGE_DAMAGES            = 136654, // Bloodlord 
+    SPELL_RENDING_CHARGE_DAMAGES            = 136654, // Bloodlord
     SPELL_VENOM_BOLT_VOLLEY                 = 136587, // Venom Priest
     SPELL_SUMMON_VENOMOUS_EFFUSION          = 136644, // Venom Priest
 
     // Drakkari
     SPELL_UNCONTROLLED_ABOMINATION          = 136709, // Risen Drakkari Champion / Warrior
-    SPELL_DEADLY_PLAGUE                     = 136710, // Risen Drakkari Champion / Warrior 
+    SPELL_DEADLY_PLAGUE                     = 136710, // Risen Drakkari Champion / Warrior
     SPELL_MORTAL_STRIKE                     = 136670, // Frozen Warlord
     SPELL_SUMMON_FROZEN_ORB                 = 136564, // Frozen Warlord
 
@@ -67,16 +67,16 @@ enum eSpells
     SPELL_FIREBALL                          = 136465, // Flame Caster
     SPELL_SWIPE                             = 136463, // Warbear
     SPELL_CHAIN_LIGHTNING                   = 136480, // Beast Shaman
-    SPELL_HEX_OF_CONFUSION                  = 136512, // 
-    SPELL_SUMMON_LIGHTNING_NOVA_TOTEM       = 136487, // 
+    SPELL_HEX_OF_CONFUSION                  = 136512, //
+    SPELL_SUMMON_LIGHTNING_NOVA_TOTEM       = 136487, //
 
     // Zandalari
     SPELL_DINO_MENDING                      = 136797, // Dinomancer
-    SPELL_DINO_FORM                         = 137237, // 
-    SPELL_SUMMON_ORB_OF_CONTROL_FARRAKI     = 137445, // 
-    SPELL_SUMMON_ORB_OF_CONTROL_GURUBASHI   = 137447, // 
-    SPELL_SUMMON_ORB_OF_CONTROL_DRAKKARI    = 137448, // 
-    SPELL_SUMMON_ORB_OF_CONTROL_AMANI       = 137449, // 
+    SPELL_DINO_FORM                         = 137237, //
+    SPELL_SUMMON_ORB_OF_CONTROL_FARRAKI     = 137445, //
+    SPELL_SUMMON_ORB_OF_CONTROL_GURUBASHI   = 137447, //
+    SPELL_SUMMON_ORB_OF_CONTROL_DRAKKARI    = 137448, //
+    SPELL_SUMMON_ORB_OF_CONTROL_AMANI       = 137449, //
 
     // Summons
     SPELL_DIRE_FIXATION                     = 140946, // Dire Horn Spirit
@@ -107,7 +107,7 @@ enum eEvents
     // Horridon
     EVENT_TRIPLE_PUNCTURE                   = 1,
     EVENT_DOUBLE_SWIPE                      = 2,
-    EVENT_HORRIDON_CHARGE                   = 3, // 
+    EVENT_HORRIDON_CHARGE                   = 3, //
     EVENT_DIRE_CALL                         = 4,
     EVENT_PREPARE_CHARGE                    = 5, // Pseudo hack
     EVENT_CHARGE_AT_DOOR                    = 6,
@@ -146,13 +146,13 @@ enum eEvents
     EVENT_BESTIAL_CRY                       = 23,
 
     // Helper
-    EVENT_SUMMON_MINOR                      = 24, // 
-    EVENT_SUMMON_MAJOR                      = 25, // 
-    EVENT_TRANSITION                        = 28, // 
+    EVENT_SUMMON_MINOR                      = 24, //
+    EVENT_SUMMON_MAJOR                      = 25, //
+    EVENT_TRANSITION                        = 28, //
 
     // RP Event Helper
     EVENT_CHECK_PLAYERS                     = 29, // Every 500 ms to not flood the world
-    EVENT_INTRO_PART_I                      = 30, // Jalak begins it's speech... 
+    EVENT_INTRO_PART_I                      = 30, // Jalak begins it's speech...
     EVENT_INTRO_PART_II                     = 31, // Continues
     EVENT_INTRO_PART_III                    = 32, // Horridon breaks free and go and kill every... oh wait... that's not the time
     EVENT_INTRO_PART_IV                     = 33, // Now Horridon breaks free
@@ -200,7 +200,6 @@ enum eMotions
     MOTION_HORRIDON_DOOR_CHARGE             = 3205,
 };
 
-
 enum eTalks
 {
     TALK_INTRO_FIRST                        = 0, // Welcome weaklings
@@ -234,7 +233,7 @@ enum eDatas
     1) Summon trash at door:
     2) Call creature from tribune in sequence: 1 - 2 - Dinomancer
     gates - 1 - gates - 2 - gates - dinomancer - gates - gates... etc till door not closed
-    
+
     Seems like Horridon controll it whole, Jalak just say something if alive.
 */
 enum eTrashPhases
@@ -252,7 +251,6 @@ enum eDrakkariCycle
     DRAKKARI_CYCLE_FIRST                    = 0,
     DRAKKARI_CYCLE_SECOND                   = 1,
 };
-
 
 // Relocation of Horridon's Home Position
 static const Position middlePosition = { 5428.461f, 5701.532f, 129.606461f, 1.57860f };
@@ -478,7 +476,7 @@ class boss_horridon : public CreatureScript
                 _JustEngagedWith();
                 m_mBerserkEvents.ScheduleEvent(EVENT_BERSERK, 12 * MINUTE * IN_MILLISECONDS);
                 InitCombatEvents();
-                
+
                 if (instance)
                 {
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me);
@@ -674,10 +672,10 @@ class boss_horridon : public CreatureScript
                         case EVENT_SUMMON_MINOR:
                             if (uPhase == TRASH_PHASE_NONE)
                                 break;
-                        
+
                             HandleSummonMinorTribes();
                             m_mBerserkEvents.ScheduleEvent(EVENT_SUMMON_MINOR, 20 * IN_MILLISECONDS);
-                        
+
                             if (majorCount < 4)
                                 m_mBerserkEvents.ScheduleEvent(EVENT_SUMMON_MAJOR, 18.5 * IN_MILLISECONDS);
                             break;
@@ -1016,7 +1014,7 @@ class npc_war_god_jalak : public CreatureScript
             }
 
             void Reset() override
-            {   
+            {
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_IMMUNE_TO_PC);
                 events.Reset();
                 secondPhase = false;
@@ -1144,7 +1142,7 @@ class npc_war_god_jalak : public CreatureScript
             {
                 if (ObjectAccessor::GetCreature(*me, instance ? instance->GetGuidData(DATA_HORRIDON):ObjectGuid::Empty) && ObjectAccessor::GetCreature(*me, instance ? instance->GetGuidData(DATA_HORRIDON):ObjectGuid::Empty)->isDead())
                     instance->SetBossState(DATA_HORRIDON, DONE);
-                else 
+                else
                 {
                     if (Creature* pHorridon = ObjectAccessor::GetCreature(*me, instance ? instance->GetGuidData(DATA_HORRIDON):ObjectGuid::Empty))
                         pHorridon->AddAura(SPELL_RAMPAGE, pHorridon);
@@ -1251,7 +1249,7 @@ struct npc_horridon_trashs : public horridon_tribeAI
             {
                 float x, y;
                 GetPositionWithDistInOrientation(me, 35.0f, me->GetOrientation(), x, y);
-            
+
                 me->GetMotionMaster()->MoveJump({ x, y, 130.037354f, me->GetOrientation() }, 20.0f, 20.0f, MOTION_MAJOR_JUMP);
                 break;
             }
@@ -1390,10 +1388,10 @@ struct npc_horridon_trashs : public horridon_tribeAI
                         {
                             DoCast(victim, SPELL_STONE_GAZE);
                             events.ScheduleEvent(EVENT_STONE_GAZE, 10 * IN_MILLISECONDS);
-                
+
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 0.0f, true, -SPELL_STONE_GAZE))
                                 ScriptedAI::AttackStart(target);
-                
+
                             return;
                         }
                         events.ScheduleEvent(EVENT_STONE_GAZE, 1000);
@@ -1406,7 +1404,7 @@ struct npc_horridon_trashs : public horridon_tribeAI
                         DoCast(target, SPELL_BLAZING_SUNLIGHT);
                     else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 200.0f, true))
                         DoCast(target, SPELL_BLAZING_SUNLIGHT);
-                
+
                     events.ScheduleEvent(EVENT_BLAZING_LIGHT, 10 * IN_MILLISECONDS);
                     break;
                 case EVENT_SUMMON_SAND_TRAP:
@@ -1414,7 +1412,7 @@ struct npc_horridon_trashs : public horridon_tribeAI
                         DoCast(target, SPELL_SUMMON_SAND_TRAP);
                     else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 200.0f, true))
                         DoCast(target, SPELL_SUMMON_SAND_TRAP);
-                
+
                     events.ScheduleEvent(EVENT_SUMMON_SAND_TRAP, 15000 + rand() % 10000);
                     break;
                     // Gurubashi
@@ -1429,7 +1427,7 @@ struct npc_horridon_trashs : public horridon_tribeAI
                         pRendingChargeTarget = target;
                         DoCast(target, SPELL_RENDING_CHARGE);
                     }
-                
+
                     events.ScheduleEvent(EVENT_RENDING_CHARGE, 10 * IN_MILLISECONDS);
                     break;
                 case EVENT_GURUBASHI_VENOM_BOLT_VOLLEY:
@@ -1454,13 +1452,13 @@ struct npc_horridon_trashs : public horridon_tribeAI
                         me->AddThreat(target, 100000.0f);
                         ScriptedAI::AttackStart(target);
                     }
-                
+
                     events.ScheduleEvent(EVENT_SWITCH_TARGET, 7 * IN_MILLISECONDS);
                     break;
                 case EVENT_MORTAL_STRIKE:
                     if (Unit* victim = me->GetVictim())
                         DoCast(victim, SPELL_MORTAL_STRIKE);
-                
+
                     events.ScheduleEvent(EVENT_MORTAL_STRIKE, 10 * IN_MILLISECONDS);
                     break;
                 case EVENT_SUMMON_FROZEN_ORB:
@@ -1473,7 +1471,7 @@ struct npc_horridon_trashs : public horridon_tribeAI
                         DoCast(target, SPELL_FIREBALL);
                     else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 200.0f, true))
                         DoCast(target, SPELL_FIREBALL);
-                
+
                     events.ScheduleEvent(EVENT_FIREBALL, 10 * IN_MILLISECONDS);
                     break;
                 case EVENT_SWIPE:
@@ -1485,7 +1483,7 @@ struct npc_horridon_trashs : public horridon_tribeAI
                         DoCast(target, SPELL_CHAIN_LIGHTNING);
                     else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 200.0f, true))
                         DoCast(target, SPELL_CHAIN_LIGHTNING);
-                
+
                     events.ScheduleEvent(EVENT_CHAIN_LIGHTNING, 10 * IN_MILLISECONDS);
                     break;
                 case EVENT_HEX_OF_CONFUSION:
@@ -1493,7 +1491,7 @@ struct npc_horridon_trashs : public horridon_tribeAI
                         DoCast(target, SPELL_HEX_OF_CONFUSION);
                     else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 200.0f, true, -SPELL_HEX_OF_CONFUSION))
                         DoCast(target, SPELL_HEX_OF_CONFUSION);
-                
+
                     events.ScheduleEvent(EVENT_HEX_OF_CONFUSION, 10 * IN_MILLISECONDS);
                     break;
                 case EVENT_SUMMON_LIGHTNING_NOVA_TOTEM:
@@ -1510,7 +1508,6 @@ struct npc_horridon_trashs : public horridon_tribeAI
         Unit* pRendingChargeTarget;
         uint32 uiChainLightningCount;
 };
-
 
 // Summons AI
 class npc_horridon_summons : public CreatureScript
@@ -1682,7 +1679,6 @@ class npc_zandalari_dinomancer : public CreatureScript
         }
 };
 
-
 // Direhorn Spirit 70688
 struct npc_direhorn_spirit : public ScriptedAI
 {
@@ -1847,7 +1843,7 @@ class npc_amani_shi_warbear : public CreatureScript
 
         struct npc_amani_shi_warbearAI : public ScriptedAI
         {
-            npc_amani_shi_warbearAI(Creature* creature) : ScriptedAI(creature) 
+            npc_amani_shi_warbearAI(Creature* creature) : ScriptedAI(creature)
             {
                 m_shamanGuid = ObjectGuid::Empty;
                 instance = me->GetInstanceScript();
@@ -2079,7 +2075,6 @@ class spell_horridon_chain_lightning : public SpellScriptLoader
         }
 };
 
-
 // Control Horridon Spells
 class spell_control_horridon : public SpellScriptLoader
 {
@@ -2110,7 +2105,6 @@ class spell_control_horridon : public SpellScriptLoader
            return new spell_control_horridon_AuraScript();
         }
 };
-
 
 // Living Sand (radius calc) 136723
 class spell_horridon_sand_trap : public SpellScript
@@ -2290,20 +2284,20 @@ class AreaTrigger_at_forward_jalak : public AreaTriggerScript
 {
     public:
         AreaTrigger_at_forward_jalak() : AreaTriggerScript("AreaTrigger_at_forward_jalak") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if (Creature* jalak = ObjectAccessor::GetCreature(*player, instance->GetGuidData(NPC_WAR_GOD_JALAK)))
                     jalak->AI()->DoAction(ACTION_START_INTRO);
-    
+
             return false;
         }
 };
 
 void AddSC_boss_horridon()
 {
-    // boss / helpers  
+    // boss / helpers
     new boss_horridon();
     new npc_war_god_jalak();
 
@@ -2315,7 +2309,7 @@ void AddSC_boss_horridon()
     new creature_script<npc_living_poison>("npc_living_poison");
     new npc_venomous_effusion();
     new npc_amani_shi_warbear();
-   
+
     // gameobject
     new go_horridon_orb_of_control();
 

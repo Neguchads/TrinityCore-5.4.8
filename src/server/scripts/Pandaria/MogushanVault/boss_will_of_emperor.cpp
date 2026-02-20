@@ -710,7 +710,6 @@ class boss_jin_qin_xi : public CreatureScript
 
                             ++devastatingComboPhase;
 
-
                             me->SetOrientation(spellOri);
                             me->UpdateOrientation(spellOri);
                             me->SetFacingTo(spellOri);
@@ -987,7 +986,7 @@ class npc_woe_add_generic : public CreatureScript
 
                             PlayerOnTerracota.remove_if(RageTargetSelector());
                             PlayerOnTerracota.remove_if(TankSpecTargetSelector());
-                           
+
                             if (!PlayerOnTerracota.empty())
                             {
                                 if (Player* itr = Trinity::Containers::SelectRandomContainerElement(PlayerOnTerracota))
@@ -1025,7 +1024,7 @@ class npc_woe_add_generic : public CreatureScript
                                     me->GetThreatManager().addThreat(itr, 300.0f);
                                 }
                             }
-                            else 
+                            else
                                 if (Player* itr = me->FindNearestPlayer(VISIBLE_RANGE))
                                 {
                                     me->AI()->AttackStart(itr);
@@ -1443,7 +1442,7 @@ class npc_ancient_mogu_machine : public CreatureScript
 
             void AttackStart(Unit* target) override
             {
-                if (target->GetTypeId() == TYPEID_PLAYER)
+                if (target->IsPlayer())
                     CreatureAI::AttackStart(target);
             }
 
@@ -1462,17 +1461,17 @@ class npc_ancient_mogu_machine : public CreatureScript
                             Talk(TALK_TITAN_GAS_START);
                             Talk(TALK_TITAN_GAS_ANN);
                             me->CastSpell(CENTER_X, CENTER_Y, CENTER_Z, IsHeroic() ? SPELL_TITAN_GAS_HEROIC : SPELL_TITAN_GAS, false);
-                        
+
                             // In Heroic Gas available all time
                             if (!IsHeroic())
                             {
                                 // Reset spawning terracota while titan gas in use
                                 if (Unit* QinXi = ObjectAccessor::GetUnit(*me, instance->GetGuidData(NPC_QIN_XI)))
                                     QinXi->ToCreature()->AI()->DoAction(ACTION_TITAN_GAS);
-                        
+
                                 if (Unit* JanXi = ObjectAccessor::GetUnit(*me, instance->GetGuidData(NPC_JAN_XI)))
                                     JanXi->ToCreature()->AI()->DoAction(ACTION_TITAN_GAS);
-                        
+
                                 events.ScheduleEvent(EVENT_END_TITAN_GAS, 30000);
                                 events.ScheduleEvent(EVENT_TITAN_GAS, 210000);
                             }
@@ -1482,11 +1481,11 @@ class npc_ancient_mogu_machine : public CreatureScript
                         {
                             // Talk for Titan Gas ending
                             Talk(TALK_TITAN_GAS_END);
-                        
+
                             // Set spawn terracota again
                             if (Unit* QinXi = ObjectAccessor::GetUnit(*me, instance->GetGuidData(NPC_QIN_XI)))
                                 QinXi->ToCreature()->AI()->DoAction(ACTION_TITAN_GAS_END);
-                        
+
                             if (Unit* JanXi = ObjectAccessor::GetUnit(*me, instance->GetGuidData(NPC_JAN_XI)))
                                 JanXi->ToCreature()->AI()->DoAction(ACTION_TITAN_GAS_END);
                             break;
@@ -1495,13 +1494,13 @@ class npc_ancient_mogu_machine : public CreatureScript
                             if (instance && instance->IsWipe(81.5f, me))
                             {
                                 Reset();
-                        
+
                                 if (Creature* jan_xi = instance->instance->GetCreature(me->GetInstanceScript()->GetGuidData(NPC_JAN_XI)))
                                     jan_xi->AI()->DoAction(ACTION_WIPE);
-                        
+
                                 if (Creature* qin_xi = instance->instance->GetCreature(me->GetInstanceScript()->GetGuidData(NPC_QIN_XI)))
                                     qin_xi->AI()->DoAction(ACTION_WIPE);
-                        
+
                                 break;
                             }
                             events.ScheduleEvent(EVENT_CHECK_WIPE, 1 * IN_MILLISECONDS);
@@ -1509,7 +1508,7 @@ class npc_ancient_mogu_machine : public CreatureScript
                         case EVENT_LIGHTNING_COSMETIC:
                             DoZoneInCombat();
                             me->CastSpell(me, SPELL_COSMETIC_LIGHTNING, false);
-                        
+
                             for (auto&& pItr : instance->instance->GetPlayers())
                                 if (Player* player = pItr.GetSource())
                                     if (player->IsAlive() && !player->IsGameMaster() && player->GetPositionZ() > 363.39f)
@@ -1644,7 +1643,6 @@ class spell_magnetized_qin : public SpellScriptLoader
             private:
                 ObjectGuid targetGUID;
 
-
             void Register() override
             {
                 OnEffectApply += AuraEffectApplyFn(spell_magnetized_qin_AuraScript::Apply, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
@@ -1761,7 +1759,7 @@ struct TitanGasTargetSelector final
 {
     bool operator ()(WorldObject const* object) const
     {
-        if (object->GetTypeId() == TYPEID_PLAYER)
+        if (object->IsPlayer())
             return false;
 
         return true;
@@ -1880,7 +1878,7 @@ class spell_titan_gas_players final : public SpellScript
     }
 };
 
-class EnergizingSmashPredicate 
+class EnergizingSmashPredicate
 {
     public:
         EnergizingSmashPredicate(Unit* const m_owner) : _owner(m_owner) { }
@@ -1945,7 +1943,7 @@ struct FocusedTargetSelector final
 
         bool operator ()(WorldObject const* unit) const
         {
-            if (caster->GetVictim() && caster->GetVictim()->GetTypeId() == TYPEID_PLAYER && unit == caster->GetVictim())
+            if (caster->GetVictim() && caster->GetVictim()->IsPlayer() && unit == caster->GetVictim())
                 return false;
 
             return true;

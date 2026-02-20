@@ -31,7 +31,6 @@ EndScriptData */
 #include "ReputationMgr.h"
 #include "ScriptMgr.h"
 
-
 class modify_commandscript : public CommandScript
 {
 public:
@@ -1054,7 +1053,7 @@ data.WriteByteSeq(guid[4]);
         }
 
         // check online security
-        if (target->GetTypeId() == TYPEID_PLAYER && handler->HasLowerSecurity(target->ToPlayer(), ObjectGuid::Empty))
+        if (target->IsPlayer() && handler->HasLowerSecurity(target->ToPlayer(), ObjectGuid::Empty))
             return false;
 
         char* pField = strtok((char*)args, " ");
@@ -1248,7 +1247,7 @@ data.WriteByteSeq(guid[4]);
             target = handler->GetSession()->GetPlayer();
 
         // check online security
-        else if (target->GetTypeId() == TYPEID_PLAYER && handler->HasLowerSecurity(target->ToPlayer(), ObjectGuid::Empty))
+        else if (target->IsPlayer() && handler->HasLowerSecurity(target->ToPlayer(), ObjectGuid::Empty))
             return false;
 
         target->SetDisplayId(display_id);
@@ -1267,7 +1266,7 @@ data.WriteByteSeq(guid[4]);
         Unit* target = handler->getSelectedUnit();
         if (target)
         {
-            if (target->GetTypeId() == TYPEID_PLAYER)
+            if (target->IsPlayer())
                 target->ToPlayer()->GetPhaseMgr().SetCustomPhase(phasemask);
             else
                 target->SetPhaseMask(phasemask, true);
@@ -1375,7 +1374,7 @@ data.WriteByteSeq(guid[4]);
             target = handler->GetSession()->GetPlayer();
 
         // check online security
-        else if (target->GetTypeId() == TYPEID_PLAYER && handler->HasLowerSecurity(target->ToPlayer(), ObjectGuid::Empty))
+        else if (target->IsPlayer() && handler->HasLowerSecurity(target->ToPlayer(), ObjectGuid::Empty))
             return false;
 
         target->DeMorph();

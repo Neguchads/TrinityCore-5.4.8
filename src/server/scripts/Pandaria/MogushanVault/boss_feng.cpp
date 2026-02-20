@@ -537,7 +537,7 @@ class boss_feng : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 
@@ -810,7 +810,7 @@ class npc_lightning_fist : public CreatureScript
                 me->GetMotionMaster()->MoveCharge(x, y, me->GetPositionZ(), 9.5f, 1);
 
                 events.ScheduleEvent(EVENT_CHECK_NEAR_PLAYER, 500);
-                
+
                 if (IsHeroic() && summoner->GetEntry() == NPC_FENG)
                     events.ScheduleEvent(EVENT_HEROIC_ARC, 200);
             }
@@ -895,7 +895,7 @@ class npc_siphon_shield : public CreatureScript
             {
                 if (actionId == ACTION_SOUL_HOME)
                     if (Creature* feng = instance->instance->GetCreature(instance->GetGuidData(NPC_FENG)))
-                        feng->SetHealth(feng->GetHealth() + (uint32)feng->GetMaxHealth()*(Is25ManRaid() ? 0.05f : 0.1f)); // 10% at 10 mode for each soul and 5% at 25 
+                        feng->SetHealth(feng->GetHealth() + (uint32)feng->GetMaxHealth()*(Is25ManRaid() ? 0.05f : 0.1f)); // 10% at 10 mode for each soul and 5% at 25
             }
 
             bool HasAnySpiritAlive()
@@ -1546,7 +1546,7 @@ struct PlayerTargetSelector
 {
     bool operator ()(WorldObject const* object) const
     {
-        if (object->GetTypeId() == TYPEID_PLAYER)
+        if (object->IsPlayer())
             return false;
         return true;
     }
@@ -1772,7 +1772,7 @@ class sat_nullification_barrier : public IAreaTriggerAura
         Unit* unit = target->ToUnit();
         if (unit->IsInRaidWith(GetCaster()))
             unit->CastSpell(unit, SPELL_NULLIFICATION_BARRIER_EFFECT, true);
-        else if (unit->GetTypeId() == TYPEID_UNIT)
+        else if (unit->IsCreature())
         {
             if (unit->GetEntry() == NPC_WILDFIRE_SPARK || unit->GetEntry() == NPC_SOUL_FRAGMENT)
                 unit->ToCreature()->DespawnOrUnsummon();

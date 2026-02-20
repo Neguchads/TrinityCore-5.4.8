@@ -124,7 +124,7 @@ enum Other
     POINT_EYE           = 3,
 };
 
-const Position poolPos[5] = 
+const Position poolPos[5] =
 {
     {2903.26f, 63.1788f, 3.2449f, 0.0f},
     {2862.83f, 131.462f, 3.18436f, 0.0f},
@@ -247,7 +247,7 @@ class boss_echo_of_tyrande : public CreatureScript
             void JustEngagedWith(Unit* /*who*/) override
             {
                 Talk(SAY_AGGRO);
-                
+
                 phase = 0;
                 eyesphase = -1;
 
@@ -377,7 +377,7 @@ class boss_echo_of_tyrande : public CreatureScript
                                 if (Creature* creature = me->SummonCreature(entry, pos))
                                     creature->AI()->AttackStart(player);
                             }
-                            
+
                             events.ScheduleEvent(EVENT_SUMMON_ADDS, urand(5000, 10000));
                             break;
                         }
@@ -390,7 +390,7 @@ class boss_echo_of_tyrande : public CreatureScript
                                     if (Player* player = itr->GetSource())
                                         if (player->GetAreaId() == AREA_EMERALD && player->IsAlive())
                                             num++;
-                            
+
                             if (!num)
                             {
                                 summons.DespawnAll();
@@ -466,7 +466,7 @@ class boss_echo_of_tyrande : public CreatureScript
             }
 
         private:
-            uint8 phase; 
+            uint8 phase;
             ObjectGuid moonlanceGUID;
             uint8 eventphase;
             int32 eyesphase;
@@ -514,10 +514,10 @@ class npc_echo_of_tyrande_moonlance : public CreatureScript
                     if (me->GetEntry() == NPC_MOONLANCE_1)
                     {
                         Position pos1_1 = me->GetNearPosition(3.0f, -(M_PI / 4.0f));
-                        Position pos1_2 = me->GetNearPosition(30.0f, -(M_PI / 4.0f)); 
-                        Position pos2_1 = me->GetNearPosition(3.0f, 0.0f); 
-                        Position pos2_2 = me->GetNearPosition(30.0f, 0.0f); 
-                        Position pos3_1 = me->GetNearPosition(3.0f, (M_PI / 4.0f)); 
+                        Position pos1_2 = me->GetNearPosition(30.0f, -(M_PI / 4.0f));
+                        Position pos2_1 = me->GetNearPosition(3.0f, 0.0f);
+                        Position pos2_2 = me->GetNearPosition(30.0f, 0.0f);
+                        Position pos3_1 = me->GetNearPosition(3.0f, (M_PI / 4.0f));
                         Position pos3_2 = me->GetNearPosition(30.0f, (M_PI / 4.0f));
                         if (Creature* pLance1 = me->SummonCreature(NPC_MOONLANCE_2_1, pos1_1, TEMPSUMMON_TIMED_DESPAWN, 30000))
                             pLance1->GetMotionMaster()->MovePoint(POINT_MOONLANCE, pos1_2);
@@ -764,7 +764,7 @@ class at_et_tyrande : public AreaTriggerScript
 
             if (InstanceScript* instance = player->GetInstanceScript())
             {
-                if (instance->GetData(DATA_TYRANDE_EVENT) != IN_PROGRESS && 
+                if (instance->GetData(DATA_TYRANDE_EVENT) != IN_PROGRESS &&
                     instance->GetData(DATA_TYRANDE_EVENT) != DONE)
                 {
                     if (Creature* pTyrande = ObjectAccessor::GetCreature(*player, instance->GetGuidData(DATA_ECHO_OF_TYRANDE)))

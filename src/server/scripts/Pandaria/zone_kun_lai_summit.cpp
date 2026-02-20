@@ -31,7 +31,7 @@ enum ZoneKunLaiSummitSpellData
     SPELL_SMOKED_BLADE                      = 125633,
     SPELL_INEVITABILITY                     = 135843,
 
-    // Tongue of Ba-Shon          
+    // Tongue of Ba-Shon
     SPELL_SUMMON_CHO_FORCE                  = 118996,
     SPELL_SUMMON_CHO                        = 118953,
     SPELL_CHO_MEDITATION                    = 118999,
@@ -340,8 +340,8 @@ const std::vector<AuraType> controlMechanicType =
     SPELL_AURA_MOD_CONFUSE,
 };
 
-const Position pootPootLeavePos [2] = 
-{ 
+const Position pootPootLeavePos [2] =
+{
     { 3144.28f, 1784.07f, 628.582f, 0.0f },
     { 3105.52f, 1777.65f, 634.111f, 0.0f },
 };
@@ -1175,7 +1175,7 @@ class go_yaungol_banner : public GameObjectScript
         }
 };
 
-enum ExplosivesBarrelMiscs 
+enum ExplosivesBarrelMiscs
 {
     EMOTE_EXPLO_BARREL_THREE = 0,
     EMOTE_EXPLO_BARREL_TWO   = 1,
@@ -1492,7 +1492,7 @@ struct npc_relcaimer_zuan_pets : public ScriptedAI
         }
     }
 
-    void JustDied(Unit* /*killer*/) override 
+    void JustDied(Unit* /*killer*/) override
     {
         if (me->GetEntry() == NPC_RECLAIMER_ZUAN)
         {
@@ -1517,7 +1517,7 @@ struct npc_relcaimer_zuan_pets : public ScriptedAI
                 case EVENT_RECLAIM_STRG:
                     if (Unit* vict = me->GetVictim())
                         DoCast(vict, SPELL_RECLAIM_STRENGTH);
-                        
+
                     events.ScheduleEvent(EVENT_RECLAIM_STRG, 20s);
                     break;
                 case EVENT_WILD_MAGIC:
@@ -1701,7 +1701,7 @@ class npc_xuen_celestial_experience : public CreatureScript
             player->KilledMonsterCredit(NPC_XUEN);
             player->SummonCreature(NPC_XUEN, *creature, TEMPSUMMON_TIMED_DESPAWN, 300 * IN_MILLISECONDS);
             player->SetPhaseMask(3, true);
-            player->CLOSE_GOSSIP_MENU();;
+            player->CLOSE_GOSSIP_MENU();
             return true;
         }
 
@@ -1843,7 +1843,7 @@ class npc_xuen_celestial_experience : public CreatureScript
                         break;
                     case NPC_SPIRIT_OF_ANGER:
                         Talk(SAY_SPECIAL_3);
-                        
+
                         delay = 0;
                         me->m_Events.Schedule(delay += 14000, 16, [this]()
                         {

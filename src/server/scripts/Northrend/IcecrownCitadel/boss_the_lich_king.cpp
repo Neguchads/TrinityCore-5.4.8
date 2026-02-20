@@ -373,7 +373,7 @@ enum MiscData
     DATA_EXPLOIT_CHECK          = 3,
 };
 
-class NecroticPlagueTargetCheck 
+class NecroticPlagueTargetCheck
 {
     public:
         NecroticPlagueTargetCheck(Unit const* obj, uint32 notAura1 = 0, uint32 notAura2 = 0)
@@ -383,7 +383,7 @@ class NecroticPlagueTargetCheck
 
         bool operator()(Unit* unit) const
         {
-            if (!unit || unit->GetTypeId() != TYPEID_PLAYER || unit == _sourceObj || !unit->isTargetableForAttack() || unit->IsTotem() || unit->HasAura(SPELL_PLAGUE_AVOIDANCE))
+            if (!unit || !unit->IsPlayer() || unit == _sourceObj || !unit->isTargetableForAttack() || unit->IsTotem() || unit->HasAura(SPELL_PLAGUE_AVOIDANCE))
                 return false;
             if ((_notAura1 && unit->HasAura(_notAura1)) || (_notAura2 && unit->HasAura(_notAura2)))
                 return false;
@@ -458,7 +458,7 @@ class NonValkyrGrabbedPlayerSelector
             if (!_me || !target)
                 return false;
 
-            if (target->GetTypeId() != TYPEID_PLAYER)
+            if (!(target->IsPlayer()))
                 return false;
 
             if (_distance > 0.0f && !_me->IsWithinCombatRange(target, _distance))
@@ -772,7 +772,7 @@ class boss_the_lich_king : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER && !me->IsInEvadeMode() && !(events.IsInPhase(PHASE_OUTRO)))
+                if (victim->IsPlayer() && !me->IsInEvadeMode() && !(events.IsInPhase(PHASE_OUTRO)))
                     Talk(SAY_LK_KILL);
             }
 
@@ -1234,7 +1234,7 @@ class boss_the_lich_king : public CreatureScript
                         case EVENT_DEFILE_FAILSAFE:
                             if (me->HasAura(SPELL_HARVESTED_SOUL)) // Don't attempt to cast Defile while with Harvested Soul (will fail because of ExcludeCasterAuraSpell)
                                 break;
-                            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* u) { return u->GetTypeId() == TYPEID_PLAYER && me->GetVictim() != u && _grabbedPlayers.find(u->GetGUID()) == _grabbedPlayers.end() && !u->HasAura(SPELL_HARVEST_SOUL_VALKYR) && !u->HasAura(SPELL_HARVEST_SOUL_TELEPORT); }))
+                            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* u) { return u->IsPlayer() && me->GetVictim() != u && _grabbedPlayers.find(u->GetGUID()) == _grabbedPlayers.end() && !u->HasAura(SPELL_HARVEST_SOUL_VALKYR) && !u->HasAura(SPELL_HARVEST_SOUL_TELEPORT); }))
                             {
                                 Talk(EMOTE_DEFILE_WARNING);
                                 DoCast(target, SPELL_DEFILE);
@@ -2474,7 +2474,7 @@ class npc_spirit_warden : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     victim->RemoveAurasDueToSpell(IsHeroic() ? SPELL_HARVEST_SOULS_TELEPORT : SPELL_HARVEST_SOUL_TELEPORT);
             }
 
@@ -2656,7 +2656,7 @@ class npc_lich_king_spirit : public CreatureScript
 
             bool CanAIAttack(Unit const* target) const override
             {
-                if (target->GetTypeId() != TYPEID_PLAYER || target->GetPositionZ() <= 830.0f)
+                if (!(target->IsPlayer() || target->GetPositionZ() <= 830.0f))
                     return false;
 
                 // Target selection:
@@ -2992,7 +2992,7 @@ class spell_the_lich_king_shadow_trap_periodic : public SpellScriptLoader
                 GetCaster()->CastSpell((Unit*)nullptr, SPELL_SHADOW_TRAP_KNOCKBACK, true);
 
                 GetCaster()->RemoveAurasDueToSpell(SPELL_SHADOW_TRAP_AURA);
-                if (GetCaster()->GetTypeId() == TYPEID_UNIT)
+                if (GetCaster()->IsCreature())
                   GetCaster()->ToCreature()->DespawnOrUnsummon(3000U);
             }
 
@@ -3075,7 +3075,7 @@ class spell_the_lich_king_ice_burst_target_search : public SpellScriptLoader
 
                 // if there is at least one affected target cast the explosion
                 GetCaster()->CastSpell(GetCaster(), SPELL_ICE_BURST, true);
-                if (GetCaster()->GetTypeId() == TYPEID_UNIT)
+                if (GetCaster()->IsCreature())
                 {
                     GetCaster()->ToCreature()->SetReactState(REACT_PASSIVE);
                     GetCaster()->AttackStop();
@@ -3501,7 +3501,7 @@ class spell_the_lich_king_vile_spirit_move_target_search : public SpellScriptLoa
             bool Load() override
             {
                 _target = nullptr;
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void SelectTarget(std::list<WorldObject*>& targets)
@@ -3553,7 +3553,7 @@ class spell_the_lich_king_vile_spirit_damage_target_search : public SpellScriptL
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void CheckTargetCount(std::list<WorldObject*>& targets)

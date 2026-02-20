@@ -179,7 +179,7 @@ class boss_reliquary_of_souls : public CreatureScript
                 if (me->IsInCombat())
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (me->GetDistance(who) > 30.0f)
@@ -481,7 +481,7 @@ class boss_essence_of_suffering : public CreatureScript
                 for (; itr != threatlist.end(); ++itr)
                 {
                     Unit* unit = Unit::GetUnit(*me, (*itr)->getUnitGuid());
-                    if (unit && unit->IsAlive() && (unit->GetTypeId() == TYPEID_PLAYER)) // Only alive players
+                    if (unit && unit->IsAlive() && (unit->IsPlayer())) // Only alive players
                         targets.push_back(unit);
                 }
                 if (targets.empty())

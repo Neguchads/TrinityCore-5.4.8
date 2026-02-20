@@ -18,7 +18,7 @@
 #include"ScriptPCH.h"
 #include "the_vortex_pinnacle.h"
 
-// �������������� � ������ ���� �� �����������
+// Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
 
 enum Creatures
 {
@@ -77,7 +77,7 @@ enum Spells
     SPELL_DEVASTATE                 = 78660,
     SPELL_RALLY                     = 87761,
     SPELL_SHOCKWAVE                 = 87759,
-    
+
     // Gust Soldier
     SPELL_AIR_NOVA                  = 87933,
     SPELL_CHARGE                    = 87930,
@@ -166,7 +166,7 @@ enum Events
     EVENT_HOWLING_GALE_DEACTIVATE   = 28,
 };
 
-const Position teleportPos[2] = 
+const Position teleportPos[2] =
 {
     {-906.08f, -176.51f, 664.50f, 2.86f},
     {-1193.67f, 472.83f, 634.86f, 0.50f},
@@ -543,7 +543,7 @@ class npc_empyrean_assassin : public CreatureScript
 
             void JustEngagedWith(Unit* /*who*/) override
             {
-                events.ScheduleEvent(EVENT_VAPOR_FORM, urand(15000, 20000));    
+                events.ScheduleEvent(EVENT_VAPOR_FORM, urand(15000, 20000));
             }
 
             void UpdateAI(uint32 diff) override
@@ -714,7 +714,7 @@ struct npc_lurking_tempest : public ScriptedAI
         SetCombatMovement(false);
     }
 
-    void Reset() override 
+    void Reset() override
     {
         me->RemoveAurasDueToSpell(SPELL_LURK);
         me->RemoveAurasDueToSpell(SPELL_FEIGN_DEATH);
@@ -729,7 +729,7 @@ struct npc_lurking_tempest : public ScriptedAI
             damage = 0;
     }
 
-    void JustEngagedWith(Unit* /*who*/) override 
+    void JustEngagedWith(Unit* /*who*/) override
     {
         events.ScheduleEvent(EVENT_LIGHTNING_BOLT, 1 * IN_MILLISECONDS);
         events.ScheduleEvent(EVENT_LURK, 3 * IN_MILLISECONDS);
@@ -1304,7 +1304,6 @@ class spell_minister_of_air_lightning_lash : public SpellScriptLoader
     public:
         spell_minister_of_air_lightning_lash() : SpellScriptLoader("spell_minister_of_air_lightning_lash") { }
 
-
         class spell_minister_of_air_lightning_lash_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_minister_of_air_lightning_lash_SpellScript);
@@ -1333,7 +1332,7 @@ class spell_howling_gale_howling_gale : public SpellScriptLoader
 {
     public:
         spell_howling_gale_howling_gale() : SpellScriptLoader("spell_howling_gale_howling_gale") { }
- 
+
         class spell_howling_gale_howling_gale_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_howling_gale_howling_gale_AuraScript)
@@ -1347,13 +1346,13 @@ class spell_howling_gale_howling_gale : public SpellScriptLoader
                 //GetCaster()->CastSpell(GetCaster(), SPELL_HOWLING_GALE_2, true);
                 //GetCaster()->CastSpell(GetCaster(), SPELL_HOWLING_GALE_3, true);
             }
- 
+
             void Register() override
             {
                 OnEffectPeriodic += AuraEffectPeriodicFn(spell_howling_gale_howling_gale_AuraScript::OnPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_TRIGGER_SPELL);
             }
         };
- 
+
         AuraScript* GetAuraScript() const override
         {
             return new spell_howling_gale_howling_gale_AuraScript();

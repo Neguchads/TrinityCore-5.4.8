@@ -189,7 +189,6 @@ class spell_gen_alchemist_stone : public AuraScript
         GetTarget()->CastCustomSpell(spellId, SPELLVALUE_BASE_POINT0, bp, GetTarget(), true, NULL, aurEff);
     }
 
-
     void Register() override
     {
         DoCheckProc += AuraCheckProcFn(spell_gen_alchemist_stone::CheckProc);
@@ -319,7 +318,7 @@ class spell_gen_aura_service_uniform : public AuraScript
         // Apply model goblin
         Unit* target = GetTarget();
 
-        if (target->GetTypeId() == TYPEID_PLAYER)
+        if (target->IsPlayer())
         {
             if (target->GetGender() == GENDER_MALE)
                 target->SetDisplayId(MODEL_GOBLIN_MALE);
@@ -331,7 +330,7 @@ class spell_gen_aura_service_uniform : public AuraScript
     void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
     {
         Unit* target = GetTarget();
-        if (target->GetTypeId() == TYPEID_PLAYER)
+        if (target->IsPlayer())
             target->RestoreDisplayId();
     }
 
@@ -927,7 +926,7 @@ class spell_gen_creature_permanent_feign_death : public SpellScriptLoader
                 target->SetFlag(OBJECT_FIELD_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
                 target->SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
 
-                if (target->GetTypeId() == TYPEID_UNIT)
+                if (target->IsCreature())
                     target->ToCreature()->SetReactState(REACT_PASSIVE);
             }
 
@@ -1028,7 +1027,7 @@ class spell_gen_despawn_self : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void HandleDummy(SpellEffIndex effIndex)
@@ -1066,7 +1065,7 @@ class spell_gen_divine_storm_cd_reset : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             bool Validate(SpellInfo const* /*spellInfo*/) override
@@ -1317,7 +1316,7 @@ class spell_gen_fishing : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void HandleDummy(SpellEffIndex effIndex)
@@ -2017,7 +2016,7 @@ class spell_gen_on_tournament_mount : public SpellScriptLoader
             bool Load() override
             {
                 _pennantSpellId = 0;
-                return GetCaster() && GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster() && GetCaster()->IsPlayer();
             }
 
             void HandleApplyEffect(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
@@ -2172,7 +2171,7 @@ class spell_gen_oracle_wolvar_reputation : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void HandleDummy(SpellEffIndex effIndex)
@@ -2387,7 +2386,6 @@ class spell_gen_replenishment : public SpellScriptLoader
         }
 };
 
-
 enum RunningWildMountIds
 {
     RUNNING_WILD_MODEL_MALE     = 29422,
@@ -2565,7 +2563,7 @@ class spell_gen_seaforium_blast : public SpellScriptLoader
             bool Load() override
             {
                 // OriginalCaster is always available in Spell::prepare
-                return GetOriginalCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetOriginalCaster()->IsPlayer();
             }
 
             void AchievementCredit(SpellEffIndex /*effIndex*/)
@@ -2635,7 +2633,7 @@ class spell_gen_spirit_healer_res : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetOriginalCaster() && GetOriginalCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetOriginalCaster() && GetOriginalCaster()->IsPlayer();
             }
 
             void HandleDummy(SpellEffIndex /* effIndex */)
@@ -2716,7 +2714,7 @@ class spell_gen_summon_elemental : public SpellScriptLoader
             {
                 if (GetCaster())
                     if (Unit* owner = GetCaster()->GetOwner())
-                        if (owner->GetTypeId() == TYPEID_PLAYER) /// @todo this check is maybe wrong
+                        if (owner->IsPlayer()) /// @todo this check is maybe wrong
                             owner->ToPlayer()->RemovePet(PET_REMOVE_DISMISS, PET_REMOVE_FLAG_RESET_CURRENT);
             }
 
@@ -2786,7 +2784,6 @@ class spell_gen_summon_tournament_mount : public SpellScriptLoader
         }
 };
 
-
 enum MountedDuelSpells
 {
     SPELL_ON_TOURNAMENT_MOUNT = 63034,
@@ -2821,7 +2818,7 @@ class spell_gen_tournament_duel : public SpellScriptLoader
                     }
                     else if (Unit* unitTarget = GetHitUnit())
                     {
-                        if (unitTarget->GetCharmer() && unitTarget->GetCharmer()->GetTypeId() == TYPEID_PLAYER && unitTarget->GetCharmer()->HasAura(SPELL_ON_TOURNAMENT_MOUNT))
+                        if (unitTarget->GetCharmer() && unitTarget->GetCharmer()->IsPlayer() && unitTarget->GetCharmer()->HasAura(SPELL_ON_TOURNAMENT_MOUNT))
                             rider->CastSpell(unitTarget->GetCharmer(), SPELL_MOUNTED_DUEL, true);
                     }
                 }
@@ -2850,7 +2847,7 @@ class spell_gen_tournament_pennant : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster() && GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster() && GetCaster()->IsPlayer();
             }
 
             void HandleApplyEffect(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
@@ -2872,8 +2869,6 @@ class spell_gen_tournament_pennant : public SpellScriptLoader
         }
 };
 
-
-
 enum PvPTrinketTriggeredSpells
 {
     SPELL_WILL_OF_THE_FORSAKEN_COOLDOWN_TRIGGER         = 72752,
@@ -2886,7 +2881,7 @@ class spell_pvp_trinket_wotf_shared_cd : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     bool Validate(SpellInfo const* /*spellInfo*/) override
@@ -2921,7 +2916,7 @@ class spell_gen_turkey_marker : public AuraScript
 
     std::list<TimeValue> applyTimes;
 
-    enum 
+    enum
     {
         SPELL_TURKEY_VENGEANCE = 25285
     };
@@ -3325,7 +3320,7 @@ class spell_gen_debug_move : public SpellScript
     bool Load() override
     {
         if (Unit* caster = GetCaster())
-            return caster->GetTypeId() == TYPEID_PLAYER;
+            return caster->IsPlayer();
         return false;
     }
 
@@ -3475,7 +3470,7 @@ class spell_gen_the_quick_and_the_dead : public AuraScript
 };
 
 // Guild Perk Level 25
-// 83968 - Mass Resurrection 
+// 83968 - Mass Resurrection
 class spell_gen_mass_resurrection : public SpellScript
 {
     PrepareSpellScript(spell_gen_mass_resurrection);
@@ -3551,7 +3546,7 @@ class spell_gen_profession_research : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     void HandleScript(SpellEffIndex)
@@ -4166,7 +4161,7 @@ class spell_gen_lightning_strike_charges_trigger : public AuraScript
         if (eventInfo.GetActionTarget())
             GetUnitOwner()->CastSpell(eventInfo.GetActionTarget(), SPELL_CAPACITANCE, true);
     }
- 
+
     void Register() override
     {
         OnProc += AuraProcFn(spell_gen_lightning_strike_charges_trigger::HandleProc);
@@ -4283,7 +4278,7 @@ class spell_item_sylvanas_music_box : public SpellScript
 
     bool Load()
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     void HandleScript(SpellEffIndex effIndex)
@@ -4456,7 +4451,7 @@ class spell_gen_inactive : public AuraScript
     void HandleRemove(AuraEffect const*, AuraEffectHandleModes)
     {
         if (GetTargetApplication()->GetRemoveMode() == AURA_REMOVE_BY_EXPIRE)
-            if (GetTarget()->GetTypeId() == TYPEID_PLAYER)
+            if (GetTarget()->IsPlayer())
                 GetTarget()->ToPlayer()->LeaveBattleground();
     }
 
@@ -4508,7 +4503,7 @@ class spell_gen_readiness_base : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetOwner()->IsPlayer();
     }
 
     void HandleApply(AuraEffect const* effect, AuraEffectHandleModes)
@@ -4823,5 +4818,5 @@ void AddSC_generic_spell_scripts()
     new aura_script<spell_carrying_seaforium>("spell_carrying_seaforium");
     new aura_script<spell_gen_surgical_alterations>("spell_gen_surgical_alterations");
     new spell_script<spell_gen_deserter>("spell_gen_deserter");
-	new spell_script<spell_gen_rocket_barrage>("spell_gen_rocket_barrage");
+    new spell_script<spell_gen_rocket_barrage>("spell_gen_rocket_barrage");
 }

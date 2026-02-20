@@ -50,4 +50,3 @@ void AuthCrypt::EncryptSend(uint8 *data, size_t len)
     ASSERT(_initialized);
     _serverEncrypt.UpdateData(data, len);
 }
-

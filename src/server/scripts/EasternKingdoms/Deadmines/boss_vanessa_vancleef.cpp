@@ -112,7 +112,7 @@ enum Events
 
 #define ACHIEVEMENT_EVENT 27527
 
-const Position addsPos[3] = 
+const Position addsPos[3] =
 {
     {-67.115807f, -829.708740f, 40.959011f, 1.344201f},
     {-69.161903f, -814.125977f, 40.722912f, 1.611237f},
@@ -164,7 +164,7 @@ class boss_vanessa_vancleef : public CreatureScript
                 phase = 0;
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 // by default right now cuz poison phase doesn`t work...
                 me->GetMap()->SetWorldState(WORLDSTATE_VANCLEEF_VINDICATION, 1);
@@ -186,7 +186,7 @@ class boss_vanessa_vancleef : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -219,7 +219,7 @@ class boss_vanessa_vancleef : public CreatureScript
                     events.ScheduleEvent(EVENT_ADDS_1, 1000);
                     return;
                 }
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -265,7 +265,7 @@ class npc_vanessa_vancleef_a_note_from_vanessa : public CreatureScript
 {
     public:
         npc_vanessa_vancleef_a_note_from_vanessa() : CreatureScript("npc_vanessa_vancleef_a_note_from_vanessa") { }
-     
+
         bool OnGossipHello(Player* /*player*/, Creature* creature) override
         {
             InstanceScript* instance = creature->GetInstanceScript();
@@ -314,7 +314,7 @@ class npc_vanessa_vancleef_vanessa_sitting : public CreatureScript
             void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)

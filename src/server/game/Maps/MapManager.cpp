@@ -69,7 +69,7 @@ void MapManager::Initialize()
     // Start mtmaps if needed.
     if (num_threads > 0)
         m_updater.activate(num_threads);
-    
+
 }
 
 void MapManager::InitializeVisibilityDistanceInfo()

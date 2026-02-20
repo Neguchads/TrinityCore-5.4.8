@@ -66,7 +66,6 @@ class boss_faerlina : public CreatureScript
             {
             }
 
-
             void JustEngagedWith(Unit* /*who*/) override
             {
                 _JustEngagedWith();
@@ -86,7 +85,7 @@ class boss_faerlina : public CreatureScript
             void MoveInLineOfSight(Unit* who) override
 
             {
-                if (!_introDone && who->GetTypeId() == TYPEID_PLAYER)
+                if (!_introDone && who->IsPlayer())
                 {
                     Talk(SAY_GREET);
                     _introDone = true;
@@ -188,7 +187,8 @@ class npc_faerlina_add : public CreatureScript
 
             void Reset() override
             {
-                if (GetDifficulty() == RAID_DIFFICULTY_10MAN_NORMAL) {
+                if (GetDifficulty() == RAID_DIFFICULTY_10MAN_NORMAL)
+                {
                     me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_BIND, true);
                     me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 }

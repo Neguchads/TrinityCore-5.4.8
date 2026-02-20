@@ -86,7 +86,7 @@ struct npc_felwood_honey_bunny : public ScriptedAI
 enum q27995
 {
     QUEST_DANCE_FOR_RUUMBO = 27995,
-                           
+
     NPC_FERLI              = 47558,
     NPC_DRIZLE             = 47556,
     NPC_RUMBO_DANCE_CREDIT = 47555,

@@ -32,7 +32,7 @@ enum eCreature
 {
     NPC_AVATAR_OF_HAKKAR  = 8443,
     NPC_JAMMALAN_PROPHET  = 5710,
-    // Wardens            
+    // Wardens
     NPC_WEAVER            = 5720,
     NPC_DREAMSCYTHE       = 5721,
     NPC_MORPHAZ           = 5719,
@@ -54,4 +54,3 @@ enum eGameObjects
 };
 
 #endif // DEF_SUNKEN_TEMPLE_H
-

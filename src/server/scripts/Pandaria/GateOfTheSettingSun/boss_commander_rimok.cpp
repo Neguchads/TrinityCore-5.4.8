@@ -89,7 +89,7 @@ class boss_commander_rimok : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -114,7 +114,7 @@ class boss_commander_rimok : public CreatureScript
             {
                 summons.Summon(summon);
             }
-             
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
@@ -132,7 +132,7 @@ class boss_commander_rimok : public CreatureScript
                                 targetGUID = vict->GetGUID();
                                 me->PrepareChanneledCast(me->GetAngle(vict), SPELL_FRENZIED_ASSAULT);
                             }
-                            
+
                             events.ScheduleEvent(EVENT_FRENZIED_ASSAULT_REMOVE, 7500);
                             events.ScheduleEvent(EVENT_FRENZIED_ASSAULT, urand(20, 21) * IN_MILLISECONDS);
                             break;
@@ -218,7 +218,7 @@ class npc_krikthik_swarmer : public CreatureScript
         };
 
         CreatureAI* GetAI(Creature* creature) const override
-        { 
+        {
             return new npc_krikthik_swarmerAI(creature);
         }
 };
@@ -301,7 +301,7 @@ class npc_add_generator : public CreatureScript
                     case FAIL:
                         summons.DespawnAll();
                         // no break
-                    case DONE:               
+                    case DONE:
                         me->RemoveAurasDueToSpell(SPELL_PERIODIC_SPAWN_SWARMER);
                         me->RemoveAurasDueToSpell(SPELL_PERIODIC_SPAWN_SABOTEUR);
                         summons.DespawnAll();

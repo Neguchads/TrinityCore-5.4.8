@@ -85,8 +85,8 @@ enum Adds
     NPC_CRATER                  = 52866,
     NPC_LIQUID_OBSIDIAN         = 52619,
     NPC_VOLCANO                 = 52582,
-    NPC_LEFT_FOOT               = 52577, 
-    NPC_RIGHT_FOOT              = 53087, 
+    NPC_LEFT_FOOT               = 52577,
+    NPC_RIGHT_FOOT              = 53087,
     NPC_RHYOLITH_2              = 53772,
     NPC_MOVEMENT_CONTROLLER     = 52659,
 };
@@ -169,7 +169,7 @@ class boss_lord_rhyolith : public CreatureScript
             void Reset() override
             {
                 _Reset();
-                
+
                 me->SetHealth(me->GetMaxHealth());
                 me->SetReactState(REACT_PASSIVE);
                 me->LowerPlayerDamageReq(me->GetMaxHealth());
@@ -209,7 +209,7 @@ class boss_lord_rhyolith : public CreatureScript
             void JustEngagedWith(Unit* /*who*/) override
             {
                 Talk(SAY_AGGRO);
-                
+
                 curMove = 0;
                 phase = 0;
                 players_count = instance->instance->GetPlayers().getSize();
@@ -280,7 +280,7 @@ class boss_lord_rhyolith : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -299,7 +299,7 @@ class boss_lord_rhyolith : public CreatureScript
                     events.Reset();
 
                     uint32 _health = me->GetHealth();
-                    
+
                     if (Creature* pRhyolith = me->SummonCreature(NPC_RHYOLITH_2, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
                     {
                         pRhyolith->RemoveAllAuras();
@@ -317,7 +317,7 @@ class boss_lord_rhyolith : public CreatureScript
                     Talk(SAY_TRANS);
                     instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_ERUPTION_DMG);
                     instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_BALANCE_BAR);
-                    
+
                     if (pController)
                     {
                         pController->DespawnOrUnsummon();
@@ -332,7 +332,7 @@ class boss_lord_rhyolith : public CreatureScript
                     {
                         pRightFoot->DespawnOrUnsummon();
                         pRightFoot = NULL;
-                    }      
+                    }
                     return;
                 }
 
@@ -372,7 +372,6 @@ class boss_lord_rhyolith : public CreatureScript
                                         pRightFoot->RemoveAura(SPELL_BURNING_FEET);
 
                                     instance->DoSetAlternatePowerOnPlayers(25);
-
 
                                     events.ScheduleEvent(EVENT_CHECK_MOVE, 1000);
                                     return;
@@ -414,7 +413,7 @@ class boss_lord_rhyolith : public CreatureScript
                             std::list<Creature*> volcanos;
                             Creature* target = NULL;
                             me->GetCreatureListWithEntryInGrid(volcanos, NPC_VOLCANO, 300.0f);
-                            
+
                             if (!volcanos.empty())
                                 volcanos.remove_if(AuraCheck(SPELL_ERUPTION));
 
@@ -451,14 +450,14 @@ class boss_lord_rhyolith : public CreatureScript
                             while (posList.size() < max_size)
                             {
                                 uint8 i = urand(0, _MAX_VOLCANO - 1);
-                                
+
                                 if (posList.find(i) == posList.end())
                                     posList.insert(i);
                             }
 
                             for (std::set<uint8>::const_iterator itr = posList.begin(); itr != posList.end(); ++itr)
                                 me->CastSpell(volcanoPos[(*itr)].GetPositionX(), volcanoPos[(*itr)].GetPositionY(), volcanoPos[(*itr)].GetPositionZ(), SPELL_SUMMON_FRAGMENT_OF_RHYOLITH, true);
-                            
+
                             events.ScheduleEvent(EVENT_SPARK, 30000);
                             break;
                         }
@@ -489,7 +488,7 @@ class boss_lord_rhyolith : public CreatureScript
             int32 CalculateNextMove(int32 cur, int32 left, int32 right)
             {
                 int32 diff = right - left;
-                
+
                 if (diff == 0)
                     return 0;
                 else if (diff > 0 && diff < 3)
@@ -512,7 +511,7 @@ class boss_lord_rhyolith : public CreatureScript
 
                 instance->DoSetAlternatePowerOnPlayers(energy);
 
-                return int32(diff); 
+                return int32(diff);
             }
 
             int32 NormalizeMove(int32 cur, int32 diff)
@@ -531,7 +530,7 @@ class boss_lord_rhyolith : public CreatureScript
             {
                 public:
                     AuraCheck(uint32 spellId) : _spellId(spellId) { }
-        
+
                     bool operator()(Creature* volcano)
                     {
                        return (volcano->HasAura(_spellId));
@@ -606,7 +605,7 @@ class npc_lord_rhyolith_rhyolith : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -872,7 +871,7 @@ class npc_lord_rhyolith_volcano : public CreatureScript
             void JustEngagedWith(Unit* /*who*/) override
             {
                 DoCast(me, SPELL_VOLCANO_SMOKE, true);
-                events.ScheduleEvent(EVENT_CHECK_RHYOLITH, 3000);       
+                events.ScheduleEvent(EVENT_CHECK_RHYOLITH, 3000);
             }
 
             void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
@@ -930,7 +929,7 @@ class npc_lord_rhyolith_volcano : public CreatureScript
                                     for (std::set<uint8>::const_iterator itr = posList.begin(); itr != posList.end(); ++itr)
                                         pRhyolith->SummonCreature(NPC_LIQUID_OBSIDIAN, movePos[(*itr)]);
                                 }
-                                
+
                                 me->DespawnOrUnsummon(500);
                             }
                             else
@@ -980,7 +979,7 @@ class npc_lord_rhyolith_crater : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
 
                 while (uint32 eventId = events.ExecuteEvent())
@@ -1041,7 +1040,7 @@ class npc_lord_rhyolith_liquid_obsidian : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
 
                 while (uint32 eventId = events.ExecuteEvent())
@@ -1101,7 +1100,7 @@ class npc_lord_rhyolith_spark_of_rhyolith : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
 
                 while (uint32 eventId = events.ExecuteEvent())
@@ -1171,7 +1170,7 @@ class npc_lord_rhyolith_fragment_of_rhyolith : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
 
                 while (uint32 eventId = events.ExecuteEvent())
@@ -1274,7 +1273,7 @@ class spell_lord_rhyolith_magma_flow : public SpellScriptLoader
         class spell_lord_rhyolith_magma_flow_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_lord_rhyolith_magma_flow_AuraScript);
-            
+
             bool Load() override
             {
                 count = 0;
@@ -1347,7 +1346,6 @@ class spell_lord_rhyolith_drink_magma : public SpellScriptLoader
     public:
         spell_lord_rhyolith_drink_magma() : SpellScriptLoader("spell_lord_rhyolith_drink_magma") { }
 
-
         class spell_lord_rhyolith_drink_magma_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_lord_rhyolith_drink_magma_SpellScript);
@@ -1394,7 +1392,7 @@ class spell_lord_rhyolith_lava_strike : public SpellScriptLoader
             void HandleDummy(SpellEffIndex effIndex)
             {
                 if (!GetCaster() || !GetHitUnit())
-                    return; 
+                    return;
 
                 GetCaster()->CastSpell(GetHitUnit(), SPELL_LAVA_STRIKE, true);
             }

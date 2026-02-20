@@ -120,7 +120,7 @@ class boss_sha_of_anger : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 
@@ -279,7 +279,7 @@ struct npc_sha_of_anger_bunny : public ScriptedAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() != TYPEID_PLAYER)
+        if (!(who->IsPlayer()))
             return;
 
         if (!who->IsWithinDist(me, 50.0f))
@@ -374,5 +374,5 @@ void AddSC_boss_sha_of_anger()
     new boss_sha_of_anger();
     new creature_script<npc_sha_of_anger_bunny>("npc_sha_of_anger_bunny");
     new aura_script<spell_sha_of_anger_aggressive_behaviour>("spell_sha_of_anger_aggressive_behaviour");
-    new aura_script<spell_sha_of_anger_overcome_by_anger>("spell_sha_of_anger_overcome_by_anger");   
+    new aura_script<spell_sha_of_anger_overcome_by_anger>("spell_sha_of_anger_overcome_by_anger");
 }

@@ -219,7 +219,7 @@ class boss_kologarn : public CreatureScript
                 if (!urand(0,5))
                     Talk(SAY_SLAY);
 
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     who->_ExitVehicle();
             }
 
@@ -474,7 +474,7 @@ class npc_kologarn_arm : public CreatureScript
             }
 
             void AttackStart(Unit* /*victim*/) override { }
-            
+
             void UpdateAI(uint32 /*diff*/) override
             {
                 if (me->GetInstanceScript()->GetBossState(BOSS_KOLOGARN) == DONE)
@@ -611,7 +611,7 @@ class spell_ulduar_summon_rubble : public SpellScriptLoader
 };
 
 // predicate function to select non main tank target
-class StoneGripTargetSelector 
+class StoneGripTargetSelector
 {
     public:
         StoneGripTargetSelector(Creature* me, Unit const* victim) : _me(me), _victim(victim) { }
@@ -621,7 +621,7 @@ class StoneGripTargetSelector
             if (target == _victim)
                 return true;
 
-            if (target->GetTypeId() != TYPEID_PLAYER)
+            if (!(target->IsPlayer()))
                 return true;
 
             return false;
@@ -642,7 +642,7 @@ class spell_ulduar_stone_grip_cast_target : public SpellScriptLoader
 
             bool Load() override
             {
-                if (GetCaster()->GetTypeId() != TYPEID_UNIT)
+                if (!(GetCaster()->IsCreature()))
                     return false;
                 return true;
             }
@@ -852,7 +852,7 @@ class spell_ulduar_stone_grip : public SpellScriptLoader
                 if (!(mode & AURA_EFFECT_HANDLE_REAL))
                     return;
 
-                if (GetOwner()->GetTypeId() != TYPEID_UNIT)
+                if (!(GetOwner()->IsCreature()))
                     return;
 
                 Player* caster = GetCaster() ? GetCaster()->ToPlayer() : 0;
@@ -927,7 +927,7 @@ class spell_kologarn_summon_focused_eyebeam : public SpellScriptLoader
 
             void FilterTargets(std::list<WorldObject*>& targets)
             {
-                if (!GetCaster() || GetCaster()->GetTypeId() != TYPEID_UNIT || !GetCaster()->IsAIEnabled)
+                if (!GetCaster() || !GetCaster()->IsCreature() || !GetCaster()->IsAIEnabled)
                     return;
 
                 Creature* caster = GetCaster()->ToCreature();

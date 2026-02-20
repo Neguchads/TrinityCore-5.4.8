@@ -5,11 +5,7 @@ UPDATE `creature_template` SET `AIName`='SmartAI'
 WHERE `entry` IN (43443, 43445, 43446, 43447, 43448, 43449, 43458, 43459, 43460, 43461, 43462, 112962);
 
 -- Ensure boat is a spellclick vehicle
-UPDATE `creature_template`
-SET `AIName`='SmartVehicleAI', `npcflag`=16777216, `VehicleId`=964,
-    `unit_flags`=(`unit_flags` | 0x00000200)
-WHERE `entry`=43450;
-
+UPDATE `creature_template` SET `AIName`='SmartVehicleAI', `npcflag`=16777216, `VehicleId`=964, `unit_flags`=(`unit_flags` | 0x00000200) WHERE `entry`=43450;
 
 -- Vehicle accessories (boat passengers)
 DELETE FROM `vehicle_template_accessory` WHERE `entry`=43450;
@@ -19,7 +15,6 @@ INSERT INTO `vehicle_template_accessory` (`entry`, `accessory_entry`, `seat_id`,
 (43450, 43447, 2, 1, 'Jorgensen', 8, 0),
 (43450, 43446, 3, 1, 'Krakauer', 8, 0),
 (43450, 43445, 4, 1, 'Danforth', 8, 0);
-
 
 -- Spellclick to board the boat
 DELETE FROM `npc_spellclick_spells` WHERE `npc_entry`=43450 AND `spell_id`=46598;
@@ -201,9 +196,7 @@ UPDATE `creature` SET `position_x`=-9463.11, `position_y`=-2825.89, `position_z`
 UPDATE `creature` SET `position_x`=-9466.39, `position_y`=-2829.02, `position_z`=65.2776, `orientation`=0.505524 WHERE `id`=43462;
 
 -- Align dock clicker with boat spawn to avoid teleport
-UPDATE `creature`
-SET `position_x`=-9298.79, `position_y`=-2367.42, `position_z`=55.8253, `orientation`=3.6967
-WHERE `id`=43443;
+UPDATE `creature` SET `position_x`=-9298.79, `position_y`=-2367.42, `position_z`=55.8253, `orientation`=3.6967 WHERE `id`=43443;
 
 DELETE FROM `creature` WHERE `id`=43460;
 SET @CGUID := (SELECT MAX(`guid`) + 1 FROM `creature`);

@@ -53,15 +53,15 @@ class go_end_time_teleport : public GameObjectScript
 
             if (InstanceScript* instance = go->GetInstanceScript())
             {
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Перенестись ко входу.":"Entryway of Time.", GOSSIP_SENDER_MAIN, START_TELEPORT);
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¸ÃÂµÃ‘â‚¬ÃÂµÃÂ½ÃÂµÃ‘ÂÃ‘â€šÃÂ¸Ã‘ÂÃ‘Å’ ÃÂºÃÂ¾ ÃÂ²Ã‘â€¦ÃÂ¾ÃÂ´Ã‘Æ’.":"Entryway of Time.", GOSSIP_SENDER_MAIN, START_TELEPORT);
 
                 if (player->IsGameMaster())
                 {
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Изумрудное святилище драконов.":"Emerald Dragonshrine.", GOSSIP_SENDER_MAIN, TYRANDE_TELEPORT);
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Лазуритовое святилище драконов.":"Azure Dragonshrine.", GOSSIP_SENDER_MAIN, JAINA_TELEPORT);
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Обсидиановое святилище драконов.":"Obsidian Dragonshrine.", GOSSIP_SENDER_MAIN, BAINE_TELEPORT);
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Рубиновое святилище драконов.":"Ruby Dragonshrine.", GOSSIP_SENDER_MAIN, SYLVANAS_TELEPORT);
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Бронзовое святилище драконов.":"Bronze Dragonshrine.", GOSSIP_SENDER_MAIN, MUROZOND_TELEPORT);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃËœÃÂ·Ã‘Æ’ÃÂ¼Ã‘â‚¬Ã‘Æ’ÃÂ´ÃÂ½ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Emerald Dragonshrine.", GOSSIP_SENDER_MAIN, TYRANDE_TELEPORT);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Ãâ€ºÃÂ°ÃÂ·Ã‘Æ’Ã‘â‚¬ÃÂ¸Ã‘â€šÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Azure Dragonshrine.", GOSSIP_SENDER_MAIN, JAINA_TELEPORT);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾ÃÂ±Ã‘ÂÃÂ¸ÃÂ´ÃÂ¸ÃÂ°ÃÂ½ÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Obsidian Dragonshrine.", GOSSIP_SENDER_MAIN, BAINE_TELEPORT);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÂ Ã‘Æ’ÃÂ±ÃÂ¸ÃÂ½ÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Ruby Dragonshrine.", GOSSIP_SENDER_MAIN, SYLVANAS_TELEPORT);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Ãâ€˜Ã‘â‚¬ÃÂ¾ÃÂ½ÃÂ·ÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Bronze Dragonshrine.", GOSSIP_SENDER_MAIN, MUROZOND_TELEPORT);
                 }
                 else
                 {
@@ -72,16 +72,16 @@ class go_end_time_teleport : public GameObjectScript
                     switch (echo1)
                     {
                         case DATA_ECHO_OF_JAINA:
-                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Лазуритовое святилище драконов.":"Azure Dragonshrine.", GOSSIP_SENDER_MAIN, JAINA_TELEPORT);
+                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Ãâ€ºÃÂ°ÃÂ·Ã‘Æ’Ã‘â‚¬ÃÂ¸Ã‘â€šÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Azure Dragonshrine.", GOSSIP_SENDER_MAIN, JAINA_TELEPORT);
                             break;
                         case DATA_ECHO_OF_BAINE:
-                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Обсидиановое святилище драконов.":"Obsidian Dragonshrine.", GOSSIP_SENDER_MAIN, BAINE_TELEPORT);
+                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾ÃÂ±Ã‘ÂÃÂ¸ÃÂ´ÃÂ¸ÃÂ°ÃÂ½ÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Obsidian Dragonshrine.", GOSSIP_SENDER_MAIN, BAINE_TELEPORT);
                             break;
                         case DATA_ECHO_OF_TYRANDE:
-                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Изумрудное святилище драконов.":"Emerald Dragonshrine.", GOSSIP_SENDER_MAIN, TYRANDE_TELEPORT);
+                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃËœÃÂ·Ã‘Æ’ÃÂ¼Ã‘â‚¬Ã‘Æ’ÃÂ´ÃÂ½ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Emerald Dragonshrine.", GOSSIP_SENDER_MAIN, TYRANDE_TELEPORT);
                             break;
                         case DATA_ECHO_OF_SYLVANAS:
-                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Рубиновое святилище драконов.":"Ruby Dragonshrine.", GOSSIP_SENDER_MAIN, SYLVANAS_TELEPORT);
+                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÂ Ã‘Æ’ÃÂ±ÃÂ¸ÃÂ½ÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Ruby Dragonshrine.", GOSSIP_SENDER_MAIN, SYLVANAS_TELEPORT);
                             break;
                     }
 
@@ -90,22 +90,22 @@ class go_end_time_teleport : public GameObjectScript
                         switch (echo2)
                         {
                             case DATA_ECHO_OF_JAINA:
-                                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Лазуритовое святилище драконов.":"Azure Dragonshrine.", GOSSIP_SENDER_MAIN, JAINA_TELEPORT);
+                                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Ãâ€ºÃÂ°ÃÂ·Ã‘Æ’Ã‘â‚¬ÃÂ¸Ã‘â€šÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Azure Dragonshrine.", GOSSIP_SENDER_MAIN, JAINA_TELEPORT);
                                 break;
                             case DATA_ECHO_OF_BAINE:
-                                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Обсидиановое святилище драконов.":"Obsidian Dragonshrine.", GOSSIP_SENDER_MAIN, BAINE_TELEPORT);
+                                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾ÃÂ±Ã‘ÂÃÂ¸ÃÂ´ÃÂ¸ÃÂ°ÃÂ½ÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Obsidian Dragonshrine.", GOSSIP_SENDER_MAIN, BAINE_TELEPORT);
                                 break;
                             case DATA_ECHO_OF_TYRANDE:
-                                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Изумрудное святилище драконов.":"Emerald Dragonshrine.", GOSSIP_SENDER_MAIN, TYRANDE_TELEPORT);
+                                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃËœÃÂ·Ã‘Æ’ÃÂ¼Ã‘â‚¬Ã‘Æ’ÃÂ´ÃÂ½ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Emerald Dragonshrine.", GOSSIP_SENDER_MAIN, TYRANDE_TELEPORT);
                                 break;
                             case DATA_ECHO_OF_SYLVANAS:
-                                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Рубиновое святилище драконов.":"Ruby Dragonshrine.", GOSSIP_SENDER_MAIN, SYLVANAS_TELEPORT);
+                                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÂ Ã‘Æ’ÃÂ±ÃÂ¸ÃÂ½ÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Ruby Dragonshrine.", GOSSIP_SENDER_MAIN, SYLVANAS_TELEPORT);
                                 break;
                         }
                     }
 
                     if (instance->GetData(DATA_SECOND_ENCOUNTER) == DONE)
-                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Бронзовое святилище драконов.":"Bronze Dragonshrine.", GOSSIP_SENDER_MAIN, MUROZOND_TELEPORT);
+                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Ãâ€˜Ã‘â‚¬ÃÂ¾ÃÂ½ÃÂ·ÃÂ¾ÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂ²Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»ÃÂ¸Ã‘â€°ÃÂµ ÃÂ´Ã‘â‚¬ÃÂ°ÃÂºÃÂ¾ÃÂ½ÃÂ¾ÃÂ².":"Bronze Dragonshrine.", GOSSIP_SENDER_MAIN, MUROZOND_TELEPORT);
                 }
             }
 
@@ -122,8 +122,8 @@ class go_end_time_teleport : public GameObjectScript
             InstanceScript* instance = player->GetInstanceScript();
             if (!instance)
                 return true;
-            
-            switch (action) 
+
+            switch (action)
             {
                 case START_TELEPORT:
                     player->CastSpell(player, SPELL_TELEPORT_TO_START, true);
@@ -161,7 +161,7 @@ class go_end_time_teleport : public GameObjectScript
             }
 
             return true;
-        }    
+        }
 };
 
 void AddSC_end_time_teleport()

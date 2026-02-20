@@ -675,7 +675,9 @@ void hyjalAI::SpawnVeins()
                 VeinGUID[i]=gem->GetGUID();
         }
         VeinsSpawned[0] = true;
-    }else{
+    }
+    else
+    {
         if (VeinsSpawned[1])
             return;
         for (uint8 i = 7; i<14; ++i)
@@ -775,7 +777,9 @@ void hyjalAI::UpdateAI(uint32 diff)
                 RespawnNearPos(5542.2f, -2629.36f);
             }
             me->SetVisible(true);
-        }else{
+        }
+        else
+        {
             RespawnTimer -= diff;
             me->SetVisible(false);
         }

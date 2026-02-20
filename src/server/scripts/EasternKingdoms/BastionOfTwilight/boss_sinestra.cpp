@@ -126,7 +126,6 @@ enum Events
     EVENT_START_PHASE_3             = 15,
     EVENT_WIPE                      = 16,
     EVENT_MELEE_CHECK               = 17,
-    
 
     EVENT_UNLEASH_ESSENCE,
     EVENT_INDOMITABLE,
@@ -144,7 +143,7 @@ enum Events
     EVENT_SUMMON_ESSENCE,
     EVENT_CHECK_RESURRECT,
     EVENT_RESURRECT,
-    
+
     EVENT_ESSENCE_GROW,
 
     EVENT_TWILIGHT_BREATH,
@@ -161,7 +160,7 @@ enum Others
     ACTION_END_EGG,
 };
 
-const Position addsPos[16] = 
+const Position addsPos[16] =
 {
     { -1007.830f, -807.280f, 438.600f, 0.870f }, // 0 Calen
 
@@ -174,7 +173,7 @@ const Position addsPos[16] =
     { -1049.920f, -708.420f, 472.740f, 5.270f }, // 6 Drake fly 2
     { -969.860f,  -795.980f, 438.600f, 2.630f }, // 7 Drake land 1
     { -1005.740f, -766.530f, 438.600f, 5.750f }, // 8 Drake land 2
-    
+
     { -1035.88f,  -841.07f,  442.99f,  0.97f  }, // 9 Caller spawn
     { -1012.74f,  -812.81f,  438.60f,  0.86f  }, // 10 Caller land
 
@@ -314,7 +313,6 @@ class boss_sinestra : public CreatureScript
                             if (Player* player = itr->GetSource())
                                 player->NearTeleportTo(enterPos.GetPositionX(), enterPos.GetPositionY(), enterPos.GetPositionZ(), enterPos.GetOrientation());
 
-                        
                         return;
                     }
                 }
@@ -379,7 +377,7 @@ class boss_sinestra : public CreatureScript
                     return;
                 instance->SetBossState(DATA_SINESTRA, DONE);
             }
-            
+
             void JustSummoned(Creature* summon) override
             {
                 summons.Summon(summon);
@@ -486,7 +484,7 @@ class boss_sinestra : public CreatureScript
 
                             std::list<Unit*>::const_iterator iter = targetList.begin();
                             pOrb1 = me->SummonCreature(NPC_SHADOW_ORB, (*iter)->GetPositionX(), (*iter)->GetPositionY(), (*iter)->GetPositionZ(), (*iter)->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN, 14000);
-                            
+
                             ++iter;
                             pOrb2 = me->SummonCreature(NPC_SHADOW_ORB, (*iter)->GetPositionX(), (*iter)->GetPositionY(), (*iter)->GetPositionZ(), (*iter)->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN, 14000);
 
@@ -497,7 +495,7 @@ class boss_sinestra : public CreatureScript
                         case EVENT_TWILIGHT_SLICER:
                             if (pOrb1 && pOrb2)
                             {
-                                
+
                                 pOrb1->CastSpell(pOrb2, SPELL_TWILIGHT_SLICER, true);
                                 pOrb1->ClearUnitState(UNIT_STATE_CASTING);
                             }
@@ -532,7 +530,7 @@ class boss_sinestra : public CreatureScript
                             Talk(SAY_SINESTRA_PHASE_2_2);
                             EntryCheckPredicate pred(NPC_PULSING_TWILIGHT_EGG);
                             summons.DoAction(ACTION_START_EGG, pred);
-                            
+
                             me->SetPower(POWER_MANA, me->GetMaxPower(POWER_MANA));
                             events.ScheduleEvent(EVENT_CONTINUE_PHASE_2, 30000);
                             break;
@@ -648,7 +646,7 @@ class npc_sinestra_calen : public CreatureScript
             void JustDied(Unit* /*killer*/) override
             {
                 summons.DespawnAll();
-                
+
                 if (!bEventDeath)
                 {
                     Talk(SAY_CALEN_DEATH);
@@ -759,7 +757,7 @@ class npc_sinestra_twilight_whelp : public CreatureScript
                         case EVENT_SUMMON_ESSENCE:
                             if (Creature* pSinestra = me->FindNearestCreature(NPC_SINESTRA, 200.0f))
                                 pSinestra->SummonCreature(NPC_TWILIGHT_ESSENCE, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation());
-                            break; 
+                            break;
                         case EVENT_RESURRECT:
                             me->SetReactState(REACT_AGGRESSIVE);
                             events.ScheduleEvent(EVENT_TWILIGHT_SPIT, urand(7000, 15000));
@@ -919,7 +917,7 @@ class npc_sinestra_shadow_orb : public CreatureScript
             void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -937,7 +935,7 @@ class npc_sinestra_shadow_orb : public CreatureScript
                                 me->DespawnOrUnsummon();
                             break;
                         case EVENT_START_MOVE:
-                            DoCast(me, SPELL_TWILIGHT_PULSE, true);                                
+                            DoCast(me, SPELL_TWILIGHT_PULSE, true);
                             break;
                     }
                 }
@@ -1005,7 +1003,7 @@ class npc_sinestra_twilight_spitecaller : public CreatureScript
     public:
         npc_sinestra_twilight_spitecaller() : CreatureScript("npc_sinestra_twilight_spitecaller") { }
 
-        struct npc_sinestra_twilight_spitecallerAI : public ScriptedAI 
+        struct npc_sinestra_twilight_spitecallerAI : public ScriptedAI
         {
             npc_sinestra_twilight_spitecallerAI(Creature* creature) : ScriptedAI(creature) { }
 
@@ -1058,7 +1056,7 @@ class npc_sinestra_twilight_drake : public CreatureScript
     public:
         npc_sinestra_twilight_drake() : CreatureScript("npc_sinestra_twilight_drake") { }
 
-        struct npc_sinestra_twilight_drakeAI : public ScriptedAI 
+        struct npc_sinestra_twilight_drakeAI : public ScriptedAI
         {
             npc_sinestra_twilight_drakeAI(Creature* creature) : ScriptedAI(creature)
             {
@@ -1142,7 +1140,7 @@ class spell_sinestra_wrack : public SpellScriptLoader
 
                 std::list<Player*> targets;
                 Trinity::AnyPlayerInObjectRangeCheck checker(GetTarget(), 100.0f, true);
-                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(GetTarget(), targets, checker); 
+                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(GetTarget(), targets, checker);
                 GetTarget()->VisitNearbyWorldObject(100.0f, searcher);
                 targets.sort(Trinity::ObjectDistanceOrderPred(GetTarget()));
                 uint8 count = 0;
@@ -1160,7 +1158,7 @@ class spell_sinestra_wrack : public SpellScriptLoader
                         {
                             //aur->SetMaxDuration(GetDuration());
                             aur->SetDuration(GetDuration());
-                        } 
+                        }
                     }
             }
 

@@ -103,7 +103,7 @@ class npc_mostrasz_56314 : public CreatureScript
                 player->KilledMonsterCredit(56314, ObjectGuid::Empty);
                 player->TeleportTo(0, 14.685211f, -1463.118896f, 173.92f, 6.23f);
             }
-            
+
             return true;
         }
 };
@@ -119,7 +119,7 @@ class npc_wrathion_57777 : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!who || who->GetTypeId() != TYPEID_PLAYER)
+                if (!who || !who->IsPlayer())
                     return;
 
                 if (!me->IsWithinDistInMap(who, 20.0f))
@@ -143,7 +143,7 @@ class npc_lord_hiram_creed : public CreatureScript
 
         struct npc_lord_hiram_creedAI : ScriptedAI
         {
-            npc_lord_hiram_creedAI(Creature* creature) : ScriptedAI(creature) 
+            npc_lord_hiram_creedAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetReactState(REACT_DEFENSIVE);
             }
@@ -168,7 +168,7 @@ class npc_lord_hiram_creed : public CreatureScript
             void JustSummoned(Creature* summon) override
             {
                 if (summon->GetEntry() == NPC_HIRAM_CREEDS_SHADOW_BREATH)
-                {   
+                {
                     me->SetFacingToObject(summon);
                     DoCast(me, SPELL_SHADOW_BREATH);
                 }
@@ -264,7 +264,7 @@ class npc_lord_hiram_creed : public CreatureScript
 
                     bool operator()(Unit const* target) const
                     {
-                        if (target->GetTypeId() != TYPEID_PLAYER)
+                        if (!(target->IsPlayer()))
                             return false;
 
                         if (target->GetClass() == CLASS_ROGUE)

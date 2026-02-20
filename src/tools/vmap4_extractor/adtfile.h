@@ -144,7 +144,7 @@ public:
     ADTFile(char* filename);
     ~ADTFile();
     std::vector<std::string> WmoInstanceNames;
-    std::vector<std::string> ModelInstanceNames;    
+    std::vector<std::string> ModelInstanceNames;
     bool init(uint32 map_num, uint32 tileX, uint32 tileY);
     //void LoadMapChunks();
 

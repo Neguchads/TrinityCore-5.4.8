@@ -94,7 +94,7 @@ class boss_ordos : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_ORDOS_KILL);
             }
 
@@ -185,9 +185,9 @@ class boss_ordos : public CreatureScript
                     {
                         if (Unit* target = me->GetVictim())
                         {
-                            if (target->GetTypeId() == TYPEID_PLAYER)
+                            if (target->IsPlayer())
                                 DoCast(target, SPELL_ORDOS_MAGMA_CRUSH);
-                            else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [=](Unit const* conditionTarget) { return conditionTarget && conditionTarget->GetTypeId() == TYPEID_PLAYER && conditionTarget->GetExactDist2d(me) <= 10.0f; }))
+                            else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [=](Unit const* conditionTarget) { return conditionTarget && conditionTarget->IsPlayer() && conditionTarget->GetExactDist2d(me) <= 10.0f; }))
                                 DoCast(target, SPELL_ORDOS_MAGMA_CRUSH);
                         }
 

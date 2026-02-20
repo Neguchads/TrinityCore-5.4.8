@@ -26,8 +26,8 @@ enum Spells
     SPELL_LINGERING_ENERGIES       = 138450, // on aborb any sphere
     SPELL_SUMMON_ESSENCE_OF_VITA   = 138324,
     SPELL_SUMMON_ESSENCE_OF_ANIMA  = 138323,
-                                   
-    /*Vita*/                       
+
+    /*Vita*/
     SPELL_EMBUED_WITH_VITA         = 138332,
     SPELL_UNLEASHED_VITA           = 138330,
     SPELL_FATAL_STRIKE             = 138334,
@@ -65,8 +65,8 @@ enum Spells
     SPELL_TWISTED_VITA             = 139078, // chain lightning
     SPELL_TWISTED_ANIMA            = 139075, // aoe. if not cause anyone - cast 140998
     SPELL_CALL_ESSENSE             = 139040,
-                                   
-    /*Cosmetic*/                   
+
+    /*Cosmetic*/
     SPELL_HEAVY_CHAINS_RIGHT       = 140030,
     SPELL_HEAVY_CHAINS_LEFT        = 140032,
     SPELL_KNEEL                    = 142479,
@@ -124,7 +124,7 @@ class boss_ra_den : public CreatureScript
 {
     public:
         boss_ra_den() : CreatureScript("boss_ra_den") { }
-    
+
         struct boss_ra_denAI : public BossAI
         {
             boss_ra_denAI(Creature* creature) : BossAI(creature, DATA_RA_DEN) { }
@@ -160,7 +160,7 @@ class boss_ra_den : public CreatureScript
 
                 Reset();
             }
-    
+
             void Reset() override
             {
                 // Prevent issue multi kill at server restart
@@ -171,7 +171,7 @@ class boss_ra_den : public CreatureScript
                 }
 
                 _Reset();
-                
+
                 phase = PHASE_NONE;
                 me->SetReactState(REACT_AGGRESSIVE);
                 x = 0.0f; y = 0.0f;
@@ -192,7 +192,7 @@ class boss_ra_den : public CreatureScript
                     });
                 }
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 Talk(TALK_AGGRO);
@@ -209,7 +209,7 @@ class boss_ra_den : public CreatureScript
 
                 return 0;
             }
-    
+
             void DoAction(int32 actionId) override
             {
                 switch (actionId)
@@ -217,42 +217,42 @@ class boss_ra_den : public CreatureScript
                     case ACTION_START_INTRO:
                         if ((instance && instance->GetData(DATA_RA_DEN_EVENT) == DONE) || introDone)
                             break;
-                    
+
                         introDone = true;
-                    
+
                         Talk(TALK_INTRO_1);
-                    
+
                         delay = 0;
                         me->m_Events.Schedule(delay += 15000, [this]()
                         {
                             Talk(TALK_INTRO_2);
                         });
-                    
+
                         me->m_Events.Schedule(delay += 26000, [this]()
                         {
                             Talk(TALK_INTRO_3);
                         });
-                    
+
                         me->m_Events.Schedule(delay += 6000, [this]()
                         {
                             me->HandleEmoteStateCommand(EMOTE_STATE_CUSTOM_SPELL_03); // should`ve seems like hook on emotes :/
                         });
-                    
+
                         me->m_Events.Schedule(delay += 2800, [this]()
                         {
                             me->RemoveAurasDueToSpell(SPELL_HEAVY_CHAINS_RIGHT);
                         });
-                    
+
                         me->m_Events.Schedule(delay += 6850, [this]()
                         {
                             me->RemoveAurasDueToSpell(SPELL_HEAVY_CHAINS_LEFT);
                         });
-                    
+
                         me->m_Events.Schedule(delay += 3000, [this]()
                         {
                             if (instance)
                                 instance->SetData(DATA_RA_DEN_EVENT, DONE);
-                    
+
                             me->HandleEmoteStateCommand(EMOTE_STATE_NONE);
                             me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_PACIFIED);
                         });
@@ -498,16 +498,16 @@ class boss_ra_den : public CreatureScript
 
                 summon->SetInCombatWithZone();
             }
-    
+
             void EnterEvadeMode() override
             {
                 _EnterEvadeMode();
                 BossAI::EnterEvadeMode();
-    
+
                 if (instance)
                 {
                     instance->DoRemoveBloodLustDebuffSpellOnPlayers();
-    
+
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
                     instance->SetBossState(DATA_RA_DEN, FAIL);
 
@@ -523,11 +523,11 @@ class boss_ra_den : public CreatureScript
                 _DespawnAtEvade();
                 me->GetMotionMaster()->MoveTargetedHome();
             }
-    
+
             void JustDied(Unit* /*killer*/) override
             {
                 _JustDied();
-    
+
                 Talk(TALK_DEATH);
                 DoCastAOE(SPELL_RA_DEN_KILL_CREDIT, true);
 
@@ -561,16 +561,16 @@ class boss_ra_den : public CreatureScript
                 DoCast(me, SPELL_KNEEL);
                 me->SummonGameObject(GO_CACHE_OF_STORMS, radenChestPos.GetPositionX(), radenChestPos.GetPositionY(), radenChestPos.GetPositionZ(), radenChestPos.GetOrientation(), { }, 0);
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
 
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
@@ -609,7 +609,7 @@ class boss_ra_den : public CreatureScript
                             break;
                     }
                 }
-    
+
                 if (phase == PHASE_RUIN)
                     if (Unit* target = me->GetVictim())
                         if (me->GetExactDist2d(target) > 10.0f)
@@ -641,7 +641,7 @@ class boss_ra_den : public CreatureScript
                     } while (sOri < (5 * M_PI) / 2);
                 }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_ra_denAI(creature);
@@ -747,7 +747,7 @@ struct npc_corrupted_essence_of_creation : public ScriptedAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         if (!choiseMe)
             return;
@@ -1337,13 +1337,13 @@ class AreaTrigger_forward_ra_den : public AreaTriggerScript
 {
     public:
         AreaTrigger_forward_ra_den() : AreaTriggerScript("AreaTrigger_forward_ra_den") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if (Creature* raden = ObjectAccessor::GetCreature(*player, instance->GetGuidData(DATA_RA_DEN)))
                     raden->AI()->DoAction(ACTION_START_INTRO);
-    
+
             return true;
         }
 };

@@ -98,4 +98,3 @@ inline AI* GetHyjalAI(T* obj)
 }
 
 #endif
-

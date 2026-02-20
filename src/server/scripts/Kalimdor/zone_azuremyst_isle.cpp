@@ -76,7 +76,7 @@ struct npc_draenei_survivor : public ScriptedAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (canSayHelp && who->GetTypeId() == TYPEID_PLAYER && me->IsFriendlyTo(who) && me->IsWithinDistInMap(who, 25.0f))
+        if (canSayHelp && who->IsPlayer() && me->IsFriendlyTo(who) && me->IsWithinDistInMap(who, 25.0f))
         {
             sayHelpTimer = 20000;
             canSayHelp = false;
@@ -312,7 +312,6 @@ public:
         void JustEngagedWith(Unit* /*who*/) override { }
 
         void MoveInLineOfSight(Unit* /*who*/) override { }
-
 
         void UpdateAI(uint32 /*diff*/) override { }
     };

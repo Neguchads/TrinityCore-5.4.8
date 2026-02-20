@@ -531,7 +531,7 @@ class npc_gunship_boss : public CreatureScript
 
                              for (auto&& passenger : OtherTransport()->GetStaticPassengers())
                              {
-                                 if (passenger->GetTypeId() != TYPEID_UNIT)
+                                 if (!(passenger->IsCreature()))
                                      continue;
 
                                  switch (passenger->GetEntry())
@@ -1004,7 +1004,7 @@ class npc_gunship_boss : public CreatureScript
             {
                 if (slot)
                     for (auto&& passenger : MyTransport()->GetStaticPassengers())
-                        if (passenger->GetTypeId() == TYPEID_UNIT && passenger->GetEntry() == entry && passenger->ToCreature()->IsAlive() && passenger->ToCreature()->AI()->GetData(DATA_GB_PASSENGER_SPAWN_SLOT) == slot)
+                        if (passenger->IsCreature() && passenger->GetEntry() == entry && passenger->ToCreature()->IsAlive() && passenger->ToCreature()->AI()->GetData(DATA_GB_PASSENGER_SPAWN_SLOT) == slot)
                             return nullptr;
 
                 Position spawnPos = IsAlliance() ? Position { 18.01219f, -0.004024724f, 20.50269f, 4.092516f } : Position { 54.739746f, 0.093245f, 38.138222f, 3.159349f };
@@ -1056,8 +1056,8 @@ class npc_gunship_boss : public CreatureScript
 
             bool DoWipeCheck(Transport* t1, Transport* t2)
             {
-                return std::any_of(t1->GetPassengers().begin(), t1->GetPassengers().end(), [](WorldObject* passenger) { return passenger->GetTypeId() == TYPEID_PLAYER && passenger->ToPlayer()->IsAlive(); })
-                    || std::any_of(t2->GetPassengers().begin(), t2->GetPassengers().end(), [](WorldObject* passenger) { return passenger->GetTypeId() == TYPEID_PLAYER && passenger->ToPlayer()->IsAlive(); });
+                return std::any_of(t1->GetPassengers().begin(), t1->GetPassengers().end(), [](WorldObject* passenger) { return passenger->IsPlayer() && passenger->ToPlayer()->IsAlive(); })
+                    || std::any_of(t2->GetPassengers().begin(), t2->GetPassengers().end(), [](WorldObject* passenger) { return passenger->IsPlayer() && passenger->ToPlayer()->IsAlive(); });
             }
 
             void DoCheckFallingPlayer(Creature* me)
@@ -1456,7 +1456,7 @@ class npc_sergeant : public CreatureScript
             {
                 if (instance->GetBossState(DATA_GUNSHIP_EVENT) != IN_PROGRESS)
                     return false;
-                if (target->GetTypeId() == TYPEID_UNIT)
+                if (target->IsCreature())
                     return target->GetEntry() == (me->GetEntry() == NPC_GB_SKYBREAKER_SERGEANT ? NPC_GB_HIGH_OVERLORD_SAURFANG : NPC_GB_MURADIN_BRONZEBEARD);
                 return target->HasAura(me->GetEntry() == NPC_GB_SKYBREAKER_SERGEANT ? SPELL_ON_ORGRIMS_HAMMERS_DECK : SPELL_ON_SKYBREAKERS_DECK);
             }
@@ -1552,7 +1552,7 @@ class npc_marine_or_reaver : public CreatureScript
             {
                 if (instance->GetBossState(DATA_GUNSHIP_EVENT) != IN_PROGRESS)
                     return false;
-                if (target->GetTypeId() == TYPEID_UNIT)
+                if (target->IsCreature())
                     return target->GetEntry() == (me->GetEntry() == NPC_GB_SKYBREAKER_MARINE ? NPC_GB_HIGH_OVERLORD_SAURFANG : NPC_GB_MURADIN_BRONZEBEARD);
                 return target->HasAura(me->GetEntry() == NPC_GB_SKYBREAKER_MARINE ? SPELL_ON_ORGRIMS_HAMMERS_DECK : SPELL_ON_SKYBREAKERS_DECK);
             }
@@ -2022,7 +2022,7 @@ class npc_korkron_primalist: public CreatureScript
                 if (instance->GetData(DATA_TEAM_IN_INSTANCE) != HORDE)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (instance->GetData(DATA_FIRST_SQUAD_STATE) == DONE)
@@ -2141,7 +2141,7 @@ class npc_korkron_defender: public CreatureScript
                 if (instance->GetData(DATA_TEAM_IN_INSTANCE) != HORDE)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (me->IsWithinDistInMap(who, 25.0f))
@@ -2255,7 +2255,7 @@ class npc_skybreaker_vindicator: public CreatureScript
                 if (instance->GetData(DATA_TEAM_IN_INSTANCE) != ALLIANCE)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (instance->GetData(DATA_FIRST_SQUAD_STATE) == DONE)
@@ -2361,7 +2361,7 @@ class npc_skybreaker_protector: public CreatureScript
                 if (instance->GetData(DATA_TEAM_IN_INSTANCE) != ALLIANCE)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (me->IsWithinDistInMap(who, 25.0f))
@@ -2476,7 +2476,7 @@ class npc_icc_spire_frostwyrm: public CreatureScript
                 if (!instance)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (!who->isTargetableForAttack())
@@ -2647,7 +2647,7 @@ class spell_gb_heat_drain : public SpellScriptLoader
             {
                 if (Unit* caster = GetCaster())
                 {
-                    if (caster->GetPower(POWER_ENERGY) >= 100 && caster->GetTypeId() == TYPEID_UNIT)
+                    if (caster->GetPower(POWER_ENERGY) >= 100 && caster->IsCreature())
                     {
                         caster->CastSpell(caster, SPELL_OVERHEAT, true);
                         if (Player* owner = caster->GetCharmerOrOwnerPlayerOrPlayerItself())
@@ -2846,7 +2846,7 @@ class spell_gb_melee_targeting : public SpellScriptLoader
 
             void FilterTargets(std::list<WorldObject*>& targets)
             {
-                targets.remove_if([](WorldObject* u) { return u->GetTypeId() != TYPEID_PLAYER || u->ToPlayer()->GetVehicle(); });
+                targets.remove_if([](WorldObject* u) { return !u->IsPlayer() || u->ToPlayer()->GetVehicle(); });
                 if (targets.size() > 1)
                 {
                     if (Unit* caster = GetCaster())
@@ -2895,7 +2895,7 @@ class spell_gb_melee_targeting : public SpellScriptLoader
                             caster->GetAI()->AttackStart(boss);
 
                     uint32 spellId = caster->GetEntry() == NPC_GB_KORKRON_SERGEANT || caster->GetEntry() == NPC_GB_KORKRON_REAVER ? SPELL_BURNING_PITCH_H : SPELL_BURNING_PITCH_A;
-                    if (caster->GetTypeId() == TYPEID_UNIT && !caster->ToCreature()->HasSpellCooldown(spellId))
+                    if (caster->IsCreature() && !caster->ToCreature()->HasSpellCooldown(spellId))
                     {
                         caster->CastSpell(caster, spellId);
                         caster->ToCreature()->_AddCreatureSpellCooldown(spellId, time(nullptr) + 4);

@@ -426,7 +426,7 @@ enum CreaturesIds
     NPC_JIKUN_JUVENILE                      = 70095,
     NPC_JIKUN_NEST_GUARDIAN                 = 70134, // HEROIC only!
     NPC_FEED_POOL                           = 68178, // Feed NPC's.
-    NPC_FEED_HATCHLINGS                     = 70130,                                       
+    NPC_FEED_HATCHLINGS                     = 70130,
     NPC_POOL_OF_FEED                        = 68188, // Feed Pool NPC's.
     NPC_POOL_OF_FEED_HATCHLING              = 70216,
     NPC_INCUBATOR                           = 69626,
@@ -639,7 +639,7 @@ enum ObjectsIds
     GO_TWIN_CONSORT_BACK_DOOR              = 218711,
     GO_TWIN_CONSORT_FORWARD_DOOR           = 218712,
     GO_TWIN_CONSORT_PASSAGE_DOOR           = 218394,
- 
+
     GO_TRIBAL_DOOR_GURUBASHI               = 218670,
     GO_TRIBAL_DOOR_DRAKKARI                = 218671,
     GO_TRIBAL_DOOR_FARRAKI                 = 218672,

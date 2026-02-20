@@ -468,7 +468,7 @@ class boss_prince_keleseth_icc : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KELESETH_KILL);
             }
 
@@ -688,7 +688,7 @@ class boss_prince_taldaram_icc : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_TALDARAM_KILL);
             }
 
@@ -933,7 +933,7 @@ class boss_prince_valanar_icc : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_VALANAR_KILL);
             }
 
@@ -989,7 +989,6 @@ class boss_prince_valanar_icc : public CreatureScript
 
                 return true;
             }
-
 
             void UpdateAI(uint32 diff) override
             {
@@ -1191,7 +1190,7 @@ class npc_ball_of_flame : public CreatureScript
                             me->CastSpell(me, SPELL_BALL_OF_FLAMES_PERIODIC, true);
                             if (TempSummon* summon = me->ToTempSummon())
                                 if (Unit* summoner = summon->GetSummoner())
-                                    if (summoner && summoner->IsAIEnabled && summoner->GetTypeId() == TYPEID_UNIT)
+                                    if (summoner && summoner->IsAIEnabled && summoner->IsCreature())
                                         if (Unit* unit = ObjectAccessor::GetUnit(*me, _chaseGUID))
                                         summoner->ToCreature()->AI()->Talk(EMOTE_TALDARAM_FLAME, unit);
                         }
@@ -1655,7 +1654,7 @@ class spell_valanar_kinetic_bomb : public SpellScriptLoader
                 //WorldLocation* summonPos = GetExplTargetDest();
                 //Position offset = {0.0f, 0.0f, 20.0f, 0.0f};
                 //summonPos->RelocateOffset(offset);  // +20 in height
-                
+
             //WorldLocation summonPos = *GetExplTargetDest();
                 //Position offset = {0.0f, 0.0f, 20.0f, 0.0f};
                 //summonPos.RelocateOffset(offset);
@@ -1681,7 +1680,7 @@ class spell_valanar_kinetic_bomb : public SpellScriptLoader
             void HandleDummyTick(AuraEffect const* /*aurEff*/)
             {
                 Unit* target = GetTarget();
-                if (target->GetTypeId() != TYPEID_UNIT)
+                if (!(target->IsCreature()))
                     return;
 
                 if (Creature* bomb = target->FindNearestCreature(NPC_KINETIC_BOMB, 1.0f, true))
@@ -1784,7 +1783,7 @@ class spell_blood_council_shadow_prison : public SpellScriptLoader
 
             void HandleDummyTick(AuraEffect const* aurEff)
             {
-                if (GetTarget()->isMoving() && GetTarget()->GetTypeId() == TYPEID_PLAYER)
+                if (GetTarget()->isMoving() && GetTarget()->IsPlayer())
                     GetTarget()->CastSpell(GetTarget(), SPELL_SHADOW_PRISON_DAMAGE, true, nullptr, aurEff);
             }
 

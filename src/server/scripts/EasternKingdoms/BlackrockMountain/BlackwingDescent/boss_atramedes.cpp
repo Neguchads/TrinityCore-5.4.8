@@ -19,7 +19,7 @@
 #include "Spell.h"
 #include "blackwing_descent.h"
 
-/* 
+/*
     43404 - maloriak
     43396 - nefarian
     43407 - atramedes
@@ -84,7 +84,7 @@ enum Adds
     NPC_ROARING_FLAME                   = 41807,
     NPC_ROARING_FLAME_TARGET            = 42121,
     NPC_ABNOXIOUS_FIEND                 = 49740,
-    NPC_LORD_VICTOR_NEFARIUS_A          = 43396, // �� ������
+    NPC_LORD_VICTOR_NEFARIUS_A          = 43396, // ÃƒÂ­ÃƒÂ¥ ÃƒÂ³ÃƒÂ¢ÃƒÂ¥ÃƒÂ°ÃƒÂ¥ÃƒÂ­
 
     NPC_IMP_PORTAL_STALKER              = 49801,
     NPC_BLIND_DRAGON_TAIL               = 42356,
@@ -125,7 +125,7 @@ enum Events
 
 const Position flyPos = {127.94f, -225.10f, 110.45f, 0.0f};
 const Position groundPos = {127.94f, -225.10f, 75.45f, 0.0f};
-const uint32 dwarvenshieldsEntry[8] = 
+const uint32 dwarvenshieldsEntry[8] =
 {
     41445,
     42958,
@@ -136,7 +136,7 @@ const uint32 dwarvenshieldsEntry[8] =
     42954,
     42956,
 };
-const Position dwarvenshieldsPos[8] = 
+const Position dwarvenshieldsPos[8] =
 {
     {169.57f, -262.49f, 76.72f, 2.42f},
     {154.70f, -273.64f, 76.64f, 2.18f},
@@ -150,15 +150,15 @@ const Position dwarvenshieldsPos[8] =
 
 const Position atramedesnefariusspawnPos = {96.54f, -220.32f, 94.90f, 0.06f};
 
-Unit* atramedesTarget; // ���� ���� ��������
-Creature* atramedesShield; // ��������� �������������� ���
+Unit* atramedesTarget; // ÃƒÂ¶ÃƒÂ¥ÃƒÂ«ÃƒÂ¼ ÃƒÂ«ÃƒÂ³ÃƒÂ·ÃƒÂ  ÃƒÂ ÃƒÂ²ÃƒÂ°ÃƒÂ ÃƒÂ¬ÃƒÂ¥ÃƒÂ¤Ãƒ
+Creature* atramedesShield; // ÃƒÂ¯ÃƒÂ®ÃƒÂ±ÃƒÂ«ÃƒÂ¥ÃƒÂ¤ÃƒÂ­ÃƒÂ¨ÃƒÂ© ÃƒÂ¨ÃƒÂ±ÃƒÂ¯ÃƒÂ®ÃƒÂ«ÃƒÂ¼ÃƒÂ§ÃƒÂ®ÃƒÂ¢ÃƒÂ ÃƒÂ­ÃƒÂ­ÃƒÂ»ÃƒÂ© ÃƒÂ¹ÃƒÂ¨ÃƒÂ²
 Creature* roaringsummon;
 Creature* _shields[8];
 
 //
-// ������� ���������� ��� �������� ����:
+// ÃƒÂ°ÃƒÂ®ÃƒÂ²ÃƒÂ ÃƒÂ¶ÃƒÂ¨ÃƒÂ¿ ÃƒÂ§ÃƒÂ ÃƒÂªÃƒÂ«ÃƒÂ¨ÃƒÂ­ÃƒÂ ÃƒÂ­ÃƒÂ¨ÃƒÂ© ÃƒÂ¯ÃƒÂ°ÃƒÂ¨ ÃƒÂ­ÃƒÂ ÃƒÂ§ÃƒÂ¥ÃƒÂ¬ÃƒÂ­ÃƒÂ®ÃƒÂ© ÃƒÂ´ÃƒÂ ÃƒÂ§ÃƒÂ¥:
 // pulse, breath, pulse, breath, flame, pulse, breath, pulse
-// ���� 80���, ������ �������� ������ 13 ������ ���-�� ������ �����������, ����� ������� ������� ������
+// ÃƒÂ´ÃƒÂ ÃƒÂ§ÃƒÂ  80ÃƒÂ±ÃƒÂ¥ÃƒÂª, ÃƒÂ§ÃƒÂ­ÃƒÂ ÃƒÂ·ÃƒÂ¨ÃƒÂ² ÃƒÂ¯ÃƒÂ°ÃƒÂ¨ÃƒÂ¬ÃƒÂ¥ÃƒÂ°ÃƒÂ­ÃƒÂ® ÃƒÂªÃƒÂ ÃƒÂ¦ÃƒÂ¤ÃƒÂ»ÃƒÂ¥ 13 ÃƒÂ±ÃƒÂ¥ÃƒÂªÃƒÂ³ÃƒÂ­ÃƒÂ¤ ÃƒÂ·ÃƒÂ²ÃƒÂ®-ÃƒÂ²ÃƒÂ® ÃƒÂ¤ÃƒÂ®ÃƒÂ«ÃƒÂ¦ÃƒÂ­ÃƒÂ® ÃƒÂªÃƒÂ ÃƒÂ±ÃƒÂ²ÃƒÂ®ÃƒÂ¢ÃƒÂ ÃƒÂ²ÃƒÂ¼ÃƒÂ±ÃƒÂ¿, ÃƒÂ¯ÃƒÂ®ÃƒÂ§ÃƒÂ¦ÃƒÂ¥ ÃƒÂ­ÃƒÂ ÃƒÂ±ÃƒÂ²ÃƒÂ°ÃƒÂ®ÃƒÂ¾ ÃƒÂ²ÃƒÂ ÃƒÂ©ÃƒÂ¬ÃƒÂ¥ÃƒÂ°ÃƒÂ» ÃƒÂ²ÃƒÂ®ÃƒÂ·ÃƒÂ­ÃƒÂ¥ÃƒÂ¥
 //
 
 class boss_atramedes : public CreatureScript
@@ -168,7 +168,7 @@ class boss_atramedes : public CreatureScript
 
         struct boss_atramedesAI : public BossAI
         {
-            boss_atramedesAI(Creature* creature) : BossAI(creature, DATA_ATRAMEDES), summons(me) 
+            boss_atramedesAI(Creature* creature) : BossAI(creature, DATA_ATRAMEDES), summons(me)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
@@ -183,7 +183,7 @@ class boss_atramedes : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
-            
+
             EventMap events;
             uint8 stage;    //0 - ground, 1 - fly
             uint8 nextspell; // from 0 to 7
@@ -257,7 +257,7 @@ class boss_atramedes : public CreatureScript
                 switch (summon->GetEntry())
                 {
                     case NPC_TRACKING_FLAMES:
-                        //todo: ����������� ������������
+                        //todo: ÃƒÂ°ÃƒÂ¥ÃƒÂ ÃƒÂ«ÃƒÂ¨ÃƒÂ§ÃƒÂ®ÃƒÂ¢ÃƒÂ ÃƒÂ²ÃƒÂ¼ ÃƒÂ¯ÃƒÂ¥ÃƒÂ°ÃƒÂ¥ÃƒÂ¤ÃƒÂ¢ÃƒÂ¨ÃƒÂ¦ÃƒÂ¥ÃƒÂ­ÃƒÂ¨ÃƒÂ¥
                         DoCast(summon, SPELL_SONIC_BREATH);
                         break;
                     case NPC_ROARING_FLAME_TARGET:
@@ -350,7 +350,7 @@ class boss_atramedes : public CreatureScript
                             me->GetMotionMaster()->MovePoint(2, groundPos);
                             break;
                         case EVENT_NEXT_SPELL:
-                            // �� ���� ���� ����� ���������� 7 �������
+                            // Ãƒâ€¡ÃƒÂ  ÃƒÂ®ÃƒÂ¤ÃƒÂ­ÃƒÂ³ ÃƒÂ´ÃƒÂ ÃƒÂ§ÃƒÂ³ ÃƒÂ¡ÃƒÂ³ÃƒÂ¤ÃƒÂ¥ÃƒÂ² ÃƒÂ±ÃƒÂªÃƒÂ ÃƒÂ±ÃƒÂ²ÃƒÂ®ÃƒÂ¢ÃƒÂ ÃƒÂ­ÃƒÂ® 7 ÃƒÂ±ÃƒÂªÃƒÂ¨ÃƒÂ«ÃƒÂ«ÃƒÂ®ÃƒÂ¢
                             if (nextspell > 7)
                                 break;
                             switch (nextspell)
@@ -424,7 +424,7 @@ class npc_tracking_flames : public CreatureScript
             npc_tracking_flamesAI(Creature* creature) : ScriptedAI(creature) { }
 
             void Reset() override { }
-            
+
             void UpdateAI(uint32 /*diff*/) override { }
         };
 
@@ -462,7 +462,7 @@ class npc_sonar_pulse : public CreatureScript
 
         struct npc_sonar_pulseAI : public ScriptedAI
         {
-            npc_sonar_pulseAI(Creature* creature) : ScriptedAI(creature) 
+            npc_sonar_pulseAI(Creature* creature) : ScriptedAI(creature)
             {
                 creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
@@ -476,7 +476,7 @@ class npc_sonar_pulse : public CreatureScript
                 events.ScheduleEvent(EVENT_SONAR_PULSE_MOVE, 1500);
                 DoCast(SPELL_SONAR_PULSE_AURA);
             }
-            
+
             void IsSummonedBy(Unit* summoner) override
             {
                 if (summoner)
@@ -487,12 +487,12 @@ class npc_sonar_pulse : public CreatureScript
             {
                 if (type == POINT_MOTION_TYPE)
                 {
-                    // ���� ��� ������ �������� �����, �� �������
+                    // Ãƒâ€¦ÃƒÂ±ÃƒÂ«ÃƒÂ¨ ÃƒÂ­ÃƒÂ¯ÃƒÂ¶ ÃƒÂ¤ÃƒÂ®ÃƒÂ±ÃƒÂ²ÃƒÂ¨ÃƒÂ£ ÃƒÂªÃƒÂ®ÃƒÂ­ÃƒÂ¥ÃƒÂ·ÃƒÂ­ÃƒÂ®ÃƒÂ© ÃƒÂ²ÃƒÂ®ÃƒÂ·ÃƒÂªÃƒÂ¨, ÃƒÂ²ÃƒÂ® ÃƒÂ¤ÃƒÂ¥ÃƒÂ±ÃƒÂ¯ÃƒÂ ÃƒÂ¢ÃƒÂ­
                     if (pointId == 1)
                     {
                         me->DespawnOrUnsummon();
                     }
-                }            
+                }
             }
 
             void UpdateAI(uint32 diff) override
@@ -505,7 +505,7 @@ class npc_sonar_pulse : public CreatureScript
                 {
                     switch (eventId)
                     {
-                        // ����� 1��� ��� �������� ��������
+                        // Ãƒâ€”ÃƒÂ¥ÃƒÂ°ÃƒÂ¥ÃƒÂ§ 1ÃƒÂ±ÃƒÂ¥ÃƒÂª ÃƒÂ­ÃƒÂ¯ÃƒÂ¶ ÃƒÂ­ÃƒÂ ÃƒÂ·ÃƒÂ¨ÃƒÂ­ÃƒÂ ÃƒÂ¥ÃƒÂ² ÃƒÂ¤ÃƒÂ¢ÃƒÂ¨ÃƒÂ¦ÃƒÂ¥ÃƒÂ­ÃƒÂ¨ÃƒÂ¥
                         case EVENT_SONAR_PULSE_MOVE:
                             if (target)
                                 pos = me->GetNearPosition(50.0f, me->GetAngle(target->GetPositionX(), target->GetPositionY()));
@@ -529,7 +529,7 @@ class npc_roaring_flame_target : public CreatureScript
 
         struct npc_roaring_flame_targetAI : public ScriptedAI
         {
-            npc_roaring_flame_targetAI(Creature* creature) : ScriptedAI(creature) 
+            npc_roaring_flame_targetAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetSpeed(MOVE_WALK, 0.8f);
                 me->SetSpeed(MOVE_RUN, 0.8f);
@@ -606,7 +606,7 @@ class npc_abnoxious_fiend : public CreatureScript
             {
                 instance = creature->GetInstanceScript();
             }
-            
+
             InstanceScript* instance;
 
             void Reset() override { }
@@ -698,7 +698,7 @@ class spell_atramedes_vertigo : public SpellScriptLoader
 
                 GetTarget()->ToCreature()->AI()->DoAction(ACTION_SHIELD_KILL);
             }
-            
+
             void Register() override
             {
                 OnEffectRemove += AuraEffectRemoveFn(spell_atramedes_vertigo_AuraScript::OnRemove, EFFECT_1, SPELL_AURA_MOD_STUN, AURA_EFFECT_HANDLE_REAL);

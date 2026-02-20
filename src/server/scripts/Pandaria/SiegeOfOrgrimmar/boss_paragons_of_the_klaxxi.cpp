@@ -20,8 +20,8 @@
 #include "siege_of_orgrimmar.h"
 
 enum Spells
-{                                   
-    // Kilruk                        
+{
+    // Kilruk
     SPELL_MUTILATE                   = 143941,
     SPELL_DEATH_FROM_ABOVE           = 142263, // summon 71309
     SPELL_REAVE_EFF                  = 142232,
@@ -95,7 +95,7 @@ enum Spells
     SPELL_MOLT                       = 142651, // if it`ll gain 100 energy
     SPELL_SWIPE                      = 142655,
     SPELL_MESMERIZE_AURA             = 142671,
-                                     
+
     // Korven
     SPELL_VICIOUS_ASSAULT            = 143977,
     SPELL_VICIOUS_ASSAULT_AURA       = 143979,
@@ -417,7 +417,7 @@ class boss_paragon_of_the_klaxxi : public CreatureScript
 
         struct boss_paragon_of_the_klaxxiAI : public BossAI
         {
-            boss_paragon_of_the_klaxxiAI(Creature* creature) : BossAI(creature, DATA_PARAGONS_OF_THE_KLAXXI) 
+            boss_paragon_of_the_klaxxiAI(Creature* creature) : BossAI(creature, DATA_PARAGONS_OF_THE_KLAXXI)
             {
                 me->setActive(true);
                 hasIntro = false;
@@ -467,7 +467,7 @@ class boss_paragon_of_the_klaxxi : public CreatureScript
                 _JustEngagedWith();
 
                 evadeEvents.ScheduleEvent(EVENT_CHECK_EVADE, 1 * IN_MILLISECONDS);
-                
+
                 if (IsHeroic())
                     evadeEvents.ScheduleEvent(EVENT_PARAGON_PURPOSE, 35 * IN_MILLISECONDS);
             }
@@ -1253,7 +1253,7 @@ struct boss_kilruk_the_wind_reaver : public soo_paragon_typeAI
                         me->OverrideInhabitType(INHABIT_AIR);
                         me->UpdateMovementFlags();
                         GetPositionWithDistInOrientation(me, 10.0f, me->GetAngle(target), x, y);
-                       
+
                         if (Unit* target = me->GetVictim())
                             targetGUID = target->GetGUID();
 
@@ -1375,14 +1375,14 @@ struct boss_xaril_the_poisoned_mind : public soo_paragon_typeAI
                         m_catalysts.clear();
                         m_catalysts = { SPELL_CATALYST_PURPLE, SPELL_CATALYST_GREEN , SPELL_CATALYST_ORANGE };
                     }
-                
+
                     // Combo of toxins shouldn`t be repeatable.
                     if (prevToxin)
                         m_catalysts.erase(std::find(m_catalysts.begin(), m_catalysts.end(), prevToxin));
-                
+
                     // Select new toxin catalyst from updated container
                     prevToxin = Trinity::Containers::SelectRandomContainerElement(m_catalysts);
-                
+
                     DoCast(me, prevToxin);
                     events.ScheduleEvent(EVENT_TOXIN_REACT, 33 * IN_MILLISECONDS);
                     break;
@@ -1390,7 +1390,7 @@ struct boss_xaril_the_poisoned_mind : public soo_paragon_typeAI
                 case EVENT_CAUSTIC_BLOOD:
                     if (Unit* target = me->GetVictim())
                         DoCast(target, SPELL_CAUSTIC_BLOOD);
-                
+
                     events.ScheduleEvent(EVENT_CAUSTIC_BLOOD, urand(9 * IN_MILLISECONDS, 10.5 * IN_MILLISECONDS));
                     break;
             }
@@ -2170,7 +2170,7 @@ struct npc_paragon_mantid_amber : public ScriptedAI
         {
             case ACTION_KLAXXI_COMBAT:
                 me->RemoveAurasDueToSpell(SPELL_COSMETIC_TO_FIGHT);
-            
+
                 if (InstanceScript* instance = me->GetInstanceScript())
                     if (Creature* m_Paragon = ObjectAccessor::GetCreature(*me, instance->GetGuidData(NPC_PARAGON_OF_THE_KLAXXI)))
                         m_Paragon->AI()->DoAction(ACTION_KLAXXI_COMBAT);
@@ -2256,7 +2256,7 @@ struct npc_soo_paragon_hungry_kunchong : public ScriptedAI
 
             me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);
             me->SetReactState(REACT_AGGRESSIVE);
-            
+
             if (Player* target = me->FindNearestPlayer(200.0f))
                 me->RemoveChanneledCast(target->GetGUID());
 
@@ -2369,7 +2369,7 @@ struct npc_blood : public ScriptedAI
     ObjectGuid getLowestKlaxxiGUID()
     {
         std::list<Creature*> paragonMembers;
-        
+
         for (auto&& itr : eParagonsOfTheKlaaxi)
             GetCreatureListWithEntryInGrid(paragonMembers, me, itr, 300.0f);
 
@@ -2488,7 +2488,7 @@ struct npc_paragon_eerie_fog : public ScriptedAI
         return 0;
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         events.Update(diff);
 
@@ -3256,7 +3256,7 @@ class spell_soo_aim : public SpellScript
     }
 };
 
-class AimPredicate 
+class AimPredicate
 {
     public:
         AimPredicate(Creature* const caster) : _caster(caster) { }
@@ -3597,7 +3597,7 @@ class spell_paragon_mesmerize : public SpellScript
     {
         m_targets = targets;
 
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; }); // exlude pets
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); }); // exlude pets
         targets.remove_if(TankSpecTargetSelector());
 
         if (targets.size() >= 1)
@@ -3611,7 +3611,7 @@ class spell_paragon_mesmerize : public SpellScript
         for (auto&& itr : m_targets)
             targets.push_back(itr);
 
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; }); // exlude pets
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); }); // exlude pets
 
         if (targets.size() > 1)
             Trinity::Containers::RandomResizeList(targets, 1);
@@ -3675,7 +3675,7 @@ class spell_paragon_fiery_edge_periodic : public AuraScript
     }
 };
 
-class FieryEdgePredicate 
+class FieryEdgePredicate
 {
     public:
         FieryEdgePredicate(Unit* const caster, Unit* const target) : _caster(caster), _target(target) { }
@@ -3805,7 +3805,7 @@ class spell_paragon_feed : public SpellScript
                     allowPrevTarget = true;
 
             m_targets = targets;
-            targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; }); // exlude pets
+            targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); }); // exlude pets
 
             if (allowPrevTarget)
                 targets.remove_if([=](WorldObject* target) { return target && target->ToPlayer() && caster->AI()->GetGUID() != target->ToPlayer()->GetGUID(); });
@@ -3819,7 +3819,7 @@ class spell_paragon_feed : public SpellScript
                 for (auto&& itr : m_targets)
                     targets.push_back(itr);
 
-                targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; }); // exlude pets
+                targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); }); // exlude pets
 
                 if (targets.size() > 1)
                     Trinity::Containers::RandomResizeList(targets, 1);

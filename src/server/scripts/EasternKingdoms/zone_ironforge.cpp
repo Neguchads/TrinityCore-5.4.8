@@ -24,7 +24,7 @@ class at_daryl_riknussun : public AreaTriggerScript
 {
     public:
         at_daryl_riknussun() : AreaTriggerScript("at_daryl_riknussun") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (player->HasAura(99491))

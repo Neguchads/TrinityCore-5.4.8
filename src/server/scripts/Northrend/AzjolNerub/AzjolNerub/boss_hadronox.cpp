@@ -200,7 +200,7 @@ class boss_hadronox : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (currentWaypointIndex == 0 && who->GetTypeId() == TYPEID_PLAYER && me->GetExactDist2d(who) <= 40.0f && who->GetPositionZ() < 750.0f && who->IsAlive() && me->IsValidAttackTarget(who))
+                if (currentWaypointIndex == 0 && who->IsPlayer() && me->GetExactDist2d(who) <= 40.0f && who->GetPositionZ() < 750.0f && who->IsAlive() && me->IsValidAttackTarget(who))
                 {
                     if (InstanceScript* instance = me->GetInstanceScript())
                     {
@@ -211,7 +211,7 @@ class boss_hadronox : public CreatureScript
                         }
                     }
                 }
-                if (who->GetTypeId() == TYPEID_UNIT && !who->IsPet())
+                if (who->IsCreature() && !who->IsPet())
                     ScriptedAI::MoveInLineOfSight(who);
             }
 
@@ -340,7 +340,7 @@ class npc_anubar_crusher : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER && me->GetExactDist2d(who) <= 40.0f && who->GetPositionZ() < 750.0f && who->IsAlive() && me->IsValidAttackTarget(who))
+                if (who->IsPlayer() && me->GetExactDist2d(who) <= 40.0f && who->GetPositionZ() < 750.0f && who->IsAlive() && me->IsValidAttackTarget(who))
                     AttackStart(who);
                 else
                     ScriptedAI::MoveInLineOfSight(who);
@@ -476,7 +476,7 @@ class npc_anubar_champion : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!isTrash && who->GetTypeId() == TYPEID_PLAYER && me->GetExactDist2d(who) <= 40.0f && who->GetPositionZ() < 750.0f && who->IsAlive() && me->IsValidAttackTarget(who))
+                if (!isTrash && who->IsPlayer() && me->GetExactDist2d(who) <= 40.0f && who->GetPositionZ() < 750.0f && who->IsAlive() && me->IsValidAttackTarget(who))
                     AttackStart(who);
                 else
                     ScriptedAI::MoveInLineOfSight(who);
@@ -625,7 +625,7 @@ class npc_anubar_crypt_fiend : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!isTrash && who->GetTypeId() == TYPEID_PLAYER && me->GetExactDist2d(who) <= 40.0f && who->GetPositionZ() < 750.0f && who->IsAlive() && me->IsValidAttackTarget(who))
+                if (!isTrash && who->IsPlayer() && me->GetExactDist2d(who) <= 40.0f && who->GetPositionZ() < 750.0f && who->IsAlive() && me->IsValidAttackTarget(who))
                     AttackStart(who);
                 else
                     ScriptedAI::MoveInLineOfSight(who);

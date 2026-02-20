@@ -231,7 +231,7 @@ class npc_nibbler : public CreatureScript
             void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -359,7 +359,7 @@ class boss_hoptallus : public CreatureScript
             void MoveInLineOfSight(Unit* who) override
             {
                 if (!introStarted && who) // Small hack to make sure boss isn't triggered from behind
-                    if (who->GetTypeId() == TYPEID_PLAYER && who->GetDistance(me) < 20.f && who->GetPositionX() > -705.f)
+                    if (who->IsPlayer() && who->GetDistance(me) < 20.f && who->GetPositionX() > -705.f)
                         InitJump();
 
                 ScriptedAI::MoveInLineOfSight(who);
@@ -554,7 +554,7 @@ class npc_hammer_bopper : public CreatureScript
                 me->AddAura(SPELL_HOPPER_ANIM_REPLACEMENT, me);
                 events.ScheduleEvent(EVENT_CHECK_POS, 5 * IN_MILLISECONDS);
             }
-            
+
             void JustDied(Unit* killer) override
             {
                 DoCast(me, SPELL_SUMMON_HAMMER, true);
@@ -893,7 +893,7 @@ class npc_sb_hopling : public CreatureScript
                 events.ScheduleEvent(EVENT_CHECK_POS, 5 * IN_MILLISECONDS);
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 me->GetMotionMaster()->Clear();
                 events.Reset();

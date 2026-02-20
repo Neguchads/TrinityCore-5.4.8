@@ -45,7 +45,7 @@ enum Spells
     SPELL_BORER_DRILL_MAIN_AT        = 144221, // areatrigger that triggering 144220 AT
     SPELL_BORER_DRILL_UNK            = 144296,
     SPELL_BORER_DRILL_ANN            = 144296,
-                                     
+
     /*Siege Phase*/
     SPELL_DEMOLISHER_CANNONS_EFF     = 144154,
     SPELL_DEMOLISHER_CANNONS         = 144153,
@@ -66,8 +66,8 @@ enum Spells
     SPELL_SIEGE_CUTTER_LASER_AT      = 144576,
     SPELL_SIEGE_CUTTER_LASER         = 144573,
     SPELL_SIEGE_CUTTER_LASER_PRECAST = 145190,
-                                     
-    // Misc                          
+
+    // Misc
     SPELL_MELEE                      = 149356,
     SPELL_BERSERK                    = 26662,
     SPELL_ZERO_POWER                 = 72242,
@@ -129,7 +129,7 @@ class boss_iron_juggernaut : public CreatureScript
 
         struct boss_iron_juggernautAI : public BossAI
         {
-            boss_iron_juggernautAI(Creature* creature) : BossAI(creature, DATA_IRON_JUGGERNAUT) 
+            boss_iron_juggernautAI(Creature* creature) : BossAI(creature, DATA_IRON_JUGGERNAUT)
             {
                 me->setActive(true);
                 DoCast(me, SPELL_MELEE);
@@ -394,7 +394,7 @@ class boss_iron_juggernaut : public CreatureScript
                             energyGainTick = 0;
                             crawlerCount   = 0;
                             hasFirstLaser = true;
-                            
+
                             if (Unit* target = me->GetVictim())
                                 targetGUID = target->GetGUID();
 
@@ -456,7 +456,7 @@ class boss_iron_juggernaut : public CreatureScript
                     for (auto&& itr : invSiegeWeaponsType)
                         if (entry == itr.first)
                             return true;
-                    
+
                     return false;
                 }
 
@@ -587,7 +587,7 @@ struct npc_juggernaut_crawler_mine_clicker : public ScriptedAI
 {
     npc_juggernaut_crawler_mine_clicker(Creature* creature) : ScriptedAI(creature) { }
 
-    void IsSummonedBy(Unit* summoner) override 
+    void IsSummonedBy(Unit* summoner) override
     {
         if (Creature* juggernaut = ObjectAccessor::GetCreature(*me, me->GetInstanceScript() ? me->GetInstanceScript()->GetGuidData(DATA_IRON_JUGGERNAUT) : ObjectGuid::Empty))
             juggernaut->AI()->JustSummoned(me);
@@ -729,7 +729,7 @@ struct npc_juggernaut_cutter_laser : public ScriptedAI
         return 0;
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         events.Update(diff);
 
@@ -901,8 +901,8 @@ struct npc_juggernaut_sawblade : public ScriptedAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
-    { 
+    void UpdateAI(uint32 diff) override
+    {
         scheduler.Update(diff);
     }
 };
@@ -1278,7 +1278,7 @@ class spell_juggernaut_demolisher_cannons_selector : public SpellScript
     }
 };
 
-// Explosive Tar 144492 �
+// Explosive Tar 144492 Ã¯Â¿Â½
 class spell_juggernaut_explosive_tar : public AuraScript
 {
     PrepareAuraScript(spell_juggernaut_explosive_tar);
@@ -1581,7 +1581,7 @@ class spell_juggernaut_seismic_activity_eff : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
     }
 
     void Register() override
@@ -1597,7 +1597,7 @@ class spell_juggernaut_shock_pulse : public SpellScript
 
     void FilterTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
     }
 
     void Register() override

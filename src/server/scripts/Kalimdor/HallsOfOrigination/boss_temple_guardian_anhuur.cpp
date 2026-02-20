@@ -24,7 +24,7 @@ enum ScriptTexts
     SAY_DEATH       = 0,
     SAY_AGGRO       = 1,
     SAY_EVENT       = 2,
-    SAY_KILL        = 3, 
+    SAY_KILL        = 3,
 };
 
 enum Spells
@@ -36,8 +36,8 @@ enum Spells
     SPELL_BURNING_LIGHT_DMG     = 75116,
     SPELL_BURNING_LIGHT_FORCE   = 75115,
     SPELL_SHIELD_OF_LIGHT       = 74938,
-    SPELL_BEAM_LEFT             = 83697, 
-    SPELL_BEAM_RIGHT            = 83698, 
+    SPELL_BEAM_LEFT             = 83697,
+    SPELL_BEAM_RIGHT            = 83698,
     SPELL_POISON_TIPPED_FANGS   = 74538,
 };
 
@@ -254,14 +254,14 @@ class boss_temple_guardian_anhuur : public CreatureScript
                     phase++;
                     for (uint32 i = 0; i < 21; ++i)
                         me->SummonCreature(NPC_PIT_SNAKE,SpawnPosition[i],TEMPSUMMON_CORPSE_TIMED_DESPAWN, 3000);
-                    
+
                     if (GameObject* go = me->FindNearestGameObject(GO_BEACON_LEFT, 100.0f))
                         go->RemoveFlag(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_INTERACT_COND);
                     if (GameObject* go = me->FindNearestGameObject(GO_BEACON_RIGHT, 100.0f))
                         go->RemoveFlag(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_INTERACT_COND);
 
                     Talk(SAY_EVENT);
-                    
+
                     me->SetReactState(REACT_PASSIVE);
                     me->AttackStop();
                     //DoTeleportTo(bosspos.GetPositionX(), bosspos.GetPositionY(), bosspos.GetPositionZ());

@@ -615,7 +615,7 @@ public:
                 if (unitGuid != dbGuid)
                     unitGuid = dbGuid;
             }
-            if (unit->GetTypeId() == TYPEID_PLAYER)
+            if (unit->IsPlayer())
                 handler->PSendSysMessage("Listing attackers of player |cffffffff%s|r (guid: |cffffffff%u|r)", unit->GetName().c_str(), unitGuid);
             else
                 handler->PSendSysMessage("Listing attackers of creature |cffffffff%s|r (guid: |cffffffff%u|r id: |cffffffff%u|r)", unit->GetName().c_str(), unitGuid, unit->GetEntry());
@@ -628,7 +628,7 @@ public:
                     break;
                 Unit* attacker = (*itr);
                 uint32 guid = attacker->GetGUID().GetCounter();
-                if (attacker->GetTypeId() == TYPEID_PLAYER)
+                if (attacker->IsPlayer())
                     handler->PSendSysMessage("guid: |cffffffff%u|r - player - |cffffffff%s|r", guid, attacker->GetName().c_str());
                 else
                 {
@@ -668,7 +668,7 @@ public:
                 if (unitGuid != dbGuid)
                     unitGuid = dbGuid;
             }
-            if (unit->GetTypeId() == TYPEID_PLAYER)
+            if (unit->IsPlayer())
                 handler->PSendSysMessage("Listing hostiles towards player |cffffffff%s|r (guid: |cffffffff%u|r)", unit->GetName().c_str(), unitGuid);
             else
                 handler->PSendSysMessage("Listing hostiles towards creature |cffffffff%s|r (guid: |cffffffff%u|r id: |cffffffff%u|r)", unit->GetName().c_str(), unitGuid, unit->GetEntry());
@@ -678,7 +678,7 @@ public:
             {
                 Unit* hostile = itr->GetSource()->GetOwner();
                 uint32 guid = hostile->GetGUID().GetCounter();
-                if (hostile->GetTypeId() == TYPEID_PLAYER)
+                if (hostile->IsPlayer())
                     handler->PSendSysMessage("guid: |cffffffff%u|r - player - |cffffffff%s|r", guid, hostile->GetName().c_str());
                 else
                 {
@@ -718,7 +718,7 @@ public:
                 if (unitGuid != dbGuid)
                     unitGuid = dbGuid;
             }
-            if (unit->GetTypeId() == TYPEID_PLAYER)
+            if (unit->IsPlayer())
                 handler->PSendSysMessage("Displaying threatlist of player |cffffffff%s|r (guid: |cffffffff%u|r)", unit->GetName().c_str(), unitGuid);
             else
                 handler->PSendSysMessage("Displaying threatlist of creature |cffffffff%s|r (guid: |cffffffff%u|r id: |cffffffff%u|r)", unit->GetName().c_str(), unitGuid, unit->GetEntry());
@@ -740,7 +740,7 @@ public:
                     }
 
                     uint32 guid = hostile->GetGUID().GetCounter();
-                    if (hostile->GetTypeId() == TYPEID_PLAYER)
+                    if (hostile->IsPlayer())
                         handler->PSendSysMessage("%sguid: |cffffffff%u|r%s - player - |cffffffff%s|r%s (%.2f)|r", color, guid, color, hostile->GetName().c_str(), color, ref->getThreat());
                     else
                     {

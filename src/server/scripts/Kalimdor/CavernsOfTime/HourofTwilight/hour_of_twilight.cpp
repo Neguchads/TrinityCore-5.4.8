@@ -89,8 +89,8 @@ enum eSpells
     SPELL_WATER_SHIELD                 = 103688,
     SPELL_MOLTEN_FURY                  = 103905,
 
-    // Arcurion 
-    SPELL_APPEARS                      = 104767, // for spawn 
+    // Arcurion
+    SPELL_APPEARS                      = 104767, // for spawn
     SPELL_IMPALE                       = 104019,
 
     // Asira
@@ -274,7 +274,7 @@ class npc_hour_of_twilight_life_warden : public CreatureScript
                 me->SetCanFly(true);
             }
 
-            void MovementInform(uint32 type, uint32 pointId) override 
+            void MovementInform(uint32 type, uint32 pointId) override
             {
                 if (type != POINT_MOTION_TYPE)
                     return;
@@ -300,7 +300,7 @@ class npc_hour_of_twilight_life_warden : public CreatureScript
                 }
             }
 
-            void DoAction(int32 action) override 
+            void DoAction(int32 action) override
             {
                 if (action == ACTION_REMOVE_ALL_PASSENGERS)
                 {
@@ -427,7 +427,7 @@ class npc_hour_of_twilight_life_warden_thrall : public CreatureScript
                 summon->EnterVehicle(me, 0);
             }
 
-            void DoAction(int32 action) override 
+            void DoAction(int32 action) override
             {
                 if (action == ACTION_FLY_TO_DRAGON_SOUL)
                 {
@@ -485,9 +485,9 @@ class npc_hour_of_twilight_twilight_drake : public CreatureScript
             uint32 wp;
             Creature* LifeWarden;
 
-            void IsSummonedBy(Unit* summoner) override 
-            { 
-                nonCombatEvents.ScheduleEvent(EVENT_ESCORT, 1500); 
+            void IsSummonedBy(Unit* summoner) override
+            {
+                nonCombatEvents.ScheduleEvent(EVENT_ESCORT, 1500);
                 LifeWarden = summoner->ToCreature();
                 me->SetSpeed(MOVE_FLIGHT, 2.0f);
             }
@@ -594,7 +594,7 @@ class npc_thrall_intro : public CreatureScript
                 nonCombatEvents.ScheduleEvent(EVENT_ESCORT, 1500);
             }
 
-            void DoAction(int32 action) override 
+            void DoAction(int32 action) override
             {
                 switch (action)
                 {
@@ -704,7 +704,7 @@ class npc_thrall_intro : public CreatureScript
                     {
                         case EVENT_LAVA_BURST:
                             if (Unit* itr = me->GetVictim())
-                                 me->CastSpell(itr, SPELL_LAVA_BURST, false);  
+                                 me->CastSpell(itr, SPELL_LAVA_BURST, false);
                             events.ScheduleEvent(EVENT_LAVA_BURST, 10000);
                             break;
                         case EVENT_CHAIN_LIGHTNING:
@@ -809,7 +809,7 @@ class npc_thrall_arcurion : public CreatureScript
                     summon->CastSpell(summon, SPELL_RISING_FIRE_TOTEM_COSMETIC, false);
             }
 
-            void DoAction(int32 action) override 
+            void DoAction(int32 action) override
             {
                 switch (action)
                 {
@@ -1403,7 +1403,7 @@ class npc_thrall_benedictus : public CreatureScript
             EventMap events, nonCombatEvents;
             uint32 timer;
 
-            void IsSummonedBy(Unit* summoner) override 
+            void IsSummonedBy(Unit* summoner) override
             {
                 me->SetReactState(REACT_PASSIVE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
@@ -1424,7 +1424,7 @@ class npc_thrall_benedictus : public CreatureScript
                 events.ScheduleEvent(EVENT_HEALING_WAVE, 50000);
             }
 
-            void DoAction(int32 action) override 
+            void DoAction(int32 action) override
             {
                 switch (action)
                 {
@@ -1451,7 +1451,6 @@ class npc_thrall_benedictus : public CreatureScript
             {
                 damage = 0;
             }
-
 
             void UpdateAI(uint32 diff) override
             {
@@ -1587,7 +1586,7 @@ class npc_frozen_servitor_stalker : public CreatureScript
                 damage = 0;
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 nonCombatEvents.Update(diff);
 
@@ -1621,7 +1620,7 @@ class npc_twilights_hammer : public CreatureScript
             EventMap events, nonCombatEvents;
             uint32 timer;
 
-            void IsSummonedBy(Unit* summoner) override 
+            void IsSummonedBy(Unit* summoner) override
             {
                 if (summoner->GetPositionZ()<12.0f)
                     nonCombatEvents.ScheduleEvent(EVENT_COMBAT, 1000);
@@ -1798,7 +1797,7 @@ class npc_faceless_minions : public CreatureScript
 
             }
 
-            void EnterEvadeMode() override 
+            void EnterEvadeMode() override
             {
                 ScriptedAI::EnterEvadeMode();
             }
@@ -1880,7 +1879,7 @@ class npc_faceless_minions : public CreatureScript
                                 me->CastSpell(itr, SPELL_SEEKING_SHADOWS, false);
                             events.ScheduleEvent(EVENT_SEEKING_SHADOW, urand(10000, 15000));
                             break;
-                        case EVENT_SHADOW_VALLEY:  
+                        case EVENT_SHADOW_VALLEY:
                             if (Unit* itr = me->GetVictim())
                                 me->CastSpell(itr, SPELL_SHADOW_VOLLEY, false);
                             events.ScheduleEvent(EVENT_SHADOW_VALLEY, urand(6000, 8000));
@@ -1955,7 +1954,7 @@ class npc_ice_wall_exit_stalker : public CreatureScript
         {
             npc_ice_wall_exit_stalkerAI(Creature* creature) : ScriptedAI(creature) { }
 
-            void Reset() override 
+            void Reset() override
             {
                 me->SetDisplayFromModel(1);
                 me->SetReactState(REACT_PASSIVE);

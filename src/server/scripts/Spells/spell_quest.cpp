@@ -148,7 +148,7 @@ class spell_q5206_test_fetid_skull : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             bool Validate(SpellInfo const* /*spellEntry*/) override
@@ -200,7 +200,7 @@ class spell_q6124_6129_apply_salve : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void HandleDummy(SpellEffIndex /*effIndex*/)
@@ -324,7 +324,7 @@ class spell_q11396_11399_scourging_crystal_controller : public SpellScriptLoader
             void HandleDummy(SpellEffIndex /*effIndex*/)
             {
                 if (Unit* target = GetExplTargetUnit())
-                    if (target->GetTypeId() == TYPEID_UNIT && target->HasAura(SPELL_FORCE_SHIELD_ARCANE_PURPLE_X3))
+                    if (target->IsCreature() && target->HasAura(SPELL_FORCE_SHIELD_ARCANE_PURPLE_X3))
                         // Make sure nobody else is channeling the same target
                         if (!target->HasAura(SPELL_SCOURGING_CRYSTAL_CONTROLLER))
                             GetCaster()->CastSpell(target, SPELL_SCOURGING_CRYSTAL_CONTROLLER, true, GetCastItem());
@@ -362,7 +362,7 @@ class spell_q11396_11399_scourging_crystal_controller_dummy : public SpellScript
             void HandleDummy(SpellEffIndex /*effIndex*/)
             {
                 if (Unit* target = GetHitUnit())
-                    if (target->GetTypeId() == TYPEID_UNIT)
+                    if (target->IsCreature())
                         target->RemoveAurasDueToSpell(SPELL_FORCE_SHIELD_ARCANE_PURPLE_X3);
             }
 
@@ -475,7 +475,7 @@ class spell_q11730_ultrasonic_screwdriver : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER && GetCastItem();
+                return GetCaster()->IsPlayer() && GetCastItem();
             }
 
             bool Validate(SpellInfo const* /*spellEntry*/) override
@@ -739,7 +739,7 @@ class spell_q12937_relief_for_the_fallen : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             bool Validate(SpellInfo const* /*spellEntry*/) override
@@ -877,7 +877,7 @@ class spell_q12659_ahunaes_knife : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void HandleDummy(SpellEffIndex /*effIndex*/)
@@ -908,14 +908,13 @@ enum StoppingTheSpread
     SPELL_FLAMES                                 = 39199,
 };
 
-
 class spell_q9874_liquid_fire : public SpellScript
 {
     PrepareSpellScript(spell_q9874_liquid_fire);
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     void HandleDummy(SpellEffIndex /*effIndex*/)
@@ -954,7 +953,7 @@ class spell_q12805_lifeblood_dummy : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void HandleScript(SpellEffIndex /*effIndex*/)
@@ -1085,7 +1084,7 @@ class spell_q9452_cast_net: public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             SpellCastResult CheckCast()
@@ -1159,11 +1158,11 @@ public:
             if (Player* target = GetTarget()->ToPlayer())
             {
                 if (Creature* trigger = target->FindNearestCreature(NPC_ICE_SPIKE_BUNNY, 25.0f))
-                {                
+                {
                     sCreatureTextMgr->SendChat(trigger, SAY_1, target, CHAT_MSG_ADDON, LANG_ADDON, TEXT_RANGE_NORMAL, 0, TEAM_OTHER, false, target);
                     target->KilledMonsterCredit(NPC_KILLCREDIT);
                     sCreatureTextMgr->SendChat(trigger, SAY_2, target, CHAT_MSG_ADDON, LANG_ADDON, TEXT_RANGE_NORMAL, 0, TEAM_OTHER, false, target);
-                }                
+                }
             }
         }
 
@@ -1203,7 +1202,7 @@ class spell_q12277_wintergarde_mine_explosion : public SpellScriptLoader
                 {
                     if (Unit* caster = GetCaster())
                     {
-                        if (caster->GetTypeId() == TYPEID_UNIT)
+                        if (caster->IsCreature())
                         {
                             if (Unit* owner = caster->GetOwner())
                             {
@@ -1835,7 +1834,7 @@ class spell_q13011_bear_flank_master : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void HandleScript(SpellEffIndex /*effIndex*/)
@@ -1940,7 +1939,7 @@ class spell_q12690_burst_at_the_seams : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void HandleKnockBack(SpellEffIndex /*effIndex*/)
@@ -2056,7 +2055,6 @@ class spell_q12308_escape_from_silverbrook_summon_worgen : public SpellScriptLoa
             return new spell_q12308_escape_from_silverbrook_summon_worgen_SpellScript();
         }
 };
-
 
 enum DeathComesFromOnHigh
 {
@@ -2393,7 +2391,6 @@ class spell_cooking_for_kunzen_bonfire : public AuraScript
         OnEffectPeriodic += AuraEffectPeriodicFn(spell_cooking_for_kunzen_bonfire::HandleEffectPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DUMMY);
     }
 };
-
 
 class spell_q30050_resuscitate: public SpellScriptLoader
 {

@@ -99,7 +99,7 @@ enum
     WORLD_STATE_HERE_KITTY_KITTY    = 3410,
 };
 
-const Position pridePos[16] = 
+const Position pridePos[16] =
 {
     {-11517.2f, -1646.82f, 44.4849f, 3.87463f},
     {-11519.2f, -1605.37f, 44.4849f, 3.56047f},
@@ -119,7 +119,7 @@ const Position pridePos[16] =
     {-11518.1f, -1651.48f, 44.4849f, 2.26893f}
 };
 
-const Position cavePos[4] = 
+const Position cavePos[4] =
 {
     {-11506.63f, -1605.05f, 44.41f, 0.0f},
     {-11506.26f, -1643.40f, 44.41f, 0.0f},
@@ -212,7 +212,7 @@ class boss_kilnara : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(bTwoPhase? SAY_KILL_FERAL: SAY_KILL);
             }
 
@@ -256,7 +256,7 @@ class boss_kilnara : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-            
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -406,7 +406,7 @@ class spell_kilnara_wave_of_agony_target : public SpellScriptLoader
             PrepareSpellScript(spell_kilnara_wave_of_agony_target_SpellScript);
 
             void HandleScript(SpellEffIndex /*effIndex*/)
-            { 
+            {
                 if (!GetCaster() || !GetHitUnit())
                     return;
 

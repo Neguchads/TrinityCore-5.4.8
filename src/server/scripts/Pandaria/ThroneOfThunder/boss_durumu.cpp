@@ -66,11 +66,11 @@ enum Spells
     SPELL_LINGERING_GAZE_MARK         = 134626,
     SPELL_FORCE_OF_WILL               = 136932,
     SPELL_FORCE_OF_WILL_KNOCKBACK     = 136413,
-                                      
-    /*Misc | Shared*/                 
+
+    /*Misc | Shared*/
     SPELL_DURUMU_EYE_SPAWN            = 137674,
-                                      
-    // Beams                          
+
+    // Beams
     SPELL_YELLOW_BEAM                 = 133740,
     SPELL_RED_BEAM                    = 133734,
     SPELL_BLUE_BEAM                   = 133672,
@@ -85,14 +85,14 @@ enum Spells
     SPELL_INFRARED_BEAM_FOCUS         = 134123,
     SPELL_BRIGHT_LIGHT_FOCUS          = 134124, // yellow
     SPELL_BLUE_RAYS_FOCUS             = 134122, // blue
-                                      
+
     SPELL_FOG_INVISIBLE               = 137092,
-                                      
+
     SPELL_CAUSTIC_SPIKE               = 136154,
     SPELL_ICY_GRASP                   = 136177,
     SPELL_CRIMSON_BLOOM               = 136122,
     SPELL_FLASH_FREEZE                = 136124,
-                                      
+
     SPELL_SUMMON_CRIMSON_FOG          = 136128,
     SPELL_SUMMON_BLUE_FOG             = 136130,
     SPELL_INFRARED_LIGHT_ANN          = 133731,
@@ -238,7 +238,7 @@ enum miscPhase
     TYPE_LIFE_DRAIN_DURATION,
 };
 
-const std::map<uint32, uint32> invBeamsType = 
+const std::map<uint32, uint32> invBeamsType =
 {
     { SPELL_INFRARED_BEAM_FOCUS, SPELL_RED_BEAM  },
     { SPELL_BLUE_RAYS_FOCUS,     SPELL_BLUE_BEAM },
@@ -480,7 +480,6 @@ class boss_durumu : public CreatureScript
                 SummonEyes();
             }
 
-
             void DespawnCreature(uint32 entry)
             {
                 std::list<Creature*> creatureList;
@@ -556,7 +555,7 @@ class boss_durumu : public CreatureScript
                                     _initiate = false;
                                     break;
                                 }
-                        
+
                             if (_initiate)
                                 DoAction(ACTION_BEGIN_INTRO);
                             else
@@ -592,7 +591,7 @@ class boss_durumu : public CreatureScript
                                 }
 
                                 sOri += M_PI / 8;
-                            } 
+                            }
                             while (sOri <= (3 * M_PI) / 8);
 
                             break;
@@ -650,7 +649,7 @@ class boss_durumu : public CreatureScript
                                 GetPositionWithDistInOrientation(me, frand(27.0f, 60.0f), frand(0.0f, 2 * M_PI), x, y);
                                 me->CastSpell(x, y, me->GetPositionZ(), SPELL_SUMMON_CRIMSON_FOG, true);
                             }
-                        
+
                             GetPositionWithDistInOrientation(me, frand(27.0f, 60.0f), frand(0.0f, 2 * M_PI), x, y);
                             me->CastSpell(x, y, me->GetPositionZ(), SPELL_SUMMON_BLUE_FOG, true);
 
@@ -671,7 +670,7 @@ class boss_durumu : public CreatureScript
                                 if (std::find(achievementFogsEntry.begin(), achievementFogsEntry.end(), tempFog) != achievementFogsEntry.end())
                                     achievementFogsEntry.erase(std::find(achievementFogsEntry.begin(), achievementFogsEntry.end(), tempFog));
                             }
-                        
+
                             if (instance)
                                 instance->DoUpdateWorldState(WORLDSTATE_FOG_BEASTS_REMAINING, 3);
 
@@ -999,7 +998,7 @@ class boss_durumu : public CreatureScript
 // durumu fogs 69052, 69050, 69051
 struct npc_durumu_fog : public ScriptedAI
 {
-    npc_durumu_fog(Creature* creature) : ScriptedAI(creature) 
+    npc_durumu_fog(Creature* creature) : ScriptedAI(creature)
     {
         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_DISABLE_MOVE);
         me->SetReactState(REACT_PASSIVE);
@@ -1376,10 +1375,10 @@ struct npc_durumu_eye : public ScriptedAI
                 case EVENT_EYES_ORIENTATION:
                     if (Unit* target = ObjectAccessor::GetUnit(*me, SelectBeamTargetGuid()))
                         me->SetFacingToObject(target);
-                
+
                     if (me->GetEntry() != NPC_YELLOW_EYE)
                         TrySearchFogs();
-                
+
                     events.ScheduleEvent(EVENT_EYES_ORIENTATION, 200);
                     break;
             }
@@ -1591,7 +1590,7 @@ class spell_drain_life_damage : public SpellScriptLoader
             PrepareSpellScript(spell_drain_life_damage_SpellScript);
 
             void CalculateDamage(SpellEffIndex /*effIndex*/)
-            { 
+            {
                 if (!GetCaster() || !GetHitUnit())
                     return;
 
@@ -1903,11 +1902,11 @@ class spell_durumu_mind_daggers : public SpellScript
     }
 };
 
-class LifeDrainPredicate 
+class LifeDrainPredicate
 {
     public:
         LifeDrainPredicate(Creature* const m_caster) : _caster(m_caster) { }
-    
+
         bool operator()(WorldObject* object)
         {
             if (Unit* currentTarget = ObjectAccessor::GetUnit(*_caster, _caster->AI()->GetGUID()))
@@ -1915,7 +1914,7 @@ class LifeDrainPredicate
 
             return false;
         }
-    
+
     private:
         Creature const* _caster;
 };
@@ -2160,7 +2159,7 @@ class sat_optic_spectrum : public IAreaTriggerAura
 // 660, 661, 662, 663, 664, 665, 666, 667, 668, 669. Summoned by 136232 - 136241 - Whole Slice Room
 class sat_maze : public IAreaTriggerAura
 {
-    void OnInit() override 
+    void OnInit() override
     {
         uint32 sDuration = 0;
 
@@ -2219,7 +2218,7 @@ class AreaTrigger_down_durumu : public AreaTriggerScript
 {
     public:
         AreaTrigger_down_durumu() : AreaTriggerScript("AreaTrigger_down_durumu") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             player->Kill(player);

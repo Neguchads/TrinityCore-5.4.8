@@ -42,7 +42,8 @@ namespace VMAP
         const Vector3 p(ray.direction().cross(e2));
         const float a = e1.dot(p);
 
-        if (std::fabs(a) < EPS) {
+        if (std::fabs(a) < EPS)
+        {
             // Determinant is ill-conditioned; abort early
             return false;
         }
@@ -51,7 +52,8 @@ namespace VMAP
         const Vector3 s(ray.origin() - points[tri.idx0]);
         const float u = f * s.dot(p);
 
-        if ((u < 0.0f) || (u > 1.0f)) {
+        if ((u < 0.0f) || (u > 1.0f))
+        {
             // We hit the plane of the m_geometry, but outside the m_geometry
             return false;
         }
@@ -59,7 +61,8 @@ namespace VMAP
         const Vector3 q(s.cross(e1));
         const float v = f * ray.direction().dot(q);
 
-        if ((v < 0.0f) || ((u + v) > 1.0f)) {
+        if ((v < 0.0f) || ((u + v) > 1.0f))
+        {
             // We hit the plane of the triangle, but outside the triangle
             return false;
         }
@@ -480,7 +483,7 @@ namespace VMAP
             // M2 models are not taken into account for LoS calculation if caller requested their ignoring.
             if (Flags & MOD_M2)
                 return false;
-        }        
+        }
 
         // small M2 workaround, maybe better make separate class with virtual intersection funcs
         // in any case, there's no need to use a bound tree if we only have one submodel

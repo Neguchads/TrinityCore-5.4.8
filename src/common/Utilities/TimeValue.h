@@ -143,7 +143,6 @@ private:
     Duration _duration;
 };
 
-
 inline TimeValue operator-(TimeValue const& lhs, TimeValue const& rhs)
 {
     auto diff = lhs.GetDuration() - rhs.GetDuration();

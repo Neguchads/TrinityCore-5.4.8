@@ -137,7 +137,6 @@ namespace VMAP
             typedef bool(*IsVMAPDisabledForFn)(uint32 entry, uint8 flags);
             IsVMAPDisabledForFn IsVMAPDisabledForPtr;
 
-
             /**
             get the hit position and return true if we hit something
             otherwise the result pos will be the dest pos

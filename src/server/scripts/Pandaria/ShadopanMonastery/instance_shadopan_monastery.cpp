@@ -40,7 +40,6 @@ static std::vector<ScenarioBosses> const scenarioBosses =
     { DATA_TARAN_ZHU,        CRITERIA_TARAN_ZHU        },
 };
 
-
 class instance_shadopan_monastery : public InstanceMapScript
 {
     public: instance_shadopan_monastery() : InstanceMapScript("instance_shadopan_monastery", 959) { }
@@ -156,7 +155,7 @@ class instance_shadopan_monastery : public InstanceMapScript
                     snowdriftRefereeGUID = creature->GetGUID();
                     break;
                 case NPC_ARCHERY_TARGET:
-                    archeryTargetGuids.push_back(creature->GetGUID()); 
+                    archeryTargetGuids.push_back(creature->GetGUID());
                     break;
                 case NPC_HATEFUL_ESSENCE:
                     creature->SetDisplayId(41106);

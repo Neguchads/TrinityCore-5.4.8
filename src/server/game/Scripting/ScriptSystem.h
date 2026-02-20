@@ -61,7 +61,6 @@ typedef std::vector<ScriptPointMove> ScriptPointVector;
 class SystemMgr
 {
 
-
         SystemMgr() { }
         ~SystemMgr() { }
 

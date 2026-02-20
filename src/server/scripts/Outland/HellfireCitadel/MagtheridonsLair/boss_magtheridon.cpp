@@ -40,7 +40,7 @@ enum Yells
     EMOTE_WEAKEN               = 7,
     EMOTE_NEARLY_FREE          = 8,
     EMOTE_BREAKS_FREE          = 9,
-    EMOTE_BLAST_NOVA           = 10    
+    EMOTE_BLAST_NOVA           = 10
 };
 
 enum Emotes
@@ -324,7 +324,6 @@ class boss_magtheridon : public CreatureScript
             }
 
             void MoveInLineOfSight(Unit* /*who*/) override { }
-
 
             void AttackStart(Unit* who) override
             {
@@ -623,4 +622,3 @@ void AddSC_boss_magtheridon()
     new npc_abyssal();
     new go_manticron_cube();
 }
-

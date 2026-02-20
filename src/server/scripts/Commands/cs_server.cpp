@@ -62,7 +62,7 @@ public:
         {
             { "cancel",         SEC_ADMINISTRATOR,  true,   &HandleServerShutDownCancelCommand, },
             { "",               SEC_ADMINISTRATOR,  true,   &HandleServerShutDownCommand,       },
-            
+
         };
 
         static std::vector<ChatCommand> serverSetCommandTable =
@@ -96,7 +96,7 @@ public:
          static std::vector<ChatCommand> commandTable =
         {
             { "server",         SEC_PLAYER,         true,   serverCommandTable                  },
-            
+
         };
         return commandTable;
     }

@@ -152,13 +152,13 @@ enum Others
     DATA_TRAPPED_PLAYER = 1,
 };
 
-const Position maloriakHomePos = 
+const Position maloriakHomePos =
 {-105.826f, -470.104f, 73.45f, 1.67f};
 
-const Position maloriakGreenPos = 
+const Position maloriakGreenPos =
 {-106.61f, -437.49f, 73.40f, 4.70f};
 
-const Position aberrationPos[2] = 
+const Position aberrationPos[2] =
 {
     {-138.48f, -428.37f, 73.241f, 5.63f},
     {-76.70f, -428.15f, 73.23f, 3.51f}
@@ -260,7 +260,7 @@ class boss_maloriak : public CreatureScript
                             break;
                         case POINT_FROST:
                             Talk(SAY_BLUE);
-                            DoCast(me, SPELL_DRINK_BLUE_BOTTLE);                            
+                            DoCast(me, SPELL_DRINK_BLUE_BOTTLE);
                             break;
                         case POINT_GREEN:
                             Talk(SAY_GREEN);
@@ -363,7 +363,7 @@ class boss_maloriak : public CreatureScript
                             me->GetMotionMaster()->MovePoint(POINT_GREEN, maloriakHomePos);
                             break;
                         case EVENT_JUMP_TO:
-                            for (SummonList::const_iterator itr = summons.begin(); itr != summons.end(); ++itr)    
+                            for (SummonList::const_iterator itr = summons.begin(); itr != summons.end(); ++itr)
                                 if (Creature* summon = Unit::GetCreature(*me, *itr))
                                     summon->RemoveAurasDueToSpell(SPELL_GROWN_CATALYST);
                             DoCast(me, SPELL_DEBILITATING_SLIME, true);
@@ -412,7 +412,7 @@ class boss_maloriak : public CreatureScript
                             if (targets.size() >= minTargets)
                                 minDist = -20.0f;
                             if (Unit* targetflashfreeze = SelectTarget(SELECT_TARGET_RANDOM, 1, minDist, true))
-                                DoCast(targetflashfreeze, SPELL_FLASH_FREEZE);    
+                                DoCast(targetflashfreeze, SPELL_FLASH_FREEZE);
                             break;
                         }
                         case EVENT_ENGULFING_DARKNESS:
@@ -479,12 +479,12 @@ class boss_maloriak : public CreatureScript
                         events.CancelEvent(EVENT_SCORCHING_BLAST);
                     }
                 }
-                
+
                 void EventFrostSkills(bool on)
                 {
                     if (on)
                     {
-                        events.ScheduleEvent(EVENT_RELEASE_ABERRATIONS, 10000); 
+                        events.ScheduleEvent(EVENT_RELEASE_ABERRATIONS, 10000);
                         events.ScheduleEvent(EVENT_RELEASE_ABERRATIONS, 30000);
                         events.ScheduleEvent(EVENT_ARCANE_STORM, 13000);
                         events.ScheduleEvent(EVENT_ARCANE_STORM, 33000);
@@ -501,12 +501,12 @@ class boss_maloriak : public CreatureScript
                         events.CancelEvent(EVENT_FLASH_FREEZE);
                     }
                 }
-                
+
                 void EventGreenSkills(bool on)
                 {
                     if (on)
                     {
-                        events.ScheduleEvent(EVENT_RELEASE_ABERRATIONS, 7000); 
+                        events.ScheduleEvent(EVENT_RELEASE_ABERRATIONS, 7000);
                         events.ScheduleEvent(EVENT_RELEASE_ABERRATIONS, 25000);
                         events.ScheduleEvent(EVENT_ARCANE_STORM, 5000);
                         events.ScheduleEvent(EVENT_ARCANE_STORM, 19000);
@@ -630,9 +630,9 @@ class npc_absolute_zero : public CreatureScript
                 creature->SetSpeed(MOVE_WALK, 0.5f);
             }
 
-            uint32 uiPauseTimer; //����� �� ����������� ����� ��� ������� ����� ������
+            uint32 uiPauseTimer; //Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
             uint32 uiDespawnTimer;
-            bool bCanExplode; 
+            bool bCanExplode;
 
             void Reset() override
             {
@@ -716,7 +716,7 @@ class npc_magma_jet : public CreatureScript
                 {
                     Position newPos = me->GetNearPosition(5.5f, 0.0f);
                     me->NearTeleportTo(newPos.GetPositionX(), newPos.GetPositionY(), me->GetPositionZ(), me->GetOrientation());
-                    if (creOwner->GetDistance(me) >= 50.0f) // �������� ������� �� ���������� �� 50 �� �����
+                    if (creOwner->GetDistance(me) >= 50.0f) // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½ 50 Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
                         me->DespawnOrUnsummon();
                     else
                     {
@@ -754,13 +754,13 @@ class npc_magma_jet_summon : public CreatureScript
                 DoCast(SPELL_MAGMA_JETS_DMG);
                 summonTimer = 15000;
             }
-            
+
             void UpdateAI(uint32 diff) override
             {
                 if (summonTimer <= diff)
                     me->DespawnOrUnsummon();
                 else
-                    summonTimer -= diff;                
+                    summonTimer -= diff;
             }
         };
 
@@ -778,7 +778,7 @@ class npc_aberration : public CreatureScript
         struct npc_aberrationAI : public ScriptedAI
         {
             npc_aberrationAI(Creature* creature) : ScriptedAI(creature) { }
-            
+
             void JustDied(Unit* /*killer*/) override
             {
                 if (me->GetInstanceScript())
@@ -813,7 +813,7 @@ class npc_prime_subject : public CreatureScript
         struct npc_prime_subjectAI : public ScriptedAI
         {
             npc_prime_subjectAI(Creature* creature) : ScriptedAI(creature) { }
-            
+
             EventMap events;
 
             void Reset() override
@@ -921,9 +921,9 @@ class spell_maloriak_flash_freeze : public SpellScriptLoader
                 if (!GetCaster())
                     return;
                 if (TempSummon* summon = GetCaster()->SummonCreature(NPC_FLASH_FREEZE, pos))
-                    summon->AI()->SetGUID(aurEff->GetBase()->GetOwner()->GetGUID(), DATA_TRAPPED_PLAYER);   
+                    summon->AI()->SetGUID(aurEff->GetBase()->GetOwner()->GetGUID(), DATA_TRAPPED_PLAYER);
             }
-            
+
             void Register() override
             {
                 OnEffectApply += AuraEffectApplyFn(spell_maloriak_flash_freeze_AuraScript::OnApply, EFFECT_0, SPELL_AURA_MOD_STUN, AURA_EFFECT_HANDLE_REAL);
@@ -945,7 +945,7 @@ class GoCheck
         {
             if (!obj->ToGameObject())
                 return true;
-            
+
             return (obj->ToGameObject()->GetEntry() != 206704);
         }
 };
@@ -958,7 +958,7 @@ class EntryCheck
         {
             if (!obj->ToCreature())
                 return true;
-            
+
             return (obj->ToCreature()->GetEntry() != i_entry);
         }
     private:
@@ -969,7 +969,6 @@ class spell_maloriak_release_aberrations : public SpellScriptLoader
 {
     public:
         spell_maloriak_release_aberrations() : SpellScriptLoader("spell_maloriak_release_aberrations") { }
-
 
         class spell_maloriak_release_aberrations_SpellScript : public SpellScript
         {
@@ -1032,13 +1031,12 @@ class spell_maloriak_release_all_minions : public SpellScriptLoader
     public:
         spell_maloriak_release_all_minions() : SpellScriptLoader("spell_maloriak_release_all_minions") { }
 
-
         class spell_maloriak_release_all_minions_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_maloriak_release_all_minions_SpellScript);
 
             void FilterTargets(std::list<WorldObject*>& targets)
-            { 
+            {
                 if (targets.empty())
                     return;
 
@@ -1056,7 +1054,7 @@ class spell_maloriak_release_all_minions : public SpellScriptLoader
                         Trinity::RandomResizeList(targets, count);
                     else
                         targets.clear();
-                    
+
                     if (!tempGos.empty())
                         for (std::list<WorldObject*>::const_iterator itr = tempGos.begin(); itr != tempGos.end(); ++itr)
                             targets.push_back((*itr));
@@ -1072,7 +1070,7 @@ class spell_maloriak_release_all_minions : public SpellScriptLoader
                 if (GetHitGObj()->GetEntry() == 206704)
                     GetCaster()->SummonCreature(NPC_ABERRATION, (GetHitGObj()->GetPositionX() < -100.0f? aberrationPos[0]: aberrationPos[1]), TEMPSUMMON_CORPSE_DESPAWN);
                 else if (GetHitGObj()->GetEntry() == 206705)
-                    GetCaster()->SummonCreature(NPC_PRIME_SUBJECT, (GetHitGObj()->GetPositionX() < -100.0f? aberrationPos[0]: aberrationPos[1]), TEMPSUMMON_CORPSE_DESPAWN); 
+                    GetCaster()->SummonCreature(NPC_PRIME_SUBJECT, (GetHitGObj()->GetPositionX() < -100.0f? aberrationPos[0]: aberrationPos[1]), TEMPSUMMON_CORPSE_DESPAWN);
             }
 
             void OnAfterCast()
@@ -1209,7 +1207,6 @@ class spell_maloriak_drink_bottle : public SpellScriptLoader
     public:
         spell_maloriak_drink_bottle() : SpellScriptLoader("spell_maloriak_drink_bottle") { }
 
-
         class spell_maloriak_drink_bottle_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_maloriak_drink_bottle_SpellScript);
@@ -1260,19 +1257,19 @@ class spell_lord_victor_nefarius_master_adventurer_award : public SpellScriptLoa
 
             void OnApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                if (GetTarget() && GetTarget()->GetTypeId() == TYPEID_PLAYER)
+                if (GetTarget() && GetTarget()->IsPlayer())
                     if (CharTitlesEntry const* title = sCharTitlesStore.LookupEntry(188))
                         GetTarget()->ToPlayer()->SetTitle(title);
             }
 
             void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                if (GetTarget() && GetTarget()->GetTypeId() == TYPEID_PLAYER)
+                if (GetTarget() && GetTarget()->IsPlayer())
                     if (CharTitlesEntry const* title = sCharTitlesStore.LookupEntry(188))
                         GetTarget()->ToPlayer()->SetTitle(title, true);
 
             }
-            
+
             void Register() override
             {
                 OnEffectApply += AuraEffectApplyFn(spell_lord_victor_nefarius_master_adventurer_award_AuraScript::OnApply, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);

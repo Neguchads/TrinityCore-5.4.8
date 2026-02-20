@@ -18,13 +18,13 @@
 #define DATA_WAVE 1
 #define POINT_LAND 1
 
-const Position addsPos[2] = 
+const Position addsPos[2] =
 {
     {13460.484375f, -12140.264648f, 150.94f, 3.12f},
     {13461.267578f, -12125.923828f, 150.91f, 3.12f}
 };
 
-const Position gorionaPos[8] = 
+const Position gorionaPos[8] =
 {
     {13535.674805f, -12078.470703f, 173.678528f, 3.44f}, // summon
     {13462.571289f, -12099.389648f, 170.569244f, 3.74f},
@@ -36,7 +36,7 @@ const Position gorionaPos[8] =
     {13418.731445f, -12132.061523f, 151.18f, 0.01f}
 };
 
-const Position enginePos[4] = 
+const Position enginePos[4] =
 {
     {13472.7f, -12173.8f, 139.096f, 0.0f},
     {13397.7f, -12100.1f, 142.06f, 0.0f},
@@ -45,13 +45,13 @@ const Position enginePos[4] =
 };
 
 const Position blackhornPos = {13465.208008f, -12134.354492f, 151.18f, 3.07f};
-const Position sapperPos[2] = 
+const Position sapperPos[2] =
 {
     {13418.580078f, -12132.129883f, 151.18f, 6.23f},
     {13475.221680f, -12134.425781f, 150.81f, 6.21f}
 };
 
-const Position assaultdrakePos[2][10] = 
+const Position assaultdrakePos[2][10] =
 {
     {
         {13577.010742f, -12103.028320f, 190.578171f, 3.121954f},
@@ -79,13 +79,13 @@ const Position assaultdrakePos[2][10] =
     }
 };
 
-const Position harpoonPos[2] = 
+const Position harpoonPos[2] =
 {
     {13430.200195f, -12159.500000f, 157.082993f, 1.574715f}, // 0 side
     {13432.299805f, -12105.599609f, 157.080994f, 4.700602f}  // 1 side
 };
 
-const Position infiltratorPos[12] = 
+const Position infiltratorPos[12] =
 {
     {13541.888672f, -12186.561523f, 203.783569f, 3.007129f},
     {13532.317383f, -12185.048828f, 201.008087f, 2.979640f},

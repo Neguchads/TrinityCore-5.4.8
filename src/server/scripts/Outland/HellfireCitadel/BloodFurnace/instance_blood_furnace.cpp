@@ -155,7 +155,7 @@ class instance_blood_furnace : public InstanceMapScript
 
             void OnUnitDeath(Unit* unit) override
             {
-                if (unit && unit->GetTypeId() == TYPEID_UNIT && unit->GetEntry() == 17398)
+                if (unit && unit->IsCreature() && unit->GetEntry() == 17398)
                     PrisonerDied(unit->GetGUID());
             }
 
@@ -439,4 +439,3 @@ void AddSC_instance_blood_furnace()
 {
     new instance_blood_furnace();
 }
-

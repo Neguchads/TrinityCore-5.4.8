@@ -87,7 +87,7 @@ bool WMORoot::open()
         {
             DoodadData.Sets.resize(size / sizeof(WMO::MODS));
             f.read(DoodadData.Sets.data(), size);
-        } 
+        }
         else if (!strcmp(fourcc,"MODN"))
         {
             char* ptr = f.getPointer();
@@ -108,7 +108,7 @@ bool WMORoot::open()
                 if (ExtractSingleModel(path))
                     ValidDoodadNames.insert(doodadNameIndex);
             }
-        } 
+        }
         else if (!strcmp(fourcc,"MODD"))
         {
             DoodadData.Spawns.resize(size / sizeof(WMO::MODD));
@@ -118,7 +118,7 @@ bool WMORoot::open()
         {
             GroupNames.resize(size);
             f.read(GroupNames.data(), size);
-        }                      
+        }
         /*
         else if (!strcmp(fourcc,"MOTX"))
         {
@@ -260,7 +260,7 @@ bool WMOGroup::open(WMORoot* rootWMO)
         {
             DoodadReferences.resize(size / sizeof(uint16));
             f.read(DoodadReferences.data(), size);
-        }        
+        }
         else if (!strcmp(fourcc, "MLIQ"))
         {
             liquflags |= 1;
@@ -410,7 +410,7 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE *output, bool preciseVectorData)
             bool isCollision = MOPY[2 * i] & WMO_MATERIAL_COLLISION || isRenderFace;
             if (!isCollision)
                 continue;
-            
+
             // Use this triangle
             for (int j = 0; j < 3; ++j)
             {

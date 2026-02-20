@@ -108,7 +108,7 @@ class boss_eregos : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -175,7 +175,7 @@ class boss_eregos : public CreatureScript
                 if (!me->GetMap()->IsHeroic())
                     return;
 
-                if ( (me->GetHealthPct() < 60.0f  && me->GetHealthPct() > 20.0f && _phase < PHASE_FIRST_PLANAR)
+                if ((me->GetHealthPct() < 60.0f  && me->GetHealthPct() > 20.0f && _phase < PHASE_FIRST_PLANAR)
                     || (me->GetHealthPct() < 20.0f && _phase < PHASE_SECOND_PLANAR) )
                 {
                     events.Reset();

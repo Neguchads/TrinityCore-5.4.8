@@ -62,7 +62,7 @@ struct zanvess_assault_typeAI : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (attacker->GetTypeId() != TYPEID_PLAYER && HealthBelowPct(75))
+        if (!(attacker->IsPlayer() && HealthBelowPct(75)))
             damage = 0;
     }
 
@@ -130,8 +130,8 @@ class npc_zanvess_korkron_gunship : public CreatureScript
 
         struct npc_zanvess_korkron_gunshipAI : public CreatureAI
         {
-            npc_zanvess_korkron_gunshipAI(Creature* creature) : CreatureAI(creature) 
-            { 
+            npc_zanvess_korkron_gunshipAI(Creature* creature) : CreatureAI(creature)
+            {
                 instance = me->GetInstanceScript();
                 nalleyGUID = ObjectGuid::Empty;
             }
@@ -161,7 +161,7 @@ class npc_zanvess_korkron_gunship : public CreatureScript
                 me->SetSpeed(MOVE_RUN, 5.5f, true);
 
                 pos = MoveToBattle[4];
-                
+
                 events.ScheduleEvent(EVENT_LAUNCH_GUNSHIP, 2 * IN_MILLISECONDS);
             }
 
@@ -281,7 +281,6 @@ class npc_zanvess_korkron_gunship : public CreatureScript
                             loopPath.clear();
                             me->StopMoving();
                             me->SetSpeed(MOVE_RUN, 5.5f, true); // should be 2.5 , but actually player control vehicle
-                            
 
                             Movement::MoveSplineInit pInit(me);
                             for (uint8 i = 0; i < 3; i++)
@@ -1116,7 +1115,7 @@ class npc_zanvess_commander_telvrak : public CreatureScript
                         me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED | UNIT_FLAG_IMMUNE_TO_PC);
                         break;
                     case ACTION_SWORD:
-                        SetData(TYPE_SWAP_WEAPON, 1);;
+                        SetData(TYPE_SWAP_WEAPON, 1);
                         me->RemoveAurasDueToSpell(SPELL_SWIFTNESS);
                         DoCast(me, SPELL_BLADEMASTER);
                         SetEquipmentSlots(false, TYPE_KLAXXI_SWORD, 0, EQUIP_NO_CHANGE);
@@ -1198,7 +1197,7 @@ struct npc_zanvess_zarthik_guardian : public ScriptedAI
         DoCast(me, SPELL_PROTECTIVE_SHELL);
     }
 
-    void EnterEvadeMode() override 
+    void EnterEvadeMode() override
     {
         ScriptedAI::EnterEvadeMode();
     }
@@ -1215,8 +1214,8 @@ struct npc_zanvess_zarthik_guardian : public ScriptedAI
 // Strafing Ran Trigger 67838
 struct npc_zanvess_strafing_ran_trigger : public ScriptedAI
 {
-    npc_zanvess_strafing_ran_trigger(Creature* creature) : ScriptedAI(creature) 
-    { 
+    npc_zanvess_strafing_ran_trigger(Creature* creature) : ScriptedAI(creature)
+    {
         summonerGUID = ObjectGuid::Empty;
     }
 
@@ -1307,7 +1306,7 @@ class spell_zanvess_bombard : public SpellScript
 
     void HandleEffectHit(SpellEffIndex /*effIndex*/)
     {
-        // tooltip miss or should calculate by anyway. in 5.4.8 has ~320-350k 
+        // tooltip miss or should calculate by anyway. in 5.4.8 has ~320-350k
         SetHitDamage(GetHitDamage() * 10);
     }
 

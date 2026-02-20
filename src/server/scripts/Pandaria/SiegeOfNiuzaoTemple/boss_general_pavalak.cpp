@@ -25,7 +25,7 @@ enum
     POINT_BULWARK               = 10
 };
 
-static const Position reinforcements[4] = 
+static const Position reinforcements[4] =
 {
     {1741.793f, 5338.747f, 136.2742f, 4.686225f },
     {1727.012f, 5342.524f, 138.5872f, 4.686225f },
@@ -113,7 +113,7 @@ class boss_general_pavalak : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!introDone && who->GetTypeId() == TYPEID_PLAYER && me->IsWithinDist2d(who, 50.0f))
+                if (!introDone && who->IsPlayer() && me->IsWithinDist2d(who, 50.0f))
                 {
                     Talk(SAY_INTRO);
                     introDone = true;
@@ -129,7 +129,7 @@ class boss_general_pavalak : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -302,13 +302,13 @@ class boss_general_pavalak : public CreatureScript
             int8 phase;
             ObjectGuid rushTargetGUID;
 
-            struct BladeRushPredicate 
+            struct BladeRushPredicate
             {
                 public:
                     BladeRushPredicate(Creature const* me) : _me(me) { }
                     bool operator()(Unit const* target) const
                     {
-                        return target && target->GetTypeId() == TYPEID_PLAYER && target->GetDistance2d(_me) > 6.0f;
+                        return target && target->IsPlayer() && target->GetDistance2d(_me) > 6.0f;
                     }
 
                 private:
@@ -504,7 +504,6 @@ class npc_pavalak_amber_sapper : public CreatureScript
             return new npc_pavalak_amber_sapperAI(creature);
         }
 };
-
 
 static const Position sapperPos = { 1837.330f, 5235.642f, 176.60643f, 2.62f };
 

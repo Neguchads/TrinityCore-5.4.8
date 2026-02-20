@@ -67,7 +67,7 @@ class boss_sha_of_doubt : public CreatureScript
             void InitializeAI() override
             {
                 me->CastSpell(me, SPELL_INVISIBILITY_DETECTION, false);
-                
+
                 if (instance)
                 {
                     instance->SetData(DATA_SHA_OF_DOUBT, NOT_STARTED);
@@ -126,7 +126,7 @@ class boss_sha_of_doubt : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 
@@ -329,7 +329,7 @@ class npc_figment_of_doubt : public CreatureScript
                 {
                     if (Unit* summoner = me->ToTempSummon()->GetSummoner())
                     {
-                        if (summoner->GetTypeId() == TYPEID_PLAYER)
+                        if (summoner->IsPlayer())
                         {
                             switch (summoner->ToPlayer()->GetRoleForGroup(summoner->ToPlayer()->GetTalentSpecialization()))
                             {
@@ -387,7 +387,7 @@ class npc_figment_of_doubt : public CreatureScript
                             if (me->GetAuraCount(SPELL_GATHERING_DOUBT_2) == 30)
                             {
                                 me->RemoveAura(SPELL_GATHERING_DOUBT);
-                                me->CastSpell(me, SPELL_RELEASE_DOUBT, false); 
+                                me->CastSpell(me, SPELL_RELEASE_DOUBT, false);
                                 me->CastSpell(me, SPELL_QUIET_SUICIDE, false);
                             }
                             else
@@ -487,7 +487,7 @@ struct npc_ghost_of_lin_dagu : public ScriptedAI
 
     void KilledUnit(Unit* victim) override
     {
-        if (victim->GetTypeId() == TYPEID_PLAYER)
+        if (victim->IsPlayer())
             Talk(TALK_LIN_SLAY);
     }
 
@@ -538,7 +538,7 @@ class PlayerTargetSelector
 
         bool operator()(WorldObject* object)
         {
-            if (object->GetTypeId() == TYPEID_PLAYER)
+            if (object->IsPlayer())
                 return false;
 
             return true;

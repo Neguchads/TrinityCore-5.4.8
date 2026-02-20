@@ -150,7 +150,7 @@ void Map::LoadMMap(int gx, int gy)
 
     if (mmapLoadResult)
         TC_LOG_DEBUG("maps", "MMAP loaded name:%s, id:%d, x:%d, y:%d (mmap rep.: x:%d, y:%d)", GetMapName(), GetId(), gx, gy, gx, gy);
-    else 
+    else
         TC_LOG_WARN("maps", "Could not load MMAP name:%s, id:%d, x:%d, y:%d (mmap rep.: x:%d, y:%d)", GetMapName(), GetId(), gx, gy, gx, gy);
 }
 
@@ -813,7 +813,6 @@ void Map::RemovePlayerFromMap(Player* player, bool remove)
         DeleteFromWorld(player);
 }
 
-
 template<class T>
 void Map::RemoveFromMap(T *obj, bool remove)
 {
@@ -905,7 +904,7 @@ void Map::PlayerRelocation(Player* player, float x, float y, float z, float orie
 
     player->OnRelocated();
     player->UpdatePositionData();
-    
+
 }
 
 void Map::CreatureRelocation(Creature* creature, float x, float y, float z, float ang, bool respawnRelocationOnFail)
@@ -1441,7 +1440,6 @@ bool Map::DynamicObjectCellRelocation(DynamicObject* dynObj, Cell new_cell)
     {
         EnsureGridLoadedForActiveObject(new_cell, dynObj);
 
-
         dynObj->RemoveFromGrid();
         AddToGrid(dynObj, new_cell);
 
@@ -1487,7 +1485,6 @@ bool Map::AreaTriggerCellRelocation(AreaTrigger* areaTrigger, Cell newCell)
     {
         EnsureGridLoadedForActiveObject(newCell, areaTrigger);
 
-
         areaTrigger->RemoveFromGrid();
         AddToGrid(areaTrigger, newCell);
 
@@ -1497,7 +1494,6 @@ bool Map::AreaTriggerCellRelocation(AreaTrigger* areaTrigger, Cell newCell)
     // in diff. loaded grid normal GameObject
     if (IsGridLoaded(GridCoord(newCell.GridX(), newCell.GridY())))
     {
-
 
         areaTrigger->RemoveFromGrid();
         EnsureGridCreated(GridCoord(newCell.GridX(), newCell.GridY()));
@@ -1729,7 +1725,7 @@ bool Map::CheckGameEventSpawn(uint32 gameEvent) const
         default:
             return true;
     }
-    
+
     if (InstanceMap const* instance = ToInstanceMap())
         if (instance->GetId() == mapId && !instance->IsLFGMap())
             return false;
@@ -2011,7 +2007,6 @@ bool  GridMap::loadHolesData(FILE *in, uint32 offset, uint32 size)
 
     return true;
 }
-
 
 uint16 GridMap::getArea(float x, float y) const
 {
@@ -2599,7 +2594,7 @@ bool Map::GetAreaInfo(uint32 phaseMask, float x, float y, float z, uint32 &flags
         }
         return true;
     }
-    return false;    
+    return false;
 }
 
 uint32 Map::GetAreaId(uint32 phaseMask, float x, float y, float z) const
@@ -2937,7 +2932,7 @@ bool Map::CheckGridIntegrity(T* c, bool moved) const
     if (xy_cell != cur_cell)
     {
         TC_LOG_DEBUG("maps", "%s (GUID: %u) X: %f Y: %f (%s) is in grid[%u, %u]cell[%u, %u] instead of grid[%u, %u]cell[%u, %u]",
-            c->GetTypeId() == TYPEID_UNIT ? "Creature" : c->GetTypeId() == TYPEID_GAMEOBJECT ? "GameObject" : c->GetTypeId() == TYPEID_DYNAMICOBJECT ? "DynamicObject" : "Object",
+            c->IsCreature() ? "Creature" : c->IsGameObject() ? "GameObject" : c->GetTypeId() == TYPEID_DYNAMICOBJECT ? "DynamicObject" : "Object",
             c->GetGUID().GetCounter(),
             c->GetPositionX(), c->GetPositionY(), (moved ? "final" : "original"),
             cur_cell.GridX(), cur_cell.GridY(), cur_cell.CellX(), cur_cell.CellY(),
@@ -3111,8 +3106,8 @@ void Map::AddObjectToSwitchList(WorldObject* obj, bool on)
 {
     ASSERT(obj->GetMapId() == GetId() && obj->GetInstanceId() == GetInstanceId());
     // i_objectsToSwitch is iterated only in Map::RemoveAllObjectsInRemoveList() and it uses
-    // the contained objects only if GetTypeId() == TYPEID_UNIT , so we can return in all other cases
-    if (obj->GetTypeId() != TYPEID_UNIT && obj->GetTypeId() != TYPEID_GAMEOBJECT)
+    // the contained objects only if IsCreature() , so we can return in all other cases
+    if (!(obj->IsCreature() && !obj->IsGameObject()))
         return;
 
     std::map<WorldObject*, bool>::iterator itr = i_objectsToSwitch.find(obj);

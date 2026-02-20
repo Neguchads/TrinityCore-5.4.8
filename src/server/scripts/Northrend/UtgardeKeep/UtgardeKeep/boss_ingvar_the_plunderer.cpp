@@ -449,7 +449,6 @@ class npc_ingvar_throw_dummy : public CreatureScript
         }
 };
 
-
 void AddSC_boss_ingvar_the_plunderer()
 {
     new boss_ingvar_the_plunderer();

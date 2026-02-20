@@ -141,17 +141,17 @@ enum Spells
     // spirit of anvilrage
     SPELL_BESTOWAL_OF_ANVILRAGE          = 80874,
     SPELL_SPIRIT_OF_ANVILRAGE            = 80768,
-    SPELL_STORMBOLT                      = 80648, // �������
+    SPELL_STORMBOLT                      = 80648, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
 
     // spirit of moltenfist
     SPELL_BESTOWAL_OF_MOLTENFIST         = 80876,
     SPELL_SPIRIT_OF_MOLTENFIST           = 80764,
     SPELL_DWARVEN_THUNDERCLAP            = 80649,
-        
+
     // spirit of shadowforge
     SPELL_BESTOWAL_OF_SHADOWFORGE        = 80873,
     SPELL_SPIRIT_OF_SHADOWFORGE          = 80769,
-    SPELL_DWARVEN_CHAIN_LIGHTNING        = 80646, // �������
+    SPELL_DWARVEN_CHAIN_LIGHTNING        = 80646, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
 
     // lord victor nefarius
     // omnotron
@@ -549,7 +549,7 @@ class npc_drakonid_drudge : public CreatureScript
                 GetCreatureListWithEntryInGrid(_drudges, me, NPC_GOLEM_SENTRY, 200.0f);
                 for (std::list<Creature*>::iterator itr = _drudges.begin(); itr != _drudges.end(); ++itr)
                     if ((*itr)->GetGUID() != me->GetGUID())
-                        DoCast((*itr), SPELL_VENGEFUL_RAGE);            
+                        DoCast((*itr), SPELL_VENGEFUL_RAGE);
             }
 
             void JustEngagedWith(Unit* who) override
@@ -588,7 +588,7 @@ class npc_drakonid_drudge : public CreatureScript
                             for (std::list<Creature*>::iterator itr = _drudges.begin(); itr != _drudges.end(); ++itr)
                                 if ((*itr)->GetGUID() != me->GetGUID() && (*itr)->IsAlive())
                                     if (Unit* target = (*itr)->AI()->SelectTarget(SELECT_TARGET_TOPAGGRO))
-                                        DoCast(target, SPELL_DRAKONID_RUSH);                    
+                                        DoCast(target, SPELL_DRAKONID_RUSH);
                             events.ScheduleEvent(EVENT_DRAKONID_RUSH, 20000);
                             break;
                     }
@@ -1291,7 +1291,7 @@ class npc_bd_spirit_of_dwarf: public CreatureScript
                             events.ScheduleEvent(EVENT_AVATAR, urand(25000, 30000));
                             break;
                         case EVENT_EXECUTION_SENTENSE:
-                            
+
                             events.ScheduleEvent(EVENT_EXECUTION_SENTENSE, urand(25000, 30000));
                             break;
                         case EVENT_WHIRLWIND:
@@ -1332,7 +1332,7 @@ class spell_drakonid_chainwielder_grievous_wound : public SpellScriptLoader
 {
     public:
         spell_drakonid_chainwielder_grievous_wound() : SpellScriptLoader("spell_drakonid_chainwielder_grievous_wound") { }
- 
+
         class spell_drakonid_chainwielder_grievous_wound_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_drakonid_chainwielder_grievous_wound_AuraScript)
@@ -1345,13 +1345,13 @@ class spell_drakonid_chainwielder_grievous_wound : public SpellScriptLoader
                 if (GetTarget()->HealthAbovePct(90))
                     GetTarget()->RemoveAurasDueToSpell(aurEff->GetId());
             }
- 
+
             void Register() override
             {
                 OnEffectPeriodic += AuraEffectPeriodicFn(spell_drakonid_chainwielder_grievous_wound_AuraScript::OnPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DAMAGE);
             }
         };
- 
+
         AuraScript* GetAuraScript() const override
         {
             return new spell_drakonid_chainwielder_grievous_wound_AuraScript();
@@ -1489,7 +1489,7 @@ class npc_lord_victor_nefarius_heroic : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1733,7 +1733,7 @@ class spell_lord_victor_nefarius_encasing_shadows : public SpellScriptLoader
             {
                 if (!GetCaster() || !GetHitUnit())
                     return;
-                
+
                 if (!GetCaster()->GetMap()->IsHeroic())
                     PreventHitEffect(EFFECT_0);
 
@@ -1771,7 +1771,7 @@ class spell_lord_victor_nefarius_grip_of_death : public SpellScriptLoader
 
                 float speedZ = float(GetSpellInfo()->Effects[effIndex].CalcValue() / 10);
                 float speedXY = float(GetSpellInfo()->Effects[effIndex].MiscValue / 10);
-    
+
                 GetHitUnit()->GetMotionMaster()->MoveJump(
                     GetCaster()->GetPositionX(),
                     GetCaster()->GetPositionY(),
@@ -1806,7 +1806,7 @@ class spell_lord_victor_nefarius_overcharge : public SpellScriptLoader
                     return;
 
                 GetHitUnit()->RemoveAllAuras();
-                GetHitUnit()->CastSpell(GetHitUnit(), SPELL_OVERCHARGED_POWER_GENERATOR, true); 
+                GetHitUnit()->CastSpell(GetHitUnit(), SPELL_OVERCHARGED_POWER_GENERATOR, true);
             }
 
             void Register() override

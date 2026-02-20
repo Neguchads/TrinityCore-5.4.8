@@ -135,7 +135,6 @@ class boss_altairus : public CreatureScript
                 else
                     _cur = creature + M_PI;
 
-
                 _up = _cur + 1.0f;
                 _down = _cur - 1.0f;
 
@@ -189,7 +188,7 @@ class boss_altairus : public CreatureScript
                             if (me->GetMap()->GetPlayers().isEmpty() || !_aircurrent)
                                 break;
 
-                            for (Map::PlayerList::const_iterator itr = me->GetMap()->GetPlayers().begin(); itr != me->GetMap()->GetPlayers().end(); ++itr) 
+                            for (Map::PlayerList::const_iterator itr = me->GetMap()->GetPlayers().begin(); itr != me->GetMap()->GetPlayers().end(); ++itr)
                             {
                                 if (CheckOrientation(itr->GetSource()->GetOrientation(), _aircurrent->GetOrientation()))
                                 {
@@ -220,7 +219,7 @@ class boss_altairus : public CreatureScript
                     me->SummonCreature(NPC_TWISTER, AlrairusCenter.GetPositionX() + frand(-20.0f, 25.0f), AlrairusCenter.GetPositionY() + frand(-28.0f, 28.0f), AlrairusCenter.GetPositionZ(), AlrairusCenter.GetOrientation());
             }
         };
-        
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return GetInstanceAI<boss_altairusAI>(creature);

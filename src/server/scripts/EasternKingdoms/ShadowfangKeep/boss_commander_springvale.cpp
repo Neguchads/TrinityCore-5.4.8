@@ -38,7 +38,7 @@ enum Spells
     SPELL_MALEFIC_STRIKE            = 93685,
     SPELL_SHIELD_OF_PERFIDIOUS      = 93693,
     SPELL_SHIELD_OF_PERFIDIOUS_DMG  = 93722,
-    SPELL_UNHOLY_POWER              = 93686, 
+    SPELL_UNHOLY_POWER              = 93686,
     SPELL_WORD_OF_SHAME             = 93852, // Heroic
     SPELL_SEPARATION_ANXIETY        = 96272, // Heroic
     SPELL_DESECRATION_AURA          = 93690,
@@ -85,7 +85,7 @@ enum Adds
     NOC_DESECRATION_BUNNY   = 50503,
 };
 
-const Position addSpawnPos[2] = 
+const Position addSpawnPos[2] =
 {
     {-250.85f, 2239.18f, 100.89f, 1.55f},
     {-249.71f, 2263.23f, 100.89f, 5.15f}
@@ -198,7 +198,7 @@ class boss_commander_springvale : public CreatureScript
                     if (unholypower->GetStackAmount() >= 3)
                     {
                         me->RemoveAurasDueToSpell(SPELL_UNHOLY_POWER);
-                        
+
                         if (IsHeroic())
                         {
                             switch (urand(0, 1))
@@ -244,11 +244,11 @@ class npc_springvale_wailing_guardsman : public CreatureScript
             {
                 events.Reset();
             }
-            
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 events.ScheduleEvent(EVENT_MORTAL_STRIKE, 3000);
-                events.ScheduleEvent(EVENT_SCREAMS_OF_THE_PAST, urand(15000, 20000));    
+                events.ScheduleEvent(EVENT_SCREAMS_OF_THE_PAST, urand(15000, 20000));
                 events.ScheduleEvent(EVENT_UNHOLY_EMPOWERMENT, 15000);
             }
 
@@ -261,7 +261,7 @@ class npc_springvale_wailing_guardsman : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                    
+
                 while(uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -310,14 +310,14 @@ class npc_springvale_tormented_officer : public CreatureScript
             {
                 events.Reset();
             }
-            
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 events.ScheduleEvent(EVENT_UNHOLY_EMPOWERMENT, 15000);
                 events.ScheduleEvent(EVENT_FORSAKEN_ABILITY, urand(10000, 30000));
                 events.ScheduleEvent(EVENT_SHIELD_WALL, urand(20000, 25000));
             }
-            
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
@@ -327,7 +327,7 @@ class npc_springvale_tormented_officer : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while(uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -336,7 +336,7 @@ class npc_springvale_tormented_officer : public CreatureScript
                             DoCast(SPELL_SHIELD_WALL);
                             break;
                         case EVENT_FORSAKEN_ABILITY:
-                            //todo: ����������� �����
+                            //todo: Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
                             break;
                         case EVENT_UNHOLY_EMPOWERMENT:
                             if (Creature* springvale = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_SPRINGVALE)))
@@ -372,7 +372,7 @@ class npc_springvale_desecration_bunny : public CreatureScript
                 DoCast(me, SPELL_DESECRATION_AURA);
             }
          };
-        
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return GetInstanceAI<npc_springvale_desecration_bunnyAI>(creature);

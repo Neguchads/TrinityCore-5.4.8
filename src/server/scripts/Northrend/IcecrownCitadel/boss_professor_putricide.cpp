@@ -293,7 +293,7 @@ class boss_professor_putricide : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -739,7 +739,7 @@ class boss_professor_putricide : public CreatureScript
                                 {
                                     const std::list<HostileReference*>& threatlist = me->GetThreatManager().getThreatList();
                                     for (std::list<HostileReference*>::const_iterator itr = threatlist.begin(); itr != threatlist.end(); ++itr)
-                                        if ((*itr)->getTarget()->GetTypeId() == TYPEID_PLAYER)
+                                        if ((*itr)->getTarget()->IsPlayer())
                                             targetList.push_back((*itr)->getTarget());
                                 }
 
@@ -898,7 +898,7 @@ class npc_putricide_ooze : public CreatureScript
                 if (!victim)
                     return;
 
-                if (victim->GetTypeId() != TYPEID_PLAYER)
+                if (!(victim->IsPlayer()))
                     return;
 
                 // Lock threat to the target of spell selection
@@ -1173,7 +1173,7 @@ class spell_putricide_ooze_channel : public SpellScriptLoader
             bool Load() override
             {
                 _target = nullptr;
-                return GetCaster()->GetTypeId() == TYPEID_UNIT && GetCaster()->IsAIEnabled;
+                return GetCaster()->IsCreature() && GetCaster()->IsAIEnabled;
             }
 
             void SelectTarget(std::list<WorldObject*>& targets)
@@ -1341,7 +1341,7 @@ class spell_putricide_unstable_experiment : public SpellScriptLoader
             void HandleScript(SpellEffIndex effIndex)
             {
                 PreventHitDefaultEffect(effIndex);
-                if (GetCaster()->GetTypeId() != TYPEID_UNIT)
+                if (!(GetCaster()->IsCreature()))
                     return;
 
                 uint32 stage = GetCaster()->ToCreature()->AI()->GetData(DATA_EXPERIMENT_STAGE);
@@ -1489,7 +1489,6 @@ class spell_putricide_unbound_plague : public SpellScriptLoader
                         return;
                     }
                 }
-
 
                 targets.remove_if(Trinity::UnitAuraCheck(true, SPELL_UNBOUND_PLAGUE));
                 Trinity::Containers::RandomResizeList(targets, 1);
@@ -1736,7 +1735,7 @@ class spell_putricide_mutation_init : public SpellScriptLoader
                 if (!GetExplTargetUnit())
                     return SPELL_FAILED_BAD_TARGETS;
 
-                if (GetExplTargetUnit()->GetTypeId() != TYPEID_PLAYER)
+                if (!(GetExplTargetUnit()->IsPlayer()))
                     return SPELL_FAILED_TARGET_NOT_PLAYER;
 
                 SpellCustomErrors extension = SPELL_CUSTOM_ERROR_NONE;
@@ -2001,7 +2000,7 @@ class spell_putricide_malleable_goo : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster() && GetCaster()->IsAIEnabled && GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster() && GetCaster()->IsAIEnabled && GetCaster()->IsCreature();
             }
 
             void FilterTargets(std::list<WorldObject*>& targets)

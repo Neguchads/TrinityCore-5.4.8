@@ -79,7 +79,7 @@ enum Spells
     SPELL_CONSUMING_SHROUD_DMG          = 110215,
     SPELL_TWILIGHT_FLAMES               = 108051,
     SPELL_TWILIGHT_FLAMES_AURA          = 108053,
-    
+
     // Twilight Assault Drake
     SPELL_TWILIGHT_BARRAGE              = 107286,
     SPELL_TWILIGHT_BARRAGE_DMG_1        = 107439,
@@ -207,7 +207,7 @@ class boss_warmaster_blackhorn: public CreatureScript
         struct boss_warmaster_blackhornAI : public BossAI
         {
             boss_warmaster_blackhornAI(Creature* creature) : BossAI(creature, DATA_BLACKHORN)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -235,7 +235,7 @@ class boss_warmaster_blackhorn: public CreatureScript
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 me->SetReactState(REACT_PASSIVE);
                 me->SetVisible(false);
-                
+
                 me->setActive(true);
 
                 uiWave = 0;
@@ -350,7 +350,6 @@ class boss_warmaster_blackhorn: public CreatureScript
                     if (creatures.size() == 2)
                         for (std::list<Creature*>::const_iterator itr = creatures.begin(); itr != creatures.end(); ++itr)
                             (*itr)->AI()->DoAction(ACTION_END_BATTLE);
-                    
 
                     DoCast(me, SPELL_VENGEANCE, true);
 
@@ -386,14 +385,14 @@ class boss_warmaster_blackhorn: public CreatureScript
                     pSwayze->AI()->DoAction(ACTION_BLACKHORN_DIED);
                     pSwayze->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                 }
-                        
+
                 DespawnCreatures(NPC_GORIONA);
                 DespawnCreatures(NPC_TWILIGHT_FLAMES);
             }
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -482,7 +481,7 @@ class boss_warmaster_blackhorn: public CreatureScript
                                     (*itr)->InterruptNonMeleeSpells(false);
                                     (*itr)->AI()->EnterEvadeMode();
                                 }
-                            
+
                             events.ScheduleEvent(EVENT_BERSERK, 4 * MINUTE * IN_MILLISECONDS);
                             events.ScheduleEvent(EVENT_DISRUPTING_ROAR, 10000);
                             events.ScheduleEvent(EVENT_SHOCKWAVE, urand(13000, 16000));
@@ -505,7 +504,7 @@ class boss_warmaster_blackhorn: public CreatureScript
 
                             me->SetReactState(REACT_PASSIVE);
                             me->AttackStop();
-                            
+
                             DoCastAOE(SPELL_SHOCKWAVE_AOE);
 
                             events.ScheduleEvent(EVENT_SHOCKWAVE, 23000);
@@ -580,7 +579,7 @@ class npc_warmaster_blackhorn_goriona: public CreatureScript
         struct npc_warmaster_blackhorn_gorionaAI : public ScriptedAI
         {
             npc_warmaster_blackhorn_gorionaAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -600,7 +599,7 @@ class npc_warmaster_blackhorn_goriona: public CreatureScript
             }
 
             void Reset() override
-            {           
+            {
                 events.Reset();
                 me->SetReactState(REACT_PASSIVE);
                 me->setActive(true);
@@ -716,7 +715,7 @@ class npc_warmaster_blackhorn_goriona: public CreatureScript
                             }
                             init.SetWalk(false);
                             init.Launch();
-                    
+
                             events.ScheduleEvent(EVENT_TWILIGHT_ONSLAUGHT, 46000);
                             if (IsHeroic())
                                 events.ScheduleEvent(EVENT_BROADSIDE, 57000);
@@ -754,9 +753,9 @@ class npc_warmaster_blackhorn_goriona: public CreatureScript
                             target = SelectTarget(SELECT_TARGET_RANDOM, 0, TwilightFlamesSelector());
                             if (!target)
                                 target = SelectTarget(SELECT_TARGET_RANDOM, 0, 0.0f, true);
-                            
+
                             if (target)
-                                me->CastSpell(target->GetPositionX(), target->GetPositionY(), target->GetPositionZ(), SPELL_TWILIGHT_FLAMES, true);                            
+                                me->CastSpell(target->GetPositionX(), target->GetPositionY(), target->GetPositionZ(), SPELL_TWILIGHT_FLAMES, true);
                             events.ScheduleEvent(EVENT_TWILIGHT_FLAMES, 9000);
                             break;
                         }
@@ -776,15 +775,15 @@ class npc_warmaster_blackhorn_goriona: public CreatureScript
             uint8 phase;
             InstanceScript* instance;
 
-            struct TwilightFlamesSelector 
+            struct TwilightFlamesSelector
             {
                 public:
-                    
+
                     TwilightFlamesSelector() { }
 
                     bool operator()(Unit const* target) const
                     {
-                        if (target->GetTypeId() != TYPEID_PLAYER)
+                        if (!(target->IsPlayer()))
                             return false;
                         if (target->FindNearestCreature(NPC_BLACKHORN, 14.0f))
                             return false;
@@ -807,7 +806,7 @@ class npc_warmaster_blackhorn_twilight_assault_drake: public CreatureScript
         struct npc_warmaster_blackhorn_twilight_assault_drakeAI : public ScriptedAI
         {
             npc_warmaster_blackhorn_twilight_assault_drakeAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -828,7 +827,7 @@ class npc_warmaster_blackhorn_twilight_assault_drake: public CreatureScript
             }
 
             void Reset() override
-            {           
+            {
                 me->SetReactState(REACT_PASSIVE);
                 me->setActive(true);
                 side = ((me->GetEntry() == NPC_TWILIGHT_ASSAULT_DRAKE_2) ? 1 : 0);
@@ -990,7 +989,7 @@ class npc_warmaster_blackhorn_twilight_elite_dreadblade_slayer: public CreatureS
         struct npc_warmaster_blackhorn_twilight_elite_dreadblade_slayerAI : public ScriptedAI
         {
             npc_warmaster_blackhorn_twilight_elite_dreadblade_slayerAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -1101,7 +1100,7 @@ class npc_warmaster_blackhorn_skyfire_harpoon_gun: public CreatureScript
         struct npc_warmaster_blackhorn_skyfire_harpoon_gunAI : public  ScriptedAI
         {
             npc_warmaster_blackhorn_skyfire_harpoon_gunAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->SetReactState(REACT_PASSIVE);
                 drakeEntry = 0;
                 SetCombatMovement(false);
@@ -1182,7 +1181,7 @@ class npc_warmaster_blackhorn_twilight_infiltrator: public CreatureScript
         struct npc_warmaster_blackhorn_twilight_infiltratorAI : public ScriptedAI
         {
             npc_warmaster_blackhorn_twilight_infiltratorAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -1212,7 +1211,7 @@ class npc_warmaster_blackhorn_twilight_infiltrator: public CreatureScript
                     point.z = infiltratorPos[i].GetPositionZ();
                     init.Path().push_back(point);
                 }
-                
+
                 init.SetWalk(false);
                 init.Launch();
 
@@ -1265,7 +1264,7 @@ class npc_warmaster_blackhorn_twilight_sapper: public CreatureScript
         struct npc_warmaster_blackhorn_twilight_sapperAI : public ScriptedAI
         {
             npc_warmaster_blackhorn_twilight_sapperAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_FEAR, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_ROOT, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_FREEZE, true);
@@ -1350,7 +1349,7 @@ class npc_warmaster_blackhorn_skyfire: public CreatureScript
         struct npc_warmaster_blackhorn_skyfireAI : public  ScriptedAI
         {
             npc_warmaster_blackhorn_skyfireAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->SetReactState(REACT_PASSIVE);
                 instance = me->GetInstanceScript();
                 bLowHealth = false;
@@ -1390,7 +1389,7 @@ class npc_warmaster_blackhorn_skyfire: public CreatureScript
             {
                 instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me);
             }
-            
+
         private:
             InstanceScript* instance;
             bool bLowHealth;
@@ -1497,13 +1496,13 @@ class npc_dragon_soul_sky_captain_swayze : public CreatureScript
         struct npc_dragon_soul_sky_captain_swayzeAI : public ScriptedAI
         {
             npc_dragon_soul_sky_captain_swayzeAI(Creature* creature) : ScriptedAI(creature), summons(me)
-            {             
+            {
                 me->setActive(true);
                 me->SetReactState(REACT_PASSIVE);
             }
 
             void Reset() override
-            {           
+            {
                 events.Reset();
                 me->SetReactState(REACT_PASSIVE);
                 me->setActive(true);
@@ -1684,7 +1683,7 @@ class npc_blade_rush_target : public CreatureScript
                 else
                     visualTimer -= diff;
             }
-            
+
         private:
             uint32 visualTimer;
             bool firstTime;
@@ -1801,10 +1800,10 @@ class spell_warmaster_blackhorn_blade_rush_dmg : public SpellScriptLoader
             {
                 public:
                     TargetCheck(Creature* owner) : _owner(owner) { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
-                        if (unit->GetTypeId() != TYPEID_PLAYER)
+                        if (!(unit->IsPlayer()))
                             return true;
 
                         if (npc_warmaster_blackhorn_twilight_elite_dreadblade_slayer::npc_warmaster_blackhorn_twilight_elite_dreadblade_slayerAI* dreadbladeAI = CAST_AI(npc_warmaster_blackhorn_twilight_elite_dreadblade_slayer::npc_warmaster_blackhorn_twilight_elite_dreadblade_slayerAI, _owner->GetAI()))
@@ -1868,7 +1867,7 @@ class spell_warmaster_blackhorn_consuming_shroud : public SpellScriptLoader
             {
                 AuraRemoveMode removeMode = GetTargetApplication()->GetRemoveMode();
                 if (removeMode == AURA_REMOVE_BY_DEATH)
-                    if (GetTarget()) 
+                    if (GetTarget())
                     {
                         int32 bp0 = aurEff->GetAmount();
                         GetTarget()->CastCustomSpell((Unit*)NULL, SPELL_CONSUMING_SHROUD_DMG, &bp0, NULL, NULL, true);

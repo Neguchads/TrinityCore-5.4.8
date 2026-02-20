@@ -141,7 +141,7 @@ class boss_baron_silverlaine : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     if (eventId == EVENT_VEIL_OF_SHADOW)

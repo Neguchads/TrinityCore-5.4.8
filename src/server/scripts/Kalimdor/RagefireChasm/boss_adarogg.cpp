@@ -45,7 +45,7 @@ class boss_adarogg : public CreatureScript
 
             uint32 m_InfernoTarget;
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 Reset();
             }
@@ -113,7 +113,7 @@ class boss_adarogg : public CreatureScript
                     m_InfernoTarget = data;
             }
 
-            void UpdateAI(uint32 diff) override  
+            void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;

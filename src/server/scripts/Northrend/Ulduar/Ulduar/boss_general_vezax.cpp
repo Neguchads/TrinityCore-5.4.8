@@ -130,7 +130,7 @@ class boss_general_vezax : public CreatureScript
 
             void JustEngagedWith(Unit* who) override
             {
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                 {
                     _EnterEvadeMode();
                     return;
@@ -209,7 +209,7 @@ class boss_general_vezax : public CreatureScript
 
             void SpellHitTarget(Unit* who, SpellInfo const* spell) override
             {
-                if (who && who->GetTypeId() == TYPEID_PLAYER && spell->Id == SPELL_SHADOW_CRASH_HIT)
+                if (who && who->IsPlayer() && spell->Id == SPELL_SHADOW_CRASH_HIT)
                 {
                     me->GetMap()->SetWorldState(WORLDSTATE_SHADOW_DODGER, 0);
                     _shadowDodger = false;
@@ -294,7 +294,7 @@ class boss_general_vezax : public CreatureScript
             void DoAction(int32 action) override
             {
                 switch (action)
-                {   
+                {
                     case ACTION_VAPORS_DIE:
                         --_vaporsAlive;
                         break;
@@ -718,7 +718,7 @@ class spell_aura_of_despair_aura : public SpellScriptLoader // Spell 62692
 
             void OnApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                if (GetTarget()->GetTypeId() != TYPEID_PLAYER)
+                if (!(GetTarget()->IsPlayer()))
                     return;
 
                 Player* target = GetTarget()->ToPlayer();
@@ -731,7 +731,7 @@ class spell_aura_of_despair_aura : public SpellScriptLoader // Spell 62692
 
             void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                if (GetTarget()->GetTypeId() != TYPEID_PLAYER)
+                if (!(GetTarget()->IsPlayer()))
                     return;
 
                 Player* target = GetTarget()->ToPlayer();

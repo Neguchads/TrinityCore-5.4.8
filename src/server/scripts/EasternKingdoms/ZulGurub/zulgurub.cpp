@@ -43,7 +43,7 @@ enum Options
 };
 
 enum Creatures
-{    
+{
     NPC_RITUAL_TIKI_MASK = 52364
 };
 
@@ -118,14 +118,14 @@ class npc_cache_of_madness_artifact : public CreatureScript
 {
     public:
         npc_cache_of_madness_artifact() : CreatureScript("npc_cache_of_madness_artifact") { }
-        
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
             if (action == GOSSIP_ACTION_INFO_DEF + 1)
             {
                 player->SEND_GOSSIP_MENU(GOSSIP_TEXT_ARTIFACT_ACTIVATED, creature->GetGUID());
-                if (npc_cache_of_madness_artifactAI* ai = (npc_cache_of_madness_artifactAI*)creature->GetAI()) 
+                if (npc_cache_of_madness_artifactAI* ai = (npc_cache_of_madness_artifactAI*)creature->GetAI())
                 {
                     ai->events.SetPhase(1);
                     ai->events.ScheduleEvent(EVENT_ARTIFACT_SUMMON, 5 * IN_MILLISECONDS);

@@ -184,7 +184,7 @@ class boss_tyrannus : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -432,7 +432,7 @@ class spell_tyrannus_overlord_brand : public SpellScriptLoader
 
             void OnApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                if (GetTarget()->GetTypeId() != TYPEID_PLAYER)
+                if (!(GetTarget()->IsPlayer()))
                     return;
 
                 Player* pTarget = GetTarget()->ToPlayer();
@@ -444,7 +444,7 @@ class spell_tyrannus_overlord_brand : public SpellScriptLoader
 
             void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                if (GetTarget()->GetTypeId() != TYPEID_PLAYER)
+                if (!(GetTarget()->IsPlayer()))
                     return;
 
                 GetTarget()->IsAIEnabled = oldAIState;
@@ -481,7 +481,7 @@ class spell_tyrannus_mark_of_rimefang : public SpellScriptLoader
             void OnApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
                 Unit* caster = GetCaster();
-                if (!caster || caster->GetTypeId() != TYPEID_UNIT)
+                if (!caster || !caster->IsCreature())
                     return;
 
                 if (InstanceScript* instance = caster->GetInstanceScript())
@@ -654,7 +654,6 @@ class npc_icy_cave_guardian : public CreatureScript
             return new npc_icy_cave_guardianAI(creature);
         }
 };
-
 
 void AddSC_boss_tyrannus()
 {

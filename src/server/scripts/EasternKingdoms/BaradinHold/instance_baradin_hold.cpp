@@ -37,12 +37,12 @@ class instance_baradin_hold : public InstanceMapScript
                 SetBossNumber(MAX_ENCOUNTER);
                 LoadDoorData(doorData);
             }
-            
+
             bool SetBossState(uint32 type, EncounterState state) override
             {
                 if (!InstanceScript::SetBossState(type, state))
                     return false;
-                
+
                 return true;
             }
 

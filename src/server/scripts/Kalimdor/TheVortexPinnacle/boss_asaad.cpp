@@ -33,7 +33,7 @@ enum Spells
     SPELL_GROUNDING_FIELD_VISUAL_BEAMS       = 87517,
 
     SPELL_SUPREMACY_OF_THE_STORM             = 86930,
-    
+
     SPELL_SUPREMACY_OF_THE_STORM_DUMMY       = 86715,
     SPELL_SUPREMACY_OF_THE_STORM_DMG         = 87553,
 
@@ -74,7 +74,7 @@ const Position fieldPos[4] =
     { -639.23f, 488.13f, 656.63f, 0.0f  },
 };
 
-const Position starPos[6] = 
+const Position starPos[6] =
 {
     { -583.77f, 516.56f, 649.51f, 5.65f },
     { -591.65f, 476.39f, 649.19f, 4.39f },
@@ -153,7 +153,6 @@ class boss_asaad : public CreatureScript
                 if (instance)
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
             }
-            
 
             void UpdateAI(uint32 diff) override
             {
@@ -194,7 +193,7 @@ class boss_asaad : public CreatureScript
                             if (_field1 = me->SummonCreature(NPC_UNSTABLE_GROUNDING_FIELD, fieldPos[0]))
                                 DoCast(_field1, SPELL_UNSTABLE_GROUNDING_FIELD);
                             events.ScheduleEvent(EVENT_FIELD_4, 20000);
-                            events.ScheduleEvent(EVENT_FIELD_1, 6000); 
+                            events.ScheduleEvent(EVENT_FIELD_1, 6000);
                             break;
                         case EVENT_FIELD_1:
                             if (_field2 = me->SummonCreature(NPC_UNSTABLE_GROUNDING_FIELD, fieldPos[1]))
@@ -235,7 +234,7 @@ class boss_asaad : public CreatureScript
                                 _field3->DespawnOrUnsummon();
                             bField = false;
                             me->SetCanFly(false);
-                            me->SetDisableGravity(false);;
+                            me->SetDisableGravity(false);
                             me->SetReactState(REACT_AGGRESSIVE);
                             AttackStart(me->GetVictim());
                             events.ScheduleEvent(EVENT_FIELD, 45000);

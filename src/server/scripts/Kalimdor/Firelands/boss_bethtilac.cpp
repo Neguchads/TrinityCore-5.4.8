@@ -55,8 +55,8 @@ enum Adds
     NPC_CINDERWEB_SPINNER       = 52524, // 98858, 98958
     NPC_CINDERWEB_DRONE         = 52581, // 99211
     NPC_CINDERWEB_SPIDERLING    = 52447,
-    NPC_ENGORGED_BROODLING      = 53745, // 99982 
-    NPC_SPIDERWEB_FILAMENT      = 53082, // 98149 
+    NPC_ENGORGED_BROODLING      = 53745, // 99982
+    NPC_SPIDERWEB_FILAMENT      = 53082, // 98149
     NPC_CRACKLING_FLAME         = 53433, // 98570
     NPC_SPIDERLING_STALKER      = 53178,
     NPC_STICKY_WEBBING          = 53492,
@@ -99,7 +99,7 @@ enum Other
 #define GROUND_HEIGHT 74.05f
 
 const Position highPos = { 75.68f, 397.199f, 110.0f, 3.63f };
-const Position addsPos[9] = 
+const Position addsPos[9] =
 {
     { 24.691f,  298.297f, 81.54f,    0.0f  }, // spiderling
     { 134.570f, 360.037f, 85.420f,   0.0f  }, // spiderling
@@ -107,12 +107,12 @@ const Position addsPos[9] =
     { 11.773f,  479.865f, 78.51f,    0.0f  }, // Drone
     { 48.428f,  376.85f,  106.8785f, 0.0f  }, // Spiderweb Filament
     { 41.594f,  378.043f, 74.05f,    0.0f  }, // center of the room
-    { 55.301f,  375.729f, 111.0f,    0.94f }, 
+    { 55.301f,  375.729f, 111.0f,    0.94f },
     { 75.372f,  374.039f, 111.0f,    2.18f },
     { 59.665f,  406.437f, 111.0f,    5.02f }
 };
 
-struct PositionSelector 
+struct PositionSelector
 {
     public:
         PositionSelector(bool b, uint32 spellId) : _b(b), _spellId(spellId) { }
@@ -122,7 +122,7 @@ struct PositionSelector
             if (_spellId && target->HasAura(_spellId))
                 return false;
 
-            return _b? (target->GetPositionZ() < 100.0f): (target->GetPositionZ() > 100.0f); 
+            return _b? (target->GetPositionZ() < 100.0f): (target->GetPositionZ() > 100.0f);
         }
 
     private:
@@ -236,7 +236,7 @@ class boss_bethtilac : public CreatureScript
 
                 AddSmoulderingAura(me);
             }
-            
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim() || !CheckInArea(diff, 5764))
@@ -310,8 +310,8 @@ class boss_bethtilac : public CreatureScript
                             {
                                 DoCastAOE(SPELL_EMBER_FLARE_2);
                             }
-                            
-                            events.ScheduleEvent(EVENT_EMBER_FLARE, urand(6000, 7000)); 
+
+                            events.ScheduleEvent(EVENT_EMBER_FLARE, urand(6000, 7000));
                             break;
                         case EVENT_FILAMENT:
                             for (uint8 i = 0; i < RAID_MODE(2, 4, 2, 4); i++)
@@ -377,7 +377,7 @@ class boss_bethtilac : public CreatureScript
                                     events.RescheduleEvent(EVENT_EMBER_FLARE, 15000);
                                     events.ScheduleEvent(EVENT_GO_DOWN, 10000);
                                 }
-                                
+
                                 DoCastAOE(SPELL_SMOLDERING_DEVASTATION);
                             }
                             else
@@ -471,7 +471,7 @@ class npc_bethtilac_spiderweb_filament : public CreatureScript
 
             void OnSpellClick(Unit* clicker, bool& /*result*/) override
             {
-                if (clicker->GetTypeId() == TYPEID_PLAYER)
+                if (clicker->IsPlayer())
                 {
                     uint32 i = urand(6, 8);
                     clicker->NearTeleportTo(addsPos[i].GetPositionX(), addsPos[i].GetPositionY(), addsPos[i].GetPositionZ(), addsPos[i].GetOrientation());
@@ -495,7 +495,7 @@ class npc_bethtilac_spiderweb_filament : public CreatureScript
                         pSpinner->CastSpell(pSpinner, SPELL_TEMPERAMENT, true);
                         float z = pSpinner->GetMap()->GetHeight(pSpinner->GetPositionX(), pSpinner->GetPositionY(), pSpinner->GetPositionZ() - 5.0f, true);
                         //float z = GROUND_HEIGHT;
-                        pSpinner->GetMotionMaster()->MovePoint(0, pSpinner->GetPositionX(), pSpinner->GetPositionY(), z + 5.0f); 
+                        pSpinner->GetMotionMaster()->MovePoint(0, pSpinner->GetPositionX(), pSpinner->GetPositionY(), z + 5.0f);
                     }
                 }
                 else if (summoner->GetEntry() == NPC_SPIDERWEB_FILAMENT)
@@ -503,7 +503,7 @@ class npc_bethtilac_spiderweb_filament : public CreatureScript
                     DoCast(me, SPELL_SPIDERWEB_FILAMENT_DOWN, true);
                     float z = me->GetMap()->GetHeight(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ() - 5.0f, true, 100.0f);
                     //float z = GROUND_HEIGHT;
-                    me->GetMotionMaster()->MovePoint(POINT_DOWN, me->GetPositionX(), me->GetPositionY(), z); 
+                    me->GetMotionMaster()->MovePoint(POINT_DOWN, me->GetPositionX(), me->GetPositionY(), z);
                 }
             }
 
@@ -879,7 +879,7 @@ class npc_bethtilac_cinderweb_spiderling : public CreatureScript
                                     drones.sort(Trinity::DistanceCompareOrderPred(me));
                                 if (drones.size())
                                 {
-                                    pDrone = drones.front();;
+                                    pDrone = drones.front();
                                     me->GetMotionMaster()->MovementExpired(false);
                                     me->GetMotionMaster()->MoveFollow(pDrone, 0.0f, 0.0f);
                                 }

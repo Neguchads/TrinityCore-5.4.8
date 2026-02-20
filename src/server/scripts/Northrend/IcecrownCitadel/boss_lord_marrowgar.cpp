@@ -95,14 +95,14 @@ enum Actions
     ACTION_TALK_ENTER_ZONE        = 2
 };
 
-class BoneSpikeTargetSelector 
+class BoneSpikeTargetSelector
 {
     public:
         BoneSpikeTargetSelector(UnitAI* ai) : _ai(ai) { }
 
         bool operator()(Unit* unit) const
         {
-            if (unit->GetTypeId() != TYPEID_PLAYER)
+            if (!(unit->IsPlayer()))
                 return false;
 
             if (unit->HasAura(SPELL_IMPALED))
@@ -119,14 +119,14 @@ class BoneSpikeTargetSelector
         UnitAI* _ai;
 };
 
-class BoneStormTargetSelector 
+class BoneStormTargetSelector
 {
     public:
         BoneStormTargetSelector(WorldObject const* source, bool ignoreDistance) : _source(source), _ignoreDistance(ignoreDistance) { }
 
         bool operator()(Unit* unit) const
         {
-            return unit->GetTypeId() == TYPEID_PLAYER && unit->IsAlive() && unit->GetPositionX() < -337.0f && (_ignoreDistance || _source->GetDistance2d(unit) > 8.0f);
+            return unit->IsPlayer() && unit->IsAlive() && unit->GetPositionX() < -337.0f && (_ignoreDistance || _source->GetDistance2d(unit) > 8.0f);
         }
 
     private:
@@ -208,7 +208,7 @@ class boss_lord_marrowgar : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -480,7 +480,7 @@ class npc_coldflame : public CreatureScript
 
             void IsSummonedBy(Unit* owner) override
             {
-                if (owner->GetTypeId() != TYPEID_UNIT || !owner->GetAI())
+                if (!(owner->IsCreature() || !owner->GetAI()))
                     return;
 
                 float ang;
@@ -788,7 +788,7 @@ class spell_marrowgar_bone_spike_graveyard : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT && GetCaster()->IsAIEnabled;
+                return GetCaster()->IsCreature() && GetCaster()->IsAIEnabled;
             }
 
             SpellCastResult CheckCast()

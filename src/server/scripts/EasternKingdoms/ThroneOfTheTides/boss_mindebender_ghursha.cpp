@@ -195,7 +195,7 @@ class boss_erunak_stonespeaker : public CreatureScript
                             events.ScheduleEvent(EVENT_MAGMA_SPLASH, 13000);
                             break;
                     }
-                }            
+                }
                 DoMeleeAttackIfReady();
             }
         };
@@ -301,7 +301,7 @@ class boss_mindbender_ghursha : public CreatureScript
                             events.ScheduleEvent(EVENT_UNRELENTING_AGONY, 30000);
                             break;
                     }
-                }        
+                }
                 DoMeleeAttackIfReady();
             }
 

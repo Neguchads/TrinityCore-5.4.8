@@ -117,7 +117,7 @@ enum eSpells
     SPELL_ARCANE_BOMB_COSMETIC          = 113848,  // cosmetic at ground
     SPELL_ARCNE_BOMB_COSMETIC_SPHERE    = 109122,
     SPELL_FILL_PHYLACTERY               = 111441, // cosmetic implosion
-    
+
     // Rattlegore
     SPELL_BONEWEAVING                   = 113647, // cosmetic
     SPELL_BONE_SHARDS                   = 113629,

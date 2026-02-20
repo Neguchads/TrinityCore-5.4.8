@@ -32,7 +32,7 @@ class instance_lost_city_of_the_tolvir : public InstanceMapScript
 
         struct instance_lost_city_of_the_tolvir_InstanceMapScript : public InstanceScript
         {
-            instance_lost_city_of_the_tolvir_InstanceMapScript(InstanceMap* map) : InstanceScript(map) 
+            instance_lost_city_of_the_tolvir_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
             {
                 SetBossNumber(MAX_ENCOUNTER);
 
@@ -61,7 +61,7 @@ class instance_lost_city_of_the_tolvir : public InstanceMapScript
             void OnCreatureCreate(Creature* creature) override
             {
                 bool siamatAvailable = (GetBossState(DATA_GENERAL_HUSAM)==DONE) && (GetBossState(DATA_LOCKMAW)==DONE) && (GetBossState(DATA_HIGH_PROPHET_BARIM)==DONE);
-            
+
                 switch (creature->GetEntry())
                 {
                     case BOSS_GENERAL_HUSAM:

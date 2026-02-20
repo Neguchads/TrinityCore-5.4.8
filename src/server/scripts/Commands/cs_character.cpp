@@ -43,7 +43,7 @@ public:
         {
             { "load",           SEC_GAMEMASTER, true,   &HandlePDumpLoadCommand,                },
             { "write",          SEC_GAMEMASTER, true,   &HandlePDumpWriteCommand,               },
-            
+
         };
         static std::vector<ChatCommand> characterDeletedCommandTable =
         {

@@ -49,9 +49,9 @@ enum Spells
     SPELL_TWILIGHT_METEORITE_MARK                     = 88518,
     SPELL_DEEP_BREATH                                 = 86059,
     SPELL_TWILIGHT_FLAMES_TRIGGER                     = 86194,
-    SPELL_TWILIGHT_FLAME_DMG_1                        = 86199, // ���� �� �������� ����
-    SPELL_TWILIGHT_FLAME_DMG_2                        = 86228, // ���� �� ����������� ����
-    SPELL_COSMETIC_TWILIGHT_BREATH                    = 78954, // �������� ��������
+    SPELL_TWILIGHT_FLAME_DMG_1                        = 86199, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    SPELL_TWILIGHT_FLAME_DMG_2                        = 86228, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    SPELL_COSMETIC_TWILIGHT_BREATH                    = 78954, // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
 
     // Theralion
     SPELL_ENGULFING_MAGIC                             = 86607,
@@ -72,8 +72,8 @@ enum Spells
 
     // twilight ream & mobs spells
     SPELL_TWILIGHT_PROTECTION_BUFF                    = 86415,
-    SPELL_TWILIGHT_SHIFT_AURA_1                       = 86202, // �� ��������� �������
-    SPELL_TWILIGHT_SHIFT_AURA_2                       = 88436, // �� ����������
+    SPELL_TWILIGHT_SHIFT_AURA_1                       = 86202, // Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
+    SPELL_TWILIGHT_SHIFT_AURA_2                       = 88436, // Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
     SPELL_COLLAPSING_TWILIGHT_PORTAL_VISUAL           = 86291,
     SPELL_UNSTABLE_TWILIGHT_VISUAL                    = 86302,
     SPELL_UNSTABLE_TWILIGHT_DMG                       = 86305,
@@ -98,13 +98,13 @@ enum Adds
     NPC_THERALION_FLIGHT_TARGET_STALKER     = 46364,
     NPC_CONVECTIVE_FLAMES                   = 46588,
     NPC_TWILIGHT_FLAMES                     = 40718,
-    NPC_UNSTABLE_TWILIGHT                   = 46304, 
+    NPC_UNSTABLE_TWILIGHT                   = 46304,
     NPC_COLLAPSING_TWILIGHT_PORTAL          = 46301,
     NPC_DEVOURING_FLAMES                    = 48798,
     NPC_TWILIGHT_SENTRY                     = 50008,
     NPC_TWILIGHT_RIFT                       = 50014,
     NPC_VALIONA_STALKER                     = 46147, // ?
-    NPC_FLAME_BREATH_TARGET_STALKER         = 46296, 
+    NPC_FLAME_BREATH_TARGET_STALKER         = 46296,
 };
 
 enum Action
@@ -145,7 +145,7 @@ enum Events
     EVENT_DEEP_BREATH                   = 13,
     EVENT_VALIONA_ON                    = 14,
     EVENT_TWILIGHT_METEORITE            = 15,
-    EVENT_VALIONA_1                     = 16, 
+    EVENT_VALIONA_1                     = 16,
     EVENT_VALIONA_2                     = 17,
     EVENT_VALIONA_3                     = 18,
     EVENT_VALIONA_4                     = 19,
@@ -168,7 +168,7 @@ enum Events
 const Position valionatheralionlandPos = { -740.86f, -681.37f, 831.89f };
 const Position valionatheralionflightPos = { -740.86f, -681.37f, 861.89f };
 
-const Position valionadeepbreathPos[2][3] = 
+const Position valionadeepbreathPos[2][3] =
 {
     {
         {-760.49f, -770.87f, 866.68f, 6.17f},
@@ -182,7 +182,7 @@ const Position valionadeepbreathPos[2][3] =
     },
 };
 
-const Position valionatwilightflamePos[3][25] = 
+const Position valionatwilightflamePos[3][25] =
 {
     {
         { -759.53f, -603.89f, 836.68f, 0.0f },
@@ -269,7 +269,7 @@ const Position valionatwilightflamePos[3][25] =
 
 const Position twilightportalPos = { -745.01f, -688.87f, 831.89f, 0.0f };
 
-const Position unstabletwilightPos[10] = 
+const Position unstabletwilightPos[10] =
 {
     { -721.71f, -683.42f, 835.89f, 4.64f },
     { -720.54f, -664.70f, 835.89f, 4.64f },
@@ -350,7 +350,7 @@ class boss_theralion : public CreatureScript
             {
                 Talk(SAY_THERALION_KILL);
             }
-            
+
             void DoAction(int32 action) override
             {
                 switch (action)
@@ -389,7 +389,7 @@ class boss_theralion : public CreatureScript
             {
                 summons.Despawn(summon);
             }
-            
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 instance->SetData(DATA_HEALTH_VALIONA_THERALION, me->GetMaxHealth());
@@ -426,7 +426,7 @@ class boss_theralion : public CreatureScript
                 if (Creature* pValiona = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_VALIONA)))
                     killer->Kill(pValiona);
             }
-            
+
             void MovementInform(uint32 type, uint32 pointId) override
             {
                 if (type == POINT_MOTION_TYPE)
@@ -452,7 +452,7 @@ class boss_theralion : public CreatureScript
                     }
                 }
             }
-            
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
@@ -513,7 +513,7 @@ class boss_theralion : public CreatureScript
                                 hasInitializeTwilight = true;
                                 events.ScheduleEvent(EVENT_SPAWN_TWILIGHT_FIENDS, 1 * IN_MILLISECONDS);
                             }
-                            
+
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
                                 me->SummonCreature(NPC_DAZZLING_DESTRUCTION_STALKER, target->GetPositionX(), target->GetPositionY(), target->GetPositionZ(), 0.0f, TEMPSUMMON_TIMED_DESPAWN, me->GetDistance(target) / 15 * 1000 + 7000);
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
@@ -540,7 +540,7 @@ class boss_theralion : public CreatureScript
                             DoCast(me, SPELL_DAZZLING_DESTRUCTION);
                             events.ScheduleEvent(EVENT_THERALION_ON, 6000);
                             break;
-                         case EVENT_THERALION_ON:      
+                         case EVENT_THERALION_ON:
                             me->AI()->DoAction(ACTION_THERALION_FLY_STOP);
                             break;
                          case EVENT_SPAWN_TWILIGHT_FIENDS:
@@ -548,7 +548,7 @@ class boss_theralion : public CreatureScript
                              events.ScheduleEvent(EVENT_SPAWN_TWILIGHT_FIENDS, 15 * IN_MILLISECONDS); // doesn`t know real algorythm
                              break;
                     }
-                }            
+                }
                 DoMeleeAttackIfReady();
             }
         };
@@ -591,7 +591,7 @@ class boss_valiona : public CreatureScript
             {
                 _Reset();
 
-                // ������ ����� ������� ���� ���
+                // Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
 
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_TWILIGHT_PROTECTION_BUFF);
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_TWILIGHT_SHIFT_AURA_1);
@@ -625,12 +625,12 @@ class boss_valiona : public CreatureScript
                 me->LowerPlayerDamageReq(damage);
                 instance->SetData(DATA_HEALTH_VALIONA_THERALION, me->GetHealth() > damage ? me->GetHealth() - damage : 0);
             }
-            
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_VALIONA_KILL);
             }
-            
+
             void JustReachedHome() override
             {
                 _JustReachedHome();
@@ -655,7 +655,7 @@ class boss_valiona : public CreatureScript
                 if (Creature* Chogall = me->SummonCreature(NPC_CHOGALL_DLG, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), 1, TEMPSUMMON_DEAD_DESPAWN, 0))
                     Chogall->AI()->DoAction(ACTION_AT_VALIONA_THERALION_END);
             }
-            
+
             void JustSummoned(Creature* summon) override
             {
                 summons.Summon(summon);
@@ -714,7 +714,7 @@ class boss_valiona : public CreatureScript
                     events.ScheduleEvent(EVENT_TWILIGHT_SENTRY, urand(3000, 7000));
                     events.ScheduleEvent(EVENT_TWILIGHT_SHIFT_STACK, urand(10000, 20000));
                 }
-                
+
                 if (Creature* pTheralion = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_THERALION)))
                     pTheralion->SetInCombatWithZone();
                 for (uint8 i = 0; i < 10; i++)
@@ -728,8 +728,7 @@ class boss_valiona : public CreatureScript
                 instance->SetBossState(DATA_VALIONA_THERALION, IN_PROGRESS);
                 DoZoneInCombat();
             }
-             
-             
+
             void MovementInform(uint32 type, uint32 pointId) override
             {
                 if (type == POINT_MOTION_TYPE)
@@ -749,7 +748,7 @@ class boss_valiona : public CreatureScript
                             AttackStart(me->GetVictim());
                             break;
                         case POINT_FLY:
-                            events.ScheduleEvent(EVENT_TWILIGHT_METEORITE, urand(6000, 8000)); 
+                            events.ScheduleEvent(EVENT_TWILIGHT_METEORITE, urand(6000, 8000));
                             events.ScheduleEvent(EVENT_DEEP_BREATH, 98000);
                             break;
                         case POINT_VALIONA_1:
@@ -884,7 +883,7 @@ class boss_valiona : public CreatureScript
                             break;
                     }
                 }
-                DoMeleeAttackIfReady();      
+                DoMeleeAttackIfReady();
             }
         };
 
@@ -982,7 +981,7 @@ class npc_unstable_twilight : public CreatureScript
                         case EVENT_UNSTABLE_TWILIGHT:
                             if (Unit* target = me->SelectNearestTarget(3.0f))
                             {
-                                if (target->GetTypeId() == TYPEID_PLAYER && !target->HasAura(SPELL_TWILIGHT_PROTECTION_BUFF))
+                                if (target->IsPlayer() && !target->HasAura(SPELL_TWILIGHT_PROTECTION_BUFF))
                                 {
                                     DoCast(me, SPELL_UNSTABLE_TWILIGHT_DMG);
                                     events.ScheduleEvent(EVENT_UNSTABLE_TWILIGHT_DESPAWN, 800);
@@ -1214,7 +1213,7 @@ struct npc_theralion_twilight_fiend : public ScriptedAI
     TaskScheduler scheduler;
     float x, y, oldX, oldY, ori, dist;
 
-    void Reset() override 
+    void Reset() override
     {
         ori = 0.0f;
         oldX = me->GetPositionX();
@@ -1268,7 +1267,7 @@ class spell_valiona_blackout : public SpellScriptLoader
                     GetTargetApplication()->GetRemoveMode() == AURA_REMOVE_BY_EXPIRE)
                     GetTarget()->CastSpell(GetTarget(), SPELL_BLACKOUT_DMG, true);
             }
-            
+
             void Register() override
             {
                 OnEffectRemove += AuraEffectRemoveFn(spell_valiona_blackout_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_SCHOOL_HEAL_ABSORB, AURA_EFFECT_HANDLE_REAL);
@@ -1297,7 +1296,7 @@ class spell_valiona_twilight_meteorite : public SpellScriptLoader
 
                 GetCaster()->CastSpell(GetTarget(), SPELL_TWILIGHT_METEORITE, false);
             }
-            
+
             void Register() override
             {
                 OnEffectApply += AuraEffectApplyFn(spell_valiona_twilight_meteorite_AuraScript::OnApply, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
@@ -1319,13 +1318,12 @@ class spell_valiona_twilight_flame_dmg_1 : public SpellScriptLoader
         {
             PrepareSpellScript(spell_valiona_twilight_flame_dmg_1_SpellScript);
 
-
             void HandleScript(SpellEffIndex /*effIndex*/)
             {
                 if (!GetCaster() || !GetHitUnit())
                     return;
 
-                if (GetHitUnit()->GetTypeId() == TYPEID_PLAYER)
+                if (GetHitUnit()->IsPlayer())
                 {
                     GetHitUnit()->AddAura(SPELL_TWILIGHT_SHIFT_AURA_1, GetHitUnit());
                     GetHitUnit()->AddAura(SPELL_TWILIGHT_PROTECTION_BUFF, GetHitUnit());
@@ -1411,7 +1409,7 @@ class spell_theralion_dazzling_destruction_dmg : public SpellScriptLoader
                 if (!GetCaster() || !GetHitUnit())
                     return;
 
-                if (GetHitUnit()->GetTypeId() == TYPEID_PLAYER)
+                if (GetHitUnit()->IsPlayer())
                 {
                     GetHitUnit()->AddAura(SPELL_TWILIGHT_SHIFT_AURA_2, GetHitUnit());
                     GetHitUnit()->AddAura(SPELL_TWILIGHT_PROTECTION_BUFF, GetHitUnit());
@@ -1513,7 +1511,7 @@ class spell_shifting_reality : public SpellScriptLoader
             {
                 if (!GetCaster() || !GetHitUnit())
                     return;
-                
+
                 GetHitUnit()->AddAura(SPELL_TWILIGHT_SHIFT_AURA_1, GetHitUnit());
                 GetHitUnit()->AddAura(SPELL_TWILIGHT_PROTECTION_BUFF, GetHitUnit());
             }

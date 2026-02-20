@@ -258,7 +258,7 @@ class boss_master_snowdrift : public CreatureScript
                         if (hurlChiCnt < 3)
                         {
                             me->SetVisible(false);
-                            me->CastSpell(me, SPELL_SMOKE_BOMB, true);   
+                            me->CastSpell(me, SPELL_SMOKE_BOMB, true);
                             summons.DespawnEntry(NPC_SNOWDRIFT_CLONE);
                             nonCombatEvents.ScheduleEvent(EVENT_DISAPPEAR, 2 * IN_MILLISECONDS);
 
@@ -269,11 +269,11 @@ class boss_master_snowdrift : public CreatureScript
                         {
                             phase = PHASE_FIGHT_3;
 
-                            Talk(TALK_PHASE_3);        
+                            Talk(TALK_PHASE_3);
                             Talk(TALK_P_3_EMOTE);
                             me->SetReactState(REACT_AGGRESSIVE);
                             DoZoneInCombat();
-                            me->setRegeneratingHealth(true);                  
+                            me->setRegeneratingHealth(true);
                             events.ScheduleEvent(urand(EVENT_PARRY_STANCE, EVENT_TORNADO_SLAM), urand(12, 15) * IN_MILLISECONDS);
                             nonCombatEvents.Reset();
 
@@ -393,7 +393,7 @@ class boss_master_snowdrift : public CreatureScript
                             break;
                         case EVENT_OUTRO_END:
                             me->SetFacingTo(4.114f);
-                            me->SetReactState(REACT_AGGRESSIVE);                       
+                            me->SetReactState(REACT_AGGRESSIVE);
                             me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                             if (instance)
                             {
@@ -406,7 +406,7 @@ class boss_master_snowdrift : public CreatureScript
                                srand(time(0));
                                std::random_device rd;
                                std::mt19937 g(rd());
-                               std::shuffle(randIndex, randIndex + 3, g);                               
+                               std::shuffle(randIndex, randIndex + 3, g);
                                for (int i = 0; i < 3; ++i)
                                {
                                    if (!isBossSummoned)
@@ -685,7 +685,7 @@ class npc_spm_pandaren_referee : public CreatureScript
             void DoAction(int32 actionId) override
             {
                 switch (actionId)
-                { 
+                {
                     case ACTION_START_EVENT:
                         DoEvent(eventPhase);
                         break;
@@ -738,7 +738,7 @@ class npc_spm_pandaren_referee : public CreatureScript
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
-                    { 
+                    {
                         case EVENT_INIT_EVENT:
                             DoEvent(eventPhase);
                             break;
@@ -827,7 +827,7 @@ class npc_snowdrift_novice : public CreatureScript
             bool stillInFight;
             bool hasReward;
             bool allowReward;
-            
+
             void InitializeAI() override
             {
                 instance = me->GetInstanceScript();
@@ -1007,12 +1007,12 @@ class npc_snowdrift_miniboss : public CreatureScript
 
             SummonList summons;
             EventMap events, nonCombatEvents;
-            InstanceScript* instance;       
+            InstanceScript* instance;
             bool stillInFight;
 
             void PassengerBoarded(Unit* who, int8 seatId, bool apply) override
             {
-                if (who->GetTypeId() != TYPEID_UNIT)
+                if (!(who->IsCreature()))
                     return;
 
                 if (apply)
@@ -1244,7 +1244,7 @@ class npc_snowdrift_fireball : public CreatureScript
         enum eSpells
         {
             SPELL_BALL_OF_FIRE_BLUE = 106534,
-            SPELL_BALL_OF_FIRE_RED  = 106535 
+            SPELL_BALL_OF_FIRE_RED  = 106535
         };
 
         enum eEvents
@@ -1399,7 +1399,7 @@ class spell_snowdrift_ball_of_fire : public SpellScriptLoader
                                     owner->SetFacingToObject(player);
                                     owner->SetOrientation(owner->GetAngle(player));
                                     break;
-                                }                            
+                                }
                             }
                         }
                     }
@@ -1620,7 +1620,7 @@ class spell_snowdrift_parry_stance : public SpellScriptLoader
                 OnEffectProc += AuraEffectProcFn(spell_snowdrift_parry_stance_AuraScript::HanleOnProc, EFFECT_0, SPELL_AURA_DUMMY);
             }
         };
-         
+
         AuraScript* GetAuraScript() const override
         {
             return new spell_snowdrift_parry_stance_AuraScript();
@@ -1666,7 +1666,7 @@ class BallOfFireDamageTargetSelector
 
         bool operator() (WorldObject* unit) const
         {
-            if (unit->GetDistance(caster) <= 0.5 && unit->GetTypeId() == TYPEID_PLAYER && !unit->ToPlayer()->HasAura(SPELL_BALL_OF_FIRE_AURA_BLUE) && !unit->ToPlayer()->HasAura(SPELL_BALL_OF_FIRE_AURA_RED))
+            if (unit->GetDistance(caster) <= 0.5 && unit->IsPlayer() && !unit->ToPlayer()->HasAura(SPELL_BALL_OF_FIRE_AURA_BLUE) && !unit->ToPlayer()->HasAura(SPELL_BALL_OF_FIRE_AURA_RED))
                 return false;
 
             return true;

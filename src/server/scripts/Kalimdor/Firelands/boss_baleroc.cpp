@@ -124,7 +124,7 @@ class boss_baleroc : public CreatureScript
                     instance->DoNearTeleportPlayers(FLEntrancePos);
                     return;
                 }
-                
+
                 Talk(SAY_AGGRO);
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_BLAZE_OF_GLORY);
                 events.ScheduleEvent(EVENT_BERSERK, 6 * MINUTE * IN_MILLISECONDS);
@@ -145,7 +145,7 @@ class boss_baleroc : public CreatureScript
 
                 AddSmoulderingAura(me);
             }
-            
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_KILL);
@@ -212,7 +212,7 @@ class boss_baleroc : public CreatureScript
                             break;
                     }
                 }
-                
+
                 if (me->HasAura(SPELL_INFERNO_BLADE))
                 {
                     if (!me->HasUnitState(UNIT_STATE_CASTING) && me->isAttackReady() && me->IsWithinMeleeRange(me->GetVictim()))
@@ -279,21 +279,21 @@ class npc_baleroc_shard_of_torment : public CreatureScript
 
                     return;
                 }
-                
+
                 if (uiSelectTargetTimer <= diff)
                 {
                     if (Player* newVictim = me->SelectNearestPlayer(15.0f))
                     {
                         if (newVictim->GetGUID() == curVictim && newVictim->HasAura(SPELL_TORMENT))
                             return;
-                
+
                         me->InterruptNonMeleeSpells(false);
                         curVictim = newVictim->GetGUID();
-                        
+
                         if (Creature* pBaleroc = me->FindNearestCreature(NPC_BALEROC, 200.0f))
                             if (boss_baleroc::boss_balerocAI* BalerocAI = CAST_AI(boss_baleroc::boss_balerocAI, pBaleroc->GetAI()))
                                 BalerocAI->AddTormentedPlayer(newVictim->GetGUID().GetCounter());
-                        
+
                         DoCast(newVictim, SPELL_TORMENT);
                     }
                     else
@@ -336,7 +336,7 @@ class spell_baleroc_shards_of_torment_aoe : public SpellScriptLoader
                 {
                     case RAID_DIFFICULTY_10MAN_NORMAL:
                     case RAID_DIFFICULTY_10MAN_HEROIC:
-                    {    
+                    {
                         std::list<WorldObject*> meleetargets;
 
                         for (std::list<WorldObject*>::const_iterator itr = targets.begin(); itr != targets.end(); ++itr)
@@ -352,7 +352,7 @@ class spell_baleroc_shards_of_torment_aoe : public SpellScriptLoader
                         {
                             if (GetMembersWithoutAura(meleetargets, SPELL_BLAZE_OF_GLORY) >= 1)
                                 meleetargets.remove_if(AuraCheck(SPELL_BLAZE_OF_GLORY));
-                            
+
                             if (meleetargets.size() > 1)
                                 Trinity::Containers::RandomResizeList(meleetargets, 1);
 
@@ -366,7 +366,7 @@ class spell_baleroc_shards_of_torment_aoe : public SpellScriptLoader
                     }
                     case RAID_DIFFICULTY_25MAN_NORMAL:
                     case RAID_DIFFICULTY_25MAN_HEROIC:
-                    {    
+                    {
                         std::list<WorldObject*> meleetargets;
                         std::list<WorldObject*> rangetargets;
 
@@ -385,7 +385,7 @@ class spell_baleroc_shards_of_torment_aoe : public SpellScriptLoader
                         {
                             if (GetMembersWithoutAura(targets, SPELL_BLAZE_OF_GLORY) >= 2)
                                 targets.remove_if(AuraCheck(SPELL_BLAZE_OF_GLORY));
-                            
+
                             if (targets.size() > 2)
                                 Trinity::Containers::RandomResizeList(targets, 2);
                         }
@@ -393,17 +393,17 @@ class spell_baleroc_shards_of_torment_aoe : public SpellScriptLoader
                         {
                             if (GetMembersWithoutAura(meleetargets, SPELL_BLAZE_OF_GLORY) >= 1)
                                 meleetargets.remove_if(AuraCheck(SPELL_BLAZE_OF_GLORY));
-                            
+
                             if (meleetargets.size() > 1)
                                 Trinity::Containers::RandomResizeList(meleetargets, 1);
 
                             if (GetMembersWithoutAura(rangetargets, SPELL_BLAZE_OF_GLORY) >= 1)
                                 rangetargets.remove_if(AuraCheck(SPELL_BLAZE_OF_GLORY));
-                            
+
                             if (rangetargets.size() > 1)
                                 Trinity::Containers::RandomResizeList(rangetargets, 1);
 
-                            targets.clear();;
+                            targets.clear();
                             targets.push_back(meleetargets.front());
                             targets.push_back(rangetargets.front());
                         }
@@ -519,7 +519,7 @@ class spell_baleroc_final_countdown : public SpellScriptLoader
         class spell_baleroc_final_countdown_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_baleroc_final_countdown_SpellScript);
-            
+
             bool Load() override
             {
                 bCanLink = false;
@@ -541,7 +541,7 @@ class spell_baleroc_final_countdown : public SpellScriptLoader
                     target1->CastSpell(target2, SPELL_FINAL_COUNTDOWN_DUMMY, true);
                 }
             }
-            
+
             void FilterTargets(std::list<WorldObject*>& targets)
             {
                 //if (!targets.empty() && GetCaster() && GetCaster()->GetVictim())

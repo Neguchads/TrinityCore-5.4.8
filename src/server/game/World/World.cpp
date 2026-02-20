@@ -101,10 +101,6 @@
 #include "VMapManager2.h"
 #include <boost/asio/ip/address.hpp>
 #include "CharacterCache.h"
-#ifdef ELUNA
-#include "LuaEngine.h"
-#include "HookMgr.h"
-#endif
 
 uint8 World::m_ExitCode = SHUTDOWN_EXIT_CODE;
 
@@ -123,9 +119,6 @@ int32 World::m_visibility_notify_periodInBGArenas   = DEFAULT_VISIBILITY_NOTIFY_
 float World::Visibility_RelocationLowerLimit = 10.0f;
 uint32 World::Visibility_AINotifyDelay = 1000;
 
-#ifdef ELUNA
-extern void StartEluna(bool restart);
-#endif
 /// World constructor
 World::World()
 {
@@ -1482,10 +1475,6 @@ void World::LoadConfigSettings(bool reload)
     m_float_configs[CONFIG_VENGEANCE_MULTIPLIER] = sConfigMgr->GetFloatDefault("VengeanceMultipier", 1.0f);
 
     m_bool_configs[CONFIG_BOOST_PROMOTION] = sConfigMgr->GetBoolDefault("BoostPromotion.Enabled", false);
-#ifdef ELUNA
-    //eluna
-    m_bool_configs[CONFIG_BOOL_ELUNA_ENABLED] = sConfigMgr->GetBoolDefault("Eluna.Enabled", true);
-#endif
     // Loading of Locales
     m_bool_configs[CONFIG_LOAD_LOCALES] = sConfigMgr->GetBoolDefault("Load.Locales", true);
     // call ScriptMgr if we're reloading the configuration
@@ -2412,16 +2401,6 @@ void World::SetInitialWorldSettings()
     sServiceMgr->LoadFromDB();
 
     uint32 startupDuration = GetMSTimeDiffToNow(startupBegin);
-
-#ifdef ELUNA
-    if (sWorld->getBoolConfig(CONFIG_BOOL_ELUNA_ENABLED))
-    {
-        ///- Initialize Lua Engine
-        TC_LOG_INFO("server.loading", ">> Initialize Eluna Lua Engine...");
-        StartEluna(false);
-    }
-
-#endif
 
     TC_LOG_INFO("server.worldserver", "World initialized in %u minutes %u seconds", (startupDuration / 60000), ((startupDuration % 60000) / 1000));
 
@@ -4245,7 +4224,7 @@ uint8 AutoBroadcastEntry::ScheduleData::Part::ParseToken(std::string token)
     }
 
     std::transform(token.begin(), token.end(), token.begin(), tolower);
-    if (                  token == "sun") return 0;
+    if (token == "sun") return 0;
     if (token == "jan" || token == "mon") return 1;
     if (token == "feb" || token == "tue") return 2;
     if (token == "mar" || token == "wed") return 3;

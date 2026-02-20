@@ -56,10 +56,10 @@ target_include_directories(authserver
   PUBLIC
     ${CMAKE_BINARY_DIR}
   PRIVATE
-    common 
+    common
     database
     ${CMAKE_SOURCE_DIR}/src/server/shared
-    ${CMAKE_SOURCE_DIR}/src/server/shared/Networking    
+    ${CMAKE_SOURCE_DIR}/src/server/shared/Networking
     ${CMAKE_SOURCE_DIR}/src/server/shared/Packets
     ${CMAKE_SOURCE_DIR}/src/server/shared/Realms
     ${CMAKE_SOURCE_DIR}/src/server/shared/Threading
@@ -117,5 +117,5 @@ endif()
 
 # Generate precompiled header
 if (USE_COREPCH)
-  target_precompile_headers(authserver PRIVATE ${authserver_PCH_HDR}) 
+  target_precompile_headers(authserver PRIVATE ${authserver_PCH_HDR})
 endif()

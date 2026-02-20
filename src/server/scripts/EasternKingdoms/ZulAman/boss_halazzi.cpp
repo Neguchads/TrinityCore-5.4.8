@@ -43,7 +43,7 @@ enum Spells
     SPELL_TRANSFORM_HUMAN2          = 43573,
     SPELL_TRANSFORM_LYNX            = 43271,
     SPELL_DUAL_WIELD                = 29651,
-    
+
     SPELL_FIXATE                    = 97486,
     SPELL_SHRED_ARMOR               = 43243,
     SPELL_LYNX_FLURRY               = 43290,
@@ -62,7 +62,7 @@ enum Events
     EVENT_FLAME_SHOCK       = 3,
     EVENT_WATER_TOTEM       = 4,
     EVENT_LIGHTNING_TOTEM   = 5,
-   
+
     EVENT_FIXATE            = 6,
     EVENT_LYNX_FLURRY       = 7,
     EVENT_SHRED_ARMOR       = 8,
@@ -106,7 +106,7 @@ class boss_halazzi : public CreatureScript
 
             uint8 phase;
             uint32 health;
-            bool isLynx; 
+            bool isLynx;
 
             void Reset() override
             {
@@ -115,7 +115,7 @@ class boss_halazzi : public CreatureScript
                 //DoCast(me, SPELL_DUAL_WIELD, true);
                 phase = 0;
                 isLynx = true;
-                
+
                 me->RemoveAurasDueToSpell(SPELL_TRANSFORM_HUMAN2);
                 DoCast(me, SPELL_TRANSFORM_LYNX, true);
 
@@ -158,7 +158,7 @@ class boss_halazzi : public CreatureScript
                         summons.DespawnEntry(NPC_SPIRIT_LYNX);
                         me->RemoveAurasDueToSpell(SPELL_TRANSFORM_HUMAN2);
                         me->SetHealth(health);
-                        break;                    
+                        break;
                     case PHASE_HUMAN:
                         Talk(SAY_SPLIT);
                         events.CancelEvent(EVENT_ENRAGE);
@@ -175,7 +175,7 @@ class boss_halazzi : public CreatureScript
                 Talk(SAY_DEATH);
                 _JustDied();
             }
-            
+
             void DoAction(int32 action) override
             {
                 if (action == ACTION_COMBINE)
@@ -270,7 +270,7 @@ class npc_halazzi_lynx : public CreatureScript
 
         struct npc_halazzi_lynxAI : public ScriptedAI
         {
-            npc_halazzi_lynxAI(Creature* creature) : ScriptedAI(creature) 
+            npc_halazzi_lynxAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
@@ -386,7 +386,7 @@ class npc_halazzi_lightning_totem : public CreatureScript
             {
                 SetCombatMovement(false);
             }
-            
+
             EventMap events;
 
             void Reset() override
@@ -403,7 +403,7 @@ class npc_halazzi_lightning_totem : public CreatureScript
             {
                 me->GetMap()->SetWorldState(WORLDSTATE_TUNNEL_VISION, 0);
             }
-            
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())

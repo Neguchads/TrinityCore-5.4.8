@@ -975,7 +975,7 @@ class spell_theramore_rig_to_explode : public SpellScript
                     {
                         instance->SetData(DATA_TANKS_FOR_NOTHING, IN_PROGRESS);
                         target->CastSpell(target, SPELL_SUMMON_SABOTAGED_TANK, true);
-                        
+
                         if (target->ToCreature())
                             target->ToCreature()->DespawnOrUnsummon();
                     }
@@ -1014,7 +1014,7 @@ class spell_theramore_war_engine : public AuraScript
             owner->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_FEAR_2, true);
             owner->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_STUN, true);
             owner->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_ROOT, true);
-            owner->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_PULL, true);;
+            owner->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_PULL, true);
         }
     }
 
@@ -1034,7 +1034,7 @@ class spell_big_bessa_cannon : public SpellScript
         if (Unit* target = GetHitUnit())
         {
             target->CastSpell(target, SPELL_BIG_BESSA_CANNON_SHOT, true);
-            
+
             if (target->ToCreature())
                 target->ToCreature()->DespawnOrUnsummon();
         }

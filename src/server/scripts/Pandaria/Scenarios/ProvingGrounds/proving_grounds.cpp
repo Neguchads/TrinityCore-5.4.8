@@ -481,7 +481,7 @@ struct npc_proving_grounds_illusionary_forager : public provingGroundsAI
 // Illusionary Flamecaller 71835, 71836
 struct npc_proving_grounds_illusionary_flamecaller : public provingGroundsAI
 {
-    npc_proving_grounds_illusionary_flamecaller(Creature* creature) : provingGroundsAI(creature) 
+    npc_proving_grounds_illusionary_flamecaller(Creature* creature) : provingGroundsAI(creature)
     {
         SetCombatMovement(false);
     }
@@ -877,8 +877,8 @@ enum frienlyEvents
 // Kavan the Arcanist 72221
 struct npc_proving_grounds_kavan_the_arcanist : public customCreatureAI
 {
-    npc_proving_grounds_kavan_the_arcanist(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_proving_grounds_kavan_the_arcanist(Creature* creature) : customCreatureAI(creature)
+    {
         if (Creature* controller = ObjectAccessor::GetCreature(*me, me->GetInstanceScript() ? me->GetInstanceScript()->GetGuidData(NPC_PROVING_GROUNDS_2) : ObjectGuid::Empty))
             if (controller->AI()->GetData(TRIAL_DATA) == TRIAL_HEAL_SILVER)
                 Talk(TALK_HEALER_SILVER_INTRO);
@@ -1013,7 +1013,7 @@ struct npc_proving_grounds_kavan_the_arcanist : public customCreatureAI
 // Ki the Assassin 72219
 struct npc_proving_grounds_ki_the_assassin : public customCreatureAI
 {
-    npc_proving_grounds_ki_the_assassin(Creature* creature) : customCreatureAI(creature) 
+    npc_proving_grounds_ki_the_assassin(Creature* creature) : customCreatureAI(creature)
     {
         if (Creature* controller = ObjectAccessor::GetCreature(*me, me->GetInstanceScript() ? me->GetInstanceScript()->GetGuidData(NPC_PROVING_GROUNDS_2) : ObjectGuid::Empty))
             if (controller->AI()->GetData(TRIAL_DATA) == TRIAL_HEAL_GOLD)
@@ -1166,7 +1166,7 @@ struct npc_proving_grounds_ki_the_assassin : public customCreatureAI
 // Oto the Protector 72218
 struct npc_proving_grounds_oto_the_protector : public customCreatureAI
 {
-    npc_proving_grounds_oto_the_protector(Creature* creature) : customCreatureAI(creature) 
+    npc_proving_grounds_oto_the_protector(Creature* creature) : customCreatureAI(creature)
     {
         if (Creature* controller = ObjectAccessor::GetCreature(*me, me->GetInstanceScript() ? me->GetInstanceScript()->GetGuidData(NPC_PROVING_GROUNDS_2) : ObjectGuid::Empty))
             if (controller->AI()->GetData(TRIAL_DATA) == TRIAL_HEAL_BRONZE)
@@ -1327,8 +1327,8 @@ struct npc_proving_grounds_oto_the_protector : public customCreatureAI
 // Sooli the Survivalist 72220
 struct npc_proving_grounds_sooli_the_survivalist : public customCreatureAI
 {
-    npc_proving_grounds_sooli_the_survivalist(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_proving_grounds_sooli_the_survivalist(Creature* creature) : customCreatureAI(creature)
+    {
         SetCombatMovement(false);
         DoCast(me, SPELL_CALL_SPEEDY);
     }
@@ -1483,7 +1483,7 @@ class npc_proving_grounds_trial_master_rotun : public CreatureScript
 {
     public:
         npc_proving_grounds_trial_master_rotun() : CreatureScript("npc_proving_grounds_trial_master_rotun") { }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
@@ -1672,7 +1672,6 @@ struct npc_proving_grounds_controller : public ScriptedAI
                         me->SummonCreature(illusions.first, illusions.second, TEMPSUMMON_MANUAL_DESPAWN);
 
                     currentTimer += 10 * IN_MILLISECONDS;
-
 
                     if (Player* trialOwner = ObjectAccessor::GetPlayer(*me, me->GetInstanceScript() ? me->GetInstanceScript()->GetGuidData(PLAYER_DATA) : ObjectGuid::Empty))
                     {
@@ -2726,7 +2725,7 @@ struct npc_proving_grounds_controller : public ScriptedAI
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_BANSHE, arenaCenterPos, TEMPSUMMON_MANUAL_DESPAWN);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(currentTimer - 20 * IN_MILLISECONDS), [this](TaskContext context)
                             {
@@ -2820,13 +2819,13 @@ struct npc_proving_grounds_controller : public ScriptedAI
                             break;
                         case 4:
                             currentTimer = 50 * IN_MILLISECONDS;
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(5 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_AMBUSHER, innerPillarsPos[2], TEMPSUMMON_MANUAL_DESPAWN);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(15 * IN_MILLISECONDS), [this](TaskContext context)
                             {
@@ -2835,13 +2834,13 @@ struct npc_proving_grounds_controller : public ScriptedAI
                             break;
                         case 5:
                             currentTimer = 50 * IN_MILLISECONDS;
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(15 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_WIND_GUARD, innerPillarsPos[4], TEMPSUMMON_MANUAL_DESPAWN);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(25 * IN_MILLISECONDS), [this](TaskContext context)
                             {
@@ -2853,7 +2852,7 @@ struct npc_proving_grounds_controller : public ScriptedAI
                             break;
                         case 7:
                             currentTimer += 10 * IN_MILLISECONDS;
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(35 * IN_MILLISECONDS), [this](TaskContext context)
                             {
@@ -2862,13 +2861,13 @@ struct npc_proving_grounds_controller : public ScriptedAI
                             break;
                         case 8:
                             currentTimer += 10 * IN_MILLISECONDS;
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(25 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_LARGE_ILLUSIONARY_AMBUSHER, innerPillarsPos[0], TEMPSUMMON_MANUAL_DESPAWN);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(40 * IN_MILLISECONDS), [this](TaskContext context)
                             {
@@ -2877,26 +2876,26 @@ struct npc_proving_grounds_controller : public ScriptedAI
                             break;
                         case 9:
                             currentTimer += 30 * IN_MILLISECONDS;
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(10 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_AMBUSHER, innerPillarsPos[5], TEMPSUMMON_MANUAL_DESPAWN);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(20 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_WIND_GUARD, innerPillarsPos[0].GetPositionX() + frand(-2.5f, 2.5f), innerPillarsPos[0].GetPositionY() + frand(-2.5f, 2.5f), innerPillarsPos[0].GetPositionZ(), 0.0f, TEMPSUMMON_MANUAL_DESPAWN);
                                 me->SummonCreature(NPC_LARGE_ILLUSIONARY_CONQUEROR, innerPillarsPos[0].GetPositionX() + frand(-2.5f, 2.5f), innerPillarsPos[0].GetPositionY() + frand(-2.5f, 2.5f), innerPillarsPos[0].GetPositionZ(), 0.0f, TEMPSUMMON_MANUAL_DESPAWN);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(50 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_AMBUSHER, innerPillarsPos[5], TEMPSUMMON_MANUAL_DESPAWN);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(60 * IN_MILLISECONDS), [this](TaskContext context)
                             {
@@ -2905,7 +2904,7 @@ struct npc_proving_grounds_controller : public ScriptedAI
                             break;
                         case 10:
                             currentTimer += 10 * IN_MILLISECONDS;
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(15 * IN_MILLISECONDS), [this](TaskContext context)
                             {
@@ -2913,19 +2912,19 @@ struct npc_proving_grounds_controller : public ScriptedAI
                                 me->SummonCreature(NPC_LARGE_ILLUSIONARY_CONQUEROR, innerPillarsPos[1].GetPositionX() + frand(-2.5f, 2.5f), innerPillarsPos[1].GetPositionY() + frand(-2.5f, 2.5f), innerPillarsPos[1].GetPositionZ(), 0.0f, TEMPSUMMON_MANUAL_DESPAWN);
                                 me->SummonCreature(NPC_LARGE_ILLUSIONARY_CONQUEROR, innerPillarsPos[1].GetPositionX() + frand(-2.5f, 2.5f), innerPillarsPos[1].GetPositionY() + frand(-2.5f, 2.5f), innerPillarsPos[1].GetPositionZ(), 0.0f, TEMPSUMMON_MANUAL_DESPAWN);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(25 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_AMBUSHER, innerPillarsPos[4], TEMPSUMMON_MANUAL_DESPAWN);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(40 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_AMBUSHER, innerPillarsPos[5], TEMPSUMMON_MANUAL_DESPAWN);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(60 * IN_MILLISECONDS), [this](TaskContext context)
                             {
@@ -3008,7 +3007,7 @@ struct npc_proving_grounds_controller : public ScriptedAI
                                 .Schedule(Milliseconds(15 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_FLAMECALLER_H, innerPillarsPos[1], TEMPSUMMON_MANUAL_DESPAWN);
-                        
+
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_HIVE_SINGER, innerPillarsPos[1].GetPositionX() + frand(-2.5f, 2.5f), innerPillarsPos[1].GetPositionY() + frand(-2.5f, 2.5f), innerPillarsPos[1].GetPositionZ(), 0.0f, TEMPSUMMON_MANUAL_DESPAWN);
                             });
                             break;
@@ -3017,7 +3016,7 @@ struct npc_proving_grounds_controller : public ScriptedAI
                                 .Schedule(Milliseconds(15 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_AQUALYTE, innerPillarsPos[3], TEMPSUMMON_MANUAL_DESPAWN);
-                        
+
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_HIVE_SINGER, innerPillarsPos[3].GetPositionX() + frand(-2.5f, 2.5f), innerPillarsPos[3].GetPositionY() + frand(-2.5f, 2.5f), innerPillarsPos[3].GetPositionZ(), 0.0f, TEMPSUMMON_MANUAL_DESPAWN);
                             });
                             break;
@@ -3026,19 +3025,19 @@ struct npc_proving_grounds_controller : public ScriptedAI
                                 .Schedule(Milliseconds(20 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_AQUALYTE, innerPillarsPos[4], TEMPSUMMON_MANUAL_DESPAWN);
-                        
+
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_FLAMECALLER_H, innerPillarsPos[4].GetPositionX() + frand(-2.5f, 2.5f), innerPillarsPos[4].GetPositionY() + frand(-2.5f, 2.5f), innerPillarsPos[4].GetPositionZ(), 0.0f, TEMPSUMMON_MANUAL_DESPAWN);
 
                                 // Use time warp on group at last wave
                                 if (Creature* kavan = ObjectAccessor::GetCreature(*me, me->GetInstanceScript() ? me->GetInstanceScript()->GetGuidData(NPC_KAVAN_THE_ARCANIST) : ObjectGuid::Empty))
                                     kavan->CastSpell(kavan, SPELL_TIME_WARP, true);
                             });
-                        
+
                             scheduler
                                 .Schedule(Milliseconds(40 * IN_MILLISECONDS), [this](TaskContext context)
                             {
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_CONQUEROR_H, innerPillarsPos[4], TEMPSUMMON_MANUAL_DESPAWN);
-                        
+
                                 me->SummonCreature(NPC_SMALL_ILLUSIONARY_HIVE_SINGER, innerPillarsPos[4].GetPositionX() + frand(-2.5f, 2.5f), innerPillarsPos[4].GetPositionY() + frand(-2.5f, 2.5f), innerPillarsPos[4].GetPositionZ(), 0.0f, TEMPSUMMON_MANUAL_DESPAWN);
                             });
                             break;
@@ -3144,7 +3143,7 @@ struct npc_proving_grounds_controller : public ScriptedAI
 struct npc_proving_grounds_sikari_the_mistweaver : public customCreatureAI
 {
     npc_proving_grounds_sikari_the_mistweaver(Creature* creature) : customCreatureAI(creature)
-    { 
+    {
         SetCombatMovement(false);
     }
 

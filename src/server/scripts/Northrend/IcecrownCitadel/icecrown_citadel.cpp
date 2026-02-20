@@ -1521,7 +1521,7 @@ struct npc_argent_captainAI : public ScriptedAI
 
         void KilledUnit(Unit* victim) override
         {
-            if (victim->GetTypeId() == TYPEID_PLAYER)
+            if (victim->IsPlayer())
                 Talk(SAY_CAPTAIN_KILL);
         }
 
@@ -3532,7 +3532,7 @@ class npc_icc_unsealed_chest_questgiver : public CreatureScript
 
         bool OnDummyEffect(Unit* caster, uint32 spellId, SpellEffIndex effIndex, Creature* target) override
         {
-            if (spellId == SPELL_MOGRAINE_FORGE && caster->GetTypeId() == TYPEID_PLAYER)
+            if (spellId == SPELL_MOGRAINE_FORGE && caster->IsPlayer())
             {
                 if (Quest const* quest = sObjectMgr->GetQuestTemplate(QUEST_THE_SACRED_AND_THE_CORRUPT))
                 {

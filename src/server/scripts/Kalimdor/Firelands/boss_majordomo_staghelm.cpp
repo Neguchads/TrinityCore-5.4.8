@@ -83,7 +83,7 @@ enum CreatureEncounterIds
     NPC_BURNING_ORB     = 53216,
 };
 
-const Position orbsPos[5] = 
+const Position orbsPos[5] =
 {
     {468.600f, -20.167f, 78.950f, 0.0f},
     {434.693f, -14.543f, 79.000f, 0.0f},
@@ -122,7 +122,7 @@ class boss_majordomo_staghelm : public CreatureScript
                 me->SetMaxPower(POWER_ENERGY, 100);
                 me->SetPower(POWER_ENERGY, 0);
                 me->SetHealth(me->GetMaxHealth());
-                
+
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CONCENTRATION_AURA);
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_LEGENDARY_CONCENTRATION);
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_EPIC_CONCENTRATION);
@@ -181,7 +181,7 @@ class boss_majordomo_staghelm : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -283,7 +283,7 @@ class boss_majordomo_staghelm : public CreatureScript
                                         me->SetPower(POWER_ENERGY, 0);
                                         DoCast(me, SPELL_CAT_FORM, true);
                                         DoCast(me, SPELL_FURY, true);
-                                        
+
                                     }
                                     else if (_phase == PHASE_SCORPION)
                                     {
@@ -293,7 +293,7 @@ class boss_majordomo_staghelm : public CreatureScript
                                         DoCast(me, SPELL_SCORPION_FORM, true);
                                         DoCast(me, SPELL_FURY, true);
                                     }
-                                }                                
+                                }
                             }
 
                             events.ScheduleEvent(EVENT_CHECK_PHASE, 1000);

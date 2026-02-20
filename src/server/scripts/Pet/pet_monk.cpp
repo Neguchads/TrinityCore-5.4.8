@@ -28,7 +28,6 @@ enum MonkPetSpells
 {
 };
 
-
 void AddSC_monk_pet_scripts()
 {
 }

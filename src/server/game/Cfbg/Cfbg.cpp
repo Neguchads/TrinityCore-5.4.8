@@ -28,7 +28,7 @@
 
 uint8 Unit::getRace(bool forceoriginal) const
 {
-    if (GetTypeId() == TYPEID_PLAYER)
+    if (IsPlayer())
     {
         Player* pPlayer = ((Player*)this);
 
@@ -221,7 +221,7 @@ bool BattlegroundQueue::FillXPlayersToBG(BattlegroundBracketId bracket_id, Battl
 {
     uint8 queuedPeople = 0;
     for (GroupsQueueType::const_iterator itr = m_QueuedGroups[bracket_id][BG_QUEUE_MIXED].begin(); itr != m_QueuedGroups[bracket_id][BG_QUEUE_MIXED].end(); ++itr)
-        if (!(*itr)->IsInvitedToBGInstanceGUID)
+        if (!(*itr)->IsInvitedToBGInstanceGUID))
             queuedPeople += (*itr)->Players.size();
 
     if (sWorld->getBoolConfig(BATTLEGROUND_CROSSFACTION_ENABLED) && (sBattlegroundMgr->isTesting() || queuedPeople >= bg->GetMinPlayersPerTeam()*2 || !start))
@@ -234,7 +234,6 @@ bool BattlegroundQueue::FillXPlayersToBG(BattlegroundBracketId bracket_id, Battl
         int32 valiFree = aliFree;
         int32 vhordeFree = hordeFree;
         int32 diff = 0;
-
 
         // Add teams to their own factions as far as possible.
         if (start)

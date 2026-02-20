@@ -105,7 +105,7 @@ public:
             if (bCanEat || bIsEating)
                 return;
 
-            if (pCaster->GetTypeId() == TYPEID_PLAYER && spell->Id == SPELL_PLACE_CARCASS && !me->HasAura(SPELL_JUST_EATEN))
+            if (pCaster->IsPlayer() && spell->Id == SPELL_PLACE_CARCASS && !me->HasAura(SPELL_JUST_EATEN))
             {
                 uiPlayerGUID = pCaster->GetGUID();
                 bCanEat = true;
@@ -243,7 +243,7 @@ public:
             if (!caster)
                 return;
 
-            if (caster->GetTypeId() == TYPEID_PLAYER && spell->Id == SPELL_HIT_FORCE_OF_NELTHARAKU && !Tapped)
+            if (caster->IsPlayer() && spell->Id == SPELL_HIT_FORCE_OF_NELTHARAKU && !Tapped)
             {
                 Tapped = true;
                 PlayerGUID = caster->GetGUID();
@@ -366,7 +366,7 @@ public:
             if (!caster)
                 return;
 
-            if (caster->GetTypeId() == TYPEID_PLAYER && spell->Id == 40468 && !Tapped)
+            if (caster->IsPlayer() && spell->Id == 40468 && !Tapped)
             {
                 PlayerGUID = caster->GetGUID();
 
@@ -1123,7 +1123,7 @@ public:
                 return;
 
             //only aggro text if not player
-            if (who->GetTypeId() != TYPEID_PLAYER)
+            if (!(who->IsPlayer()))
             {
                 //appears to be random
                 if (urand(0, 1))
@@ -1620,7 +1620,7 @@ public:
                 {
                     if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
                     {
-                        if (target->GetTypeId() == TYPEID_PLAYER)
+                        if (target->IsPlayer())
                         {
                             DoCast(target, SpawnCast[1].SpellId); //Focused Bursts
                             SpellTimer1 = SpawnCast[1].Timer2 + (rand()%5 * 1000);
@@ -1896,7 +1896,7 @@ class spell_unlocking_zuluheds_chains : public SpellScriptLoader
 
             void HandleAfterHit()
             {
-                if (GetCaster()->GetTypeId() == TYPEID_PLAYER)
+                if (GetCaster()->IsPlayer())
                     if (Creature* karynaku = GetCaster()->FindNearestCreature(NPC_KARYNAKU, 15.0f))
                         GetCaster()->ToPlayer()->KilledMonsterCredit(NPC_KARYNAKU, karynaku->GetGUID());
             }

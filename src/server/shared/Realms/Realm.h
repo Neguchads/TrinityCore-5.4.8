@@ -70,7 +70,7 @@ struct TC_SHARED_API Realm
     uint32 Build;
     std::unique_ptr<boost::asio::ip::address> ExternalAddress;
     std::unique_ptr<boost::asio::ip::address> LocalAddress;
-    std::unique_ptr<boost::asio::ip::address> LocalSubnetMask;    
+    std::unique_ptr<boost::asio::ip::address> LocalSubnetMask;
     uint16 Port;
     std::string Name;
     uint8 Type;

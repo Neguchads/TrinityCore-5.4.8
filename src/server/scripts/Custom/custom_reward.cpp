@@ -37,7 +37,7 @@ public:
                 LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_BATTLEPAY_VP_COINS);
                 stmt->setUInt32(0, sConfigMgr->GetIntDefault("PlayedTimeReward.vp", 0));
                 stmt->setUInt32(1, player->GetSession()->GetAccountId());
-                LoginDatabase.Query(stmt);                
+                LoginDatabase.Query(stmt);
             }
         }
     }
@@ -45,5 +45,5 @@ public:
 
 void AddSC_custom_reward()
 {
-	new Played_Time_Reward();
+    new Played_Time_Reward();
 }

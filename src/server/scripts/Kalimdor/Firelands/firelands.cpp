@@ -41,7 +41,7 @@ enum Spells
     SPELL_FIERY_BLOOD                           = 99993,
     SPELL_SLIGHTLY_WARM_PINCERS                 = 99984,
 
-    // Fire Turtle Hatchling 
+    // Fire Turtle Hatchling
     SPELL_SHELL_SPIN                            = 100263,
 
     // Fire Archon
@@ -123,7 +123,7 @@ enum Spells
 };
 
 enum Adds
-{    
+{
     NPC_MAGMAKIN        = 54144,
     NPC_MAGMA_CONDUIT   = 54145, // 97699, 98250, 100746
 
@@ -236,7 +236,7 @@ class npc_firelands_ancient_core_hound : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -255,7 +255,7 @@ class npc_firelands_ancient_core_hound : public CreatureScript
                             break;
                     }
                 }
-                
+
                 DoMeleeAttackIfReady();
             }
         };
@@ -296,7 +296,7 @@ class npc_firelands_ancient_lava_dweller : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -307,7 +307,7 @@ class npc_firelands_ancient_lava_dweller : public CreatureScript
                             break;
                     }
                 }
-                
+
                 DoSpellAttackIfReady(SPELL_LAVA_SPIT);
             }
         };
@@ -385,7 +385,7 @@ class npc_firelands_fire_turtle_hatchling : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -396,7 +396,7 @@ class npc_firelands_fire_turtle_hatchling : public CreatureScript
                             break;
                     }
                 }
-                
+
                 DoMeleeAttackIfReady();
             }
         };
@@ -451,7 +451,7 @@ class npc_firelands_flame_archon : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -466,7 +466,7 @@ class npc_firelands_flame_archon : public CreatureScript
                             break;
                     }
                 }
-                
+
                 DoMeleeAttackIfReady();
             }
         };
@@ -502,7 +502,7 @@ class npc_firelands_molten_lord : public CreatureScript
 
             InstanceScript* instance;
             EventMap events;
-            
+
             void Reset() override
             {
                 events.Reset();
@@ -529,7 +529,7 @@ class npc_firelands_molten_lord : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -548,7 +548,7 @@ class npc_firelands_molten_lord : public CreatureScript
                             break;
                     }
                 }
-                
+
                 DoMeleeAttackIfReady();
             }
 
@@ -647,7 +647,7 @@ class npc_firelands_molten_flamefather : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -745,7 +745,7 @@ class npc_firelands_magmakin : public CreatureScript
                 }
 
                 if (me->GetDistance(me->GetVictim()) < 2.0f)
-                    DoCastAOE(SPELL_ERUPTION, true);                
+                    DoCastAOE(SPELL_ERUPTION, true);
             }
         };
 
@@ -777,7 +777,7 @@ class spell_firelands_ancient_core_hound_dinner_time : public SpellScriptLoader
                 if (!GetTarget())
                     return;
 
-                GetTarget()->SetControlled(false, UNIT_STATE_STUNNED);                
+                GetTarget()->SetControlled(false, UNIT_STATE_STUNNED);
             }
 
             void Register() override
@@ -815,7 +815,7 @@ class spell_firelands_ancient_core_hound_flame_breath : public SpellScriptLoader
                 if (!GetTarget())
                     return;
 
-                GetTarget()->SetControlled(false, UNIT_STATE_STUNNED);                
+                GetTarget()->SetControlled(false, UNIT_STATE_STUNNED);
             }
 
             void Register() override
@@ -884,7 +884,7 @@ class spell_firelands_fire_turtle_hatchling_shell_spin : public SpellScriptLoade
                 if (!GetTarget())
                     return;
 
-                GetTarget()->SetControlled(false, UNIT_STATE_ROOT);                
+                GetTarget()->SetControlled(false, UNIT_STATE_ROOT);
             }
 
             void Register() override
@@ -922,7 +922,7 @@ class spell_firelands_flame_archon_fiery_torment : public SpellScriptLoader
                 if (!GetTarget())
                     return;
 
-                GetTarget()->SetControlled(false, UNIT_STATE_STUNNED);                
+                GetTarget()->SetControlled(false, UNIT_STATE_STUNNED);
             }
 
             void PeriodicTick(AuraEffect const* /*aurEff*/)
@@ -934,7 +934,6 @@ class spell_firelands_flame_archon_fiery_torment : public SpellScriptLoader
                     if (Unit* target = GetCaster()->GetAI()->SelectTarget(SELECT_TARGET_NEAREST, 0, 100.0f, true))
                         GetCaster()->CastSpell(target, SPELL_FIERY_TORMENT_DMG, true);
             }
-
 
             void Register() override
             {
@@ -955,11 +954,9 @@ class spell_firelands_molten_lord_summon_lava_jets : public SpellScriptLoader
     public:
         spell_firelands_molten_lord_summon_lava_jets() : SpellScriptLoader("spell_firelands_molten_lord_summon_lava_jets") { }
 
-
         class spell_firelands_molten_lord_summon_lava_jets_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_firelands_molten_lord_summon_lava_jets_SpellScript);
-
 
             void HandleScript(SpellEffIndex /*effIndex*/)
             {
@@ -980,7 +977,6 @@ class spell_firelands_molten_lord_summon_lava_jets : public SpellScriptLoader
             return new spell_firelands_molten_lord_summon_lava_jets_SpellScript();
         }
 };
-
 
 enum Texts
 {
@@ -1439,7 +1435,7 @@ class npc_firelands_circle_of_thorns_portal : public CreatureScript
             if (bIn)
                 player->NearTeleportTo(504.063416f, 476.256317f, 246.745483f, 2.30f, false);
             else
-                player->NearTeleportTo(173.153091f, 283.155334f, 84.603622f, 3.69f, false); 
+                player->NearTeleportTo(173.153091f, 283.155334f, 84.603622f, 3.69f, false);
 
             return true;
         }
@@ -1665,7 +1661,7 @@ class spell_alysrazor_aggro_closest : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void HandleEffect(SpellEffIndex effIndex)
@@ -1827,7 +1823,7 @@ struct npc_firelands_majordomo_stagheim_event : public CreatureAI
         });
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }

@@ -29,7 +29,6 @@ enum Spells
     SPELL_SLIPSTREAM            = 85016,
 };
 
-
 const Position RopeBeamPos[8]=
 {
     { -11095.3f, -1357.22f, 11.5751f, 0.0f },
@@ -235,7 +234,7 @@ class npc_wind_tunnel : public CreatureScript
 
             void PassengerBoarded(Unit* who, int8 /*seatId*/, bool apply) override
             {
-                if (apply && who->GetTypeId() == TYPEID_PLAYER)
+                if (apply && who->IsPlayer())
                 {
                     SlipstreamPlayer new_player;
                     new_player.uiPlayerGUID = who->GetGUID();

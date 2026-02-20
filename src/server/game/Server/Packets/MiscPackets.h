@@ -49,7 +49,7 @@ namespace WorldPackets
             WorldPacket const* Write() override;
 
             uint32 CinematicID = 0;
-        };        
+        };
 
         class TriggerMovie final : public ServerPacket
         {
@@ -68,7 +68,7 @@ namespace WorldPackets
 
             void Read() override { }
         };
-        
+
         class NextCinematicCamera final : public ClientPacket
         {
         public:
@@ -124,7 +124,7 @@ namespace WorldPackets
             bool Abrupt = false;
             float Intensity = 0.0f;
             WeatherState WeatherID = WeatherState(0);
-        };        
+        };
 
         class TC_GAME_API PlayMusic final : public ServerPacket
         {
@@ -266,7 +266,6 @@ namespace WorldPackets
             int32 TransitionMilliseconds = 0;
             int32 OverrideLightID = 0;
         };
-
 
     }
 }

@@ -28,7 +28,7 @@ enum ScriptTexts
 enum Spells
 {
     SPELL_FLAME_BOLT                = 77370,
-    SPELL_FLAME_BOLT_DMG            = 75540, 
+    SPELL_FLAME_BOLT_DMG            = 75540,
     SPELL_RAGING_SMASH              = 83650,
     SPELL_EARTH_SPIKE               = 94974,
     SPELL_EARTH_SPIKE_DMG           = 75339,
@@ -40,7 +40,7 @@ enum Spells
     SPELL_SAND_VORTEX_DUMMY1        = 79441,
     SPELL_SAND_VORTEX_DUMMY2        = 93570,
     SPELL_SAND_VORTEX               = 83097,
-    SPELL_SAND_VORTEX_DMG           = 83096, 
+    SPELL_SAND_VORTEX_DMG           = 83096,
 
     SPELL_SUBMERGE                  = 53421,
 
@@ -50,20 +50,20 @@ enum Spells
 
     SPELL_SMASH                     = 75453,
 };
- 
+
 enum Events
 {
     EVENT_FLAME_BOLT    = 1,
     EVENT_RAGING_SMASH  = 2,
     EVENT_EARTH_POINT   = 3,
     EVENT_SUBMERGE      = 4,
-    EVENT_SUMMON        = 5,      
+    EVENT_SUMMON        = 5,
     EVENT_STORM_MOVE    = 6,
     EVENT_VORTEX_DUST   = 7,
     EVENT_SMASH         = 8,
     EVENT_MERGE         = 9,
 };
- 
+
 enum Adds
 {
     NPC_QUICKSAND               = 40503, // 75546
@@ -71,7 +71,7 @@ enum Adds
     NPC_JEWELED_SCARAB          = 40458,
     NPC_TUMULTUOUS_EARTHSTORM   = 40406,
 };
- 
+
 class boss_earthrager_ptah : public CreatureScript
 {
     public:
@@ -106,7 +106,7 @@ class boss_earthrager_ptah : public CreatureScript
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
 
                 me->RemoveFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
-                
+
                 phase = 0;
             }
 
@@ -143,7 +143,7 @@ class boss_earthrager_ptah : public CreatureScript
 
                 Talk(SAY_DEATH);
             }
-            
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_KILL);
@@ -158,14 +158,14 @@ class boss_earthrager_ptah : public CreatureScript
                     for (auto itr : m_burrowStalker)
                         itr->CastSpell(itr, SPELL_BEETLE_BURROW, false);
             }
-      
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-                                       
+
                 events.Update(diff);
- 
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
@@ -186,7 +186,7 @@ class boss_earthrager_ptah : public CreatureScript
                 {
                     switch (eventId)
                     {
-                        case EVENT_SUBMERGE:           
+                        case EVENT_SUBMERGE:
                             HandleSetBurrow();
                             DoCast(me, SPELL_QUICKSAND, true);
                             DoCast(me, SPELL_SAND_VORTEX, true);
@@ -213,7 +213,7 @@ class boss_earthrager_ptah : public CreatureScript
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM))
                                 DoCast(target->GetVehicleBase() ? target->GetVehicleBase() : target, SPELL_EARTH_SPIKE, true);
                             events.ScheduleEvent(EVENT_EARTH_POINT, urand(20000, 25000));
-                            break;                            
+                            break;
                     }
                 }
 

@@ -67,13 +67,13 @@ enum eSpells
     SPELL_AWAKEN_PEON                = 19938,
     SPELL_SUMMON_GARROSH_JI          = 121139,
     SPELL_SUMMON_JI                  = 120749,
-                                     
-    // Garrosh Abilities             
+
+    // Garrosh Abilities
     SPELL_BERSERK_CHARGE             = 84742,
     SPELL_WHIRLWIND                  = 84724,
     SPELL_SHOCKWAVE                  = 84715,
 
-    // Quest: Gift of Hellscream 
+    // Quest: Gift of Hellscream
     // So, will use 6td phase for player and 2 for creatures because i didn`t find phase aura.
     SPELL_TELEPORT_OUT_BLACKOUT      = 121123,
     SPELL_RING_OF_VALOR_IN_THE_ARENA = 132633,
@@ -587,7 +587,7 @@ class npc_ji_firepaw_horde_way_quest : public CreatureScript
                 });
             }
 
-            void EnterEvadeMode() override 
+            void EnterEvadeMode() override
             {
                 me->HandleEmoteStateCommand(EMOTE_STATE_NONE);
                 Talk(SAY_SPECIAL_2);
@@ -915,7 +915,7 @@ class spell_summ_ji_horde_way : public AuraScript
         if (Player* pCaster = GetCaster()->ToPlayer())
         {
             pCaster->KilledMonsterCredit(NPC_GARROSH_HORDE_WAY_CREDIT);
-            
+
             uint32 delay = 0;
             pCaster->m_Events.Schedule(delay += 3500, 1, [pCaster]()
             {

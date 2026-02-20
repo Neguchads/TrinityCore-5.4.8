@@ -37,28 +37,28 @@ enum Spells
     // Soulguard Reaper
     SPELL_FROST_NOVA                    = 70209,
     SPELL_SHADOW_LANCE                  = 69058,
-    
+
     // Soulguard Bonecaster
     SPELL_BONE_VOLLEY                   = 69080,
     SPELL_RAISE_DEAD                    = 69562,
     SPELL_SHIELD_OF_BONES               = 69069,
-    
+
     // Soulguard Animator
     // Raise dead 69562
     SPELL_SHADOW_BOLT                   = 69068,
     SPELL_SOUL_SICKNESS                 = 69131,
     SPELL_SOUL_SIPHON                   = 69128,
-    
+
     // Soulguard Adept
     // Raise dead 69562
     // Shadow Bolt 69068/70208
     SPELL_DRAIN_LIFE                    = 69066,
     SPELL_SHADOW_MEND                   = 69564,
-    
+
     // Soul Horror
     SPELL_SOUL_STRIKE                   = 69088,
     SPELL_SOUL_CHANNELING_IMPACT        = 68837,
-    
+
     SPELL_SOULGUARD_CHANNEL_BEAM02      = 68834,
     SPELL_SOULGUARD_CHANNEL             = 68797,
 };

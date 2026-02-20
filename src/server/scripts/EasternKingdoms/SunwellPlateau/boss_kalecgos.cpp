@@ -420,7 +420,7 @@ class boss_kalec : public CreatureScript
             {
                 instance = creature->GetInstanceScript();
             }
-            
+
             InstanceScript* instance;
             uint32 revitalizeTimer;
             uint32 heroicStrikeTimer;

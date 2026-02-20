@@ -176,7 +176,7 @@ class boss_akmahat : public CreatureScript
             {
                 summons.Despawn(summon);
             }
-            
+
             void JustDied(Unit* /*killer*/) override
             {
                 events.Reset();
@@ -187,12 +187,12 @@ class boss_akmahat : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -236,7 +236,7 @@ class boss_akmahat : public CreatureScript
         {
             return new boss_akmahatAI(creature);
         }
-};  
+};
 
 class npc_akmahat_fury_of_the_sands : public CreatureScript
 {
@@ -583,7 +583,7 @@ class npc_tahet : public CreatureScript
                     if (TempSummon* PitMaster = player->SummonCreature(NPC_CAIMAS_PIT_MASTER, PitMasterPath[0], TEMPSUMMON_MANUAL_DESPAWN))
                         PitMaster->SetPhaseMask(QUEST_THE_PIT_OF_SCALES, true);
                 });
-                
+
             }
 
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
@@ -841,7 +841,7 @@ class spell_transform_camel_dust_pile : public SpellScriptLoader
             {
                 Unit* caster = GetCaster();
                 Unit* target = GetOriginalCaster();
-                if (!caster || caster->GetTypeId() != TYPEID_UNIT || !target || target->GetTypeId() != TYPEID_PLAYER)
+                if (!caster || !caster->IsCreature() || !target || !target->IsPlayer())
                     return;
 
                 caster->ToCreature()->SetLootRecipient(target);

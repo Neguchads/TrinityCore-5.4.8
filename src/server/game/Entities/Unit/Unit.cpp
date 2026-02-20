@@ -9586,7 +9586,7 @@ void Unit::RemoveCharmAuras()
     RemoveAurasByType(SPELL_AURA_MOD_CHARM);
     RemoveAurasByType(SPELL_AURA_MOD_POSSESS);
     RemoveAurasByType(SPELL_AURA_AOE_CHARM);
-    RemoveAurasDueToSpell(12480); // Hex of Jammal'an hasn't charm effect �\_(?)_/�
+    RemoveAurasDueToSpell(12480); // Hex of Jammal'an hasn't charm effect Ãƒâ€šÃ‚Â¯\_(?)_/Ãƒâ€šÃ‚Â¯
 }
 
 void Unit::UnsummonAllTotems()
@@ -17504,7 +17504,8 @@ public:
 
 void Unit::OnRelocated()
 {
-    if (!m_lastVisibilityUpdPos.IsInDist(this, World::Visibility_RelocationLowerLimit)) {
+    if (!m_lastVisibilityUpdPos.IsInDist(this, World::Visibility_RelocationLowerLimit))
+    {
         m_lastVisibilityUpdPos = *this;
         m_Events.AddEvent(new VisibilityUpdateTask(this), m_Events.CalculateTime(1));
     }

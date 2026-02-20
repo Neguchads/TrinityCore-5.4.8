@@ -114,7 +114,7 @@ void TransportMgr::GeneratePath(GameObjectTemplate const* goInfo, TransportTempl
     std::vector<KeyFrame>& keyFrames = transport->keyFrames;
 
 #ifdef OLD_PATH_GENERATION
-    Movement::PointsArray splinePath, allPoints;;
+    Movement::PointsArray splinePath, allPoints;
     bool mapChange = false;
     for (size_t i = 0; i < path.size(); ++i)
         allPoints.push_back(G3D::Vector3(path[i].LocX, path[i].LocY, path[i].LocZ));

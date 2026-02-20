@@ -124,7 +124,7 @@ class instance_halls_of_origination : public InstanceMapScript
 
             void OnGameObjectCreate(GameObject* go) override
             {
-                switch (go->GetEntry()) 
+                switch (go->GetEntry())
                 {
                     case GO_ORIGINATION_ELEVATOR:
                         uiOriginationElevatorGUID = go->GetGUID();
@@ -132,7 +132,7 @@ class instance_halls_of_origination : public InstanceMapScript
                     case GO_ANHUUR_BRIDGE:
                     case GO_ANHUUR_ELEVATOR:
                     case GO_DOOR_ULDUM_14:
-                    case GO_DOOR_ULDUM_15:                                           
+                    case GO_DOOR_ULDUM_15:
                         AddDoor(go, true);
                         break;
                     case GO_VAULT_OF_LIGHTS_ENTR_DOOR:
@@ -188,7 +188,7 @@ class instance_halls_of_origination : public InstanceMapScript
                 {
                     case DATA_WARDENS:
                         uiWardensDone += data;
-                        
+
                         if (uiWardensDone == 4)
                         {
                             DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET2, SPELL_FASTER_THAN_LIGHT);
@@ -225,7 +225,7 @@ class instance_halls_of_origination : public InstanceMapScript
                 OUT_SAVE_INST_DATA;
 
                 std::ostringstream saveStream;
-                saveStream << "H O" << GetBossSaveData() << uiWardensDone << " " << archaeologyQuestAura; 
+                saveStream << "H O" << GetBossSaveData() << uiWardensDone << " " << archaeologyQuestAura;
 
                 OUT_SAVE_INST_DATA_COMPLETE;
                 return saveStream.str();

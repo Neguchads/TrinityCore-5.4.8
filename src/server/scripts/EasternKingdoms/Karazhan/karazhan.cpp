@@ -458,7 +458,6 @@ class npc_berthold : public CreatureScript
         }
 };
 
-
 /*###
 # npc_image_of_medivh
 ####*/

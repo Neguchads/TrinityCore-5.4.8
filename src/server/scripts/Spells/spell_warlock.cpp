@@ -674,7 +674,7 @@ class spell_warl_flames_of_xoroth : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     SpellCastResult CheckPet()
@@ -1103,7 +1103,7 @@ class spell_warl_life_tap_heal_absorb : public AuraScript
     }
 };
 
-// 5782 - Fear 
+// 5782 - Fear
 class spell_warl_fear : public SpellScript
 {
     PrepareSpellScript(spell_warl_fear);
@@ -1599,7 +1599,7 @@ class spell_warl_grimoire_of_sacrifice : public AuraScript
     void InitEffects(uint32& mask)
     {
         Unit* warlock = GetCaster();
-        if (!warlock || warlock->GetTypeId() != TYPEID_PLAYER)
+        if (!warlock || !warlock->IsPlayer())
             return;
         // Remove always.
         mask &= ~(1 << EFFECT_9);
@@ -1685,7 +1685,7 @@ class spell_warl_grimoire_of_sacrifice_selector : public SpellScript
             default:
                 return;
         }
-        
+
         GetHitUnit()->RemoveOwnedAura(SPELL_WARLOCK_OVERRIDE_COMMAND_DEMON);
         warlock->RemoveAurasDueToSpell(SPELL_WARLOCK_OVERRIDE_COMMAND_DEMON);
         warlock->CastSpell(warlock, SPELL_WARLOCK_OVERRIDE_COMMAND_DEMON, true);
@@ -2241,7 +2241,7 @@ class spell_warl_soul_shards : public AuraScript
     }
 };
 
-// 17877 - Shadowburn, 116858 - Chaos Bolt 
+// 17877 - Shadowburn, 116858 - Chaos Bolt
 class spell_warl_ember_consumer : public SpellScript
 {
     PrepareSpellScript(spell_warl_ember_consumer);
@@ -2319,7 +2319,7 @@ class spell_warl_fire_and_brimstone : public SpellScript
     }
 };
 
-// 108685 - Conflagrate, 108686 - Immolate, 114654 - Incinerate 
+// 108685 - Conflagrate, 108686 - Immolate, 114654 - Incinerate
 class spell_warl_fire_and_brimstone_spell : public SpellScript
 {
     PrepareSpellScript(spell_warl_fire_and_brimstone_spell);
@@ -2448,7 +2448,7 @@ class spell_warl_fel_firebolt : public SpellScript
     }
 };
 
-// 47960 - Shadowflame 
+// 47960 - Shadowflame
 class spell_warl_shadowflame : public AuraScript
 {
     PrepareAuraScript(spell_warl_shadowflame);
@@ -2634,7 +2634,7 @@ protected:
     }
 };
 
-// 103103 - Malefic Grasp 
+// 103103 - Malefic Grasp
 class spell_warl_malefic_grasp : public spell_warl_dot_instant_damage_trigger
 {
     PrepareAuraScript(spell_warl_malefic_grasp);
@@ -2653,7 +2653,7 @@ class spell_warl_malefic_grasp : public spell_warl_dot_instant_damage_trigger
     }
 };
 
-// 1120 - Drain Soul 
+// 1120 - Drain Soul
 class spell_warl_drain_soul : public spell_warl_dot_instant_damage_trigger
 {
     PrepareAuraScript(spell_warl_drain_soul);
@@ -2855,7 +2855,7 @@ public:
     }
 };
 
-// 86213 - Soul Swap Exhale 
+// 86213 - Soul Swap Exhale
 class spell_warl_soul_swap_exhale : public SpellScript
 {
     PrepareSpellScript(spell_warl_soul_swap_exhale);
@@ -2899,7 +2899,7 @@ class spell_warl_soul_swap_soulburn : public SpellScript
     }
 };
 
-// 114168 - Dark Apotheosis 
+// 114168 - Dark Apotheosis
 class spell_warl_dark_apotheosis : public AuraScript
 {
     PrepareAuraScript(spell_warl_dark_apotheosis);
@@ -2990,7 +2990,7 @@ class spell_warl_demonic_calling : public AuraScript
     }
 };
 
-// 63303 - Glyph of Demon Hunting 
+// 63303 - Glyph of Demon Hunting
 class spell_warl_glyph_of_demon_hunting : public AuraScript
 {
     PrepareAuraScript(spell_warl_glyph_of_demon_hunting);
@@ -3309,7 +3309,6 @@ class spell_warl_havoc : public AuraScript
     }
 };
 
-
 // 348 - Immolate
 // 1490 - Curse of the Elements
 // 6789 - Mortal Coil
@@ -3377,7 +3376,6 @@ class spell_warl_havoc_target_selector : public SpellScript
         AfterCast += SpellCastFn(spell_warl_havoc_target_selector::HandleCast);
     }
 };
-
 
 // 104232 - Rain of Fire
 class spell_warl_rain_of_fire : public AuraScript
@@ -3824,7 +3822,7 @@ struct npc_demonic_gateway : public ScriptedAI
 
     void DoTeleportIfCan(Unit* clicker)
     {
-        if (clicker->GetTypeId() != TYPEID_PLAYER)
+        if (!(clicker->IsPlayer()))
             return;
 
         // Cooldown
@@ -4389,7 +4387,7 @@ class spell_warl_soul_shards_visual_test : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     void HandleCast()
@@ -4408,7 +4406,7 @@ class spell_warl_soul_shards_visual_test : public SpellScript
         uint32 spell_1_3    = spheres ? SPELL_WARLOCK_VERDANT_SHPERES_1_3   : SPELL_WARLOCK_SOULSHARDS_1_3;
         uint32 spell_2_3_4  = spheres ? SPELL_WARLOCK_VERDANT_SHPERES_2_3_4 : SPELL_WARLOCK_SOULSHARDS_2_3_4;
         uint32 spell_4      = spheres ? SPELL_WARLOCK_VERDANT_SHPERES_4     : SPELL_WARLOCK_SOULSHARDS_4;
-        
+
         switch (shards)
         {
             case 0:
@@ -4583,7 +4581,7 @@ class spell_warl_glyph_of_verdant_spheres : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     void HandleApply(AuraEffect const*, AuraEffectHandleModes)
@@ -4612,7 +4610,6 @@ class spell_warl_glyph_of_verdant_spheres : public AuraScript
             warlock->CastSpell(warlock, SPELL_WARLOCK_EMBER_TEST, true);
     }
 
-
     void Register() override
     {
         OnEffectApply  += AuraEffectApplyFn (spell_warl_glyph_of_verdant_spheres::HandleApply,  EFFECT_1, SPELL_AURA_TRIGGER_ON_POWER_LEVEL, AURA_EFFECT_HANDLE_REAL);
@@ -4627,7 +4624,7 @@ class spell_warl_glyph_of_soul_consumption : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetOwner()->IsPlayer();
     }
 
     bool CheckProc(ProcEventInfo& eventInfo)
@@ -4675,7 +4672,7 @@ class spell_warl_archimondes_darkness : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     void HandleApply(AuraEffect const*, AuraEffectHandleModes)
@@ -4860,7 +4857,7 @@ class spell_warl_corruption : public AuraScript
     void HandleTick(AuraEffect const*)
     {
         Unit* caster = GetCaster();
-        if (!caster || caster->GetTypeId() != TYPEID_PLAYER)
+        if (!caster || !caster->IsPlayer())
             return;
 
         Player* warlock = caster->ToPlayer();

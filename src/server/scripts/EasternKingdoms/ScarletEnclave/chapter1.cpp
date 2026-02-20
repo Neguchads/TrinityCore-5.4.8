@@ -495,7 +495,6 @@ public:
     }
 };
 
-
 /*######
 ## npc_death_knight_initiate
 ######*/
@@ -658,7 +657,7 @@ public:
                         EnterEvadeMode();
                     return;
                 }
-                else if (me->GetVictim()->GetTypeId() == TYPEID_PLAYER && me->GetVictim()->HealthBelowPct(10))
+                else if (me->GetVictim()->IsPlayer() && me->GetVictim()->HealthBelowPct(10))
                 {
                     me->GetVictim()->CastSpell(me->GetVictim(), 7267, true); // beg
                     me->GetVictim()->RemoveGameObject(SPELL_DUEL_FLAG, true);
@@ -795,7 +794,7 @@ public:
         {
             if (spell->Id == SPELL_DELIVER_STOLEN_HORSE)
             {
-                if (caster->GetTypeId() == TYPEID_UNIT && caster->IsVehicle())
+                if (caster->IsCreature() && caster->IsVehicle())
                 {
                     if (Unit* charmer = caster->GetCharmer())
                     {
@@ -817,7 +816,7 @@ public:
         {
             ScriptedAI::MoveInLineOfSight(who);
 
-            if (who->GetTypeId() == TYPEID_UNIT && who->IsVehicle() && me->IsWithinDistInMap(who, 5.0f))
+            if (who->IsCreature() && who->IsVehicle() && me->IsWithinDistInMap(who, 5.0f))
             {
                 if (Unit* charmer = who->GetCharmer())
                 {
@@ -887,7 +886,7 @@ public:
             if (!deathcharger)
                 return;
 
-            if (killer->GetTypeId() == TYPEID_PLAYER && deathcharger->GetTypeId() == TYPEID_UNIT && deathcharger->IsVehicle())
+            if (killer->IsPlayer() && deathcharger->IsCreature() && deathcharger->IsVehicle())
             {
                 deathcharger->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
                 deathcharger->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
@@ -1319,5 +1318,5 @@ void AddSC_the_scarlet_enclave_c1()
     new npc_scarlet_miner();
     new npc_scarlet_miner_cart();
     RegisterCreatureAI(npc_eye_of_acherus);
-    new spell_q12641_death_comes_from_on_high_summon_ghouls();    
+    new spell_q12641_death_comes_from_on_high_summon_ghouls();
 }

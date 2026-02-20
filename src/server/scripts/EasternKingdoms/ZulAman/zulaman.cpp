@@ -135,12 +135,12 @@ class npc_zulaman_forest_frog : public CreatureScript
                     if (cEntry == NPC_EULINDA && instance->GetData(DATA_VENDOR_2))
                         cEntry = NPC_ARINOTH;
 
-                    if (cEntry) 
+                    if (cEntry)
                         me->UpdateEntry(cEntry);
 
                     if (spellId)
                         DoCastAOE(spellId, true);
-                    
+
                     // There must be only one vendor per instance
                     if (cEntry == NPC_HARALD)
                         instance->SetData(DATA_VENDOR_1, DONE);
@@ -160,7 +160,7 @@ class npc_zulaman_forest_frog : public CreatureScript
 
             void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
-                if (spell->Id == SPELL_REMOVE_AMANI_CURSE && caster->GetTypeId() == TYPEID_PLAYER && me->GetEntry() == NPC_FOREST_FROG)
+                if (spell->Id == SPELL_REMOVE_AMANI_CURSE && caster->IsPlayer() && me->GetEntry() == NPC_FOREST_FROG)
                 {
                     if (roll_chance_i(6))
                     {
@@ -188,7 +188,7 @@ class go_strange_gong : public GameObjectScript
 {
     public:
         go_strange_gong() : GameObjectScript("go_strange_gong") { }
-        
+
         bool OnGossipHello(Player* /*player*/, GameObject* go) override
         {
             if (InstanceScript* instance = go->GetInstanceScript())

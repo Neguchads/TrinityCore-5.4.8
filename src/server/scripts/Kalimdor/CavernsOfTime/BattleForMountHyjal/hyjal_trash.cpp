@@ -191,7 +191,7 @@ hyjal_trashAI::hyjal_trashAI(Creature* creature) : npc_escortAI(creature)
 
 void hyjal_trashAI::DamageTaken(Unit* done_by, uint32 &damage)
 {
-    if (done_by->GetTypeId() == TYPEID_PLAYER || done_by->IsPet())
+    if (done_by->IsPlayer() || done_by->IsPet())
     {
         damageTaken += damage;
         if (instance)
@@ -463,7 +463,9 @@ public:
             if (Delay <= diff)
             {
                 Delay=0;
-            }else{
+            }
+            else
+            {
                 Delay-=diff;
                 return;
             }
@@ -481,7 +483,9 @@ public:
                 }
                 me->GetMotionMaster()->Clear();
                 meteor = true;
-            } else if (!CanMove){
+            }
+            else if (!CanMove)
+            {
                 if (spawnTimer <= diff)
                 {
                     me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
@@ -495,7 +499,9 @@ public:
                             Unit* target = Unit::GetUnit(*me, instance->GetGuidData(DATA_THRALL));
                             if (target && target->IsAlive())
                                 me->AddThreat(target, 0.0f);
-                        } else if (instance->GetData(DATA_ALLIANCE_RETREAT) && instance->GetData(DATA_HORDE_RETREAT)){
+                        }
+                        else if (instance->GetData(DATA_ALLIANCE_RETREAT) && instance->GetData(DATA_HORDE_RETREAT))
+                        {
                             //do overrun
                         }
                     }
@@ -1240,7 +1246,8 @@ public:
             }
             if (!UpdateVictim())
                 return;
-            if (!me->IsWithinDist(me->GetVictim(), 25)){
+            if (!me->IsWithinDist(me->GetVictim(), 25))
+            {
                 if (MoveTimer <= diff)
                 {
                     me->GetMotionMaster()->MoveChase(me->GetVictim());

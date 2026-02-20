@@ -133,7 +133,6 @@ class instance_naxxramas : public InstanceMapScript
                 constructionPortalGUID = ObjectGuid::Empty;
                 plaguePortalGUID = ObjectGuid::Empty;
 
-
                 m_mEvents.Reset();
 
                 memset(PortalsGUID, 0, sizeof(PortalsGUID));
@@ -274,7 +273,7 @@ class instance_naxxramas : public InstanceMapScript
 
             void OnUnitDeath(Unit* unit) override
             {
-                if (unit->GetTypeId() == TYPEID_PLAYER && IsEncounterInProgress())
+                if (unit->IsPlayer() && IsEncounterInProgress())
                 {
                     playerDied = 1;
                     SaveToDB();

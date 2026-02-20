@@ -39,7 +39,7 @@ enum Spells
 
     // Haywire Sunreaver Construct
     SPELL_HAYWIRE                   = 139324,
-    
+
     // Mumta
     SPELL_SPIRIT_BOLTS              = 139004,
     SPELL_DARKNESS_DARKNESS         = 139010,
@@ -97,7 +97,7 @@ enum Spells
 
     // Draining Spirit
     SPELL_DRAIN_SPIRIT              = 137125,
-    
+
     // Restless Spirit
     SPELL_BURIED_ALIVE              = 137280,
 
@@ -128,7 +128,7 @@ enum Spells
     SPELL_LIGHTNING_BOLT            = 138018,
     SPELL_LIGHTNING_PROD            = 138019,
     SPELL_LIGHTNING_STRIKE          = 138012,
-    
+
     // Ancient Mogu Guardian
     SPELL_MANTLE_OF_THUNDER_KING    = 138073,
 
@@ -140,10 +140,10 @@ enum Spells
     // Windweaver Akil'amon
     SPELL_IMPENDING_GUST            = 138976,
     SPELL_LIFT_OFF                  = 139021,
-    
+
     // Soaring Eagle
     SPELL_PLUCKED                   = 97318,
-    
+
     // Cera
     SPELL_DOUBLE_EDGE_TRASH         = 136866,
     SPELL_CHARGE                    = 138660,
@@ -1100,8 +1100,8 @@ const std::map < uint32, std::array<uint32, 4>> invZandalariSpellsType =
 // War-God Dokah 70096 - Zandalari Warbringer 69769 69841 69842 - Zandalari Warscout 69768
 struct npc_thunder_zandalaris : public customCreatureAI
 {
-    npc_thunder_zandalaris(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_thunder_zandalaris(Creature* creature) : customCreatureAI(creature)
+    {
         eventsList = { 1, 2, 3, 4, 5 };
         Trinity::Containers::RandomResizeList(eventsList, 4);
     }
@@ -1351,7 +1351,7 @@ struct npc_animated_warrior : public customCreatureAI
     {
         if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC))
             return;
-        if (who->GetTypeId() != TYPEID_PLAYER)
+        if (!(who->IsPlayer()))
             return;
         if (!me->IsWithinDistInMap(who, 5.0f, false))
             return;
@@ -1396,7 +1396,7 @@ struct npc_animated_warrior : public customCreatureAI
 // Lightning Rod 69327
 struct npc_lightning_rod : public ScriptedAI
 {
-    npc_lightning_rod(Creature* creature) : ScriptedAI(creature) 
+    npc_lightning_rod(Creature* creature) : ScriptedAI(creature)
     {
         me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
     }
@@ -1778,7 +1778,7 @@ struct npc_juvenile_skyscreamer : public customCreatureAI
 // Zandalari Spiritbinder 69225
 struct npc_zandalari_spiritbinder : public customCreatureAI
 {
-    npc_zandalari_spiritbinder(Creature* creature) : customCreatureAI(creature) 
+    npc_zandalari_spiritbinder(Creature* creature) : customCreatureAI(creature)
     {
         isCaster = true;
     }
@@ -2616,7 +2616,7 @@ class npc_scout_captain_elsia : public CreatureScript
 
         struct npc_scout_captain_elsiaAI : public ScriptedAI
         {
-            npc_scout_captain_elsiaAI(Creature* creature) : ScriptedAI(creature) 
+            npc_scout_captain_elsiaAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED | UNIT_FLAG_IMMUNE_TO_NPC);
             }
@@ -2649,7 +2649,7 @@ class npc_scout_captain_elsia : public CreatureScript
 // Sunreaver Bloodhawk 70367, 70368
 struct npc_sunreaver_bloodhawk : public CreatureAI
 {
-    npc_sunreaver_bloodhawk(Creature* creature) : CreatureAI(creature) 
+    npc_sunreaver_bloodhawk(Creature* creature) : CreatureAI(creature)
     {
         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED | UNIT_FLAG_IMMUNE_TO_NPC);
     }
@@ -2733,7 +2733,7 @@ struct npc_sunreaver_bloodhawk : public CreatureAI
         summonerGUID = summon->GetGUID();
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -2773,7 +2773,7 @@ class npc_vereesa_windrunner : public CreatureScript
 
         struct npc_vereesa_windrunnerAI : public ScriptedAI
         {
-            npc_vereesa_windrunnerAI(Creature* creature) : ScriptedAI(creature) 
+            npc_vereesa_windrunnerAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED | UNIT_FLAG_IMMUNE_TO_NPC);
             }
@@ -2808,7 +2808,7 @@ class npc_vereesa_windrunner : public CreatureScript
 // Silver Covenant Hippogryph 70369, 70366
 struct npc_silver_covenant_hippogryph : public CreatureAI
 {
-    npc_silver_covenant_hippogryph(Creature* creature) : CreatureAI(creature) 
+    npc_silver_covenant_hippogryph(Creature* creature) : CreatureAI(creature)
     {
         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED | UNIT_FLAG_IMMUNE_TO_NPC);
     }
@@ -2985,7 +2985,7 @@ struct npc_lorthemar_theron_isle_intro : public ScriptedAI
         });
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -3505,7 +3505,7 @@ struct npc_iot_stone_sentinel : public customCreatureAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() != TYPEID_PLAYER)
+        if (!(who->IsPlayer()))
             return;
         if (!me->IsWithinDistInMap(who, 5.0f, false))
             return;
@@ -3524,7 +3524,7 @@ class npc_assigment_map : public CreatureScript
 {
     public:
         npc_assigment_map() : CreatureScript("npc_assigment_map") { }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             player->CLOSE_GOSSIP_MENU();
@@ -3559,7 +3559,6 @@ struct npc_nalak_essence_of_storms : public customCreatureAI
         });
     }
 
-
     void EnterEvadeMode() override
     {
         ScriptedAI::EnterEvadeMode();
@@ -3582,7 +3581,7 @@ struct npc_nalak_essence_of_storms : public customCreatureAI
         }
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
 
@@ -3743,7 +3742,7 @@ struct npc_hatchling_skyscreamer : public ScriptedAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() != TYPEID_PLAYER)
+        if (!(who->IsPlayer()))
             return;
 
         if (who->GetDistance(me->GetPosition()) < 5.0f)
@@ -3890,7 +3889,7 @@ class spell_reverberating_smash : public SpellScript
     }
 };
 
-class ReverberatingSmashRangePredicate 
+class ReverberatingSmashRangePredicate
 {
     public:
         ReverberatingSmashRangePredicate(uint32 const& spell_id, WorldLocation const* m_pos) : _spell_id(spell_id), _pos(m_pos) { }
@@ -3913,7 +3912,7 @@ class ReverberatingSmashRangePredicate
 
             return false;
         }
-    
+
     private:
         uint32 const& _spell_id;
         WorldLocation const* _pos;
@@ -3999,7 +3998,7 @@ class spell_zandalari_potion : public SpellScript
     {
         if (Unit* caster = GetCaster())
         {
-            std::vector<uint32> PotionsSpellStorage = { SPELL_JAGUAR_STALKER, SPELL_JAGUAR_SPEED, SPELL_JAGUAR_FEROCITY };    
+            std::vector<uint32> PotionsSpellStorage = { SPELL_JAGUAR_STALKER, SPELL_JAGUAR_SPEED, SPELL_JAGUAR_FEROCITY };
             caster->CastSpell(caster, Trinity::Containers::SelectRandomContainerElement(PotionsSpellStorage), true);
         }
     }
@@ -4334,7 +4333,6 @@ class spell_nalak_throw_spear : public SpellScript
 class spell_summon_essence_of_storm : public SpellScript
 {
     PrepareSpellScript(spell_summon_essence_of_storm);
-
 
     void SelectTargets(SpellDestination& dest)
     {

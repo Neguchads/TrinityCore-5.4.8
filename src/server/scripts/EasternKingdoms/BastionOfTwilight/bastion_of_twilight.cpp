@@ -42,7 +42,7 @@ enum Spells
     SPELL_SHADOW_BOLT             = 85544,
     SPELL_SHAPE_PORTAL            = 85529,
     SPELL_SHAPE_PORTAL_SUM        = 85528,
-    
+
     //twilight shifter
     SPELL_TWILIGHT_SHIFT          = 85556,
 
@@ -50,7 +50,7 @@ enum Spells
     SPELL_MIND_SEAR               = 85643,
     SPELL_MIND_SEAR_DMG           = 85647,
     SPELL_UMBRAL_FLAMES           = 85664,
-    SPELL_UMBRAL_FLAMES_DMG       = 85679,  
+    SPELL_UMBRAL_FLAMES_DMG       = 85679,
     SPELL_SHADOW_MENDING          = 85575,
     SPELL_SHADOW_MENDING_HEAL     = 85577,
 };
@@ -2057,7 +2057,7 @@ class npc_bt_instance_portal: public CreatureScript
                         at = sAreaTriggerStore.LookupEntry(6442);
                     else if (instance->GetBossState(DATA_HALFUS) == DONE)
                         at = sAreaTriggerStore.LookupEntry(6437);
-                    
+
                     if (at)
                         clicker->NearTeleportTo(at->Pos.X, at->Pos.Y, at->Pos.Z, clicker->GetOrientation(), false);
                 }

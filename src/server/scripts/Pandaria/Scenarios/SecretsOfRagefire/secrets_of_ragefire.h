@@ -431,7 +431,7 @@ const std::vector<uint32> goblinsList =
 
 enum Worldstates
 {
-    WORLDSTATE_FEW_PROUD_GOB_SQUAD = 14102, 
+    WORLDSTATE_FEW_PROUD_GOB_SQUAD = 14102,
 };
 
 const std::map<uint32, uint32> investigatedItems =

@@ -177,7 +177,7 @@ class boss_auriaya : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -422,8 +422,8 @@ class npc_sanctum_sentry : public CreatureScript
                         case EVENT_POUNCE:
                         {
                             Unit* target = me->GetVictim();
-                            if (!target || target->GetTypeId() != TYPEID_PLAYER || me->IsWithinCombatRange(target, 8.0f) || !me->IsWithinCombatRange(target, 25.0f))
-                                target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* u) { return u->GetTypeId() == TYPEID_PLAYER && !me->IsWithinCombatRange(u, 8.0f) && me->IsWithinCombatRange(u, 25.0f); });
+                            if (!target || !target->IsPlayer() || me->IsWithinCombatRange(target, 8.0f) || !me->IsWithinCombatRange(target, 25.0f))
+                                target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* u) { return u->IsPlayer() && !me->IsWithinCombatRange(u, 8.0f) && me->IsWithinCombatRange(u, 25.0f); });
                             if (target)
                             {
                                 firstPounce = false;
@@ -505,8 +505,8 @@ class npc_feral_defender : public CreatureScript
                         case EVENT_FERAL_POUNCE:
                         {
                             Unit* target = me->GetVictim();
-                            if (!target || target->GetTypeId() != TYPEID_PLAYER || me->IsWithinCombatRange(target, 8.0f) || !me->IsWithinCombatRange(target, 25.0f))
-                                target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* u) { return u->GetTypeId() == TYPEID_PLAYER && !me->IsWithinCombatRange(u, 8.0f) && me->IsWithinCombatRange(u, 25.0f); });
+                            if (!target || !target->IsPlayer() || me->IsWithinCombatRange(target, 8.0f) || !me->IsWithinCombatRange(target, 25.0f))
+                                target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit* u) { return u->IsPlayer() && !me->IsWithinCombatRange(u, 8.0f) && me->IsWithinCombatRange(u, 25.0f); });
                             if (target)
                             {
                                 firstPounce = false;

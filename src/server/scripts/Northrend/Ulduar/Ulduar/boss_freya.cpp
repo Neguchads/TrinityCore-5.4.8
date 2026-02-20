@@ -254,7 +254,7 @@ class boss_freya : public CreatureScript
         {
             boss_freyaAI(Creature* creature) : BossAI(creature, BOSS_FREYA)
             {
-               _encounterFinished = false; 
+               _encounterFinished = false;
             }
 
             bool _checkElementalAlive[2];
@@ -302,12 +302,12 @@ class boss_freya : public CreatureScript
                             elder->AI()->EnterEvadeMode();
                         }
                     }
-                } 
+                }
             }
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -860,7 +860,7 @@ class boss_elder_brightleaf : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     Talk(SAY_BRIGHTLEAF_SLAY);
             }
 
@@ -869,7 +869,7 @@ class boss_elder_brightleaf : public CreatureScript
                 _JustDied();
                 Talk(SAY_BRIGHTLEAF_DEATH);
 
-                if (killer && killer->GetTypeId() == TYPEID_PLAYER)
+                if (killer && killer->IsPlayer())
                 {
                     if (Creature* Ironbranch = ObjectAccessor::GetCreature(*me, instance->GetGuidData(BOSS_IRONBRANCH)))
                         Ironbranch->AI()->DoAction(ACTION_ELDER_DEATH);
@@ -987,7 +987,7 @@ class boss_elder_stonebark : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     Talk(SAY_STONEBARK_SLAY);
             }
 
@@ -996,7 +996,7 @@ class boss_elder_stonebark : public CreatureScript
                 _JustDied();
                 Talk(SAY_STONEBARK_DEATH);
 
-                if (killer && killer->GetTypeId() == TYPEID_PLAYER)
+                if (killer && killer->IsPlayer())
                 {
                     if (Creature* Ironbranch = ObjectAccessor::GetCreature(*me, instance->GetGuidData(BOSS_IRONBRANCH)))
                         Ironbranch->AI()->DoAction(ACTION_ELDER_DEATH);
@@ -1115,7 +1115,7 @@ class boss_elder_ironbranch : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     Talk(SAY_IRONBRANCH_SLAY);
             }
 
@@ -1124,7 +1124,7 @@ class boss_elder_ironbranch : public CreatureScript
                 _JustDied();
                 Talk(SAY_IRONBRANCH_DEATH);
 
-                if (killer && killer->GetTypeId() == TYPEID_PLAYER)
+                if (killer && killer->IsPlayer())
                 {
                     if (Creature* Brightleaf = ObjectAccessor::GetCreature(*me, instance->GetGuidData(BOSS_BRIGHTLEAF)))
                         Brightleaf->AI()->DoAction(ACTION_ELDER_DEATH);
@@ -1218,7 +1218,7 @@ class npc_iron_roots : public CreatureScript
             {
                 SetCombatMovement(false);
             }
-            
+
             void InitializeAI() override
             {
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
@@ -1237,7 +1237,7 @@ class npc_iron_roots : public CreatureScript
 
             void IsSummonedBy(Unit* summoner) override
             {
-                if (summoner->GetTypeId() != TYPEID_PLAYER)
+                if (!(summoner->IsPlayer()))
                     return;
                 // Summoner is a player, who should have root aura on self
                 _summonerGUID = summoner->GetGUID();
@@ -1409,7 +1409,7 @@ class npc_ancient_water_spirit : public CreatureScript
                     CAST_AI(boss_freya::boss_freyaAI, Freya->AI())->LasherDead(1);
                 }
             }
-            
+
             void DoAction(int32 action) override
             {
                 switch (action)
@@ -1492,7 +1492,7 @@ class npc_storm_lasher : public CreatureScript
                     CAST_AI(boss_freya::boss_freyaAI, Freya->AI())->LasherDead(2);
                 }
             }
-            
+
             void DoAction(int32 action) override
             {
                 switch (action)
@@ -1570,7 +1570,7 @@ class npc_snaplasher : public CreatureScript
             }
 
             void Reset() override { }
-            
+
             void JustDied(Unit* /*killer*/) override
             {
                 if (Creature* Freya = ObjectAccessor::GetCreature(*me, instance->GetGuidData(BOSS_FREYA)))
@@ -1839,7 +1839,7 @@ class npc_eonars_gift : public CreatureScript
                 }
                 else
                     me->DisappearAndDie();
-                
+
                 if (!_cast)
                 {
                     if (_lifeBindersGiftTimer <= diff)
@@ -1929,10 +1929,10 @@ class npc_unstable_sun_beam : public CreatureScript
                 me->SetDisplayFromModel(1);
                 SetCombatMovement(false);
             }
-            
+
             void MoveInLineOfSight(Unit* target) override
             {
-                if (target && target->GetTypeId() == TYPEID_UNIT)
+                if (target && target->IsCreature())
                 {
                     if (target->ToCreature()->GetEntry() == NPC_ELDER_BRIGHTLEAF)
                     {
@@ -2068,7 +2068,6 @@ class spell_essence_targeting_brightleaf : public SpellScriptLoader
             return new spell_essence_targeting_SpellScript();
         }
 };
-
 
 class spell_aggregation_pheromones_targeting : public SpellScriptLoader
 {

@@ -60,7 +60,7 @@ class npc_slipstream_raid : public CreatureScript
             {
                 instance = creature->GetInstanceScript();
                 SlipstreamPosition = DIR_TO_MIDDLE;
-                
+
                 if (creature->ToTempSummon())
                 {
                     DoCast(me, SPELL_SLIPSTREAM_TO_MIDDLE_AURA, true);
@@ -148,7 +148,7 @@ class npc_slipstream_raid : public CreatureScript
                 else if (Creature* boss = ObjectAccessor::GetCreature(*me, linkedBossGuid))
                     isUltimate = boss->AI()->GetData(0);
                 else if (isUltimate)
-                    isUltimate = false;    
+                    isUltimate = false;
 
                 if (!isUltimate != isActive)
                 {

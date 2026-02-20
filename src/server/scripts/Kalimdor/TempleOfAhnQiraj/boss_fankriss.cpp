@@ -45,45 +45,45 @@ class boss_fankriss : public CreatureScript
 {
     public:
         boss_fankriss() : CreatureScript("boss_fankriss") { }
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_fankrissAI(creature);
         }
-    
+
         struct boss_fankrissAI : public BossAI
         {
             boss_fankrissAI(Creature* creature) : BossAI(creature, DATA_FANKRISS) { }
-    
+
             uint32 MortalWound_Timer;
             uint32 SpawnHatchlings_Timer;
             uint32 SpawnSpawns_Timer;
             int Rand;
             float RandX;
             float RandY;
-    
+
             Creature* Hatchling;
             Creature* Spawn;
-    
+
             void Reset() override
             {
                 MortalWound_Timer = urand(10000, 15000);
                 SpawnHatchlings_Timer = urand(6000, 12000);
                 SpawnSpawns_Timer = urand(15000, 45000);
             }
-    
+
             void SummonSpawn(Unit* victim)
             {
                 if (!victim)
                     return;
-    
+
                 Rand = 10 + (rand()%10);
                 switch (rand()%2)
                 {
                     case 0: RandX = 0.0f - Rand; break;
                     case 1: RandX = 0.0f + Rand; break;
                 }
-    
+
                 Rand = 10 + (rand()%10);
                 switch (rand()%2)
                 {
@@ -95,7 +95,7 @@ class boss_fankriss : public CreatureScript
                 if (Spawn)
                     Spawn->AI()->AttackStart(victim);
             }
-    
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 _JustEngagedWith();
@@ -105,20 +105,20 @@ class boss_fankriss : public CreatureScript
             {
                 _JustDied();
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 //Return since we have no target
                 if (!UpdateVictim())
                     return;
-    
+
                 //MortalWound_Timer
                 if (MortalWound_Timer <= diff)
                 {
                     DoCastVictim(SPELL_MORTAL_WOUND);
                     MortalWound_Timer = urand(10000, 20000);
                 } else MortalWound_Timer -= diff;
-    
+
                 //Summon 1-3 Spawns of Fankriss at random time.
                 if (SpawnSpawns_Timer <= diff)
                 {
@@ -139,7 +139,7 @@ class boss_fankriss : public CreatureScript
                     }
                     SpawnSpawns_Timer = urand(30000, 60000);
                 } else SpawnSpawns_Timer -= diff;
-    
+
                 // Teleporting Random Target to one of the three tunnels and spawn 4 hatchlings near the gamer.
                 //We will only telport if fankriss has more than 3% of hp so teleported gamers can always loot.
                 if (HealthAbovePct(3))
@@ -149,10 +149,10 @@ class boss_fankriss : public CreatureScript
                         if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 0.0f, true))
                         {
                             DoCast(target, SPELL_ROOT);
-    
+
                             if (DoGetThreat(target))
                                 DoModifyThreatPercent(target, -100);
-    
+
                             switch (urand(0, 2))
                             {
                                 case 0:
@@ -205,10 +205,10 @@ class boss_fankriss : public CreatureScript
                         SpawnHatchlings_Timer = urand(45000, 60000);
                     } else SpawnHatchlings_Timer -= diff;
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
-        };   
+        };
 };
 
 void AddSC_boss_fankriss()

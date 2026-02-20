@@ -118,7 +118,7 @@ Position const magmawmassivecrashPos[2][21] =
         { -327.528f, -32.3648f, 211.394f, 3.06337f  },
         { -316.344f, -33.1654f, 211.428f, 3.17725f  }
     },
-    { 
+    {
         { -313.627f, -72.6881f, 213.266f, 1.00637f  },
         { -319.881f, -82.0775f, 213.552f, 4.27756f  },
         { -306.833f, -83.4444f, 213.633f, 4.36788f  },
@@ -143,9 +143,9 @@ Position const magmawmassivecrashPos[2][21] =
     }
 };
 
-Position const magmawnefariusspawnPos = {-340.92f, -67.10f, 225.49f, 4.26f}; 
+Position const magmawnefariusspawnPos = {-340.92f, -67.10f, 225.49f, 4.26f};
 
-Position const magmawpincerPos[2] = 
+Position const magmawpincerPos[2] =
 {
     {-317.28f, -51.07f, 212.24f, 0.0f},
     {-310.37f, -55.48f, 212.46f, 0.0f}
@@ -207,7 +207,7 @@ class boss_magmaw : public CreatureScript
                 events.ScheduleEvent(EVENT_MAGMA_SPLIT, urand(15000, 20000));
                 events.ScheduleEvent(EVENT_MANGLE, 65000);
                 //events.ScheduleEvent(EVENT_HEAD_START, 5000);
-                
+
                 if (IsHeroic())
                     if (Creature* pNefarius = me->SummonCreature(NPC_LORD_VICTOR_NEFARIUS_HEROIC, magmawnefariusspawnPos))
                     {
@@ -225,14 +225,14 @@ class boss_magmaw : public CreatureScript
                 summons.DespawnAll();
                 instance->SetBossState(DATA_MAGMAW, DONE);
                 instance->SaveToDB();
-                if (Creature* pNefarius = me->SummonCreature(NPC_LORD_VICTOR_NEFARIUS_HEROIC, 
+                if (Creature* pNefarius = me->SummonCreature(NPC_LORD_VICTOR_NEFARIUS_HEROIC,
                     me->GetPositionX(),
                     me->GetPositionY(),
                     me->GetPositionZ(),
                     0.0f))
                     pNefarius->AI()->DoAction(ACTION_MAGMAW_DEATH);
             }
-            
+
             void JustSummoned(Creature* summon) override
             {
                 summons.Summon(summon);
@@ -296,7 +296,7 @@ class boss_magmaw : public CreatureScript
                             events.ScheduleEvent(EVENT_MELEE_CHECK, 1000);
                             break;
                         case EVENT_MAGMA_SPLIT:
-                            me->CastCustomSpell(SPELL_MAGMA_SPLIT_1, SPELLVALUE_MAX_TARGETS, RAID_MODE(3, 8, 3, 8), 0, false); 
+                            me->CastCustomSpell(SPELL_MAGMA_SPLIT_1, SPELLVALUE_MAX_TARGETS, RAID_MODE(3, 8, 3, 8), 0, false);
                             events.ScheduleEvent(EVENT_MAGMA_SPLIT, urand(15000, 20000));
                             break;
                         case EVENT_LAVA_SPEW:
@@ -499,7 +499,7 @@ class npc_lava_parasite : public CreatureScript
                 {
                     if ((me->GetDistance(me->GetVictim()) <= 4.0f))
                     {
-                        if (me->GetVictim()->GetTypeId() == TYPEID_PLAYER)
+                        if (me->GetVictim()->IsPlayer())
                         {
                             me->GetMap()->SetWorldState(WORLDSTATE_PARASITE_EVENING, 0);
                             me->GetVictim()->CastSpell(me->GetVictim(), SPELL_PARASITIC_INFECTION, true);
@@ -596,7 +596,7 @@ class spell_magmaw_mangle : public SpellScriptLoader
                 GetTarget()->SetControlled(false, UNIT_STATE_STUNNED);
                 GetTarget()->CastSpell(GetTarget() , SPELL_SWENTERING_ARMOR, true);
             }
-            
+
             void Register() override
             {
                 OnEffectApply += AuraEffectApplyFn(spell_magmaw_mangle_AuraScript::OnApply, EFFECT_0, SPELL_AURA_PERIODIC_DAMAGE, AURA_EFFECT_HANDLE_REAL);

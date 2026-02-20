@@ -365,7 +365,7 @@ class spell_gen_gather_muddy_water : public SpellScriptLoader
             void HandleDummy(SpellEffIndex /*effIndex*/)
             {
                 auto target = GetHitUnit();
-                if (!target || target->GetTypeId() != TYPEID_PLAYER)
+                if (!target || !target->IsPlayer())
                     return;
 
                 auto player = GetCaster()->ToPlayer();
@@ -377,7 +377,7 @@ class spell_gen_gather_muddy_water : public SpellScriptLoader
                         LocaleConstant loc_idx = player->GetSession()->GetSessionDbLocaleIndex();
                         std::string baseText = "";
                         if (bct)
-                            baseText = bct->GetText(loc_idx, player->GetGender());                   
+                            baseText = bct->GetText(loc_idx, player->GetGender());
                         player->TextEmote(baseText);
                         player->CastSpell(player, 106284, true);
                     }
@@ -1756,7 +1756,7 @@ struct npc_vfw_darkhide : public customCreatureAI
         events.ScheduleEvent(EVENT_GROUND_AND_POUND, 10 * IN_MILLISECONDS);
     }
 
-    void JustDied(Unit* /*killer*/) override 
+    void JustDied(Unit* /*killer*/) override
     {
         me->RemoveAllAreasTrigger();
     }
@@ -1823,7 +1823,7 @@ const std::map<uint32, uint32> stolneItemsType =
 struct npc_vfw_barrel_of_fireworks : public ScriptedAI
 {
     npc_vfw_barrel_of_fireworks(Creature* creature) : ScriptedAI(creature) { }
-    
+
     TaskScheduler scheduler;
     ObjectGuid summonerGUID;
 
@@ -2030,7 +2030,7 @@ struct npc_vfw_krungko_fingerlicker : public customCreatureAI
     void IsSummonedBy(Unit* summoner) override
     {
         summonerGUID = summoner->GetGUID();
-        
+
         if (Creature* hozenHunter = me->SummonCreature(NPC_KUNZEN_HUNTER, *me, TEMPSUMMON_TIMED_DESPAWN, 300 * IN_MILLISECONDS))
             helperGUID = hozenHunter->GetGUID();
 

@@ -850,7 +850,7 @@ class spell_pri_shadowform : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     void HandleApply(AuraEffect const*, AuraEffectHandleModes)
@@ -887,7 +887,7 @@ class spell_pri_glyph_of_shadow : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     void HandleApply(AuraEffect const*, AuraEffectHandleModes)
@@ -1169,7 +1169,7 @@ class spell_pri_mind_blast : public SpellScriptLoader
             void HandleAfterHit()
             {
                 Unit* caster = GetCaster();
-                if (!caster || caster->GetTypeId() != TYPEID_PLAYER)
+                if (!caster || !caster->IsPlayer())
                     return;
 
                 // Handle Divine Insight if it procced while casting current Mind Blast
@@ -1206,7 +1206,7 @@ class spell_pri_confession : public SpellScriptLoader
 
             void HandleDummy(SpellEffIndex /*effIndex*/)
             {
-                uint32 confessions[57] = 
+                uint32 confessions[57] =
                 {
                     64978,   // [%s] confesses: I once took a bow that a hunter wanted.
                     64991,   // [%s] confesses: I have "borrowed" things from my guild bank.
@@ -1264,7 +1264,7 @@ class spell_pri_confession : public SpellScriptLoader
                     76095,   // [%s] confesses: I still carry around Argent Crusade Scorugestones. You never know when they'll be useful again.
                     76096,   // [%s] confesses: I feel bad for my ground mounts. I hardly ever use them anymore.
                     76097,   // [%s] confesses: I'm going to totally ninja that hunter's loot.
-                    76098    // [%s] confesses: I am confused why female draenei like gnomes.                    
+                    76098    // [%s] confesses: I am confused why female draenei like gnomes.
                 };
 
                 auto target = GetHitUnit();
@@ -1277,7 +1277,7 @@ class spell_pri_confession : public SpellScriptLoader
                     if (bct)
                         baseText = bct->GetText(loc_idx, _player->GetGender());
 
-                    target->TextEmote(baseText.c_str(), nullptr); 
+                    target->TextEmote(baseText.c_str(), nullptr);
                 }
             }
 
@@ -1325,7 +1325,6 @@ class spell_pri_glyph_of_confession : public SpellScriptLoader
         }
 };
 
-
 // 2944 - Devouring Plague
 class spell_pri_devouring_plague : public SpellScript
 {
@@ -1335,7 +1334,7 @@ class spell_pri_devouring_plague : public SpellScript
 
     void Prepare()
     {
-        if (GetCaster()->GetTypeId() == TYPEID_PLAYER)
+        if (GetCaster()->IsPlayer())
             orbs = GetCaster()->GetPower(POWER_SHADOW_ORBS);
     }
 
@@ -1545,10 +1544,10 @@ class spell_pri_spirit_of_redemption : public AuraScript
                 Unit const* attacker = dmgInfo.GetAttacker();
                 uint32 attackerId = 0;
                 if (attacker)
-                    attackerId = attacker->GetTypeId() == TYPEID_PLAYER ? attacker->GetGUIDLow() : attacker->GetEntry();
+                    attackerId = attacker->IsPlayer() ? attacker->GetGUIDLow() : attacker->GetEntry();
                 char const* attackerType = "<unknown>";
                 if (attacker)
-                    attackerType = attacker->GetTypeId() == TYPEID_PLAYER ? "player" : "creature";
+                    attackerType = attacker->IsPlayer() ? "player" : "creature";
 
                 TC_LOG_ERROR("shitlog", "spell_pri_spirit_of_redemption, owner: %u, attacker: %u (%s), spell: %u", priest->GetGUIDLow(), attackerId, attackerType, dmgInfo.GetSpellInfo() ? dmgInfo.GetSpellInfo()->Id : 0);
                 */
@@ -1556,7 +1555,7 @@ class spell_pri_spirit_of_redemption : public AuraScript
                 return;
             }
 
-            if (dmgInfo.GetAttacker() && dmgInfo.GetAttacker()->GetTypeId() == TYPEID_PLAYER)
+            if (dmgInfo.GetAttacker() && dmgInfo.GetAttacker()->IsPlayer())
             {
                 dmgInfo.GetAttacker()->ToPlayer()->RewardPlayerAndGroupAtKill(priest, false);
                 if (Battleground* bg = priest->GetBattlegorund())
@@ -1606,7 +1605,7 @@ class spell_pri_spirit_of_redemption_form : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     void HandleApply(AuraEffect const*, AuraEffectHandleModes)
@@ -1657,7 +1656,7 @@ class spell_pri_spirit_of_redemption_form : public AuraScript
     }
 };
 
-// 129176 - Shadow Word: Death 
+// 129176 - Shadow Word: Death
 class spell_pri_shadow_word_death_glyphed : public SpellScript
 {
     PrepareSpellScript(spell_pri_shadow_word_death_glyphed);
@@ -1718,7 +1717,7 @@ class spell_pri_shadow_word_death_glyphed : public SpellScript
     }
 };
 
-// 32379 - Shadow Word: Death 
+// 32379 - Shadow Word: Death
 class spell_pri_shadow_word_death : public SpellScript
 {
     PrepareSpellScript(spell_pri_shadow_word_death);
@@ -2257,7 +2256,7 @@ class spell_pri_void_shift : public SpellScript
 
     SpellCastResult CheckTarget()
     {
-        if (GetExplTargetUnit() && GetExplTargetUnit()->GetTypeId() != TYPEID_PLAYER)
+        if (GetExplTargetUnit() && !GetExplTargetUnit()->IsPlayer())
             return SPELL_FAILED_BAD_TARGETS;
         return SPELL_CAST_OK;
     }
@@ -2549,7 +2548,6 @@ class spell_pri_spectral_guise_remove : public AuraScript
 {
     PrepareAuraScript(spell_pri_spectral_guise_remove);
 
-
     void HandleRemove(AuraEffect const*, AuraEffectHandleModes)
     {
         std::list<TempSummon*> summons;
@@ -2706,7 +2704,7 @@ class spell_pri_shadowy_appartion : public SpellScript
     }
 };
 
-// 31897 - Lightwell 
+// 31897 - Lightwell
 struct npc_pri_lightwell : public NullCreatureAI
 {
     npc_pri_lightwell(Creature* creature)
@@ -2991,7 +2989,6 @@ class spell_pri_psychic_terror_aura : public AuraScript
     }
 };
 
-
 // 114164 - Psyfiend Hit Me Driver
 class spell_pri_psyfiend_hit_me_driver : public AuraScript
 {
@@ -3016,7 +3013,7 @@ class spell_pri_psyfiend_hit_me_driver : public AuraScript
         OnProc += AuraProcFn(spell_pri_psyfiend_hit_me_driver::HandleProc);
     }
 };
-    
+
 // 48045 - Mind Sear
 class spell_pri_mind_sear_check : public SpellScript
 {
@@ -3510,7 +3507,7 @@ class spell_pri_t16_healer_4p_bonus : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetOwner()->IsPlayer();
     }
 
     void HandleProc(ProcEventInfo& eventInfo)
@@ -3632,7 +3629,7 @@ class sat_pri_angelic_feather : public IAreaTriggerOnce
 {
     bool CheckTriggering(WorldObject* target)
     {
-        return target->GetTypeId() == TYPEID_PLAYER && GetCaster()->IsValidAssistTarget(target->ToPlayer());
+        return target->IsPlayer() && GetCaster()->IsValidAssistTarget(target->ToPlayer());
     }
 
     void OnTrigger(WorldObject* target)

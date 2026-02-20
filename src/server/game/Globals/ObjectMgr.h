@@ -757,7 +757,7 @@ struct PlayerInfo
     uint16 displayId_f;
     PlayerCreateInfoItems item;
     PlayerCreateInfoSpells castSpells;
-    //PlayerCreateInfoSkills skills;      // Not skill id - index from SkillRaceClassInfo.dbc 
+    //PlayerCreateInfoSkills skills;      // Not skill id - index from SkillRaceClassInfo.dbc
     PlayerCreateSkillRaceClassList skills;
     PlayerCreateInfoActions action;
 
@@ -1241,7 +1241,7 @@ class ObjectMgr
         bool LoadTrinityStrings(char const* table, int32 min_value, int32 max_value);
         bool LoadTrinityStrings() { return LoadTrinityStrings("trinity_string", MIN_TRINITY_STRING_ID, MAX_TRINITY_STRING_ID); }
         void LoadBroadcastTexts();
-        void LoadBroadcastTextLocales();        
+        void LoadBroadcastTextLocales();
         void LoadCreatureClassLevelStats();
         void LoadCreatureLocales();
         void LoadGraveyardOrientations();
@@ -1249,7 +1249,7 @@ class ObjectMgr
         void LoadCreatureTemplateAddons();
         void LoadCreatureSparringTemplate();
         void LoadCreatureTemplate(Field* fields);
-        void LoadCreatureTemplateModels();        
+        void LoadCreatureTemplateModels();
         void LoadCreatureDifficultyModifiers();
         void CheckCreatureTemplate(CreatureTemplate const* cInfo);
         void CheckCreatureMovement(char const* table, uint64 id, CreatureMovementData& creatureMovement);
@@ -1272,7 +1272,7 @@ class ObjectMgr
         void LoadQuestObjectivesLocale();
         void LoadQuestGreetingLocales();
         void LoadQuestOfferRewardLocale();
-        void LoadQuestRequestItemsLocale();         
+        void LoadQuestRequestItemsLocale();
         void LoadNpcTextLocales();
         void LoadPageTextLocales();
         void LoadGossipMenuItemsLocales();
@@ -1538,7 +1538,7 @@ class ObjectMgr
             QuestTemplateLocaleContainer::const_iterator itr = _questTemplateLocaleStore.find(entry);
             if (itr == _questTemplateLocaleStore.end()) return nullptr;
             return &itr->second;
-        }        
+        }
         QuestOfferRewardLocale const* GetQuestOfferRewardLocale(uint32 entry) const
         {
             auto itr = _questOfferRewardLocaleStore.find(entry);
@@ -1556,7 +1556,7 @@ class ObjectMgr
             QuestObjectivesLocaleContainer::const_iterator itr = _questObjectivesLocaleStore.find(entry);
             if (itr == _questObjectivesLocaleStore.end()) return nullptr;
             return &itr->second;
-        }        
+        }
         NpcTextLocale const* GetNpcTextLocale(uint32 entry) const
         {
             NpcTextLocaleContainer::const_iterator itr = _npcTextLocaleStore.find(entry);
@@ -1681,7 +1681,7 @@ class ObjectMgr
 
         void LoadScriptNames();
         ScriptNameContainer const& GetAllScriptNames() const;
-        std::string const& GetScriptName(uint32 id) const;        
+        std::string const& GetScriptName(uint32 id) const;
         uint32 GetScriptId(std::string const& name);
 
         SpellClickInfoMapBounds GetSpellClickInfoMapBounds(uint32 creature_id) const
@@ -1716,7 +1716,7 @@ class ObjectMgr
         {
             if (data.size() > size_t(loc_idx) && !data[loc_idx].empty())
                 value = data[loc_idx];
-        }        
+        }
         static inline void GetLocaleString(std::vector<std::string> const& data, LocaleConstant localeConstant, std::string& value) //TC version
         {
             if (data.size() > size_t(localeConstant) && !data[localeConstant].empty())
@@ -1755,7 +1755,7 @@ class ObjectMgr
         ArchaeologyFindList const* GetArcheologyFindListForDigsite(uint32 digsiteId);
 
         ResearchProjectRequirements const* GetResearchProjectRequirements(uint32 projectId) const;
-        
+
         CreatureDifficultyInfo const* GetCreatureDifficultyInfo(Difficulty difficulty, uint32 id) const;
         CreatureDifficultyInfo const* SelectDifficultyInfo(Map const* map, uint32 entry) const;
 
@@ -1975,7 +1975,7 @@ class ObjectMgr
         QuestTemplateLocaleContainer _questTemplateLocaleStore;
         QuestObjectivesLocaleContainer _questObjectivesLocaleStore;
         QuestOfferRewardLocaleContainer _questOfferRewardLocaleStore;
-        QuestRequestItemsLocaleContainer _questRequestItemsLocaleStore;        
+        QuestRequestItemsLocaleContainer _questRequestItemsLocaleStore;
         NpcTextLocaleContainer _npcTextLocaleStore;
         PageTextLocaleContainer _pageTextLocaleStore;
         TrinityStringLocaleContainer _trinityStringLocaleStore;

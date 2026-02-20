@@ -36,7 +36,7 @@ class npc_shadopan_ambusher : public CreatureScript
             SPELL_CRISE            = 128245,
             SPELL_FLIP_OUT_AURA    = 128248,
             SPELL_STEALTH          = 102921,
-            SPELL_SHADOWSTEP       = 128766 
+            SPELL_SHADOWSTEP       = 128766
         };
 
         enum eEvents
@@ -151,7 +151,7 @@ class npc_shadopan_warden: public CreatureScript
             {
                 events.Reset();
             }
-     
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 if (!aggroTalked)
@@ -199,7 +199,7 @@ class npc_shadopan_stormbringer : public CreatureScript
         {
             SPELL_FOCUSING_ENERGY = 115009,
             SPELL_FOCUSING_COMBAT = 115433,
-            SPELL_ARC_LIGHTNING   = 115026 
+            SPELL_ARC_LIGHTNING   = 115026
         };
 
         enum eEvents
@@ -255,7 +255,7 @@ class npc_shadopan_stormbringer : public CreatureScript
                 {
                     if (auto const energy = me->FindNearestCreature(NPC_UNSTABLE_ENERGY, 10.0f))
                         me->CastSpell(energy, SPELL_FOCUSING_ENERGY, false);
-                }        
+                }
 
                 if (!UpdateVictim())
                     return;
@@ -689,7 +689,7 @@ class npc_shadopan_archery : public CreatureScript
             npc_shadopan_archeryAI(Creature* creature) : ScriptedAI(creature) { }
 
             EventMap events;
-            InstanceScript* instance;      
+            InstanceScript* instance;
 
             void InitializeAI() override
             {
@@ -1157,7 +1157,7 @@ struct PlayerTargetSelector
 {
     bool operator ()(WorldObject const* object) const
     {
-        if (object->GetTypeId() == TYPEID_PLAYER)
+        if (object->IsPlayer())
             return false;
         return true;
     }

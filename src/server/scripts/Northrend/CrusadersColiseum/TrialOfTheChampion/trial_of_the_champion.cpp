@@ -27,8 +27,8 @@ EndContentData */
 #include "Group.h"
 #include "trial_of_the_champion.h"
 
-#define GOSSIP_START_EVENT1     "Я готов к старту испытания."
-#define GOSSIP_START_EVENT2     "Я готов к следующему испытанию."
+#define GOSSIP_START_EVENT1     "ÃÂ¯ ÃÂ³ÃÂ¾Ã‘â€šÃÂ¾ÃÂ² ÃÂº Ã‘ÂÃ‘â€šÃÂ°Ã‘â‚¬Ã‘â€šÃ‘Æ’ ÃÂ¸Ã‘ÂÃÂ¿Ã‘â€¹Ã‘â€šÃÂ°ÃÂ½ÃÂ¸Ã‘Â."
+#define GOSSIP_START_EVENT2     "ÃÂ¯ ÃÂ³ÃÂ¾Ã‘â€šÃÂ¾ÃÂ² ÃÂº Ã‘ÂÃÂ»ÃÂµÃÂ´Ã‘Æ’Ã‘Å½Ã‘â€°ÃÂµÃÂ¼Ã‘Æ’ ÃÂ¸Ã‘ÂÃÂ¿Ã‘â€¹Ã‘â€šÃÂ°ÃÂ½ÃÂ¸Ã‘Å½."
 
 #define ORIENTATION             4.714f
 
@@ -94,7 +94,7 @@ class npc_anstart : public CreatureScript
                 if (!who)
                     return;
 
-                if (Phase == IDLE && who->GetTypeId() == TYPEID_PLAYER && me->IsWithinDistInMap(who, 20.0))
+                if (Phase == IDLE && who->IsPlayer() && me->IsWithinDistInMap(who, 20.0))
                 {
                     Phase = INTRO;
                     me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);

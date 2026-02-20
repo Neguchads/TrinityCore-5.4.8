@@ -810,8 +810,8 @@ class boss_spoils_of_pandaria : public CreatureScript
 // Artifact Spoils 73721, 73720, 73722, 71512
 struct npc_spoils_artifact_spoils : public ScriptedAI
 {
-    npc_spoils_artifact_spoils(Creature* creature) : ScriptedAI(creature) 
-    { 
+    npc_spoils_artifact_spoils(Creature* creature) : ScriptedAI(creature)
+    {
         instance = me->GetInstanceScript();
     }
 
@@ -1435,7 +1435,7 @@ struct npc_animated_stone_mogu : public spoils_baseAI
                         DoCast(target, SPELL_EARTHEN_SHARD);
                     else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 80.0f, true))
                         DoCast(target, SPELL_EARTHEN_SHARD);
-                
+
                     events.ScheduleEvent(EVENT_EARTHEN_SHARD, urand(6 * IN_MILLISECONDS, 8 * IN_MILLISECONDS));
                     break;
                 case EVENT_HARDEN_FLESH:
@@ -1811,7 +1811,7 @@ struct npc_spoils_lift_hook : public ScriptedAI
         });
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -2490,7 +2490,6 @@ struct npc_spoils_unstable_spark : public ScriptedAI
     }
 };
 
-
 // Secured Stockpile of Spoils 220823
 class go_spoils_secured_stockpile_of_spoils : public GameObjectScript
 {
@@ -2547,7 +2546,7 @@ class go_spoils_secured_stockpile_of_spoils : public GameObjectScript
                 std::vector<uint32> mixedVoiceChoise(leadersVoiceChoise.begin(), leadersVoiceChoise.end());
                 std::random_device rd;
                 std::mt19937 g(rd());
-                std::shuffle(mixedVoiceChoise.begin(), mixedVoiceChoise.end(), g);                
+                std::shuffle(mixedVoiceChoise.begin(), mixedVoiceChoise.end(), g);
 
                 // save this value for check
                 if (Creature* spoils = ObjectAccessor::GetCreature(*go, go->GetInstanceScript() ? go->GetInstanceScript()->GetGuidData(DATA_SPOILS_OF_PANDARIA) : ObjectGuid::Empty))
@@ -2654,7 +2653,7 @@ class spell_spoils_breaking : public SpellScript
         if (GameObject* box = GetHitGObj())
         {
             std::list<Creature*> spoilLoots;
-            
+
             // we won`t activate not our npc...
             for (auto&& itr : mantidCreatures)
                 GetCreatureListWithEntryInGrid(spoilLoots, box, itr.first, 10.0f);
@@ -3880,7 +3879,7 @@ class sat_spoils_staff_of_resonating_water : public IAreaTriggerAura
                 path.push_back({ x, y, z });
 
                 at->InitSpline(path, at->GetDuration());
-            }              
+            }
         }
     }
 

@@ -51,7 +51,7 @@ enum Phases
 {
     PHASE_DEFAULT                  = 0,
     PHASE_ILLUSIONS                = 1
-}; 
+};
 
 class boss_jandice_barov : public CreatureScript
 {
@@ -82,12 +82,12 @@ class boss_jandice_barov : public CreatureScript
                 me->GetMap()->SetWorldState(WORLDSTATE_ATTENTION_TO_DETAIL, 1);
             }
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 CurHealth = 0;
                 phase = PHASE_DEFAULT;
                 CurPcnt = 66;
-                Max = me->GetMaxHealth(); 
+                Max = me->GetMaxHealth();
                 TargetGUID = ObjectGuid::Empty;
             }
 
@@ -179,7 +179,7 @@ class boss_jandice_barov : public CreatureScript
                 events.ScheduleEvent(EVENT_GRAVITY_FLUX, urand(8000, 12000));
             }
 
-            void DamageTaken(Unit* /*attacker*/, uint32& damage) override  
+            void DamageTaken(Unit* /*attacker*/, uint32& damage) override
             {
                 if (CurPcnt == 0 && phase == PHASE_DEFAULT)
                     return;

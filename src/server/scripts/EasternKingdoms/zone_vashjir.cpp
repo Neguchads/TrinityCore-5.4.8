@@ -68,7 +68,7 @@ struct npc_drowning_soldier_and_warrior : public ScriptedAI
         {
             move_timer = 0;
 
-            // Бежать вперёд на 15 ярдов
+            // Ãâ€˜ÃÂµÃÂ¶ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ²ÃÂ¿ÃÂµÃ‘â‚¬Ã‘â€˜ÃÂ´ ÃÂ½ÃÂ° 15 Ã‘ÂÃ‘â‚¬ÃÂ´ÃÂ¾ÃÂ²
             const float angle = (me->GetOrientation()) - static_cast<float>(M_PI / 2);
             const float x = me->GetPositionX() - 15 * std::sin(angle);
             const float y = me->GetPositionY() + 15 * std::cos(angle);

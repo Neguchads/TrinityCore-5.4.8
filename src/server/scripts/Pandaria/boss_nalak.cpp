@@ -51,7 +51,7 @@ class boss_nalak : public CreatureScript
 {
     public:
         boss_nalak() : CreatureScript("boss_nalak") { }
-    
+
         struct boss_nalakAI : public ScriptedAI
         {
             boss_nalakAI(Creature* creature) : ScriptedAI(creature) { }
@@ -66,7 +66,7 @@ class boss_nalak : public CreatureScript
                 me->SetFloatValue(UNIT_FIELD_COMBAT_REACH, 25.0f);
                 events.Reset();
             }
-    
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 Talk(SAY_NALAK_AGGRO);
@@ -92,22 +92,22 @@ class boss_nalak : public CreatureScript
                 me->SetCorpseDelay(corpseDelay);
                 me->SetRespawnDelay(respawnDelay);
             }
-    
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_NALAK_SLAY);
             }
-    
+
             void JustDied(Unit* /*killer*/) override
             {
                 Talk(SAY_NALAK_DEATH);
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -133,11 +133,11 @@ class boss_nalak : public CreatureScript
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_nalakAI(creature);
@@ -159,7 +159,7 @@ class spell_nalak_lightning_tether : public SpellScript
             pList.remove_if(TankSpecTargetSelector());
             pList.remove_if([=](Player* target) { return target && target->HasAura(SPELL_LIGHTNING_TETHER); });
 
-            // if we have enough players without tanks and affected by aura 
+            // if we have enough players without tanks and affected by aura
             if (pList.size() >= 5)
             {
                 targets.clear();
@@ -245,7 +245,7 @@ class spell_nalak_storm_cloud : public SpellScript
             pList.remove_if(MeeleSpecTargetSelector());
             pList.remove_if([=](Player* target) { return target && target->HasAura(SPELL_STORM_CLOUD); });
 
-            // if we have enough players without tanks, meelee and affected by aura 
+            // if we have enough players without tanks, meelee and affected by aura
             if (pList.size() >= 3)
             {
                 targets.clear();

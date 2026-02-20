@@ -189,7 +189,7 @@ public:
 
         void DamageTaken(Unit* done_by, uint32 &damage) override
         {
-            if (done_by && done_by->GetTypeId() == TYPEID_PLAYER)
+            if (done_by && done_by->IsPlayer())
                 if (me->GetHealth() <= damage)
                     if (rand()%100 < 75)
                         //Summon Wood Mites
@@ -276,7 +276,7 @@ public:
 
         void DamageTaken(Unit* done_by, uint32 &damage) override
         {
-            if (done_by->GetTypeId() == TYPEID_PLAYER)
+            if (done_by->IsPlayer())
                 if (me->GetHealth() <= damage)
                     if (rand()%100 < 75)
                         //Summon Lots of Wood Mights
@@ -317,7 +317,6 @@ public:
         void Reset() override { }
         void JustEngagedWith(Unit* /*who*/) override { }
         void MoveInLineOfSight(Unit* /*who*/) override { }
-
 
         void JustDied(Unit* killer) override
         {
@@ -694,7 +693,7 @@ public:
                     me->SummonCreature(NPC_CABAL_SKRIMISHER, -2793.55f, 5412.79f, -34.53f, 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 25000);
                     break;
                 case 11:
-                    if (player->GetTypeId() == TYPEID_PLAYER)
+                    if (player->IsPlayer())
                         player->GroupEventHappens(QUEST_ESCAPING_THE_TOMB, me);
                     break;
             }

@@ -282,7 +282,7 @@ class boss_blood_queen_lana_thel : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -343,7 +343,7 @@ class boss_blood_queen_lana_thel : public CreatureScript
             void MoveInLineOfSight(Unit* who) override
             {
                 // Only aggro by proximity on players, flying pets and guardians can raise Kinetic Bombs into Lana'thel's room
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     BossAI::MoveInLineOfSight(who);
             }
 
@@ -558,7 +558,7 @@ class boss_blood_queen_lana_thel : public CreatureScript
 
                 for (std::list<HostileReference*>::const_iterator itr = threatlist.begin(); itr != threatlist.end(); ++itr)
                     if (Unit* refTarget = (*itr)->getTarget())
-                        if (refTarget != me->GetVictim() && refTarget->GetTypeId() == TYPEID_PLAYER && (includeOfftank ? true : (refTarget->GetGUID() != _offtankGUID)) && me->IsValidAttackTarget(refTarget))
+                        if (refTarget != me->GetVictim() && refTarget->IsPlayer() && (includeOfftank ? true : (refTarget->GetGUID() != _offtankGUID)) && me->IsValidAttackTarget(refTarget))
                             tempTargets.push_back(refTarget->ToPlayer());
 
                 if (tempTargets.empty())
@@ -709,13 +709,13 @@ class spell_blood_queen_vampiric_bite : public SpellScriptLoader
                         if (Creature* bloodQueen = ObjectAccessor::GetCreature(*GetCaster(), instance->GetGuidData(DATA_BLOOD_QUEEN_LANA_THEL)))
                             bloodqueenFound = true;
 
-                    if (GetCaster()->GetTypeId() == TYPEID_PLAYER)
+                    if (GetCaster()->IsPlayer())
                     {
                         if (Player* casterPlayer = GetCaster()->ToPlayer())
                         {
                             if (casterPlayer->GetSelectedUnit())
                             {
-                                if (casterPlayer->GetSelectedUnit()->GetTypeId() == TYPEID_PLAYER)
+                                if (casterPlayer->GetSelectedUnit()->IsPlayer())
                                 {
                                     if (Player* targetPlayer = casterPlayer->GetSelectedUnit()->ToPlayer())
                                     {
@@ -743,7 +743,7 @@ class spell_blood_queen_vampiric_bite : public SpellScriptLoader
 
             void OnCast()
             {
-                if (GetCaster()->GetTypeId() != TYPEID_PLAYER)
+                if (!(GetCaster()->IsPlayer()))
                     return;
 
                 InstanceScript* instance = GetCaster()->GetInstanceScript();

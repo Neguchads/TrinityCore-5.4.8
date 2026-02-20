@@ -220,7 +220,7 @@ enum Events
     EVENT_DEATHWING_INTRO_3     = 38,
     EVENT_DEATHWING_INTRO_4     = 39,
     EVENT_DEATHWING_INTRO_5     = 40,
-    
+
     EVENT_DEATHWING_OOC_VISUAL  = 41,
     EVENT_DEATHWING_OOC_CAST_1  = 42,
     EVENT_DEATHWING_OOC_CAST_2  = 43,
@@ -230,9 +230,9 @@ enum Events
     EVENT_DRAGONS_INTRO_1       = 46,
     EVENT_DRAGONS_INTRO_2       = 47,
     EVENT_DRAGONS_INTRO_3       = 48,
-    
+
     EVENT_TRASH_WIPE_CHECK      = 49,
-    
+
     EVENT_DEATHWING_DESPAWN     = 50,
     EVENT_SPAWN_ULTRAXION       = 51,
     EVENT_ULTRAXION_NEAR        = 52,
@@ -271,8 +271,8 @@ enum Misc
     POINT_ASSAULTER = 6,
 };
 
-const Position DeathwingEventPos = {-1648.428f, -2380.605f, 387.681f, 0.0f}; 
-const Position DeathwingDespawnPos = {-1417.52f, -2193.82f, 374.776f, 0.0f}; 
+const Position DeathwingEventPos = {-1648.428f, -2380.605f, 387.681f, 0.0f};
+const Position DeathwingDespawnPos = {-1417.52f, -2193.82f, 374.776f, 0.0f};
 
 const Position DeathwingOOCVisual[3] =
 {
@@ -333,7 +333,7 @@ class npc_dragon_soul_ancient_water_lord : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -414,7 +414,7 @@ class npc_dragon_soul_earthen_destroyer : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -496,7 +496,7 @@ class npc_dragon_soul_earthen_soldier : public CreatureScript
                     DoCast(me, SPELL_TWILIGHT_RAGE);
                     return;
                 }
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -707,10 +707,10 @@ class npc_dragon_soul_crimson_globule : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
-                    me->CastCustomSpell(SPELL_SEARING_BLOOD, SPELLVALUE_MAX_TARGETS, RAID_MODE(3, 8), me); 
+                    me->CastCustomSpell(SPELL_SEARING_BLOOD, SPELLVALUE_MAX_TARGETS, RAID_MODE(3, 8), me);
                     events.ScheduleEvent(EVENT_SEARING_BLOOD, (me->HasAura(SPELL_GLOWING_BLOOD_OF_SHUMA_2) ? 7000 : 14000));
                 }
                 DoMeleeAttackIfReady();
@@ -767,7 +767,7 @@ class npc_dragon_soul_acidic_globule : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     DoCastAOE(SPELL_DIGESTIVE_ACID);
@@ -827,7 +827,7 @@ class npc_dragon_soul_dark_globule : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     DoCastVictim(SPELL_PSYCHIC_SLICE);
@@ -887,7 +887,7 @@ class npc_dragon_soul_shadowed_globule : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 0.0f, true))
@@ -1347,7 +1347,7 @@ class npc_dragon_soul_thrall : public CreatureScript
 
         struct npc_dragon_soul_thrallAI : public ScriptedAI
         {
-            npc_dragon_soul_thrallAI(Creature* creature) : ScriptedAI(creature) 
+            npc_dragon_soul_thrallAI(Creature* creature) : ScriptedAI(creature)
             {
                 instance = creature->GetInstanceScript();
             }
@@ -1545,20 +1545,20 @@ class npc_dragon_soul_thrall : public CreatureScript
                             if (Creature* Alexstrasza = me->FindNearestCreature(NPC_ALEXSTRASZA_THE_LIFE_BINDER, 50.0f))
                                 Alexstrasza->AI()->Talk(SAY_ALEXSTRASZA_EVENT_1);
                             events.ScheduleEvent(EVENT_DRAGON_SOUL_7, 9000);
-                            break; 
+                            break;
                         case EVENT_DRAGON_SOUL_7:
                             if (Creature* Alexstrasza = me->FindNearestCreature(NPC_ALEXSTRASZA_THE_LIFE_BINDER, 50.0f))
                                 Alexstrasza->CastSpell(Alexstrasza, SPELL_CHARGING_UP_LIFE);
                             events.ScheduleEvent(EVENT_DRAGON_SOUL_8, 2000);
-                            break; 
+                            break;
                         case EVENT_DRAGON_SOUL_8:
                             Talk(SAY_THRALL_EVENT_1);
                             events.ScheduleEvent(EVENT_DRAGON_SOUL_9, 6000);
-                            break; 
+                            break;
                         case EVENT_DRAGON_SOUL_9:
                             Talk(SAY_THRALL_EVENT_2);
                             events.ScheduleEvent(EVENT_DRAGON_SOUL_10, 10000);
-                            break; 
+                            break;
                         case EVENT_DRAGON_SOUL_10:
                             Talk(SAY_THRALL_EVENT_3);
                             events.ScheduleEvent(EVENT_DRAGON_SOUL_11, 3000);
@@ -1699,7 +1699,7 @@ class npc_dragon_soul_deathwing_event : public CreatureScript
 
         struct npc_dragon_soul_deathwing_eventAI : public ScriptedAI
         {
-            npc_dragon_soul_deathwing_eventAI(Creature* creature) : ScriptedAI(creature) 
+            npc_dragon_soul_deathwing_eventAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetWalk(false);
                 me->SetSpeed(MOVE_FLIGHT, 5, true);
@@ -1955,7 +1955,7 @@ class npc_dragon_soul_twilight_assaulter : public CreatureScript
                     return;
                 if (!wasAssaulting || wasChanneling)
                     return;
-                
+
                 me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
                 me->GetMotionMaster()->MoveIdle();
                 me->SetFacingTo(assaultPos.GetOrientation());
@@ -2096,7 +2096,7 @@ class npc_dragon_soul_kalecgos_event : public CreatureScript
                  if ((instance->GetBossState(DATA_YORSAHJ) != DONE) || (instance->GetBossState(DATA_ZONOZZ) != DONE))
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (!me->IsWithinDistInMap(who, 20.0f, false))
@@ -2113,7 +2113,7 @@ class npc_dragon_soul_kalecgos_event : public CreatureScript
                 {
                     case EVENT_OPEN_PORTAL_START:
                         if (Creature* Thrall = me->FindNearestCreature(NPC_THRALL_1, 50.0f))
-                            Thrall->AI()->Talk(SAY_THRALL_PORTAL_1); 
+                            Thrall->AI()->Talk(SAY_THRALL_PORTAL_1);
                         events.ScheduleEvent(EVENT_OPEN_PORTAL_1, 13000);
                         break;
                     case EVENT_OPEN_PORTAL_1:
@@ -2131,17 +2131,17 @@ class npc_dragon_soul_kalecgos_event : public CreatureScript
                         break;
                     case EVENT_OPEN_PORTAL_4:
                         if (Creature* Thrall = me->FindNearestCreature(NPC_THRALL_1, 50.0f))
-                            Thrall->AI()->Talk(SAY_THRALL_PORTAL_2); 
+                            Thrall->AI()->Talk(SAY_THRALL_PORTAL_2);
                         events.ScheduleEvent(EVENT_OPEN_PORTAL_5, 12000);
                         break;
                     case EVENT_OPEN_PORTAL_5:
                         if (Creature* Ysera = me->FindNearestCreature(NPC_YSERA_THE_AWAKENED, 50.0f))
-                            Ysera->AI()->Talk(SAY_YSERA_PORTAL); 
+                            Ysera->AI()->Talk(SAY_YSERA_PORTAL);
                         events.ScheduleEvent(EVENT_OPEN_PORTAL_6, 12000);
                         break;
                     case EVENT_OPEN_PORTAL_6:
                         if (Creature* Thrall = me->FindNearestCreature(NPC_THRALL_1, 50.0f))
-                            Thrall->AI()->Talk(SAY_THRALL_PORTAL_3); 
+                            Thrall->AI()->Talk(SAY_THRALL_PORTAL_3);
                         events.ScheduleEvent(EVENT_OPEN_PORTAL_7, 6000);
                         break;
                     case EVENT_OPEN_PORTAL_7:
@@ -2311,10 +2311,10 @@ class spell_dragon_soul_cobalt_globule_mana_void : public SpellScriptLoader
             {
                 public:
                     ManaCheck() { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
-                        if (unit->GetTypeId() != TYPEID_PLAYER)
+                        if (!(unit->IsPlayer()))
                             return true;
                         if (unit->ToPlayer()->GetPowerType() == POWER_MANA)
                             return false;

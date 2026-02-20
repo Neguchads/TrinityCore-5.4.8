@@ -734,7 +734,6 @@ protected:
     std::array<uint32, 2> m_flags;
 };
 
-
 enum ComparisionType
 {
     COMP_TYPE_EQ = 0,

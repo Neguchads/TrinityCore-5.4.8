@@ -23,7 +23,7 @@ struct npc_sister_goldskimmer : public ScriptedAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() == TYPEID_PLAYER && me->IsFriendlyTo(who) && me->isInFrontInMap(who, 7) && !who->HasAura(74973))
+        if (who->IsPlayer() && me->IsFriendlyTo(who) && me->isInFrontInMap(who, 7) && !who->HasAura(74973))
         {
             Talk(0, who);
             me->CastSpell(who, 74973, true);

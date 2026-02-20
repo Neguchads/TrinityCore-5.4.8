@@ -333,7 +333,7 @@ class npc_ruby_emerald_amber_drake : public CreatureScript
 
             void PassengerBoarded(Unit* passenger, int8 /*seatId*/, bool apply) override
             {
-                if (passenger->GetTypeId() != TYPEID_PLAYER)
+                if (!(passenger->IsPlayer()))
                     return;
 
                 if (!me->IsAlive())

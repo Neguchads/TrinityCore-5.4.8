@@ -90,7 +90,7 @@ enum Spells
     SPELL_ACID_RAIN_MISSILE     = 139848, // Should target dummy npc only (needs trigger spell added (DAMAGE below))
     SPELL_ACID_RAIN_DAMAGE      = 139850, // Damage, needs spellscript for range.
 
-    SPELL_ROT_ARMOR             = 139838, // Triggers 139839 per. dmg. + 139840 damage taken debuff. 
+    SPELL_ROT_ARMOR             = 139838, // Triggers 139839 per. dmg. + 139840 damage taken debuff.
     SPELL_ROT_ARMOR_EFF         = 139840,
 
     // Arcane Head - Heroic only!
@@ -122,7 +122,7 @@ enum Spells
     SPELL_RAMPAGE_FROST_CAST    = 139440,
     SPELL_RAMPAGE_POISON_CAST   = 139504,
     SPELL_RAMPAGE_ARCANE_CAST   = 139513,
-                                
+
     SPELL_RAMPAGE_FIRE          = 139548, // Flaming Head.
     SPELL_RAMPAGE_FROST         = 139549, // Frozen Head.
     SPELL_RAMPAGE_POISON        = 139551, // Venomous Head.
@@ -187,7 +187,7 @@ enum Events
     EVENT_ICY_GROUND_GROW,
     EVENT_ICY_GROUND_INIT,
 
-    // Nether Wyrm - From Arcane Head - Heroic only! 
+    // Nether Wyrm - From Arcane Head - Heroic only!
     EVENT_NETHER_SPIKE,
     EVENT_SUPPRESSION
 };
@@ -247,12 +247,12 @@ class boss_megaera : public CreatureScript
 
         struct boss_megaeraAI : public BossAI
         {
-            boss_megaeraAI(Creature* creature) : BossAI(creature, DATA_MEGAERA) 
+            boss_megaeraAI(Creature* creature) : BossAI(creature, DATA_MEGAERA)
             {
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                 me->SetDisplayFromModel(1);
 
-                // delay for init 
+                // delay for init
                 me->m_Events.Schedule(1500, [this]()
                 {
                     if (instance && instance->GetData(DATA_MEGERA_EVENT) == DONE)
@@ -314,7 +314,7 @@ class boss_megaera : public CreatureScript
                     instance->SetBossState(DATA_MEGAERA, NOT_STARTED);
 
                 me->GetMap()->SetWorldState(WORLDSTATE_HEAD_CASE_DEFAULT, 1); // by default
-                
+
                 for (auto&& itr : invCaseHeadType)
                     me->GetMap()->SetWorldState(itr.second, 1);
 
@@ -498,7 +498,7 @@ class boss_megaera : public CreatureScript
                         // Remove 15% health each time a head is killed.
                         me->SetHealth(me->GetMaxHealth() - ((0.15 * me->GetMaxHealth()) * headKills));
 
-                        // Megera Rampage 
+                        // Megera Rampage
                         scheduler
                             .Schedule(Milliseconds(4500), [this](TaskContext context)
                         {
@@ -824,7 +824,7 @@ struct megaeraHeadsBaseAI : public ScriptedAI
                     DoCast(me, SPELL_EMERGE);
                     me->NearTeleportTo(invHeadCombatType.find(me->GetEntry())->second.GetPositionX(), invHeadCombatType.find(me->GetEntry())->second.GetPositionY(), invHeadCombatType.find(me->GetEntry())->second.GetPositionZ(), invHeadCombatType.find(me->GetEntry())->second.GetOrientation());
                 });
-            
+
                 scheduler
                     .Schedule(Milliseconds(2700), [this](TaskContext context)
                 {
@@ -1364,7 +1364,6 @@ struct npc_icy_ground_megaera : public ScriptedAI
     void UpdateAI(uint32 /*diff*/) override { }
 };
 
-
 // Icy Ground 70446.
 struct npc_torrent_of_ice : public ScriptedAI
 {
@@ -1490,16 +1489,16 @@ struct npc_nether_wyrm_megaera : public ScriptedAI
                         DoCast(target, SPELL_NETHER_SPIKE);
                     else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 200.0f, true))
                         DoCast(target, SPELL_NETHER_SPIKE);
-                
+
                     events.ScheduleEvent(EVENT_NETHER_SPIKE, urand(7000, 11000));
                     break;
-                
+
                 case EVENT_SUPPRESSION:
                     if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankSpecTargetSelector()))
                         DoCast(target, SPELL_SUPPRESSION);
                     else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 200.0f, true))
                         DoCast(target, SPELL_NETHER_SPIKE);
-                
+
                     events.ScheduleEvent(EVENT_SUPPRESSION, urand(18000, 23000));
                     break;
             }
@@ -1559,7 +1558,6 @@ class spell_concealing_fog_megaera : public AuraScript
         OnEffectRemove += AuraEffectRemoveFn(spell_concealing_fog_megaera::OnRemove, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
     }
 };
-    
 
 // Cinders - 139822.
 class spell_cinders_megaera : public SpellScript
@@ -1772,7 +1770,7 @@ class correctSummonerPredicate
             {
                 return target->ToCreature()->GetOwnerGUID() != uiGuid;
             }
-            
+
             return false;
         }
 };
@@ -1913,7 +1911,7 @@ class spell_megaera_rampage : public AuraScript
 
             if (owner->GetMap()->IsHeroic())
                 rampageType.push_back(SPELL_RAMPAGE_ARCANE);
-            
+
             if (prevSpellId)
                 rampageType.erase(std::find(rampageType.begin(), rampageType.end(), prevSpellId));
 
@@ -2090,11 +2088,11 @@ class AreaTrigger_into_megaera_water : public AreaTriggerScript
 {
     public:
         AreaTrigger_into_megaera_water() : AreaTriggerScript("AreaTrigger_into_megaera_water") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             player->JumpTo(trigger->ID == 8954 ? 9.0f : 10.0f, trigger->ID == 8954 ? 40.0f : 10.0f, false);
-    
+
             return true;
         }
 };
@@ -2103,14 +2101,14 @@ class cond_nether_tear_selector : public ConditionScript
 {
     public:
         cond_nether_tear_selector() : ConditionScript("cond_nether_tear_selector") { }
-    
+
         bool OnConditionCheck(Condition const* cond, ConditionSourceInfo& source) override
         {
             if (source.mConditionTargets[0])
                 if (Creature* target = source.mConditionTargets[0]->ToCreature())
                     if (!target->HasAura(SPELL_NETHER_PORTAL))
                         return true;
-    
+
             return false;
         }
 };

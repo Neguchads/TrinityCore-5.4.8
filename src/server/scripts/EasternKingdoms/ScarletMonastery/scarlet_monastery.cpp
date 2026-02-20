@@ -104,14 +104,13 @@ class npc_scarlet_flamethower : public CreatureScript
                 nonCombatEvents.ScheduleEvent(EVENT_FLAMETHOWER_NONCOMBAT, urand(1500, 2000));
             }
 
-
             void JustEngagedWith(Unit* /*who*/) override
             {
                 nonCombatEvents.Reset();
                 events.ScheduleEvent(EVENT_FLAMETHOWER_COMBAT, urand(1500, 2000));
             }
 
-            void JustDied(Unit* /*killer*/) override 
+            void JustDied(Unit* /*killer*/) override
             {
                 me->SummonCreature(NPC_FUEL_BARREL, me->GetPositionX() + frand(-2.0f, 2.0f), me->GetPositionY() + frand(-1.5f, 1.5f), me->GetPositionZ(), me->GetOrientation(), TEMPSUMMON_MANUAL_DESPAWN);
             }
@@ -409,7 +408,7 @@ class npc_scarlet_judicator : public CreatureScript
                 me->RemoveAllAuras();
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 nonCombatEvents.Reset();
             }
@@ -622,7 +621,7 @@ class npc_zombified_corpse : public CreatureScript
             bool attacked;
             EventMap nonCombatEvents;
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 me->SetFaction(1962);
                 attacked = false;
@@ -636,7 +635,7 @@ class npc_zombified_corpse : public CreatureScript
 
             void DamageTaken(Unit* killer, uint32 &damage) override
             {
-                if (!attacked && killer->GetTypeId() != TYPEID_PLAYER)
+                if (!attacked && !killer->IsPlayer())
                 {
                     me->Attack(killer, true);
                     nonCombatEvents.ScheduleEvent(EVENT_COSMETIC, urand(3000, 5000));
@@ -694,14 +693,14 @@ class npc_scarlet_zealot : public CreatureScript
             EventMap events;
             ObjectGuid ResTarget;
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 events.ScheduleEvent(EVENT_HEAL, 10000);
                 events.ScheduleEvent(EVENT_SMITE, urand(4000, 6000));
                 events.ScheduleEvent(EVENT_RESSURECTION, 15000);
             }
 
-            void JustDied(Unit* /*killer*/) override 
+            void JustDied(Unit* /*killer*/) override
             {
                 me->SummonCreature(NPC_SPIRIT_OF_REDEMPTION, me->GetPositionX() + frand(-2.0f, 2.0f), me->GetPositionY() + frand(-1.5f, 1.5f), me->GetPositionZ(), me->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN, 12000);
             }
@@ -815,7 +814,6 @@ class npc_sc_spirit_of_redemption : public CreatureScript
         {
             SPELL_HEAL = 111008,
         };
-
 
         struct npc_sc_spirit_of_redemptionAI : public ScriptedAI
         {
@@ -957,7 +955,7 @@ class spell_sc_cleave : public SpellScriptLoader
                 {
                     if (Iscript->instance && Iscript->instance->IsHeroic())
                         SetHitDamage(40000);
-                    else 
+                    else
                         SetHitDamage(urand(900, 1200));
                 }
             }
@@ -983,7 +981,6 @@ class spell_sc_ressurection : public SpellScriptLoader
         class spell_sc_ressurection_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_sc_ressurection_SpellScript);
-
 
             void HandleAfterCast()
             {
@@ -1028,7 +1025,6 @@ class spell_scm_barrel_explosion : public SpellScriptLoader
             {
                 targets.remove_if(BarrelExplosionTargetSelector());
             }
-
 
             void Register() override
             {

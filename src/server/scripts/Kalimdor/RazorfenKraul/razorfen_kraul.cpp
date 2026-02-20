@@ -146,7 +146,7 @@ enum SnufflenoseGopher
     POINT_TUBBER                 = 0
 };
 
-struct DistanceOrder 
+struct DistanceOrder
 {
     DistanceOrder(Creature* me) : me(me) { }
 
@@ -238,7 +238,6 @@ public:
                 DoFindNewTubber();
         }
 
-
         bool IsMovementActive;
         ObjectGuid TargetTubberGUID;
     };
@@ -255,7 +254,7 @@ class spell_snufflenose_command : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void HandleAfterCast()

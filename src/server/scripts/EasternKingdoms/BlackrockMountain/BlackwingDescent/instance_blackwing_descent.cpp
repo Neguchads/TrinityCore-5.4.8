@@ -33,7 +33,7 @@ class instance_blackwing_descent : public InstanceMapScript
 
         struct instance_blackwing_descent_InstanceMapScript : public InstanceScript
         {
-            instance_blackwing_descent_InstanceMapScript(Map* map) : InstanceScript(map) 
+            instance_blackwing_descent_InstanceMapScript(Map* map) : InstanceScript(map)
             {
                 SetBossNumber(MAX_ENCOUNTER);
                 LoadDoorData(doorData);
@@ -80,7 +80,7 @@ class instance_blackwing_descent : public InstanceMapScript
                         break;
                     case NPC_OMNOTRON:
                         uiOmnotronControllerGUID = creature->GetGUID();
-                        break;                    
+                        break;
                     case NPC_ARCANOTRON:
                         m_uiOmnotronGUID[0] = creature->GetGUID();
                         break;
@@ -237,7 +237,7 @@ class instance_blackwing_descent : public InstanceMapScript
             {
                 if (player && player->IsGameMaster())
                     return true;
-            
+
                 switch (bossId)
                 {
                     case DATA_CHIMAERON:
@@ -254,7 +254,7 @@ class instance_blackwing_descent : public InstanceMapScript
                             GetBossState(DATA_CHIMAERON) != DONE ||
                             GetBossState(DATA_ATRAMEDES) != DONE)
                             return false;
-                    default:   
+                    default:
                         break;
                 }
                 return true;
@@ -296,7 +296,7 @@ class instance_blackwing_descent : public InstanceMapScript
                             tmpState = NOT_STARTED;
                         SetBossState(i, EncounterState(tmpState));
                     }
-                } 
+                }
                 else OUT_LOAD_INST_DATA_FAIL;
 
                 OUT_LOAD_INST_DATA_COMPLETE;

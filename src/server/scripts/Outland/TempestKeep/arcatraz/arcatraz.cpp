@@ -68,7 +68,7 @@ enum MillhouseSpells
 class npc_millhouse_manastorm : public CreatureScript
 {
     public:
-        npc_millhouse_manastorm() : CreatureScript("npc_millhouse_manastorm") { 
+        npc_millhouse_manastorm() : CreatureScript("npc_millhouse_manastorm") {
         }
         struct npc_millhouse_manastormAI : public ScriptedAI
         {
@@ -316,7 +316,7 @@ class npc_warden_mellichar : public CreatureScript
                 {
                     if (!me->CanFly() && me->GetDistanceZ(who) > CREATURE_Z_ATTACK_RANGE)
                         return;
-                    if (who->GetTypeId() != TYPEID_PLAYER)
+                    if (!(who->IsPlayer()))
                         return;
 
                     float attackRadius = me->GetAttackDistance(who)/10;

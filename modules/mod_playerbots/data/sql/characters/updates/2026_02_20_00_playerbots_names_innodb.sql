@@ -7,7 +7,7 @@ SET @has_playerbots_names := (
 
 SET @sql := IF(
     @has_playerbots_names > 0,
-    'ALTER TABLE `playerbots_names` ENGINE=InnoDB',
+    'DO 0',
     'DO 0'
 );
 PREPARE stmt FROM @sql;
@@ -23,7 +23,7 @@ SET @has_playerbots_guild_names := (
 
 SET @sql := IF(
     @has_playerbots_guild_names > 0,
-    'ALTER TABLE `playerbots_guild_names` ENGINE=InnoDB',
+    'DO 0',
     'DO 0'
 );
 PREPARE stmt FROM @sql;
@@ -39,7 +39,7 @@ SET @has_ai_playerbot_guild_names := (
 
 SET @sql := IF(
     @has_ai_playerbot_guild_names > 0,
-    'ALTER TABLE `ai_playerbot_guild_names` ENGINE=InnoDB',
+    'DO 0',
     'DO 0'
 );
 PREPARE stmt FROM @sql;

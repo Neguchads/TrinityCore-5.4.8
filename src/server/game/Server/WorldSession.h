@@ -275,7 +275,7 @@ struct MuteInfo
 };
 
 /// Player session in the World
-class TC_GAME_API WorldSession 
+class TC_GAME_API WorldSession
 {
     public:
         WorldSession(uint32 id, std::shared_ptr<WorldSocket> sock, AccountTypes sec, uint8 expansion, time_t mute_time, LocaleConstant locale, uint32 recruiter, uint32 flags, bool isARecruiter, bool hasBoost, bool isBot = false);
@@ -888,7 +888,7 @@ class TC_GAME_API WorldSession
         void HandleSetChannelWatch(WorldPacket& recvPacket);
 
         void HandleCompleteCinematic(WorldPackets::Misc::CompleteCinematic& packet);
-        void HandleCompleteMovie(WorldPackets::Misc::CompleteMovie& packet);    
+        void HandleCompleteMovie(WorldPackets::Misc::CompleteMovie& packet);
         void HandleNextCinematicCamera(WorldPackets::Misc::NextCinematicCamera& packet);
 
         void HandlePageTextQueryOpcode(WorldPacket& recvPacket);
@@ -934,7 +934,7 @@ class TC_GAME_API WorldSession
         void HandleBattlemasterJoinArena(WorldPacket& recvData);
         void HandleBattlemasterJoinRated(WorldPacket& recvData);
         void HandleReportPvPAFK(WorldPacket& recvData);
-        //void HandleRequestRatedBgInfo(WorldPacket& recvData); 
+        //void HandleRequestRatedBgInfo(WorldPacket& recvData);
         void HandleRequestPvpOptions(WorldPacket& recvData);
         void HandleRequestPvpReward(WorldPacket& recvData);
         void HandleRequestRatedBgStats(WorldPacket& recvData);

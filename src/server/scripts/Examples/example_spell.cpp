@@ -67,7 +67,7 @@ class spell_ex_5581 : public SpellScriptLoader
                 return true;
                 // return false - script will be immediately removed from the spell
                 // for example - we don't want this script to be executed on a creature
-                // if (GetCaster()->GetTypeID() != TYPEID_PLAYER)
+) // if (!(GetCaster()->IsPlayer())
                 //     return false;
             }
 
@@ -108,7 +108,6 @@ class spell_ex_5581 : public SpellScriptLoader
                     //return SPELL_FAILED_BAD_TARGETS;
                 return SPELL_CAST_OK;
             }
-
 
             void HandleDummyLaunch(SpellEffIndex /*effIndex*/)
             {
@@ -222,11 +221,10 @@ class spell_ex_66244 : public SpellScriptLoader
             {
                 // do not load script if aura is casted by player or caster not avalible
                 if (Unit* caster = GetCaster())
-                    if (caster->GetTypeId() == TYPEID_PLAYER)
+                    if (caster->IsPlayer())
                         return true;
                 return false;
             }
-
 
             void HandleOnEffectApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
@@ -406,7 +404,7 @@ class spell_ex_463 : public SpellScriptLoader
             {
                 TC_LOG_INFO("misc", "Area aura checks if unit is a valid target for it!");
                 // in our script we allow only players to be affected
-                return target->GetTypeId() == TYPEID_PLAYER;
+                return target->IsPlayer();
             }
             void Register() override
             {

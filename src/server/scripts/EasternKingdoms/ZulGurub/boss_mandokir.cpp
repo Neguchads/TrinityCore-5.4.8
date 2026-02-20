@@ -150,7 +150,7 @@ class boss_mandokir : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                 {
                     Talk(SAY_PLAYER_KILL);
                     DoCast(SPELL_LEVEL_UP);
@@ -416,16 +416,16 @@ class npc_chained_spirit : public CreatureScript
         }
 };
 
-class DecapitatePredicate 
+class DecapitatePredicate
 {
     public:
         DecapitatePredicate(Unit* const m_caster) : _caster(m_caster) { }
-    
+
         bool operator()(WorldObject* object)
         {
             return object && object->ToUnit() && _caster->GetVictim() && _caster->GetVictim()->GetGUID() == object->ToUnit()->GetGUID();
         }
-    
+
     private:
         Unit const* _caster;
 };
@@ -528,7 +528,7 @@ class spell_mandokir_spirit_vengeance_cancel : public SpellScriptLoader
         }
 };
 
-class DevastatingSlamTargetSelector 
+class DevastatingSlamTargetSelector
 {
     public:
         DevastatingSlamTargetSelector(Creature* me, Unit const* victim) : _me(me), _victim(victim) { }
@@ -538,7 +538,7 @@ class DevastatingSlamTargetSelector
             if (target == _victim && _me->GetThreatManager().getThreatList().size() > 1)
                 return true;
 
-            if (target->GetTypeId() != TYPEID_PLAYER)
+            if (!(target->IsPlayer()))
                 return true;
 
             return false;

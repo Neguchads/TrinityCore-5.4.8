@@ -422,9 +422,9 @@ void ObjectMgr::LoadCreatureTemplates()
 {
     uint32 oldMSTime = getMSTime();
 
-    //                                                 0              1                 2                  3                 4                   5                  6             7         
+    //                                                 0              1                 2                  3                 4                   5                  6             7
     QueryResult result = WorldDatabase.Query("SELECT entry, difficulty_entry_1, difficulty_entry_2, difficulty_entry_3, difficulty_entry_4, difficulty_entry_5, KillCredit1, KillCredit2,  "
-    //                                           8       9         10        11        12             13        14      15     16      17       18        19         20             
+    //                                           8       9         10        11        12             13        14      15     16      17       18        19         20
                                              "name, femaleName, subname, IconName, gossip_menu_id, minlevel, maxlevel, exp, exp_unk, faction, npcflag, npcflag2, speed_walk, "
     //                                            21       22     23      24      25       26          27             28              29              30             31          32           33
                                              "speed_run, scale, `rank`, mindmg, maxdmg, dmgschool, attackpower, dmg_multiplier, BaseAttackTime, RangeAttackTime, unit_class, unit_flags, unit_flags2, "
@@ -644,12 +644,11 @@ static bool CheckCreatureAddonSpell(uint32 entry, SpellInfo const* spellInfo)
     return true;
 }
 
-
 void ObjectMgr::LoadCreatureTemplateAddons()
 {
     uint32 oldMSTime = getMSTime();
 
-    //                                                 0       1       2           3       4          5         6           7        8        9             10                   11        12                          
+    //                                                 0       1       2           3       4          5         6           7        8        9             10                   11        12
     QueryResult result = WorldDatabase.Query("SELECT entry, path_id, mount, StandState, AnimTier, VisFlags, SheathState, PvPFlags, emote, aiAnimKit, movementAnimKit, meleeAnimKit, auras FROM creature_template_addon");
 
     if (!result)
@@ -2208,7 +2207,7 @@ uint32 ObjectMgr::AddGOData(uint32 entry, uint32 mapId, Position const& position
     data.spawnMask      = 1;
     data.go_state       = GO_STATE_READY;
     data.phaseMask      = PHASEMASK_NORMAL;
-	data.phaseid        = 169;
+    data.phaseid        = 169;
     data.phaseGroup     = 0;
     data.artKit         = goinfo->type == GAMEOBJECT_TYPE_CAPTURE_POINT ? 21 : 0;
     data.dbData = false;
@@ -3968,7 +3967,7 @@ void ObjectMgr::LoadPlayerInfo()
                     }
                 }
             }  while (result->NextRow());
-            
+
             TC_LOG_INFO("server.loading", ">> Loaded %u player create cast spells in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
         }
     }
@@ -5841,7 +5840,6 @@ void ObjectMgr::LoadGossipText()
                     gOption.BroadcastTextID = 0;
                 }
 
-
             }
         }
 
@@ -6568,7 +6566,7 @@ AccessRequirement const* ObjectMgr::GetAccessRequirement(uint32 mapid, Difficult
     AccessRequirementContainer::const_iterator itr = _accessRequirementStore.find(MAKE_PAIR32(mapid, difficulty));
     if (itr != _accessRequirementStore.end())
         return itr->second;
-    return nullptr;    
+    return nullptr;
 }
 
 bool ObjectMgr::AddGraveYardLink(uint32 id, uint32 zoneId, uint32 team, bool persist /*= true*/)
@@ -6608,7 +6606,6 @@ void ObjectMgr::RemoveGraveYardLink(uint32 id, uint32 zoneId, uint32 team, bool 
     }
 
     bool found = false;
-
 
     for (; range.first != range.second; ++range.first)
     {
@@ -8009,7 +8006,6 @@ void ObjectMgr::LoadQuestRelationsHelper(QuestRelations& map, QuestRelationsReve
             continue;
         }
 
-
         map.insert(QuestRelations::value_type(id, quest));
         if (reversedMap)
             reversedMap->insert(QuestRelationsReverse::value_type(quest, id));
@@ -8489,61 +8485,61 @@ struct DeclineForm
     uint32 DeclensionSetNone;
 } DeclineForms[55] =
 {
-    { L"и",    L"у",   L"ы",   L"э",   L"ю",   L"аа",  L"",    L"",    L"",    GENDER_NONE,   L"",     0,  0, 71, 71 },
-    { L"ай",   L"ей",  L"уй",  L"эй",  L"юй",  L"яй",  L"ёй",  L"",    L"",    GENDER_MALE,   L"й",    0,  1,  0, 71 },
-    { L"ай",   L"ей",  L"уй",  L"эй",  L"юй",  L"яй",  L"",    L"",    L"",    GENDER_FEMALE, L"й",    0,  0,  1, 71 },
-    { L"ок",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ок",   0,  2,  3,  0 },
-    { L"чек",  L"шек", L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ек",   0,  4,  5,  0 },
-    { L"чек",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ек",   0,  4,  6,  0 },
-    { L"лек",  L"мек", L"нек", L"рек", L"сек", L"тек", L"",    L"",    L"",    GENDER_NONE,   L"ек",   0,  8,  7,  0 },
-    { L"аек",  L"еек", L"иек", L"уек", L"ёек", L"",    L"",    L"",    L"",    GENDER_NONE,   L"ек",   0,  9, 10,  0 },
-    { L"аец",  L"еец", L"иец", L"оец", L"уец", L"ыец", L"эец", L"юец", L"яец", GENDER_NONE,   L"ец",   0, 11,  0, 71 },
-    { L"ец",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ец",   0, 12, 13,  0 },
-    { L"ка",   L"га",  L"ха",  L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"а",    0, 14,  0, 71 },
-    { L"ия",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"я",    0, 15,  0, 71 },
-    { L"ея",   L"ёя",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"я",    0, 16,  0, 71 },
-    { L"емя",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"я",    0, 17,  0, 71 },
-    { L"ой",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ой",   0, 18, 19,  0 },
-    { L"ый",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ый",   0, 20, 21,  0 },
-    { L"ий",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ий",   0, 22, 23, 52 },
-    { L"чая",  L"щая", L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ая",   0, 24,  0, 71 },
-    { L"ая",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ая",   0, 25, 26,  0 },
-    { L"яя",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"яя",   0, 27, 28,  0 },
-    { L"ое",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ое",   0, 29, 30,  0 },
-    { L"ое",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ое",   0, 29, 31,  0 },
-    { L"ее",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ее",   0, 32, 33,  0 },
-    { L"ее",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ее",   0, 32, 34,  0 },
-    { L"о",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"о",    0,  0, 35, 71 },
-    { L"ие",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"е",    0, 37,  0,  0 },
-    { L"е",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"е",    0,  0, 38, 71 },
-    { L"я",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"я",    0, 39,  0, 71 },
-    { L"ь",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ь",    0, 40, 41,  0 },
-    { L"ь",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ь",    0, 41, 40,  0 },
-    { L"ча",   L"ша",  L"ща",  L"жа",  L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"а",    0, 42,  0, 71 },
-    { L"ца",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"а",    0, 43,  0, 71 },
-    { L"а",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"а",    0, 44,  0, 71 },
-    { L"ч",    L"щ",   L"ж",   L"ш",   L"ж",   L"",    L"",    L"",    L"",    GENDER_MALE,   L"",     0, 45, 46,  0 },
-    { L"ч",    L"щ",   L"ж",   L"ш",   L"ж",   L"",    L"",    L"",    L"",    GENDER_FEMALE, L"",     0,  0, 45, 46 },
+    { L"ÃÂ¸",    L"Ã‘Æ’",   L"Ã‘â€¹",   L"Ã‘Â",   L"Ã‘Å½",   L"ÃÂ°ÃÂ°",  L"",    L"",    L"",    GENDER_NONE,   L"",     0,  0, 71, 71 },
+    { L"ÃÂ°ÃÂ¹",   L"ÃÂµÃÂ¹",  L"Ã‘Æ’ÃÂ¹",  L"Ã‘ÂÃÂ¹",  L"Ã‘Å½ÃÂ¹",  L"Ã‘ÂÃÂ¹",  L"Ã‘â€˜ÃÂ¹",  L"",    L"",    GENDER_MALE,   L"ÃÂ¹",    0,  1,  0, 71 },
+    { L"ÃÂ°ÃÂ¹",   L"ÃÂµÃÂ¹",  L"Ã‘Æ’ÃÂ¹",  L"Ã‘ÂÃÂ¹",  L"Ã‘Å½ÃÂ¹",  L"Ã‘ÂÃÂ¹",  L"",    L"",    L"",    GENDER_FEMALE, L"ÃÂ¹",    0,  0,  1, 71 },
+    { L"ÃÂ¾ÃÂº",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ¾ÃÂº",   0,  2,  3,  0 },
+    { L"Ã‘â€¡ÃÂµÃÂº",  L"Ã‘Ë†ÃÂµÃÂº", L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ÃÂµÃÂº",   0,  4,  5,  0 },
+    { L"Ã‘â€¡ÃÂµÃÂº",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ÃÂµÃÂº",   0,  4,  6,  0 },
+    { L"ÃÂ»ÃÂµÃÂº",  L"ÃÂ¼ÃÂµÃÂº", L"ÃÂ½ÃÂµÃÂº", L"Ã‘â‚¬ÃÂµÃÂº", L"Ã‘ÂÃÂµÃÂº", L"Ã‘â€šÃÂµÃÂº", L"",    L"",    L"",    GENDER_NONE,   L"ÃÂµÃÂº",   0,  8,  7,  0 },
+    { L"ÃÂ°ÃÂµÃÂº",  L"ÃÂµÃÂµÃÂº", L"ÃÂ¸ÃÂµÃÂº", L"Ã‘Æ’ÃÂµÃÂº", L"Ã‘â€˜ÃÂµÃÂº", L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂµÃÂº",   0,  9, 10,  0 },
+    { L"ÃÂ°ÃÂµÃ‘â€ ",  L"ÃÂµÃÂµÃ‘â€ ", L"ÃÂ¸ÃÂµÃ‘â€ ", L"ÃÂ¾ÃÂµÃ‘â€ ", L"Ã‘Æ’ÃÂµÃ‘â€ ", L"Ã‘â€¹ÃÂµÃ‘â€ ", L"Ã‘ÂÃÂµÃ‘â€ ", L"Ã‘Å½ÃÂµÃ‘â€ ", L"Ã‘ÂÃÂµÃ‘â€ ", GENDER_NONE,   L"ÃÂµÃ‘â€ ",   0, 11,  0, 71 },
+    { L"ÃÂµÃ‘â€ ",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂµÃ‘â€ ",   0, 12, 13,  0 },
+    { L"ÃÂºÃÂ°",   L"ÃÂ³ÃÂ°",  L"Ã‘â€¦ÃÂ°",  L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ°",    0, 14,  0, 71 },
+    { L"ÃÂ¸Ã‘Â",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"Ã‘Â",    0, 15,  0, 71 },
+    { L"ÃÂµÃ‘Â",   L"Ã‘â€˜Ã‘Â",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"Ã‘Â",    0, 16,  0, 71 },
+    { L"ÃÂµÃÂ¼Ã‘Â",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"Ã‘Â",    0, 17,  0, 71 },
+    { L"ÃÂ¾ÃÂ¹",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ¾ÃÂ¹",   0, 18, 19,  0 },
+    { L"Ã‘â€¹ÃÂ¹",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"Ã‘â€¹ÃÂ¹",   0, 20, 21,  0 },
+    { L"ÃÂ¸ÃÂ¹",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ¸ÃÂ¹",   0, 22, 23, 52 },
+    { L"Ã‘â€¡ÃÂ°Ã‘Â",  L"Ã‘â€°ÃÂ°Ã‘Â", L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ°Ã‘Â",   0, 24,  0, 71 },
+    { L"ÃÂ°Ã‘Â",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ°Ã‘Â",   0, 25, 26,  0 },
+    { L"Ã‘ÂÃ‘Â",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"Ã‘ÂÃ‘Â",   0, 27, 28,  0 },
+    { L"ÃÂ¾ÃÂµ",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ÃÂ¾ÃÂµ",   0, 29, 30,  0 },
+    { L"ÃÂ¾ÃÂµ",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ÃÂ¾ÃÂµ",   0, 29, 31,  0 },
+    { L"ÃÂµÃÂµ",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ÃÂµÃÂµ",   0, 32, 33,  0 },
+    { L"ÃÂµÃÂµ",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ÃÂµÃÂµ",   0, 32, 34,  0 },
+    { L"ÃÂ¾",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ¾",    0,  0, 35, 71 },
+    { L"ÃÂ¸ÃÂµ",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂµ",    0, 37,  0,  0 },
+    { L"ÃÂµ",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂµ",    0,  0, 38, 71 },
+    { L"Ã‘Â",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"Ã‘Â",    0, 39,  0, 71 },
+    { L"Ã‘Å’",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"Ã‘Å’",    0, 40, 41,  0 },
+    { L"Ã‘Å’",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"Ã‘Å’",    0, 41, 40,  0 },
+    { L"Ã‘â€¡ÃÂ°",   L"Ã‘Ë†ÃÂ°",  L"Ã‘â€°ÃÂ°",  L"ÃÂ¶ÃÂ°",  L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ°",    0, 42,  0, 71 },
+    { L"Ã‘â€ ÃÂ°",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ°",    0, 43,  0, 71 },
+    { L"ÃÂ°",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ°",    0, 44,  0, 71 },
+    { L"Ã‘â€¡",    L"Ã‘â€°",   L"ÃÂ¶",   L"Ã‘Ë†",   L"ÃÂ¶",   L"",    L"",    L"",    L"",    GENDER_MALE,   L"",     0, 45, 46,  0 },
+    { L"Ã‘â€¡",    L"Ã‘â€°",   L"ÃÂ¶",   L"Ã‘Ë†",   L"ÃÂ¶",   L"",    L"",    L"",    L"",    GENDER_FEMALE, L"",     0,  0, 45, 46 },
     { L"",     L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"",     0, 47,  0, 71 }, // 35
     { L"",     L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"",     0,  0, 47, 71 }, // 36
-    { L"ийся", L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ийся", 0, 48,  0, 71 },
-    { L"ееся", L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ееся", 0, 49,  0, 71 },
-    { L"аяся", L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"аяся", 0, 50,  0, 71 },
-    { L"иеся", L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"иеся", 0, 51,  0, 71 },
-    { L"ё",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ё",    0,  0, 53, 71 },
-    { L"ень",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ень",  0, 54, 55,  0 },
-    { L"ень",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ень",  0,  0, 54, 56 },
-    { L"ёнь",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ёнь",  0, 57, 58,  0 },
-    { L"ёнь",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ёнь",  0,  0, 57, 59 },
-    { L"оть",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"оть",  0, 60, 61,  0 },
-    { L"оть",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"оть",  0, 61, 60,  0 },
-    { L"ще",   L"ше",  L"че",  L"це",  L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"е",    0, 62,  0, 71 },
-    { L"лёк",  L"мёк", L"нёк", L"рёк", L"сёк", L"тёк", L"",    L"",    L"",    GENDER_NONE,   L"ёк",   0, 63, 64,  0 },
-    { L"аёк",  L"еёк", L"иёк", L"уёк", L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ёк",   0,  9, 10,  0 },
-    { L"аёц",  L"еёц", L"иёц", L"оёц", L"уёц", L"ыёц", L"эёц", L"юёц", L"яёц", GENDER_NONE,   L"ёц",   0, 11,  0, 71 },
-    { L"лец",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ец",   0, 65, 66,  0 },
-    { L"лёц",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ёц",   0, 67, 68,  0 },
-    { L"ёц",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ёц",   0, 69, 70,  0 },
+    { L"ÃÂ¸ÃÂ¹Ã‘ÂÃ‘Â", L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ¸ÃÂ¹Ã‘ÂÃ‘Â", 0, 48,  0, 71 },
+    { L"ÃÂµÃÂµÃ‘ÂÃ‘Â", L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂµÃÂµÃ‘ÂÃ‘Â", 0, 49,  0, 71 },
+    { L"ÃÂ°Ã‘ÂÃ‘ÂÃ‘Â", L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ°Ã‘ÂÃ‘ÂÃ‘Â", 0, 50,  0, 71 },
+    { L"ÃÂ¸ÃÂµÃ‘ÂÃ‘Â", L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂ¸ÃÂµÃ‘ÂÃ‘Â", 0, 51,  0, 71 },
+    { L"Ã‘â€˜",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"Ã‘â€˜",    0,  0, 53, 71 },
+    { L"ÃÂµÃÂ½Ã‘Å’",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ÃÂµÃÂ½Ã‘Å’",  0, 54, 55,  0 },
+    { L"ÃÂµÃÂ½Ã‘Å’",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ÃÂµÃÂ½Ã‘Å’",  0,  0, 54, 56 },
+    { L"Ã‘â€˜ÃÂ½Ã‘Å’",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"Ã‘â€˜ÃÂ½Ã‘Å’",  0, 57, 58,  0 },
+    { L"Ã‘â€˜ÃÂ½Ã‘Å’",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"Ã‘â€˜ÃÂ½Ã‘Å’",  0,  0, 57, 59 },
+    { L"ÃÂ¾Ã‘â€šÃ‘Å’",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_MALE,   L"ÃÂ¾Ã‘â€šÃ‘Å’",  0, 60, 61,  0 },
+    { L"ÃÂ¾Ã‘â€šÃ‘Å’",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_FEMALE, L"ÃÂ¾Ã‘â€šÃ‘Å’",  0, 61, 60,  0 },
+    { L"Ã‘â€°ÃÂµ",   L"Ã‘Ë†ÃÂµ",  L"Ã‘â€¡ÃÂµ",  L"Ã‘â€ ÃÂµ",  L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂµ",    0, 62,  0, 71 },
+    { L"ÃÂ»Ã‘â€˜ÃÂº",  L"ÃÂ¼Ã‘â€˜ÃÂº", L"ÃÂ½Ã‘â€˜ÃÂº", L"Ã‘â‚¬Ã‘â€˜ÃÂº", L"Ã‘ÂÃ‘â€˜ÃÂº", L"Ã‘â€šÃ‘â€˜ÃÂº", L"",    L"",    L"",    GENDER_NONE,   L"Ã‘â€˜ÃÂº",   0, 63, 64,  0 },
+    { L"ÃÂ°Ã‘â€˜ÃÂº",  L"ÃÂµÃ‘â€˜ÃÂº", L"ÃÂ¸Ã‘â€˜ÃÂº", L"Ã‘Æ’Ã‘â€˜ÃÂº", L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"Ã‘â€˜ÃÂº",   0,  9, 10,  0 },
+    { L"ÃÂ°Ã‘â€˜Ã‘â€ ",  L"ÃÂµÃ‘â€˜Ã‘â€ ", L"ÃÂ¸Ã‘â€˜Ã‘â€ ", L"ÃÂ¾Ã‘â€˜Ã‘â€ ", L"Ã‘Æ’Ã‘â€˜Ã‘â€ ", L"Ã‘â€¹Ã‘â€˜Ã‘â€ ", L"Ã‘ÂÃ‘â€˜Ã‘â€ ", L"Ã‘Å½Ã‘â€˜Ã‘â€ ", L"Ã‘ÂÃ‘â€˜Ã‘â€ ", GENDER_NONE,   L"Ã‘â€˜Ã‘â€ ",   0, 11,  0, 71 },
+    { L"ÃÂ»ÃÂµÃ‘â€ ",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"ÃÂµÃ‘â€ ",   0, 65, 66,  0 },
+    { L"ÃÂ»Ã‘â€˜Ã‘â€ ",  L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"Ã‘â€˜Ã‘â€ ",   0, 67, 68,  0 },
+    { L"Ã‘â€˜Ã‘â€ ",   L"",    L"",    L"",    L"",    L"",    L"",    L"",    L"",    GENDER_NONE,   L"Ã‘â€˜Ã‘â€ ",   0, 69, 70,  0 },
 };
 
 struct DetectDeclinedNameFormResult
@@ -8657,12 +8653,12 @@ bool DetectDeclinedNameForm(std::string name, DetectDeclinedNameFormResult& resu
         }
         else
         {
-            if (length <= 3 || result.Name[length - 1] != L'ь')
+            if (length <= 3 || result.Name[length - 1] != L'Ã‘Å’')
                 return true;
 
             for (auto&& variant : DeclineForms[result.MatchedDeclineFormIndex].EndingVariants)
             {
-                if (variant[0] == L'ь')
+                if (variant[0] == L'Ã‘Å’')
                 {
                     rootEndIndex = length - 3;
                     break;
@@ -8672,9 +8668,9 @@ bool DetectDeclinedNameForm(std::string name, DetectDeclinedNameFormResult& resu
 
         if (rootEndIndex > 0)
         {
-            if (result.Name[rootEndIndex] == L'е' ||
-                result.Name[rootEndIndex] == L'о' ||
-                result.Name[rootEndIndex] == L'ё')
+            if (result.Name[rootEndIndex] == L'ÃÂµ' ||
+                result.Name[rootEndIndex] == L'ÃÂ¾' ||
+                result.Name[rootEndIndex] == L'Ã‘â€˜')
             {
                 result.SoftRootEndIndex = rootEndIndex;
                 result.SoftRootFound = true;
@@ -10552,7 +10548,7 @@ ResearchDigsiteList const* ObjectMgr::GetResearchDigsitesForContinent(uint32 map
     if (iter != _researchDigsiteStore.end())
         return &iter->second;
 
-    return nullptr;    
+    return nullptr;
 }
 
 ArchaeologyFindInfo const* ObjectMgr::GetArchaeologyFindInfo(uint32 findGUID, uint32 digsiteId)
@@ -10565,7 +10561,7 @@ ArchaeologyFindInfo const* ObjectMgr::GetArchaeologyFindInfo(uint32 findGUID, ui
         if (find->guid == findGUID)
             return &(*find);
 
-    return nullptr;    
+    return nullptr;
 }
 
 ArchaeologyFindInfo const* ObjectMgr::GetRandomArchaeologyFindForDigsite(uint32 digsiteId)
@@ -10577,13 +10573,13 @@ ArchaeologyFindInfo const* ObjectMgr::GetRandomArchaeologyFindForDigsite(uint32 
     if (itr->second.empty())
         return nullptr;
 
-    return &Trinity::Containers::SelectRandomContainerElement(itr->second);    
+    return &Trinity::Containers::SelectRandomContainerElement(itr->second);
 }
 
 ArchaeologyFindList const* ObjectMgr::GetArcheologyFindListForDigsite(uint32 digsiteId)
 {
     ArchaeologyFindContainer::const_iterator itr = _archaeologyFindStore.find(digsiteId);
-    return itr != _archaeologyFindStore.end() ? &itr->second : nullptr;    
+    return itr != _archaeologyFindStore.end() ? &itr->second : nullptr;
 }
 
 ResearchProjectRequirements const* ObjectMgr::GetResearchProjectRequirements(uint32 projectId) const
@@ -10592,7 +10588,7 @@ ResearchProjectRequirements const* ObjectMgr::GetResearchProjectRequirements(uin
     if (iter != _researchProjectRequirementStore.end())
         return &iter->second;
 
-    return nullptr;    
+    return nullptr;
 }
 
 void ObjectMgr::LoadBattlePetBreedData()
@@ -10853,7 +10849,7 @@ void ObjectMgr::LoadQuestStartersAndEnders()
     TC_LOG_INFO("server.loading", "Loading Creature Start Quest Data...");
     LoadCreatureQuestStarters();
     TC_LOG_INFO("server.loading", "Loading Creature End Quest Data...");
-    LoadCreatureQuestEnders();    
+    LoadCreatureQuestEnders();
 }
 
 void ObjectMgr::LoadQuestTemplateLocale()

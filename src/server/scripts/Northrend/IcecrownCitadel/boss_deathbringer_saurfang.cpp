@@ -360,7 +360,7 @@ class boss_deathbringer_saurfang : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -663,7 +663,6 @@ class boss_deathbringer_saurfang : public CreatureScript
 };
 
 uint32 const boss_deathbringer_saurfang::boss_deathbringer_saurfangAI::FightWonValue = 100000;
-
 
 struct npc_high_overlord_saurfang_icc : public ScriptedAI
 {
@@ -1052,7 +1051,6 @@ struct npc_muradin_bronzebeard_icc : public ScriptedAI
     {
         _events.Reset();
     }
-
 
     bool OnGossipSelect(Player* player, uint32 menuId, uint32 /*gossipListId*/) override
     {
@@ -1922,7 +1920,7 @@ class achievement_ive_gone_and_made_a_mess : public AchievementCriteriaScript
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_UNIT;
+                return GetCaster()->IsCreature();
             }
 
             void FilterTargets(std::list<WorldObject*>& targets)
@@ -2141,7 +2139,7 @@ class BloodTargetFilter
         {
             if (Unit* unit = target->ToUnit())
                 return unit->HasAura(SPELL_SCENT_OF_BLOOD);
-            //if (unit->GetTypeId() != TYPEID_PLAYER)
+            // if (!unit->IsPlayer())
             //    return false;
             return true;
         }

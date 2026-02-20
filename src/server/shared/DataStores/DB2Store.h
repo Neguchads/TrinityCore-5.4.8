@@ -115,11 +115,11 @@ public:
         WritePacket = writePacket ? writePacket : (PacketWriter)&WriteDB2RecordToPacket<T>;
     }
 
-    ~DB2Storage() 
+    ~DB2Storage()
     {
         delete[] reinterpret_cast<char*>(indexTable.asT);
         for (T* t : m_dataTableEx)
-            delete[] t;        
+            delete[] t;
         for (char* stringPool : m_stringPoolList)
             delete[] stringPool;
     }

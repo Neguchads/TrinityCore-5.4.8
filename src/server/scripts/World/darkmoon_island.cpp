@@ -99,7 +99,7 @@ class npc_darkmoon_deathmatch_announcer : public CreatureScript
             ObjectGuid winnerGuid;
             bool chestNeedsRespawn;
         };
-        
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_darkmoon_deathmatch_announcerAI(creature);

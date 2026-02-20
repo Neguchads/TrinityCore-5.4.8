@@ -457,7 +457,6 @@ class npc_kiljaeden_controller : public CreatureScript
         }
 };
 
-
 //AI for Kil'jaeden
 class boss_kiljaeden : public CreatureScript
 {
@@ -940,8 +939,8 @@ class npc_hand_of_the_deceiver : public CreatureScript
                 if (instance)
                 {
                     instance->SetData(DATA_KILJAEDEN_EVENT, IN_PROGRESS);
-                    //if (Creature* сontrol = Unit::GetCreature(*me, instance->GetGuidData(DATA_KILJAEDEN_CONTROLLER)))
-                    //    сontrol->AddThreat(who, 1.0f);
+                    //if (Creature* Ã‘Âontrol = Unit::GetCreature(*me, instance->GetGuidData(DATA_KILJAEDEN_CONTROLLER)))
+                    //    Ã‘Âontrol->AddThreat(who, 1.0f);
                 }
                 me->InterruptNonMeleeSpells(true);
             }
@@ -1048,7 +1047,6 @@ class npc_felfire_portal : public CreatureScript
             return new npc_felfire_portalAI(creature);
         }
 };
-
 
 // AI for Felfire Fiend
 class npc_volatile_felfire_fiend : public CreatureScript

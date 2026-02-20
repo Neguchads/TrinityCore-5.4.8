@@ -62,7 +62,7 @@ class npc_master_shang_xi : public CreatureScript
             {
                 if (spell->Id == SPELL_SNATCH_MASTERS_FLAME) // Snatch Master's Flame
                 {
-                    if (caster->GetTypeId() == TYPEID_PLAYER)
+                    if (caster->IsPlayer())
                     {
                         if (caster->ToPlayer()->GetQuestStatus(QUEST_LESSONS_OF_BURNING_SCROLL) == QUEST_STATUS_INCOMPLETE)
                         {
@@ -771,7 +771,7 @@ class boss_li_fei_fight : public CreatureScript
                 for (auto&& hostileRef : threatList)
                 {
                     auto unit = hostileRef->getTarget();
-                    if (unit && unit->GetTypeId() == TYPEID_PLAYER)
+                    if (unit && unit->IsPlayer())
                         unit->ToPlayer()->KilledMonsterCredit(54734, ObjectGuid::Empty);
                 }
 

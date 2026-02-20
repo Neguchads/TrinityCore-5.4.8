@@ -172,15 +172,6 @@ set(game_STAT_SRCS
   ${sources_Cfbg}
 )
 
-if (ELUNA)
-  file(GLOB_RECURSE sources_LuaEngine LuaEngine/*.cpp LuaEngine/*.h)
-  source_group(LuaEngine FILES ${sources_LuaEngine})
-  set(game_STAT_SRCS
-    ${game_STAT_SRCS}
-    ${sources_LuaEngine}
-  )
-endif()
-
 add_library(game STATIC
   ${game_STAT_SRCS}
 )
@@ -282,16 +273,6 @@ target_include_directories(game
     Recast
 )
 
-if (ELUNA)
-  target_include_directories(game
-    PUBLIC
-      ${CMAKE_CURRENT_SOURCE_DIR}/LuaEngine
-    PRIVATE
-      lua
-  )
-
-endif()
-
 target_link_libraries(game
   PUBLIC
     Detour
@@ -304,29 +285,6 @@ target_link_libraries(game
 
 if(USE_MODULES)
     target_compile_definitions(game PRIVATE USE_MODULES)
-endif()
-
-if (ELUNA)
-  add_dependencies(game lua)
-  target_link_libraries(game
-    PRIVATE
-      lua
-  )
-  if( WIN32 )
-    if ( MSVC )
-      add_custom_command(TARGET game
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/lua_scripts/extensions/"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/LuaEngine/extensions" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/lua_scripts/extensions/"
-      )
-    elseif ( MINGW )
-      add_custom_command(TARGET game
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bin/lua_scripts/extensions/"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/LuaEngine/extensions" "${CMAKE_BINARY_DIR}/bin/lua_scripts/extensions/"
-      )
-    endif()
-  endif()
 endif()
 
 add_dependencies(game revision_data.h)

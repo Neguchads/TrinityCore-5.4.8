@@ -165,7 +165,7 @@ class boss_ymiron : public CreatureScript
 
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
-                if (target && target->GetTypeId() == TYPEID_PLAYER && spell->Id == SPELL_BANE_TRIGGERED)
+                if (target && target->IsPlayer() && spell->Id == SPELL_BANE_TRIGGERED)
                     me->GetMap()->SetWorldState(WORLDSTATE_KINGS_BANE, 0);
             }
 
@@ -366,7 +366,7 @@ class boss_ymiron : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_SLAY);
             }
 

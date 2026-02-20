@@ -73,7 +73,7 @@ enum Datas
     DATA_NEXT_ASSAULTER       = 96,
     DATA_DRAGONS_COUNT        = 97,
     DATA_DRAGON_SOUL_EVENT    = 98,
-    DATA_ULTRAXION_TRASH      = 99,    
+    DATA_ULTRAXION_TRASH      = 99,
     DATA_IS_LFR               = 100,
     DATA_IS_FALL_OF_DEATHWING = 101,
 };
@@ -243,7 +243,7 @@ enum SharedSpells
     SPELL_WARDEN_RING_GREEN                     = 95514,
     SPELL_WARDEN_RING_ORANGE                    = 110468,
     SPELL_WARDEN_RING_YELLOW                    = 110469,
-    
+
     SPELL_CHARGING_UP_LIFE                      = 108490,
     SPELL_CHARGING_UP_MAGIC                     = 108491,
     SPELL_CHARGING_UP_EARTH                     = 108492,
@@ -348,7 +348,7 @@ const Position portalsPos[11] =
     {-1768.1762f, -2391.7094f,  45.6463f, 3.21f},  // From Maelstorm to Wyrmrest Temple
 };
 
-const Position ultraxionPos[2] = 
+const Position ultraxionPos[2] =
 {
     {-1564.0000f, -2369.0000f, 250.0830f, 3.28f},  // spawn
     {-1699.4699f, -2388.0300f, 355.1929f, 3.21f},  // move to

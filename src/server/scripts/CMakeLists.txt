@@ -79,25 +79,14 @@ endif()
 message(STATUS "SCRIPT PREPARATION COMPLETE")
 message("")
 
-if (ELUNA)
-  set(scripts_STAT_SRCS
-    ${scripts_STAT_SRCS}
-  )
-  include_directories(
-    PRIVATE
-      ${CMAKE_SOURCE_DIR}/dep/lualib
-      ${CMAKE_SOURCE_DIR}/src/server/game/LuaEngine 
-  )  
-endif()
-
 if( USE_SCRIPTPCH AND MSVC )
   set(scripts_STAT_SRCS
     ${scripts_STAT_SRCS}
   )
 endif()
 
-add_library(scripts STATIC 
-  ${scripts_STAT_SRCS} 
+add_library(scripts STATIC
+  ${scripts_STAT_SRCS}
 )
 
 target_include_directories(scripts
@@ -105,14 +94,14 @@ target_include_directories(scripts
     ${CMAKE_BINARY_DIR}
     boost
     common
-  PRIVATE   
+  PRIVATE
     game
-    fmt 
+    fmt
     ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour/Include
     ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Recast/Include
     ${CMAKE_SOURCE_DIR}/dep/g3dlite/include
     ${CMAKE_SOURCE_DIR}/src/server/database/Database
-    ${CMAKE_SOURCE_DIR}/src/server/database/Logging    
+    ${CMAKE_SOURCE_DIR}/src/server/database/Logging
     ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders
 )
 
@@ -121,24 +110,16 @@ target_link_libraries(scripts
     game)
 
 if(USE_MODULES)
-	add_dependencies(scripts modules)
-	target_link_libraries(scripts
-		PRIVATE
-		modules)
+    add_dependencies(scripts modules)
+    target_link_libraries(scripts
+        PRIVATE
+        modules)
     target_compile_definitions(scripts PRIVATE USE_MODULES)
-endif()
-
-if (ELUNA)
-  add_dependencies(scripts lua)
-  target_link_libraries(scripts
-    PRIVATE
-      lua
-  )
 endif()
 
 add_dependencies(scripts revision_data.h)
 
 # Generate precompiled header
 if (USE_SCRIPTPCH)
-  target_precompile_headers(scripts PRIVATE ${scripts_STAT_PCH_HDR}) 
+  target_precompile_headers(scripts PRIVATE ${scripts_STAT_PCH_HDR})
 endif()

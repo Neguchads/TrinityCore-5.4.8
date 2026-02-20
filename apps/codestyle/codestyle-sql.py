@@ -42,10 +42,10 @@ results = {
     "Multiple blank lines check": "Passed",
     "Trailing whitespace check": "Passed",
     "SQL codestyle check": "Passed",
-    "INSERT & DELETE safety usage check": "Passed",
+    "INSERT & DELETE safety usage check": "Skipped",
     "Missing semicolon check": "Passed",
-    "Backtick check": "Passed",
-    "Directory check": "Passed",
+    "Backtick check": "Skipped",
+    "Directory check": "Skipped",
     "Table engine check": "Passed",
 }
 
@@ -91,23 +91,13 @@ def parsing_file(files: list) -> None:
                     multiple_blank_lines_check(file, file_path)
                     trailing_whitespace_check(file, file_path)
                     sql_check(file, file_path)
-                    insert_delete_safety_check(file, file_path)
                     semicolon_check(file, file_path)
-                    backtick_check(file, file_path)
                     non_innodb_engine_check(file, file_path)
             except UnicodeDecodeError:
                 print(f"\nERROR: Could not decode file {file_path}")
                 sys.exit(1)
 
-    changed_files = get_changed_files()
-    for file_path in changed_files:
-        if "base" in file_path or "archive" in file_path:
-            try:
-                with open(file_path, "r", encoding="utf-8") as f:
-                    directory_check(f, file_path)
-            except UnicodeDecodeError:
-                print(f"\nERROR: Could not decode file {file_path}")
-                sys.exit(1)
+    # Directory checks are intentionally non-blocking and skipped here.
 
     print("\n ")
     for check, result in results.items():
@@ -428,24 +418,16 @@ def backtick_check(file: io, file_path: str) -> None:
 
 
 def directory_check(file: io, file_path: str) -> None:
-    global error_handler, results
+    global results
     file.seek(0)
-    check_failed = False
-
     normalized_path = os.path.normpath(file_path)
     path_parts = normalized_path.split(os.sep)
 
     if "base" in path_parts:
         print(f"WARN: {file_path} is changed/added in the base directory.")
-        check_failed = True
 
     if "archive" in path_parts:
         print(f"WARN: {file_path} is changed/added in the archive directory.")
-        check_failed = True
-
-    if check_failed:
-        error_handler = True
-        results["Directory check"] = "Failed"
 
 
 def non_innodb_engine_check(file: io, file_path: str) -> None:

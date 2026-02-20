@@ -528,7 +528,7 @@ void WorldSession::HandleOpenItemOpcode(WorldPacket& recvPacket)
     }
 
     // Verify that the bag is an actual bag or wrapped item that can be used "normally"
-    if (!(proto->Flags & ITEM_FLAG_HAS_LOOT) && !item->HasFlag(ITEM_FIELD_DYNAMIC_FLAGS, ITEM_FLAG_WRAPPED))
+    if (!(proto->Flags&ITEM_FLAG_HAS_LOOT) && !item->HasFlag(ITEM_FIELD_DYNAMIC_FLAGS, ITEM_FLAG_WRAPPED))
     {
         pUser->SendEquipError(EQUIP_ERR_CLIENT_LOCKED_OUT, item, NULL);
         TC_LOG_ERROR("network", "Possible hacking attempt: Player %s [guid: %u] tried to open item [guid: %u, entry: %u] which is not openable!",
@@ -1752,10 +1752,10 @@ void WorldSession::SendTotemCreated(ObjectGuid TotemGUID, uint32 Duration, uint3
 
 std::string choiceStrings[5][2] =
 {
-    { "Choose your assignment for the day:",                                                       "Выберите свое сегодняшнее назначение:"                                             }, // both
-    { "Aid the Kirin Tor against the Thunder King's forces.",                                      "Оказать помощь в борьбе с силами Властелина Грома."                                }, // both pve
-    { "Aid the Kirin Tor against the Horde and Sunreaver forces. [This will flag you for PvP]",    "Оказать помощь в борьбе с Ордой и Похитителями Солнца. [Будет включен режим PvP.]" }, // alliance pvp (ru text possible not blizzlike)
-    { "Aid the Kirin Tor against the Alliance and Kirin Tor forces. [This will flag you for PvP]", "Оказать помощь в борьбе с Альянсом и Кирин-Тором. [Будет включен режим PvP.]"      }, // horde pvp (eng text possible not blizzlike)
+    { "Choose your assignment for the day:",                                                       "Ãâ€™Ã‘â€¹ÃÂ±ÃÂµÃ‘â‚¬ÃÂ¸Ã‘â€šÃÂµ Ã‘ÂÃÂ²ÃÂ¾ÃÂµ Ã‘ÂÃÂµÃÂ³ÃÂ¾ÃÂ´ÃÂ½Ã‘ÂÃ‘Ë†ÃÂ½ÃÂµÃÂµ ÃÂ½ÃÂ°ÃÂ·ÃÂ½ÃÂ°Ã‘â€¡ÃÂµÃÂ½ÃÂ¸ÃÂµ:"                                             }, // both
+    { "Aid the Kirin Tor against the Thunder King's forces.",                                      "ÃÅ¾ÃÂºÃÂ°ÃÂ·ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¿ÃÂ¾ÃÂ¼ÃÂ¾Ã‘â€°Ã‘Å’ ÃÂ² ÃÂ±ÃÂ¾Ã‘â‚¬Ã‘Å’ÃÂ±ÃÂµ Ã‘Â Ã‘ÂÃÂ¸ÃÂ»ÃÂ°ÃÂ¼ÃÂ¸ Ãâ€™ÃÂ»ÃÂ°Ã‘ÂÃ‘â€šÃÂµÃÂ»ÃÂ¸ÃÂ½ÃÂ° Ãâ€œÃ‘â‚¬ÃÂ¾ÃÂ¼ÃÂ°."                                }, // both pve
+    { "Aid the Kirin Tor against the Horde and Sunreaver forces. [This will flag you for PvP]",    "ÃÅ¾ÃÂºÃÂ°ÃÂ·ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¿ÃÂ¾ÃÂ¼ÃÂ¾Ã‘â€°Ã‘Å’ ÃÂ² ÃÂ±ÃÂ¾Ã‘â‚¬Ã‘Å’ÃÂ±ÃÂµ Ã‘Â ÃÅ¾Ã‘â‚¬ÃÂ´ÃÂ¾ÃÂ¹ ÃÂ¸ ÃÅ¸ÃÂ¾Ã‘â€¦ÃÂ¸Ã‘â€šÃÂ¸Ã‘â€šÃÂµÃÂ»Ã‘ÂÃÂ¼ÃÂ¸ ÃÂ¡ÃÂ¾ÃÂ»ÃÂ½Ã‘â€ ÃÂ°. [Ãâ€˜Ã‘Æ’ÃÂ´ÃÂµÃ‘â€š ÃÂ²ÃÂºÃÂ»Ã‘Å½Ã‘â€¡ÃÂµÃÂ½ Ã‘â‚¬ÃÂµÃÂ¶ÃÂ¸ÃÂ¼ PvP.]" }, // alliance pvp (ru text possible not blizzlike)
+    { "Aid the Kirin Tor against the Alliance and Kirin Tor forces. [This will flag you for PvP]", "ÃÅ¾ÃÂºÃÂ°ÃÂ·ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¿ÃÂ¾ÃÂ¼ÃÂ¾Ã‘â€°Ã‘Å’ ÃÂ² ÃÂ±ÃÂ¾Ã‘â‚¬Ã‘Å’ÃÂ±ÃÂµ Ã‘Â ÃÂÃÂ»Ã‘Å’Ã‘ÂÃÂ½Ã‘ÂÃÂ¾ÃÂ¼ ÃÂ¸ ÃÅ¡ÃÂ¸Ã‘â‚¬ÃÂ¸ÃÂ½-ÃÂ¢ÃÂ¾Ã‘â‚¬ÃÂ¾ÃÂ¼. [Ãâ€˜Ã‘Æ’ÃÂ´ÃÂµÃ‘â€š ÃÂ²ÃÂºÃÂ»Ã‘Å½Ã‘â€¡ÃÂµÃÂ½ Ã‘â‚¬ÃÂµÃÂ¶ÃÂ¸ÃÂ¼ PvP.]"      }, // horde pvp (eng text possible not blizzlike)
     { "PvE",                                                                                       "PvP"                                                                               }
 };
 

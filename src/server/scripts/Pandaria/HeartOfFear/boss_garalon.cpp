@@ -138,7 +138,7 @@ class boss_garalon : public CreatureScript
 
         struct boss_garalonAI : public BossAI
         {
-            boss_garalonAI(Creature* creature) 
+            boss_garalonAI(Creature* creature)
                 : BossAI(creature, DATA_GARALON) { }
 
             bool damagedHeroic, castingCrush;
@@ -235,7 +235,7 @@ class boss_garalon : public CreatureScript
                 me->GetMap()->SetWorldState(WORLD_STATE_LIKE_AN_ARROR_TO_THE_FACE, 1);
             }
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 me->SetVisible(false);
                 me->SetReactState(REACT_PASSIVE);
@@ -358,7 +358,7 @@ class boss_garalon : public CreatureScript
                 }
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -802,7 +802,6 @@ class spell_garalon_pheromones_summon : public SpellScript
 
         return SPELL_CAST_OK;
     }
-
 
     void Register() override
     {

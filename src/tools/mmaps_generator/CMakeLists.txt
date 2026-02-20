@@ -13,13 +13,13 @@ file(GLOB_RECURSE mmap_gen_sources *.cpp *.h)
 
 add_executable(mmaps_generator ${mmap_gen_sources})
 
-target_include_directories(mmaps_generator 
+target_include_directories(mmaps_generator
   PUBLIC
     ${CMAKE_BINARY_DIR}
-  PRIVATE  
+  PRIVATE
     zlib
     bzip2
-    g3dlite	 
+    g3dlite
     common
     shared
     ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Recast

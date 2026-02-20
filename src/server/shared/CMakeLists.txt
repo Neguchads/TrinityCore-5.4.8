@@ -66,7 +66,7 @@ target_include_directories(shared
     ${CMAKE_CURRENT_SOURCE_DIR}/Packets
     ${CMAKE_CURRENT_SOURCE_DIR}/Realms
     ${CMAKE_CURRENT_SOURCE_DIR}/Threading
-    ${CMAKE_CURRENT_SOURCE_DIR}/Utilities      
+    ${CMAKE_CURRENT_SOURCE_DIR}/Utilities
     boost
   PRIVATE
     common
@@ -82,8 +82,7 @@ target_link_libraries(shared
     database
 )
 
-
 # Generate precompiled header
 if (USE_COREPCH)
-  target_precompile_headers(shared PRIVATE ${shared_STAT_PCH_HDR}) 
+  target_precompile_headers(shared PRIVATE ${shared_STAT_PCH_HDR})
 endif ()

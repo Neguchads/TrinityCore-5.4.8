@@ -173,7 +173,7 @@ void WINAPI ServiceControlHandler(DWORD controlCode)
             break;
 
         default:
-            if ( controlCode >= 128 && controlCode <= 255 )
+            if (controlCode >= 128 && controlCode <= 255 )
                 // user defined control code
                 break;
             else
@@ -197,7 +197,7 @@ void WINAPI ServiceMain(DWORD argc, char *argv[])
 
     serviceStatusHandle = RegisterServiceCtrlHandler(serviceName, ServiceControlHandler);
 
-    if ( serviceStatusHandle )
+    if (serviceStatusHandle )
     {
         char path[_MAX_PATH + 1];
         unsigned int i, last_slash = 0;
@@ -260,4 +260,3 @@ bool WinServiceRun()
     return true;
 }
 #endif
-

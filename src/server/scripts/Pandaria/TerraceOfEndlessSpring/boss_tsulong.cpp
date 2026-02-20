@@ -58,7 +58,7 @@ enum TsulongSpells
     SPELL_SHA_ACTIVE                    = 122438, // night phase regen
     SPELL_TSULONG_KILL_CREDIT           = 123901,
     SPELL_WHOS_GOT_TWO_GREEN_THUMBS     = 125827,
-          
+
     // day phase
     SPELL_GOLD_ACTIVE                   = 122453, // day phase regen and model
     SPELL_SUN_BREATH                    = 122855,
@@ -232,7 +232,7 @@ class boss_tsulong : public CreatureScript
                 me->SetPowerType(POWER_ENERGY);
                 me->SetPower(POWER_ENERGY, 0);
                 me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
-                
+
                 if (hasBeenDefeated)
                     return;
 
@@ -305,7 +305,7 @@ class boss_tsulong : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk((phase == PHASE_DAY) ? SAY_SLAY_DAY : SAY_SLAY_NIGHT);
             }
 
@@ -491,7 +491,7 @@ class boss_tsulong : public CreatureScript
                 EnterEvadeMode();
 
                 Talk(SAY_DEATH);
-                
+
                 me->CombatStop();
                 me->SetReactState(REACT_PASSIVE);
                 me->SetFaction(FACTION_DAY);
@@ -541,7 +541,7 @@ class boss_tsulong : public CreatureScript
                         player->CombatStop();
                     }
                 }
-                
+
                 me->StopMoving();
                 me->OverrideInhabitType(INHABIT_AIR);
                 me->UpdateMovementFlags();
@@ -778,7 +778,7 @@ class boss_tsulong : public CreatureScript
             }
 
             private:
-                /* Main idea that we`ll get any positions in area 
+                /* Main idea that we`ll get any positions in area
                 like points in static range with any orientation*/
                 void GenerateDarkOfNight(Creature* sunbeam)
                 {
@@ -1200,7 +1200,7 @@ class spell_sunbeam_aura : public AuraScript
     {
         if (Unit* target = GetTarget())
         {
-            if (target->GetTypeId() == TYPEID_PLAYER)
+            if (target->IsPlayer())
             {
                 if (Pet* pet = target->ToPlayer()->GetPet())
                     pet->AddAura(SPELL_SUNBEAM_PROTECTION, pet);
@@ -1223,7 +1223,7 @@ class spell_sunbeam_aura : public AuraScript
     {
         if (Unit* target = GetTarget())
         {
-            if (target->GetTypeId() == TYPEID_PLAYER)
+            if (target->IsPlayer())
             {
                 if (Pet* pet = target->ToPlayer()->GetPet())
                     pet->RemoveAurasDueToSpell(SPELL_SUNBEAM_PROTECTION);
@@ -1348,7 +1348,7 @@ class spell_tsulong_terrorize : public SpellScriptLoader
                 if (Unit* caster = GetCaster())
                 {
                     uint32 m_maxTargets = (caster->GetMap()->GetDifficulty() == RAID_DIFFICULTY_25MAN_NORMAL || caster->GetMap()->GetDifficulty() == RAID_DIFFICULTY_25MAN_HEROIC) ? 5 : 2;
-      
+
                     if (targets.size() > m_maxTargets)
                         Trinity::Containers::RandomResizeList(targets, m_maxTargets);
                 }
@@ -1410,7 +1410,7 @@ class npc_dark_of_night : public CreatureScript
                         DoCast(me, SPELL_DARK_EXPLOSION, true);
 
                     if (Creature* sunbeam = ObjectAccessor::GetCreature(*me, sunbeamGUID))
-                        sunbeam->DespawnOrUnsummon();;
+                        sunbeam->DespawnOrUnsummon();
 
                     me->DespawnOrUnsummon();
                 });
@@ -1447,13 +1447,13 @@ class npc_dark_of_night : public CreatureScript
                             DoCast(me, SPELL_DARK_EXPLOSION, true);
 
                         if (Creature* sunbeam = ObjectAccessor::GetCreature(*me, sunbeamGUID))
-                            sunbeam->DespawnOrUnsummon();;
+                            sunbeam->DespawnOrUnsummon();
 
                         me->DespawnOrUnsummon();
                     });
                 }
             }
-        
+
             void UpdateAI(uint32 /*diff*/) override { }
 
         };

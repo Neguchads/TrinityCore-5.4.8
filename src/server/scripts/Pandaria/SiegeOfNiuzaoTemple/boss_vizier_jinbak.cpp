@@ -103,7 +103,7 @@ class boss_vizier_jinbak : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!introDone && who->GetTypeId() == TYPEID_PLAYER)
+                if (!introDone && who->IsPlayer())
                 {
                     if (me->IsWithinDist2d(who, 30.0f))
                     {
@@ -167,7 +167,7 @@ class boss_vizier_jinbak : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -280,7 +280,6 @@ class boss_vizier_jinbak : public CreatureScript
         }
 };
 
-
 class npc_sap_globule : public CreatureScript
 {
     enum Spells
@@ -373,7 +372,7 @@ class npc_sap_puddle : public CreatureScript
 
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
-                if (!skipTick && target->GetTypeId() == TYPEID_PLAYER && spell->Id == SPELL_RESIDUE_DOT)
+                if (!skipTick && target->IsPlayer() && spell->Id == SPELL_RESIDUE_DOT)
                     if (Aura * growAura = me->GetAura(SPELL_GROW))
                     {
                         int32 stackAmt = growAura->GetStackAmount();
@@ -400,7 +399,6 @@ class npc_sap_puddle : public CreatureScript
             return new npc_sap_puddleAI(creature);
         }
 };
-
 
 class spell_sap_residue : public SpellScriptLoader
 {

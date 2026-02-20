@@ -181,7 +181,7 @@ enum ancientEnemy
         SPELL_FIRES_BEAM            = 73294,
 };
 
-#define VOLJIN_GOSSIP       "我准备好了."
+#define VOLJIN_GOSSIP       "Ã¦Ë†â€˜Ã¥â€¡â€ Ã¥Â¤â€¡Ã¥Â¥Â½Ã¤Âºâ€ ."
 static const uint32 npcId[3] = { NPC_ZUNI, NPC_VANIRA, NPC_VOLJIN };
 
 class npc_voljin_ancient_enemy : public CreatureScript
@@ -289,7 +289,7 @@ public:
         if (player->GetQuestStatus(QUEST_ANCIENT_ENEMY) == QUEST_STATUS_INCOMPLETE)
         {
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, VOLJIN_GOSSIP, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
-            player->SEND_GOSSIP_MENU(GOSSIP_VOLJIN, creature->GetGUID());            
+            player->SEND_GOSSIP_MENU(GOSSIP_VOLJIN, creature->GetGUID());
         }
         return true;
     }
@@ -437,7 +437,7 @@ class npc_zarjira : public CreatureScript
                         {
                             (*i)->CastSpell((*i), SPELL_FIRES, true);
                             (*i)->CastSpell(me, SPELL_FIRES_BEAM, true);
-                            (*i)->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);                            
+                            (*i)->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                         }
                         events.ScheduleEvent(EVENT_FIRES, urand(60000, 80000));
                     }

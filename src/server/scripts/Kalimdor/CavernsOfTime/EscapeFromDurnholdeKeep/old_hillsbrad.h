@@ -64,4 +64,3 @@ inline AI* GetOldHillsbradAI(T* obj)
 #define RegisterOldHillsbradGameObjectAI(ai_name) RegisterGameObjectAIWithFactory(ai_name, GetOldHillsbradAI)
 
 #endif
-

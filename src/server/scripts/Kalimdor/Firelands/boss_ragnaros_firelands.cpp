@@ -38,7 +38,7 @@ enum ScriptTextsRagnaros
 };
 
 enum ScriptTextsMalfurion
-{ 
+{
     SAY_MALFURION_EVENT_1 = 0,
     SAY_MALFURION_EVENT_2 = 1,
     SAY_MALFURION_EVENT_3 = 2,
@@ -103,7 +103,7 @@ enum Spells
     SPELL_SUPERNOVA                     = 99112,
     SPELL_BLAZING_SPEED_AURA            = 98473,
     SPELL_BLAZING_SPEED                 = 99414,
-    SPELL_MOLTEN_SEED_AOE_1             = 98333, 
+    SPELL_MOLTEN_SEED_AOE_1             = 98333,
     SPELL_MOLTEN_SEED_AOE_2             = 98497, // hit stalkers
     SPELL_MOLTEN_SEED_MISSILE           = 98495,
     SPELL_MOLTEN_SEED_DMG               = 98498,
@@ -455,7 +455,7 @@ class boss_ragnaros_firelands : public CreatureScript
                     me->DespawnOrUnsummon();
                     return;
                 }
-                
+
                 _JustDied();
                 DespawnEncounterCreatures();
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_DELUGE_AURA);
@@ -468,15 +468,15 @@ class boss_ragnaros_firelands : public CreatureScript
 
                 // Achievement Ragnar'os
                 if (Lavalogged >= 3)
-                    instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_ACHIEVEMENT, 0, me); 
-                
+                    instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_ACHIEVEMENT, 0, me);
+
                 if (Creature* pMalfurion = me->FindNearestCreature(NPC_MALFURION_STORMRAGE, 300.0f))
                     pMalfurion->AI()->DoAction(ACTION_WIN);
                 if (Creature* pCenarius = me->FindNearestCreature(NPC_CENARIUS, 300.0f))
                     pCenarius->AI()->DoAction(ACTION_WIN);
                 if (Creature* pHamuul = me->FindNearestCreature(NPC_HAMUUL_RUNETOTEM, 300.0f))
                     pHamuul->AI()->DoAction(ACTION_WIN);
-                
+
                 Map::PlayerList const &plrList = instance->instance->GetPlayers();
                 if (!plrList.isEmpty())
                 {
@@ -494,7 +494,7 @@ class boss_ragnaros_firelands : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -567,7 +567,7 @@ class boss_ragnaros_firelands : public CreatureScript
                 if (me->HealthBelowPct(70) && phase == 0)
                 {
                     phase = 1;
-                    
+
                     me->SetReactState(REACT_PASSIVE);
                     me->AttackStop();
 
@@ -614,7 +614,7 @@ class boss_ragnaros_firelands : public CreatureScript
                 else if (me->HealthBelowPct(40) && phase == 2)
                 {
                     phase = 3;
-                    
+
                     me->SetReactState(REACT_PASSIVE);
                     me->AttackStop();
 
@@ -812,7 +812,7 @@ class boss_ragnaros_firelands : public CreatureScript
                             break;
                         case EVENT_MOLTEN_SEED:
                         {
-                            me->CastCustomSpell(SPELL_MOLTEN_SEED_AOE_1, SPELLVALUE_MAX_TARGETS, (Is25ManRaid() ? 20 : 10), me, true); 
+                            me->CastCustomSpell(SPELL_MOLTEN_SEED_AOE_1, SPELLVALUE_MAX_TARGETS, (Is25ManRaid() ? 20 : 10), me, true);
                             events.ScheduleEvent(EVENT_MOLTEN_SEED, 60000);
                             break;
                         }
@@ -855,19 +855,19 @@ class boss_ragnaros_firelands : public CreatureScript
                             }
                             else
                                 me->DespawnOrUnsummon(2000);
-                            break;                 
+                            break;
                         case EVENT_EVENT_1:
                             me->SummonCreature(NPC_MALFURION_STORMRAGE, npcPos[0]);
                             me->SummonCreature(NPC_CENARIUS, npcPos[1]);
                             me->SummonCreature(NPC_HAMUUL_RUNETOTEM, npcPos[2]);
-                            break; 
+                            break;
                         case EVENT_EVENT_2:
                             me->RemoveAura(SPELL_DRAW_OUT_FIRELORD_1);
                             me->RemoveAura(SPELL_DRAW_OUT_FIRELORD_2);
                             me->RemoveAura(SPELL_DRAW_OUT_FIRELORD_3);
                             me->RemoveAura(SPELL_LEGS_SUBMERGE);
                             me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
-                            
+
                             DoCast(me, SPELL_TRANSFORM, true);
                             // DoCast(me, SPELL_LEGS_HEAL, true);
                             me->SetHealth(me->CountPctFromMaxHealth(50));
@@ -877,11 +877,11 @@ class boss_ragnaros_firelands : public CreatureScript
 
                             me->SetFloatValue(UNIT_FIELD_BOUNDING_RADIUS, 8);
                             me->SetFloatValue(UNIT_FIELD_COMBAT_REACH, 8);
-                            
+
                             events.ScheduleEvent(EVENT_EVENT_3, 9000);
                             break;
                         case EVENT_EVENT_3:
-                            
+
                             //me->SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_INSTANTLY_APPEAR_MODEL);
                             if (Creature* pMalfurion = me->FindNearestCreature(NPC_MALFURION_STORMRAGE, 100.0f))
                                 pMalfurion->AI()->Talk(SAY_MALFURION_EVENT_1);
@@ -954,7 +954,7 @@ class boss_ragnaros_firelands : public CreatureScript
                 DespawnCreatures(NPC_DREADFLAME);
                 DespawnCreatures(NPC_BREADTH_OF_FROST);
                 DespawnCreatures(NPC_CLOUDBURST);
-                DespawnCreatures(NPC_ENTRAPPING_ROOTS); 
+                DespawnCreatures(NPC_ENTRAPPING_ROOTS);
             }
 
             void DespawnEventCreatures()
@@ -981,20 +981,20 @@ class boss_ragnaros_firelands : public CreatureScript
                 events.Reset();
                 me->SetReactState(REACT_PASSIVE);
                 me->AttackStop();
-                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);     
+                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
                 me->RemoveAllAuras();
                 DoCast(me, SPELL_LEGS_SUBMERGE);
                 Talk(SAY_DEATH_1);
                 me->HandleEmoteCommand(EMOTE_ONESHOT_SUBMERGE);
                 me->AddAura(SPELL_SUBMERGE_AURA, me);
-                
+
                 // Achievement Ragnar'os
                 if (Lavalogged >= 3)
-                    instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_ACHIEVEMENT, 0, me); 
+                    instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_ACHIEVEMENT, 0, me);
 
                 // Achievement
-                instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_ENCOUNTER_COMPLETE, 0, me); 
-                    
+                instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_ENCOUNTER_COMPLETE, 0, me);
+
                 // Guild Achievement
                 Map::PlayerList const &plrList = instance->instance->GetPlayers();
                 if (!plrList.isEmpty())
@@ -1009,7 +1009,7 @@ class boss_ragnaros_firelands : public CreatureScript
                                     break;
                                 }
                     }
-                    
+
                     for (Map::PlayerList::const_iterator i = plrList.begin(); i != plrList.end(); ++i)
                     {
                         if (Player* plr = i->GetSource())
@@ -1021,7 +1021,7 @@ class boss_ragnaros_firelands : public CreatureScript
                     }
                 }
 
-                instance->UpdateEncounterState(ENCOUNTER_CREDIT_CAST_SPELL, SPELL_ENCOUNTER_COMPLETE, me); 
+                instance->UpdateEncounterState(ENCOUNTER_CREDIT_CAST_SPELL, SPELL_ENCOUNTER_COMPLETE, me);
                 instance->SetBossState(DATA_RAGNAROS, DONE);
 
                 if (GetDifficulty() == RAID_DIFFICULTY_10MAN_NORMAL)
@@ -1056,7 +1056,7 @@ class npc_ragnaros_firelands_sulfuras_smash : public CreatureScript
             void Reset() override
             {
                 if (Creature* pRagnaros = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_RAGNAROS)))
-                {    
+                {
                     if (me->GetEntry() == NPC_SULFURAS_SMASH_1)
                     {
                         pRagnaros->SetFacingToObject(me);
@@ -1229,7 +1229,7 @@ class npc_ragnaros_firelands_splitting_blow : public CreatureScript
 {
     public:
         npc_ragnaros_firelands_splitting_blow() : CreatureScript("npc_ragnaros_firelands_splitting_blow") { }
-            
+
         struct npc_ragnaros_firelands_splitting_blowAI : public ScriptedAI
         {
             npc_ragnaros_firelands_splitting_blowAI(Creature* creature) : ScriptedAI(creature)
@@ -1257,7 +1257,7 @@ class npc_ragnaros_firelands_sulfuras_hand_of_ragnaros : public CreatureScript
 {
     public:
         npc_ragnaros_firelands_sulfuras_hand_of_ragnaros() : CreatureScript("npc_ragnaros_firelands_sulfuras_hand_of_ragnaros") { }
-            
+
         struct npc_ragnaros_firelands_sulfuras_hand_of_ragnarosAI : public ScriptedAI
         {
             npc_ragnaros_firelands_sulfuras_hand_of_ragnarosAI(Creature* creature) : ScriptedAI(creature)
@@ -1331,7 +1331,7 @@ class npc_ragnaros_firelands_son_of_flame : public CreatureScript
 
                 events.Update(diff);
 
-                if (uint32 eventId = events.ExecuteEvent())   
+                if (uint32 eventId = events.ExecuteEvent())
                     if (Creature* pSulfuras = me->FindNearestCreature(NPC_SULFURAS_HAND_OF_RAGNAROS_1, 300.0f))
                         me->GetMotionMaster()->MoveFollow(pSulfuras, 0.0f, 0.0f);
             }
@@ -1424,7 +1424,7 @@ class npc_ragnaros_firelands_molten_elemental : public CreatureScript
 
                 events.Update(diff);
 
-                if (uint32 eventId = events.ExecuteEvent()) 
+                if (uint32 eventId = events.ExecuteEvent())
                 {
                     DoCastAOE(SPELL_MOLTEN_INFERNO);
                     me->RemoveAura(SPELL_MOLTEN_SEED_VISUAL);
@@ -1502,7 +1502,7 @@ class npc_ragnaros_firelands_lava_scion : public CreatureScript
 
                 events.Update(diff);
 
-                if (uint32 eventId = events.ExecuteEvent()) 
+                if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
                     {
@@ -1523,7 +1523,7 @@ class npc_ragnaros_firelands_lava_scion : public CreatureScript
                                         if (scion->GetVictim())
                                             guids.push_back(scion->GetVictim()->GetGUID());
                             }
-                            
+
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, BlazingHeatSelector(guids)))
                                 DoCast(target, SPELL_BLAZING_HEAT);
                             events.ScheduleEvent(EVENT_BLAZING_HEAT, urand(18000, 22000));
@@ -1541,7 +1541,7 @@ class npc_ragnaros_firelands_lava_scion : public CreatureScript
             struct BlazingHeatSelector
             {
                 public:
-                    
+
                     BlazingHeatSelector(std::vector<ObjectGuid> _guids) : tankGUIDs(_guids) { }
 
                     bool operator()(Unit const* target) const
@@ -1781,7 +1781,7 @@ class npc_ragnaros_firelands_cenarius : public CreatureScript
             {
                 events.Update(diff);
 
-                if (uint32 eventId = events.ExecuteEvent()) 
+                if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
                     {
@@ -1863,7 +1863,7 @@ class npc_ragnaros_firelands_malfurion_stormrage : public CreatureScript
             {
                 events.Update(diff);
 
-                if (uint32 eventId = events.ExecuteEvent()) 
+                if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
                     {
@@ -1936,10 +1936,10 @@ class npc_ragnaros_firelands_hamuul_runetotem : public CreatureScript
             {
                 events.Update(diff);
 
-                if (uint32 eventId = events.ExecuteEvent()) 
+                if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
-                    { 
+                    {
                         case EVENT_ENTRAPPING_ROOTS:
                         {
                             uint32 i = urand(0, 275);
@@ -2007,7 +2007,7 @@ class npc_ragnaros_firelands_dreadflame_spawn : public CreatureScript
                             bFloor[i] = true;
                             //me->CastSpell(floorPos[i].GetPositionX(), floorPos[i].GetPositionY(), floorPos[i].GetPositionZ(), SPELL_DREADFLAME_SUMMON, true);
                             if (Creature* pDreadflame = me->SummonCreature(NPC_DREADFLAME, floorPos[i], TEMPSUMMON_TIMED_DESPAWN, 600000))
-                                pDreadflame->AI()->SetData(DATA_DREADFLAME_ID, i + 1);    
+                                pDreadflame->AI()->SetData(DATA_DREADFLAME_ID, i + 1);
                             events.ScheduleEvent(EVENT_DREADFLAME_UPDATE, 5000);
                             break;
                         }
@@ -2104,7 +2104,7 @@ class npc_ragnaros_firelands_dreadflame : public CreatureScript
                                     if (target && !target->HasAura(SPELL_DELUGE_AURA))
                                         DoCast(target, SPELL_DREADFLAME_DMG, true);
                             }
-                            
+
                             events.ScheduleEvent(EVENT_CHECK_TARGET, 1000);
                             break;
                         }
@@ -2166,7 +2166,7 @@ class npc_ragnaros_firelands_cloudburst : public CreatureScript
 
             return true;
         }
-    
+
         struct npc_ragnaros_firelands_cloudburstAI : public ScriptedAI
         {
             npc_ragnaros_firelands_cloudburstAI(Creature* creature) : ScriptedAI(creature)
@@ -2247,7 +2247,7 @@ class spell_ragnaros_firelands_wrath_of_ragnaros_aoe : public SpellScriptLoader
             {
                 public:
                     DistanceCheck(Unit* searcher) : _searcher(searcher) { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
                         return (!unit->ToUnit() || _searcher->GetDistance(unit) < 18.0f);
@@ -2360,7 +2360,6 @@ class spell_ragnaros_firelands_sulfuras_smash : public SpellScriptLoader
     public:
         spell_ragnaros_firelands_sulfuras_smash() : SpellScriptLoader("spell_ragnaros_firelands_sulfuras_smash") { }
 
-
         class spell_ragnaros_firelands_sulfuras_smash_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_ragnaros_firelands_sulfuras_smash_SpellScript);
@@ -2391,7 +2390,6 @@ class spell_ragnaros_firelands_splitting_blow : public SpellScriptLoader
     public:
         spell_ragnaros_firelands_splitting_blow() : SpellScriptLoader("spell_ragnaros_firelands_splitting_blow") { }
 
-
         class spell_ragnaros_firelands_splitting_blow_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_ragnaros_firelands_splitting_blow_SpellScript);
@@ -2421,7 +2419,6 @@ class spell_ragnaros_firelands_invoke_sons_aoe_1 : public SpellScriptLoader
 {
     public:
         spell_ragnaros_firelands_invoke_sons_aoe_1() : SpellScriptLoader("spell_ragnaros_firelands_invoke_sons_aoe_1") { }
-
 
         class spell_ragnaros_firelands_invoke_sons_aoe_1_SpellScript : public SpellScript
         {
@@ -2548,7 +2545,7 @@ class spell_ragnaros_firelands_engulfing_flames : public SpellScriptLoader
             {
                 public:
                     NearCheck(Unit* searcher) : _searcher(searcher) { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
                         return (!unit->ToUnit() || _searcher->GetDistance(unit) >= 1.0f);
@@ -2562,7 +2559,7 @@ class spell_ragnaros_firelands_engulfing_flames : public SpellScriptLoader
             {
                 public:
                     MidCheck(Unit* searcher) : _searcher(searcher) { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
                         return (!unit->ToUnit() || _searcher->GetDistance(unit) < 1.0f || _searcher->GetDistance(unit) > 12.0f);
@@ -2576,7 +2573,7 @@ class spell_ragnaros_firelands_engulfing_flames : public SpellScriptLoader
             {
                 public:
                     FarCheck(Unit* searcher) : _searcher(searcher) { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
                         return (!unit->ToUnit() || _searcher->GetDistance(unit) < 12.0f);
@@ -2627,7 +2624,6 @@ class spell_ragnaros_firelands_engulfing_flame_script : public SpellScriptLoader
 {
     public:
         spell_ragnaros_firelands_engulfing_flame_script() : SpellScriptLoader("spell_ragnaros_firelands_engulfing_flame_script") { }
-
 
         class spell_ragnaros_firelands_engulfing_flame_script_SpellScript : public SpellScript
         {
@@ -2684,7 +2680,7 @@ class spell_ragnaros_firelands_world_in_flame : public SpellScriptLoader
                 if (Creature* caster = GetCaster()->ToCreature())
                     caster->AI()->DoAction(ACTION_WORLD_IN_FLAME_OFF);
             }
-            
+
             void Register() override
             {
                 OnEffectRemove += AuraEffectApplyFn(spell_ragnaros_firelands_world_in_flame_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_PERIODIC_TRIGGER_SPELL, AURA_EFFECT_HANDLE_REAL);
@@ -2814,7 +2810,7 @@ class spell_ragnaros_firelands_superheated_dmg : public SpellScriptLoader
             {
                 public:
                     BreadthCloudburstCheck() { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
                         return (!unit->ToUnit() || unit->ToUnit()->HasAura(SPELL_BREADTH_OF_FROST_ALLY) || unit->ToUnit()->HasAura(SPELL_DELUGE_AURA));

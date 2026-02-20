@@ -195,19 +195,19 @@ class npc_quest_mullan_gryphon : public CreatureScript
 {
     public:
         npc_quest_mullan_gryphon() : CreatureScript("npc_quest_mullan_gryphon") { }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
-    
+
             if (action == GOSSIP_ACTION_INFO_DEF + 1)
                 creature->AI()->DoAction(ACTION_START_INTRO);
-    
+
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
@@ -533,7 +533,7 @@ class npc_gurgthock_twilands : public CreatureScript
                 }
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
             }
@@ -1380,7 +1380,7 @@ class gob_thundermar_ale_keg : public GameObjectScript
             return true;
         }
 };
- 
+
 void AddSC_twilight_highlands()
 {
     new creature_script<npc_dunwald_victim>("npc_dunwald_victim");

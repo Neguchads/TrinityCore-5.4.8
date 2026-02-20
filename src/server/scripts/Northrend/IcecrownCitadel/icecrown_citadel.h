@@ -99,7 +99,7 @@ enum ZoneBuffs
     AURA_ZONE_PCT_BUFF_A_10 = 73824,
     AURA_ZONE_PCT_BUFF_H_10 = 73818,
 };
-        
+
 enum DataTypes
 {
     // Encounter States/Boss GUIDs

@@ -401,7 +401,8 @@ class npc_arthas : public CreatureScript
                 uiInfiniteGUID = ObjectGuid::Empty;
                 WavesCounter = 0;
 
-                if (instance) {
+                if (instance)
+                {
                     instance->SetData(DATA_ARTHAS_EVENT, NOT_STARTED);
                     switch (instance->GetData(DATA_ARTHAS_EVENT))
                     {

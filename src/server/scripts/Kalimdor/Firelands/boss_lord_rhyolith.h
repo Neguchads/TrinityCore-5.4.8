@@ -20,7 +20,7 @@
 #define _MAX_MOVE 192
 #define _MAX_VOLCANO 32
 
-const Position movePos[192] = 
+const Position movePos[192] =
 {
     {-355.225708f, -376.727631f, 99.903870f, 0.0f},
     {-355.225708f, -376.727631f, 99.903870f, 0.0f},
@@ -216,7 +216,7 @@ const Position movePos[192] =
     {-347.421143f, -374.073273f, 100.319786f, 0.0f}
 };
 
-const Position volcanoPos[32] = 
+const Position volcanoPos[32] =
 {
     {-396.114746f, -346.146484f, 100.684708f, 0.0f},
     {-399.102173f, -342.254395f, 100.808762f, 0.0f},

@@ -292,7 +292,7 @@ class spell_dk_necrotic_strike : public AuraScript
 
             int32 absorbAmount = std::round(amount);
             caster->ApplyResilience(GetUnitOwner(), &absorbAmount);
-            
+
             if (AuraEffect* necrotic = GetUnitOwner()->GetAuraEffect(73975, EFFECT_0, caster->GetGUID()))
                 absorbAmount += necrotic->GetAmount();
             amount = int32(absorbAmount);
@@ -496,7 +496,7 @@ class spell_dk_blood_tap : public SpellScript
             Aura* bloodCharges = GetCaster()->ToPlayer()->GetAura(SPELL_DK_BLOOD_CHARGE);
             if (!bloodCharges)
                 return SPELL_FAILED_DONT_REPORT;
-            
+
             if (bloodCharges->GetStackAmount() < 5)
                 return SPELL_FAILED_DONT_REPORT;
 
@@ -767,7 +767,7 @@ class spell_dk_outbreak : public SpellScript
         GetCaster()->CastSpell(GetHitUnit(), SPELL_DK_FROST_FEVER, true);
 
         // Dancing rune weapon
-        if (GetCaster()->GetTypeId() == TYPEID_PLAYER)
+        if (GetCaster()->IsPlayer())
             for (auto&& itr : GetCaster()->GetSummons())
                 if (itr->GetEntry() == 27893)
                     itr->CastSpell(GetHitUnit(), GetSpellInfo()->Id);
@@ -1379,7 +1379,7 @@ class spell_dk_unholy_frenzy : public SpellScriptLoader
 {
     public:
         spell_dk_unholy_frenzy() : SpellScriptLoader("spell_dk_unholy_frenzy") { }
-        
+
         class spell_dk_unholy_frenzy_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_dk_unholy_frenzy_AuraScript)
@@ -1413,7 +1413,7 @@ class spell_dk_soul_reaper_effect : public SpellScriptLoader
 {
     public:
         spell_dk_soul_reaper_effect() : SpellScriptLoader("spell_dk_soul_reaper_effect") { }
-        
+
         class spell_dk_soul_reaper_effect_AuraScript : public AuraScript
         {
             PrepareAuraScript(spell_dk_soul_reaper_effect_AuraScript)
@@ -1522,9 +1522,9 @@ class spell_dk_death_coil : public SpellScript
             {
                 if (!caster->isInFront(target))
                     return SPELL_FAILED_UNIT_NOT_INFRONT;
-                if (target->GetTypeId() == TYPEID_PLAYER && !target->IsPvP())
+                if (target->IsPlayer() && !target->IsPvP())
                 {
-                    if (caster->GetTypeId() != TYPEID_PLAYER || !caster->ToPlayer()->duel || caster->ToPlayer()->duel->opponent != target)
+                    if (!(caster->IsPlayer() || !caster->ToPlayer()->duel || caster->ToPlayer()->duel->opponent != target))
                         return SPELL_FAILED_BAD_TARGETS;
                 }
             }
@@ -1766,7 +1766,7 @@ class spell_dk_soul_reaper : public AuraScript
     }
 };
 
-// 49184 - Howling Blast 
+// 49184 - Howling Blast
 class spell_dk_howling_blast : public SpellScript
 {
     PrepareSpellScript(spell_dk_howling_blast);
@@ -1903,7 +1903,7 @@ struct npc_bloodworm : public ScriptedAI
         {
             if (Aura* aura = me->GetAura(SPELL_BLOOD_GORGED))
             {
-                if (roll_chance_f(aura->GetStackAmount() * 7.0f)) // wild 
+                if (roll_chance_f(aura->GetStackAmount() * 7.0f)) // wild
                 {
                     int32 heal = me->CountPctFromMaxHealth(aura->GetSpellInfo()->Effects[EFFECT_1].BasePoints) * aura->GetStackAmount();
                     me->CastCustomSpell(SPELL_BLOOD_BURST, SPELLVALUE_BASE_POINT0, heal, me, true);
@@ -1920,7 +1920,7 @@ class spell_dk_shadow_infusion_proc : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetOwner()->IsPlayer();
     }
 
     bool CheckProc(ProcEventInfo& eventInfo)
@@ -2017,7 +2017,7 @@ class spell_dk_raise_dead : public SpellScript
 
     SpellCastResult CheckCast()
     {
-        if (GetCaster()->GetTypeId() != TYPEID_PLAYER)
+        if (!(GetCaster()->IsPlayer()))
             return SPELL_FAILED_DONT_REPORT;
         if (Unit* pet = GetCaster()->ToPlayer()->GetGuardianPet())
             if (pet->IsAlive())
@@ -2505,7 +2505,7 @@ class spell_dk_dark_simulacrum : public AuraScript
     bool CheckProc(ProcEventInfo& eventInfo)
     {
         Unit* caster = GetCaster();
-        if (!caster || caster->GetTypeId() != TYPEID_PLAYER)
+        if (!caster || !caster->IsPlayer())
             return false;
 
         Spell const* spell = eventInfo.TriggeredBySpell();
@@ -2526,7 +2526,7 @@ class spell_dk_dark_simulacrum : public AuraScript
         if (!found)
             return false;
 
-        // Against nonplayers, only absorbs some harmful spells. ¯\_(ツ)_/¯
+        // Against nonplayers, only absorbs some harmful spells. ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯\_(ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾)_/ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯
         if (Creature* spellCaster = GetUnitOwner()->ToCreature())
             if (spellCaster->IsDungeonBoss() || spellCaster->isWorldBoss() || spellCaster->GetCreatureTemplate()->rank == CREATURE_ELITE_WORLDBOSS)
                 return false;
@@ -2555,7 +2555,7 @@ class spell_dk_dark_simulacrum : public AuraScript
             if (!item->IsFitToSpellRequirements(spellInfo))
                 return false;
         }
-        
+
         for (auto&& effect : spell->GetSpellInfo()->Effects)
         {
             switch (effect.Effect)
@@ -2636,7 +2636,7 @@ class spell_dk_dancing_rune_weapon_driver : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetOwner()->IsPlayer();
     }
 
     void HandleProc(ProcEventInfo& eventInfo)
@@ -2780,7 +2780,7 @@ class spel_dk_death_shroud_duration : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     void HandleHit()
@@ -2818,7 +2818,7 @@ class spell_dk_death_shroud : public AuraScript
 
     bool Load() override
     {
-        if (GetOwner()->GetTypeId() != TYPEID_PLAYER)
+        if (!(GetOwner()->IsPlayer()))
             return false;
 
         haste = GetOwner()->ToPlayer()->GetRatingBonusValue(CR_HASTE_MELEE) > GetOwner()->ToPlayer()->GetRatingBonusValue(CR_MASTERY);
@@ -2905,7 +2905,7 @@ class spell_dk_t16_blood_4p_bonus : public AuraScript
 
     bool Load() override
     {
-        return GetOwner()->GetTypeId() == TYPEID_PLAYER && GetUnitOwner()->GetClass() == CLASS_DEATH_KNIGHT;
+        return GetOwner()->IsPlayer() && GetUnitOwner()->GetClass() == CLASS_DEATH_KNIGHT;
     }
 
     void HandleProc(ProcEventInfo& eventInfo)

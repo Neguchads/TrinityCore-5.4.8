@@ -46,7 +46,7 @@ public:
     bool GetBoolDefault(std::string const& name, bool def, bool quiet = false) const;
     int GetIntDefault(std::string const& name, int def, bool quiet = false) const;
     float GetFloatDefault(std::string const& name, float def, bool quiet = false) const;
-    
+
     template<class T>
     T GetOption(std::string const& name, T const& def, bool showLogs = true) const;
 

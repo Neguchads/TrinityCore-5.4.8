@@ -192,7 +192,7 @@ public:
         time_t& cooldown = cooldowns[player->GetGUID().GetCounter()];
         if (now <= cooldown)
         {
-            handler->PSendSysMessage("Вы уже использовали эту команду за последнюю минуту");
+            handler->PSendSysMessage("Ãâ€™Ã‘â€¹ Ã‘Æ’ÃÂ¶ÃÂµ ÃÂ¸Ã‘ÂÃÂ¿ÃÂ¾ÃÂ»Ã‘Å’ÃÂ·ÃÂ¾ÃÂ²ÃÂ°ÃÂ»ÃÂ¸ Ã‘ÂÃ‘â€šÃ‘Æ’ ÃÂºÃÂ¾ÃÂ¼ÃÂ°ÃÂ½ÃÂ´Ã‘Æ’ ÃÂ·ÃÂ° ÃÂ¿ÃÂ¾Ã‘ÂÃÂ»ÃÂµÃÂ´ÃÂ½Ã‘Å½Ã‘Å½ ÃÂ¼ÃÂ¸ÃÂ½Ã‘Æ’Ã‘â€šÃ‘Æ’");
             handler->SetSentErrorMessage(true);
             return false;
         }

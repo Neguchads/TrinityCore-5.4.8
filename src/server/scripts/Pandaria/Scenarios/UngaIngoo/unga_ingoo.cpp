@@ -151,7 +151,7 @@ class npc_brewmaster_bo_escort : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!intro && who && who->GetTypeId() == TYPEID_PLAYER)
+                if (!intro && who && who->IsPlayer())
                 {
                     intro = true;
                     Talk(TALK_INTRO);
@@ -353,7 +353,7 @@ class npc_brewmaster_bo_brew : public CreatureScript
                 kegStilled = 0;
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -521,8 +521,8 @@ struct npc_unga_spearscamp : public ScriptedAI
 // Unga Bird Haver 62475
 struct npc_unga_bird_haver : public ScriptedAI
 {
-    npc_unga_bird_haver(Creature* creature) : ScriptedAI(creature), instance(creature->GetInstanceScript()) 
-    { 
+    npc_unga_bird_haver(Creature* creature) : ScriptedAI(creature), instance(creature->GetInstanceScript())
+    {
         m_bcount = 0;
     }
 
@@ -875,7 +875,7 @@ struct npc_unga_pirate : public ScriptedAI
                     Movement::MoveSplineInit init(me);
                     for (uint8 i = 7; i < 12; ++i)
                         init.Path().push_back(G3D::Vector3(BoWaypoints[i].GetPositionX(), BoWaypoints[i].GetPositionY(), BoWaypoints[i].GetPositionZ()));
-                
+
                     init.SetSmooth();
                     init.SetUncompressed();
                     init.Launch();
@@ -979,7 +979,7 @@ struct npc_unga_pirate : public ScriptedAI
                 case EVENT_BANANA_TOSS:
                     if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 120.0f, true))
                         me->CastSpell(target, SPELL_BANANA_TOSS, false);
-                
+
                     events.ScheduleEvent(EVENT_BANANA_TOSS, urand(6 * IN_MILLISECONDS, 10 * IN_MILLISECONDS));
                     break;
                 case EVENT_BLADESTORM:

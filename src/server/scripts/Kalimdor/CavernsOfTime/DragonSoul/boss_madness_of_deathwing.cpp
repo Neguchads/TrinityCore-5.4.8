@@ -88,7 +88,7 @@ enum ThrallScriptedTexts
 enum Spells
 {
     // Thrall
-    SPELL_ASTRAL_RECALL                 = 108537, 
+    SPELL_ASTRAL_RECALL                 = 108537,
 
     SPELL_IDLE                          = 106187, // tail tentacle has it
 
@@ -102,7 +102,7 @@ enum Spells
     SPELL_ELEMENTIUM_BLAST              = 105723,
     SPELL_ELEMENTIUM_METEOR_TARGET      = 106242, // target mark
     SPELL_ELEMENTIUM_METEOR_TRANSFORM_1 = 106991, // summon from sniffs ?
-    SPELL_ELEMENTIUM_METEOR_TRANSFORM_2 = 110663, 
+    SPELL_ELEMENTIUM_METEOR_TRANSFORM_2 = 110663,
     SPELL_ELEMENTIUM_METEOR_AURA        = 110628,
     SPELL_ELEMENTIUM_METEOR_AURA_DMG    = 110632,
     SPELL_CATACLYSM                     = 106523,
@@ -241,7 +241,7 @@ enum Adds
     NPC_WING_TENTACLE       = 56168, // 1 & 4
     NPC_ARM_TENTACLE_1      = 56846, // 2
     NPC_ARM_TENTACLE_2      = 56167, // 3
-    
+
     NPC_LEFT_ARM            = 57694,
     NPC_RIGHT_ARM           = 57686,
 
@@ -387,7 +387,7 @@ uint8 GetGround(WorldObject const* who)
     return 0;
 }
 
-const Position mutatedcorruptionPos[4] = 
+const Position mutatedcorruptionPos[4] =
 {
     { -11993.3f, 12286.3f, -2.58115f, 5.91667f  }, // 1
     { -12028.8f, 12265.6f, -6.27147f, 4.13643f  }, // 2
@@ -395,7 +395,7 @@ const Position mutatedcorruptionPos[4] =
     { -12160.9f, 12057.0f,  2.47362f, 0.733038f }  // 4
 };
 
-const Position limbsPos[4] = 
+const Position limbsPos[4] =
 {
     { -11941.2f, 12248.9f,  12.1499f, 1.98968f  },
     { -12005.8f, 12190.3f, -6.59399f, 2.1293f   },
@@ -403,7 +403,7 @@ const Position limbsPos[4] =
     { -12097.8f, 12067.4f,  13.4888f, 2.21657f  }
 };
 
-const Position hemorrhagePos[4] = 
+const Position hemorrhagePos[4] =
 {
     { -11955.948242f, 12281.756836f,  1.30f, 0.0f },
     { -12048.077148f, 12237.601563f, -6.14f, 0.0f },
@@ -411,7 +411,7 @@ const Position hemorrhagePos[4] =
     { -12146.370117f, 12093.588867f,  2.31f, 0.0f }
 };
 
-const Position boltPos[5] = 
+const Position boltPos[5] =
 {
     { -11929.83f,     12035.63f,      35.45797f, 0.0f},
     { -11961.268555f, 12286.041992f,  1.30f,     0.0f}, // 1
@@ -420,7 +420,7 @@ const Position boltPos[5] =
     { -12149.885742f, 12081.416992f,  2.31f,     0.0f}  // 4
 };
 
-const Position timezonePos[5] = 
+const Position timezonePos[5] =
 {
     { -11951.963867f, 12265.349609f,  1.30f, 0.0f },
     { -12039.828125f, 12226.136719f, -6.14f, 0.0f },
@@ -430,7 +430,7 @@ const Position timezonePos[5] =
 };
 
 const Position blisteringPos[4] =
-{                                                 
+{
     { -11942.116211f, 12249.538086f,  1.37f, 0.0f },
     { -12025.414063f, 12213.312500f, -6.14f, 0.0f },
     { -12084.824219f, 12146.507813f, -2.72f, 0.0f },
@@ -446,7 +446,7 @@ const Position nozdormuPos = { -12093.8f, 12312.0f, 43.228f, 5.42797f };
 const Position yseraPos = { -12157.4f, 12212.5f, 36.0152f, 5.75959f };
 const Position kalecgosPos = { -12224.8f, 12128.5f, 68.96f, 5.84685f };
 
-const Position jumpPos[6] = 
+const Position jumpPos[6] =
 {
     { -11972.8f, 12272.8f,  1.38396f, 0.0f }, // from 1 to 2
     { -12023.f,  12228.5f, -6.0689f,  0.0f }, // from 2 to 1
@@ -464,7 +464,7 @@ const Position armsPos[2] =
 
 const Position jumpThrallPos = { -12072.790f, 12191.343f, 15.300f, 5.51f }; // jump pos
 
-const Position outroPos[6] = 
+const Position outroPos[6] =
 {
     { -12066.1f, 12150.4f, -2.65091f, 3.05433f },  // Aggra
     { -12067.7f, 12146.4f, -2.65091f, 3.05433f },  // Thrall
@@ -487,7 +487,7 @@ class boss_madness_of_deathwing : public CreatureScript
         struct boss_madness_of_deathwingAI : public BossAI
         {
             boss_madness_of_deathwingAI(Creature* creature) : BossAI(creature, DATA_MADNESS)
-            {       
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -500,7 +500,7 @@ class boss_madness_of_deathwing : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
-                
+
                 me->setActive(true);
                 me->SetCanFly(true);
                 me->SetDisableGravity(true);
@@ -577,7 +577,7 @@ class boss_madness_of_deathwing : public CreatureScript
                     events.CancelEvent(EVENT_CATACLYSM);
                     events.CancelEvent(EVENT_ELEMENTIUM_BOLT);
 
-                    if ((m_destroyed_platform & (1 << 1)) > 0 && 
+                    if ((m_destroyed_platform & (1 << 1)) > 0 &&
                         (m_destroyed_platform & (1 << 2)) > 0 &&
                         (m_destroyed_platform & (1 << 3)) > 0 &&
                         (m_destroyed_platform & (1 << 4)) > 0)
@@ -882,7 +882,7 @@ class npc_dragon_soul_thrall_1 : public CreatureScript
 
                 player->ADD_GOSSIP_ITEM_DB(player->GetDefaultGossipMenuForSource(creature), 0, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
                 player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
-                
+
                 return true;
             }
             return false;
@@ -926,7 +926,7 @@ class npc_dragon_soul_thrall_1 : public CreatureScript
         struct npc_dragon_soul_thrall_1AI : public ScriptedAI
         {
             npc_dragon_soul_thrall_1AI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->setActive(true);
                 me->SetReactState(REACT_PASSIVE);
                 instance = me->GetInstanceScript();
@@ -1338,7 +1338,7 @@ class npc_madness_of_deathwing_mutated_corruption : public CreatureScript
         struct npc_madness_of_deathwing_mutated_corruptionAI : public ScriptedAI
         {
             npc_madness_of_deathwing_mutated_corruptionAI(Creature* creature) : ScriptedAI(creature)
-            {     
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -1351,7 +1351,7 @@ class npc_madness_of_deathwing_mutated_corruption : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
-                
+
                 me->setActive(true);
                 me->SetCanFly(true);
                 me->SetDisableGravity(true);
@@ -1378,7 +1378,7 @@ class npc_madness_of_deathwing_mutated_corruption : public CreatureScript
                 events.ScheduleEvent(EVENT_IMPALE, 12000);
                 events.ScheduleEvent(EVENT_SELECT_VICTIM, 5000);
             }
-            
+
             void JustDied(Unit* /*killer*/) override
             {
                 me->DespawnOrUnsummon(2000);
@@ -1422,19 +1422,19 @@ class npc_madness_of_deathwing_mutated_corruption : public CreatureScript
                                         {
                                             Unit* pAspect = NULL;
                                             uint8 platform = pDeathwing->AI()->GetData(DATA_CURRENT_PLATFORM);
-                                            
+
                                             switch (platform)
                                             {
-                                                case 1: 
+                                                case 1:
                                                     pAspect = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_ALEXSTRASZA_DRAGON));
                                                     break;
-                                                case 2: 
+                                                case 2:
                                                     pAspect = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_NOZDORMU_DRAGON));
                                                     break;
-                                                case 3: 
+                                                case 3:
                                                     pAspect = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_YSERA_DRAGON));
                                                     break;
-                                                case 4: 
+                                                case 4:
                                                     pAspect = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_KALECGOS_DRAGON));
                                                     break;
                                             }
@@ -1484,7 +1484,7 @@ class npc_madness_of_deathwing_crush_target : public CreatureScript
         struct npc_madness_of_deathwing_crush_targetAI : public ScriptedAI
         {
             npc_madness_of_deathwing_crush_targetAI(Creature* creature) : ScriptedAI(creature)
-            { 
+            {
                 me->SetReactState(REACT_PASSIVE);
                 SetCombatMovement(false);
             }
@@ -1513,7 +1513,7 @@ class npc_madness_of_deathwing_limb_tentacle : public CreatureScript
         struct npc_madness_of_deathwing_limb_tentacleAI : public ScriptedAI
         {
             npc_madness_of_deathwing_limb_tentacleAI(Creature* creature) : ScriptedAI(creature)
-            {    
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -1526,7 +1526,7 @@ class npc_madness_of_deathwing_limb_tentacle : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
-                
+
                 me->SetReactState(REACT_PASSIVE);
                 SetCombatMovement(false);
 
@@ -1663,7 +1663,7 @@ class npc_madness_of_deathwing_limb_tentacle : public CreatureScript
                         if (instance)
                             if (Creature* pAspect = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_ALEXSTRASZA_DRAGON)))
                                 pAspect->AI()->DoAction(ACTION_CAUTERIZE);
-                            
+
                     }
                     return;
                 }
@@ -1753,7 +1753,7 @@ class npc_madness_of_deathwing_blistering_tentacle : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
-                
+
                 me->SetReactState(REACT_PASSIVE);
                 SetCombatMovement(false);
             }
@@ -1761,7 +1761,7 @@ class npc_madness_of_deathwing_blistering_tentacle : public CreatureScript
             void IsSummonedBy(Unit* summoner) override
             {
                 me->SetFloatValue(UNIT_FIELD_COMBAT_REACH, 50.0f);
-                
+
                 if (summoner->GetEntry() == NPC_WING_TENTACLE ||
                     summoner->GetEntry() == NPC_ARM_TENTACLE_1 ||
                     summoner->GetEntry() == NPC_ARM_TENTACLE_2)
@@ -1795,7 +1795,7 @@ class npc_madness_of_deathwing_regenerative_blood : public CreatureScript
         struct npc_madness_of_deathwing_regenerative_bloodAI : public ScriptedAI
         {
             npc_madness_of_deathwing_regenerative_bloodAI(Creature* creature) : ScriptedAI(creature)
-            {          
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -1843,9 +1843,9 @@ class npc_madness_of_deathwing_regenerative_blood : public CreatureScript
                         me->GetMotionMaster()->MoveChase(target);
                 }
             }
-            
+
             void JustDied(Unit* /*killer*/) override
-            {   
+            {
                 me->DespawnOrUnsummon(2000);
             }
 
@@ -1912,7 +1912,7 @@ class npc_madness_of_deathwing_elementium_bolt : public CreatureScript
         struct npc_madness_of_deathwing_elementium_boltAI : public ScriptedAI
         {
             npc_madness_of_deathwing_elementium_boltAI(Creature* creature) : ScriptedAI(creature)
-            {          
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -2040,7 +2040,7 @@ class npc_madness_of_deathwing_corrupting_parasite : public CreatureScript
         struct npc_madness_of_deathwing_corrupting_parasiteAI : public ScriptedAI
         {
             npc_madness_of_deathwing_corrupting_parasiteAI(Creature* creature) : ScriptedAI(creature)
-            {          
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -2053,7 +2053,7 @@ class npc_madness_of_deathwing_corrupting_parasite : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
-                
+
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
                 me->SetReactState(REACT_PASSIVE);
             }
@@ -2112,7 +2112,7 @@ class npc_madness_of_deathwing_deathwing : public CreatureScript
         struct npc_madness_of_deathwing_deathwingAI : public ScriptedAI
         {
             npc_madness_of_deathwing_deathwingAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->SetDisableGravity(true);
 
                 me->SetReactState(REACT_PASSIVE);
@@ -2393,7 +2393,7 @@ class npc_madness_of_deathwing_congealing_blood : public CreatureScript
 
             void UpdateAI(uint32 /*diff*/) override { }
         };
-        
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return GetInstanceAI<npc_madness_of_deathwing_congealing_bloodAI>(creature);
@@ -2486,7 +2486,7 @@ class npc_dragon_soul_alexstrasza_dragon : public CreatureScript
         struct npc_dragon_soul_alexstrasza_dragonAI : public ScriptedAI
         {
             npc_dragon_soul_alexstrasza_dragonAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->setActive(true);
                 me->SetCanFly(true);
                 me->SetDisableGravity(true);
@@ -2512,7 +2512,7 @@ class npc_dragon_soul_alexstrasza_dragon : public CreatureScript
                     events.Reset();
                     me->RemoveAura(SPELL_ALEXSTRASZA_PRESENCE);
                     me->InterruptNonMeleeSpells(true);
-                    DoCast(SPELL_CONCENTRATION_1);                    
+                    DoCast(SPELL_CONCENTRATION_1);
                 }
             }
 
@@ -2566,7 +2566,7 @@ class npc_dragon_soul_nozdormu_dragon : public CreatureScript
         struct npc_dragon_soul_nozdormu_dragonAI : public ScriptedAI
         {
             npc_dragon_soul_nozdormu_dragonAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->setActive(true);
                 me->SetCanFly(true);
                 me->SetDisableGravity(true);
@@ -2594,7 +2594,7 @@ class npc_dragon_soul_nozdormu_dragon : public CreatureScript
                     events.Reset();
                     me->RemoveAura(SPELL_NOZDORMU_PRESENCE);
                     me->InterruptNonMeleeSpells(true);
-                    DoCast(SPELL_CONCENTRATION_2);                    
+                    DoCast(SPELL_CONCENTRATION_2);
                 }
             }
 
@@ -2654,7 +2654,7 @@ class npc_dragon_soul_ysera_dragon : public CreatureScript
         struct npc_dragon_soul_ysera_dragonAI : public ScriptedAI
         {
             npc_dragon_soul_ysera_dragonAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->setActive(true);
                 me->SetCanFly(true);
                 me->SetDisableGravity(true);
@@ -2677,7 +2677,7 @@ class npc_dragon_soul_ysera_dragon : public CreatureScript
                     me->RemoveAura(SPELL_YSERA_PRESENCE);
                     me->RemoveAura(SPELL_THE_DREAMER);
                     me->InterruptNonMeleeSpells(true);
-                    DoCast(SPELL_CONCENTRATION_3);                    
+                    DoCast(SPELL_CONCENTRATION_3);
                 }
             }
 
@@ -2702,7 +2702,7 @@ class npc_dragon_soul_kalecgos_dragon : public CreatureScript
         struct npc_dragon_soul_kalecgos_dragonAI : public ScriptedAI
         {
             npc_dragon_soul_kalecgos_dragonAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->setActive(true);
                 me->SetCanFly(true);
                 me->SetDisableGravity(true);
@@ -2725,7 +2725,7 @@ class npc_dragon_soul_kalecgos_dragon : public CreatureScript
                     me->RemoveAura(SPELL_KALECGOS_PRESENCE);
                     me->RemoveAura(SPELL_SPELLWEAVER);
                     me->InterruptNonMeleeSpells(true);
-                    DoCast(SPELL_CONCENTRATION_4);                    
+                    DoCast(SPELL_CONCENTRATION_4);
                 }
             }
 
@@ -3335,7 +3335,7 @@ class spell_madness_of_deathwing_carrying_winds_script : public SpellScriptLoade
             }
 
         public:
-            spell_madness_of_deathwing_carrying_winds_script_SpellScript(uint8 pos) : SpellScript(), _pos(pos) { } 
+            spell_madness_of_deathwing_carrying_winds_script_SpellScript(uint8 pos) : SpellScript(), _pos(pos) { }
 
         private:
             uint8 _pos;
@@ -3397,7 +3397,7 @@ class spell_madness_of_deathwing_shrapnel : public SpellScriptLoader
                 m_fragments = std::vector<WorldObject*>(targets.begin(), targets.end());
                 std::random_device rd;
                 std::mt19937 g(rd());
-                std::shuffle(m_fragments.begin(), m_fragments.end(), g);                
+                std::shuffle(m_fragments.begin(), m_fragments.end(), g);
             }
 
             void FilterEnemies(std::list<WorldObject*>& targets)
@@ -3436,7 +3436,7 @@ class spell_madness_of_deathwing_shrapnel : public SpellScriptLoader
                 public:
                     bool operator()(WorldObject* u) const
                     {
-                        if (u->GetTypeId() == TYPEID_PLAYER)
+                        if (u->IsPlayer())
                             return false;
 
                         switch (u->GetEntry())

@@ -414,7 +414,7 @@ INSERT INTO `creature_text` (`CreatureID`, `groupid`, `id`, `text`, `type`, `lan
 (@GURGTHOCK, 15, 1, 'Avert your eyes, ladies and gentlemen! It''s a bloodbath!', 14, 0, 100, 1, 0, 0, 'Gurgthock'),
 (@GURGTHOCK, 15, 2, 'Call in the clowns! It''s turned into a circus in there!', 14, 0, 100, 1, 0, 0, 'Gurgthock'),
 (@GURGTHOCK, 15, 3, 'OOOF! That one''s gonna require the \"scraper.\"', 14, 0, 100, 1, 0, 0, 'Gurgthock'),
-(@GURGTHOCK, 15, 4, 'OUTTA NOWHERE -- WHAMO! DEAD!', 14, 0, 100, 1, 0, 0, 'Gurgthock'),
+(@GURGTHOCK, 15, 4, 'OUTTA NOWHERE - WHAMO! DEAD!', 14, 0, 100, 1, 0, 0, 'Gurgthock'),
 (@GURGTHOCK, 15, 5, 'They went down like a sack of orc skulls!', 14, 0, 100, 1, 0, 0, 'Gurgthock'),
 (@YGGDRAS, 1, 0, '%s emerges!', 41, 0, 100, 0, 0, 13878, 'Yggdras'),
 (@STINKBEARD, 0, 0, '%s becomes enraged!', 16, 0, 100, 1, 0, 0, 'Stinkbeard'),

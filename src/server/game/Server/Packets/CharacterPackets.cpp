@@ -30,7 +30,7 @@ void WorldPackets::Character::ShowingHelm::Read()
 void WorldPackets::Character::PlayerLogin::Read()
 {
     _worldPacket >> FarClip;
-    
+
     Guid[1] = _worldPacket.ReadBit();
     Guid[4] = _worldPacket.ReadBit();
     Guid[7] = _worldPacket.ReadBit();
@@ -56,4 +56,3 @@ WorldPacket const* WorldPackets::Character::LogoutResponse::Write()
     _worldPacket << uint8(Instant);
     return &_worldPacket;
 }
-

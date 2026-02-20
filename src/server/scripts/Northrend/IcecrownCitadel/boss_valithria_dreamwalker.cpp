@@ -167,7 +167,7 @@ class RisenArchmageCheck
         }
 };
 
-struct ManaVoidSelector 
+struct ManaVoidSelector
 {
     public:
         explicit ManaVoidSelector(WorldObject const* source) : _source(source) { }
@@ -587,13 +587,13 @@ class npc_green_dragon_combat_trigger : public CreatureScript
 
             void AttackStart(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     BossAI::AttackStart(victim);
             }
 
             bool CanAIAttack(Unit const* target) const override
             {
-                return target->GetTypeId() == TYPEID_PLAYER;
+                return target->IsPlayer();
             }
 
             void EnterEvadeMode() override
@@ -634,7 +634,7 @@ class npc_green_dragon_combat_trigger : public CreatureScript
                 // Check if there is any player on threatlist, if not - evade
                 for (std::list<HostileReference*>::const_iterator itr = threatList.begin(); itr != threatList.end(); ++itr)
                     if (Unit* target = (*itr)->getTarget())
-                        if (target->GetTypeId() == TYPEID_PLAYER)
+                        if (target->IsPlayer())
                             if (target->GetInstanceId() == me->GetInstanceId())
                                 // Found any player in same instance, return
                                 return;
@@ -1587,7 +1587,6 @@ class spell_dreamwalker_summon_nightmare_portal : public SpellScriptLoader
             return new spell_dreamwalker_summon_nightmare_portal_SpellScript();
         }
 };
-
 
 // Custom OnDestinationTargetSelect for 71301 and 71977
 class spell_dreamwalker_summon_portal_effect : public SpellScriptLoader

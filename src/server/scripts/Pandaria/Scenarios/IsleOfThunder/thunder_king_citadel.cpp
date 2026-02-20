@@ -394,11 +394,11 @@ class npc_thunder_king_treasure_taoshi : public CreatureScript
 {
     public:
         npc_thunder_king_treasure_taoshi() : CreatureScript("npc_thunder_king_treasure_taoshi") { }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
-    
+
             if (action == GOSSIP_ACTION_INFO_DEF + 1 && player->GetInstanceScript())
             {
                 player->GetInstanceScript()->SetData(DATA_SPEAK_WITH_TAOSHI, DONE);
@@ -408,19 +408,19 @@ class npc_thunder_king_treasure_taoshi : public CreatureScript
                 player->CastSpell(player, SPELL_THROVES_OF_THE_THUNDER_KING, true);
                 creature->CastSpell(player, SPELL_LIMITED_TIME, true);
             }
-    
+
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
 
             player->ADD_GOSSIP_ITEM_DB(player->GetDefaultGossipMenuForSource(creature), 0, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-    
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
@@ -431,23 +431,23 @@ class npc_thunder_king_treasure_taoshi_queue : public CreatureScript
 {
     public:
         npc_thunder_king_treasure_taoshi_queue() : CreatureScript("npc_thunder_king_treasure_taoshi_queue") { }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
-    
+
             if (action == GOSSIP_ACTION_INFO_DEF + 1)
             {
                 lfg::LfgDungeonSet scenario = { 620 };
                 sLFGMgr->JoinLfg(player, lfg::PLAYER_ROLE_DAMAGE, scenario, "");
                 player->DestroyItemCount(94222, 1, true);
             }
-    
+
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
@@ -455,7 +455,7 @@ class npc_thunder_king_treasure_taoshi_queue : public CreatureScript
 
             if (player->HasItemCount(94222) && !player->GetGroup() && !player->IsUsingLfg())
                 player->ADD_GOSSIP_ITEM_DB(player->GetDefaultGossipMenuForSource(creature), 0, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-    
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
@@ -532,7 +532,7 @@ class go_thunder_king_treasure_lever : public GameObjectScript
 {
     public:
         go_thunder_king_treasure_lever() : GameObjectScript("go_thunder_king_treasure_lever") { }
-    
+
         void OnGameObjectStateChanged(GameObject* go, uint32 state) override
         {
             if (state == GO_STATE_ACTIVE && go->GetInstanceScript())
@@ -556,11 +556,11 @@ class go_thunder_king_treasure_lever : public GameObjectScript
 class go_thunder_king_treasure_mogu_chest : public GameObjectScript
 {
     public:
-        go_thunder_king_treasure_mogu_chest() : GameObjectScript("go_thunder_king_treasure_mogu_chest") 
+        go_thunder_king_treasure_mogu_chest() : GameObjectScript("go_thunder_king_treasure_mogu_chest")
         {
             chestGUIDs.clear();
         }
-    
+
         void OnLootStateChanged(GameObject* go, uint32 state, Unit* unit) override
         {
             if (state == GO_ACTIVATED && unit)
@@ -569,7 +569,7 @@ class go_thunder_king_treasure_mogu_chest : public GameObjectScript
                     return;
 
                 chestGUIDs.push_back(go->GetGUID());
-                
+
                 if (unit->GetInstanceScript())
                 {
                     unit->GetInstanceScript()->SetData(CHEST_DATA, go->GetEntry() == GO_MOGU_GOLDEN_TREASURE_CHEST ? 10 : 5);
@@ -579,7 +579,7 @@ class go_thunder_king_treasure_mogu_chest : public GameObjectScript
                 }
             }
         }
-    
+
         private:
             std::list<uint64> chestGUIDs;
 };

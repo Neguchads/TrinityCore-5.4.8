@@ -32,7 +32,7 @@ struct npc_wild_turkey : public CritterAI
 
     void JustDied(Unit* killer) override
     {
-        if (killer && killer->GetTypeId() == TYPEID_PLAYER)
+        if (killer && killer->IsPlayer())
             killer->CastSpell(killer, SPELL_TURKEY_TRACKER, true);
     }
 };

@@ -195,7 +195,7 @@ class boss_brother_korloff : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-               
+
                 if (heal - me->GetHealthPct() >= 10)
                 {
                     heal = me->GetHealthPct();
@@ -254,7 +254,7 @@ class boss_brother_korloff : public CreatureScript
                         FireStormPredicate(Creature const* me) : _me(me) { }
                         bool operator()(Unit const* target) const
                         {
-                            return target && target->GetTypeId() == TYPEID_PLAYER && target->GetDistance2d(_me) > 5.0f; // if less then it possible bugged
+                            return target && target->IsPlayer() && target->GetDistance2d(_me) > 5.0f; // if less then it possible bugged
                         }
 
                     private:

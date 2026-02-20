@@ -27,10 +27,10 @@ class instance_grim_batol : public InstanceMapScript
 
         struct instance_grim_batol_InstanceMapScript : public InstanceScript
         {
-            instance_grim_batol_InstanceMapScript(InstanceMap *map) : InstanceScript(map) 
+            instance_grim_batol_InstanceMapScript(InstanceMap *map) : InstanceScript(map)
             {
                 SetBossNumber(MAX_ENCOUNTER);
-                    
+
                 uiGeneralUmbrissGUID = ObjectGuid::Empty;
                 uiForgemasterThrongusGUID = ObjectGuid::Empty;
                 uiDrahgaShadowburnerGUID = ObjectGuid::Empty;
@@ -141,7 +141,7 @@ class instance_grim_batol : public InstanceMapScript
 
                     loadStream >> archaeologyQuestAura;
                 }
-                else 
+                else
                     OUT_LOAD_INST_DATA_FAIL;
 
                 OUT_LOAD_INST_DATA_COMPLETE;

@@ -20,7 +20,7 @@
 
 #define MAX_ENCOUNTER 3
 
-static std::vector<DoorData> const doordata = 
+static std::vector<DoorData> const doordata =
 {
     { GO_ICEWALL_1, DATA_ARCURION, DOOR_TYPE_PASSAGE, BOUNDARY_NONE },
 };
@@ -96,7 +96,7 @@ class instance_hour_of_twilight : public InstanceMapScript
             bool SetBossState(uint32 type, EncounterState state) override
             {
                 if (!InstanceScript::SetBossState(type, state))
-                    return false;            
+                    return false;
 
                 return true;
             }

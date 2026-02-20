@@ -675,7 +675,7 @@ struct npc_seething_hatred : public ScriptedAI
                 case EVENT_PURE_HATE:
                     if (Unit* target = me->GetVictim())
                         DoCast(target, SPELL_PURE_HATE);
-                
+
                     events.ScheduleEvent(EVENT_PURE_HATE, urand(8.5 * IN_MILLISECONDS, 15 * IN_MILLISECONDS));
                     events.ScheduleEvent(EVENT_KNOCKBACK, 2.5 * IN_MILLISECONDS);
                     break;
@@ -684,7 +684,7 @@ struct npc_seething_hatred : public ScriptedAI
                     {
                         targetGUID = target->GetGUID();
                         me->PrepareChanneledCast(me->GetAngle(target), SPELL_CONSUMING_HATE);
-                
+
                         delay = 0;
                         me->m_Events.Schedule(delay += 6500, 4, [this]()
                         {
@@ -791,7 +791,6 @@ class npc_eshelon : public CreatureScript
                     return;
 
                 events.Update(diff);
-
 
                 while (uint32 eventId = events.ExecuteEvent())
                 {
@@ -928,7 +927,7 @@ public:
             if (!caster || !target)
                 return;
 
-            if (target->GetTypeId() == TYPEID_UNIT && target->GetEntry() == 60925 && !target->HasAura(106246))
+            if (target->IsCreature() && target->GetEntry() == 60925 && !target->HasAura(106246))
             {
                 if (auto player = caster->ToPlayer())
                     player->KilledMonsterCredit(target->GetEntry());
@@ -1165,7 +1164,7 @@ class npc_osul_mist_shaman : public CreatureScript
                 events.ScheduleEvent(EVENT_CAPACITOR_TOTEM, urand(4000, 6000));
             }
 
-            void JustDied(Unit* killer) override 
+            void JustDied(Unit* killer) override
             {
                 if (Unit* Torch = ObjectAccessor::GetUnit(*me, TorchGUID))
                 {
@@ -1294,7 +1293,7 @@ class npc_suna_silentstrike : public CreatureScript
 
                     Talk(SAY_SUNA_END);
                     me->SetStandState(UNIT_STAND_STATE_KNEEL);
-                    if (who->GetTypeId() == TYPEID_PLAYER)
+                    if (who->IsPlayer())
                         who->ToPlayer()->KilledMonsterCredit(NPC_SUNA_SILENTSTRIKE_2);
                     else if (Player* player = who->GetCharmerOrOwnerPlayerOrPlayerItself())
                         player->KilledMonsterCredit(NPC_SUNA_SILENTSTRIKE_2);

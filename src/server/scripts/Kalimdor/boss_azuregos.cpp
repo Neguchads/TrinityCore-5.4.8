@@ -94,7 +94,7 @@ public:
                 for (i = threatlist.begin(); i != threatlist.end(); ++i)
                 {
                     Unit* unit = Unit::GetUnit(*me, (*i)->getUnitGuid());
-                    if (unit && (unit->GetTypeId() == TYPEID_PLAYER))
+                    if (unit && (unit->IsPlayer()))
                     {
                         DoTeleportPlayer(unit, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()+3, unit->GetOrientation());
                     }

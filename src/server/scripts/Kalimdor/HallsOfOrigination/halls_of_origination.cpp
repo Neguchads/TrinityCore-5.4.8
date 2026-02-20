@@ -70,7 +70,7 @@ enum Events
     EVENT_LAVA_ERUPTION         = 2,
     EVENT_RAGING_INFERNO        = 3,
 
-    // Water Warden         
+    // Water Warden
     EVENT_BUBBLE_BOUND          = 4,
 
     // Earth Warden
@@ -129,7 +129,7 @@ class npc_air_warden : public CreatureScript
                    me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                    me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
- 
+
             InstanceScript* instance;
             EventMap events;
 
@@ -148,14 +148,14 @@ class npc_air_warden : public CreatureScript
             {
                 instance->SetData(DATA_WARDENS, 1);
             }
-        
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-                                       
+
                 events.Update(diff);
- 
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
@@ -167,14 +167,14 @@ class npc_air_warden : public CreatureScript
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM))
                                 DoCast(target, SPELL_WIND_SNEAR);
                             events.ScheduleEvent(EVENT_WIND_SNEAR, urand(7000, 10000));
-                            break;                                                 
+                            break;
                     }
                 }
 
                 DoMeleeAttackIfReady();
             }
         };
- 
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return GetInstanceAI<npc_air_wardenAI>(creature);
@@ -205,7 +205,7 @@ class npc_flame_warden : public CreatureScript
                    me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                    me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
- 
+
             InstanceScript* instance;
             EventMap events;
 
@@ -230,9 +230,9 @@ class npc_flame_warden : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                                       
+
                 events.Update(diff);
- 
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
@@ -255,7 +255,7 @@ class npc_flame_warden : public CreatureScript
                 DoMeleeAttackIfReady();
             }
         };
- 
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return GetInstanceAI<npc_flame_wardenAI>(creature);
@@ -285,7 +285,7 @@ class npc_water_warden : public CreatureScript
                    me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                    me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
- 
+
             InstanceScript* instance;
             EventMap events;
 
@@ -309,9 +309,9 @@ class npc_water_warden : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                                       
+
                 events.Update(diff);
- 
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
@@ -360,7 +360,7 @@ class npc_earth_warden : public CreatureScript
                    me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                    me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
- 
+
             InstanceScript* instance;
             EventMap events;
 
@@ -385,9 +385,9 @@ class npc_earth_warden : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                                       
+
                 events.Update(diff);
- 
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
@@ -476,7 +476,7 @@ class npc_halls_of_origination_brann_bronzebeard : public CreatureScript
             if (creature->IsQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
 
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Вперед." : "Let's go.", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Ãâ€™ÃÂ¿ÃÂµÃ‘â‚¬ÃÂµÃÂ´." : "Let's go.", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
 
             return true;
@@ -502,7 +502,7 @@ class npc_halls_of_origination_brann_bronzebeard : public CreatureScript
                 instance = creature->GetInstanceScript();
                 creature->setActive(true);
             }
- 
+
             InstanceScript* instance;
             EventMap events;
 
@@ -534,7 +534,7 @@ class npc_halls_of_origination_brann_bronzebeard : public CreatureScript
             }
 
             void UpdateAI(uint32 diff) override
-            {        
+            {
                 events.Update(diff);
 
                 while (uint32 eventId = events.ExecuteEvent())
@@ -574,7 +574,7 @@ class npc_halls_of_origination_brann_bronzebeard : public CreatureScript
                 }
             }
         };
- 
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return GetInstanceAI<npc_halls_of_origination_brann_bronzebeardAI>(creature);
@@ -593,11 +593,11 @@ class go_halls_of_origination_transit_device : public GameObjectScript
             if (InstanceScript* instance = go->GetInstanceScript())
             {
                 if (instance->GetBossState(DATA_ANRAPHET) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться к Чертогу Огней." : "Teleport to The Vaults of Lights.", GOSSIP_SENDER_HALLS_OF_ORIGINATION, 2);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂº ÃÂ§ÃÂµÃ‘â‚¬Ã‘â€šÃÂ¾ÃÂ³Ã‘Æ’ ÃÅ¾ÃÂ³ÃÂ½ÃÂµÃÂ¹." : "Teleport to The Vaults of Lights.", GOSSIP_SENDER_HALLS_OF_ORIGINATION, 2);
                 if (instance->GetBossState(DATA_EARTHRAGER_PTAH) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться в гробницу Ярости Земли." : "Teleport to Tobm of the Earthrager.", GOSSIP_SENDER_HALLS_OF_ORIGINATION, 1);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂ² ÃÂ³Ã‘â‚¬ÃÂ¾ÃÂ±ÃÂ½ÃÂ¸Ã‘â€ Ã‘Æ’ ÃÂ¯Ã‘â‚¬ÃÂ¾Ã‘ÂÃ‘â€šÃÂ¸ Ãâ€”ÃÂµÃÂ¼ÃÂ»ÃÂ¸." : "Teleport to Tobm of the Earthrager.", GOSSIP_SENDER_HALLS_OF_ORIGINATION, 1);
                 if (instance->GetBossState(DATA_TEMPLE_GUARDIAN_ANHUUR) == DONE)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "Отправиться к платформе Творца." : "Teleport to Chamber of Prophecy.", GOSSIP_SENDER_HALLS_OF_ORIGINATION, 0);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, ru ? "ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘Â ÃÂº ÃÂ¿ÃÂ»ÃÂ°Ã‘â€šÃ‘â€žÃÂ¾Ã‘â‚¬ÃÂ¼ÃÂµ ÃÂ¢ÃÂ²ÃÂ¾Ã‘â‚¬Ã‘â€ ÃÂ°." : "Teleport to Chamber of Prophecy.", GOSSIP_SENDER_HALLS_OF_ORIGINATION, 0);
             }
 
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(go), go->GetGUID());

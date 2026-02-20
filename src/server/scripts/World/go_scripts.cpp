@@ -885,7 +885,7 @@ class go_soulwell : public GameObjectScript
                     return true;
 
                 Unit* owner = me->GetOwner();
-                if (!owner || owner->GetTypeId() != TYPEID_PLAYER || !player->IsInSameRaidWith(owner->ToPlayer()))
+                if (!owner || !owner->IsPlayer() || !player->IsInSameRaidWith(owner->ToPlayer()))
                     return true;
                 return false;
             }
@@ -1538,7 +1538,7 @@ struct go_golden_lotus : public GameObjectScript
 
     void OnLootStateChanged(GameObject* go, uint32 state, Unit* unit) override
     {
-        if (state == GO_JUST_DEACTIVATED && unit && unit->GetTypeId() == TYPEID_PLAYER)
+        if (state == GO_JUST_DEACTIVATED && unit && unit->IsPlayer())
             unit->CastSpell(unit, SPELL_LUCK_OF_THE_LOTUS, true);
     }
 };

@@ -363,7 +363,6 @@ class instance_oculus : public InstanceMapScript
 
                 char dataHead1, dataHead2;
 
-
                 std::istringstream loadStream(in);
                 loadStream >> dataHead1 >> dataHead2;
 

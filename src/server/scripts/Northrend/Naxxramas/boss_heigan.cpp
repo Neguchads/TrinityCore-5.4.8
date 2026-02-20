@@ -77,7 +77,7 @@ public:
         {
             if (!(rand()%5))
                 Talk(SAY_SLAY);
-            if (who->GetTypeId() == TYPEID_PLAYER)
+            if (who->IsPlayer())
                 me->GetMap()->SetWorldState(WORLDSTATE_SAFETY_DANCE, 0);
         }
 

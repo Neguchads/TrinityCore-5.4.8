@@ -30,7 +30,7 @@ namespace VMAP
 {
     class WorldModel;
     struct AreaInfo;
-    struct LocationInfo;    
+    struct LocationInfo;
     enum class ModelIgnoreFlags : uint32;
 }
 

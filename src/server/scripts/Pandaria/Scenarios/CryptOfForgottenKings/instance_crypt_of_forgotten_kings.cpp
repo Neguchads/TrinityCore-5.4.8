@@ -60,7 +60,7 @@ class instance_crypt_of_forgotten_kings : public InstanceMapScript
                 CryptGuardians.clear();
             }
 
-            void OnPlayerEnter(Player* player) override 
+            void OnPlayerEnter(Player* player) override
             {
                 // Init Scenario
                 sScenarioMgr->SendScenarioState(player, 1030, DATA_JIN_IRONFIST, 0);

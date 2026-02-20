@@ -30,7 +30,7 @@ EndScriptData */
 #include "Pet.h"
 #include "ScriptMgr.h"
 #include "RatedPvp.h"
-#include <boost/algorithm/string.hpp> 
+#include <boost/algorithm/string.hpp>
 
 class reset_commandscript : public CommandScript
 {
@@ -220,7 +220,7 @@ public:
             if (!*args && creature && creature->IsPet())
             {
                 Unit* owner = creature->GetOwner();
-                if (owner && owner->GetTypeId() == TYPEID_PLAYER && creature->ToPet()->IsPermanentPetFor(owner->ToPlayer()))
+                if (owner && owner->IsPlayer() && creature->ToPet()->IsPermanentPetFor(owner->ToPlayer()))
                 {
                     ChatHandler(owner->ToPlayer()->GetSession()).SendSysMessage(LANG_RESET_PET_TALENTS);
                     if (!handler->GetSession() || handler->GetSession()->GetPlayer() != owner->ToPlayer())

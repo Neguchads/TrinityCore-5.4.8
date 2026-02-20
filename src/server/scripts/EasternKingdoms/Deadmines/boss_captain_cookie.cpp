@@ -92,7 +92,7 @@ enum Events
     EVENT_MOVE                              = 4,
 };
 
-const uint32 ThrowFoodSpells[12] = 
+const uint32 ThrowFoodSpells[12] =
 {
     SPELL_THROW_FOOD_TARGETING_CORN,
     SPELL_THROW_FOOD_TARGETING_ROTTEN_CORN,
@@ -252,7 +252,7 @@ class npc_captain_cookie_cauldron : public CreatureScript
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
             }
 
-            void Reset() override 
+            void Reset() override
             {
                 DoCast(me, SPELL_CAULDRON_VISUAL, true);
                 DoCast(me, SPELL_CAULDRON_FIRE);
@@ -288,11 +288,11 @@ class npc_captain_cookie_good_food : public CreatureScript
 
         struct npc_captain_cookie_good_foodAI : public ScriptedAI
         {
-            npc_captain_cookie_good_foodAI(Creature* creature) : ScriptedAI(creature) 
+            npc_captain_cookie_good_foodAI(Creature* creature) : ScriptedAI(creature)
             {
                 instance = creature->GetInstanceScript();
             }
-    
+
             void JustDied(Unit* /*killer*/) override
             {
                 me->DespawnOrUnsummon();
@@ -318,7 +318,7 @@ class npc_captain_cookie_bad_food : public CreatureScript
 {
     public:
         npc_captain_cookie_bad_food() : CreatureScript("npc_captain_cookie_bad_food") { }
-     
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             InstanceScript* instance = creature->GetInstanceScript();
@@ -329,14 +329,14 @@ class npc_captain_cookie_bad_food : public CreatureScript
 
             player->CastSpell(player, SPELL_NAUSEATED, true);
             player->CastSpell(player, SPELL_ACHIEVEMENT_AURA_REMOVE, true);
-            
+
             creature->DespawnOrUnsummon();
             return true;
         }
 
         struct npc_captain_cookie_bad_foodAI : public ScriptedAI
         {
-            npc_captain_cookie_bad_foodAI(Creature* creature) : ScriptedAI(creature) 
+            npc_captain_cookie_bad_foodAI(Creature* creature) : ScriptedAI(creature)
             {
                 instance = creature->GetInstanceScript();
             }
@@ -355,7 +355,7 @@ class npc_captain_cookie_bad_food : public CreatureScript
         private:
             InstanceScript* instance;
         };
-     
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return GetInstanceAI<npc_captain_cookie_bad_foodAI>(creature);
@@ -370,7 +370,6 @@ class spell_captain_cookie_setiated : public SpellScriptLoader
         class spell_captain_cookie_setiated_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_captain_cookie_setiated_SpellScript);
-
 
             void HandleScript(SpellEffIndex /*effIndex*/)
             {
@@ -400,7 +399,6 @@ class spell_captain_cookie_nauseated : public SpellScriptLoader
         class spell_captain_cookie_nauseated_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_captain_cookie_nauseated_SpellScript);
-
 
             void HandleScript(SpellEffIndex /*effIndex*/)
             {

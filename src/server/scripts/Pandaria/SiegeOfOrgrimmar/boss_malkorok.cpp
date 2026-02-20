@@ -127,7 +127,7 @@ class boss_malkorok : public CreatureScript
 
         struct boss_malkorokAI : public BossAI
         {
-            boss_malkorokAI(Creature* creature) : BossAI(creature, DATA_MALKOROK) 
+            boss_malkorokAI(Creature* creature) : BossAI(creature, DATA_MALKOROK)
             {
                 me->setActive(true);
                 hasIntroDone = false;
@@ -261,7 +261,7 @@ class boss_malkorok : public CreatureScript
                         me->SetAutoattackOverrideSpell(0, 0);
                         DoCast(me, SPELL_RELENTLESS_ASSAULT, true);
                         events.Reset();
-                        
+
                         DoCast(me, SPELL_FATAL_STRIKES);
                         events.ScheduleEvent(EVENT_SIESMIC_SLAM, 3.5 * IN_MILLISECONDS);
                         events.ScheduleEvent(EVENT_ARCING_SMASH_PREPARE, 10 * IN_MILLISECONDS);
@@ -413,7 +413,7 @@ class boss_malkorok : public CreatureScript
                             if (ArcingSmashCount > 2)
                                 break;
 
-                            DoCast(me, SPELL_SIESMIC_SLAM_SELECTOR);           
+                            DoCast(me, SPELL_SIESMIC_SLAM_SELECTOR);
                             events.ScheduleEvent(EVENT_SIESMIC_SLAM, 20000);
                             break;
                         case EVENT_BREATH_OF_YSSHAARJ:
@@ -435,7 +435,7 @@ class boss_malkorok : public CreatureScript
                                 events.ScheduleEvent(EVENT_BREATH_OF_YSSHAARJ, 0.5 * IN_MILLISECONDS);
                                 break;
                             }
-                        
+
                             DoCast(me, SPELL_ARCING_SMASH_PREPARE);
                             events.ScheduleEvent(EVENT_ARCING_SMASH_PREPARE, 19 * IN_MILLISECONDS);
                             break;
@@ -560,7 +560,7 @@ class boss_malkorok : public CreatureScript
         }
 };
 
-// Implosion 71470 
+// Implosion 71470
 struct npc_malkorok_implosion : public ScriptedAI
 {
     npc_malkorok_implosion(Creature* creature) : ScriptedAI(creature) { }
@@ -703,7 +703,7 @@ struct npc_malkorok_controller : public ScriptedAI
             if (Creature* smashTrigger = Trinity::Containers::SelectRandomContainerElement(arcingSmashTriggersList))
             {
                 smashTrigger->CastSpell(smashTrigger, SPELL_ARCING_SMASH, false);
-                
+
                 if (Creature* malkorok = ObjectAccessor::GetCreature(*me, instance ? instance->GetGuidData(DATA_MALKOROK) : ObjectGuid::Empty))
                 {
                     malkorok->PlayOneShotAnimKitId(4308);
@@ -944,7 +944,7 @@ class spell_malkorok_eradicate : public SpellScript
 
     void SelectTargets(std::list<WorldObject*>&targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
     }
 
     void Register() override

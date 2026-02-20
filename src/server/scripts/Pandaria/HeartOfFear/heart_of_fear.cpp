@@ -207,7 +207,7 @@ class npc_wind_lord_meljarak_intro : public CreatureScript
                 // if Pre event has done or not
                 if (instance->GetData(DATA_GARALON) > DONE)
                     nonCombatEvents.ScheduleEvent(EVENT_MELJARAK_TERRACE_EMPTY, 1500);
-                else 
+                else
                     nonCombatEvents.ScheduleEvent(EVENT_MELJARAK_TERRACE_IN_COMBAT, urand(200, 300));
             }
 
@@ -217,18 +217,17 @@ class npc_wind_lord_meljarak_intro : public CreatureScript
                 me->GetCreatureListWithEntryInGrid(Familiars,NPC_SRATHIK_AMBER_TRAPPER, 100.0f);
                 me->GetCreatureListWithEntryInGrid(Familiars, NPC_KORTHIK_ELITE_BLADEMASTER, 100.0f);
                 me->GetCreatureListWithEntryInGrid(Familiars, NPC_ZARTHIK_BATTLE_MENDER, 100.0f);
-                
+
                 for (auto&& itr : Familiars)
                 {
                     itr->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                     itr->SetReactState(REACT_PASSIVE);
-                    itr->SetCanFly(true); 
+                    itr->SetCanFly(true);
                     itr->SetDisableGravity(true);
                     itr->SetAnimTier(AnimTier::Hover);
                     itr->AddUnitMovementFlag(MOVEMENTFLAG_CAN_FLY | MOVEMENTFLAG_FLYING);
                 }
             }
-
 
             void SetMoveOnMeOrFamiliars(uint32 point = 1, float range = 50.0f)
             {
@@ -278,7 +277,7 @@ class npc_wind_lord_meljarak_intro : public CreatureScript
                     return;
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -322,7 +321,7 @@ class npc_wind_lord_meljarak_intro : public CreatureScript
                             break;
                         case EVENT_MELJARAK_TERRACE_EMPTY:
                             if (!HasTerraceEmpty(me))
-                            { 
+                            {
                                 nonCombatEvents.ScheduleEvent(EVENT_MELJARAK_TERRACE_EMPTY, urand(200, 300));
                                 return;
                             }
@@ -1707,24 +1706,24 @@ class npc_heart_of_fear_kazrik : public CreatureScript
 {
     public:
         npc_heart_of_fear_kazrik() : CreatureScript("npc_heart_of_fear_kazrik") { }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
-    
+
             if (action == GOSSIP_ACTION_INFO_DEF + 1)
             {
                 creature->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-    
+
                 if (creature->GetInstanceScript())
                     creature->GetInstanceScript()->DoRemoveDampeningFromCreatures();
             }
-    
+
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
@@ -1732,22 +1731,22 @@ class npc_heart_of_fear_kazrik : public CreatureScript
 
             if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.HeartOfFear", 1))
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Turn off dampening?", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-    
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
-    
+
         struct npc_heart_of_fear_kazrikAI : public ScriptedAI
         {
             npc_heart_of_fear_kazrikAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             void InitializeAI() override
             {
                 if (me->GetMap()->GetDifficulty() != RAID_DIFFICULTY_25MAN_LFR)
                     me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_heart_of_fear_kazrikAI(creature);

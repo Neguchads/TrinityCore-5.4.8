@@ -297,7 +297,7 @@ void AnticheatMgr::HandlePlayerLogin(Player* player)
     // we initialize the pos of lastMovementPosition var.
     _players[player->GetGUID()].SetPosition(player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetOrientation());
     /*QueryResult resultDB = CharacterDatabase.PQuery("SELECT * FROM daily_players_reports WHERE guid=%u;",player->GetGUIDLow());
-    
+
     if (resultDB)
         _players[player->GetGUIDLow()].SetDailyReportState(true);*/
 }

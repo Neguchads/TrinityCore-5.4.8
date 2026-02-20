@@ -327,7 +327,7 @@ class boss_krick : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() != TYPEID_PLAYER)
+                if (!(victim->IsPlayer()))
                     return;
 
                 Talk(SAY_KRICK_SLAY);
@@ -528,7 +528,7 @@ class spell_krick_explosive_barrage : public SpellScriptLoader
             {
                 PreventDefaultAction();
                 if (Unit* caster = GetCaster())
-                    if (caster->GetTypeId() == TYPEID_UNIT)
+                    if (caster->IsCreature())
                     {
                         for (auto&& ref : caster->GetMap()->GetPlayers())
                             if (Player* player = ref.GetSource())
@@ -561,14 +561,14 @@ class spell_ick_explosive_barrage : public SpellScriptLoader
             void HandleEffectApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
                 if (Unit* caster = GetCaster())
-                    if (caster->GetTypeId() == TYPEID_UNIT)
+                    if (caster->IsCreature())
                         caster->GetMotionMaster()->MoveIdle();
             }
 
             void HandleEffectRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
                 if (Unit* caster = GetCaster())
-                    if (caster->GetTypeId() == TYPEID_UNIT)
+                    if (caster->IsCreature())
                     {
                         caster->GetMotionMaster()->Clear();
                         caster->GetMotionMaster()->MoveChase(caster->GetVictim());
@@ -649,7 +649,7 @@ class spell_krick_pursuit : public SpellScriptLoader
 
             void HandleScriptEffect(SpellEffIndex /*effIndex*/)
             {
-                if (GetCaster()->GetTypeId() != TYPEID_UNIT)
+                if (!(GetCaster()->IsCreature()))
                     return;
 
                 Unit* caster = GetCaster();

@@ -45,28 +45,28 @@ class boss_sartura : public CreatureScript
 {
     public:
         boss_sartura() : CreatureScript("boss_sartura") { }
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_sarturaAI(creature);
         }
-    
+
         struct boss_sarturaAI : public BossAI
         {
             boss_sarturaAI(Creature* creature) : BossAI(creature, DATA_SARTURA) { }
-    
+
             uint32 WhirlWind_Timer;
             uint32 WhirlWindRandom_Timer;
             uint32 WhirlWindEnd_Timer;
             uint32 AggroReset_Timer;
             uint32 AggroResetEnd_Timer;
             uint32 EnrageHard_Timer;
-    
+
             bool Enraged;
             bool EnragedHard;
             bool WhirlWind;
             bool AggroReset;
-    
+
             void Reset() override
             {
                 WhirlWind_Timer = 30000;
@@ -75,37 +75,37 @@ class boss_sartura : public CreatureScript
                 AggroReset_Timer = urand(45000, 55000);
                 AggroResetEnd_Timer = 5000;
                 EnrageHard_Timer = 10*60000;
-    
+
                 WhirlWind = false;
                 AggroReset = false;
                 Enraged = false;
                 EnragedHard = false;
-    
+
             }
-    
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 Talk(SAY_AGGRO);
                 _JustEngagedWith();
             }
-    
+
              void JustDied(Unit* /*killer*/) override
              {
                  Talk(SAY_DEATH);
                  _JustDied();
              }
-    
+
              void KilledUnit(Unit* /*victim*/) override
              {
                  Talk(SAY_SLAY);
              }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 //Return since we have no target
                 if (!UpdateVictim())
                     return;
-    
+
                 if (WhirlWind)
                 {
                     if (WhirlWindRandom_Timer <= diff)
@@ -119,14 +119,14 @@ class boss_sartura : public CreatureScript
                         }
                         WhirlWindRandom_Timer = urand(3000, 7000);
                     } else WhirlWindRandom_Timer -= diff;
-    
+
                     if (WhirlWindEnd_Timer <= diff)
                     {
                         WhirlWind = false;
                         WhirlWind_Timer = urand(25000, 40000);
                     } else WhirlWindEnd_Timer -= diff;
                 }
-    
+
                 if (!WhirlWind)
                 {
                     if (WhirlWind_Timer <= diff)
@@ -135,7 +135,7 @@ class boss_sartura : public CreatureScript
                         WhirlWind = true;
                         WhirlWindEnd_Timer = 15000;
                     } else WhirlWind_Timer -= diff;
-    
+
                     if (AggroReset_Timer <= diff)
                     {
                         //Attack random Gamers
@@ -148,7 +148,7 @@ class boss_sartura : public CreatureScript
                         AggroReset = true;
                         AggroReset_Timer = urand(2000, 5000);
                     } else AggroReset_Timer -= diff;
-    
+
                     if (AggroReset)
                     {
                         if (AggroResetEnd_Timer <= diff)
@@ -158,7 +158,7 @@ class boss_sartura : public CreatureScript
                             AggroReset_Timer = urand(35000, 45000);
                         } else AggroResetEnd_Timer -= diff;
                     }
-    
+
                     //If she is 20% enrage
                     if (!Enraged)
                     {
@@ -168,7 +168,7 @@ class boss_sartura : public CreatureScript
                             Enraged = true;
                         }
                     }
-    
+
                     //After 10 minutes hard enrage
                     if (!EnragedHard)
                     {
@@ -178,37 +178,37 @@ class boss_sartura : public CreatureScript
                             EnragedHard = true;
                         } else EnrageHard_Timer -= diff;
                     }
-    
+
                     DoMeleeAttackIfReady();
                 }
             }
-        };  
+        };
 };
 
 class npc_sartura_royal_guard : public CreatureScript
 {
     public:
         npc_sartura_royal_guard() : CreatureScript("npc_sartura_royal_guard") { }
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_sartura_royal_guardAI(creature);
         }
-    
+
         struct npc_sartura_royal_guardAI : public ScriptedAI
         {
             npc_sartura_royal_guardAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             uint32 WhirlWind_Timer;
             uint32 WhirlWindRandom_Timer;
             uint32 WhirlWindEnd_Timer;
             uint32 AggroReset_Timer;
             uint32 AggroResetEnd_Timer;
             uint32 KnockBack_Timer;
-    
+
             bool WhirlWind;
             bool AggroReset;
-    
+
             void Reset() override
             {
                 WhirlWind_Timer = 30000;
@@ -217,21 +217,21 @@ class npc_sartura_royal_guard : public CreatureScript
                 AggroReset_Timer = urand(45000, 55000);
                 AggroResetEnd_Timer = 5000;
                 KnockBack_Timer = 10000;
-    
+
                 WhirlWind = false;
                 AggroReset = false;
             }
-    
+
             void JustEngagedWith(Unit* /*who*/) override
             {
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 //Return since we have no target
                 if (!UpdateVictim())
                     return;
-    
+
                 if (!WhirlWind && WhirlWind_Timer <= diff)
                 {
                     DoCast(me, SPELL_WHIRLWINDADD);
@@ -239,7 +239,7 @@ class npc_sartura_royal_guard : public CreatureScript
                     WhirlWind_Timer = urand(25000, 40000);
                     WhirlWindEnd_Timer = 15000;
                 } else WhirlWind_Timer -= diff;
-    
+
                 if (WhirlWind)
                 {
                     if (WhirlWindRandom_Timer <= diff)
@@ -251,16 +251,16 @@ class npc_sartura_royal_guard : public CreatureScript
                             me->TauntApply(target);
                             AttackStart(target);
                         }
-    
+
                         WhirlWindRandom_Timer = urand(3000, 7000);
                     } else WhirlWindRandom_Timer -= diff;
-    
+
                     if (WhirlWindEnd_Timer <= diff)
                     {
                         WhirlWind = false;
                     } else WhirlWindEnd_Timer -= diff;
                 }
-    
+
                 if (!WhirlWind)
                 {
                     if (AggroReset_Timer <= diff)
@@ -272,18 +272,18 @@ class npc_sartura_royal_guard : public CreatureScript
                             me->TauntApply(target);
                             AttackStart(target);
                         }
-    
+
                         AggroReset = true;
                         AggroReset_Timer = urand(2000, 5000);
                     } else AggroReset_Timer -= diff;
-    
+
                     if (KnockBack_Timer <= diff)
                     {
                         DoCast(me, SPELL_WHIRLWINDADD);
                         KnockBack_Timer = urand(10000, 20000);
                     } else KnockBack_Timer -= diff;
                 }
-    
+
                 if (AggroReset)
                 {
                     if (AggroResetEnd_Timer <= diff)
@@ -293,10 +293,10 @@ class npc_sartura_royal_guard : public CreatureScript
                         AggroReset_Timer = urand(30000, 40000);
                     } else AggroResetEnd_Timer -= diff;
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
-        };   
+        };
 };
 
 void AddSC_boss_sartura()

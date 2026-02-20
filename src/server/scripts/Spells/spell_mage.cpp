@@ -343,7 +343,7 @@ class spell_mage_slow : public SpellScriptLoader
                 {
                     if (Unit* target = GetHitUnit())
                     {
-                        if (target->GetTypeId() == TYPEID_PLAYER)
+                        if (target->IsPlayer())
                         {
                             if (Aura *frostjaw = target->GetAura(SPELL_MAGE_SLOW, _player->GetGUID()))
                             {
@@ -367,7 +367,6 @@ class spell_mage_slow : public SpellScriptLoader
             return new spell_mage_slow_SpellScript();
         }
 };
-
 
 class CheckNetherImpactPredicate
 {
@@ -418,7 +417,7 @@ class spell_mage_frostjaw : public SpellScriptLoader
                 {
                     if (Unit* target = GetHitUnit())
                     {
-                        if (target->GetTypeId() == TYPEID_PLAYER)
+                        if (target->IsPlayer())
                         {
                             if (Aura *frostjaw = target->GetAura(SPELL_MAGE_FROSTJAW, _player->GetGUID()))
                             {
@@ -588,7 +587,7 @@ class spell_mage_cold_snap : public SpellScriptLoader
 
             bool Load() override
             {
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+                return GetCaster()->IsPlayer();
             }
 
             void HandleDummy(SpellEffIndex /*effIndex*/)
@@ -740,7 +739,7 @@ class spell_mage_flameglow : public SpellScriptLoader
             void Absorb(AuraEffect * /*auraEffect*/, DamageInfo& dmgInfo, uint32& absorbAmount)
             {
                 Unit* target = GetTarget();
-                if (target->GetTypeId() != TYPEID_PLAYER)
+                if (!(target->IsPlayer()))
                     return;
 
                 int32 bonusPct = GetAura()->GetSpellInfo()->Effects[EFFECT_1].BasePoints;
@@ -898,7 +897,7 @@ class spell_mage_illusion : public SpellScriptLoader
             {
                 if (targets.empty())
                     return;
-                
+
                 target = Trinity::Containers::SelectRandomContainerElement(targets)->ToUnit();
             }
 
@@ -1032,7 +1031,7 @@ class spell_mage_arcane_missiles_proc_visual : public visual_stacks_controller
     }
 };
 
-// 44544 - Fingers of Frost 
+// 44544 - Fingers of Frost
 class spell_mage_fingers_of_frost : public visual_stacks_controller
 {
     PrepareAuraScript(spell_mage_fingers_of_frost);
@@ -1092,7 +1091,7 @@ class spell_mage_mastery_icicles : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     void HandleProc(AuraEffect const* mastery, ProcEventInfo& eventInfo)
@@ -1114,7 +1113,7 @@ class spell_mage_mastery_icicles : public AuraScript
             if (mage->GetFloatValue(PLAYER_FIELD_PVP_POWER_DAMAGE))
                 damage /= (1.0f + mage->GetFloatValue(PLAYER_FIELD_PVP_POWER_DAMAGE) / 100.f);
         }
-        
+
         damage = CalculatePct(damage, mastery->GetFloatAmount());
         for (int32 i = 0; i < 5; ++i)
         {
@@ -1528,7 +1527,7 @@ class spell_mage_nether_tempest_selector : public SpellScript
             if (!target->ToUnit() || !target->ToUnit()->IsInCombat())
                 return true;
 
-            if (target->GetTypeId() == TYPEID_PLAYER)
+            if (target->IsPlayer())
                 return false;
 
             if (!target->ToUnit()->GetThreatManager().getThreat(GetCaster()))
@@ -1691,7 +1690,7 @@ class spell_mage_pyroblast_crearcasting : public AuraScript
             {
                 if (mage->GetAura(spellId) == thisAura) // Generally impossible, but ensures what we are use this script
                 {
-                    if (!m_delayedRemove)               // Pyroblast casted, 
+                    if (!m_delayedRemove)               // Pyroblast casted,
                         return;
                     m_delayedRemove = false;
                 }
@@ -2372,7 +2371,7 @@ class spell_mage_invisibility_threat_reduction: public SpellScript
     }
 };
 
-// 112948 - Frost Bomb 
+// 112948 - Frost Bomb
 class spell_mage_frost_bomb_aura : public AuraScript
 {
     PrepareAuraScript(spell_mage_frost_bomb_aura);
@@ -2398,7 +2397,7 @@ class spell_mage_frost_bomb_aura : public AuraScript
     }
 };
 
-// 113092 - Frost Bomb 
+// 113092 - Frost Bomb
 class spell_mage_frost_bomb : public SpellScript
 {
     PrepareSpellScript(spell_mage_frost_bomb);
@@ -2631,7 +2630,7 @@ class spell_mage_icy_veins_cooldown : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     void HandleCast()

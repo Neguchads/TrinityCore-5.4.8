@@ -317,7 +317,7 @@ class instance_shadowfang_keep : public InstanceMapScript
 
                 OUT_LOAD_INST_DATA_COMPLETE;
             }
-        
+
         private:
             ObjectGuid uiAshburyGUID;
             ObjectGuid uiSilverlaineGUID;

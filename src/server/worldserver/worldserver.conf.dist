@@ -117,7 +117,7 @@ CharacterDatabaseInfo   = "127.0.0.1;3306;trinity;trinity;characters"
 #                     MySQL server and their own thread on the MySQL server.
 #        Default:     1 - (LoginDatabase.WorkerThreads)
 #                     1 - (WorldDatabase.WorkerThreads)
-#                     1 - (CharacterDatabase.WorkerThreads)            
+#                     1 - (CharacterDatabase.WorkerThreads)
 
 LoginDatabase.WorkerThreads         = 1
 WorldDatabase.WorkerThreads         = 1
@@ -549,7 +549,6 @@ ChatLogs.SysChan = 0
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-
 ChatLogs.Party = 1
 
 #
@@ -557,7 +556,6 @@ ChatLogs.Party = 1
 #        Description: Log raid chat.
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
-
 
 ChatLogs.Raid = 1
 
@@ -1000,7 +998,6 @@ Instance.IgnoreRaid = 0
 #        Default:     4 - (04:00 AM)
 
 Instance.ResetTimeHour = 4
-
 
 #
 #    Instance.ResetTimeDay
@@ -2727,7 +2724,7 @@ AlwaysMaxWeaponSkill = 0
 #        Description: Define the resilience rating of each player (Temple).
 #        Default:     44.0
 #                     40.0 - Patch 5.0
-#                     65.0 - Patch 5.3 
+#                     65.0 - Patch 5.3
 #                     72.0 - Patch 5.4
 #                     77.0 - Patch 5.4.7
 
@@ -3294,7 +3291,7 @@ BattlePay.Currency = 4
 # BLACK MARKET SETTINGS
 #
 #    BlackMarket.Open
-#        Description: 
+#        Description:
 #        Default:     1 - (Open)
 #                     0 - (Closed)
 #
@@ -3311,7 +3308,7 @@ BlackMarket.MaxAuctions = 12
 
 #
 #    BlackMarket.AuctionDelay
-#        Description: 
+#        Description:
 #        Default:     12 (hours)
 #
 
@@ -3319,7 +3316,7 @@ BlackMarket.AuctionDelay = 12
 
 #
 #    BlackMarket.AuctionDelayMod
-#        Description: 
+#        Description:
 #        Default:     60
 #
 
@@ -3378,9 +3375,9 @@ PacketSpoof.BanDuration = 86400
 WordFilter.Enable = 0
 
 #   .wordfilter mod on/off 开启或者关闭检测
-#   .wordfilter badword add #word 添加某个关键字检测   .wordfilter badword remove #word 移除某个检测关键字检测  
+#   .wordfilter badword add #word 添加某个关键字检测   .wordfilter badword remove #word 移除某个检测关键字检测
 #   .wordfilter badword list 显示已经检测的关键字
-#   .reload bad_word 重新加载关键字表   
+#   .reload bad_word 重新加载关键字表
 
 #    Description: Mute chat for player.
 #    Default:     10000 - (10 sec)
@@ -3517,29 +3514,6 @@ Rate.XP.Gather = 1
 
 Rate.Modw.InGame = 1
 
-###################################################################################################################
-#  ELUNA SETTINGS
-#
-#    Eluna.Enabled
-#        Enable Eluna LuaEngine
-#        Default: 1 (Enabled)
-#                 0 (Disabled)
-#
-#   Eluna.ScriptPath
-#       Description: Sets the location of the script folder to load scripts from
-#                    The path can be relative or absolute.
-#       Default:    "lua_scripts"
-#
-#   Notice: 
-#          1) use .reload config to reload lua script
-#          2) mop core is difference with wlk, lua from wlk core may need modify to fit this core.
-###################################################################################################################
-
-Eluna.Enabled = 0
-Eluna.ScriptPath = "lua_scripts"
-
-###############################################################################
-
 ###################################################################################################
 # LOAD SETTINGS
 #
@@ -3560,20 +3534,20 @@ Respawn.GuidAlertLevel = 16000000
 DEBUG_LFG_QUEUE_SAVE_PREV_STATE = 0
 Arena.BonusReward.GamesCount.2v2 = 0
 Arena.BonusReward.Item.2v2 = 0
-Arena.BonusReward.MailTitle.2v2 = 
+Arena.BonusReward.MailTitle.2v2 =
 Arena.BonusReward.MailText.2v2 =
 Arena.BonusReward.GamesCount.3v3 = 0
 Arena.BonusReward.Item.3v3 = 0
-Arena.BonusReward.MailTitle.3v3 = 
+Arena.BonusReward.MailTitle.3v3 =
 Arena.BonusReward.MailText.3v3 =
 Arena.BonusReward.GamesCount.5v5 = 0
 Arena.BonusReward.Item.5v5 = 0
-Arena.BonusReward.MailTitle.5v5 = 
-Arena.BonusReward.MailText.5v5 = 
+Arena.BonusReward.MailTitle.5v5 =
+Arena.BonusReward.MailText.5v5 =
 Arena.BonusReward.GamesCount.RBG = 0
-Arena.BonusReward.Item.RBG = 0 
-Arena.BonusReward.MailTitle.RBG = 
-Arena.BonusReward.MailText.RBG = 
+Arena.BonusReward.Item.RBG = 0
+Arena.BonusReward.MailTitle.RBG =
+Arena.BonusReward.MailText.RBG =
 Arena.SeasonReward.Cleanup.Enabled = 1
 Arena.SeasonReward.Cleanup.KeepWithAchievements = 2091
 Arena.SeasonReward.Cleanup.Achievements = 2093 2092 2090

@@ -31,8 +31,8 @@ enum Spells
     SPELL_FLAMES_OF_GALAKROND_EFF              = 146992,
     SPELL_FLAMES_OF_GALAKROND_AT               = 146991,
     SPELL_EJECT_ALL_PASSENGERS                 = 50630, // for dbm
-                                               
-    // Misc                                    
+
+    // Misc
     SPELL_IN_A_TOWER                           = 147317,
     SPELL_TOWER_STRENGTH_S                     = 148119,
     SPELL_TOWER_STRENGTH_N                     = 148120,
@@ -44,14 +44,14 @@ enum Spells
     SPELL_FIRE_BALL                            = 11839,
     SPELL_RIFFLE_SHOT                          = 147990,
     SPELL_JUMP                                 = 148887,
-                                               
-    // Dragonmaw Flameslinger                  
+
+    // Dragonmaw Flameslinger
     SPELL_FLAME_ARROWS                         = 146763,
     SPELL_FLAME_ARROWS_EFF                     = 146764,
     SPELL_FLAME_ARROWS_AT_EFF                  = 146765,
     SPELL_FLAME_ARROWS_SELECTOR                = 147438,
-                                               
-    // Ranking Officers                        
+
+    // Ranking Officers
     SPELL_SHATTERING_CLEAVE                    = 146849,
     SPELL_SKULL_CRACKER                        = 146848,
     SPELL_CRUSHERS_CALL                        = 146780, // pull
@@ -268,7 +268,7 @@ class boss_galakras : public CreatureScript
 
         struct boss_galakrasAI : public BossAI
         {
-            boss_galakrasAI(Creature* creature) : BossAI(creature, DATA_GALAKRAS) 
+            boss_galakrasAI(Creature* creature) : BossAI(creature, DATA_GALAKRAS)
             {
                 hasPreEventDone = false;
             }
@@ -569,8 +569,8 @@ class boss_galakras : public CreatureScript
                         instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, vereesa);
 
                     if (GameObject* towerDoor = ObjectAccessor::GetGameObject(*me, instance->GetGuidData(GO_PORTCULLIS)))
-                        towerDoor->SetGoState(GO_STATE_READY);                     
-                                                                                   
+                        towerDoor->SetGoState(GO_STATE_READY);
+
                     if (GameObject* towerDoor = ObjectAccessor::GetGameObject(*me, instance->GetGuidData(GO_PORTCULLIS + 1)))
                         towerDoor->SetGoState(GO_STATE_READY);
 
@@ -629,7 +629,7 @@ class boss_galakras : public CreatureScript
                 return 0;
             }
 
-            void SetData(uint32 type, uint32 data) override 
+            void SetData(uint32 type, uint32 data) override
             {
                 switch (type)
                 {
@@ -800,7 +800,7 @@ class boss_galakras : public CreatureScript
                                     if (keyflex->second[i])
                                         me->SummonCreature(keyflex->second[i], galakrasWavePoint[i], TEMPSUMMON_MANUAL_DESPAWN);
                             }
-                            else 
+                            else
                                 if (instance && !instance->GetData(DATA_FLEX)) // If we are in instance and not flex raid, use normal script
                                 {
                                     if (key->first != 4 && key->first != 9) // not announce dragons
@@ -810,7 +810,7 @@ class boss_galakras : public CreatureScript
                                         if (key->second[i])
                                             me->SummonCreature(key->second[i], galakrasWavePoint[i], TEMPSUMMON_MANUAL_DESPAWN);
                                 }
-                            else 
+                            else
                                     if (instance && instance->GetData(DATA_FLEX) && instance->instance->GetPlayersCountExceptGMs() > 15) // If We are in Flex and Have more than 15 players we use normal spawns
                                     {
                                         if (key->first != 4 && key->first != 9) // not announce dragons
@@ -821,7 +821,7 @@ class boss_galakras : public CreatureScript
                                                 me->SummonCreature(key->second[i], galakrasWavePoint[i], TEMPSUMMON_MANUAL_DESPAWN);
                                     }
                         if (instance && !instance->GetData(DATA_FLEX))
-                            berserkerEvents.ScheduleEvent(EVENT_NEXT_WAVE, 60 * IN_MILLISECONDS); 
+                            berserkerEvents.ScheduleEvent(EVENT_NEXT_WAVE, 60 * IN_MILLISECONDS);
                             else
                                 if (instance && instance->GetData(DATA_FLEX) && instance->instance->GetPlayersCountExceptGMs() < 26)
                                     berserkerEvents.ScheduleEvent(EVENT_NEXT_WAVE, 50 * IN_MILLISECONDS); // Wave in Flex Have -10 Seconds cause we have less mobs
@@ -1730,7 +1730,7 @@ struct npc_galakras_dragonmaw_war_banner : public ScriptedAI
 // Dragonmaw Grunt 73530, 72941
 struct npc_galakras_dragonmaw_grunt : public ScriptedAI
 {
-    npc_galakras_dragonmaw_grunt(Creature* creature) : ScriptedAI(creature) 
+    npc_galakras_dragonmaw_grunt(Creature* creature) : ScriptedAI(creature)
     {
         inTower = 0;
     }
@@ -2126,7 +2126,7 @@ struct npc_galakras_varian_wrynn : public ScriptedAI
 // Sylvanas Windrunner 72561
 struct npc_galakras_sylvanas_windrunner : public ScriptedAI
 {
-    npc_galakras_sylvanas_windrunner(Creature* creature) : ScriptedAI(creature) 
+    npc_galakras_sylvanas_windrunner(Creature* creature) : ScriptedAI(creature)
     {
         SetCombatMovement(false);
     }
@@ -2221,7 +2221,7 @@ struct npc_galakras_sylvanas_windrunner : public ScriptedAI
 // Aethas Sunreaver 73909
 struct npc_galakras_aethas_sunreaver : public ScriptedAI
 {
-    npc_galakras_aethas_sunreaver(Creature* creature) : ScriptedAI(creature) 
+    npc_galakras_aethas_sunreaver(Creature* creature) : ScriptedAI(creature)
     {
         SetCombatMovement(false);
     }
@@ -2316,7 +2316,7 @@ struct npc_galakras_aethas_sunreaver : public ScriptedAI
 // Vereesa Windrunner 73910
 struct npc_galakras_vereesa_windrunner : public ScriptedAI
 {
-    npc_galakras_vereesa_windrunner(Creature* creature) : ScriptedAI(creature) 
+    npc_galakras_vereesa_windrunner(Creature* creature) : ScriptedAI(creature)
     {
         SetCombatMovement(false);
     }
@@ -2350,7 +2350,7 @@ struct npc_galakras_vereesa_windrunner : public ScriptedAI
         if (actionId == ACTION_FACTIONS_EVADE && !hasEvade)
         {
             hasEvade = true;
-            
+
             if (me->GetInstanceScript())
                 me->GetInstanceScript()->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
 
@@ -2392,13 +2392,13 @@ struct npc_galakras_vereesa_windrunner : public ScriptedAI
                 case EVENT_SYLVANAS_SHOT:
                     if (Unit* target = me->GetVictim())
                         DoCast(target, SPELL_SYLVANAS_SHOT);
-                
+
                     events.ScheduleEvent(EVENT_SYLVANAS_SHOT, 2.5 * IN_MILLISECONDS);
                     break;
                 case EVENT_SYLVANAS_MULTI_SHOT:
                     if (Unit* target = me->GetVictim())
                         DoCast(target, SPELL_SYLVANAS_MULTI_SHOT);
-                
+
                     events.ScheduleEvent(EVENT_SYLVANAS_MULTI_SHOT, 10 * IN_MILLISECONDS);
                     break;
             }
@@ -2437,7 +2437,7 @@ class npc_galakras_jaina_proudmoore : public CreatureScript
 
         struct npc_galakras_jaina_proudmooreAI : public ScriptedAI
         {
-            npc_galakras_jaina_proudmooreAI(Creature* creature) : ScriptedAI(creature) 
+            npc_galakras_jaina_proudmooreAI(Creature* creature) : ScriptedAI(creature)
             {
                 SetCombatMovement(false);
                 instance = me->GetInstanceScript();
@@ -2651,10 +2651,10 @@ class npc_galakras_lorthemar_theron : public CreatureScript
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
-    
+
             if (action == GOSSIP_ACTION_INFO_DEF + 1)
                 creature->AI()->DoAction(ACTION_START_INTRO);
-    
+
             player->CLOSE_GOSSIP_MENU();
             return true;
         }
@@ -2933,7 +2933,7 @@ struct npc_galakras_demolitions_expert : public ScriptedAI
 // Sunreaver Magus 72581, 72534
 struct npc_galakras_ally_range_assist : public ScriptedAI
 {
-    npc_galakras_ally_range_assist(Creature* creature) : ScriptedAI(creature) 
+    npc_galakras_ally_range_assist(Creature* creature) : ScriptedAI(creature)
     {
         SetCombatMovement(false);
     }
@@ -3420,7 +3420,7 @@ class spell_galakras_shattering_roar : public SpellScript
 
     void SelectMainTargets(std::list<WorldObject*>& targets)
     {
-        targets.remove_if([=](WorldObject* target) { return target && target->GetTypeId() != TYPEID_PLAYER; });
+        targets.remove_if([=](WorldObject* target) { return target && !target->IsPlayer(); });
         targets.remove_if([=](WorldObject* target) { return target && target->ToPlayer() && target->ToPlayer()->HasAura(SPELL_IN_A_TOWER); });
     }
 
@@ -3968,8 +3968,8 @@ class sat_galakras_blizzard : public IAreaTriggerAura
 {
     bool CheckTriggering(WorldObject* triggering) override
     {
-        return triggering && triggering->ToCreature() && (triggering->ToCreature()->GetEntry() == NPC_DRAGONMAW_FLAMESLINGER || triggering->ToCreature()->GetEntry() == NPC_GALAKRAS_DRAGONMAW_BONECRUSHER || 
-            triggering->ToCreature()->GetEntry() == NPC_GALAKRAS_DRAGONMAW_TIDAL_SHAMAN || triggering->ToCreature()->GetEntry() == NPC_GALAKRAS_DRAGONMAW_GRUNT || triggering->ToCreature()->GetEntry() == NPC_GALAKRAS_DRAGONMAW_FLAGBEARER || 
+        return triggering && triggering->ToCreature() && (triggering->ToCreature()->GetEntry() == NPC_DRAGONMAW_FLAMESLINGER || triggering->ToCreature()->GetEntry() == NPC_GALAKRAS_DRAGONMAW_BONECRUSHER ||
+            triggering->ToCreature()->GetEntry() == NPC_GALAKRAS_DRAGONMAW_TIDAL_SHAMAN || triggering->ToCreature()->GetEntry() == NPC_GALAKRAS_DRAGONMAW_GRUNT || triggering->ToCreature()->GetEntry() == NPC_GALAKRAS_DRAGONMAW_FLAGBEARER ||
             triggering->ToCreature()->GetEntry() == NPC_GALAKRAS_DRAGONMAW_EBON_STALKER || triggering->ToCreature()->GetEntry() == NPC_GALAKRAS_DRAGONMAW_PROTO_DRAKE);
     }
 

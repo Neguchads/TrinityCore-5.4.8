@@ -203,7 +203,7 @@ class npc_angry_hound : public CreatureScript
                     stake->CastSpell(me, SPELL_LEASHED, false);
                 else nonCombatEvents.ScheduleEvent(EVENT_LEASHED, 1000);
 
-                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);;
+                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);
                 AnyUnitAtStake = false;
             }
 
@@ -309,7 +309,7 @@ class npc_reinforced_archery_target : public CreatureScript
 
             bool hasRider;
 
-            void Reset() override 
+            void Reset() override
             {
                 me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
                 DoCast(me, SPELL_ARCHERY_VEHICLE, true);
@@ -368,7 +368,7 @@ class npc_commander_lindon : public CreatureScript
             EventMap nonCombatEvents;
             bool Melee, initCombat, explosion;
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 Melee      = false;
                 initCombat = false;
@@ -378,7 +378,7 @@ class npc_commander_lindon : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!initCombat && who && who->GetTypeId() == TYPEID_PLAYER)
+                if (!initCombat && who && who->IsPlayer())
                 {
                     initCombat = true;
                     Talk(TALK_INTRO);
@@ -399,14 +399,14 @@ class npc_commander_lindon : public CreatureScript
                 }
             }
 
-            void Reset() override 
+            void Reset() override
             {
                 _Reset();
                 Melee = false;
                 events.Reset();
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 _JustEngagedWith();
                 HandleDoors();
@@ -421,7 +421,7 @@ class npc_commander_lindon : public CreatureScript
                         instance->HandleGameObject(ObjectGuid::Empty, reset, Idoor);
             }
 
-            void JustDied(Unit* /*killer*/) override 
+            void JustDied(Unit* /*killer*/) override
             {
                 _JustDied();
                 if (instance)
@@ -435,7 +435,7 @@ class npc_commander_lindon : public CreatureScript
                 summon->SetDisplayFromModel(0);
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 nonCombatEvents.Update(diff);
 
@@ -497,13 +497,13 @@ class npc_commander_lindon : public CreatureScript
                         itr->AI()->DoAction(action);
             }
 
-            struct ShieldBreakerPredicate 
+            struct ShieldBreakerPredicate
             {
                 public:
                     ShieldBreakerPredicate(Creature const* me) : _me(me) { }
                     bool operator()(Unit const* target) const
                     {
-                        return target && target->GetTypeId() == TYPEID_PLAYER && target->GetDistance2d(_me) < 18.0f;
+                        return target && target->IsPlayer() && target->GetDistance2d(_me) < 18.0f;
                     }
 
                 private:
@@ -564,7 +564,7 @@ class npc_scarlet_master_archer : public CreatureScript
                 events.ScheduleEvent(EVENT_BLEEDING_WOUND, urand(2500, 4500));
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -828,7 +828,7 @@ class npc_scarlet_cannoneer : public CreatureScript
             bool triggered;
             ObjectGuid CannonGuid;
 
-            void IsSummonedBy(Unit* summoner) override 
+            void IsSummonedBy(Unit* summoner) override
             {
                 if (!IsHeroic())
                 {
@@ -993,7 +993,7 @@ class npc_scarlet_evoker : public CreatureScript
 
             EventMap events;
 
-            void Reset() override 
+            void Reset() override
             {
                 SetEquipmentSlots(false, W_MOULDERING_CORPSE, 0, EQUIP_NO_CHANGE);
                 events.Reset();
@@ -1115,7 +1115,7 @@ class npc_scarlet_treasurer : public CreatureScript
 
             EventMap events;
 
-            void Reset() override 
+            void Reset() override
             {
                 events.Reset();
             }
@@ -1173,13 +1173,13 @@ class npc_scarlet_hooded_crusader : public CreatureScript
             EventMap nonCombatEvents;
             uint32 wp;
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 if (actionId == ACTION_KODEX)
                     nonCombatEvents.ScheduleEvent(EVENT_ESCORT, urand(100, 200));
             }
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 wp = 0;
             }
@@ -1238,7 +1238,7 @@ class npc_scarlet_scholar : public CreatureScript
 
             EventMap events;
 
-            void Reset() override 
+            void Reset() override
             {
                 events.Reset();
                 SetEquipmentSlots(false, W_MOULDERING_CORPSE, 0, EQUIP_NO_CHANGE);
@@ -1307,7 +1307,7 @@ class npc_scarlet_pupil : public CreatureScript
 
             EventMap events;
 
-            void Reset() override 
+            void Reset() override
             {
                 events.Reset();
             }

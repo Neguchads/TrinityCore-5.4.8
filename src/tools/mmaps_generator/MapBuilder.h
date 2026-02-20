@@ -140,7 +140,7 @@ namespace MMAP
             std::thread m_workerThread;
             // build performance - not really used for now
             rcContext* m_rcContext;
-    };    
+    };
 
     class MapBuilder
     {
@@ -174,7 +174,7 @@ namespace MMAP
 
         private:
             // builds all mmap tiles for the specified map id (ignores skip settings)
-            void buildMap(uint32 mapID);           
+            void buildMap(uint32 mapID);
             // detect maps and tiles
             void discoverTiles();
             std::set<uint32>* getTileList(uint32 mapID);
@@ -225,7 +225,7 @@ namespace MMAP
 
             std::vector<TileBuilder*> m_tileBuilders;
             ProducerConsumerQueue<TileInfo> _queue;
-            std::atomic<bool> _cancelationToken;          
+            std::atomic<bool> _cancelationToken;
     };
 }
 #endif

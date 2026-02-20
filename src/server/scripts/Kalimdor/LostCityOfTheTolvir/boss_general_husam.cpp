@@ -139,7 +139,7 @@ class boss_general_husam : public CreatureScript
                 {
                     float x, y, z;
                     summon->GetPosition(x, y, z);
-                    
+
                     if (Creature* mine = me->SummonCreature(44796, x, y, z))
                     {
                         mine->EnterVehicle(summon);
@@ -151,7 +151,7 @@ class boss_general_husam : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(YELL_KILL_PLAYER);
             }
 
@@ -275,7 +275,7 @@ class npc_land_mine : public CreatureScript
                 uiCountdownTimer = urand(20000, 35000);
                 me->SetInCombatWithZone();
             }
-            
+
             uint32 uiActivationTimer;
             uint32 uiCountdownTimer;
             uint32 uiDespawnTimer;
@@ -431,7 +431,7 @@ class npc_shockwave_stalker : public CreatureScript
                     caster->CastSpell(me, SPELL_SHOCKWAVE_VISUAL, true);
                     me->RemoveAllAuras();
                     CanCheck = false;
-                    
+
                     if (lSummonedGUID.empty())
                         return;
 

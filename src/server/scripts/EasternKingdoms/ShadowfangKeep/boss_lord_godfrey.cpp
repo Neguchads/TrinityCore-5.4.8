@@ -140,7 +140,7 @@ class boss_lord_godfrey : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_UNIT && victim->GetEntry() == NPC_BLOODTHRISTY_GHOUL)
+                if (victim->IsCreature() && victim->GetEntry() == NPC_BLOODTHRISTY_GHOUL)
                     DoCastAOE(SPELL_ACHIEVEMENT, true);
                 Talk(SAY_KILL);
             }

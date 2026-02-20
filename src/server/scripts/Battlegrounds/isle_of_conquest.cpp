@@ -276,7 +276,7 @@ class spell_ioc_gunship_portal : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     void HandleScript(SpellEffIndex /*effIndex*/)
@@ -312,7 +312,7 @@ class spell_ioc_parachute_ic : public AuraScript
     void HandleEffectRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
     {
         if (Unit* target = GetTarget())
-            if (target->GetTypeId() == TYPEID_PLAYER && target->HasUnitMovementFlag(MOVEMENTFLAG_FALLING | MOVEMENTFLAG_FALLING_FAR) && !target->IsOnGround() && !target->HasAura(SPELL_PARACHUTE_IC))
+            if (target->IsPlayer() && target->HasUnitMovementFlag(MOVEMENTFLAG_FALLING | MOVEMENTFLAG_FALLING_FAR) && !target->IsOnGround() && !target->HasAura(SPELL_PARACHUTE_IC))
                 target->CastSpell(target, SPELL_PARACHUTE_IC, true);
     }
 

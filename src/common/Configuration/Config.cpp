@@ -144,7 +144,7 @@ namespace
             return std::nullopt;
 
         return std::string(val);
-    }    
+    }
 }
 
 bool ConfigMgr::LoadInitial(std::string file, std::vector<std::string> args,

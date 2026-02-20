@@ -33,7 +33,7 @@ namespace WorldPackets
 
             void Read() override { }
         };
-        
+
         class ShowingCloak final : public ClientPacket
         {
         public:
@@ -75,7 +75,6 @@ namespace WorldPackets
             uint32 LogoutResult = 0;
             bool Instant = false;
         };
-
 
     }
 }

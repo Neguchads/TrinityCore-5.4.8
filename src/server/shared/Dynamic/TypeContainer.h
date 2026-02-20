@@ -174,4 +174,3 @@ private:
     ContainerUnorderedMap<OBJECT_TYPES, KEY_TYPE> _elements;
 };
 #endif
-

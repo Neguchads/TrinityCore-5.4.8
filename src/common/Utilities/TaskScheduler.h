@@ -31,7 +31,6 @@
 #include "Duration.h"
 #include "Random.h"
 
-
 class TaskContext;
 
 /// The TaskScheduler class provides the ability to schedule std::function's in the near future.

@@ -6,8 +6,6 @@
 
 -- NOTE: BroadcastTextId is not provided in source; set to 0.
 
-
-
 DELETE FROM `creature_text` WHERE `CreatureID` IN (55265, 55294, 55308, 55312, 56099, 56100, 56101, 56102, 56103, 56173, 56667);
 
 INSERT INTO `creature_text` (
@@ -172,19 +170,13 @@ INSERT INTO `creature_text` (
 
 ('56667', '0', '0', 'Strike now heros , only you can gives us our opening!', '14', '0', '100', '25', '0', '25902', 0, 0, 'Thrall intro fight 1 yell');
 
-
-
 -- END 2026_02_04_01_world.sql
-
-
 
 -- BEGIN 2026_02_04_02_world.sql
 
 -- Dragon Soul missing creature_text + sounds (sourced from OMFG.GG-434 broadcast_text)
 
 -- Generated automatically.
-
-
 
 DELETE FROM `creature_text` WHERE `CreatureID` IN (53879, 55689, 55971, 56427, 56630, 56664, 56665, 56666, 56667);
 
@@ -264,19 +256,13 @@ INSERT INTO `creature_text` (
 
 (56667, 3, 0, 'Yes, I see. We can finally turn Deathwing\'s own power back against him.', 14, 0, 100, 0, 0, 25905, 56667, 0, 'DS Thrall event');
 
-
-
 -- END 2026_02_04_02_world.sql
-
-
 
 -- BEGIN 2026_02_04_03_world.sql
 
 -- Dragon Soul missing spawns from OMFG (zone 5892)
 
 -- Generated from wow_neltharion-world.creature diff
-
-
 
 INSERT INTO creature (id,map,zoneId,areaId,spawnMask,phaseMask,phaseId,phaseGroup,modelid,equipment_id,position_x,position_y,position_z,orientation,spawntimesecs,spawntimesecs_max,wander_distance,currentwaypoint,curhealth,curmana,MovementType,npcflag,npcflag2,unit_flags,unit_flags2,dynamicflags,ScriptName,walk_mode,VerifiedBuild) VALUES
 
@@ -666,17 +652,11 @@ INSERT INTO creature (id,map,zoneId,areaId,spawnMask,phaseMask,phaseId,phaseGrou
 
 (58287,967,5892,5923,15,1,0,0,0,0,-1470.15,-2589.32,344.227,5.86431,604800,0,0,0,1,0,0,0,0,0,0,0,'',0,0);
 
-
-
 -- END 2026_02_04_03_world.sql
-
-
 
 -- BEGIN 2026_02_04_04_world.sql
 
 -- Dragon Soul creature_text from OMFG (zone 5892)
-
-
 
 DELETE FROM creature_text WHERE CreatureID=55265 AND GroupID=0 AND ID=0;
 
@@ -771,8 +751,6 @@ DELETE FROM creature_text WHERE CreatureID=57280 AND GroupID=1 AND ID=0;
 DELETE FROM creature_text WHERE CreatureID=57280 AND GroupID=1 AND ID=1;
 
 DELETE FROM creature_text WHERE CreatureID=57280 AND GroupID=1 AND ID=2;
-
-
 
 INSERT INTO creature_text (CreatureID,GroupID,ID,Text,Type,Language,Probability,Emote,Duration,Sound,SoundType,BroadcastTextId,TextRange,comment) VALUES
 
@@ -870,25 +848,15 @@ INSERT INTO creature_text (CreatureID,GroupID,ID,Text,Type,Language,Probability,
 
 (57280,1,2,'A fine trophy your head will make, $r.',12,0,50,0,0,0,0,2229,0,'on Aggro Text');
 
-
-
 -- END 2026_02_04_04_world.sql
-
-
 
 -- BEGIN 2026_02_04_05_world.sql
 
 -- Dragon Soul broadcast_text from OMFG (referenced by creature_text)
 
-
-
 -- No missing broadcast_text rows;
 
-
-
 -- END 2026_02_04_05_world.sql
-
-
 
 -- BEGIN 2026_02_04_06_world.sql
 
@@ -1030,11 +998,7 @@ INSERT INTO creature_text (CreatureID, GroupID, ID, Text, Type, Language, Probab
 
 SET SQL_MODE=@OLD_SQL_MODE;
 
-
-
 -- END 2026_02_04_06_world.sql
-
-
 
 -- BEGIN 2026_02_04_07_world.sql
 
@@ -1044,43 +1008,21 @@ SET SQL_MODE=@OLD_SQL_MODE;
 
 UPDATE creature SET spawnMask=120 WHERE map=967 AND spawnMask=15;
 
-
-
 -- END 2026_02_04_07_world.sql
-
-
 
 -- Update Dragon Soul creature_text sound IDs from emucoach (map 967 entries)
 
-
-
 UPDATE creature_text SET Sound=26326, BroadcastTextId=56804 WHERE CreatureID=55312 AND GroupID=0 AND ID=0;
-
-
 
 UPDATE creature_text SET Sound=26327, BroadcastTextId=56806 WHERE CreatureID=55312 AND GroupID=1 AND ID=0;
 
-
-
 UPDATE creature_text SET Sound=26328, BroadcastTextId=56802 WHERE CreatureID=55312 AND GroupID=2 AND ID=0;
-
-
 
 UPDATE creature_text SET Sound=26329, BroadcastTextId=56809 WHERE CreatureID=55312 AND GroupID=3 AND ID=0;
 
-
-
 UPDATE creature_text SET Sound=26330, BroadcastTextId=56811 WHERE CreatureID=55312 AND GroupID=3 AND ID=1;
 
-
-
 UPDATE creature_text SET Sound=26332, BroadcastTextId=56816 WHERE CreatureID=55312 AND GroupID=4 AND ID=0;
-
-
-
-
-
-
 
 -- BEGIN 2026_02_04_09_world.sql
 

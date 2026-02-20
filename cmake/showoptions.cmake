@@ -46,13 +46,6 @@ else()
   message("* Build with scripts     : No")
 endif()
 
-if( ELUNA )
-  message("* Build Eluna LuaEngine   : Yes")
-  add_definitions(-DELUNA)
-else()
-  message("* Build Eluna LuaEngine   : No")
-endif()
-
 if( PLAYERBOTS )
   message("* Build with Playerbots   : Yes (default)")
   add_definitions(-DPLAYERBOTS)

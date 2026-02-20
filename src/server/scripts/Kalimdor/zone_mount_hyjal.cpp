@@ -74,7 +74,7 @@ class npc_garr : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
-            
+
             EventMap events;
 
             void Reset() override
@@ -94,12 +94,12 @@ class npc_garr : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -152,7 +152,7 @@ class npc_garr_firesworn : public CreatureScript
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
             }
-            
+
             EventMap events;
 
             void Reset() override
@@ -174,12 +174,12 @@ class npc_garr_firesworn : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
-                
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -191,7 +191,7 @@ class npc_garr_firesworn : public CreatureScript
                     }
                 }
                 DoMeleeAttackIfReady();
-            }   
+            }
         };
 
         CreatureAI* GetAI(Creature* creature) const override
@@ -212,9 +212,9 @@ class npc_garr_firesworn : public CreatureScript
             void JustDied(Unit* killer) override
             {
                 Unit* originalKiller = killer->GetCharmerOrOwnerOrSelf();
-                if (originalKiller && (originalKiller->GetTypeId() == TYPEID_PLAYER))
+                if (originalKiller && (originalKiller->IsPlayer()))
                     killer->CastSpell(killer, (originalKiller->ToPlayer()->GetTeamId() == TEAM_HORDE ? 74077 : 74078), true);
-            } 
+            }
         };
 
         CreatureAI* GetAI(Creature* creature) const override
@@ -375,7 +375,7 @@ class npc_angry_little_squirrel : public CreatureScript
                             if (player->IsInCombat())
                                 for (HostileRefManager::iterator itr2 = player->getHostileRefManager().begin(); itr2 != player->getHostileRefManager().end(); ++itr2)
                                     if (Unit* enemy = itr2->GetSource()->GetOwner())
-                                        if (enemy->GetTypeId() == TYPEID_UNIT && me->IsValidAttackTarget(enemy))
+                                        if (enemy->IsCreature() && me->IsValidAttackTarget(enemy))
                                             enemies.push_back(enemy);
 
                     if (!enemies.empty())
@@ -857,7 +857,7 @@ class at_king_of_the_spider_hill : public AreaTriggerScript
 {
     public:
         at_king_of_the_spider_hill() : AreaTriggerScript("at_king_of_the_spider_hill") { }
-     
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (player)
@@ -903,7 +903,7 @@ class spell_sethrias_roost_squad_aura : public SpellScriptLoader
 
                     for (Unit::ControlList::iterator itr = target->m_Controlled.begin(); itr != target->m_Controlled.end(); ++itr)
                         if (Unit* controlled = *itr)
-                            if (controlled->GetTypeId() == TYPEID_UNIT && sethriasRoostSummonCreatures.find(controlled->GetEntry()) != sethriasRoostSummonCreatures.end())
+                            if (controlled->IsCreature() && sethriasRoostSummonCreatures.find(controlled->GetEntry()) != sethriasRoostSummonCreatures.end())
                                 if (!controlled->GetVictim())
                                     controlled->GetMotionMaster()->MoveFollow(target, PET_FOLLOW_ANGLE, PET_FOLLOW_DIST);
                 }
@@ -914,7 +914,7 @@ class spell_sethrias_roost_squad_aura : public SpellScriptLoader
                 if (Unit* target = GetTarget())
                     for (Unit::ControlList::iterator itr = target->m_Controlled.begin(); itr != target->m_Controlled.end(); ++itr)
                         if (Unit* controlled = *itr)
-                            if (controlled->GetTypeId() == TYPEID_UNIT && sethriasRoostSummonCreatures.find(controlled->GetEntry()) != sethriasRoostSummonCreatures.end())
+                            if (controlled->IsCreature() && sethriasRoostSummonCreatures.find(controlled->GetEntry()) != sethriasRoostSummonCreatures.end())
                                 controlled->ToCreature()->DespawnOrUnsummon(1);
             }
 

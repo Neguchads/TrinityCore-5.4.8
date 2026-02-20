@@ -135,7 +135,7 @@ class boss_saviana_ragefire : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -206,7 +206,7 @@ class ConflagrationTargetSelector
 
         bool operator()(WorldObject* unit) const
         {
-            return unit->GetTypeId() != TYPEID_PLAYER;
+            return !unit->IsPlayer();
         }
 };
 

@@ -82,7 +82,7 @@ class boss_mennu_the_betrayer : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 
@@ -132,7 +132,7 @@ class boss_mennu_the_betrayer : public CreatureScript
                 Talk(TALK_DEATH);
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;

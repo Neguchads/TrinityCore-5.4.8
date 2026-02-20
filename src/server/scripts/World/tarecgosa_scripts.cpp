@@ -73,7 +73,7 @@ class npc_anachronos_15192 : public CreatureScript
                 uint32 curItemCount = player->GetItemCount(69238, false);
                 if (curItemCount >= 1)
                     return false;
-                
+
                 ItemPosCountVec dest;
                 uint8 msg = player->CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, 49661, 1);
                 if (msg == EQUIP_ERR_OK)
@@ -116,7 +116,7 @@ class npc_tarecgosa_52835 : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!who || who->GetTypeId() != TYPEID_PLAYER)
+                if (!who || !who->IsPlayer())
                     return;
 
                 if (!me->IsWithinDistInMap(who, 20.0f))
@@ -143,14 +143,14 @@ class npc_tarecgosa_53098 : public CreatureScript
 
         struct npc_tarecgosa_53098AI : ScriptedAI
         {
-            npc_tarecgosa_53098AI(Creature* creature) : ScriptedAI(creature) 
+            npc_tarecgosa_53098AI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetStandState(UNIT_STAND_STATE_DEAD);
             }
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!who || who->GetTypeId() != TYPEID_PLAYER)
+                if (!who || !who->IsPlayer())
                     return;
 
                 if (!me->IsWithinDistInMap(who, 20.0f))
@@ -183,7 +183,7 @@ class npc_kalecgos_53149 : public CreatureScript
 
         struct npc_kalecgos_53149AI : ScriptedAI
         {
-            npc_kalecgos_53149AI(Creature* creature) : ScriptedAI(creature) 
+            npc_kalecgos_53149AI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetStandState(UNIT_STAND_STATE_KNEEL);
             }
@@ -202,7 +202,7 @@ class npc_thyrinar : public CreatureScript
 
         struct npc_thyrinarAI : ScriptedAI
         {
-            npc_thyrinarAI(Creature* creature) : ScriptedAI(creature) 
+            npc_thyrinarAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetCanFly(true);
                 me->SetDisableGravity(true);
@@ -222,7 +222,7 @@ class npc_thyrinar : public CreatureScript
                     return;
 
                 Unit* originalKiller = who->GetCharmerOrOwnerOrSelf();
-                if (!originalKiller || originalKiller->GetTypeId() != TYPEID_PLAYER)
+                if (!originalKiller || !originalKiller->IsPlayer())
                     return;
 
                 if (Creature* pTarecgosa = me->FindNearestCreature(53567, 200.0f))
@@ -250,7 +250,7 @@ class npc_kalecgos_53349 : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!who || who->GetTypeId() != TYPEID_PLAYER)
+                if (!who || !who->IsPlayer())
                     return;
 
                 if (!me->IsWithinDistInMap(who, 20.0f))
@@ -269,13 +269,13 @@ class npc_kalecgos_53349 : public CreatureScript
 
 enum ScriptedText_kalecgos_53392
 {
-    SAY_53392_1 = 0, 
-    SAY_53392_2 = 1, 
+    SAY_53392_1 = 0,
+    SAY_53392_2 = 1,
     SAY_53392_3 = 2,
-    SAY_53392_4 = 3, 
-    SAY_53392_5 = 4, 
-    SAY_53392_6 = 5, 
-    SAY_53392_7 = 6, 
+    SAY_53392_4 = 3,
+    SAY_53392_5 = 4,
+    SAY_53392_6 = 5,
+    SAY_53392_7 = 6,
     SAY_53392_8 = 7,
 };
 
@@ -382,7 +382,7 @@ class npc_hallegosa : public CreatureScript
             player->CLOSE_GOSSIP_MENU();
 
             creature->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP | UNIT_NPC_FLAG_QUESTGIVER);
-            
+
             creature->SetWalk(true);
             creature->GetMotionMaster()->MovePoint(POINT_HALLEGOSA_1, ((creature->GetMapId() == 1) ? finalPos2[0] : finalPos1[0]));
             return true;
@@ -390,7 +390,7 @@ class npc_hallegosa : public CreatureScript
 
         struct npc_hallegosaAI : ScriptedAI
         {
-            npc_hallegosaAI(Creature* creature) : ScriptedAI(creature) 
+            npc_hallegosaAI(Creature* creature) : ScriptedAI(creature)
             {
                 curPoint = 0;
                 me->RemoveAllAuras();
@@ -485,7 +485,7 @@ class npc_kalecgos_53392 : public CreatureScript
 
         struct npc_kalecgos_53392AI : ScriptedAI
         {
-            npc_kalecgos_53392AI(Creature* creature) : ScriptedAI(creature) 
+            npc_kalecgos_53392AI(Creature* creature) : ScriptedAI(creature)
             {
                 me->setActive(true);
             }
@@ -497,7 +497,7 @@ class npc_kalecgos_53392 : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!who || who->GetTypeId() != TYPEID_PLAYER)
+                if (!who || !who->IsPlayer())
                     return;
 
                 if (me->GetDistance(who) >= 20.0f)
@@ -532,12 +532,12 @@ class npc_kalecgos_53392 : public CreatureScript
                             if (me->GetMapId() == 1)
                             {
                                 for (uint8 i = 10; i < 12; ++i)
-                                    me->SummonCreature(NPC_BLUE_DRAGON_53394, finalPos2[i], TEMPSUMMON_TIMED_DESPAWN, 30 * MINUTE * IN_MILLISECONDS); 
+                                    me->SummonCreature(NPC_BLUE_DRAGON_53394, finalPos2[i], TEMPSUMMON_TIMED_DESPAWN, 30 * MINUTE * IN_MILLISECONDS);
                             }
                             else
                             {
                                 for (uint8 i = 6; i < 9; ++i)
-                                    me->SummonCreature(NPC_BLUE_DRAGON_53394, finalPos1[i], TEMPSUMMON_TIMED_DESPAWN, 30 * MINUTE * IN_MILLISECONDS); 
+                                    me->SummonCreature(NPC_BLUE_DRAGON_53394, finalPos1[i], TEMPSUMMON_TIMED_DESPAWN, 30 * MINUTE * IN_MILLISECONDS);
                             }
                             events.ScheduleEvent(EVENT_TALK_3, 7000);
                             break;
@@ -611,7 +611,7 @@ class npc_tarecgosa_53396 : public CreatureScript
 
         struct npc_tarecgosa_53396AI : ScriptedAI
         {
-            npc_tarecgosa_53396AI(Creature* creature) : ScriptedAI(creature) 
+            npc_tarecgosa_53396AI(Creature* creature) : ScriptedAI(creature)
             {
                 me->setActive(true);
             }
@@ -630,7 +630,7 @@ class npc_blue_dragon_53394 : public CreatureScript
 
         struct npc_blue_dragon_53394AI : ScriptedAI
         {
-            npc_blue_dragon_53394AI(Creature* creature) : ScriptedAI(creature) 
+            npc_blue_dragon_53394AI(Creature* creature) : ScriptedAI(creature)
             {
                 me->setActive(true);
             }
@@ -649,7 +649,7 @@ class npc_stalker_53422 : public CreatureScript
 
         struct npc_stalker_53422AI : ScriptedAI
         {
-            npc_stalker_53422AI(Creature* creature) : ScriptedAI(creature) 
+            npc_stalker_53422AI(Creature* creature) : ScriptedAI(creature)
             {
                 me->setActive(true);
             }

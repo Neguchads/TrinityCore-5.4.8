@@ -143,10 +143,10 @@ struct npc_ring_rider_base : ScriptedAI
 
     bool CanAIAttack(Unit const* target) const override
     {
-        if (target->GetTypeId() == TYPEID_UNIT)
+        if (target->IsCreature())
             if (Vehicle* vehicle = target->GetVehicleKit())
                 if (Unit* passenger = vehicle->GetPassenger(0))
-                    return passenger->GetTypeId() == TYPEID_PLAYER;
+                    return passenger->IsPlayer();
 
         return false;
     }
@@ -186,7 +186,7 @@ struct npc_ring_rider_base : ScriptedAI
         if (!target)
             return;
 
-        if (target->GetTypeId() == TYPEID_PLAYER)
+        if (target->IsPlayer())
             target = target->GetVehicleBase();
 
         if (!target)

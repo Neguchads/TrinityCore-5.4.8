@@ -59,7 +59,7 @@ enum
     WORLD_STATE_ROTTEN_TO_THE_CORE = 8336,
 };
 
-Position highpriestessazilAddsPos[2] = 
+Position highpriestessazilAddsPos[2] =
 {
     {1263.20f, 966.03f, 205.81f, 0.0f},
     {1278.51f, 1021.72f, 209.08f, 0.0f}
@@ -75,7 +75,7 @@ class boss_high_priestess_azil : public CreatureScript
         struct boss_high_priestess_azilAI : public BossAI
         {
             boss_high_priestess_azilAI(Creature* creature) : BossAI(creature, DATA_HIGH_PRIESTESS_AZIL), summons(me)
-            { 
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -282,7 +282,6 @@ class spell_high_priestess_azil_gravity_well_script : public SpellScriptLoader
         class spell_high_priestess_azil_gravity_well_script_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_high_priestess_azil_gravity_well_script_SpellScript);
-
 
             void HandleScript(SpellEffIndex /*effIndex*/)
             {

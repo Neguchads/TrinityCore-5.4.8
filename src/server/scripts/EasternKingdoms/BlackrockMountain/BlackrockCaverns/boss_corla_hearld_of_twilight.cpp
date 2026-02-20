@@ -196,7 +196,7 @@ class boss_corla_herald_of_twilight : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who && who->GetTypeId() == TYPEID_PLAYER)
+                if (who && who->IsPlayer())
                     Talk(SAY_KILL);
             }
 

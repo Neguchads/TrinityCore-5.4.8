@@ -88,7 +88,7 @@ public:
 
         {
             //Despawn Time Keeper
-            if (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == NPC_TIME_KEEPER)
+            if (who->IsCreature() && who->GetEntry() == NPC_TIME_KEEPER)
             {
                 if (me->IsWithinDistInMap(who, 20.0f))
                 {

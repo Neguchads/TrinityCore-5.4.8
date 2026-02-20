@@ -545,7 +545,7 @@ struct boss_jormungarAI : public BossAI
 
     void KilledUnit(Unit* who) override
     {
-        if (who->GetTypeId() == TYPEID_PLAYER)
+        if (who->IsPlayer())
             if (instance)
                 instance->SetData(DATA_TRIBUTE_TO_IMMORTALITY_ELIGIBLE, 0);
     }
@@ -946,7 +946,7 @@ class boss_icehowl : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                 {
                     if (instance)
                         instance->SetData(DATA_TRIBUTE_TO_IMMORTALITY_ELIGIBLE, 0);
@@ -962,7 +962,7 @@ class boss_icehowl : public CreatureScript
 
             void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
-                if (spell->Id == SPELL_TRAMPLE && target->GetTypeId() == TYPEID_PLAYER)
+                if (spell->Id == SPELL_TRAMPLE && target->IsPlayer())
                 {
                     if (!_trampleCasted)
                     {

@@ -206,7 +206,7 @@ const std::map<uint32, Position> invFactionLeadersType =
     { NPC_MASTER_BROWNSTONE,  { -1247.59f, 837.25f,  29.99f, 5.99f } },
 };
 
-const std::list<uint32> customAnnouce = 
+const std::list<uint32> customAnnouce =
 {
     TALK_SPECIAL_1,
     TALK_SPECIAL_3,

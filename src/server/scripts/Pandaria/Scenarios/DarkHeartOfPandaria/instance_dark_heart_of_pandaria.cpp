@@ -23,13 +23,13 @@ class instance_dark_heart_of_pandaria : public InstanceMapScript
 {
     public:
         instance_dark_heart_of_pandaria() : InstanceMapScript("instance_dark_heart_of_pandaria", 1144) { }
-    
+
         struct instance_dark_heart_of_pandaria_InstanceMapScript : public InstanceScript
         {
             instance_dark_heart_of_pandaria_InstanceMapScript(Map* map) : InstanceScript(map) { }
-    
+
             EventMap events;
-    
+
             uint32 chapterOne, chapterTwo, chapterThree, chapterFour, chapterFive;
             uint32 m_auiEncounter[CHAPTERS];
             uint32 artifactCounter;
@@ -48,18 +48,18 @@ class instance_dark_heart_of_pandaria : public InstanceMapScript
             std::vector<ObjectGuid> artifactGUIDs;
             std::vector<ObjectGuid> blossomCollisionsGUIDs;
             std::vector<ObjectGuid> yshaarjBloodGUIDs;
-    
+
             void Initialize() override
             {
                 SetBossNumber(CHAPTERS);
                 memset(&m_auiEncounter, 0, sizeof(m_auiEncounter));
-    
+
                 chapterOne          = 0;
                 chapterTwo          = 0;
                 chapterThree        = 0;
                 chapterFour         = 0;
                 chapterFive         = 0;
-                                    
+
                 artifactCounter     = 0;
                 urthargesGUID = ObjectGuid::Empty;
                 malkorokGUID = ObjectGuid::Empty;
@@ -77,7 +77,7 @@ class instance_dark_heart_of_pandaria : public InstanceMapScript
                 blossomCollisionsGUIDs.clear();
                 yshaarjBloodGUIDs.clear();
             }
-    
+
             void OnPlayerEnter(Player* player) override
             {
                 // Alliance players to goblin
@@ -87,7 +87,7 @@ class instance_dark_heart_of_pandaria : public InstanceMapScript
                 // Init Scenario
                 sScenarioMgr->SendScenarioState(player, 1144, STEP_TALK_WITH_LEADER, 0);
             }
-    
+
             void OnCreatureCreate(Creature* creature) override
             {
                 switch (creature->GetEntry())
@@ -156,7 +156,7 @@ class instance_dark_heart_of_pandaria : public InstanceMapScript
                         break;
                 }
             }
-    
+
             void SetData(uint32 type, uint32 data) override
             {
                 switch (type)
@@ -246,11 +246,11 @@ class instance_dark_heart_of_pandaria : public InstanceMapScript
                             SetData(STEP_STUFF_POCKETS, DONE);
                         break;
                 }
-    
+
                 if (data == DONE)
                     SaveToDB();
             }
-    
+
             uint32 GetData(uint32 type) const override
             {
                 switch (type)
@@ -268,10 +268,10 @@ class instance_dark_heart_of_pandaria : public InstanceMapScript
                     case DATA_ARTIFACT:
                         return artifactCounter;
                 }
-    
+
                 return 0;
             }
-    
+
             ObjectGuid GetGuidData(uint32 type) const override
             {
                 switch (type)
@@ -300,40 +300,40 @@ class instance_dark_heart_of_pandaria : public InstanceMapScript
 
                 return ObjectGuid::Empty;
             }
-    
+
             bool IsWipe(float range, Unit* source) override
             {
                 Map::PlayerList const &playerList = instance->GetPlayers();
-    
+
                 for (Map::PlayerList::const_iterator itr = playerList.begin(); itr != playerList.end(); ++itr)
                 {
                     Player* player = itr->GetSource();
                     if (!player)
                         continue;
-    
+
                     if (player->IsAlive() && !player->IsGameMaster())
                         return false;
                 }
-    
+
                 return true;
             }
-    
+
             void Update(uint32 diff) override
             {
                 events.Update(diff);
             }
-    
+
             std::string GetSaveData() override
             {
                 OUT_SAVE_INST_DATA;
-    
+
                 std::ostringstream saveStream;
                 saveStream << "D H P " << chapterOne << ' ' << chapterTwo << ' ' << chapterThree << ' ' << chapterFour << ' ' << chapterFive;
-    
+
                 OUT_SAVE_INST_DATA_COMPLETE;
                 return saveStream.str();
             }
-    
+
             void Load(char const* in) override
             {
                 if (!in)
@@ -341,14 +341,14 @@ class instance_dark_heart_of_pandaria : public InstanceMapScript
                     OUT_LOAD_INST_DATA_FAIL;
                     return;
                 }
-    
+
                 OUT_LOAD_INST_DATA(in);
-    
+
                 char dataHead1, dataHead2, dataHead3;
-    
+
                 std::istringstream loadStream(in);
                 loadStream >> dataHead1 >> dataHead2 >> dataHead3;
-    
+
                 if (dataHead1 == 'D' && dataHead2 == 'H' && dataHead3 == 'P')
                 {
                     uint32 temp = 0;
@@ -369,11 +369,11 @@ class instance_dark_heart_of_pandaria : public InstanceMapScript
                     SetData(STEP_ECHO_DEFEATED, chapterFive);
                 }
                 else OUT_LOAD_INST_DATA_FAIL;
-    
+
                 OUT_LOAD_INST_DATA_COMPLETE;
             }
         };
-    
+
         InstanceScript* GetInstanceScript(InstanceMap* map) const override
         {
             return new instance_dark_heart_of_pandaria_InstanceMapScript(map);

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef VEC3D_H
 #define VEC3D_H
 
@@ -140,7 +140,6 @@ public:
     Vec3D max;
 };
 
-
 class Vec2D
 {
 public:
@@ -223,7 +222,6 @@ public:
         r.normalize();
         return r;
     }
-
 
     friend std::istream& operator>>(std::istream& in, Vec2D& v)
     {

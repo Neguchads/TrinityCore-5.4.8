@@ -256,7 +256,7 @@ class spell_warr_storm_bolt_damage : public SpellScriptLoader
             void HandleOnHit()
             {
                 if (Unit* unitTarget = GetHitUnit())
-                    if (unitTarget->GetTypeId() != TYPEID_PLAYER && unitTarget->IsImmunedToSpellEffect(sSpellMgr->GetSpellInfo(WARRIOR_SPELL_STORM_BOLT_STUN), 0))
+                    if (!(unitTarget->IsPlayer() && unitTarget->IsImmunedToSpellEffect(sSpellMgr->GetSpellInfo(WARRIOR_SPELL_STORM_BOLT_STUN), 0)))
                         SetHitDamage(GetHitDamage() * 4);
             }
 
@@ -508,7 +508,7 @@ class spell_warr_shockwave : public SpellScript
     void HandleCast()
     {
         if (m_targetCount >= 3)
-            if (GetCaster() && GetCaster()->GetTypeId() == TYPEID_PLAYER)
+            if (GetCaster() && GetCaster()->IsPlayer())
                 GetCaster()->ToPlayer()->ModifySpellCooldown(GetSpellInfo()->Id, -(GetSpellInfo()->Effects[EFFECT_3].BasePoints * IN_MILLISECONDS));
     }
 
@@ -806,7 +806,7 @@ class spell_warr_unshackled_fury : public SpellScriptLoader
 
 class spell_warr_glyph_of_burning_anger : public SpellScriptLoader
 {
-    public: 
+    public:
         spell_warr_glyph_of_burning_anger() : SpellScriptLoader("spell_warr_glyph_of_burning_anger") { }
 
         class spell_warr_glyph_of_burning_anger_SpellScript : public SpellScript
@@ -1001,7 +1001,7 @@ class spell_warr_sudden_death : public AuraScript
         if ((!eventInfo.GetSpellInfo() || eventInfo.GetSpellInfo()->Id == SPELL_WARR_OPPORTUNITY_STRIKE) && roll_chance_i(10))
         {
             warrior->CastSpell(warrior, SPELL_WARR_SUDDEN_DEATH, true);
-            if (warrior->GetTypeId() == TYPEID_PLAYER)
+            if (warrior->IsPlayer())
                 warrior->RemoveSpellCooldown(SPELL_WARR_COLOSSUS_SMASH, true);
         }
 
@@ -1086,7 +1086,7 @@ class spell_warr_intervene : public SpellScript
     SpellCastResult CheckCast()
     {
         Unit* target = GetExplTargetUnit();
-        if (!target || GetCaster()->GetTypeId() != TYPEID_PLAYER)
+        if (!target || !GetCaster()->IsPlayer())
             return SPELL_FAILED_DONT_REPORT;
         if (target == GetCaster())
             return SPELL_FAILED_BAD_TARGETS;
@@ -1233,7 +1233,7 @@ class spell_warr_heroic_leap : public SpellScript
     }
 };
 
-// 52174 - Heroic Leap 
+// 52174 - Heroic Leap
 class spell_warr_heroic_leap_damage : public SpellScript
 {
     PrepareSpellScript(spell_warr_heroic_leap_damage);
@@ -1310,7 +1310,6 @@ class spell_warr_raging_blow : public SpellScript
     }
 };
 
-
 // 29838 - Second Wind
 class spell_warr_second_wind : public AuraScript
 {
@@ -1368,7 +1367,7 @@ class spell_warr_second_wind_regen : public AuraScript
     }
 };
 
-// 23922 - Shield Slam 
+// 23922 - Shield Slam
 class spell_warr_shield_slam : public SpellScript
 {
     PrepareSpellScript(spell_warr_shield_slam);
@@ -1846,7 +1845,7 @@ class spell_warr_t16_protection_4p_bonus : public AuraScript
     void HandleRemove(AuraEffect const*, AuraEffectHandleModes)
     {
         Unit* warrior = GetCaster();
-        if (warrior && warrior->GetTypeId() == TYPEID_PLAYER)
+        if (warrior && warrior->IsPlayer())
         {
             if (warrior->HasAura(SPELL_WARRIOR_T16_PROTECTION_4P_BONUS) && GetTargetApplication()->GetRemoveMode() != AURA_REMOVE_BY_DEFAULT)
             {
@@ -1903,7 +1902,7 @@ class spell_warr_sweeping_strikes : public AuraScript
         Unit* warrior = GetUnitOwner();
 
         bool bladeStormProc = false;
-        if (eventInfo.GetSpellInfo() && eventInfo.GetSpellInfo()->Id == 50622 && warrior->GetTypeId() == TYPEID_PLAYER)
+        if (eventInfo.GetSpellInfo() && eventInfo.GetSpellInfo()->Id == 50622 && warrior->IsPlayer())
         {
             if (warrior->ToPlayer()->HasSpellCooldown(SPELL_WARRIOR_SWEEPING_STRIKES_EXTRA_ATTACK))
                 return;
@@ -1978,7 +1977,6 @@ class spell_warr_charge_drop_fire_periodic : public AuraScript
                 return;
 
             initialized = true;
-
 
             // Not blizzlike :(
             if (!GetCaster()->GetSplineDuration())

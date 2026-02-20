@@ -161,7 +161,7 @@ class boss_tayak : public CreatureScript
             uint32 PrevSideTornado, spellTornado;
             std::map<uint32, uint32> m_TornadoType;
 
-            void InitializeAI() override 
+            void InitializeAI() override
             {
                 entranceDone     = false;
                 introDone        = false;
@@ -391,7 +391,7 @@ class boss_tayak : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -593,7 +593,7 @@ class boss_tayak : public CreatureScript
                         {
                             if (Unit* target = ObjectAccessor::GetUnit(*me, unseenTarget))
                                 me->GetMotionMaster()->MoveChase(target);
-                            
+
                             events.ScheduleEvent(EVENT_UNSEEN_STRIKE_CHASE, urand(100, 200));
                             break;
                         }
@@ -1664,7 +1664,6 @@ class spell_su_jump : public SpellScriptLoader
             return new spell_su_jump_SpellScript;
         }
 };
-
 
 // AreaTrigger 8261
 class AreaTrigger_at_tayak_room : public AreaTriggerScript

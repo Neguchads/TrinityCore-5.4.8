@@ -265,7 +265,7 @@ class boss_hodir : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -347,7 +347,7 @@ class boss_hodir : public CreatureScript
 
             bool CanAIAttack(Unit const* who) const override
             {
-                if (who->GetTypeId() == TYPEID_UNIT)
+                if (who->IsCreature())
                     return !who->HasAura(SPELL_FLASH_FREEZE_HELPER) && !(who->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE) && who->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_STUNNED) && who->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED)); // SPELL_FLASH_FREEZE_HELPER is a channeled aura which might not get applied in time for MoveInLineOfSight update, so we check directly for flags applied by npc_ice_block::IsSummonedBy
 
                 return true;
@@ -454,7 +454,7 @@ class boss_hodir : public CreatureScript
                     for (auto&& itr : me->GetThreatManager().getThreatList())
                         if (Unit* target = ObjectAccessor::GetUnit(*me, itr->getUnitGuid()))
                             if (Aura* BitingColdAura = target->GetAura(SPELL_BITING_COLD_TRIGGERED))
-                                if ((target->GetTypeId() == TYPEID_PLAYER) && (BitingColdAura->GetStackAmount() > 2))
+                                if ((target->IsPlayer()) && (BitingColdAura->GetStackAmount() > 2))
                                 {
                                     me->GetMap()->SetWorldState(WORLDSTATE_GETTING_COLD_IN_HERE, 0);
                                     gettingColdInHere = false;
@@ -499,7 +499,7 @@ class boss_hodir : public CreatureScript
                     if (!me->IsWithinLOSInMap(target))
                         continue;
 
-                    if (target->GetTypeId() == TYPEID_UNIT)
+                    if (target->IsCreature())
                         if (target->IsTotem())
                             continue;
 
@@ -572,7 +572,7 @@ class npc_flash_freeze : public CreatureScript
                 DoCast(summoner, SPELL_BLOCK_OF_ICE, true);
                 // Prevents to have Ice Block on other place than target is
                 me->NearTeleportTo(summoner->GetPositionX(), summoner->GetPositionY(), summoner->GetPositionZ(), summoner->GetOrientation());
-                if (summoner->GetTypeId() == TYPEID_PLAYER)
+                if (summoner->IsPlayer())
                     if (Creature* Hodir = ObjectAccessor::GetCreature(*me, instance->GetGuidData(BOSS_HODIR)))
                         Hodir->AI()->DoAction(ACTION_CHEESE_THE_FREEZE);
             }
@@ -1117,7 +1117,7 @@ class spell_biting_cold : public SpellScriptLoader
                     return;
 
                 if (InstanceScript* instance = caster->GetInstanceScript())
-                    if (target->HasAura(SPELL_BITING_COLD) && !target->HasAura(SPELL_TOASTY_FIRE) && target->GetTypeId() == TYPEID_PLAYER && instance->GetBossState(BOSS_HODIR) == IN_PROGRESS)
+                    if (target->HasAura(SPELL_BITING_COLD) && !target->HasAura(SPELL_TOASTY_FIRE) && target->IsPlayer() && instance->GetBossState(BOSS_HODIR) == IN_PROGRESS)
                         target->CastSpell(target, SPELL_BITING_COLD_TRIGGERED, true);
             }
 

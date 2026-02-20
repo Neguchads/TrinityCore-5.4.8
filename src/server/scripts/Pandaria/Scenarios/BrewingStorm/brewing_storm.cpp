@@ -177,7 +177,7 @@ class npc_brewmaster_blanche : public CreatureScript
                 me->SetWalk(false);
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -438,7 +438,7 @@ class npc_brewmaster_blanche : public CreatureScript
 
             bool HasChapterOneCompleted()
             {
-                if (Player* itr = me->FindNearestPlayer(100.0f)) // we need check anyone player 
+                if (Player* itr = me->FindNearestPlayer(100.0f)) // we need check anyone player
                 {
                     if (!SayBrewBar && (itr->GetPower(POWER_ALTERNATE_POWER) > 50))
                     {
@@ -794,7 +794,7 @@ struct npc_viletongue_decimator : public ScriptedAI
                         DoCast(target, SPELL_TORCH_TOSS);
                     else if (Unit* target = me->GetVictim())
                         DoCast(target, SPELL_TORCH_TOSS);
-                
+
                     events.ScheduleEvent(EVENT_TORCH_TOSS, urand(7 * IN_MILLISECONDS, 10 * IN_MILLISECONDS));
                     break;
                 case EVENT_WIND_SLASH:
@@ -836,7 +836,6 @@ class spell_brewing_storm_lightning_impact : public SpellScript
         if (targets.size() > affectedCount)
             Trinity::Containers::RandomResizeList(targets, affectedCount);
     }
-
 
     void Register() override
     {

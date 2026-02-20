@@ -105,7 +105,7 @@ class boss_lorewalker_stonestep : public CreatureScript
                         events.ScheduleEvent(EVENT_SUN_0, 0.5 * IN_MILLISECONDS);
                         break;
                     case ACTION_TRIAL:
-                        events.ScheduleEvent(EVENT_STRIFE_0, 0.5 * IN_MILLISECONDS);                   
+                        events.ScheduleEvent(EVENT_STRIFE_0, 0.5 * IN_MILLISECONDS);
                         break;
                     case ACTION_RESET:
                         events.Reset();
@@ -115,7 +115,7 @@ class boss_lorewalker_stonestep : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!event && who->GetTypeId() == TYPEID_PLAYER)
+                if (!event && who->IsPlayer())
                 {
                     event = true;
                     events.ScheduleEvent(EVENT_INTRO_0, 500);
@@ -146,7 +146,7 @@ class boss_lorewalker_stonestep : public CreatureScript
                             events.ScheduleEvent(EVENT_INTRO_2, 16162);
                             break;
                         case EVENT_INTRO_2:
-                            Talk(EVENT_TALK_INTRO_2); 
+                            Talk(EVENT_TALK_INTRO_2);
                             events.ScheduleEvent(EVENT_INTRO_3, 9578);
                             break;
                         case EVENT_INTRO_3:
@@ -411,9 +411,9 @@ class npc_zao : public CreatureScript
                         events.Reset();
                         events.ScheduleEvent(EVENT_ZAO_ENTER_COMBAT_1, 1 * IN_MILLISECONDS);
                         break;
-                    case ACTION_TALK:                   
+                    case ACTION_TALK:
                         Talk(TALK_INTRO);
-                        events.ScheduleEvent(EVENT_ZAO_ATTACK, 1 * IN_MILLISECONDS);                  
+                        events.ScheduleEvent(EVENT_ZAO_ATTACK, 1 * IN_MILLISECONDS);
                         break;
                 }
             }
@@ -435,7 +435,7 @@ class npc_zao : public CreatureScript
                             break;
                         case EVENT_ZAO_ATTACK:
                             if (isCorrupted)
-                            {                          
+                            {
                                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM))
                                     me->CastSpell(target, SPELL_HELLFIRE_ARROW, true);
 
@@ -592,13 +592,13 @@ class npc_strife_peril : public CreatureScript
             {
                 isInfight = false;
                 me->SetFaction(14);
-                instance = me->GetInstanceScript();  
+                instance = me->GetInstanceScript();
                 me->CastSpell(me, SPELL_SHA_CORRUPTION_SP, false);
             }
 
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
-                if (attacker->GetTypeId() == TYPEID_UNIT && !attacker->ToCreature()->IsPet())
+                if (attacker->IsCreature() && !attacker->ToCreature()->IsPet())
                 {
                     if (me->GetHealth() < me->GetMaxHealth() || me->GetHealth() <= damage)
                         damage = 0;
@@ -622,7 +622,7 @@ class npc_strife_peril : public CreatureScript
                                 if (strife->IsAIEnabled)
                                     strife->AI()->DoAction(ACTION_IN_COMBAT);
                         };
-                    }      
+                    }
                 }
             }
 
@@ -1048,7 +1048,7 @@ class spell_tjs_intensity : public SpellScriptLoader
         {
             SPELL_ULTIMATE_POWER = 113309,
             SPELL_INTENSITY      = 113315,
-            SPELL_DISSIPATION    = 113379 
+            SPELL_DISSIPATION    = 113379
         };
 
         class spell_tjs_intensity_AuraScript : public AuraScript
@@ -1079,7 +1079,7 @@ class spell_tjs_intensity : public SpellScriptLoader
                     return false;
 
                 auto const target = eventInfo.GetActor();
-                if (!target || target->GetTypeId() != TYPEID_PLAYER)
+                if (!target || !target->IsPlayer())
                     return false;
 
                 return true;
@@ -1093,9 +1093,9 @@ class spell_tjs_intensity : public SpellScriptLoader
                     {
                         intensityStack = aura->GetStackAmount();
                         if (aura->GetStackAmount() == 10)
-                        {                      
+                        {
                             owner->RemoveAura(SPELL_INTENSITY);
-                            owner->CastSpell(owner, SPELL_ULTIMATE_POWER, false);                       
+                            owner->CastSpell(owner, SPELL_ULTIMATE_POWER, false);
                         }
                     }
 

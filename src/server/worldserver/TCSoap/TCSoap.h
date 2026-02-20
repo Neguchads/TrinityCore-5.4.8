@@ -56,7 +56,7 @@ class SOAPCommand
 
         static void print(void* callbackArg, char const* msg)
         {
-            
+
             ((SOAPCommand*)callbackArg)->appendToPrintBuffer(std::string_view(msg));
         }
 

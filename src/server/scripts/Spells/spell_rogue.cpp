@@ -316,7 +316,7 @@ class spell_rog_shroud_of_concealment : public SpellScript
             Unit const* unit = target->ToUnit();
             if (!unit)
                 return true;
-            if (unit->IsVehicle() && unit->GetTypeId() != TYPEID_PLAYER)
+            if (unit->IsVehicle() && !unit->IsPlayer())
                 return true;
             return unit->IsInCombat() || unit->HasUnitState(UNIT_STATE_CASTING);
         });
@@ -384,7 +384,7 @@ class spell_rog_slice_and_dice : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+        return GetCaster()->IsPlayer();
     }
 
     void HandleHit()
@@ -611,7 +611,7 @@ class spell_rog_deadly_poison : public SpellScriptLoader
             {
                 _stackAmount = 0;
                 // at this point CastItem must already be initialized
-                return GetCaster()->GetTypeId() == TYPEID_PLAYER && GetCastItem();
+                return GetCaster()->IsPlayer() && GetCastItem();
             }
 
             void HandleBeforeHit()
@@ -710,7 +710,7 @@ class spell_rog_marked_for_death : public SpellScriptLoader
 
             void HandleRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                if (GetCaster() && GetTarget() && GetCaster()->GetTypeId() == TYPEID_PLAYER)
+                if (GetCaster() && GetTarget() && GetCaster()->IsPlayer())
                     if (GetTargetApplication()->GetRemoveMode() == AURA_REMOVE_BY_DEATH)
                         GetCaster()->ToPlayer()->RemoveSpellCooldown(GetId(), true);
             }
@@ -1117,7 +1117,7 @@ class spell_rog_sanguinary_vein : public AuraScript
     }
 };
 
-// 1752 - Sinister Strike 
+// 1752 - Sinister Strike
 class spell_rog_sinister_strike : public SpellScript
 {
     PrepareSpellScript(spell_rog_sinister_strike);
@@ -1235,7 +1235,7 @@ class spell_rog_blade_flurry : public AuraScript
     }
 };
 
-// 22482 - Blade Flurry (damage) 
+// 22482 - Blade Flurry (damage)
 class spell_rog_blade_flurry_damage : public SpellScript
 {
     PrepareSpellScript(spell_rog_blade_flurry_damage);
@@ -1284,7 +1284,7 @@ class spell_rog_poison_proc : public AuraScript
     }
 };
 
-// 31230 - Cheat Death 
+// 31230 - Cheat Death
 class spell_rog_cheat_death : public AuraScript
 {
     PrepareAuraScript(spell_rog_cheat_death);
@@ -1355,7 +1355,7 @@ class spell_rog_shuriken_toss_aura : public AuraScript
     void HandleProc(ProcEventInfo& eventInfo)
     {
         if (eventInfo.GetSpellInfo() && GetUnitOwner() != eventInfo.GetActionTarget())
-            if (GetUnitOwner()->IsWithinMeleeRange(eventInfo.GetActionTarget()))    // Melee range reached, remove masterOfSubtlety. 
+            if (GetUnitOwner()->IsWithinMeleeRange(eventInfo.GetActionTarget()))    // Melee range reached, remove masterOfSubtlety.
                 Remove();
     }
 
@@ -1388,7 +1388,7 @@ class spell_rog_seal_fate : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     bool CheckProc(ProcEventInfo& procEvent)
@@ -1452,7 +1452,7 @@ class spell_rog_honor_among_thieves : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     bool CheckProc(ProcEventInfo& eventInfo)
@@ -1646,7 +1646,7 @@ class spell_rog_vanish_trigger : public SpellScript
         }
 
         // If this spell is given to an NPC, it must handle the rest using its own AI
-        if (rogue->GetTypeId() != TYPEID_PLAYER)
+        if (!(rogue->IsPlayer()))
             return;
 
         uint32 spellId = rogue->HasSpell(SPELL_ROGUE_SUBTERFUGE_TALENT) ? SPELL_ROGUE_SUBTERFUGE_VANISH : SPELL_ROG_VANISH;
@@ -2017,7 +2017,7 @@ class spell_rog_relentless_strikes : public SpellScript
     }
 };
 
-// 121411 - Crimson Tempest, 51723 - Fan of Knives  
+// 121411 - Crimson Tempest, 51723 - Fan of Knives
 class spell_rog_subterfuge_cast_trigger : public SpellScript
 {
     PrepareSpellScript(spell_rog_subterfuge_cast_trigger);
@@ -2082,7 +2082,7 @@ class spell_rog_blind : public SpellScript
     }
 };
 
-// 26679 - Deadly Throw 
+// 26679 - Deadly Throw
 class spell_rog_deadly_throw : public SpellScript
 {
     PrepareSpellScript(spell_rog_deadly_throw);
@@ -2384,7 +2384,7 @@ class spell_rog_t15_2p_bonus : public SpellScript
 
     bool Load() override
     {
-        return GetCaster()->GetTypeId() == TYPEID_PLAYER && GetCaster()->HasAura(SPELL_ROGUE_T15_2P_BONUS);
+        return GetCaster()->IsPlayer() && GetCaster()->HasAura(SPELL_ROGUE_T15_2P_BONUS);
     }
 
     void HanldeHit()
@@ -2420,7 +2420,7 @@ class spell_rog_t16_2p_bonus : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     int32 GetAmount()
@@ -2484,7 +2484,7 @@ class spell_rog_t16_4p_bonus : public AuraScript
 
     bool Load() override
     {
-        return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
+        return GetUnitOwner()->IsPlayer();
     }
 
     void HandleProc(ProcEventInfo& eventInfo)
@@ -2672,7 +2672,7 @@ class spell_rog_glyph_of_kick : public SpellScript
 
     void HandleHit()
     {
-        if (GetSpell()->IsSuccessfulInterrupt() && GetCaster()->GetTypeId() == TYPEID_PLAYER)
+        if (GetSpell()->IsSuccessfulInterrupt() && GetCaster()->IsPlayer())
             if (AuraEffect const* glyph = GetCaster()->GetAuraEffect(SPELL_ROGUE_GLYPH_OF_KICK, EFFECT_1))
                 GetCaster()->ToPlayer()->ModifySpellCooldown(GetSpellInfo()->Id, -glyph->GetAmount());
     }

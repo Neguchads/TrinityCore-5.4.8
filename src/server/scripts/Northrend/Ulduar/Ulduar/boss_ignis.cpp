@@ -59,7 +59,6 @@ enum Spells
     SPELL_GROUND                = 62548,
 };
 
-
 enum Events
 {
     EVENT_FLAME_JETS    = 1,
@@ -183,7 +182,7 @@ class boss_ignis : public CreatureScript
                     slagPotTarget->RemoveAurasDueToSpell(SPELL_SLAG_POT);
                     _slagPotGUID = ObjectGuid::Empty;
                 }
-                
+
                 ClearSummons(true);
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_FLAME_JETS);
 
@@ -193,7 +192,7 @@ class boss_ignis : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER)
+                if (who->IsPlayer())
                     Talk(SAY_SLAY);
             }
 

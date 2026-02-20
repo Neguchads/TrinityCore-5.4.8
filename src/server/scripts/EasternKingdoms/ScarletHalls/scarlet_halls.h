@@ -40,7 +40,7 @@ const Position ExplodingStartPos1 = {  905.77f, 534.20f,  12.90f, 6.23f };
 const Position ExplodingStartPos2 = {  906.47f, 547.90f,  12.92f, 6.23f };
 const Position DragonBreathMover =  { 1288.46f, 549.30f,  12.81f, 3.12f };
 
-const Position BladeStormPoints [POINTS] = 
+const Position BladeStormPoints [POINTS] =
 {
     { 1201.52f, 438.68f, 0.98f,  1.86f  },
     { 1198.41f, 445.94f, 0.98f,  1.0f   },
@@ -78,7 +78,7 @@ const Position DefenderPath2[6]=
     { 1223.84f, 445.44f, 6.08f,  4.24f },
     { 1219.39f, 440.57f, 6.08f,  3.97f },
     { 1205.45f, 429.81f, 1.11f,  3.74f }
-};                               
+};
 
 const Position HoodedCrusaderWp[MAX_TYPES - 2]
 {

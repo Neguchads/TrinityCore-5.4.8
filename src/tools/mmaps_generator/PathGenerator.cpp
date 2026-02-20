@@ -330,7 +330,7 @@ int main(int argc, char** argv)
     unsigned int threads = std::thread::hardware_concurrency();
     int mapnum = -1;
     int tileX = -1, tileY = -1;
-    Optional<float> maxAngle, maxAngleNotSteep;    
+    Optional<float> maxAngle, maxAngleNotSteep;
     bool skipLiquid = false,
          skipContinents = false,
          skipJunkMaps = true,
@@ -369,7 +369,7 @@ int main(int argc, char** argv)
 
     _liquidTypes = LoadLiquid();
     if (_liquidTypes.empty())
-        return silent ? -5 : finish("Failed to load LiquidType.dbc", -5);    
+        return silent ? -5 : finish("Failed to load LiquidType.dbc", -5);
 
     MapBuilder builder(maxAngle, maxAngleNotSteep, skipLiquid, skipContinents, skipJunkMaps,
                        skipBattlegrounds, skipArenas, skipDungeons, skipTransports, debugOutput, bigBaseUnit, mapnum, offMeshInputPath, threads);

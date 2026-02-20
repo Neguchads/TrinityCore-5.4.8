@@ -91,7 +91,7 @@ class boss_gu_cloudstrike : public CreatureScript
                 nonCombatEvents.Reset();
                 me->setRegeneratingHealth(true);
                 me->SetReactState(REACT_AGGRESSIVE);
-                me->RemoveAurasDueToSpell(SPELL_CHARGING_SOUL);           
+                me->RemoveAurasDueToSpell(SPELL_CHARGING_SOUL);
 
                 if (instance)
                     instance->SetData(DATA_GU_CLOUDSTRIKE, NOT_STARTED);
@@ -160,7 +160,7 @@ class boss_gu_cloudstrike : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 
@@ -375,7 +375,7 @@ class npc_azure_serpent : public CreatureScript
                     init.SetSmooth();
                     init.SetFly();
                     init.SetVelocity(13.0f);
-                    init.Launch(); 
+                    init.Launch();
 
                     events.ScheduleEvent(EVENT_SWITCH_PHASE, me->GetSplineDuration());
                 }
@@ -386,7 +386,7 @@ class npc_azure_serpent : public CreatureScript
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
-                events.Update(diff);            
+                events.Update(diff);
 
                 switch (events.ExecuteEvent())
                 {

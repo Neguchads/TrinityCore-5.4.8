@@ -18,7 +18,7 @@
 #include "ScriptPCH.h"
 #include "deadmines.h"
 
-// todo: ����������� ������ � ����� �� �������, ��������� ������ ����� �������� ���� �����
+// todo: Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½, Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½ Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½Ã¯Â¿Â½
 
 enum ScriptTexts
 {
@@ -123,7 +123,7 @@ class boss_foereaper5000 : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                
+
                 events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -185,7 +185,7 @@ class boss_foereaper5000 : public CreatureScript
                 }
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 _JustEngagedWith();
 
@@ -223,7 +223,7 @@ class boss_foereaper5000 : public CreatureScript
                 if (instance)
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
 
-                Talk(SAY_DEATH); 
+                Talk(SAY_DEATH);
             }
         };
 
@@ -237,20 +237,20 @@ class npc_foereaper_targeting_bunny: public CreatureScript
 {
     public:
         npc_foereaper_targeting_bunny() : CreatureScript("npc_foereaper_targeting_bunny") { }
-     
+
         struct npc_foereaper_targeting_bunnyAI : public ScriptedAI
         {
             npc_foereaper_targeting_bunnyAI(Creature* creature) : ScriptedAI(creature)
             {
                 SetCombatMovement(false);
             }
-           
+
             void Reset() override
             {
                 DoCast(SPELL_TARGET_BUNNY);
             }
         };
-     
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return GetInstanceAI<npc_foereaper_targeting_bunnyAI>(creature);

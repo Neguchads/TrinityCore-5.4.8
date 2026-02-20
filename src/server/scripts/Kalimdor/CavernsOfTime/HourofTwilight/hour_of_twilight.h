@@ -33,7 +33,6 @@ const Position BreakTheWall{ 4756.64f, 57.87f, 66.47f, 3.71f };
 const Position WaveSpawnPoint = { 3586.25f, 277.84f, -115.96f, 3.28f };
 const Position WaveDespawnPoint = { 3508.25f, 268.58f, -115.96f, 3.32f };
 
-
 #define MAX_POINT_ACURION 5
 #define MAX_POINT_ASIRA 10
 #define ARCURION_PREPARE_MAX_POINTS 2

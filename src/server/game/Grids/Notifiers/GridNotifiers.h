@@ -66,7 +66,7 @@ namespace Trinity
     {
         Unit &i_unit;
         bool isCreature;
-        explicit AIRelocationNotifier(Unit &unit) : i_unit(unit), isCreature(unit.GetTypeId() == TYPEID_UNIT)  { }
+        explicit AIRelocationNotifier(Unit &unit) : i_unit(unit), isCreature(unit.IsCreature())  { }
         template<class T> void Visit(GridRefManager<T> &) { }
         void Visit(CreatureMapType &);
     };
@@ -99,7 +99,7 @@ namespace Trinity
         float i_distSq;
         uint32 team;
         Player const* skipped_receiver;
-        bool required3dDist;        
+        bool required3dDist;
         MessageDistDeliverer(WorldObject const* src, WorldPacket const* msg, float dist, bool own_team_only = false, Player const* skipped = nullptr, bool req3dDist = false)
             : i_source(src), i_message(msg), i_phaseMask(src->GetPhaseMask()), i_distSq(dist * dist)
             , team(0)
@@ -860,7 +860,7 @@ namespace Trinity
             AnyFriendlyUnitInObjectRangeCheck(WorldObject const* obj, Unit const* funit, float range, bool playerOnly = false) : i_obj(obj), i_funit(funit), i_range(range), i_playerOnly(playerOnly) { }
             bool operator()(Unit* u)
             {
-                if (u->IsAlive() && i_obj->IsWithinDistInMap(u, i_range) && i_funit->IsFriendlyTo(u) && (!i_playerOnly || u->GetTypeId() == TYPEID_PLAYER))
+                if (u->IsAlive() && i_obj->IsWithinDistInMap(u, i_range) && i_funit->IsFriendlyTo(u) && (!i_playerOnly || u->IsPlayer()))
                     return true;
                 else
                     return false;
@@ -973,7 +973,7 @@ namespace Trinity
                 Unit const* owner = i_funit->GetOwner();
                 if (owner)
                     check = owner;
-                i_targetForPlayer = (check->GetTypeId() == TYPEID_PLAYER);
+                i_targetForPlayer = (check->IsPlayer());
                 if (i_obj->GetTypeId() == TYPEID_DYNAMICOBJECT)
                     _spellInfo = sSpellMgr->GetSpellInfo(((DynamicObject*)i_obj)->GetSpellId());
             }
@@ -1060,7 +1060,7 @@ namespace Trinity
                 if (!me->IsValidAttackTarget(u))
                     return false;
 
-                if (i_playerOnly && u->GetTypeId() != TYPEID_PLAYER)
+                if (i_playerOnly && !u->IsPlayer())
                     return false;
 
                 // Prioritize other units over totems
@@ -1217,9 +1217,9 @@ namespace Trinity
 
             bool operator()(Creature* u)
             {
-                if (u->GetEntry() == i_entry 
-                    && u->IsAlive() == i_alive 
-                    && i_obj.IsWithinDistInMap(u, i_range) 
+                if (u->GetEntry() == i_entry
+                    && u->IsAlive() == i_alive
+                    && i_obj.IsWithinDistInMap(u, i_range)
                     && u->CheckPrivateObjectOwnerVisibility(&i_obj))
                 {
                     i_range = i_obj.GetDistance(u);         // use found unit range as new range limit for next check

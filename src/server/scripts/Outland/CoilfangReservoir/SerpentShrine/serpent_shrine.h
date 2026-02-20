@@ -55,4 +55,3 @@ enum DataTypes
 };
 
 #endif
-

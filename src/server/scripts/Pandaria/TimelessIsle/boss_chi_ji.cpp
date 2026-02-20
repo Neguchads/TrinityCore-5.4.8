@@ -83,7 +83,7 @@ class boss_chi_ji : public CreatureScript
 
         struct boss_chi_jiAI : public ScriptedAI
         {
-            boss_chi_jiAI(Creature* creature) : ScriptedAI(creature), summons(me) 
+            boss_chi_jiAI(Creature* creature) : ScriptedAI(creature), summons(me)
             {
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE); // prisma
             }
@@ -223,7 +223,7 @@ class boss_chi_ji : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                 {
                     Talk(SAY_KILL);
                     return;

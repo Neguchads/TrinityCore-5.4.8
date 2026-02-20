@@ -17,7 +17,7 @@
 
 #include "siege_of_niuzao_temple.h"
 
-static const Position bridgePos[] = 
+static const Position bridgePos[] =
 {
     {1888.998f, 5177.15f, 143.3173f, 0.0f},
     {1808.063f, 5251.847f, 142.6636f, 0.0f}
@@ -55,7 +55,7 @@ class boss_wing_leader_neronok : public CreatureScript
         EVENT_RE_ENGAGE,
     };
 
-    enum 
+    enum
     {
         EVENT_GROUP_MOVEMENT        = 1,
         EVENT_GROUP_COMBAT          = 2,
@@ -69,8 +69,8 @@ class boss_wing_leader_neronok : public CreatureScript
 
         struct boss_wing_leader_neronokAI : public BossAI
         {
-            boss_wing_leader_neronokAI(Creature* creature) : BossAI(creature, BOSS_NERONOK) 
-            { 
+            boss_wing_leader_neronokAI(Creature* creature) : BossAI(creature, BOSS_NERONOK)
+            {
                 SetCombatMovement(false);
                 me->setActive(true);
             }
@@ -162,7 +162,7 @@ class boss_wing_leader_neronok : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -397,7 +397,7 @@ class spell_neronok_gusting_winds : public SpellScriptLoader
                     if (GetTargetApplication()->GetRemoveMode() != AURA_REMOVE_BY_CANCEL
                         && GetTargetApplication()->GetRemoveMode() != AURA_REMOVE_BY_ENEMY_SPELL)
                         return;
-                    
+
                     if (Creature* creature = owner->ToCreature())
                         creature->AI()->DoAction(1);
                 }
@@ -446,7 +446,6 @@ class sat_neronok_gusting_winds : public IAreaTriggerAura
                     target->SendApplyMovementForce(false, *caster);
     }
 };
-
 
 void AddSC_wing_leader_neronok()
 {

@@ -21,7 +21,7 @@
 #include "Vehicle.h"
 #include "MoveSplineInit.h"
 #include "GameObjectAI.h"
-#include "CombatAI.h" 
+#include "CombatAI.h"
 
 enum spells
 {
@@ -74,9 +74,9 @@ struct gss_trash_generic_baseAI : public ScriptedAI
 
     void MoveInLineOfSight(Unit* who) override
     {
-        if (who->GetTypeId() == TYPEID_PLAYER && me->IsWithinDistInMap(who, 15.0f) && !who->IsFriendlyTo(me))
+        if (who->IsPlayer() && me->IsWithinDistInMap(who, 15.0f) && !who->IsFriendlyTo(me))
         {
-            if ((me->GetVictim() && me->GetVictim()->GetTypeId() != TYPEID_PLAYER) || !me->IsInCombat())
+            if ((me->GetVictim() && !me->GetVictim()->IsPlayer()) || !me->IsInCombat())
             {
                 me->DeleteThreatList();
                 me->GetThreatManager().addThreat(who, 100.0f);
@@ -87,7 +87,7 @@ struct gss_trash_generic_baseAI : public ScriptedAI
 
     void DamageTaken(Unit* attacker, uint32& damage) override
     {
-        if (attacker->GetTypeId() == TYPEID_UNIT && !attacker->ToCreature()->IsPet())
+        if (attacker->IsCreature() && !attacker->ToCreature()->IsPet())
         {
             if (me->GetHealthPct() <= randHealth || me->GetHealth() <= damage)
             {
@@ -245,7 +245,7 @@ class npc_kirkthik_conscript : public CreatureScript
 
         struct npc_kirkthik_conscriptAI : public gss_trash_generic_baseAI
         {
-            npc_kirkthik_conscriptAI(Creature* creature) : gss_trash_generic_baseAI(creature) { }  
+            npc_kirkthik_conscriptAI(Creature* creature) : gss_trash_generic_baseAI(creature) { }
 
             void Reset() override
             {
@@ -255,7 +255,7 @@ class npc_kirkthik_conscript : public CreatureScript
 
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
-                if (attacker->GetTypeId() == TYPEID_UNIT && !attacker->ToCreature()->IsPet())
+                if (attacker->IsCreature() && !attacker->ToCreature()->IsPet())
                 {
                     if (me->GetHealth() < me->GetMaxHealth() || me->GetHealth() <= damage)
                     {
@@ -669,7 +669,7 @@ class npc_serpents_spine_marksman : public CreatureScript
                 events.ScheduleEvent(EVENT_MISSILE, 1 * IN_MILLISECONDS);
             }
 
-            void DamageTaken(Unit* /*attacker*/, uint32& /*damage*/) override 
+            void DamageTaken(Unit* /*attacker*/, uint32& /*damage*/) override
             {
                 if (me->GetPositionX() > 860.0f) // first puck of archers shouldn`t die at wall corner
                     me->Kill(me);
@@ -1065,7 +1065,7 @@ class npc_great_wall_before_gadok_intro : public CreatureScript
                         {
                             if (cann->IsAIEnabled)
                                 cann->AI()->DoAction(1);
-                            
+
                             switch (urand(0, 1))
                             {
                                 case 0:
@@ -1084,7 +1084,7 @@ class npc_great_wall_before_gadok_intro : public CreatureScript
                         {
                             if (cann->IsAIEnabled)
                                 cann->AI()->DoAction(2);
-                            
+
                             switch (urand(0, 1))
                             {
                                 case 0:
@@ -1103,7 +1103,7 @@ class npc_great_wall_before_gadok_intro : public CreatureScript
                         {
                             if (cann->IsAIEnabled)
                                 cann->AI()->DoAction(2);
-                            
+
                             switch (urand(0, 1))
                             {
                                 case 0:
@@ -1569,7 +1569,7 @@ class go_gss_generic : public GameObjectScript
         }
 };
 
-// 109986 
+// 109986
 class spell_gss_volatile_explosion : public SpellScriptLoader
 {
     public:
@@ -1609,7 +1609,7 @@ class PickAPlayerTargetSelector
 
         bool operator()(WorldObject* object)
         {
-            if (object->GetTypeId() == TYPEID_PLAYER && !object->ToPlayer()->IsVehicle())
+            if (object->IsPlayer() && !object->ToPlayer()->IsVehicle())
                 return false;
 
             return true;

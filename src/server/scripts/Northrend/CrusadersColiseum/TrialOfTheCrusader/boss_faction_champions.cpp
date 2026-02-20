@@ -580,7 +580,7 @@ struct boss_faction_championsAI : public BossAI
             Unit* unit = Unit::GetUnit(*me, (*itr)->getUnitGuid());
             if (unit && me->GetThreatManager().getThreat(unit))
             {
-                if (unit->GetTypeId() == TYPEID_PLAYER)
+                if (unit->IsPlayer())
                 {
                     float threat = CalculateThreat(me->GetDistance2d(unit), (float)unit->GetArmor(), unit->GetHealth());
                     me->GetThreatManager().modifyThreatPercent(unit, -100);
@@ -625,7 +625,7 @@ struct boss_faction_championsAI : public BossAI
 
     void KilledUnit(Unit* who) override
     {
-        if (who->GetTypeId() == TYPEID_PLAYER)
+        if (who->IsPlayer())
         {
             Map::PlayerList const &players = me->GetMap()->GetPlayers();
             uint32 TeamInInstance = 0;
@@ -644,7 +644,6 @@ struct boss_faction_championsAI : public BossAI
                 else
                     if (Creature* temp = Unit::GetCreature(*me, instance->GetGuidData(NPC_GARROSH)))
                         temp->AI()->Talk(SAY_KILL_PLAYER);
-
 
                 instance->SetData(DATA_TRIBUTE_TO_IMMORTALITY_ELIGIBLE, 0);
             }

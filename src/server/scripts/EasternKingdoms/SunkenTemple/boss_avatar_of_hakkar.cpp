@@ -178,14 +178,14 @@ class boss_avatar_of_hakkar : public CreatureScript
             }
 
             private:
-                struct TonguePredicate 
+                struct TonguePredicate
                 {
                     public:
                         TonguePredicate(Creature const* me) : _me(me) { }
 
                         bool operator()(Unit const* target) const
                         {
-                            return target && target->GetTypeId() == TYPEID_PLAYER && target->GetDistance2d(_me) > 6.0f;
+                            return target && target->IsPlayer() && target->GetDistance2d(_me) > 6.0f;
                         }
 
                     private:

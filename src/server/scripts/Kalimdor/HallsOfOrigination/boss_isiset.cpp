@@ -23,7 +23,7 @@ enum ScriptTexts
     SAY_DEATH       = 0,
     SAY_AGGRO       = 1,
     SAY_SUPERNOVA   = 2,
-    SAY_KILL        = 3, 
+    SAY_KILL        = 3,
 };
 
 enum Spells
@@ -202,7 +202,7 @@ class boss_isiset : public CreatureScript
                     me->SetReactState(REACT_PASSIVE);
                     if (CelestialCall)
                          DoCast(me, SPELL_MIRROR_IMAGE_CC);
-                    if (AstralRain)    
+                    if (AstralRain)
                         DoCast(me, SPELL_MIRROR_IMAGE_AR);
                     if (VeilOfSky)
                         DoCast(me, SPELL_MIRROR_IMAGE_VS);
@@ -594,7 +594,7 @@ class spell_isiset_supernova_dis : public SpellScriptLoader
         class spell_isiset_supernova_dis_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_isiset_supernova_dis_SpellScript);
-            
+
             void FilterTargets(std::list<WorldObject*>& unitList)
             {
                 unitList.remove_if(OrientationCheck(GetCaster()));
@@ -620,7 +620,7 @@ class spell_isiset_supernova_dmg : public SpellScriptLoader
         class spell_isiset_supernova_dmg_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_isiset_supernova_dmg_SpellScript);
-            
+
             void FilterTargets(std::list<WorldObject*>& unitList)
             {
                 unitList.remove_if(OrientationCheck(GetCaster()));

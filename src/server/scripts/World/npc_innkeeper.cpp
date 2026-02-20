@@ -42,7 +42,6 @@ enum Npc
     NPC_GOSSIP_MENU_EVENT = 342,
 };
 
-
 class npc_innkeeper : public CreatureScript
 {
 public:
@@ -123,4 +122,3 @@ void AddSC_npc_innkeeper()
 {
     new npc_innkeeper();
 }
-

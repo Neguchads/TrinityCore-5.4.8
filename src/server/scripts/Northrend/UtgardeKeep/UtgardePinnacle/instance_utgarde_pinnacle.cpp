@@ -64,7 +64,7 @@ class instance_utgarde_pinnacle : public InstanceMapScript
             ObjectGuid uiFlameBrazier_2;
 
             uint32 m_auiEncounter[MAX_ENCOUNTER];
-        
+
             ObjectGuid uiDoodad_Utgarde_Mirror_FX01;
 
             std::string str_data;
@@ -117,16 +117,16 @@ class instance_utgarde_pinnacle : public InstanceMapScript
                     case NPC_FRENZIED_WORGEN:
                         uiFrenziedWorgen = creature->GetGUID();
                         break;
-                    case NPC_RAVENOUS_FURBOLG: 
+                    case NPC_RAVENOUS_FURBOLG:
                         uiRavenousFurbolg = creature->GetGUID();
                         break;
                     case NPC_MASSIVE_JORMUNGAR:
                         uiMassiveJormungar = creature->GetGUID();
                         break;
-                    case NPC_FEROCIOUS_RHINO: 
+                    case NPC_FEROCIOUS_RHINO:
                         uiFerociousRhino = creature->GetGUID();
                         break;
-                    case NPC_SVALA: 
+                    case NPC_SVALA:
                         uiSvala = creature->GetGUID();
                         break;
                     case NPC_PALEHOOF_ORB:

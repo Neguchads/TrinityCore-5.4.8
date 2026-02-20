@@ -510,7 +510,7 @@ Position const IllusionsMiscPos[2] =
 };
 
 Position const WipePos            = { 1856.423f, -26.122f, 334.161f, 6.268605f };
- 
+
 enum MiscData
 {
     ACHIEV_TIMED_START_EVENT                = 21001,
@@ -559,7 +559,7 @@ class boss_voice_of_yogg_saron : public CreatureScript
             void MoveInLineOfSight(Unit* who) override
             {
                 // TODO: MoveInLineOfSight doesn't work for such a big distance
-                if (who->GetTypeId() == TYPEID_PLAYER && me->GetDistance2d(who) < 99.0f && !me->IsInCombat() && instance->CheckRequiredBosses(BOSS_YOGG_SARON))
+                if (who->IsPlayer() && me->GetDistance2d(who) < 99.0f && !me->IsInCombat() && instance->CheckRequiredBosses(BOSS_YOGG_SARON))
                     me->SetInCombatWithZone();
             }
 
@@ -894,7 +894,7 @@ class boss_sara : public CreatureScript
 
             void KilledUnit(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_PLAYER && !me->IsInEvadeMode())
+                if (who->IsPlayer() && !me->IsInEvadeMode())
                     Talk(SAY_SARA_KILL);
             }
 
@@ -1898,7 +1898,7 @@ class npc_observation_ring_keeper : public CreatureScript
                 return false;
 
             player->PlayerTalkClass->GetGossipMenu().SetMenuId(0);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, player->GetSession()->GetSessionDbLocaleIndex() == LOCALE_ruRU ? "Я не лидер рейда..." : "I'm not the raid leader...", 0, 0);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, player->GetSession()->GetSessionDbLocaleIndex() == LOCALE_ruRU ? "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯ ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµ ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂµÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂµÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¹ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°..." : "I'm not the raid leader...", 0, 0);
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
@@ -3539,7 +3539,7 @@ class spell_yogg_saron_keeper_aura : public SpellScriptLoader
 
             bool CanApply(Unit* target)
             {
-                if (target->GetTypeId() != TYPEID_PLAYER && target != GetCaster())
+                if (!(target->IsPlayer() && target != GetCaster()))
                     return false;
                 return true;
             }
@@ -3669,7 +3669,7 @@ class spell_yogg_saron_hodirs_protective_gaze : public SpellScriptLoader
 
             bool CanApply(Unit* target)
             {
-                if (target->GetTypeId() != TYPEID_PLAYER && target != GetCaster())
+                if (!(target->IsPlayer() && target != GetCaster()))
                     return false;
                 return true;
             }

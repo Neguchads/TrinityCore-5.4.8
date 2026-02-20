@@ -74,7 +74,7 @@ enum LoginResult
     LOGIN_PARENTALCONTROL                        = 0x13,
     LOGIN_LOCKED_ENFORCED                        = 0x14,
     LOGIN_ACCOUNT_CONVERTED                      = 0x15,
-    LOGIN_ANTI_INDULGENCE                        = 0x16, 
+    LOGIN_ANTI_INDULGENCE                        = 0x16,
     LOGIN_EXPIRED                                = 0x17,
     LOGIN_TRIAL_EXPIRED                          = 0x18,
     LOGIN_NO_GAME_ACCOUNT                        = 0x19,

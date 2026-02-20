@@ -46,7 +46,7 @@ enum GameObjects
     GO_GLOWING_ANVIL_1       = 186609,
     GO_GLOWING_ANVIL_2       = 186610,
     GO_GLOWING_ANVIL_3       = 186611,
-    
+
     GO_GIANT_PORTCULLIS_1    = 186756,
     GO_GIANT_PORTCULLIS_2    = 186694,
 };
@@ -143,7 +143,7 @@ class instance_utgarde_keep : public InstanceMapScript
             {
                 switch (go->GetEntry())
                 {
-                    case GO_BELLOW_1: 
+                    case GO_BELLOW_1:
                         forge_bellow[0] = go->GetGUID();
                         if (forge_event[0] != NOT_STARTED)
                             HandleGameObject(ObjectGuid::Empty, true, go);
@@ -347,7 +347,6 @@ class instance_utgarde_keep : public InstanceMapScript
            return new instance_utgarde_keep_InstanceMapScript(map);
         }
 };
-
 
 void AddSC_instance_utgarde_keep()
 {

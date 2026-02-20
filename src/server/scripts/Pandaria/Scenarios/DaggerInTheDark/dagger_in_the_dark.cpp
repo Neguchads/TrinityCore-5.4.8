@@ -463,7 +463,6 @@ class npc_dagger_in_dark_voljin : public CreatureScript
                                 bloodrazor->AI()->Talk(TALK_SPECIAL_4);
                         });
 
-
                         scheduler
                             .Schedule(Milliseconds(delay += 12600), [this](TaskContext context)
                         {
@@ -959,7 +958,7 @@ struct npc_dagger_in_dark_corrupted_dark_hatched_egg : public customCreatureAI
 {
     npc_dagger_in_dark_corrupted_dark_hatched_egg(Creature* creature) : customCreatureAI(creature) { }
 
-    void Reset() override 
+    void Reset() override
     {
         SetCombatMovement(false);
     }
@@ -1094,7 +1093,7 @@ struct npc_dagger_in_dark_darkhatched_flesh_hunter : public customCreatureAI
 // Darkhatched Lizard-Lord 67263
 struct npc_dagger_in_dark_darkhatched_lizard_lord : public customCreatureAI
 {
-    npc_dagger_in_dark_darkhatched_lizard_lord(Creature* creature) : customCreatureAI(creature) 
+    npc_dagger_in_dark_darkhatched_lizard_lord(Creature* creature) : customCreatureAI(creature)
     {
         hasTriggered = false;
     }
@@ -1158,7 +1157,6 @@ struct npc_dagger_in_dark_darkhatched_lizard_lord : public customCreatureAI
             me->GetInstanceScript()->SetData(DATA_GUARDS, DONE);
         }
     }
-
 
     void UpdateAI(uint32 diff) override
     {
@@ -1324,7 +1322,7 @@ struct npc_dagger_in_dark_spring_saurok_slayer : public customCreatureAI
                             me->GetInstanceScript()->SetData(DATA_INTO_THE_CAVE, DONE);
                     });
                 });
-                
+
                 break;
         }
     }
@@ -1528,7 +1526,7 @@ struct npc_dagger_in_dark_rakgor_bloodrazor : public customCreatureAI
 // Broken Mogu Tablet 67862, 67863
 struct npc_dagger_in_dark_broken_mogu_tablet : public customCreatureAI
 {
-    npc_dagger_in_dark_broken_mogu_tablet(Creature* creature) : customCreatureAI(creature) 
+    npc_dagger_in_dark_broken_mogu_tablet(Creature* creature) : customCreatureAI(creature)
     {
         hasTriggered = 0;
     }
@@ -1885,7 +1883,7 @@ void AddSC_dagger_in_the_dark()
     new creature_script<npc_dagger_in_dark_rakgor_bloodrazor>("npc_dagger_in_dark_rakgor_bloodrazor");
     new creature_script<npc_dagger_in_dark_broken_mogu_tablet>("npc_dagger_in_dark_broken_mogu_tablet");
     new creature_script<npc_dagger_in_dark_goblin_cannon>("npc_dagger_in_dark_goblin_cannon");
-    
+
     new spell_script<spell_dagger_in_dark_shadowstep_selector>("spell_dagger_in_dark_shadowstep_selector");
     new spell_script<spell_dagger_in_dark_shadowstep_eff>("spell_dagger_in_dark_shadowstep_eff");
     new spell_script<spell_dagger_in_dark_hatch_selector>("spell_dagger_in_dark_hatch_selector");

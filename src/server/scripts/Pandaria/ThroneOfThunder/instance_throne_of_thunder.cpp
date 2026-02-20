@@ -596,7 +596,7 @@ class instance_throne_of_thunder : public InstanceMapScript
                         break;
                     case GO_TRIBAL_DOOR_FARRAKI:
                     case GO_TRIBAL_DOOR_GURUBASHI:
-                    case GO_TRIBAL_DOOR_DRAKKARI: 
+                    case GO_TRIBAL_DOOR_DRAKKARI:
                     case GO_TRIBAL_DOOR_AMANI:
                         tribesDoor.insert(std::pair<uint32, uint64>(go->GetEntry(), go->GetGUID()));
                         break;
@@ -723,7 +723,7 @@ class instance_throne_of_thunder : public InstanceMapScript
 
             void OnUnitDeath(Unit* unit) override
             {
-                if (unit->GetTypeId() == TYPEID_PLAYER && GetBossState(DATA_RA_DEN) == IN_PROGRESS)
+                if (unit->IsPlayer() && GetBossState(DATA_RA_DEN) == IN_PROGRESS)
                     instance->SetWorldState(WORLDSTATE_I_THOUGHT_HE_WAS_SUPPOSED_TO_BE_HARD, 0);
             }
 
@@ -732,7 +732,7 @@ class instance_throne_of_thunder : public InstanceMapScript
                 switch (type)
                 {
                     case DATA_JINROKH_EVENT:
-                        hasJinrokhEventDone = data;           
+                        hasJinrokhEventDone = data;
                         HandleGameObject(GetGuidData(GO_JIN_ROKH_PREDOOR), true, NULL);
                         break;
                     case DATA_HORIDON_EVENT:
@@ -830,7 +830,7 @@ class instance_throne_of_thunder : public InstanceMapScript
                                     if (Creature* bunny = instance->GetCreature(itr))
                                     {
                                         uint32 _spellid = 0;
-                            
+
                                         switch (bunny->GetDBTableGUIDLow())
                                         {
                                             case 554505:
@@ -843,11 +843,11 @@ class instance_throne_of_thunder : public InstanceMapScript
                                                 _spellid = 139499;
                                                 break;
                                         }
-                            
+
                                         bunny->CastSpell(bunny, _spellid, true);
                                     }
                                 }
-                            
+
                                 break;
                             }
                         }

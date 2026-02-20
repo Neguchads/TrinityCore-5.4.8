@@ -36,7 +36,7 @@ namespace VMAP
     {
         GetLiquidFlagsPtr = &GetLiquidFlagsDummy;
         IsVMAPDisabledForPtr = &IsVMAPDisabledForDummy;
-        thread_safe_environment = true;        
+        thread_safe_environment = true;
     }
 
     VMapManager2::~VMapManager2(void)

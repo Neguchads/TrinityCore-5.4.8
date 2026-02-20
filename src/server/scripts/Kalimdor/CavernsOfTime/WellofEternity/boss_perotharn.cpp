@@ -251,7 +251,7 @@ class boss_perotharn : public CreatureScript
                 instance->DoKilledMonsterKredit(QUEST_IN_UNENDING_NUMBERS, 58240, ObjectGuid::Empty);
                 instance->DoKilledMonsterKredit(QUEST_IN_UNENDING_NUMBERS, 58241, ObjectGuid::Empty);
             }
-            
+
             void KilledUnit(Unit* victim) override { }
 
             void SetGUID(ObjectGuid guid, int32 /*type*/) override
@@ -321,7 +321,7 @@ class boss_perotharn : public CreatureScript
                             break;
                         case EVENT_CORRUPTING_TOUCH:
                             DoCastVictim(SPELL_CORRUPTING_TOUCH_DMG);
-                            events.ScheduleEvent(EVENT_CORRUPTING_TOUCH, urand(13000, 17000)); 
+                            events.ScheduleEvent(EVENT_CORRUPTING_TOUCH, urand(13000, 17000));
                             break;
                         case EVENT_FEL_FLAMES:
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 0.0f, true))
@@ -397,7 +397,7 @@ class boss_perotharn : public CreatureScript
                         case EVENT_END_HUNT:
                             events.CancelEvent(EVENT_EASY_PREY);
                             events.CancelEvent(EVENT_HIDING);
-                            phase = 4; 
+                            phase = 4;
                             summons.DespawnEntry(NPC_EYE_OF_PEROTHARN_1);
                             summons.DespawnEntry(NPC_HUNTING_SUMMON_CIRCLE);
                             me->SetReactState(REACT_AGGRESSIVE);
@@ -459,7 +459,7 @@ class npc_perotharn_eye_of_perotharn : public CreatureScript
             }
 
             void JustEngagedWith(Unit* /*who*/) override
-            { 
+            {
                 events.ScheduleEvent(EVENT_NEXT_MOVE, urand(500, 2000));
             }
 
@@ -484,14 +484,14 @@ class npc_perotharn_eye_of_perotharn : public CreatureScript
                         {
                             target->CastSpell(target, SPELL_EASY_PREY, true);
                             pPerotharn->AI()->SetGUID(target->GetGUID());
-                            pPerotharn->AI()->DoAction(ACTION_EASY_PREY);                        
+                            pPerotharn->AI()->DoAction(ACTION_EASY_PREY);
                         }
                     }
                 }
 
                 events.Update(diff);
 
-                if (uint32 eventId = events.ExecuteEvent()) 
+                if (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
                     {
@@ -543,7 +543,7 @@ class spell_perotharn_drain_essence : public SpellScriptLoader
 
             void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                if (GetUnitOwner()) 
+                if (GetUnitOwner())
                     GetUnitOwner()->SetControlled(false, UNIT_STATE_STUNNED);
             }
 
@@ -614,7 +614,7 @@ class spell_perotharn_punishing_flames_dmg : public SpellScriptLoader
             {
                 public:
                     DistanceCheck(Unit* searcher) : _searcher(searcher) { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
                         return (!unit->ToUnit() || _searcher->GetDistance(unit) < 80.0f);

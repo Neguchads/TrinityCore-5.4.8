@@ -302,13 +302,13 @@ class npc_cursed_mogu_sculpture : public CreatureScript
             }
 
             private:
-                struct CurseOfVitalityPredicate 
+                struct CurseOfVitalityPredicate
                 {
                     public:
                         CurseOfVitalityPredicate(Creature const* me) : _me(me) { }
                         bool operator()(Unit const* target) const
                         {
-                            return target && target->GetTypeId() == TYPEID_PLAYER && !target->HasAura(SPELL_CURSE_OF_VITALITY);
+                            return target && target->IsPlayer() && !target->HasAura(SPELL_CURSE_OF_VITALITY);
                         }
 
                     private:
@@ -792,7 +792,7 @@ class npc_zandalari_pterror_wing : public CreatureScript
 
             void MovementInform(uint32 /*type*/, uint32 /*pointId*/) override { }
 
-            void UpdateAI(uint32 /*diff*/) override 
+            void UpdateAI(uint32 /*diff*/) override
             {
                 if (!intro && me->FindNearestPlayer(80.0f))
                 {
@@ -860,12 +860,12 @@ class npc_zandalari_terror_rider : public CreatureScript
                 terrorwingEvents.ScheduleEvent(EVENT_VEHICLE, 1000);
             }
 
-            void JustDied(Unit* /*killer*/) override 
+            void JustDied(Unit* /*killer*/) override
             {
                 me->DespawnOrUnsummon(5 * IN_MILLISECONDS);
             }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -905,7 +905,7 @@ class npc_zandalari_terror_rider : public CreatureScript
                 events.ScheduleEvent(eventId, timer);
             }
 
-            void UpdateAI(uint32 diff) override 
+            void UpdateAI(uint32 diff) override
             {
                 terrorwingEvents.Update(diff);
 
@@ -1606,7 +1606,7 @@ class npc_msv_lorewalker_cho : public CreatureScript
             std::list<Creature*> SpiritKingsSeq;
             bool Start; uint32 wp;
 
-            void IsSummonedBy(Unit* summoner) override 
+            void IsSummonedBy(Unit* summoner) override
             {
                 switch (summoner->GetEntry())
                 {
@@ -1631,7 +1631,7 @@ class npc_msv_lorewalker_cho : public CreatureScript
 
             void JustDied(Unit* /*killer*/) override { }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -1711,7 +1711,7 @@ class npc_msv_lorewalker_cho : public CreatureScript
                         Talk(LOREWALKER_CHO_SPIRIT_KINGS_EVENT_SUBETAI);
                         if (Creature* Subetai = GetClosestCreatureWithEntry(me, NPC_SUBETAI_THE_SWIFT, 150.0f, true))
                             Subetai->AI()->DoAction(ACTION_SPIRIT_KINGS_EVENT_ACTIVE);
-                        break; 
+                        break;
                     case 23: // Meng story
                         Talk(LOREWALKER_CHO_SPIRIT_KINGS_EVENT_MENG);
                         if (Creature* Meng = GetClosestCreatureWithEntry(me, NPC_MENG_THE_DEMENTED, 100.0f, true))
@@ -1979,7 +1979,7 @@ class npc_spirit_kings_story : public CreatureScript
 
             void JustDied(Unit* /*killer*/) override { }
 
-            void DoAction(int32 actionId) override 
+            void DoAction(int32 actionId) override
             {
                 switch (actionId)
                 {
@@ -2047,7 +2047,7 @@ class npc_spirit_kings_story : public CreatureScript
                                 LoreWalkerCho->AI()->DoAction(ACTION_SPIRIT_KINGS_INTRO);
                             me->DespawnOrUnsummon();
                         }
-                        else nonCombatEvents.ScheduleEvent(EVENT_ACTIVATED, urand(100, 200));                       
+                        else nonCombatEvents.ScheduleEvent(EVENT_ACTIVATED, urand(100, 200));
                     }
 
                 }
@@ -2158,47 +2158,47 @@ class npc_mogushan_vaults_leng_windstaff : public CreatureScript
 {
     public:
         npc_mogushan_vaults_leng_windstaff() : CreatureScript("npc_mogushan_vaults_leng_windstaff") { }
-    
+
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
-    
+
             if (action == GOSSIP_ACTION_INFO_DEF + 1)
             {
                 creature->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-    
+
                 if (creature->GetInstanceScript())
                     creature->GetInstanceScript()->DoRemoveDampeningFromCreatures();
             }
-    
+
             player->CLOSE_GOSSIP_MENU();
-    
+
             return true;
         }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
-                
+
             if (sConfigMgr->GetIntDefault("FirstOfTheKingdom.MogushanVaults", 1))
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Turn off dampening?", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-    
+
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
             return true;
         }
-    
+
         struct npc_mogushan_vaults_leng_windstaffAI : public ScriptedAI
         {
             npc_mogushan_vaults_leng_windstaffAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             void InitializeAI() override
             {
                 if (me->GetMap()->GetDifficulty() != RAID_DIFFICULTY_25MAN_LFR)
                     me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_mogushan_vaults_leng_windstaffAI(creature);
@@ -2335,7 +2335,7 @@ class ExplosionTargetSelector
 
         bool operator()(WorldObject* object)
         {
-            if (object->GetTypeId() == TYPEID_PLAYER)
+            if (object->IsPlayer())
                 return false;
 
             return true;
@@ -2385,7 +2385,7 @@ class spell_msv_impale : public SpellScriptLoader
                 if (!caster)
                     return;
 
-                SetHitDamage(frand(1.95f, 2.05f)*urand(15068, 21738)); 
+                SetHitDamage(frand(1.95f, 2.05f)*urand(15068, 21738));
             }
 
             void Register() override

@@ -36,7 +36,7 @@ enum skillsId
     JEWELCRAFTING   = 755, // Jewelcrafting
     INSCRIPTION     = 773, // Inscription
     ARCHAEOLOGY     = 794  // Archaeology
-}; 
+};
 
 enum spellId_600
 {
@@ -55,7 +55,7 @@ enum spellId_600
     SPELL_600_JEWELCRAFTING   = 110420, // Jewelcrafting
     SPELL_600_INSCRIPTION     = 110417, // Inscription
     SPELL_600_ARCHAEOLOGY     = 110393  // Archaeology
-};  
+};
 
 class Boost_Profession : public ItemScript
 {
@@ -64,9 +64,9 @@ public:
 
     bool OnUse(Player* player, Item* item, SpellCastTargets const& targets) override
     {
-        player->PlayerTalkClass->ClearMenus();        
+        player->PlayerTalkClass->ClearMenus();
         player->SaveToDB();
-        
+
         if (player->HasSkill(FIRST_AID))
             player->ADD_GOSSIP_ITEM_DB(51002, 0, GOSSIP_SENDER_MAIN, FIRST_AID);
         if (player->HasSkill(BLACKSMITHING))
@@ -107,7 +107,7 @@ public:
     {
         player->PlayerTalkClass->ClearMenus();
         uint32 confirm = 0;
-        
+
         switch (action)
         {
         case 1:
@@ -176,13 +176,13 @@ public:
                 confirm = 1;
             }
             break;
-		case ENCHANTING:
-			if (!player->HasSpell(SPELL_600_ENCHANTING))
-			{
-				player->LearnSpell(SPELL_600_ENCHANTING, false);
-				confirm = 1;
-			}
-			break;
+        case ENCHANTING:
+            if (!player->HasSpell(SPELL_600_ENCHANTING))
+            {
+                player->LearnSpell(SPELL_600_ENCHANTING, false);
+                confirm = 1;
+            }
+            break;
         case FISHING:
             if (!player->HasSpell(SPELL_600_FISHING))
             {
@@ -225,7 +225,7 @@ public:
             int32 maxvalueprof = player->GetMaxSkillValue(action);
             if (player->HasSkill(action) && player->GetSkillValue(action) < maxvalueprof)
                 player->SetSkill(action, player->GetSkillStep(action), maxvalueprof, maxvalueprof);
-            
+
             ChatHandler(player->GetSession()).PSendSysMessage("Thanks for supporting the project!");
             player->DestroyItemCount(item->GetEntry(), 1, true); //Item is destroyed on useage.
 
@@ -237,7 +237,7 @@ public:
         else if (confirm == 2)
         {
             player->SetSkill(action, player->GetSkillStep(action), 600, 600);
-            
+
             ChatHandler(player->GetSession()).PSendSysMessage("Thanks for supporting the project!");
             player->DestroyItemCount(item->GetEntry(), 1, true); //Item is destroyed on useage.
 
@@ -257,13 +257,13 @@ public:
 class Boost_Profession_Small : public ItemScript
 {
 public:
-	Boost_Profession_Small() : ItemScript("Boost_Profession_Small") {}
+    Boost_Profession_Small() : ItemScript("Boost_Profession_Small") {}
 
     bool OnUse(Player* player, Item* item, SpellCastTargets const& targets) override
     {
-        player->PlayerTalkClass->ClearMenus();        
+        player->PlayerTalkClass->ClearMenus();
         player->SaveToDB();
-        
+
         if (player->HasSkill(FIRST_AID))
             player->ADD_GOSSIP_ITEM_DB(51002, 0, GOSSIP_SENDER_MAIN, FIRST_AID);
         if (player->HasSkill(BLACKSMITHING))
@@ -303,14 +303,14 @@ public:
     void OnGossipSelect(Player* player, Item* item, uint32 sender, uint32 action) override
     {
         player->PlayerTalkClass->ClearMenus();
-        
+
         if (player->HasSkill(action))
         {
             int32 maxvalueprof = player->GetMaxSkillValue(action);
 
             if (player->HasSkill(action) && player->GetSkillValue(action) < maxvalueprof)
                 player->SetSkill(action, player->GetSkillStep(action), maxvalueprof, maxvalueprof);
-            
+
             ChatHandler(player->GetSession()).PSendSysMessage("Thanks for supporting the project!");
             player->DestroyItemCount(item->GetEntry(), 1, true); //Item is destroyed on useage.
 
@@ -323,7 +323,7 @@ public:
         {
             ChatHandler(player->GetSession()).PSendSysMessage("You don't have that profession");
         }
-        
+
         player->CLOSE_GOSSIP_MENU();
     }
 };

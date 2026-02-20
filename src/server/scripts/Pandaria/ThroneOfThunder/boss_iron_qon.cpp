@@ -30,7 +30,7 @@ enum spells
     SPELL_FIST_SMASH                  = 136146,
 
     /*Roshak Phase*/
-    SPELL_BURNING_CINDERS_SPEAR_EFF   = 134758, /* visual ground rapture from spear. 
+    SPELL_BURNING_CINDERS_SPEAR_EFF   = 134758, /* visual ground rapture from spear.
     at frist cast make a rapture with AT, next cast while rapure is active it make spawn only area trigger.
     Have a sin/cos model at ~15y spawn distance*/
 
@@ -44,8 +44,8 @@ enum spells
     SPELL_UNLEASHED_FLAME_SELECTOR    = 139140,
     SPELL_UNLEASHED_FLAME_EFF         = 134628,
     SPELL_SCORCHED                    = 134647,
-                                      
-    /*Quenzal Phase*/                 
+
+    /*Quenzal Phase*/
     SPELL_STORM_CLOUD_AURA            = 136425, // same like burning cinders aura
     SPELL_STORM_CLOUD_EFF             = 136421,
     SPELL_STORM_CLOUD_MISSLE          = 136419,
@@ -98,8 +98,8 @@ enum spells
     SPELL_DEAD_ZONE_BACK_RIGHT        = 137231,
     SPELL_DEAD_ZONE                   = 137232,
     SPELL_DEAD_ZONE_EFF               = 135147,
-                                      
-    /*Misc | Shared*/                 
+
+    /*Misc | Shared*/
     SPELL_NON_REGENERATE_POWER        = 72242,
 
     /*Heroic*/
@@ -135,7 +135,7 @@ enum events
     EVENT_DEAD_ZONE,
     EVENT_ENCHANT_SPEAR,
     EVENT_ENCHANT_CYCLONE,
-    
+
     // Heroic
     EVENT_WHIRLWIND,
     EVENT_FROSTSPIKE,
@@ -198,10 +198,10 @@ class boss_iron_qon : public CreatureScript
 {
     public:
         boss_iron_qon() : CreatureScript("boss_iron_qon") { }
-    
+
         struct boss_iron_qonAI : public BossAI
         {
-            boss_iron_qonAI(Creature* creature) : BossAI(creature, DATA_IRON_QON) 
+            boss_iron_qonAI(Creature* creature) : BossAI(creature, DATA_IRON_QON)
             {
                 me->setActive(true);
             }
@@ -210,7 +210,7 @@ class boss_iron_qon : public CreatureScript
             uint32 spearType;
             float x, y;
             bool atEvade;
-   
+
             void Reset() override
             {
                 _Reset();
@@ -297,7 +297,7 @@ class boss_iron_qon : public CreatureScript
                             instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, nextQuelin);
 
                         Talk(TALK_QUILEN_DEATH);
-                        
+
                         GetPositionWithDistInOrientation(nextQuelin, 45.0f, nextQuelin->GetOrientation(), x, y);
 
                         Movement::MoveSplineInit init(nextQuelin);
@@ -417,12 +417,12 @@ class boss_iron_qon : public CreatureScript
 
                 return 0;
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
                 scheduler.Update(diff);
                 berserkEvents.Update(diff);
@@ -483,12 +483,12 @@ class boss_iron_qon : public CreatureScript
                             break;
                     }
                 }
-    
+
                 if (spearType > SPEAR_FROST)
                     DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_iron_qonAI(creature);
@@ -773,15 +773,15 @@ class npc_roshak : public CreatureScript
 {
     public:
         npc_roshak() : CreatureScript("npc_roshak") { }
-    
+
         struct npc_roshakAI : public quelingBaseAI
         {
-            npc_roshakAI(Creature* creature) : quelingBaseAI(creature) 
+            npc_roshakAI(Creature* creature) : quelingBaseAI(creature)
             {
                 instance = me->GetInstanceScript();
             }
-    
-            void JustEngagedWith(Unit* who) override 
+
+            void JustEngagedWith(Unit* who) override
             {
                 if (inCombat)
                     return;
@@ -851,7 +851,7 @@ class npc_roshak : public CreatureScript
 
                 return 0;
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 additionalEvents.Update(diff);
@@ -868,17 +868,17 @@ class npc_roshak : public CreatureScript
 
                 if (!UpdateVictim())
                     return;
-    
+
                 scheduler.Update(diff);
                 events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_roshakAI(creature);
@@ -890,14 +890,14 @@ class npc_quetzal : public CreatureScript
 {
     public:
         npc_quetzal() : CreatureScript("npc_quetzal") { }
-    
+
         struct npc_quetzalAI : public quelingBaseAI
         {
             npc_quetzalAI(Creature* creature) : quelingBaseAI(creature)
             {
                 instance = me->GetInstanceScript();
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 if (inCombat)
@@ -907,7 +907,7 @@ class npc_quetzal : public CreatureScript
 
                 me->OverrideInhabitType(INHABIT_AIR);
                 me->UpdateMovementFlags();
-                me->GetMotionMaster()->MovePoint(0, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ() + 10.0f); 
+                me->GetMotionMaster()->MovePoint(0, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ() + 10.0f);
             }
 
             void MovementInform(uint32 type, uint32 pointId) override
@@ -932,7 +932,7 @@ class npc_quetzal : public CreatureScript
                 if (type == TYPE_WIND_STORM)
                     windStormValue = data;
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 additionalEvents.Update(diff);
@@ -989,7 +989,7 @@ class npc_quetzal : public CreatureScript
 
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
                 scheduler.Update(diff);
 
@@ -1042,11 +1042,11 @@ class npc_quetzal : public CreatureScript
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_quetzalAI(creature);
@@ -1058,14 +1058,14 @@ class npc_damren : public CreatureScript
 {
     public:
         npc_damren() : CreatureScript("npc_damren") { }
-    
+
         struct npc_damrenAI : public quelingBaseAI
         {
             npc_damrenAI(Creature* creature) : quelingBaseAI(creature)
             {
                 instance = me->GetInstanceScript();
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 if (inCombat)
@@ -1100,7 +1100,7 @@ class npc_damren : public CreatureScript
                 if (type == TYPE_DEAD_ZONE)
                     prevDeadZone = data;
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 additionalEvents.Update(diff);
@@ -1117,7 +1117,7 @@ class npc_damren : public CreatureScript
 
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
                 scheduler.Update(diff);
 
@@ -1149,11 +1149,11 @@ class npc_damren : public CreatureScript
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_damrenAI(creature);
@@ -1165,11 +1165,11 @@ class npc_iron_qons_spear : public CreatureScript
 {
     public:
         npc_iron_qons_spear() : CreatureScript("npc_iron_qons_spear") { }
-    
+
         struct npc_iron_qons_spearAI : public ScriptedAI
         {
             npc_iron_qons_spearAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             InstanceScript* instance;
             TaskScheduler scheduler;
             float dist, modOri, startWave;
@@ -1246,7 +1246,7 @@ class npc_iron_qons_spear : public CreatureScript
                 scheduler.Update(diff);
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_iron_qons_spearAI(creature);
@@ -1386,7 +1386,7 @@ struct npc_rushing_wind : public ScriptedAI
             passenger = data;
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -1689,16 +1689,16 @@ class spell_arcing_lightning : public AuraScript
     }
 };
 
-class ArcingLightningSwitchPredicate 
+class ArcingLightningSwitchPredicate
 {
     public:
         ArcingLightningSwitchPredicate(Unit const* me) : _me(me) { }
-    
+
         bool operator() (WorldObject* object) const
         {
             return object && object->ToPlayer() && (object->ToPlayer()->GetExactDist2d(_me) > 10.0f || object->ToPlayer()->HasAura(SPELL_ARCING_LIGHTNING_PROC_EFF) || object->ToPlayer()->HasAura(SPELL_WIND_STORM_AT_EFF));
         }
-    
+
         private:
             Unit const* _me;
 };
@@ -2032,7 +2032,6 @@ class spell_enchant_cyclone_freeze : public SpellScript
 
         m_targets = targets;
     }
-
 
     void CopyTargets(std::list<WorldObject*>& targets)
     {

@@ -53,7 +53,7 @@ public:
         static std::vector<ChatCommand> commandTable =
         {
             { "achievement",    SEC_ADMINISTRATOR,  false, achievementCommandTable                  },
-            
+
         };
         return commandTable;
     }

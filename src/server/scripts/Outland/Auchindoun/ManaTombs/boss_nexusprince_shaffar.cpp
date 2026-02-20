@@ -118,7 +118,7 @@ public:
         void MoveInLineOfSight(Unit* who) override
 
         {
-            if (!HasTaunted && who->GetTypeId() == TYPEID_PLAYER && me->IsWithinDistInMap(who, 100.0f))
+            if (!HasTaunted && who->IsPlayer() && me->IsWithinDistInMap(who, 100.0f))
             {
                 Talk(SAY_INTRO);
                 HasTaunted = true;
@@ -353,7 +353,9 @@ public:
                 {
                     DoCastVictim(SPELL_ETHEREAL_APPRENTICE_FIREBOLT, true);
                     isFireboltTurn = false;
-                }else{
+                }
+                else
+                {
                     DoCastVictim(SPELL_ETHEREAL_APPRENTICE_FROSTBOLT, true);
                     isFireboltTurn = true;
                 }

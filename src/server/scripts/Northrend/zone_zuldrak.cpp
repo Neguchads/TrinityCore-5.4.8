@@ -143,7 +143,6 @@ public:
 
         void MoveInLineOfSight(Unit* /*who*/)override { }
 
-
         void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
         {
             if (spell->Id == SPELL_FREE_RAGECLAW)

@@ -146,7 +146,7 @@ enum Actions
     ACTION_BLUE     = 7,
 };
 
-const Position globulesPos[6] = 
+const Position globulesPos[6] =
 {
     { -1662.959961f, -2992.280029f, -173.52f, 3.63f }, // Crimson
     { -1723.760010f, -2935.330078f, -174.03f, 4.32f }, // Acidic
@@ -167,7 +167,7 @@ class boss_yorsahj_the_unsleeping: public CreatureScript
         struct boss_yorsahj_the_unsleepingAI : public BossAI
         {
             boss_yorsahj_the_unsleepingAI(Creature* creature) : BossAI(creature, DATA_YORSAHJ)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -190,7 +190,7 @@ class boss_yorsahj_the_unsleeping: public CreatureScript
                 if (bIntro)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                 return;
 
                 if (!me->IsWithinDistInMap(who,100.0f, false))
@@ -259,7 +259,7 @@ class boss_yorsahj_the_unsleeping: public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                 {
                     Talk(SAY_KILL);
                     DoCastAOE(SPELL_YORSAHJ_WHISPER_KILL, true);
@@ -420,29 +420,29 @@ class boss_yorsahj_the_unsleeping: public CreatureScript
                                 {
                                     switch ((*itr)->GetEntry())
                                     {
-                                        case NPC_CRIMSON_GLOBULE: 
-                                            DoCast(me, SPELL_CRIMSON_BLOOD_OF_SHUMA, true); 
+                                        case NPC_CRIMSON_GLOBULE:
+                                            DoCast(me, SPELL_CRIMSON_BLOOD_OF_SHUMA, true);
                                             events.ScheduleEvent(EVENT_SEARING_BLOOD, urand(5000, 7000));
                                             break;
-                                        case NPC_ACIDIC_GLOBULE: 
+                                        case NPC_ACIDIC_GLOBULE:
                                             me->SummonCreature(NPC_MAW_OF_SHUMA, mawofshumaPos, TEMPSUMMON_TIMED_DESPAWN, 60000);
                                             DoCast(me, SPELL_ACIDIC_BLOOD_OF_SHUMA, true);
                                             DoCast(me, SPELL_DIGESTIVE_ACID_DUMMY, true);
                                             events.ScheduleEvent(EVENT_DIGESTIVE_ACID, urand(7000, 9000));
                                             break;
-                                        case NPC_GLOWING_GLOBULE: 
+                                        case NPC_GLOWING_GLOBULE:
                                             bShuma = true;
-                                            DoCast(me, SPELL_GLOWING_BLOOD_OF_SHUMA, true); 
+                                            DoCast(me, SPELL_GLOWING_BLOOD_OF_SHUMA, true);
                                             break;
-                                        case NPC_DARK_GLOBULE: 
-                                            DoCast(me, SPELL_BLACK_BLOOD_OF_SHUMA, true); 
+                                        case NPC_DARK_GLOBULE:
+                                            DoCast(me, SPELL_BLACK_BLOOD_OF_SHUMA, true);
                                             events.ScheduleEvent(EVENT_CORRUPTED_MINIONS, 1000);
                                             break;
-                                        case NPC_SHADOWED_GLOBULE: 
+                                        case NPC_SHADOWED_GLOBULE:
                                             DoCast(me, SPELL_SHADOWED_BLOOD_OF_SHUMA, true);
                                             events.ScheduleEvent(EVENT_DEEP_CORRUPTION, urand(3000, 4000));
                                             break;
-                                        case NPC_COBALT_GLOBULE: 
+                                        case NPC_COBALT_GLOBULE:
                                             DoCast(me, SPELL_COBALT_BLOOD_OF_SHUMA, true);
                                             events.ScheduleEvent(EVENT_MANA_VOID_1, urand(2000, 3000));
                                             break;
@@ -583,12 +583,12 @@ class boss_yorsahj_the_unsleeping: public CreatureScript
 
                     bool operator()(Creature* u)
                     {
-                        if ((u->GetEntry() == NPC_CRIMSON_GLOBULE || 
+                        if ((u->GetEntry() == NPC_CRIMSON_GLOBULE ||
                             u->GetEntry() == NPC_ACIDIC_GLOBULE ||
                             u->GetEntry() == NPC_GLOWING_GLOBULE ||
-                            u->GetEntry() == NPC_DARK_GLOBULE || 
+                            u->GetEntry() == NPC_DARK_GLOBULE ||
                             u->GetEntry() == NPC_SHADOWED_GLOBULE ||
-                            u->GetEntry() == NPC_COBALT_GLOBULE) && 
+                            u->GetEntry() == NPC_COBALT_GLOBULE) &&
                             u->IsAlive())
                             return true;
                         return false;
@@ -610,7 +610,7 @@ class npc_yorsahj_the_unsleeping_globule: public CreatureScript
         struct npc_yorsahj_the_unsleeping_globuleAI : public ScriptedAI
         {
             npc_yorsahj_the_unsleeping_globuleAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -637,7 +637,7 @@ class npc_yorsahj_the_unsleeping_globule: public CreatureScript
             void IsSummonedBy(Unit* /*summoner*/) override
             {
                 switch (me->GetEntry())
-                { 
+                {
                     case NPC_CRIMSON_GLOBULE: DoCast(me, SPELL_AURA_TALL_RED, true); break;
                     case NPC_ACIDIC_GLOBULE: DoCast(me, SPELL_AURA_TALL_GREEN, true); break;
                     case NPC_GLOWING_GLOBULE: DoCast(me, SPELL_AURA_TALL_YELLOW, true); break;
@@ -720,7 +720,7 @@ class npc_yorsahj_the_unsleeping_forgotten_one: public CreatureScript
         struct npc_yorsahj_the_unsleeping_forgotten_oneAI : public ScriptedAI
         {
             npc_yorsahj_the_unsleeping_forgotten_oneAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
@@ -804,7 +804,7 @@ class npc_yorsahj_the_unsleeping_mana_void: public CreatureScript
         struct npc_yorsahj_the_unsleeping_mana_voidAI : public ScriptedAI
         {
             npc_yorsahj_the_unsleeping_mana_voidAI(Creature* creature) : ScriptedAI(creature)
-            {             
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
                 me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_FEAR, true);
@@ -1025,10 +1025,10 @@ class spell_yorsahj_the_unsleeping_mana_void : public SpellScriptLoader
             {
                 public:
                     ManaCheck() { }
-            
+
                     bool operator()(WorldObject* unit)
                     {
-                        if (unit->GetTypeId() != TYPEID_PLAYER)
+                        if (!(unit->IsPlayer()))
                             return true;
                         if (unit->ToPlayer()->GetPowerType() == POWER_MANA)
                             return false;

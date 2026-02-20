@@ -90,7 +90,6 @@ class boss_asira_dawnslayer : public CreatureScript
                 SetEquipmentSlots(false, AsiraDaggers, AsiraDaggers, EQUIP_NO_CHANGE);
             }
 
-
             void Reset() override
             {
                 _Reset();
@@ -111,7 +110,7 @@ class boss_asira_dawnslayer : public CreatureScript
 
                     if (me->IsOnVehicle())
                         me->ExitVehicle();
-                        
+
                     nonCombatEvents.ScheduleEvent(EVENT_JUMP_TO_HOME_POSITION, 2000);
                 }
             }
@@ -131,7 +130,7 @@ class boss_asira_dawnslayer : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim && victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim && victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -153,7 +152,7 @@ class boss_asira_dawnslayer : public CreatureScript
                     if (itr->HasAura(SPELL_MARK_OF_SILENCE))
                         if (itr->HasUnitState(UNIT_STATE_CASTING))
                             me->CastSpell(itr, SPELL_THROW_KNIFE, true);
-                        
+
             }
 
             void UpdateAI(uint32 diff) override
@@ -261,7 +260,7 @@ class spell_asira_dawnslayer_blade_barrier : public SpellScriptLoader
 };
 
 class spell_asira_dawnslayer_throw_knife : public SpellScriptLoader
-{ 
+{
     public:
         spell_asira_dawnslayer_throw_knife() : SpellScriptLoader("spell_asira_dawnslayer_throw_knife") { }
 
@@ -302,14 +301,14 @@ class spell_asira_dawnslayer_throw_knife : public SpellScriptLoader
                 if (GetHitUnit()->HasAura(SPELL_MARK_OF_SILENCE))
                     GetCaster()->CastSpell(GetHitUnit(), SPELL_SILENCE, true);
             }
-        
+
             void Register() override
             {
                 OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_asira_dawnslayer_throw_knife_SpellScript::FilterTargets, EFFECT_1, TARGET_UNIT_CONE_ENEMY_24);
                 OnEffectHitTarget += SpellEffectFn(spell_asira_dawnslayer_throw_knife_SpellScript::HandleDamage, EFFECT_1, SPELL_EFFECT_SCHOOL_DAMAGE);
             }
         };
-       
+
         SpellScript* GetSpellScript() const override
         {
             return new spell_asira_dawnslayer_throw_knife_SpellScript();
@@ -317,7 +316,7 @@ class spell_asira_dawnslayer_throw_knife : public SpellScriptLoader
 };
 
 class spell_asira_dawnslayer_mark_of_silence : public SpellScriptLoader
-{ 
+{
     public:
         spell_asira_dawnslayer_mark_of_silence() : SpellScriptLoader("spell_asira_dawnslayer_mark_of_silence") { }
 
@@ -347,12 +346,12 @@ class spell_asira_dawnslayer_mark_of_silence : public SpellScriptLoader
             {
                 public:
                     CastersCheck() {}
-            
+
                     bool operator()(WorldObject* unit)
                     {
-                        if (unit->GetTypeId() != TYPEID_PLAYER)
+                        if (!(unit->IsPlayer()))
                             return true;
-                        
+
                         switch (unit->ToPlayer()->GetClass())
                         {
                             case CLASS_WARRIOR:
@@ -376,7 +375,7 @@ class spell_asira_dawnslayer_mark_of_silence : public SpellScriptLoader
                     }
             };
         };
-       
+
         SpellScript* GetSpellScript() const override
         {
             return new spell_asira_dawnslayer_mark_of_silence_SpellScript();

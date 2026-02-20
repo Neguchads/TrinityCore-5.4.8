@@ -523,7 +523,7 @@ class npc_binan_villager : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!introDone && who && who->GetTypeId() == TYPEID_PLAYER && (me->GetDBTableGUIDLow() == 546618 || me->GetDBTableGUIDLow() == 546210))
+                if (!introDone && who && who->IsPlayer() && (me->GetDBTableGUIDLow() == 546618 || me->GetDBTableGUIDLow() == 546210))
                 {
                     introDone = true;
                     Talk(TALK_INTRO);
@@ -867,7 +867,7 @@ class npc_brewmaster_boof : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (!introDone && who && who->GetTypeId() == TYPEID_PLAYER)
+                if (!introDone && who && who->IsPlayer())
                 {
                     introDone = true;
                     Talk(TALK_INTRO);
@@ -1099,14 +1099,14 @@ class npc_bataari_yaungol : public CreatureScript
             }
 
             private:
-                struct HeroicLeapPredicate 
+                struct HeroicLeapPredicate
                 {
                     public:
                         HeroicLeapPredicate(Creature const* me) : _me(me) { }
 
                         bool operator()(Unit const* target) const
                         {
-                            return target && target->GetTypeId() == TYPEID_PLAYER && target->GetDistance2d(_me) > 8.0f;
+                            return target && target->IsPlayer() && target->GetDistance2d(_me) > 8.0f;
                         }
 
                     private:

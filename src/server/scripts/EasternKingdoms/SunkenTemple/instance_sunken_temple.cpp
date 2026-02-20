@@ -57,7 +57,7 @@ class instance_sunken_temple : public InstanceMapScript
                 switch (creature->GetEntry())
                 {
                     case NPC_AVATAR_OF_HAKKAR:
-                    case NPC_JAMMALAN_PROPHET: 
+                    case NPC_JAMMALAN_PROPHET:
                     case NPC_WEAVER:
                     case NPC_DREAMSCYTHE:
                     case NPC_MORPHAZ:

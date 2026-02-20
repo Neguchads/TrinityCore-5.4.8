@@ -101,7 +101,7 @@ class npc_highlord_demitrian : public CreatureScript
 
             return true;
         }
-    
+
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             if (creature->IsQuestGiver())

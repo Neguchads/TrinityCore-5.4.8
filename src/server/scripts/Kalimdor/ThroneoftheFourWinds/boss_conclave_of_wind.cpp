@@ -341,7 +341,7 @@ struct boss_conclave_of_wind : public BossAI
                 rohash->LowerPlayerDamageReq(me->GetMaxHealth());
 
                 attacker->Kill(anshal);
-                attacker->Kill(nezir); 
+                attacker->Kill(nezir);
                 attacker->Kill(rohash);
             }
             else if (!feignDeath)
@@ -355,7 +355,7 @@ struct boss_conclave_of_wind : public BossAI
                 me->RemoveAurasDueToSpell(COUNCIL_BOSS(SPELL_WITHERING_WINDS, SPELL_CHILLING_WINDS, SPELL_DEAFENING_WINDS));
                 me->RemoveAurasDueToSpell(COUNCIL_BOSS(SPELL_WITHERING_WINDS_RESET, SPELL_CHILLING_WINDS_RESET, SPELL_DEAFENING_WINDS_RESET));
                 TogglePlatformEffects(false);
-                DoCast(me, SPELL_DEAD, true); 
+                DoCast(me, SPELL_DEAD, true);
                 DoCast(me, SPELL_GATHER_STRENGTH);
                 Talk(COUNCIL_BOSS(SAY_ANSHAL_LOW, SAY_NEZIR_LOW, SAY_ROHASH_LOW));
                 if (remaining == 2)
@@ -740,7 +740,7 @@ class boss_nezir : public CreatureScript
             }
 
         private:
-            struct IcePatchTargetSelector 
+            struct IcePatchTargetSelector
             {
                 public:
                     IcePatchTargetSelector(Creature const* me) : _me(me) { }

@@ -339,7 +339,7 @@ class boss_lei_shi : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(TALK_SLAY);
             }
 
@@ -416,9 +416,9 @@ class boss_lei_shi : public CreatureScript
                     me->RemoveAllAreasTrigger();
                     me->setRegeneratingHealth(false);
 
-                    if (attacker && attacker->GetTypeId() == TYPEID_PLAYER)
+                    if (attacker && attacker->IsPlayer())
                         me->GetMap()->ToInstanceMap()->PermBindAllPlayers(attacker->ToPlayer());
-                    else if (attacker && attacker->GetTypeId() == TYPEID_UNIT && attacker->GetOwner() && attacker->GetOwner()->ToPlayer())
+                    else if (attacker && attacker->IsCreature() && attacker->GetOwner() && attacker->GetOwner()->ToPlayer())
                         me->GetMap()->ToInstanceMap()->PermBindAllPlayers(attacker->GetOwner()->ToPlayer());
 
                     leiShiFreed = true;
@@ -469,7 +469,7 @@ class boss_lei_shi : public CreatureScript
                 if (!caster)
                     return;
 
-                if (caster->GetTypeId() == TYPEID_UNIT && (caster->GetEntry() == NPC_LEI_SHI || caster->GetEntry() == NPC_LEI_SHI_HIDDEN))
+                if (caster->IsCreature() && (caster->GetEntry() == NPC_LEI_SHI || caster->GetEntry() == NPC_LEI_SHI_HIDDEN))
                     return;
 
                 if (!spell)
@@ -586,7 +586,7 @@ class boss_lei_shi : public CreatureScript
                         me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_PACIFIED);
                         me->SetReactState(REACT_AGGRESSIVE);
                         Talk(TALK_INTRO);
-                        
+
                         if (Creature* pReflection = ObjectAccessor::GetCreature(*me, instance ? instance->GetGuidData(NPC_REFLECTION_OF_LEI_SHI) : ObjectGuid::Empty))
                         {
                             pReflection->SetDisplayId(17612);
@@ -1035,7 +1035,7 @@ class npc_lei_shi_reflection : public CreatureScript
 
         struct npc_lei_shi_reflectionAI : public ScriptedAI
         {
-            npc_lei_shi_reflectionAI(Creature* creature) : ScriptedAI(creature) 
+            npc_lei_shi_reflectionAI(Creature* creature) : ScriptedAI(creature)
             {
                 eventDone = false;
             }

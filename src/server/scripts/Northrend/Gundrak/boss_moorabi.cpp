@@ -120,7 +120,7 @@ class boss_moorabi : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() != TYPEID_PLAYER)
+                if (!(victim->IsPlayer()))
                     return;
 
                 Talk(SAY_SLAY);
@@ -422,7 +422,7 @@ class npc_drakkari_earthshaker : public CreatureScript
 
             void JustEngagedWith(Unit* who) override
             {
-                sparring = who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == NPC_DRAKKARI_EARTHSHAKER;
+                sparring = who->IsCreature() && who->GetEntry() == NPC_DRAKKARI_EARTHSHAKER;
                 if (sparring)
                 {
                     me->SetStatFloatValue(UNIT_FIELD_MIN_DAMAGE, 3800);
@@ -442,7 +442,7 @@ class npc_drakkari_earthshaker : public CreatureScript
 
             void MoveInLineOfSight(Unit* who) override
             {
-                if (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == NPC_DRAKKARI_EARTHSHAKER)
+                if (who->IsCreature() && who->GetEntry() == NPC_DRAKKARI_EARTHSHAKER)
                     return;
 
                 ScriptedAI::MoveInLineOfSight(who);
@@ -514,7 +514,7 @@ class npc_drakkari_earthshaker : public CreatureScript
             {
                 me->SetFaction(me->GetCreatureTemplate()->faction);
 
-                if (me->GetVictim() && me->GetVictim()->GetTypeId() == TYPEID_UNIT && me->GetVictim()->GetEntry() == NPC_DRAKKARI_EARTHSHAKER)
+                if (me->GetVictim() && me->GetVictim()->IsCreature() && me->GetVictim()->GetEntry() == NPC_DRAKKARI_EARTHSHAKER)
                 {
                     me->AttackStop();
                     me->InterruptNonMeleeSpells(false);

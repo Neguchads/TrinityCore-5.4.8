@@ -22,8 +22,8 @@ enum ScriptTexts
 {
     SAY_AGGRO               = 0,
     SAY_TRANSFORM           = 1,
-    SAY_BLOODVENOM          = 3, 
-    SAY_WHISPER_OF_HETHISS  = 2, 
+    SAY_BLOODVENOM          = 3,
+    SAY_WHISPER_OF_HETHISS  = 2,
     SAY_KILL                = 4,
     SAY_DEATH               = 5,
 };
@@ -46,7 +46,7 @@ enum Spells
     SPELL_BLOODVENOM_DUMMY          = 97110,
     SPELL_BLOODVENOM_AURA           = 97099,
     SPELL_VENOM_WITHDRAWAL          = 96653,
-    SPELL_VENOMOUS_EFFUSION         = 96678, 
+    SPELL_VENOMOUS_EFFUSION         = 96678,
     SPELL_VENOMOUS_EFFUSION_SUMMON  = 96680,
     SPELL_VENOMOUS_EFFUSION_AURA    = 96681,
     SPELL_VENOMOUS_EFFUSION_DUMMY   = 96534,
@@ -87,7 +87,7 @@ enum Points
 const Position downPos = {-12000.54f, -1685.88f, 32.28f, 0.68f};
 const Position upPos = {-12020.12f, -1699.96f, 39.53f, 0.60f};
 
-const Position mazeleftPos[18] = 
+const Position mazeleftPos[18] =
 {
     {-12003.12f, -1700.04f, 32.29f, 0.0f},
     {-11999.17f, -1705.85f, 32.29f, 0.0f},
@@ -193,7 +193,7 @@ class boss_venoxis : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-            
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -269,7 +269,7 @@ class npc_venoxis_bloodvenom : public CreatureScript
 
         struct npc_venoxis_bloodvenomAI : public ScriptedAI
         {
-            npc_venoxis_bloodvenomAI(Creature* creature) : ScriptedAI(creature) 
+            npc_venoxis_bloodvenomAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetSpeed(MOVE_RUN, 0.3f);
                 me->SetReactState(REACT_PASSIVE);
@@ -277,7 +277,7 @@ class npc_venoxis_bloodvenom : public CreatureScript
                 DoCast(me, SPELL_BLOODVENOM_DUMMY, true);
                 SetCombatMovement(false);
             }
-            
+
             InstanceScript* instance;
             bool bMove;
             uint32 moveTimer;
@@ -287,7 +287,7 @@ class npc_venoxis_bloodvenom : public CreatureScript
                 bMove = false;
                 moveTimer = 1000;
             }
-            
+
             void IsSummonedBy(Unit* summoner) override
             {
                 if (Creature* pVenoxis = me->FindNearestCreature(NPC_VENOXIS, 120.0f))
@@ -329,7 +329,7 @@ class npc_venoxis_venomous_effusion_stalker : public CreatureScript
 
         struct npc_venoxis_venomous_effusion_stalkerAI : public ScriptedAI
         {
-            npc_venoxis_venomous_effusion_stalkerAI(Creature* creature) : ScriptedAI(creature) 
+            npc_venoxis_venomous_effusion_stalkerAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetSpeed(MOVE_RUN, 0.3f);
                 me->SetReactState(REACT_PASSIVE);
@@ -337,7 +337,7 @@ class npc_venoxis_venomous_effusion_stalker : public CreatureScript
                 DoCast(me, SPELL_VENOMOUS_EFFUSION, true);
                 SetCombatMovement(false);
             }
-            
+
             InstanceScript* instance;
             uint8 side;
             uint32 moveTimer;
@@ -357,7 +357,7 @@ class npc_venoxis_venomous_effusion_stalker : public CreatureScript
                 else
                     moveTimer = 1;
             }
-            
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_KILL);
@@ -400,7 +400,7 @@ class npc_venoxis_venomous_effusion : public CreatureScript
 
         struct npc_venoxis_venomous_effusionAI : public ScriptedAI
         {
-            npc_venoxis_venomous_effusionAI(Creature* creature) : ScriptedAI(creature) 
+            npc_venoxis_venomous_effusionAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetReactState(REACT_PASSIVE);
                 instance = creature->GetInstanceScript();
@@ -434,7 +434,7 @@ class npc_venoxis_venoxis_pool_of_acid_tears : public CreatureScript
 
         struct npc_venoxis_venoxis_pool_of_acid_tearsAI : public ScriptedAI
         {
-            npc_venoxis_venoxis_pool_of_acid_tearsAI(Creature* creature) : ScriptedAI(creature) 
+            npc_venoxis_venoxis_pool_of_acid_tearsAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetReactState(REACT_PASSIVE);
                 DoCast(me, SPELL_POOL_OF_ACID_TEARS_AURA, true);
@@ -456,7 +456,7 @@ class spell_venoxis_toxic_link : public SpellScriptLoader
         class spell_venoxis_toxic_link_SpellScript : public SpellScript
         {
             PrepareSpellScript(spell_venoxis_toxic_link_SpellScript);
-            
+
             bool Load() override
             {
                 bCanLink = false;
@@ -477,7 +477,7 @@ class spell_venoxis_toxic_link : public SpellScriptLoader
                     GetCaster()->CastSpell(target2, SPELL_TOXIC_LINK_AURA, true);
                 }
             }
-            
+
             void FilterTargets(std::list<WorldObject*>& targets)
             {
                 if (targets.size() < 2)
@@ -524,7 +524,7 @@ class spell_venoxis_toxic_link_aura : public SpellScriptLoader
                 if (GetCaster())
                     GetCaster()->CastSpell(GetCaster(), SPELL_TOXIC_EXPLOSION, true);
             }
-            
+
             void PeriodicTick(AuraEffect const* /*aurEff*/)
             {
                 if (!GetCaster() || !GetTarget())

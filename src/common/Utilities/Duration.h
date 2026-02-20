@@ -47,5 +47,4 @@ constexpr std::chrono::hours operator""_days(unsigned long long days)
     return std::chrono::hours(days * 24h);
 }
 
-
 #endif // _DURATION_H_

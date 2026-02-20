@@ -100,14 +100,6 @@ target_link_libraries(worldserver
     ${CMAKE_DL_LIBS}
 )
 
-if (ELUNA)
-  add_dependencies(worldserver lua)
-  target_link_libraries(game
-    PRIVATE
-      lua
-  )
-endif()
-
 if( WIN32 )
   if ( MSVC )
     add_custom_command(TARGET worldserver
@@ -132,5 +124,5 @@ endif()
 
 # Generate precompiled header
 if( USE_COREPCH )
-  target_precompile_headers(worldserver PRIVATE ${worldserver_PCH_HDR}) 
+  target_precompile_headers(worldserver PRIVATE ${worldserver_PCH_HDR})
 endif()

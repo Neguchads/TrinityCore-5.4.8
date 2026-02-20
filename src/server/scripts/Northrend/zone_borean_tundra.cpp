@@ -181,14 +181,14 @@ public:
         {
             ScriptedAI::MoveInLineOfSight(who);
 
-            if (who->GetTypeId() != TYPEID_UNIT)
+            if (!(who->IsCreature()))
                 return;
 
             if (who->GetEntry() == 25861 && me->IsWithinDistInMap(who, 10.0f))
             {
                 if (Unit* owner = who->GetOwner())
                 {
-                    if (owner->GetTypeId() == TYPEID_PLAYER)
+                    if (owner->IsPlayer())
                     {
                         owner->CastSpell(owner, 46231, true);
                         who->ToCreature()->DespawnOrUnsummon();
@@ -359,7 +359,6 @@ public:
         void Reset() override { }
         void JustEngagedWith(Unit* /*who*/) override { }
         void MoveInLineOfSight(Unit* /*who*/) override { }
-
 
         void JustDied(Unit* killer) override
         {
@@ -558,7 +557,6 @@ public:
 
         void JustEngagedWith(Unit* /*who*/) override { }
         void MoveInLineOfSight(Unit* /*who*/) override { }
-
 
         void JustDied(Unit* /*killer*/) override
         {
@@ -844,7 +842,7 @@ public:
 
         void SpellHit(Unit* caster, SpellInfo const* spell) override
         {
-            if (spell->Id == SPELL_DRAKE_HARPOON && caster->GetTypeId() == TYPEID_PLAYER)
+            if (spell->Id == SPELL_DRAKE_HARPOON && caster->IsPlayer())
             {
                 HarpoonerGUID = caster->GetGUID();
                 DoCast(me, SPELL_RED_DRAGONBLOOD, true);
@@ -1611,7 +1609,7 @@ public:
 
         void SpellHit(Unit* pCaster, SpellInfo const* pSpell) override
         {
-            if (pSpell->Id == SPELL_ARCANE_CHAINS && pCaster->GetTypeId() == TYPEID_PLAYER && !HealthAbovePct(50) && !bEnslaved)
+            if (pSpell->Id == SPELL_ARCANE_CHAINS && pCaster->IsPlayer() && !HealthAbovePct(50) && !bEnslaved)
             {
                 EnterEvadeMode(); //We make sure that the npc is not attacking the player!
                 me->SetReactState(REACT_PASSIVE);
@@ -1714,7 +1712,7 @@ public:
 
         void SpellHit(Unit* unit, SpellInfo const* spell) override
         {
-            if (spell->Id == SPELL_NEURAL_NEEDLE && unit->GetTypeId() == TYPEID_PLAYER)
+            if (spell->Id == SPELL_NEURAL_NEEDLE && unit->IsPlayer())
             {
                 if (Player* player = unit->ToPlayer())
                 {

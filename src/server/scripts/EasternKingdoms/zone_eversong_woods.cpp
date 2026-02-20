@@ -190,7 +190,7 @@ public:
         void MoveInLineOfSight(Unit* who) override
 
         {
-            if (!Progress && who->GetTypeId() == TYPEID_PLAYER && me->IsWithinDistInMap(who, 10.0f))
+            if (!Progress && who->IsPlayer() && me->IsWithinDistInMap(who, 10.0f))
             {
                 if (who->ToPlayer()->GetQuestStatus(QUEST_POWERING_OUR_DEFENSES) == QUEST_STATUS_INCOMPLETE)
                 {

@@ -131,7 +131,7 @@ class boss_baron_ashbury : public CreatureScript
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_WRACKING_PAIN);
                 instance->SetData(DATA_ASHBURY, DONE);
             }
-            
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
@@ -153,7 +153,7 @@ class boss_baron_ashbury : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                    
+
                 while(uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)

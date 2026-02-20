@@ -257,7 +257,7 @@ class npc_zandalari_spearshaper : public CreatureScript
 
         struct npc_zandalari_spearshaperAI : public ScriptedAI
         {
-            npc_zandalari_spearshaperAI(Creature* creature) : ScriptedAI(creature), summons(me) 
+            npc_zandalari_spearshaperAI(Creature* creature) : ScriptedAI(creature), summons(me)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
             }
@@ -280,7 +280,7 @@ class npc_zandalari_spearshaper : public CreatureScript
             void JustSummoned(Creature* summon) override
             {
                 summons.Summon(summon);
-                
+
                 if (summon->GetEntry() == NPC_SPEAR)
                 {
                     m_triggerGuid = summon->GetGUID();
@@ -378,8 +378,8 @@ class npc_zandalari_stormcaller : public CreatureScript
 
         struct npc_zandalari_stormcallerAI : public ScriptedAI
         {
-            npc_zandalari_stormcallerAI(Creature* creature) : ScriptedAI(creature) 
-            { 
+            npc_zandalari_stormcallerAI(Creature* creature) : ScriptedAI(creature)
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
             }
 
@@ -438,7 +438,7 @@ class npc_zandalari_stormcaller : public CreatureScript
 
                     for (auto&& unit : spellTargets)
                         unit->CastSpell(unit, SPELL_STUN, true, 0, 0, me->GetGUID());
-                }          
+                }
             }
 
             void UpdateAI(uint32 diff) override
@@ -551,7 +551,7 @@ class npc_focused_lightning_trash : public CreatureScript
                                 GetFixatedPlayerOrGetNewIfNeeded();
                                 me->GetMotionMaster()->MoveFollow(target, 0.f, 0.f);
                             }
-                        
+
                             m_mEvents.ScheduleEvent(EVENT_FIXATE_CHECK, 500);
                             break;
                         case EVENT_PULSE:
@@ -574,13 +574,13 @@ class npc_zandalari_water_binder : public CreatureScript
 {
     public:
         npc_zandalari_water_binder() : CreatureScript("npc_zandalari_water_binder") { }
-    
+
         struct npc_zandalari_water_binderAI : public ScriptedAI
         {
             npc_zandalari_water_binderAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             EventMap events;
-    
+
             void Reset() override
             {
                 events.Reset();
@@ -602,22 +602,22 @@ class npc_zandalari_water_binder : public CreatureScript
                 if (Unit* vict = me->GetVictim())
                     me->GetMotionMaster()->MoveChase(vict);
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 events.ScheduleEvent(EVENT_FROST_BOLT, 1000);
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     if (eventId == EVENT_FROST_BOLT)
@@ -641,11 +641,11 @@ class npc_zandalari_water_binder : public CreatureScript
                     }
                     break;
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_zandalari_water_binderAI(creature);
@@ -657,33 +657,33 @@ class npc_zandalari_blade_initiate : public CreatureScript
 {
     public:
         npc_zandalari_blade_initiate() : CreatureScript("npc_zandalari_blade_initiate") { }
-    
+
         struct npc_zandalari_blade_initiateAI : public ScriptedAI
         {
             npc_zandalari_blade_initiateAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             EventMap events;
-    
+
             void Reset() override
             {
                 events.Reset();
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 events.ScheduleEvent(EVENT_WOUNDING_STRIKE, urand(3.5 * IN_MILLISECONDS, 8 * IN_MILLISECONDS));
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     if (eventId == EVENT_WOUNDING_STRIKE)
@@ -695,11 +695,11 @@ class npc_zandalari_blade_initiate : public CreatureScript
                     }
                     break;
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_zandalari_blade_initiateAI(creature);
@@ -711,23 +711,23 @@ class npc_zandalari_stormcaller_2 : public CreatureScript
 {
     public:
         npc_zandalari_stormcaller_2() : CreatureScript("npc_zandalari_stormcaller_2") { }
-    
+
         struct npc_zandalari_stormcaller_2AI : public ScriptedAI
         {
-            npc_zandalari_stormcaller_2AI(Creature* creature) : ScriptedAI(creature) 
-            { 
+            npc_zandalari_stormcaller_2AI(Creature* creature) : ScriptedAI(creature)
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
             }
-    
+
             EventMap events;
             bool hasTriggered;
-    
+
             void Reset() override
             {
                 events.Reset();
                 hasTriggered = false;
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 events.ScheduleEvent(EVENT_FROST_BOLT, urand(3.5 * IN_MILLISECONDS, 8 * IN_MILLISECONDS));
@@ -742,17 +742,17 @@ class npc_zandalari_stormcaller_2 : public CreatureScript
                     DoCast(me, SPELL_STORM_WEAPON_2);
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -771,11 +771,11 @@ class npc_zandalari_stormcaller_2 : public CreatureScript
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_zandalari_stormcaller_2AI(creature);
@@ -787,35 +787,35 @@ class npc_ancient_python : public CreatureScript
 {
     public:
         npc_ancient_python() : CreatureScript("npc_ancient_python") { }
-    
+
         struct npc_ancient_pythonAI : public ScriptedAI
         {
             npc_ancient_pythonAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             EventMap events;
-    
+
             void Reset() override
             {
                 events.Reset();
                 me->AddAura(SPELL_INVISIBLE, me);
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 me->RemoveAurasDueToSpell(SPELL_INVISIBLE);
                 events.ScheduleEvent(EVENT_ANCIENT_VENOM, urand(3.5 * IN_MILLISECONDS, 8 * IN_MILLISECONDS));
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     if (eventId == EVENT_ANCIENT_VENOM)
@@ -827,11 +827,11 @@ class npc_ancient_python : public CreatureScript
                     }
                     break;
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_ancient_pythonAI(creature);
@@ -843,34 +843,34 @@ class npc_tormented_spirit : public CreatureScript
 {
     public:
         npc_tormented_spirit() : CreatureScript("npc_tormented_spirit") { }
-    
+
         struct npc_tormented_spiritAI : public ScriptedAI
         {
             npc_tormented_spiritAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             EventMap events;
-    
+
             void Reset() override
             {
                 me->SetFloatValue(UNIT_FIELD_COMBAT_REACH, 35.0f);
                 events.Reset();
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 events.ScheduleEvent(EVENT_TORMENT, 2.5 * IN_MILLISECONDS);
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     if (eventId == EVENT_TORMENT)
@@ -880,11 +880,11 @@ class npc_tormented_spirit : public CreatureScript
                     }
                     break;
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_tormented_spiritAI(creature);
@@ -896,37 +896,37 @@ class npc_soul_fed_construct : public CreatureScript
 {
     public:
         npc_soul_fed_construct() : CreatureScript("npc_soul_fed_construct") { }
-    
+
         struct npc_soul_fed_constructAI : public ScriptedAI
         {
-            npc_soul_fed_constructAI(Creature* creature) : ScriptedAI(creature) 
-            { 
+            npc_soul_fed_constructAI(Creature* creature) : ScriptedAI(creature)
+            {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
             }
-    
+
             EventMap events;
-    
+
             void Reset() override
             {
                 events.Reset();
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 events.ScheduleEvent(EVENT_CRUSH_ARMOR, urand(2 * IN_MILLISECONDS, 4 * IN_MILLISECONDS));
                 events.ScheduleEvent(EVENT_SPIRITFIRE_BEAM, 5 * IN_MILLISECONDS);
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -934,7 +934,7 @@ class npc_soul_fed_construct : public CreatureScript
                         case EVENT_CRUSH_ARMOR:
                             if (Unit* target = me->GetVictim())
                                 DoCast(target, SPELL_CRUSH_ARMOR);
-                        
+
                             events.ScheduleEvent(EVENT_CRUSH_ARMOR, urand(12 * IN_MILLISECONDS, 18 * IN_MILLISECONDS));
                             break;
                         case EVENT_SPIRITFIRE_BEAM:
@@ -947,11 +947,11 @@ class npc_soul_fed_construct : public CreatureScript
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_soul_fed_constructAI(creature);
@@ -963,28 +963,28 @@ class npc_spirit_flayer : public CreatureScript
 {
     public:
         npc_spirit_flayer() : CreatureScript("npc_spirit_flayer") { }
-    
+
         struct npc_spirit_flayerAI : public ScriptedAI
         {
             npc_spirit_flayerAI(Creature* creature) : ScriptedAI(creature) { }
 
             bool sDelay;
             float x, y;
-    
+
             void Reset() override
             {
                 sDelay = false;
                 DoCast(me, SPELL_SPIRIT_LANTERN);
             }
-    
+
             void EnterEvadeMode() override
             {
                 if (!_EnterEvadeMode())
                     return;
-    
+
                 Reset();
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!sDelay)
@@ -1002,7 +1002,7 @@ class npc_spirit_flayer : public CreatureScript
                 }
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_spirit_flayerAI(creature);
@@ -1014,23 +1014,23 @@ class npc_stormbringer_drazkil : public CreatureScript
 {
     public:
         npc_stormbringer_drazkil() : CreatureScript("npc_stormbringer_drazkil") { }
-    
+
         struct npc_stormbringer_drazkilAI : public ScriptedAI
         {
-            npc_stormbringer_drazkilAI(Creature* creature) : ScriptedAI(creature) 
+            npc_stormbringer_drazkilAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
                 instance = me->GetInstanceScript();
             }
-    
+
             EventMap events;
             InstanceScript* instance;
-    
+
             void Reset() override
             {
                 events.Reset();
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 events.ScheduleEvent(EVENT_CHAIN_LIGHTNING, urand(2 * IN_MILLISECONDS, 4 * IN_MILLISECONDS));
@@ -1045,17 +1045,17 @@ class npc_stormbringer_drazkil : public CreatureScript
                     instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_STORMCLOUD);
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1069,16 +1069,16 @@ class npc_stormbringer_drazkil : public CreatureScript
                                 DoCast(target, SPELL_CHAIN_LIGHTNING);
                             else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 150.0f, true))
                                 DoCast(target, SPELL_CHAIN_LIGHTNING);
-                        
+
                             events.ScheduleEvent(EVENT_CHAIN_LIGHTNING, 10.5 * IN_MILLISECONDS);
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_stormbringer_drazkilAI(creature);
@@ -1138,46 +1138,46 @@ class npc_amanishi_flame_chanter : public CreatureScript
 {
     public:
         npc_amanishi_flame_chanter() : CreatureScript("npc_amanishi_flame_chanter") { }
-    
+
         struct npc_amanishi_flame_chanterAI : public tribeAI
         {
             npc_amanishi_flame_chanterAI(Creature* creature) : tribeAI(creature) { }
-    
+
             void AttackStart(Unit* target) override
             {
                 if (!target)
                     return;
-    
+
                 if (me->Attack(target, false))
                     DoStartNoMovement(target);
             }
-    
+
             void CastInterrupted(SpellInfo const* spell) override
             {
                 events.RescheduleEvent(EVENT_CALL_OF_FLAMES, 6 * IN_MILLISECONDS);
                 events.RescheduleEvent(EVENT_ERUPTION, 8.5 * IN_MILLISECONDS);
-    
+
                 if (Unit* vict = me->GetVictim())
                     me->GetMotionMaster()->MoveChase(vict);
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 me->InterruptNonMeleeSpells(true, SPELL_BELL_CHANNEL);
                 events.ScheduleEvent(EVENT_CALL_OF_FLAMES, 1.5 * IN_MILLISECONDS);
                 events.ScheduleEvent(EVENT_ERUPTION, 8.5 * IN_MILLISECONDS);
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1192,10 +1192,10 @@ class npc_amanishi_flame_chanter : public CreatureScript
                                 else
                                     DoStartNoMovement(vict);
                             }
-                        
+
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
                                 DoCast(target, SPELL_CALL_FLAMES);
-                        
+
                             events.ScheduleEvent(EVENT_CALL_OF_FLAMES, 2.5 * IN_MILLISECONDS);
                             break;
                         case EVENT_ERUPTION:
@@ -1208,21 +1208,21 @@ class npc_amanishi_flame_chanter : public CreatureScript
                                 else
                                     DoStartNoMovement(vict);
                             }
-                        
+
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankSpecTargetSelector()))
                                 DoCast(target, SPELL_ERUPTION_2);
                             else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
                                 DoCast(target, SPELL_ERUPTION_2);
-                        
+
                             events.ScheduleEvent(EVENT_ERUPTION, urand(10.5 * IN_MILLISECONDS, 15 * IN_MILLISECONDS));
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_amanishi_flame_chanterAI(creature);
@@ -1234,18 +1234,18 @@ class npc_drakkari_frost_warden : public CreatureScript
 {
     public:
         npc_drakkari_frost_warden() : CreatureScript("npc_drakkari_frost_warden") { }
-    
+
         struct npc_drakkari_frost_wardenAI : public tribeAI
         {
             npc_drakkari_frost_wardenAI(Creature* creature) : tribeAI(creature) { }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 me->InterruptNonMeleeSpells(true, SPELL_BELL_CHANNEL);
                 events.ScheduleEvent(EVENT_FROST_BULWARK, 7.5 * IN_MILLISECONDS);
                 events.ScheduleEvent(EVENT_GLACIAL_FREEZE_TOTEM, 5 * IN_MILLISECONDS);
             }
-    
+
             void CastInterrupted(SpellInfo const* spell) override
             {
                 events.RescheduleEvent(EVENT_FROST_BULWARK, 8 * IN_MILLISECONDS);
@@ -1256,17 +1256,17 @@ class npc_drakkari_frost_warden : public CreatureScript
                 summon->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);
                 summon->AddAura(SPELL_GLACIAL_FREEZE, summon);
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1283,11 +1283,11 @@ class npc_drakkari_frost_warden : public CreatureScript
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_drakkari_frost_wardenAI(creature);
@@ -1299,31 +1299,31 @@ class npc_farraki_sand_conjurer : public CreatureScript
 {
     public:
         npc_farraki_sand_conjurer() : CreatureScript("npc_farraki_sand_conjurer") { }
-    
+
         struct npc_farraki_sand_conjurerAI : public tribeAI
         {
             npc_farraki_sand_conjurerAI(Creature* creature) : tribeAI(creature), summons(me)  { }
 
             SummonList summons;
-    
+
             void AttackStart(Unit* target) override
             {
                 if (!target)
                     return;
-    
+
                 if (me->Attack(target, false))
                     DoStartNoMovement(target);
             }
-    
+
             void CastInterrupted(SpellInfo const* spell) override
             {
                 events.RescheduleEvent(EVENT_SAND_BOLT, 7 * IN_MILLISECONDS);
                 events.RescheduleEvent(EVENT_CHOKING_SANDS, 8.5 * IN_MILLISECONDS);
-    
+
                 if (Unit* vict = me->GetVictim())
                     me->GetMotionMaster()->MoveChase(vict);
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 me->InterruptNonMeleeSpells(true, SPELL_BELL_CHANNEL);
@@ -1347,17 +1347,17 @@ class npc_farraki_sand_conjurer : public CreatureScript
             {
                 summons.DespawnAll();
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1372,10 +1372,10 @@ class npc_farraki_sand_conjurer : public CreatureScript
                                 else
                                     DoStartNoMovement(vict);
                             }
-                        
+
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
                                 DoCast(target, SPELL_SAND_BOLT);
-                        
+
                             events.ScheduleEvent(EVENT_SAND_BOLT, 2.5 * IN_MILLISECONDS);
                             break;
                         case EVENT_CHOKING_SANDS:
@@ -1383,16 +1383,16 @@ class npc_farraki_sand_conjurer : public CreatureScript
                                 DoCast(target, SPELL_CHOKING_SANDS);
                             else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
                                 DoCast(target, SPELL_CHOKING_SANDS);
-                        
+
                             events.ScheduleEvent(EVENT_CHOKING_SANDS, urand(10.5 * IN_MILLISECONDS, 15 * IN_MILLISECONDS));
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_farraki_sand_conjurerAI(creature);
@@ -1404,11 +1404,11 @@ class npc_zandalari_high_priest : public CreatureScript
 {
     public:
         npc_zandalari_high_priest() : CreatureScript("npc_zandalari_high_priest") { }
-    
+
         struct npc_zandalari_high_priestAI : public tribeAI
         {
             npc_zandalari_high_priestAI(Creature* creature) : tribeAI(creature) { }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 me->InterruptNonMeleeSpells(true, SPELL_BELL_CHANNEL);
@@ -1419,17 +1419,17 @@ class npc_zandalari_high_priest : public CreatureScript
             {
                 events.RescheduleEvent(EVENT_LIGHT_OF_THE_LOA, 8 * IN_MILLISECONDS);
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     if (eventId == EVENT_LIGHT_OF_THE_LOA)
@@ -1441,11 +1441,11 @@ class npc_zandalari_high_priest : public CreatureScript
                     }
                     break;
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_zandalari_high_priestAI(creature);
@@ -1457,47 +1457,47 @@ class npc_gurubashi_berserker : public CreatureScript
 {
     public:
         npc_gurubashi_berserker() : CreatureScript("npc_gurubashi_berserker") { }
-    
+
         struct npc_gurubashi_berserkerAI : public ScriptedAI
         {
             npc_gurubashi_berserkerAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             EventMap events;
             bool hasTriggered;
-    
+
             void Reset() override
             {
                 events.Reset();
                 hasTriggered = false;
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 events.ScheduleEvent(EVENT_BLOODLETTING, urand(4.5 * IN_MILLISECONDS, 8 * IN_MILLISECONDS));
             }
-    
+
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
                 if (HealthBelowPct(60) && !hasTriggered)
                 {
                     hasTriggered = true;
-    
+
                     // Some Berserks have it like default state
                     if (!me->HasAura(SPELL_BERSERKER_FRENZY))
                         DoCast(me, SPELL_BERSERKER_FRENZY);
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     if (eventId == EVENT_BLOODLETTING)
@@ -1509,11 +1509,11 @@ class npc_gurubashi_berserker : public CreatureScript
                     }
                     break;
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_gurubashi_berserkerAI(creature);
@@ -1525,20 +1525,20 @@ class npc_zandalari_prophet : public CreatureScript
 {
     public:
         npc_zandalari_prophet() : CreatureScript("npc_zandalari_prophet") { }
-    
+
         struct npc_zandalari_prophetAI : public ScriptedAI
         {
             npc_zandalari_prophetAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             EventMap events;
             bool hasTriggered;
-    
+
             void Reset() override
             {
                 events.Reset();
                 hasTriggered = false;
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 events.ScheduleEvent(EVENT_VISIONS_OF_DEMISE, urand(4.5 * IN_MILLISECONDS, 8 * IN_MILLISECONDS));
@@ -1553,17 +1553,17 @@ class npc_zandalari_prophet : public CreatureScript
                     DoCast(me, SPELL_VISIONS_OF_GRANDEUR);
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1579,16 +1579,16 @@ class npc_zandalari_prophet : public CreatureScript
                                 DoCast(target, SPELL_MARK_OF_THE_PROPHET);
                             else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 150.0f, true, -SPELL_MARK_OF_THE_PROPHET))
                                 DoCast(target, SPELL_MARK_OF_THE_PROPHET);
-                        
+
                             events.ScheduleEvent(EVENT_MARK_OF_THE_PROPHET, 10 * IN_MILLISECONDS);
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_zandalari_prophetAI(creature);
@@ -1600,38 +1600,38 @@ class npc_zandalari_prelate : public CreatureScript
 {
     public:
         npc_zandalari_prelate() : CreatureScript("npc_zandalari_prelate") { }
-    
+
         struct npc_zandalari_prelateAI : public ScriptedAI
         {
-            npc_zandalari_prelateAI(Creature* creature) : ScriptedAI(creature) 
+            npc_zandalari_prelateAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
             }
-    
+
             EventMap events;
-    
+
             void Reset() override
             {
                 events.Reset();
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 DoCast(me, SPELL_SEAL_OF_THE_LOA);
                 events.ScheduleEvent(EVENT_LIGHT_OF_THE_LOA, 15 * IN_MILLISECONDS);
                 events.ScheduleEvent(EVENT_JUDGMENT_OF_THE_LOA, urand(12 * IN_MILLISECONDS, 14 * IN_MILLISECONDS));
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1650,7 +1650,7 @@ class npc_zandalari_prelate : public CreatureScript
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
 
@@ -1673,7 +1673,7 @@ class npc_zandalari_prelate : public CreatureScript
                     return ObjectGuid::Empty;
                 }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_zandalari_prelateAI(creature);
@@ -1685,28 +1685,28 @@ class npc_zandalari_warlord : public CreatureScript
 {
     public:
         npc_zandalari_warlord() : CreatureScript("npc_zandalari_warlord") { }
-    
+
         struct npc_zandalari_warlordAI : public ScriptedAI
         {
-            npc_zandalari_warlordAI(Creature* creature) : ScriptedAI(creature) 
+            npc_zandalari_warlordAI(Creature* creature) : ScriptedAI(creature)
             {
                 hasTriggered = false;
                 instance = me->GetInstanceScript();
             }
-    
+
             EventMap events;
             InstanceScript* instance;
             uint32 pctHealth;
             ObjectGuid targetGUID;
             bool hasTriggered;
-    
+
             void Reset() override
             {
                 events.Reset();
                 pctHealth = 66;
                 targetGUID = ObjectGuid::Empty;
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 events.ScheduleEvent(EVENT_CLEAVE, urand(4.5 * IN_MILLISECONDS, 8 * IN_MILLISECONDS));
@@ -1729,7 +1729,7 @@ class npc_zandalari_warlord : public CreatureScript
                 if (instance)
                     instance->SetData(DATA_PRE_COUNCIL_EVENT_2, DONE);
             }
-    
+
             void DamageTaken(Unit* attacker, uint32& damage) override
             {
                 if (HealthBelowPct(pctHealth) && pctHealth > 0)
@@ -1738,17 +1738,17 @@ class npc_zandalari_warlord : public CreatureScript
                     DoCast(me, SPELL_ZANDALARI_WARCRY, true);
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -1756,7 +1756,7 @@ class npc_zandalari_warlord : public CreatureScript
                         case EVENT_CLEAVE:
                             if (Unit* target = me->GetVictim())
                                 DoCast(target, SPELL_CLEAVE);
-                        
+
                             events.ScheduleEvent(EVENT_CLEAVE, urand(4.5 * IN_MILLISECONDS, 8 * IN_MILLISECONDS));
                             break;
                         case EVENT_STRENGTH_OF_THE_LOA:
@@ -1772,27 +1772,27 @@ class npc_zandalari_warlord : public CreatureScript
                             break;
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_zandalari_warlordAI(creature);
         }
 };
 
-class BehindTribePredicate 
+class BehindTribePredicate
 {
     public:
         BehindTribePredicate(Unit* const m_caster) : _caster(m_caster) { }
-    
+
         bool operator()(Creature* target)
         {
             return target && target->GetPositionX() > _caster->GetPositionX();
         }
-    
+
     private:
         Unit const* _caster;
 };
@@ -1802,11 +1802,11 @@ class npc_garajal_spirit_binder_event : public CreatureScript
 {
     public:
         npc_garajal_spirit_binder_event() : CreatureScript("npc_garajal_spirit_binder_event") { }
-    
+
         struct npc_garajal_spirit_binder_eventAI : public ScriptedAI
         {
             npc_garajal_spirit_binder_eventAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             EventMap nonCombatEvents;
             InstanceScript* instance;
             std::list<Creature*> tribesList;
@@ -1848,7 +1848,7 @@ class npc_garajal_spirit_binder_event : public CreatureScript
 
                 return 0;
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 nonCombatEvents.Update(diff);
@@ -1884,7 +1884,7 @@ class npc_garajal_spirit_binder_event : public CreatureScript
                 }
 
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_garajal_spirit_binder_eventAI(creature);
@@ -1896,43 +1896,43 @@ class npc_shadowed_voodoo_spirit : public CreatureScript
 {
     public:
         npc_shadowed_voodoo_spirit() : CreatureScript("npc_shadowed_voodoo_spirit") { }
-    
+
         struct npc_shadowed_voodoo_spiritAI : public tribeAI
         {
             npc_shadowed_voodoo_spiritAI(Creature* creature) : tribeAI(creature)  { }
-    
+
             void AttackStart(Unit* target) override
             {
                 if (!target)
                     return;
-    
+
                 if (me->Attack(target, false))
                     DoStartNoMovement(target);
             }
-    
+
             void CastInterrupted(SpellInfo const* spell) override
             {
                 events.RescheduleEvent(EVENT_SHADOW_BOLT, 4.5 * IN_MILLISECONDS);
-    
+
                 if (Unit* vict = me->GetVictim())
                     me->GetMotionMaster()->MoveChase(vict);
             }
-    
+
             void JustEngagedWith(Unit* who) override
             {
                 events.RescheduleEvent(EVENT_SHADOW_BOLT, 1 * IN_MILLISECONDS);
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
                     return;
-    
+
                 events.Update(diff);
-    
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     if (eventId == EVENT_SHADOW_BOLT)
@@ -1953,11 +1953,11 @@ class npc_shadowed_voodoo_spirit : public CreatureScript
                         events.ScheduleEvent(EVENT_SHADOW_BOLT, 2.5 * IN_MILLISECONDS);
                     }
                 }
-    
+
                 DoMeleeAttackIfReady();
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_shadowed_voodoo_spiritAI(creature);
@@ -1969,11 +1969,11 @@ class npc_lei_shen_tortos : public CreatureScript
 {
     public:
         npc_lei_shen_tortos() : CreatureScript("npc_lei_shen_tortos") { }
-    
+
         struct npc_lei_shen_tortosAI : public ScriptedAI
         {
             npc_lei_shen_tortosAI(Creature* creature) : ScriptedAI(creature) { }
-    
+
             InstanceScript* instance;
             EventMap events;
             bool introDone;
@@ -1995,7 +1995,7 @@ class npc_lei_shen_tortos : public CreatureScript
 
                 return 0;
             }
-    
+
             void DoAction(int32 actionId) override
             {
                 if (actionId == ACTION_START_INTRO && !introDone && instance)
@@ -2006,11 +2006,11 @@ class npc_lei_shen_tortos : public CreatureScript
                     events.ScheduleEvent(EVENT_LEI_SHEN_SEND_CINEMATIC, 100);
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 events.Update(diff);
-    
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
@@ -2023,7 +2023,7 @@ class npc_lei_shen_tortos : public CreatureScript
                             break;
                         case EVENT_LEI_SHEN_SEND_CINEMATIC:
                             events.CancelEvent(EVENT_DESTROY_BRIDGE);
-                        
+
                             if (Creature* bridgeTrigger = me->SummonCreature(NPC_BRIDGE_TRIGGER, pMidBridge, TEMPSUMMON_TIMED_DESPAWN, 60000))
                             {
                                 for (auto&& itr : instance->instance->GetPlayers())
@@ -2034,24 +2034,24 @@ class npc_lei_shen_tortos : public CreatureScript
                                         {
                                             Position playerPos = bridgeTrigger->GetRandomNearPosition(16.f);
                                             playerPos.m_positionZ = 154.f;
-                        
+
                                             player->NearTeleportTo(playerPos.GetPositionX(), playerPos.GetPositionY(), playerPos.GetPositionZ(), player->GetAngle(me));
-                        
+
                                             if (Aura* slowfall = player->AddAura(130, player))
                                             {
                                                 slowfall->SetMaxDuration(3 * MINUTE * IN_MILLISECONDS);
                                                 slowfall->SetDuration(3 * MINUTE * IN_MILLISECONDS);
                                             }
-                        
+
                                             player->SendCinematicStart(CINEMATIC_TORTOS_INTRO);
                                         }
                                     }
                                 }
                             }
-                        
+
                             if (instance)
                                 instance->SetData(DATA_TORTOS_EVENT, DONE);
-                        
+
                             events.ScheduleEvent(EVENT_LEI_SHEN_I_1, 5900); // at 6 seconds.
                             break;
                         case EVENT_LEI_SHEN_I_1:
@@ -2066,7 +2066,7 @@ class npc_lei_shen_tortos : public CreatureScript
                             me->HandleEmoteCommand(EMOTE_ONESHOT_EXCLAMATION);
                             events.ScheduleEvent(EVENT_LEI_SHEN_VISUAL_CAST, 8000); // at 22 seconds.
                             break;
-                        
+
                         case EVENT_LEI_SHEN_VISUAL_CAST:
                             bridgeDestroy = 1;
                             DoCast(me, SPELL_BRIDGE_VIS_S);
@@ -2076,7 +2076,7 @@ class npc_lei_shen_tortos : public CreatureScript
                         {
                             if (GameObject* bridge = ObjectAccessor::GetGameObject(*me, instance ? instance->GetGuidData(GO_TORTOS_BRIDGE) : ObjectGuid::Empty))
                                 bridge->SetDestructibleState(GO_DESTRUCTIBLE_DESTROYED);
-                        
+
                             events.ScheduleEvent(EVENT_LEI_SHEN_TELEPORT_PLAYERS, 16000); // at 41 seconds.
                         }
                         break;
@@ -2089,7 +2089,7 @@ class npc_lei_shen_tortos : public CreatureScript
                 }
             }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new npc_lei_shen_tortosAI(creature);
@@ -2132,7 +2132,7 @@ struct npc_waterspout_trigger : public ScriptedAI
 // Greater Cave Bat 69351
 struct npc_greater_cave_bat : public customCreatureAI
 {
-    npc_greater_cave_bat(Creature* creature) : customCreatureAI(creature) 
+    npc_greater_cave_bat(Creature* creature) : customCreatureAI(creature)
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
     }
@@ -2281,8 +2281,8 @@ struct npc_mist_lurker : public customCreatureAI
 // Cavern Burrower 70589
 struct npc_cavern_burrower : public customCreatureAI
 {
-    npc_cavern_burrower(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_cavern_burrower(Creature* creature) : customCreatureAI(creature)
+    {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
     }
 
@@ -2338,8 +2338,8 @@ struct npc_mysterious_mushroom : public CreatureAI
 // Eternal Guardian 70586
 struct npc_eternal_guardian : public customCreatureAI
 {
-    npc_eternal_guardian(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_eternal_guardian(Creature* creature) : customCreatureAI(creature)
+    {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
     }
 
@@ -2519,8 +2519,8 @@ struct npc_bow_fly_swarm : public customCreatureAI
 // Gastropod 68220
 struct npc_gastropod : public CreatureAI
 {
-    npc_gastropod(Creature* creature) : CreatureAI(creature) 
-    { 
+    npc_gastropod(Creature* creature) : CreatureAI(creature)
+    {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
     }
 
@@ -2554,7 +2554,7 @@ struct npc_gastropod : public CreatureAI
         me->FixateOnTarget(who->GetGUID());
     }
 
-    void UpdateAI(uint32 /*diff*/) override 
+    void UpdateAI(uint32 /*diff*/) override
     {
         if (!UpdateVictim())
             return;
@@ -2645,8 +2645,8 @@ struct npc_quivering_blob : public CreatureAI
 // Thunder Lord 69821
 struct npc_thunder_lord : public customCreatureAI
 {
-    npc_thunder_lord(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_thunder_lord(Creature* creature) : customCreatureAI(creature)
+    {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
     }
 
@@ -2686,7 +2686,7 @@ struct npc_thunder_lord : public customCreatureAI
 // Lightning Guardian 69834
 struct npc_lightning_guardian : public customCreatureAI
 {
-    npc_lightning_guardian(Creature* creature) : customCreatureAI(creature) 
+    npc_lightning_guardian(Creature* creature) : customCreatureAI(creature)
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
         isCaster = true;
@@ -2738,7 +2738,7 @@ struct npc_lightning_guardian : public customCreatureAI
 // Manchu 70202
 struct npc_manchu : public customCreatureAI
 {
-    npc_manchu(Creature* creature) : customCreatureAI(creature) 
+    npc_manchu(Creature* creature) : customCreatureAI(creature)
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
         instance = me->GetInstanceScript();
@@ -2791,7 +2791,7 @@ struct npc_manchu : public customCreatureAI
 // Weishen 70205
 struct npc_weishen : public customCreatureAI
 {
-    npc_weishen(Creature* creature) : customCreatureAI(creature) 
+    npc_weishen(Creature* creature) : customCreatureAI(creature)
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
         instance = me->GetInstanceScript();
@@ -2879,14 +2879,14 @@ struct npc_untrained_quilen : public customCreatureAI
 // Shanze Celestial Shaper 70240
 struct npc_shanze_celestial_shaper : public customCreatureAI
 {
-    npc_shanze_celestial_shaper(Creature* creature) : customCreatureAI(creature) 
-    { 
+    npc_shanze_celestial_shaper(Creature* creature) : customCreatureAI(creature)
+    {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
     }
 
     void Reset() override
     {
-        // delay for init 
+        // delay for init
         me->m_Events.Schedule(1500, [this]()
         {
             // Should select nearest
@@ -2928,7 +2928,7 @@ struct npc_shanze_celestial_shaper : public customCreatureAI
 // Dark Ritualist 69702
 struct npc_dark_ritualist : public customCreatureAI
 {
-    npc_dark_ritualist(Creature* creature) : customCreatureAI(creature) 
+    npc_dark_ritualist(Creature* creature) : customCreatureAI(creature)
     {
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
         transformID = 0;
@@ -3193,7 +3193,6 @@ class spell_storm_weapon : public AuraScript
         }
     }
 
-
     void Register() override
     {
         OnEffectApply += AuraEffectApplyFn(spell_storm_weapon::HandleOnApply, EFFECT_0, SPELL_AURA_PROC_TRIGGER_SPELL, AURA_EFFECT_HANDLE_REAL);
@@ -3271,7 +3270,6 @@ class spell_storm_weapon_proc : public SpellScriptLoader
             return new spell_storm_weapon_proc_SpellScript();
         }
 };
-
 
 class spell_storm_weapon_aura : public SpellScriptLoader
 {
@@ -3396,11 +3394,11 @@ class spell_conjure_elementals : public SpellScript
     }
 };
 
-class SummonShadowyMinionsPredicate 
+class SummonShadowyMinionsPredicate
 {
     public:
         SummonShadowyMinionsPredicate(Creature* const m_caster) : _caster(m_caster) { }
-    
+
         bool operator()(WorldObject* object)
         {
             if (_caster->AI()->GetData(object->GetGUID().GetCounter()))
@@ -3408,7 +3406,7 @@ class SummonShadowyMinionsPredicate
 
             return true;
         }
-    
+
     private:
         Creature const* _caster;
 };
@@ -3485,20 +3483,19 @@ class spell_waterspout_back : public AuraScript
     }
 };
 
-class SiphonLifePredicate 
+class SiphonLifePredicate
 {
     public:
         SiphonLifePredicate(Unit* const m_owner) : _owner(m_owner) { }
-    
+
         bool operator()(WorldObject* object)
         {
             return object && object->GetExactDist2d(_owner) < 15.0f;
         }
-    
+
     private:
         Unit const* _owner;
 };
-
 
 // Siphon Life 140630
 class spell_eternal_siphon_life : public SpellScript
@@ -3657,16 +3654,16 @@ class spell_cosmic_strike_summon : public SpellScript
     }
 };
 
-class RitualLightningPredicate 
+class RitualLightningPredicate
 {
     public:
         RitualLightningPredicate(Unit* const caster, const uint32 spell_id) : _caster(caster), _spell_id(spell_id) { }
-    
+
         bool operator()(WorldObject* object)
         {
             return object && object->ToPlayer() && _spell_id == SPELL_LONG_RANGE_RITUAL_LIGHTNING ? _caster->GetExactDist2d(object->ToPlayer()) < 30.0f : _caster->GetExactDist2d(object->ToPlayer()) > 30.0f;
         }
-    
+
     private:
         Unit const* _caster;
         uint32 const _spell_id;
@@ -3792,7 +3789,7 @@ class go_displacement_pad : public GameObjectScript
 {
     public:
         go_displacement_pad() : GameObjectScript("go_displacement_pad") { }
-    
+
         bool OnGossipHello(Player* player, GameObject* go)
         {
             if (player->GetInstanceScript() && player->GetInstanceScript()->GetBossState(DATA_LEI_SHEN) != IN_PROGRESS)
@@ -3802,14 +3799,13 @@ class go_displacement_pad : public GameObjectScript
         }
 };
 
-
 // Areatrigger 8940
 // Players should die from AT, not drop damage, cuz for example priest could use levitation and don`t die
 class AreaTrigger_under_horridon_way : public AreaTriggerScript
 {
     public:
         AreaTrigger_under_horridon_way() : AreaTriggerScript("AreaTrigger_under_horridon_way") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
@@ -3832,7 +3828,7 @@ class AreaTrigger_under_lei_shen : public AreaTriggerScript
 {
     public:
         AreaTrigger_under_lei_shen() : AreaTriggerScript("AreaTrigger_under_lei_shen") { }
-    
+
         bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
@@ -3842,7 +3838,7 @@ class AreaTrigger_under_lei_shen : public AreaTriggerScript
 
                 instance->SetData(DATA_LEI_SHEN_EVENT, IN_PROGRESS);
             }
-    
+
             return false;
         }
 };

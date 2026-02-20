@@ -76,7 +76,7 @@ class instance_siege_of_niuzao_temple : public InstanceMapScript
                         break;
                     case GO_WIND_WALL:
                         AddDoor(go, true);
-                        break;                    
+                        break;
                     case GO_FIRE_WALL:
                         vojakDoor = go->GetGUID();
                         break;

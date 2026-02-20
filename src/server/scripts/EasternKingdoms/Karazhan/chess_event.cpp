@@ -348,7 +348,7 @@ class npc_chess_piece : public CreatureScript
             // movement perform spell
             if (spellId == SPELL_MOVE_TO_SQUARE && effIndex == EFFECT_0)
             {
-                if (caster->GetTypeId() == TYPEID_UNIT && !caster->HasAura(SPELL_DISABLE_SQUARE) && !caster->HasAura(SPELL_IS_SQUARE_OCCUPIED))
+                if (caster->IsCreature() && !caster->HasAura(SPELL_DISABLE_SQUARE) && !caster->HasAura(SPELL_IS_SQUARE_OCCUPIED))
                 {
                     caster->CastSpell(caster, SPELL_DISABLE_SQUARE, true);
                     caster->CastSpell(caster, SPELL_IS_SQUARE_OCCUPIED, true);
@@ -372,7 +372,7 @@ class npc_chess_piece : public CreatureScript
             // square facing
             else if (spellId == SPELL_FACE_SQUARE && effIndex == EFFECT_0)
             {
-                if (caster->GetTypeId() != TYPEID_UNIT)
+                if (!(caster->IsCreature()))
                     return true;
 
                 if (Creature* square = ObjectAccessor::GetCreature(*target, target->AI()->GetGUID()))
@@ -483,7 +483,7 @@ class npc_chess_piece : public CreatureScript
                 if (!chessPieceInfo.IsKing)
                     return;
 
-                if (!damage || isAttacked || !instance || attacker->GetTypeId() != TYPEID_UNIT || instance->GetData(TYPE_CHESS) == SPECIAL)
+                if (!damage || isAttacked || !instance || !attacker->IsCreature() || instance->GetData(TYPE_CHESS) == SPECIAL)
                     return;
 
                 if (Creature* medivh = ObjectAccessor::GetCreature(*me, instance->GetGuidData(NPC_ECHO_MEDIVH)))
@@ -618,7 +618,7 @@ class npc_chess_piece : public CreatureScript
             void SpellHit(Unit* caster, SpellInfo const* spell) override
             {
                 // do a soft reset when the piece is controlled
-                if (caster->GetTypeId() == TYPEID_PLAYER && spell->Id == SPELL_CONTROL_PIECE)
+                if (caster->IsPlayer() && spell->Id == SPELL_CONTROL_PIECE)
                 {
                     me->RestoreFaction();
                     Reset();

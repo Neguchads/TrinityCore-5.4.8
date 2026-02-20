@@ -74,7 +74,6 @@ struct BattlePetAbilityTurnEntry
     int32  ProcType;
 };
 
-
 // BattlePetBreedQuality.db2
 struct BattlePetBreedQualityEntry
 {

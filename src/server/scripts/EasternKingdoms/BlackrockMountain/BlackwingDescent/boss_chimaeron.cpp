@@ -19,7 +19,7 @@
 #include"Spell.h"
 #include"blackwing_descent.h"
 
-//todo: реализовать reroure power, low health, корректный double attack
+//todo: Ã‘â‚¬ÃÂµÃÂ°ÃÂ»ÃÂ¸ÃÂ·ÃÂ¾ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ reroure power, low health, ÃÂºÃÂ¾Ã‘â‚¬Ã‘â‚¬ÃÂµÃÂºÃ‘â€šÃÂ½Ã‘â€¹ÃÂ¹ double attack
 enum ScriptTexts
 {
     // Chimaeron
@@ -90,7 +90,7 @@ Position const bilePos[6] =
     {-120.42f,  34.49f,  72.05f, 4.11f},
 };
 
-const Position chimaeronnefariusspawnPos = {-112.16f, 42.80f, 80.14f, 4.73f}; 
+const Position chimaeronnefariusspawnPos = {-112.16f, 42.80f, 80.14f, 4.73f};
 
 class boss_chimaeron : public CreatureScript
 {
@@ -116,7 +116,7 @@ class boss_chimaeron : public CreatureScript
                 DoCast(me, SPELL_FAST_ASLEEP);
             }
 
-            uint8 massacrecount; 
+            uint8 massacrecount;
             uint8 stage;
             uint8 uiVictims;
             bool bFeud;
@@ -137,7 +137,7 @@ class boss_chimaeron : public CreatureScript
                 me->SetFloatValue(UNIT_FIELD_COMBAT_REACH, 10);
 
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, false);
-                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, false); 
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, false);
                 me->m_extraAttacks = 0;
                 me->SetReactState(REACT_DEFENSIVE);
                 events.Reset();
@@ -164,7 +164,7 @@ class boss_chimaeron : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     if (++uiVictims > 2)
                         me->GetMap()->SetWorldState(WORLDSTATE_FULL_OF_SOUND_AND_FURY, 0);
             }
@@ -359,19 +359,19 @@ class boss_chimaeron : public CreatureScript
 
 #define GOSSIP_MENU_1 16565
 #define GOSSIP_OPTION_1 "I suppose you'll be needing a key for this cage? Wait, don't tell me. The horrific gibbering monster behind me ate it, right?"
-#define GOSSIP_OPTION_1_RU "Я полагаю, тебе нужен ключ от этой клетки? Погоди, ничего не говори. Невероятно ужасный монстр позади меня съел его, не так ли?"
+#define GOSSIP_OPTION_1_RU "ÃÂ¯ ÃÂ¿ÃÂ¾ÃÂ»ÃÂ°ÃÂ³ÃÂ°Ã‘Å½, Ã‘â€šÃÂµÃÂ±ÃÂµ ÃÂ½Ã‘Æ’ÃÂ¶ÃÂµÃÂ½ ÃÂºÃÂ»Ã‘Å½Ã‘â€¡ ÃÂ¾Ã‘â€š Ã‘ÂÃ‘â€šÃÂ¾ÃÂ¹ ÃÂºÃÂ»ÃÂµÃ‘â€šÃÂºÃÂ¸? ÃÅ¸ÃÂ¾ÃÂ³ÃÂ¾ÃÂ´ÃÂ¸, ÃÂ½ÃÂ¸Ã‘â€¡ÃÂµÃÂ³ÃÂ¾ ÃÂ½ÃÂµ ÃÂ³ÃÂ¾ÃÂ²ÃÂ¾Ã‘â‚¬ÃÂ¸. ÃÂÃÂµÃÂ²ÃÂµÃ‘â‚¬ÃÂ¾Ã‘ÂÃ‘â€šÃÂ½ÃÂ¾ Ã‘Æ’ÃÂ¶ÃÂ°Ã‘ÂÃÂ½Ã‘â€¹ÃÂ¹ ÃÂ¼ÃÂ¾ÃÂ½Ã‘ÂÃ‘â€šÃ‘â‚¬ ÃÂ¿ÃÂ¾ÃÂ·ÃÂ°ÃÂ´ÃÂ¸ ÃÂ¼ÃÂµÃÂ½Ã‘Â Ã‘ÂÃ‘Å ÃÂµÃÂ» ÃÂµÃÂ³ÃÂ¾, ÃÂ½ÃÂµ Ã‘â€šÃÂ°ÃÂº ÃÂ»ÃÂ¸?"
 #define GOSSIP_MENU_2 16593
 #define GOSSIP_OPTION_2 "You were trapped, as I recall. This situation seems oddly similar."
-#define GOSSIP_OPTION_2_RU "Ты оказался в ловушке, как я понимаю. Эта ситуация кажется подозрительно похожей."
+#define GOSSIP_OPTION_2_RU "ÃÂ¢Ã‘â€¹ ÃÂ¾ÃÂºÃÂ°ÃÂ·ÃÂ°ÃÂ»Ã‘ÂÃ‘Â ÃÂ² ÃÂ»ÃÂ¾ÃÂ²Ã‘Æ’Ã‘Ë†ÃÂºÃÂµ, ÃÂºÃÂ°ÃÂº Ã‘Â ÃÂ¿ÃÂ¾ÃÂ½ÃÂ¸ÃÂ¼ÃÂ°Ã‘Å½. ÃÂ­Ã‘â€šÃÂ° Ã‘ÂÃÂ¸Ã‘â€šÃ‘Æ’ÃÂ°Ã‘â€ ÃÂ¸Ã‘Â ÃÂºÃÂ°ÃÂ¶ÃÂµÃ‘â€šÃ‘ÂÃ‘Â ÃÂ¿ÃÂ¾ÃÂ´ÃÂ¾ÃÂ·Ã‘â‚¬ÃÂ¸Ã‘â€šÃÂµÃÂ»Ã‘Å’ÃÂ½ÃÂ¾ ÃÂ¿ÃÂ¾Ã‘â€¦ÃÂ¾ÃÂ¶ÃÂµÃÂ¹."
 #define GOSSIP_MENU_3 16594
 #define GOSSIP_OPTION_3 "Gnomes in Lava Suits, for example."
-#define GOSSIP_OPTION_3_RU "Гнома в лава-костюме, например."
+#define GOSSIP_OPTION_3_RU "Ãâ€œÃÂ½ÃÂ¾ÃÂ¼ÃÂ° ÃÂ² ÃÂ»ÃÂ°ÃÂ²ÃÂ°-ÃÂºÃÂ¾Ã‘ÂÃ‘â€šÃ‘Å½ÃÂ¼ÃÂµ, ÃÂ½ÃÂ°ÃÂ¿Ã‘â‚¬ÃÂ¸ÃÂ¼ÃÂµÃ‘â‚¬."
 #define GOSSIP_MENU_4 16595
 #define GOSSIP_OPTION_4 "No, I, uh, haven't seen it. You were saying?"
-#define GOSSIP_OPTION_4_RU "Нет, я, э-э, не видел его. Так что ты говорил?"
+#define GOSSIP_OPTION_4_RU "ÃÂÃÂµÃ‘â€š, Ã‘Â, Ã‘Â-Ã‘Â, ÃÂ½ÃÂµ ÃÂ²ÃÂ¸ÃÂ´ÃÂµÃÂ» ÃÂµÃÂ³ÃÂ¾. ÃÂ¢ÃÂ°ÃÂº Ã‘â€¡Ã‘â€šÃÂ¾ Ã‘â€šÃ‘â€¹ ÃÂ³ÃÂ¾ÃÂ²ÃÂ¾Ã‘â‚¬ÃÂ¸ÃÂ»?"
 #define GOSSIP_MENU_5 16596
 #define GOSSIP_OPTION_5 "Restrictions? What restrictions?"
-#define GOSSIP_OPTION_5_RU "Условия? Что за условия?"
+#define GOSSIP_OPTION_5_RU "ÃÂ£Ã‘ÂÃÂ»ÃÂ¾ÃÂ²ÃÂ¸Ã‘Â? ÃÂ§Ã‘â€šÃÂ¾ ÃÂ·ÃÂ° Ã‘Æ’Ã‘ÂÃÂ»ÃÂ¾ÃÂ²ÃÂ¸Ã‘Â?"
 #define GOSSIP_MENU_6 16597
 
 class npc_finkle_einhorn : public CreatureScript
@@ -382,7 +382,7 @@ class npc_finkle_einhorn : public CreatureScript
         bool OnGossipHello(Player* player, Creature* creature) override
         {
             bool ru = player->GetSession()->GetSessionDbLocaleIndex() == LOCALE_ruRU;
-          
+
             InstanceScript* instance = creature->GetInstanceScript();
             if (!instance)
                 return false;
@@ -396,7 +396,7 @@ class npc_finkle_einhorn : public CreatureScript
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
         {
             bool ru = player->GetSession()->GetSessionDbLocaleIndex() == LOCALE_ruRU;
-        
+
             InstanceScript* instance = creature->GetInstanceScript();
             if (!instance)
                 return false;
@@ -487,7 +487,7 @@ class npc_bile_o_tron_800 : public CreatureScript
                     uiWaypoint = 0;
                 else
                     uiWaypoint++;
-                
+
                 events.ScheduleEvent(EVENT_NEXT_WAYPOINT, 1000);
             }
 
@@ -518,7 +518,6 @@ class spell_chimaeron_caustic_slime_target : public SpellScriptLoader
 {
     public:
         spell_chimaeron_caustic_slime_target() : SpellScriptLoader("spell_chimaeron_caustic_slime_target") { }
-
 
         class spell_chimaeron_caustic_slime_target_SpellScript : public SpellScript
         {

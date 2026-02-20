@@ -190,7 +190,7 @@ enum Events
     EVENT_P2_FROSTBOLT_VOLLEY           = 16,
     EVENT_P2_TOUCH_OF_INSIGNIFICANCE    = 17,
     EVENT_P2_SUMMON_SHADE               = 18,
-    
+
     // Cult Fanatic
     EVENT_FANATIC_NECROTIC_STRIKE       = 20,
     EVENT_FANATIC_SHADOW_CLEAVE         = 21,
@@ -418,7 +418,7 @@ class boss_lady_deathwhisper : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -635,7 +635,7 @@ class boss_lady_deathwhisper : public CreatureScript
                 if (_useInternalPlayerAI)
                     return;
 
-                if (player->HasUnitState(UNIT_STATE_CASTING)) 
+                if (player->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
                 Unit* victim = SelectTarget(SELECT_TARGET_RANDOM, 0, 30.0f, true, -SPELL_DOMINATE_MIND);
@@ -706,11 +706,11 @@ class boss_lady_deathwhisper : public CreatureScript
                         else if (roll_chance_i(30) && !player->HasSpellCooldown(SPELL_DETERRENCE))
                             player->CastSpell(player, SPELL_DETERRENCE, false);
                         else if (player->HasTalent(TALENT_AIMED_SHOT, player->GetActiveSpec()))
-                        {    
+                        {
                             if (!player->HasSpellCooldown(SPELL_AIMED_SHOT))
                             {
                                 player->CastSpell(player->GetVictim(), SPELL_AIMED_SHOT, false);
-                                break; 
+                                break;
                             }
                         }
                         player->CastSpell(victim, SPELL_AUTO_SHOT, false);
@@ -749,9 +749,9 @@ class boss_lady_deathwhisper : public CreatureScript
                         }
                         else if (!player->HasSpellCooldown(SPELL_CLEAVE))
                             player->CastSpell(player->GetVictim(), SPELL_CLEAVE, false);
-                        
+
                         player->RemoveAurasDueToSpell(SPELL_BERSERKER_STANCE);
-                        break;                
+                        break;
                     case CLASS_WARLOCK:
                         if (roll_chance_i(50))
                         {
@@ -816,7 +816,7 @@ class boss_lady_deathwhisper : public CreatureScript
                             player->CastSpell(victim, SPELL_LIGHTNING_BOLT, false);
                         else if (player->HasTalent(TALENT_FERAL_SPIRIT, player->GetActiveSpec()))
                             player->CastSpell(player->GetVictim(), SPELL_STORMSTRIKE, false);
-                        
+
                         break;
                 }
             }
@@ -1260,7 +1260,7 @@ class npc_vengeful_shade : public CreatureScript
                 {
                     switch (eventId)
                     {
-                        case EVENT_SHADE_SUICIDE: 
+                        case EVENT_SHADE_SUICIDE:
                             me->Kill(me);
                             break;
                     }

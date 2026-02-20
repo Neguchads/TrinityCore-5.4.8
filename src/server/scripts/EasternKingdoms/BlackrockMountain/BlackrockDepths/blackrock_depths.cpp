@@ -1363,7 +1363,7 @@ class npc_lord_roccor : public CreatureScript
                 events.Reset();
             }
 
-            void JustEngagedWith(Unit* who) override 
+            void JustEngagedWith(Unit* who) override
             {
                 events.ScheduleEvent(EVENT_EARTH_SHOCK, urand(7 * IN_MILLISECONDS, 9 * IN_MILLISECONDS));
                 events.ScheduleEvent(EVENT_EARTH_SHOCK, 14 * IN_MILLISECONDS);

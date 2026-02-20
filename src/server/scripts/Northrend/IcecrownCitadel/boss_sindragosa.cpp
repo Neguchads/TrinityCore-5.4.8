@@ -240,7 +240,7 @@ class boss_sindragosa : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_KILL);
             }
 
@@ -376,7 +376,7 @@ class boss_sindragosa : public CreatureScript
             {
                 if (uint32 spellId = SPELL_MYSTIC_BUFFET_AURA)
                 {
-                    if (target->GetTypeId() != TYPEID_PLAYER)
+                    if (!(target->IsPlayer()))
                         return;
 
                     if (spellId == spell->Id)
@@ -1151,7 +1151,7 @@ class npc_sindragosa_trash : public CreatureScript
                 if (!UpdateVictim())
                     return;
 
-                //if ( me->GetDistance(me->GetVictim()) > 30.0f)
+                //if (me->GetDistance(me->GetVictim()) > 30.0f)
                 //    return;
 
                 _events.Update(diff);
@@ -1562,7 +1562,7 @@ class spell_sindragosa_icy_grip : public SpellScriptLoader
                     if (unit->HasAura(SPELL_FROST_BEACON)) // player with Beacon not gripped
                         return;
 
-                    if (caster->GetTypeId() == TYPEID_UNIT && unit->GetTypeId() == TYPEID_PLAYER)
+                    if (caster->IsCreature() && unit->IsPlayer())
                         if (caster->GetVictim() != unit) // exclude tank
                             unit->CastSpell(caster, SPELL_ICY_GRIP_JUMP, true);
                 }
@@ -1888,7 +1888,8 @@ class spell_sindragosa_tail_smash : public SpellScriptLoader
 
             void TargetSelect(SpellDestination& dest)
             {
-                if (Unit* caster = GetCaster()){
+                if (Unit* caster = GetCaster())
+                {
                     Position pos = caster->GetNearPosition(40.0f, M_PI);
                     dest._position = WorldLocation(GetCaster()->GetMapId(), pos.GetPositionX(), pos.GetPositionY(), pos.GetPositionZ(), pos.GetOrientation());
                 }

@@ -112,7 +112,7 @@ public:
             if (!instance)
                 return;
 
-            if (who->GetTypeId() == TYPEID_PLAYER && me->IsWithinDistInMap(who, 10.0f))
+            if (who->IsPlayer() && me->IsWithinDistInMap(who, 10.0f))
             {
                 if (instance->GetData(TYPE_MEDIVH) == IN_PROGRESS || instance->GetData(TYPE_MEDIVH) == DONE)
                     return;
@@ -122,7 +122,7 @@ public:
                 DoCast(me, SPELL_CHANNEL, false);
                 Check_Timer = 5000;
             }
-            else if (who->GetTypeId() == TYPEID_UNIT && me->IsWithinDistInMap(who, 15.0f))
+            else if (who->IsCreature() && me->IsWithinDistInMap(who, 15.0f))
             {
                 if (instance->GetData(TYPE_MEDIVH) != IN_PROGRESS)
                     return;

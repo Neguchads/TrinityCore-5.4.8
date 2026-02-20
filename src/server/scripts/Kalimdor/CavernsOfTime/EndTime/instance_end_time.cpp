@@ -20,7 +20,7 @@
 
 #define MAX_ENCOUNTER 5
 
-static std::vector<DoorData> doordata = 
+static std::vector<DoorData> doordata =
 {
     {GO_FIRE_WALL,  DATA_ECHO_OF_BAINE, DOOR_TYPE_ROOM, BOUNDARY_NONE},
 };
@@ -185,7 +185,7 @@ class instance_end_time : public InstanceMapScript
                         }
                         break;
                 }
-             
+
                 if (data == DONE)
                     SaveToDB();
             }
@@ -207,12 +207,12 @@ class instance_end_time : public InstanceMapScript
                     case DATA_JAINA_EVENT:
                         return jaina_event;
                     case DATA_FRAGMENTS:
-                        return uiFragmentsCollected; 
+                        return uiFragmentsCollected;
                     case DATA_NOZDORMU_1:
                         return nozdormu_dialog[0];
                     case DATA_NOZDORMU_2:
                         return nozdormu_dialog[1];
-                    case DATA_NOZDORMU_3: 
+                    case DATA_NOZDORMU_3:
                         return nozdormu_dialog[2];
                     case DATA_NOZDORMU_4:
                         return nozdormu_dialog[3];
@@ -284,8 +284,8 @@ class instance_end_time : public InstanceMapScript
                 std::string str_data;
 
                 std::ostringstream saveStream;
-                saveStream << "E T " << GetBossSaveData() 
-                    << first_echo  << ' ' << second_echo << ' ' 
+                saveStream << "E T " << GetBossSaveData()
+                    << first_echo  << ' ' << second_echo << ' '
                     << first_encounter << ' ' << second_encounter << ' '
                     << jaina_event << ' ' << tyrande_event << ' '
                     << nozdormu_dialog[0] << ' ' << nozdormu_dialog[1] << ' '

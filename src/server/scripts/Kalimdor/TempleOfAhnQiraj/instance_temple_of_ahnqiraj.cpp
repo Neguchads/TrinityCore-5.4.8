@@ -121,9 +121,9 @@ class instance_temple_of_ahnqiraj : public InstanceMapScript
             uint32 GetData(uint32 type) const override
             {
                 switch (type)
-                {    
+                {
                     case DATA_BUG_TRIO_DEATH:
-                        return BugTrioDeathCount;      
+                        return BugTrioDeathCount;
                     case DATA_CTHUN_PHASE:
                         return CthunPhase;
                 }
@@ -156,7 +156,7 @@ class instance_temple_of_ahnqiraj : public InstanceMapScript
                 {
                     case DATA_VEM_DEATH:
                         IsBossDied[0] = true;
-                        break;     
+                        break;
                     case DATA_BUG_TRIO_DEATH:
                         ++BugTrioDeathCount;
 

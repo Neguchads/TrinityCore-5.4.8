@@ -82,7 +82,7 @@ class instance_proving_grounds : public InstanceMapScript
                 }
             }
 
-            void OnCreatureCreate(Creature* creature) override 
+            void OnCreatureCreate(Creature* creature) override
             {
                 switch (creature->GetEntry())
                 {
@@ -113,7 +113,7 @@ class instance_proving_grounds : public InstanceMapScript
                 }
             }
 
-            void OnGameObjectCreate(GameObject* go) override 
+            void OnGameObjectCreate(GameObject* go) override
             {
                 if (go->GetEntry() == GO_PROVING_GROUNDS_BARRICADE) // using only for tank trial
                 {

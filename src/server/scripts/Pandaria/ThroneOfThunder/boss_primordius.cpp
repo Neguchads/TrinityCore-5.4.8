@@ -61,13 +61,12 @@ enum Spells
     SPELL_PUSTULE_ERUPTION_PLAYER           = 136248,
     SPELL_PUSTULE_ERUPTION_DAMAGE           = 136247,
 
-
     // Add / player spells
     SPELL_VOLATILE_POOL                     = 140506,   // Area trigger aura on pools
     SPELL_VOLATILE_MUTATION                 = 140508,   // Volatile mutation spell, probably from pools
     SPELL_VOLATILE_MUTATION_PRIMORDIUS      = 140509,   // Volatile mutation  on primordius
     SPELL_VOLATILE_MUTATION_AURA            = 141094,   // Aura added on players from area trigger
-    
+
     SPELL_MUTAGENIC_POOL                    = 136049,   // Create areatrigger
     SPELL_MUTATION                          = 136178,   // Trigger
 
@@ -168,7 +167,7 @@ static const Position aFluidPos[10] =
     { 5650.9f, 4622.4f, 55.5f, 2.6f }
 };
 
-static const std::pair<uint32, uint32> m_pMutations[4] = 
+static const std::pair<uint32, uint32> m_pMutations[4] =
 {
     { SPELL_KEEN_EYESIGHT, SPELL_IMPAIRED_EYESIGHT },
     { SPELL_IMPROVED_SYNAPSES, SPELL_DULLED_SYNAPSES },
@@ -498,7 +497,7 @@ class boss_primordius : public CreatureScript
                             break;
                     }
                 }
-                
+
                 DoMeleeAttackIfReady();
                 EnterEvadeIfOutOfCombatArea(diff);
             }
@@ -1287,7 +1286,7 @@ class sat_volatile_pool_player : public IAreaTriggerAura
         if (Creature* target = pTriggering->ToCreature())
         {
             target->CastSpell(target, SPELL_VOLATILE_MUTATION_PRIMORDIUS, true);
-            
+
             if (AreaTrigger* areaTrigger = GetAreaTrigger())
                 areaTrigger->SetDuration(0);
 

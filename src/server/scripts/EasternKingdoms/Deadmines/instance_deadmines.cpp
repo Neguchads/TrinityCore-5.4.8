@@ -36,11 +36,11 @@ class instance_deadmines : public InstanceMapScript
 
         struct instance_deadmines_InstanceMapScript : public InstanceScript
         {
-            instance_deadmines_InstanceMapScript(Map* map) : InstanceScript(map) 
+            instance_deadmines_InstanceMapScript(Map* map) : InstanceScript(map)
             {
                 SetBossNumber(MAX_ENCOUNTER);
                 LoadDoorData(doordata);
-                
+
                 uiGlubtokGUID = ObjectGuid::Empty;
                 uiHelixGUID = ObjectGuid::Empty;
                 uiOafGUID = ObjectGuid::Empty;
@@ -217,7 +217,7 @@ class instance_deadmines : public InstanceMapScript
                         {
                             ShootCannon();
                             BlastOutDoor();
-                        }    
+                        }
                         break;
                     case DATA_VANESSA_EVENT:
                         uiVanessaEvent = data;
@@ -248,17 +248,17 @@ class instance_deadmines : public InstanceMapScript
                         return uiFoereaperGUID;
                     case DATA_ADMIRAL:
                         return uiAdmiralGUID;
-                    case DATA_TEAM_IN_INSTANCE:     
+                    case DATA_TEAM_IN_INSTANCE:
                         return ObjectGuid(uint64(TeamInInstance));
                 }
                 return ObjectGuid::Empty;
             }
-            
+
             bool SetBossState(uint32 type, EncounterState state) override
             {
                 if (!InstanceScript::SetBossState(type, state))
                     return false;
-                    
+
                 switch (type)
                 {
                     case DATA_HELIX:

@@ -18,7 +18,7 @@
 #include "ScriptPCH.h"
 #include "blackrock_caverns.h"
 
-// todo: сделать скалирование дамага от стаков брони
+// todo: Ã‘ÂÃÂ´ÃÂµÃÂ»ÃÂ°Ã‘â€šÃ‘Å’ Ã‘ÂÃÂºÃÂ°ÃÂ»ÃÂ¸Ã‘â‚¬ÃÂ¾ÃÂ²ÃÂ°ÃÂ½ÃÂ¸ÃÂµ ÃÂ´ÃÂ°ÃÂ¼ÃÂ°ÃÂ³ÃÂ° ÃÂ¾Ã‘â€š Ã‘ÂÃ‘â€šÃÂ°ÃÂºÃÂ¾ÃÂ² ÃÂ±Ã‘â‚¬ÃÂ¾ÃÂ½ÃÂ¸
 
 enum ScriptTexts
 {
@@ -99,7 +99,7 @@ class boss_karsh_steelbender : public CreatureScript
                 if (instance)
                     instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
             }
-     
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_KILL);
@@ -115,7 +115,7 @@ class boss_karsh_steelbender : public CreatureScript
                     EnterEvadeMode();
                     return;
                 }
-     
+
                 bHeat = (me->GetDistance(centerkarshPos) <= 6.0f) ? true : false;
 
                 if (!me->HasAura(SPELL_QUICKSILVER_ARMOR) && !me->HasAura(SPELL_SUPERHEATED_QUICKSILVER_ARMOR))
@@ -150,7 +150,7 @@ class boss_karsh_steelbender : public CreatureScript
             }
 
             private:
-                bool bHeat;        
+                bool bHeat;
         };
 
         CreatureAI* GetAI(Creature* creature) const override
@@ -175,7 +175,7 @@ class spell_superheated_quicksilver_armor : public AuraScript
         OnEffectApply += AuraEffectApplyFn(spell_superheated_quicksilver_armor::HandleAuraEffectApply, EFFECT_1, SPELL_AURA_MOD_DAMAGE_PERCENT_TAKEN, AURA_EFFECT_HANDLE_REAPPLY);
     }
 };
- 
+
 void AddSC_boss_karsh_steelbender()
 {
     new boss_karsh_steelbender();

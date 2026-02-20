@@ -47,15 +47,15 @@ enum Data
 enum CreatureIds
 {
     NPC_SHANNOX                     = 53691,
-    NPC_RAGEFACE                    = 53695, 
+    NPC_RAGEFACE                    = 53695,
     NPC_RIPLIMB                     = 53694,
     NPC_RHYOLITH                    = 52558,
     NPC_BETHTILAC                   = 52498,
-    NPC_ALYSRAZOR                   = 52530, 
+    NPC_ALYSRAZOR                   = 52530,
     NPC_BALEROC                     = 53494,
     NPC_STAGHELM                    = 52571,
     NPC_RAGNAROS                    = 52409,
-    
+
     // alysrazor event
     NPC_BLAZING_MONSTROSITY_LEFT    = 53786,
     NPC_BLAZING_MONSTROSITY_RIGHT   = 53791,
@@ -88,7 +88,7 @@ enum GameobjectIds
     GO_FIRE_WALL_FANDRAL_2      = 208873,
     GO_SULFURON_KEEP            = 209073,
     GO_VOLCANO                  = 209253,
-    
+
     GO_CACHE_OF_THE_FIRELORD_10 = 208967,
     GO_CACHE_OF_THE_FIRELORD_25 = 209261,
 };

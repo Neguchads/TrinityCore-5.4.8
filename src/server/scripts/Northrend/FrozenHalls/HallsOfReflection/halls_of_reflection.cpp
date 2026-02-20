@@ -1326,10 +1326,10 @@ class npc_frostworn_general : public CreatureScript
                 if (me->GetVictim())
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER
+                if (!(who->IsPlayer())
                     || instance->GetData(DATA_MARWYN_EVENT) != DONE
-                    || !me->IsWithinDistInMap(who, 20.0f)
-                    ) return;
+                    || !me->IsWithinDistInMap(who, 20.0f))
+                    return;
 
                 if (Player* player = (Player*)who)
                     if (player->IsGameMaster())
@@ -1424,19 +1424,19 @@ class npc_spiritual_reflection : public CreatureScript
         {
             npc_spiritual_reflectionAI(Creature* creature) : ScriptedAI(creature) { }
 
-            InstanceScript* instance;    
+            InstanceScript* instance;
             uint32 uiStrikeTimer;
 
             void Reset() override
             {
-                uiStrikeTimer = urand(1000, 3000);    
+                uiStrikeTimer = urand(1000, 3000);
             }
 
             void JustDied(Unit* killer) override
             {
                 DoCast(killer, SPELL_SPIRIT_BURST);
             }
-            
+
             void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim())
@@ -1461,7 +1461,7 @@ class npc_spiritual_reflection : public CreatureScript
         }
 };
 
-const Position CannonSpawns[4] = 
+const Position CannonSpawns[4] =
 {
     { 5230.00f, 1658.75f, 802.22f, 0.00f },
     { 5245.74f, 1644.44f, 802.35f, 0.00f },
@@ -1948,7 +1948,7 @@ class npc_queldelar : public CreatureScript
 // Quel`Delar Weapon 37158
 struct npc_queldelar_weapon : public customCreatureAI
 {
-    npc_queldelar_weapon(Creature* creature) : customCreatureAI(creature) 
+    npc_queldelar_weapon(Creature* creature) : customCreatureAI(creature)
     {
         isIntro = false;
     }

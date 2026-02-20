@@ -280,7 +280,7 @@ class BattlePayMgr
 
     private:
          BattlePayMgr();
-        ~BattlePayMgr();       
+        ~BattlePayMgr();
 
     public:
 

@@ -19,7 +19,7 @@
 #include "SpellScript.h"
 #include "BattlegroundSM.h"
 
-// 128648 - tirggered from 128646 Defending Cart Aura 
+// 128648 - tirggered from 128646 Defending Cart Aura
 class spell_defending_cart_arua : public SpellScript
 {
     PrepareSpellScript(spell_defending_cart_arua);
@@ -30,7 +30,7 @@ class spell_defending_cart_arua : public SpellScript
         targets.remove_if([=](WorldObject* target)
         {
             Unit* unit = target->ToUnit();
-            if (!unit || unit->GetTypeId() != TYPEID_PLAYER)
+            if (!unit || !unit->IsPlayer())
                 return true;
             if (cart->HasAura(BG_SM_CONTROL_VISUAL_ALLIANCE))
             {

@@ -132,13 +132,15 @@ void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildDat
         if (right == rightOrig)
         {
             // all left
-            if (prevAxis == axis && G3D::fuzzyEq(prevSplit, split)) {
+            if (prevAxis == axis && G3D::fuzzyEq(prevSplit, split))
+            {
                 // we are stuck here - create a leaf
                 stats.updateLeaf(depth, right - left + 1);
                 createNode(tempTree, nodeIndex, left, right);
                 return;
             }
-            if (clipL <= split) {
+            if (clipL <= split)
+            {
                 // keep looping on left half
                 gridBox.hi[axis] = split;
                 prevClip = clipL;
@@ -152,13 +154,15 @@ void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildDat
         {
             // all right
             right = rightOrig;
-            if (prevAxis == axis && G3D::fuzzyEq(prevSplit, split)) {
+            if (prevAxis == axis && G3D::fuzzyEq(prevSplit, split))
+            {
                 // we are stuck here - create a leaf
                 stats.updateLeaf(depth, right - left + 1);
                 createNode(tempTree, nodeIndex, left, right);
                 return;
             }
-            if (clipR >= split) {
+            if (clipR >= split)
+            {
                 // keep looping on right half
                 gridBox.lo[axis] = split;
                 prevClip = clipR;
@@ -180,14 +184,17 @@ void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildDat
                 tempTree.push_back(0);
                 tempTree.push_back(0);
                 tempTree.push_back(0);
-                if (wasLeft) {
+                if (wasLeft)
+                {
                     // create a node with a left child
                     // write leaf node
                     stats.updateInner();
                     tempTree[nodeIndex + 0] = (prevAxis << 30) | nextIndex;
                     tempTree[nodeIndex + 1] = floatToRawIntBits(prevClip);
                     tempTree[nodeIndex + 2] = floatToRawIntBits(G3D::inf());
-                } else {
+                }
+                else
+                {
                     // create a node with a right child
                     // write leaf node
                     stats.updateInner();
@@ -209,14 +216,16 @@ void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildDat
     // allocate left node
     int nl = right - left + 1;
     int nr = rightOrig - (right + 1) + 1;
-    if (nl > 0) {
+    if (nl > 0)
+    {
         tempTree.push_back(0);
         tempTree.push_back(0);
         tempTree.push_back(0);
     } else
         nextIndex -= 3;
     // allocate right node
-    if (nr > 0) {
+    if (nr > 0)
+    {
         tempTree.push_back(0);
         tempTree.push_back(0);
         tempTree.push_back(0);

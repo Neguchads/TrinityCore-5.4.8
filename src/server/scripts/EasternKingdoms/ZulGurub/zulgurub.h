@@ -155,4 +155,3 @@ CreatureAI* GetInstanceAI(Creature* creature)
 }
 
 #endif
-

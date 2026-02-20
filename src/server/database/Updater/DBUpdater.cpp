@@ -171,7 +171,6 @@ bool DBUpdater<CharacterDatabaseConnection>::IsEnabled(uint32 const updateMask)
     return (updateMask & DatabaseLoader::DATABASE_CHARACTER) ? true : false;
 }
 
-
 // All
 template<class T>
 BaseLocation DBUpdater<T>::GetBaseLocationType()

@@ -173,10 +173,10 @@ public:
             { "tool",           SEC_GAMEMASTER, false,  toolCommandTable            },
             { "visualize",      SEC_ADMINISTRATOR,  true,   visualizeCommandTable       },
             { "itemspecs",      SEC_ADMINISTRATOR,  true,   &HandleItemSpecsCommand,    },
-            { "loot",           SEC_ADMINISTRATOR,  true,   
+            { "loot",           SEC_ADMINISTRATOR,  true,
             {
                 { "cooldown",   SEC_ADMINISTRATOR,  true,   &HandleLootCooldownCommand, },
-                { "show",       SEC_ADMINISTRATOR,  true, 
+                { "show",       SEC_ADMINISTRATOR,  true,
                 {
                     { "personal",SEC_ADMINISTRATOR, true,   &HandleLootShowPersonalCommand, },
                     { "bonus",  SEC_ADMINISTRATOR,  true,   &HandleLootShowBonusCommand,    },
@@ -448,7 +448,7 @@ public:
             zoneX, zoneY, groundZ, floorZ, haveMap, haveVMap, haveMMap);
 
         LiquidData liquidStatus;
-        float collisionHeight = object->GetTypeId() == TYPEID_PLAYER ? object->ToPlayer()->GetCollisionHeight() : DEFAULT_UNIT_HEIGHT;
+        float collisionHeight = object->IsPlayer() ? object->ToPlayer()->GetCollisionHeight() : DEFAULT_UNIT_HEIGHT;
         ZLiquidStatus status = map->GetLiquidStatus(object->GetPhaseMask(), object->GetPositionX(), object->GetPositionY(), object->GetPositionZ(), MAP_ALL_LIQUIDS, &liquidStatus, collisionHeight);
 
         if (status)
@@ -1364,7 +1364,6 @@ public:
             return false;
         }
 
-
         AreaTableEntry const* area = sAreaTableStore.LookupEntry(atoi(args));
         if (!area)
         {
@@ -1610,7 +1609,6 @@ public:
 
         return true;
     }
-
 
     static bool HandleMaxSkillCommand(ChatHandler* handler, char const* /*args*/)
     {
@@ -2107,7 +2105,7 @@ public:
         Unit* target = handler->getSelectedUnit();
         if (player->GetTarget() && target)
         {
-            if (target->GetTypeId() != TYPEID_UNIT || target->IsPet())
+            if (!(target->IsCreature() || target->IsPet()))
             {
                 handler->SendSysMessage(LANG_SELECT_CREATURE);
                 handler->SetSentErrorMessage(true);
@@ -2455,7 +2453,7 @@ public:
         // Get character and account id
         CharacterDatabase.EscapeString(name);
         QueryResult result = CharacterDatabase.PQuery("SELECT guid, account FROM characters WHERE name = '%s'", name.c_str());
-    
+
         Field* fields;
         uint32 charId = 0;
         std::string acc;
@@ -2483,10 +2481,10 @@ public:
                 }
             }
         }
-    
+
         // Send mute history by character GUID or name (for renamed or deleted characters)
         MuteListSendCharHistoryHelper(handler, name, charId, acc, limit, activeMuteId, activeMuteTimer);
-    
+
         // Send current account mute history
         if (acc != "")
             MuteListSendAccHistoryHelper(handler, acc, limit, activeMuteId, activeMuteTimer, charId);
@@ -2561,7 +2559,7 @@ public:
 
             // Send history row
             MuteListSendRowHelper(handler, currName, currAcc, muteName, acc, muteDate, mutedBy, muteTime, muteReason, false, muteActive ? activeMuteTimer : 0);
-        } 
+        }
         while (result->NextRow());
     }
 
@@ -2611,12 +2609,12 @@ public:
 
         // Get hisrory rows
         ObjectGuid muteCharId;
-            
+
         std::string currName;
         std::string currAcc;
 
         std::unordered_map<uint32, std::pair<std::string, std::string>> nameAccCache;
-    
+
         std::string muteName;
         std::string muteAcc;
         std::string muteDate;
@@ -2744,7 +2742,7 @@ public:
             return false;
         }
 
-        handler->PSendSysMessage(LANG_MOVEGENS_LIST, (unit->GetTypeId() == TYPEID_PLAYER ? "Player" : "Creature"), unit->GetGUID().GetCounter());
+        handler->PSendSysMessage(LANG_MOVEGENS_LIST, (unit->IsPlayer() ? "Player" : "Creature"), unit->GetGUID().GetCounter());
 
         MotionMaster* motionMaster = unit->GetMotionMaster();
         float x, y, z;
@@ -2779,14 +2777,14 @@ public:
                 case CHASE_MOTION_TYPE:
                 {
                     Unit* target = NULL;
-                    if (unit->GetTypeId() == TYPEID_PLAYER)
+                    if (unit->IsPlayer())
                         target = static_cast<ChaseMovementGenerator<Player> const*>(movementGenerator)->GetTarget();
                     else
                         target = static_cast<ChaseMovementGenerator<Creature> const*>(movementGenerator)->GetTarget();
 
                     if (!target)
                         handler->SendSysMessage(LANG_MOVEGENS_CHASE_NULL);
-                    else if (target->GetTypeId() == TYPEID_PLAYER)
+                    else if (target->IsPlayer())
                         handler->PSendSysMessage(LANG_MOVEGENS_CHASE_PLAYER, target->GetName().c_str(), target->GetGUID().GetCounter());
                     else
                         handler->PSendSysMessage(LANG_MOVEGENS_CHASE_CREATURE, target->GetName().c_str(), target->GetGUID().GetCounter());
@@ -2795,14 +2793,14 @@ public:
                 case FOLLOW_MOTION_TYPE:
                 {
                     Unit* target = NULL;
-                    if (unit->GetTypeId() == TYPEID_PLAYER)
+                    if (unit->IsPlayer())
                         target = static_cast<FollowMovementGenerator<Player> const*>(movementGenerator)->GetTarget();
                     else
                         target = static_cast<FollowMovementGenerator<Creature> const*>(movementGenerator)->GetTarget();
 
                     if (!target)
                         handler->SendSysMessage(LANG_MOVEGENS_FOLLOW_NULL);
-                    else if (target->GetTypeId() == TYPEID_PLAYER)
+                    else if (target->IsPlayer())
                         handler->PSendSysMessage(LANG_MOVEGENS_FOLLOW_PLAYER, target->GetName().c_str(), target->GetGUID().GetCounter());
                     else
                         handler->PSendSysMessage(LANG_MOVEGENS_FOLLOW_CREATURE, target->GetName().c_str(), target->GetGUID().GetCounter());
@@ -2810,7 +2808,7 @@ public:
                 }
                 case HOME_MOTION_TYPE:
                 {
-                    if (unit->GetTypeId() == TYPEID_UNIT)
+                    if (unit->IsCreature())
                         handler->PSendSysMessage(LANG_MOVEGENS_HOME_CREATURE, x, y, z);
                     else
                         handler->SendSysMessage(LANG_MOVEGENS_HOME_PLAYER);
@@ -4469,7 +4467,7 @@ public:
 
         while (!itemStorage.empty())
         {
-            MailDraft draft("Тех.поддержка", "Возврат удаленных предметов.");
+            MailDraft draft("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂµÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦.ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂµÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°", "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â·ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â²ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂµÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¹ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂµÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂµÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â².");
             for (uint8 i = 0; !itemStorage.empty() && i < MAX_MAIL_ITEMS; ++i)
             {
                 draft.AddItem(itemStorage.front());
@@ -4492,4 +4490,3 @@ void AddSC_misc_commandscript()
 {
     new misc_commandscript();
 }
-

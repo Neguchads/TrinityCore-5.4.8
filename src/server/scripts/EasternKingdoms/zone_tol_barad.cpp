@@ -117,7 +117,8 @@ class npc_tol_barad_battlemage : public CreatureScript
             Battlefield* BfTB = sBattlefieldMgr->GetBattlefieldByBattleId(BATTLEFIELD_BATTLEID_TB);
             if (BfTB)
             {
-                if (BfTB->IsWarTime()){
+                if (BfTB->IsWarTime())
+                {
                     BfTB->InvitePlayerToWar(player);
                 }
                 else

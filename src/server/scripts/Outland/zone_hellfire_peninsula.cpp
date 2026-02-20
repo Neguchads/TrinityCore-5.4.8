@@ -145,7 +145,7 @@ public:
 //     {
 //         npc_ancestral_wolfAI(Creature* creature) : npc_escortAI(creature)
 //         {
-//             if (creature->GetOwner() && creature->GetOwner()->GetTypeId() == TYPEID_PLAYER)
+//             if (creature->GetOwner() && creature->GetOwner()->IsPlayer())
 //                 Start(false, false, creature->GetOwner()->GetGUID());
 //             else
 //                 TC_LOG_ERROR("scripts", "TRINITY: npc_ancestral_wolf can not obtain owner or owner is not a player.");
@@ -928,7 +928,7 @@ enum Aledis
 //         {
 //             me->Dismount();
 //             me->SetFacingToObject(player, true);
-//             //me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+//             //me->RemoveNpcFlag( UNIT_NPC_FLAG_GOSSIP);
 //             _playerGUID = player->GetGUID();
 //             _events.ScheduleEvent(EVENT_TALK, Seconds(2));
 //         }
@@ -936,8 +936,8 @@ enum Aledis
 //         void Reset() override
 //         {
 //             me->RestoreFaction();
-//             me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
-//             //me->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);   hack
+//             me->RemoveNpcFlag( UNIT_NPC_FLAG_QUESTGIVER);
+//             //me->SetNpcFlag( UNIT_NPC_FLAG_GOSSIP);   hack
 //             //me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
 //         }
 
@@ -952,7 +952,7 @@ enum Aledis
 //                 me->RemoveAllAuras();
 //                 me->DeleteThreatList();
 //                 me->CombatStop(true);
-//                 //me->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+//                 //me->SetNpcFlag( UNIT_NPC_FLAG_QUESTGIVER);
 //                 //me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
 //                 Talk(SAY_DEFEATED);
 
@@ -1010,7 +1010,6 @@ enum Aledis
 //     }
 // };
 
-
 void AddSC_hellfire_peninsula()
 {
     new npc_aeranas();
@@ -1018,6 +1017,6 @@ void AddSC_hellfire_peninsula()
     new npc_wounded_blood_elf();
     new npc_fel_guard_hound();
     new npc_colonel_jules();
-    new npc_barada();  
+    new npc_barada();
     //new npc_magister_aledis();
 }

@@ -320,7 +320,7 @@ class boss_malchezaar : public CreatureScript
                 std::advance(itr, 1);
                 for (; itr != t_list.end(); ++itr) //store the threat list in a different container
                     if (Unit* target = ObjectAccessor::GetUnit(*me, (*itr)->getUnitGuid()))
-                        if (target->IsAlive() && target->GetTypeId() == TYPEID_PLAYER)
+                        if (target->IsAlive() && target->IsPlayer())
                             targets.push_back(target);
 
                 // cut down to size if we have more than 5 targets

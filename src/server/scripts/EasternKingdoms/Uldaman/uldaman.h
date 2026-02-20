@@ -42,7 +42,7 @@ enum GameObjectIds
 
 enum CreatureIds
 {
-    // Alliance 
+    // Alliance
     NPC_EXPLORERS_LEAGUE_DIGGER = 46232,
     NPC_KAND_SANDSEEKER         = 46247,
     NPC_OLGA_RUNEWORN           = 46233,

@@ -100,7 +100,7 @@ enum Creatures
 
     NPC_PURPOSE_BUNNY_FLYING     = 54020,
     NPC_PURPOSE_BUNNY_GROUND     = 59394,
-    
+
     NPC_PANDA_BREWMASTER         = 65375,
     NPC_BARREL_TOSS_BUNNY        = 45979,
 
@@ -117,7 +117,7 @@ enum GlobalSpells
 
     SPELL_GUSHING_BREW           = 114379,
     SPELL_MOONBEAM_VISUAL        = 128281,
-    
+
     SPELL_NIBBLER_COSMETIC       = 128188,
     SPELL_BANANA_BAR             = 107297,
     SPELL_SPICY_EXPLOSION        = 107205,

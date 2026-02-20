@@ -191,7 +191,7 @@ class boss_striker_gadok : public CreatureScript
 
             void KilledUnit(Unit* victim) override
             {
-                if (victim->GetTypeId() == TYPEID_PLAYER)
+                if (victim->IsPlayer())
                     Talk(SAY_SLAY);
             }
 
@@ -463,7 +463,7 @@ class boss_striker_gadok : public CreatureScript
                             EnterEvadeMode();
                             break;
                         }
-                        else 
+                        else
                             exploitEvents.ScheduleEvent(EVENT_CHECK_WIPE, 1 * IN_MILLISECONDS);
                     }
                     break;
@@ -514,7 +514,7 @@ class boss_striker_gadok : public CreatureScript
                 }
 
                 Talk(SAY_DEATH);
-                Talk(SAY_STIKE_EMOTE);         
+                Talk(SAY_STIKE_EMOTE);
             }
 
         private:
@@ -576,7 +576,6 @@ Position GetPlatformPathPoint(Creature* me, float m_ori, ObjectGuid casterGUID, 
     // At spawn npc should look at center of pos
     return{ x, y, caster->GetPositionZ(), pos.GetAngle(caster) };
 }
-
 
 class npc_krikthik_striker : public CreatureScript
 {

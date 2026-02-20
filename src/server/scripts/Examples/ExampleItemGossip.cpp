@@ -31,7 +31,7 @@ public:
     bool OnUse(Player* player, Item* item, SpellCastTargets const& /*targets*/) override // Any hook here
     {
         player->PlayerTalkClass->ClearMenus(); // Clears old options
-        
+
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Morph", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Demorph", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
         player->PlayerTalkClass->GetGossipMenu().SetMenuId(MENU_ID);

@@ -275,7 +275,7 @@ class boss_suen : public CreatureScript
 
         struct boss_suenAI : public BossAI
         {
-            boss_suenAI(Creature* creature) : BossAI(creature, DATA_TWIN_CONSORTS) 
+            boss_suenAI(Creature* creature) : BossAI(creature, DATA_TWIN_CONSORTS)
             {
                 me->setActive(true);
             }
@@ -355,7 +355,7 @@ class boss_suen : public CreatureScript
                 SendActionToImages(ACTION_CELESTIALS_INTERRACT);
                 events.ScheduleEvent(EVENT_SWITCH_DAY, 3 * MINUTE * IN_MILLISECONDS); // temp 1m
                 events.ScheduleEvent(EVENT_SWITCH_TWILIGHT, 6 * MINUTE * IN_MILLISECONDS);
-                
+
                 berserkEvents.ScheduleEvent(EVENT_BERSERK, 10 * MINUTE * IN_MILLISECONDS);
             }
 
@@ -497,7 +497,7 @@ class boss_suen : public CreatureScript
                         events.ScheduleEvent(EVENT_FAN_OF_FLAMES, 3.5 * IN_MILLISECONDS);
                         events.ScheduleEvent(EVENT_FLAMES_OF_PASSION, 7 * IN_MILLISECONDS);
                         events.ScheduleEvent(EVENT_LIGHT_OF_DAY, 6.5 * IN_MILLISECONDS);
-                        
+
                         if (IsHeroic())
                         {
                             events.ScheduleEvent(EVENT_NUCLEAR_INFERNO, 45 * IN_MILLISECONDS);
@@ -706,7 +706,7 @@ class boss_suen : public CreatureScript
                 me->RemoveAllAreasTrigger();
             }
 
-            void JustDied(Unit* /*killer*/) override 
+            void JustDied(Unit* /*killer*/) override
             {
                 if (isDefeat)
                     return;
@@ -881,7 +881,7 @@ class boss_suen : public CreatureScript
                     return true;
                 }
         };
-    
+
         CreatureAI* GetAI(Creature* creature) const override
         {
             return new boss_suenAI(creature);
@@ -893,7 +893,7 @@ class boss_lulin : public CreatureScript
 {
     public:
         boss_lulin() : CreatureScript("boss_lulin") { }
-    
+
         struct boss_lulinAI : public ScriptedAI
         {
             boss_lulinAI(Creature* creature) : ScriptedAI(creature), summons(me)
@@ -1049,7 +1049,7 @@ class boss_lulin : public CreatureScript
                 me->RemoveAurasDueToSpell(SPELL_DISSIPATE_LULIN);
             }
 
-            void JustDied(Unit* killer) override 
+            void JustDied(Unit* killer) override
             {
                 if (isDefeat)
                     return;
@@ -1120,7 +1120,7 @@ class boss_lulin : public CreatureScript
                         break;
                 }
             }
-    
+
             void UpdateAI(uint32 diff) override
             {
                 scheduler.Update(diff);
@@ -1495,7 +1495,7 @@ struct npc_beast_of_nightmares : public ScriptedAI
             summoner->RemoveAurasDueToSpell(SPELL_BEAST_OF_NIGHTMATRES_AURA);
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
 
@@ -1553,7 +1553,7 @@ struct npc_ice_comet : public ScriptedAI
             tomb->Delete();
     }
 
-    void UpdateAI(uint32 diff) override 
+    void UpdateAI(uint32 diff) override
     {
         scheduler.Update(diff);
     }
@@ -1809,7 +1809,7 @@ class spell_blazing_radiance : public AuraScript
         {
             owner->CastSpell(owner, SPELL_BLAZING_RADIANCE_EFF, true);
 
-            if (!owner->HasAura(SPELL_ICE_COMET_CHILLED)) // Prevent stackable if in front comet 
+            if (!owner->HasAura(SPELL_ICE_COMET_CHILLED)) // Prevent stackable if in front comet
                 owner->CastSpell(owner, SPELL_BLAZING_RADIANCE_AURA, true);
         }
     }
@@ -2127,7 +2127,7 @@ class spell_launch_star_eff : public SpellScript
             pList.remove_if(MeeleSpecTargetSelector());
             pList.remove_if([=](WorldObject* target) { return target && target->ToUnit() && target->ToUnit()->HasAura(SPELL_CRASHING_STAR_SELECT_AURA); });
 
-            // if we have enough players without tanks, meelee and affected by aura 
+            // if we have enough players without tanks, meelee and affected by aura
             if (!pList.empty())
             {
                 targets.clear();
@@ -2231,7 +2231,7 @@ class spell_ice_comet_selector : public SpellScript
             pList.remove_if(TankSpecTargetSelector());
             pList.remove_if(MeeleSpecTargetSelector());
 
-            // if we have enough players without tanks, meelee and affected by aura 
+            // if we have enough players without tanks, meelee and affected by aura
             if (!pList.empty())
             {
                 targets.clear();
@@ -2534,11 +2534,11 @@ class spell_celestial_uninteractible_aura : public AuraScript
     }
 };
 
-class StarSequencePredicate 
+class StarSequencePredicate
 {
     public:
         StarSequencePredicate(Creature* const m_caster) : _caster(m_caster) { }
-    
+
         bool operator()(WorldObject* object)
         {
             if (Creature* sulin = ObjectAccessor::GetCreature(*_caster, object->GetInstanceScript() ? object->GetInstanceScript()->GetGuidData(DATA_TWIN_CONSORTS) : ObjectGuid::Empty))
@@ -2560,14 +2560,14 @@ class StarSequencePredicate
                 }
 
                 uint32 currentKey = _caster->AI()->GetData(TYPE_STAR_IN_SEQ);
-                
+
                 return sulin->AI()->GetData(TYPE_SELECTED_CELESTIAL) == NPC_FADED_IMAGE_OF_CHI_JI && sulin->AI()->GetData(TYPE_ACTIVE_STAR_COUNTER) >= 4 ? object && object->ToCreature() && object->ToCreature()->AI()->GetData(TYPE_STAR_IN_SEQ) != 5 :
                     object && object->ToCreature() && object->ToCreature()->AI()->GetData(TYPE_STAR_IN_SEQ) != celestialMap.find(currentKey)->second;
             }
 
             return true;
         }
-    
+
     private:
         Creature const* _caster;
         std::map<uint32, uint32> celestialMap;
@@ -2788,7 +2788,7 @@ class sat_celestial_star : public IAreaTriggerAura
 {
     bool CheckTriggering(WorldObject* triggering) override
     {
-        return triggering && triggering->ToPlayer() && 
+        return triggering && triggering->ToPlayer() &&
             (triggering->ToPlayer()->HasAura(SPELL_INVOKE_OX_SPIRIT) || triggering->ToPlayer()->HasAura(SPELL_INVOKE_CRANE_SPIRIT) || triggering->ToPlayer()->HasAura(SPELL_INVOKE_SERPENT_SPIRIT) || triggering->ToPlayer()->HasAura(SPELL_INVOKE_TIGER_SPIRIT));
     }
 

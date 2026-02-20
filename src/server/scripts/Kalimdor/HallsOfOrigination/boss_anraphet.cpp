@@ -30,12 +30,12 @@ enum ScriptTexts
 enum Spells
 {
     SPELL_ALPHA_BEAMS           = 76184,
-    SPELL_ALPHA_BEAMS_AOE       = 76904, 
+    SPELL_ALPHA_BEAMS_AOE       = 76904,
     SPELL_ALPHA_BEAM_CHANNELED  = 76912,
     SPELL_ALPHA_BEAM_AURA_EFF   = 91205, // void and damage
     SPELL_ALPHA_BEAM_SUMM       = 76907,
-    SPELL_ALPHA_BEAM_DMG        = 76956, 
-    SPELL_CRUMBLING_RUIN        = 75609, 
+    SPELL_ALPHA_BEAM_DMG        = 76956,
+    SPELL_CRUMBLING_RUIN        = 75609,
     SPELL_DESTRUCTION_PROTOCOL  = 77437,
     SPELL_NEMESIS_STRIKE        = 75604,
     SPELL_OMEGA_STANCE          = 75622,
@@ -129,7 +129,7 @@ class boss_anraphet : public CreatureScript
                 DespawnCreatures(NPC_OMEGA_STANCE);
                 me->SummonGameObject(GO_ORIGINATION_ELEVATOR, -505.522f, 193.411f, 79.2668f, 3.14159f, { }, 7200);
             }
-            
+
             void KilledUnit(Unit* /*victim*/) override
             {
                 Talk(SAY_KILL);
@@ -165,9 +165,9 @@ class boss_anraphet : public CreatureScript
             {
                 if (!UpdateVictim())
                     return;
-                                       
+
                 events.Update(diff);
- 
+
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 

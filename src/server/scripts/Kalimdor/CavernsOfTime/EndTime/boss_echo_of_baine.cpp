@@ -32,8 +32,8 @@ enum Spells
     SPELL_BAINE_VISUALS     = 101624,
 
     SPELL_THROW_TOTEM       = 101615,
-    SPELL_PULVERIZE         = 101626, 
-    SPELL_PULVERIZE_DMG     = 101627, 
+    SPELL_PULVERIZE         = 101626,
+    SPELL_PULVERIZE_DMG     = 101627,
     SPELL_PULVERIZE_AOE     = 101625,
     SPELL_MOLTEN_AXE        = 101836,
     SPELL_MOLTEN_FIST       = 101866,
@@ -111,7 +111,7 @@ class boss_echo_of_baine : public CreatureScript
                 if (bIntroDone)
                     return;
 
-                if (who->GetTypeId() != TYPEID_PLAYER)
+                if (!(who->IsPlayer()))
                     return;
 
                 if (!me->IsWithinDistInMap(who, 100.0f, false))
@@ -200,14 +200,14 @@ class boss_echo_of_baine : public CreatureScript
             }
 
         private:
-            struct PositionSelector 
+            struct PositionSelector
             {
                 public:
                     //PositionSelector(bool b) : _b(b) { }
 
                     bool operator()(Unit const* target) const
                     {
-                        if (target->GetTypeId() != TYPEID_PLAYER)
+                        if (!(target->IsPlayer()))
                             return false;
 
                         if (target->GetAreaId() != AREA_OBSIDIAN)
@@ -226,7 +226,7 @@ class boss_echo_of_baine : public CreatureScript
         CreatureAI* GetAI(Creature* creature) const override
         {
             return GetInstanceAI<boss_echo_of_baineAI>(creature);
-        }        
+        }
 };
 
 class npc_echo_of_baine_baines_totem : public CreatureScript

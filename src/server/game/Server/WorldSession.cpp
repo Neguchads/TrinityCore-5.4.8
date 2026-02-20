@@ -210,7 +210,7 @@ void WorldSession::SendPacket(WorldPacket const* packet, bool forced /*= false*/
         return;
     }
     sScriptMgr->OnPlayerbotPacketSent(GetPlayer(), packet);
-    
+
     ServerOpcodeHandler const* handler = opcodeTable[static_cast<OpcodeServer>(packet->GetOpcode())];
     if (!handler)
     {
@@ -405,7 +405,7 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
                         LogUnprocessedTail(packet);
                     }
                     else
-                        processedPackets = MAX_PROCESSED_PACKETS_IN_SAME_WORLDSESSION_UPDATE;   // break out of packet processing loop                    
+                        processedPackets = MAX_PROCESSED_PACKETS_IN_SAME_WORLDSESSION_UPDATE;   // break out of packet processing loop
                     break;
                 case STATUS_TRANSFER:
                     if (!_player)
@@ -419,7 +419,7 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
                         LogUnprocessedTail(packet);
                     }
                     else
-                        processedPackets = MAX_PROCESSED_PACKETS_IN_SAME_WORLDSESSION_UPDATE;   // break out of packet processing loop                    
+                        processedPackets = MAX_PROCESSED_PACKETS_IN_SAME_WORLDSESSION_UPDATE;   // break out of packet processing loop
                     break;
                 case STATUS_AUTHED:
                     // prevent cheating with skip queue wait
@@ -563,9 +563,9 @@ void WorldSession::LogoutPlayer(bool save)
             for (auto&& itr : _player->getAttackers())
             {
                 Unit* owner = itr->GetOwner();           // including player controlled case
-                if (owner && owner->GetTypeId() == TYPEID_PLAYER)
+                if (owner && owner->IsPlayer())
                     attackers.insert(owner->ToPlayer());
-                else if (itr->GetTypeId() == TYPEID_PLAYER)
+                else if (itr->IsPlayer())
                     attackers.insert(itr->ToPlayer());
             }
 
@@ -1334,7 +1334,6 @@ void WorldSession::InitializeSessionCallback(CharacterDatabaseQueryHolder const&
     SendTutorialsData();
 }
 
-
 bool WorldSession::DosProtection::EvaluateOpcode(WorldPacket& p, time_t time) const
 {
     uint32 maxPacketCounterAllowed = GetMaxPacketCounterAllowed(p.GetOpcode());
@@ -1353,7 +1352,6 @@ bool WorldSession::DosProtection::EvaluateOpcode(WorldPacket& p, time_t time) co
     // Check if player is flooding some packets
     if (++packetCounter.amountCounter <= maxPacketCounterAllowed)
         return true;
-
 
     switch (_policy)
     {
@@ -1384,7 +1382,6 @@ bool WorldSession::DosProtection::EvaluateOpcode(WorldPacket& p, time_t time) co
             return true;
     }
 }
-
 
 uint32 WorldSession::DosProtection::GetMaxPacketCounterAllowed(uint16 opcode) const
 {
@@ -1444,7 +1441,7 @@ uint32 WorldSession::DosProtection::GetMaxPacketCounterAllowed(uint16 opcode) co
     case CMSG_QUESTLOG_REMOVE_QUEST:               //   0               4
     case CMSG_QUESTGIVER_CHOOSE_REWARD:            //   0               4
     case CMSG_AUTOBANK_ITEM:                        //   0               6
-    case CMSG_AUTOSTORE_BANK_ITEM:                  //   0               6    
+    case CMSG_AUTOSTORE_BANK_ITEM:                  //   0               6
     case CMSG_WHO:                                  //  0                0
     {
         maxPacketCounterAllowed = 0;

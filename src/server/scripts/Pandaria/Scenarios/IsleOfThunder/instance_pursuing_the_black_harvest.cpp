@@ -24,11 +24,11 @@ class instance_pursuing_the_black_harvest : public InstanceMapScript
 {
     public:
         instance_pursuing_the_black_harvest() : InstanceMapScript("instance_pursuing_the_black_harvest", 1112) { }
-    
+
         struct instance_pursuing_the_black_harvest_InstanceScript : public InstanceScript
         {
             instance_pursuing_the_black_harvest_InstanceScript(Map* map) : InstanceScript(map) { }
-    
+
             EventMap m_mEvents;
 
             uint32 m_auiEncounter[CHAPTERS];
@@ -73,8 +73,8 @@ class instance_pursuing_the_black_harvest : public InstanceMapScript
                 sScenarioMgr->SendScenarioState(player, 1112, STEP_ENTER_THE_BLACK_TEMPLE, 0);
                 playerGUID = player->GetGUID();
             }
-    
-            void OnCreatureCreate(Creature* creature) override 
+
+            void OnCreatureCreate(Creature* creature) override
             {
                 switch (creature->GetEntry())
                 {
@@ -111,15 +111,15 @@ class instance_pursuing_the_black_harvest : public InstanceMapScript
                         break;
                 }
             }
-    
+
             bool SetBossState(uint32 type, EncounterState state) override
             {
                 if (!InstanceScript::SetBossState(type, state))
                     return false;
-    
+
                 return true;
             }
-    
+
             void SetData(uint32 type, uint32 data) override
             {
                 switch (type)
@@ -201,7 +201,7 @@ class instance_pursuing_the_black_harvest : public InstanceMapScript
                 if (data == DONE || data == SPECIAL)
                     SaveToDB();
             }
-    
+
             uint32 GetData(uint32 type) const override
             {
                 switch (type)
@@ -228,7 +228,7 @@ class instance_pursuing_the_black_harvest : public InstanceMapScript
 
                 return 0;
             }
-    
+
             ObjectGuid GetGuidData(uint32 type) const override
             {
                 switch (type)
@@ -251,18 +251,18 @@ class instance_pursuing_the_black_harvest : public InstanceMapScript
 
                 return ObjectGuid::Empty;
             }
-    
+
             std::string GetSaveData() override
             {
                 OUT_SAVE_INST_DATA;
-    
+
                 std::ostringstream saveStream;
                 saveStream << "P B H " << GetBossSaveData();
-    
+
                 OUT_SAVE_INST_DATA_COMPLETE;
                 return saveStream.str();
             }
-    
+
             void Load(char const* in) override
             {
                 if (!in)
@@ -270,14 +270,14 @@ class instance_pursuing_the_black_harvest : public InstanceMapScript
                     OUT_LOAD_INST_DATA_FAIL;
                     return;
                 }
-    
+
                 OUT_LOAD_INST_DATA(in);
-    
+
                 char dataHead1, dataHead2, dataHead3;
-    
+
                 std::istringstream loadStream(in);
                 loadStream >> dataHead1 >> dataHead2 >> dataHead3;
-    
+
                 if (dataHead1 == 'P' && dataHead2 == 'B' && dataHead3 == 'H')
                 {
                     uint32 temp = 0;
@@ -310,16 +310,16 @@ class instance_pursuing_the_black_harvest : public InstanceMapScript
                     SetData(STEP_DEFEAT_KANRETHAD, chapterEleven);
                 }
                 else OUT_LOAD_INST_DATA_FAIL;
-    
+
                 OUT_LOAD_INST_DATA_COMPLETE;
             }
-    
+
             void Update(uint32 diff) override
             {
                 m_mEvents.Update(diff);
             }
         };
-    
+
         InstanceScript* GetInstanceScript(InstanceMap* map) const override
         {
             return new instance_pursuing_the_black_harvest_InstanceScript(map);

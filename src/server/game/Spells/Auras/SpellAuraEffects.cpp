@@ -6613,7 +6613,7 @@ void AuraEffect::HandlePeriodicHealAurasTick(Unit* target, Unit* caster) const
         return;
 
     // don't regen when permanent aura target has full power
-    if (GetBase()->IsPermanent() && target->IsFullHealth() && GetId() != 116014) // ¯\_(ツ)_/¯
+    if (GetBase()->IsPermanent() && target->IsFullHealth() && GetId() != 116014) // Ã‚Â¯\_(Ã£Æ’â€ž)_/Ã‚Â¯
         return;
 
     // ignore negative values (can be result apply spellmods to aura damage

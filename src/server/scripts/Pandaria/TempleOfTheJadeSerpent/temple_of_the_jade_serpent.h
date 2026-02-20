@@ -26,7 +26,7 @@ enum eData
     DATA_LOREWALKER        = 1,
     DATA_LIU               = 2,
     DATA_SHA_OF_DOUBT      = 3,
-    
+
     DATA_SUN               = 5,
     DATA_ZAO               = 6,
     DATA_TRIAL             = 7,

@@ -119,9 +119,6 @@ struct npc_raliq_the_drunk : public ScriptedAI
     }
 };
 
-
-
-
 /*######
 # npc_salsalabim
 ######*/
@@ -180,7 +177,7 @@ public:
 
         void DamageTaken(Unit* done_by, uint32 &damage) override
         {
-            if (done_by->GetTypeId() == TYPEID_PLAYER && me->HealthBelowPctDamaged(20, damage))
+            if (done_by->IsPlayer() && me->HealthBelowPctDamaged(20, damage))
             {
                 done_by->ToPlayer()->GroupEventHappens(QUEST_10004, me);
                 damage = 0;
@@ -269,7 +266,7 @@ public:
 
 enum ZephyrText
 {
-    ZEPHYR_GOSSIP_MENUID  =  9205,  
+    ZEPHYR_GOSSIP_MENUID  =  9205,
     ZEPHYR_GOSSIP_OPID_0  =  0,     // Take me to the Caverns of Time.
 };
 
@@ -326,7 +323,6 @@ enum KServant
     WHISP20    = 20,
     WHISP21    = 21
 };
-
 
 struct npc_kservant : public npc_escortAI
 {
@@ -436,7 +432,7 @@ public:
 
 enum IshanahText
 {
-    ISANAH_GOSSIP_MENUID  =  7735,  
+    ISANAH_GOSSIP_MENUID  =  7735,
     ISANAH_GOSSIP_OPID_0  =  0,     // Who are the Sha'tar?
     ISANAH_GOSSIP_OPID_1  =  1      // Isn't Shattrath a draenei city? Why do you allow others here?
 };
@@ -519,7 +515,7 @@ struct npc_khadgar : public ScriptedAI
             case GOSSIP_ACTION_INFO_DEF+7:
                 AddGossipItemFor(player, KHADGAR_GOSSIP_1, 0, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
                 SendGossipMenuFor(player, 9243, me->GetGUID());
-                break;                       
+                break;
         }
         return true;
     }
@@ -535,7 +531,6 @@ struct npc_khadgar : public ScriptedAI
         return true;
     }
 };
- 
 
 void AddSC_shattrath_city()
 {

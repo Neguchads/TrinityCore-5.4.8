@@ -38,7 +38,7 @@ enum Spells
     SPELL_CREEPING_PARALYSIS        = 43095,
     SPELL_OVERPOWER                 = 43456,
     SPELL_SURGE                     = 42402,
-    
+
     SPELL_SUMMON_AMANI_LYNX         = 97686,
     SPELL_LYNX_RUSH                 = 43153,
     SPELL_CLAW_RAGE_CHARGE          = 42583,
@@ -196,7 +196,7 @@ class boss_daakara : public CreatureScript
             {
                 DoResetThreat();
                 me->SetUInt32Value(UNIT_FIELD_VIRTUAL_ITEM_ID, 0);
-                
+
                 switch (form)
                 {
                     case 0:
@@ -259,7 +259,7 @@ class boss_daakara : public CreatureScript
                 if (me->HealthBelowPct(80) && phase == 0)
                 {
                     phase++;
-                    events.CancelEvent(EVENT_WHIRLWIND); 
+                    events.CancelEvent(EVENT_WHIRLWIND);
                     events.CancelEvent(EVENT_GRIEVOUS_THROW);
                     EnterPhase(urand(0, 1));
                     return;
@@ -387,7 +387,7 @@ class npc_daakara_vortex : public CreatureScript
 
         struct npc_daakara_vortexAI : public ScriptedAI
         {
-            npc_daakara_vortexAI(Creature* creature) : ScriptedAI(creature) 
+            npc_daakara_vortexAI(Creature* creature) : ScriptedAI(creature)
             {
                 DoCast(me, SPELL_FEATHER_VORTEX_VISUAL, true);
                 me->SetReactState(REACT_PASSIVE);
@@ -401,7 +401,7 @@ class npc_daakara_vortex : public CreatureScript
             ObjectGuid victimGUID;
 
             void Reset() override { }
-            
+
             void SetGUID(ObjectGuid guid, int32 type) override
             {
                 victimGUID = guid;
@@ -440,7 +440,7 @@ class npc_daakara_pillar_of_flame : public CreatureScript
 
         struct npc_daakara_pillar_of_flameAI : public ScriptedAI
         {
-            npc_daakara_pillar_of_flameAI(Creature* creature) : ScriptedAI(creature) 
+            npc_daakara_pillar_of_flameAI(Creature* creature) : ScriptedAI(creature)
             {
                 me->SetReactState(REACT_PASSIVE);
                 DoCast(me, SPELL_PILLAR_OF_FLAME_VISUAL, true);
@@ -448,7 +448,7 @@ class npc_daakara_pillar_of_flame : public CreatureScript
                 explodeTimer = 2000;
                 SetCombatMovement(false);
             }
-            
+
             bool bExplode;
             uint32 explodeTimer;
 
@@ -488,7 +488,7 @@ class npc_daakara_amani_lynx : public CreatureScript
             {
                 events.Reset();
             }
-            
+
             void JustEngagedWith(Unit* /*who*/) override
             {
                 events.ScheduleEvent(EVENT_FERAL_SWIPE, urand(6000, 9000));
@@ -608,4 +608,3 @@ void AddSC_boss_daakara()
     new spell_daakara_sweeping_winds();
     new achievement_ring_out();
 }
-

@@ -18,7 +18,7 @@
 #include "ScriptPCH.h"
 #include "deadmines.h"
 
-//todo: ����������� flame wall
+//todo: Ã°Ã¥Ã Ã«Ã¨Ã§Ã®Ã¢Ã Ã²Ã¼ flame wall
 
 enum ScriptTexts
 {
@@ -46,7 +46,7 @@ enum Spells
     // Misc
     SPELL_FIRE_BLOSSOM_VISUAL  = 88164,
     SPELL_FROST_BLOSSOM_VISUAL = 88165, // casted by bunny
-    SPELL_FIRE_BEAM_VISUAL     = 45576, 
+    SPELL_FIRE_BEAM_VISUAL     = 45576,
     SPELL_FROST_BEAM_VISUAL    = 99490,
 };
 
@@ -97,7 +97,7 @@ class boss_glubtok : public CreatureScript
             }
 
             uint8 stage;
-     
+
             void Reset() override
             {
                 _Reset();
@@ -112,7 +112,7 @@ class boss_glubtok : public CreatureScript
                 me->SetReactState(REACT_AGGRESSIVE);
             }
 
-            void JustEngagedWith(Unit* /*who*/) override 
+            void JustEngagedWith(Unit* /*who*/) override
             {
                 _JustEngagedWith();
 
@@ -169,7 +169,7 @@ class boss_glubtok : public CreatureScript
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                
+
                 while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)

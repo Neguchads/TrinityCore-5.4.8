@@ -78,9 +78,9 @@ class DBCStorage
             indexTable.asT = nullptr;
         }
 
-        ~DBCStorage() 
-        { 
-            delete[] reinterpret_cast<char*>(indexTable.asT); 
+        ~DBCStorage()
+        {
+            delete[] reinterpret_cast<char*>(indexTable.asT);
         }
 
         T const* LookupEntry(uint32 id) const
@@ -111,7 +111,6 @@ class DBCStorage
                 if (sql->indexPos >= 0)
                     query +=" ORDER BY " + *sql->indexName + " DESC";
                 query += ';';
-
 
                 result = WorldDatabase.Query(query.c_str());
                 if (result)

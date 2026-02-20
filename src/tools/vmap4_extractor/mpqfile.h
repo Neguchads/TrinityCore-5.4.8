@@ -31,7 +31,7 @@
 #include <iostream>
 #include <deque>
 #include "StormLib.h"
-#include "Define.h" 
+#include "Define.h"
 
 using namespace std;
 
