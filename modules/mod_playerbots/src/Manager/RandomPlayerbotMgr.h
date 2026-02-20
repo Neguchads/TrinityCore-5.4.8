@@ -4,6 +4,7 @@
 #include "AsyncCallbackProcessor.h"
 #include "PlayerbotMgr.h"
 #include "DatabaseEnvFwd.h"
+#include <atomic>
 #include <list>
 #include <map>
 #include <mutex>
@@ -165,8 +166,7 @@ public:
     };
     bool HasPlayers() const
     {
-        std::lock_guard<std::mutex> lock(_playersMutex);
-        return !_players.empty();
+        return _realPlayersCount.load(std::memory_order_relaxed) > 0;
     }
     PlayerBotMap GetAllBots() { return GetPlayerBotsSnapshot(); };
     void Refresh(Player* bot);
@@ -276,6 +276,7 @@ private:
     time_t _playersCheckTimer;
     typedef void (RandomPlayerbotMgr::* ConsoleCommandHandler)(Player*);
     std::vector<Player*> _players;
+    std::atomic<uint32> _realPlayersCount{ 0 };
     mutable std::mutex _playersMutex;
     uint32 _processTicks;
     uint32 _playersLevel;

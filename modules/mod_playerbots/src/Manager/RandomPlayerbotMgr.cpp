@@ -58,6 +58,7 @@
 #include "PerformanceMonitor.h"
 #include "Playerbots.h"
 #include "RandomItemManager.h"
+#include "TravelMgr.h"
 #include "Group.h"
 #include "SharedDefines.h"
 #include "Unit.h"
@@ -298,9 +299,9 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
     }
 
     GetBots();
-    if (sPlayerbotAIConfig->randomBotJoinBG)
+    if (sPlayerbotAIConfig->randomBotJoinBG && hasRealPlayers)
         CheckBgQueue();
-    if (sPlayerbotAIConfig->randomBotJoinLfg)
+    if (sPlayerbotAIConfig->randomBotJoinLfg && hasRealPlayers)
         CheckLfgQueue();
     if (hasRealPlayers)
         AddOfflineGroupBots();
@@ -974,7 +975,7 @@ void RandomPlayerbotMgr::CheckPlayers()
 void RandomPlayerbotMgr::CheckBgQueue()
 {
     time_t now = time(nullptr);
-    if (_bgCheckTimer && now < (_bgCheckTimer + 10))
+    if (_bgCheckTimer && now < (_bgCheckTimer + 30))
         return;
     _bgCheckTimer = now;
 
@@ -1478,12 +1479,15 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
                     update = false;
                 }
             }
+
+            if (botAI->HasPlayerNearby(sPlayerbotAIConfig->grindDistance))
+                update = false;
         }
 
-        if (update)
+        if (update && !sPlayerbotAIConfig->disableRandomLevels)
             ProcessBot(player);
 
-        randomTime = urand(sPlayerbotAIConfig->minRandomBotReviveTime, sPlayerbotAIConfig->maxRandomBotReviveTime);
+        randomTime = urand(sPlayerbotAIConfig->minRandomBotReviveTime, sPlayerbotAIConfig->maxRandomBotReviveTime * 5);
         SetEventValue(bot, "update", 1, randomTime);
 
         return true;
@@ -1514,6 +1518,12 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
 
 bool RandomPlayerbotMgr::ProcessBot(Player* player)
 {
+    if (!player || !player->IsInWorld() || player->IsBeingTeleported())
+        return false;
+
+    if (!player->GetSession() || player->GetSession()->isLogingOut())
+        return false;
+
     std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     ObjectGuid bot = player->GetGUID();
 
@@ -1551,17 +1561,10 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
     PlayerbotAI* botAI = GET_PLAYERBOT_AI(player);
     if (botAI)
     {
-        /*if (TravelTarget* target = botAI->GetAiObjectContext()->GetValue<TravelTarget*>("travel target")->Get())
-        {
-            if (target->getTravelState() == TravelState::TRAVEL_STATE_IDLE)
-            {
-                idleBot = true;
-            }
-        }
-        else*/
-        //{
+        if (TravelTarget* target = botAI->GetAiObjectContext()->GetValue<TravelTarget*>("travel target")->Get())
+            idleBot = target->getTravelState() == TravelState::TRAVEL_STATE_IDLE;
+        else
             idleBot = true;
-        //}
     }
     if (idleBot)
     {
@@ -1581,7 +1584,7 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
         }
 
         uint32 teleport = GetEventValue(bot, "teleport");
-        if (!teleport)
+        if (!teleport && HasPlayers())
         {
             auto pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "RandomTeleportByLocations");
             TC_LOG_DEBUG("playerbots", "Bot #%u <%s>: teleport for level and refresh", bot.GetCounter(), player->GetName().c_str());
@@ -2043,7 +2046,12 @@ void RandomPlayerbotMgr::OnPlayerLogout(Player* player)
     std::lock_guard<std::mutex> lock(_playersMutex);
     std::vector<Player*>::iterator i = std::find(_players.begin(), _players.end(), player);
     if (i != _players.end())
+    {
         _players.erase(i);
+        uint32 count = _realPlayersCount.load(std::memory_order_relaxed);
+        if (count > 0)
+            _realPlayersCount.store(count - 1, std::memory_order_relaxed);
+    }
 }
 
 void RandomPlayerbotMgr::OnBotLoginInternal(Player* const bot)
@@ -2201,6 +2209,7 @@ void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
         if (std::find(_players.begin(), _players.end(), player) == _players.end())
         {
             _players.push_back(player);
+            _realPlayersCount.store(static_cast<uint32>(_players.size()), std::memory_order_relaxed);
             TC_LOG_DEBUG("playerbots", "Including non-random bot player %s into random bot update", player->GetName().c_str());
         }
     }

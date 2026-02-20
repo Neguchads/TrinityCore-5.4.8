@@ -769,16 +769,22 @@ public:
 
     void OnAfterUpdate(Player* player, uint32 diff) override
     {
-        if (PlayerbotAI* botAI = GET_PLAYERBOT_AI(player))
-        {
-            uint32 const targetDiff = sRandomPlayerbotMgr->HasPlayers() ? sPlayerbotAIConfig->diffWithPlayer : sPlayerbotAIConfig->diffEmpty;
-            bool const minimal = sWorld->GetUpdateTime() > targetDiff;
-            botAI->UpdateAI(diff, minimal);
-        }
+        if (!player || !player->GetSession())
+            return;
 
-        if (PlayerbotMgr* playerbotMgr = GET_PLAYERBOT_MGR(player))
+        if (player->GetSession()->IsBot())
         {
-            playerbotMgr->UpdateAI(diff);
+            if (PlayerbotAI* botAI = GET_PLAYERBOT_AI(player))
+            {
+                uint32 const targetDiff = sRandomPlayerbotMgr->HasPlayers() ? sPlayerbotAIConfig->diffWithPlayer : sPlayerbotAIConfig->diffEmpty;
+                bool const minimal = sWorld->GetUpdateTime() > targetDiff;
+                botAI->UpdateAI(diff, minimal);
+            }
+        }
+        else
+        {
+            if (PlayerbotMgr* playerbotMgr = GET_PLAYERBOT_MGR(player))
+                playerbotMgr->UpdateAI(diff);
         }
     }
 
