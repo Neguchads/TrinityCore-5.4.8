@@ -33,6 +33,7 @@
 #include "Chat.h"
 #include "ChatHelper.h"
 #include "CreatureAIImpl.h"
+#include "CharacterCache.h"
 #include "Engine.h"
 #include "ExternalEventHelper.h"
 #include "Bag.h"
@@ -1310,7 +1311,9 @@ bool PlayerbotAI::IsInRealGuild()
     if (!guild)
         return false;
 
-    uint32 leaderAccount = sObjectMgr->GetPlayerAccountIdByGUID(guild->GetLeaderGUID());
+    uint32 leaderAccount = sCharacterCache->GetCharacterAccountIdByGuid(guild->GetLeaderGUID());
+    if (!leaderAccount)
+        leaderAccount = sObjectMgr->GetPlayerAccountIdByGUID(guild->GetLeaderGUID());
     if (!leaderAccount)
         return false;
 

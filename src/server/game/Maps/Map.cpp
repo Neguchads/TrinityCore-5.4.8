@@ -56,6 +56,7 @@ static uint16 const holetab_v[4] = { 0x000F, 0x00F0, 0x0F00, 0xF000 };
 #define DEFAULT_GRID_EXPIRY     300
 #define MAX_GRID_LOAD_TIME      50
 #define MAX_CREATURE_ATTACK_RADIUS  (45.0f * sWorld->getRate(RATE_CREATURE_AGGRO))
+static constexpr uint32 PLAYERBOT_ACTIVITY_REFRESH_INTERVAL = 10 * IN_MILLISECONDS;
 
 GridState* si_GridStates[MAX_GRID_STATE];
 
@@ -706,6 +707,14 @@ void Map::Update(const uint32 t_diff)
             session->Update(t_diff, updater);
         }
     }
+
+    _playerBotActivityRefreshTimer += t_diff;
+    if (_playerBotActivityRefreshTimer >= PLAYERBOT_ACTIVITY_REFRESH_INTERVAL)
+    {
+        _playerBotActivityRefreshTimer = 0;
+        RebuildPlayerBotActivityState();
+    }
+
     /// update active cells around players and active objects
     resetMarkedCells();
 
@@ -3262,16 +3271,33 @@ uint32 Map::GetPlayersCountExceptGMs() const
 
 bool Map::HasRealPlayers() const
 {
-    return !_activePlayersForBotActivity.empty();
+    for (MapRefManager::const_iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
+    {
+        Player* player = itr->GetSource();
+        if (!player || !player->IsInWorld())
+            continue;
+
+        WorldSession* session = player->GetSession();
+        if (session && !session->IsBot())
+            return true;
+    }
+
+    return false;
 }
 
 bool Map::HasActiveZones() const
 {
+    if (!GetEntry() || !GetEntry()->IsContinent())
+        return false;
+
     return !_activePlayerZoneRefCount.empty();
 }
 
 bool Map::HasActiveZone(uint32 zoneId) const
 {
+    if (!GetEntry() || !GetEntry()->IsContinent())
+        return false;
+
     if (!zoneId || zoneId == MAP_INVALID_ZONE)
         return false;
 
@@ -3287,7 +3313,13 @@ bool Map::ShouldTrackPlayerForBotActivity(Player* player) const
     if (session->IsBot())
         return false;
 
-    return !player->IsGameMaster();
+    if (player->isAFK())
+        return false;
+
+    if (!player->isGMVisible())
+        return false;
+
+    return true;
 }
 
 uint32 Map::ResolvePlayerBotActivityZone(Player* player, float x, float y, float z) const
@@ -3307,6 +3339,9 @@ uint32 Map::ResolvePlayerBotActivityZone(Player* player, float x, float y, float
 
 void Map::AddActivePlayerZone(uint32 zoneId)
 {
+    if (!GetEntry() || !GetEntry()->IsContinent())
+        return;
+
     if (!zoneId || zoneId == MAP_INVALID_ZONE)
         return;
 
@@ -3315,6 +3350,9 @@ void Map::AddActivePlayerZone(uint32 zoneId)
 
 void Map::RemoveActivePlayerZone(uint32 zoneId)
 {
+    if (!GetEntry() || !GetEntry()->IsContinent())
+        return;
+
     if (!zoneId || zoneId == MAP_INVALID_ZONE)
         return;
 
@@ -3369,6 +3407,25 @@ void Map::UpdatePlayerBotActivityStateOnMove(Player* player, uint32 oldZoneId, u
 
     RemoveActivePlayerZone(oldZoneId);
     AddActivePlayerZone(newZoneId);
+}
+
+void Map::RebuildPlayerBotActivityState()
+{
+    _activePlayersForBotActivity.clear();
+    _activePlayerZoneRefCount.clear();
+
+    for (MapRefManager::iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
+    {
+        Player* player = itr->GetSource();
+        if (!player || !player->IsInWorld())
+            continue;
+
+        if (!ShouldTrackPlayerForBotActivity(player))
+            continue;
+
+        if (_activePlayersForBotActivity.insert(player->GetGUID()).second)
+            AddActivePlayerZone(ResolvePlayerBotActivityZone(player, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ()));
+    }
 }
 
 void Map::SendToPlayers(WorldPacket const* data) const

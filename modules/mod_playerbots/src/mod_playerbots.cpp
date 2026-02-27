@@ -61,6 +61,10 @@ namespace
         if (!player)
             return false;
 
+        WorldSession* session = player->GetSession();
+        if (!session || session->IsBot())
+            return false;
+
         PlayerbotAI* playerAI = GET_PLAYERBOT_AI(player);
         return !playerAI || playerAI->IsRealPlayer();
     }
@@ -708,7 +712,8 @@ public:
             return botAI->IsRealPlayer() || botAI->HasRealPlayerMaster();
         }
 
-        return true;
+        // Bot session without AI mapping should not consume full update flow.
+        return false;
     }
 
     void OnPlayerbotPacketSent(Player* player, WorldPacket const* packet) override

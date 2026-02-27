@@ -729,6 +729,7 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         void AddActivePlayerZone(uint32 zoneId);
         void RemoveActivePlayerZone(uint32 zoneId);
         void UpdatePlayerBotActivityStateOnMove(Player* player, uint32 oldZoneId, uint32 newZoneId);
+        void RebuildPlayerBotActivityState();
 
         void UpdateActiveCells(const float &x, const float &y, const uint32 t_diff);
 
@@ -850,6 +851,7 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         std::map<uint32, uint64> m_worldStates;
         std::unordered_set<ObjectGuid> _activePlayersForBotActivity;
         std::unordered_map<uint32, uint32> _activePlayerZoneRefCount;
+        uint32 _playerBotActivityRefreshTimer = 0;
 
         uint32 debugFlexPlayersCount;
 

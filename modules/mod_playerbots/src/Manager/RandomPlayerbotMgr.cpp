@@ -1707,20 +1707,6 @@ void RandomPlayerbotMgr::Randomize(Player* bot)
     uint32 minLevel = std::min(sPlayerbotAIConfig->randomBotMinLevel, maxLevel);
     uint32 level = GetValue(bot, "level");
 
-    // Fallback for legacy/misaligned DB states where the 'level' event is missing:
-    // preserve current character level instead of forcing a full rerandomize loop.
-    if (!level)
-    {
-        uint32 liveLevel = bot->GetLevel();
-        if (liveLevel > sPlayerbotAIConfig->randombotStartingLevel && liveLevel >= minLevel && liveLevel <= maxLevel)
-        {
-            SetValue(bot, "level", liveLevel);
-            level = liveLevel;
-            TC_LOG_DEBUG("playerbots", "Bot #%u <%s>: restored missing level event from live level %u",
-                bot->GetGUID().GetCounter(), bot->GetName().c_str(), liveLevel);
-        }
-    }
-
     if (initialRandom || !level || level < minLevel || level > maxLevel)
     {
         RandomizeFirst(bot);
@@ -1882,8 +1868,7 @@ CachedEvent* RandomPlayerbotMgr::FindEvent(uint32 bot, std::string const& event)
         if (QueryResult result = CharacterDatabase.PQuery(
                 "SELECT `event`, `value`, `time`, validIn, `data` "
                 "FROM playerbots_random_bots "
-                "WHERE owner = 0 AND bot = %u "
-                "ORDER BY `time` DESC",
+                "WHERE owner = 0 AND bot = %u",
                 bot))
         {
             do
@@ -1896,12 +1881,7 @@ CachedEvent* RandomPlayerbotMgr::FindEvent(uint32 bot, std::string const& event)
                 e.lastChangeTime = fields[2].GetUInt32();
                 e.validIn = fields[3].GetUInt32();
                 e.data = fields[4].GetString();
-
-                // Keep the newest row when duplicate events exist in DB.
-                // This protects runtime behavior on DBs that missed unique-index cleanup.
-                auto cached = cache.events.find(eventName);
-                if (cached == cache.events.end() || e.lastChangeTime >= cached->second.lastChangeTime)
-                    cache.events[eventName] = std::move(e);
+                cache.events[eventName] = std::move(e);
             } while (result->NextRow());
         }
 
@@ -1946,37 +1926,6 @@ uint32 RandomPlayerbotMgr::SetEventValue(uint32 bot, std::string const event, ui
 {
     std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     BotEventCache& cache = _eventCache[bot];
-
-    // Ensure cache is populated before mutating it to avoid losing freshly written events
-    // if DB async write is not visible yet on first read.
-    if (!cache.loaded)
-    {
-        if (QueryResult result = CharacterDatabase.PQuery(
-                "SELECT `event`, `value`, `time`, validIn, `data` "
-                "FROM playerbots_random_bots "
-                "WHERE owner = 0 AND bot = %u "
-                "ORDER BY `time` DESC",
-                bot))
-        {
-            do
-            {
-                Field* fields = result->Fetch();
-                std::string const eventName = fields[0].GetString();
-
-                CachedEvent e;
-                e.value = fields[1].GetUInt32();
-                e.lastChangeTime = fields[2].GetUInt32();
-                e.validIn = fields[3].GetUInt32();
-                e.data = fields[4].GetString();
-
-                // Keep the newest row when duplicate events exist in DB.
-                auto cached = cache.events.find(eventName);
-                if (cached == cache.events.end() || e.lastChangeTime >= cached->second.lastChangeTime)
-                    cache.events[eventName] = std::move(e);
-            } while (result->NextRow());
-        }
-        cache.loaded = true;
-    }
 
     if (cache.loaded && value == 0)
     {
