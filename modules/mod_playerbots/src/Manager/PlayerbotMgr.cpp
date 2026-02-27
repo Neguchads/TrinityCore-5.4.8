@@ -1316,7 +1316,7 @@ void PlayerbotsMgr::AddPlayerbotData(Player* player, bool isBotAI)
     {
         PlayerbotMgr* playerbotMgr = new PlayerbotMgr(player);
         {
-            std::lock_guard<std::mutex> lock(_dataMutex);
+            std::unique_lock<std::shared_mutex> lock(_dataMutex);
             std::unordered_map<ObjectGuid, PlayerbotAIBase*>::iterator itr = _playerbotsMgrMap.find(player->GetGUID());
             if (itr != _playerbotsMgrMap.end())
                 _playerbotsMgrMap.erase(itr);
@@ -1329,7 +1329,7 @@ void PlayerbotsMgr::AddPlayerbotData(Player* player, bool isBotAI)
     else
     {
         PlayerbotAI* botAI = new PlayerbotAI(player);
-        std::lock_guard<std::mutex> lock(_dataMutex);
+        std::unique_lock<std::shared_mutex> lock(_dataMutex);
         std::unordered_map<ObjectGuid, PlayerbotAIBase*>::iterator itr = _playerbotsAIMap.find(player->GetGUID());
         if (itr != _playerbotsAIMap.end())
             _playerbotsAIMap.erase(itr);
@@ -1340,7 +1340,7 @@ void PlayerbotsMgr::AddPlayerbotData(Player* player, bool isBotAI)
 
 void PlayerbotsMgr::RemovePlayerBotData(ObjectGuid const& guid, bool is_AI)
 {
-    std::lock_guard<std::mutex> lock(_dataMutex);
+    std::unique_lock<std::shared_mutex> lock(_dataMutex);
 
     if (is_AI)
     {
@@ -1366,7 +1366,7 @@ PlayerbotAI* PlayerbotsMgr::GetPlayerbotAI(Player* player)
     {
         return nullptr;
     }
-    std::lock_guard<std::mutex> lock(_dataMutex);
+    std::shared_lock<std::shared_mutex> lock(_dataMutex);
     // if (player->GetSession()->isLogingOut() || player->IsDuringRemoveFromWorld()) {
     //     return nullptr;
     // }
@@ -1386,7 +1386,7 @@ PlayerbotMgr* PlayerbotsMgr::GetPlayerbotMgr(Player* player)
     {
         return nullptr;
     }
-    std::lock_guard<std::mutex> lock(_dataMutex);
+    std::shared_lock<std::shared_mutex> lock(_dataMutex);
     auto itr = _playerbotsMgrMap.find(player->GetGUID());
     if (itr != _playerbotsMgrMap.end())
     {

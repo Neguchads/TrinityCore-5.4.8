@@ -329,7 +329,7 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
         _isBotInitializing = sWorld->GetUptime() < sPlayerbotAIConfig->maxRandomBots * (0.11 + 0.4);
     }
 
-    uint32 const updateIntervalMs = std::max<uint32>(1, sPlayerbotAIConfig->randomBotUpdateInterval) * IN_MILLISECONDS;
+    uint32 const updateIntervalMs = std::max<uint32>(1, sPlayerbotAIConfig->randomBotUpdateInterval);
     SetNextCheckDelay(updateIntervalMs);
 
     auto pmo = sPerformanceMonitor->start(

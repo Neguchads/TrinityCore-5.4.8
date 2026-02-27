@@ -527,6 +527,9 @@ bool Map::AddPlayerToMap(Player* player)
 
     player->RestoreCombatWithInstance();
 
+    if (ShouldTrackPlayerForBotActivity(player) && _activePlayersForBotActivity.insert(player->GetGUID()).second)
+        AddActivePlayerZone(ResolvePlayerBotActivityZone(player, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ()));
+
     sScriptMgr->OnPlayerEnterMap(this, player);
     return true;
 }
@@ -791,6 +794,9 @@ void Map::Update(const uint32 t_diff)
 
 void Map::RemovePlayerFromMap(Player* player, bool remove)
 {
+    if (_activePlayersForBotActivity.erase(player->GetGUID()))
+        RemoveActivePlayerZone(ResolvePlayerBotActivityZone(player, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ()));
+
     // Before leaving map, update zone/area for stats
     player->UpdateZone(MAP_INVALID_ZONE, 0);
     sScriptMgr->OnPlayerLeaveMap(this, player);
@@ -883,6 +889,15 @@ void Map::PlayerRelocation(Player* player, float x, float y, float z, float orie
 {
     ASSERT(player);
 
+    WorldSession* session = player->GetSession();
+    if (!session)
+        return;
+
+    bool const needsActivityTracking = !session->IsBot() || _activePlayersForBotActivity.find(player->GetGUID()) != _activePlayersForBotActivity.end();
+    uint32 oldZoneId = 0;
+    if (needsActivityTracking)
+        oldZoneId = ResolvePlayerBotActivityZone(player, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ());
+
     Cell old_cell(player->GetPositionX(), player->GetPositionY());
     Cell new_cell(x, y);
 
@@ -904,6 +919,12 @@ void Map::PlayerRelocation(Player* player, float x, float y, float z, float orie
 
     player->OnRelocated();
     player->UpdatePositionData();
+
+    if (needsActivityTracking)
+    {
+        uint32 newZoneId = ResolvePlayerBotActivityZone(player, x, y, z);
+        UpdatePlayerBotActivityStateOnMove(player, oldZoneId, newZoneId);
+    }
 
 }
 
@@ -2958,6 +2979,13 @@ void Map::UpdateObjectVisibility(WorldObject* obj, Cell cell, CellCoord cellpair
 
 void Map::UpdateObjectsVisibilityFor(Player* player, Cell cell, CellCoord cellpair)
 {
+    WorldSession* session = player->GetSession();
+    if (!session)
+        return;
+
+    if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
+        return;
+
     Trinity::VisibleNotifier notifier(*player);
 
     cell.SetNoCreate();
@@ -2972,6 +3000,13 @@ void Map::UpdateObjectsVisibilityFor(Player* player, Cell cell, CellCoord cellpa
 
 void Map::SendInitSelf(Player* player)
 {
+    WorldSession* session = player->GetSession();
+    if (!session)
+        return;
+
+    if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
+        return;
+
     TC_LOG_INFO("maps", "Creating player data for himself %u", player->GetGUID().GetCounter());
 
     UpdateData data(player->GetMapId());
@@ -2998,6 +3033,13 @@ void Map::SendInitSelf(Player* player)
 
 void Map::SendInitTransports(Player* player)
 {
+    WorldSession* session = player->GetSession();
+    if (!session)
+        return;
+
+    if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
+        return;
+
     // Hack to send out transports
     UpdateData transData(player->GetMapId());
     for (TransportsContainer::const_iterator i = _transports.begin(); i != _transports.end(); ++i)
@@ -3011,6 +3053,13 @@ void Map::SendInitTransports(Player* player)
 
 void Map::SendRemoveTransports(Player* player)
 {
+    WorldSession* session = player->GetSession();
+    if (!session)
+        return;
+
+    if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
+        return;
+
     // Hack to send out transports
     UpdateData transData(player->GetMapId());
     for (TransportsContainer::const_iterator i = _transports.begin(); i != _transports.end(); ++i)
@@ -3044,6 +3093,13 @@ void Map::SendObjectUpdates()
         WorldPacket packet(SMSG_UPDATE_OBJECT, 4096);
         for (auto&& it : updatePlayers)
         {
+            WorldSession* session = it.first->GetSession();
+            if (!session)
+                continue;
+
+            if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(it.first))
+                continue;
+
             it.second.BuildPacket(&packet);
             it.first->GetSession()->SendPacket(&packet);
             packet.clear();
@@ -3204,10 +3260,131 @@ uint32 Map::GetPlayersCountExceptGMs() const
     return count;
 }
 
+bool Map::HasRealPlayers() const
+{
+    return !_activePlayersForBotActivity.empty();
+}
+
+bool Map::HasActiveZones() const
+{
+    return !_activePlayerZoneRefCount.empty();
+}
+
+bool Map::HasActiveZone(uint32 zoneId) const
+{
+    if (!zoneId || zoneId == MAP_INVALID_ZONE)
+        return false;
+
+    return _activePlayerZoneRefCount.find(zoneId) != _activePlayerZoneRefCount.end();
+}
+
+bool Map::ShouldTrackPlayerForBotActivity(Player* player) const
+{
+    WorldSession* session = player ? player->GetSession() : nullptr;
+    if (!session)
+        return false;
+
+    if (session->IsBot())
+        return false;
+
+    return !player->IsGameMaster();
+}
+
+uint32 Map::ResolvePlayerBotActivityZone(Player* player, float x, float y, float z) const
+{
+    if (!player)
+        return 0;
+
+    uint32 zoneId = GetZoneId(player->GetPhaseMask(), x, y, z);
+    if (!zoneId || zoneId == MAP_INVALID_ZONE)
+        zoneId = player->GetZoneId();
+
+    if (zoneId == MAP_INVALID_ZONE)
+        return 0;
+
+    return zoneId;
+}
+
+void Map::AddActivePlayerZone(uint32 zoneId)
+{
+    if (!zoneId || zoneId == MAP_INVALID_ZONE)
+        return;
+
+    ++_activePlayerZoneRefCount[zoneId];
+}
+
+void Map::RemoveActivePlayerZone(uint32 zoneId)
+{
+    if (!zoneId || zoneId == MAP_INVALID_ZONE)
+        return;
+
+    auto itr = _activePlayerZoneRefCount.find(zoneId);
+    if (itr == _activePlayerZoneRefCount.end())
+        return;
+
+    if (itr->second > 1)
+    {
+        --itr->second;
+        return;
+    }
+
+    _activePlayerZoneRefCount.erase(itr);
+}
+
+void Map::UpdatePlayerBotActivityStateOnMove(Player* player, uint32 oldZoneId, uint32 newZoneId)
+{
+    WorldSession* session = player ? player->GetSession() : nullptr;
+    if (!session)
+        return;
+
+    ObjectGuid const playerGuid = player->GetGUID();
+    auto itr = _activePlayersForBotActivity.find(playerGuid);
+    bool const isTracked = itr != _activePlayersForBotActivity.end();
+
+    // Most bot sessions are never tracked, avoid script hook cost for every movement.
+    if (session->IsBot() && !isTracked)
+        return;
+
+    bool const shouldTrack = ShouldTrackPlayerForBotActivity(player);
+
+    if (!shouldTrack)
+    {
+        if (!isTracked)
+            return;
+
+        _activePlayersForBotActivity.erase(itr);
+        RemoveActivePlayerZone(oldZoneId);
+        return;
+    }
+
+    if (!isTracked)
+    {
+        _activePlayersForBotActivity.insert(playerGuid);
+        AddActivePlayerZone(newZoneId);
+        return;
+    }
+
+    if (oldZoneId == newZoneId)
+        return;
+
+    RemoveActivePlayerZone(oldZoneId);
+    AddActivePlayerZone(newZoneId);
+}
+
 void Map::SendToPlayers(WorldPacket const* data) const
 {
     for (MapRefManager::const_iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
-        itr->GetSource()->GetSession()->SendPacket(data);
+    {
+        Player* player = itr->GetSource();
+        WorldSession* session = player->GetSession();
+        if (!session)
+            continue;
+
+        if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
+            continue;
+
+        session->SendPacket(data);
+    }
 }
 
 /// Send a packet to all players (or players selected team) in the zone (except self if mentioned)
@@ -3218,9 +3395,16 @@ bool Map::SendZoneMessage(uint32 zone, WorldPacket const* packet, WorldSession c
     for (MapReference const& ref : GetPlayers())
     {
         Player* player = ref.GetSource();
+        WorldSession* session = player->GetSession();
+        if (!session)
+            continue;
+
+        if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
+            continue;
+
         if (player->IsInWorld() &&
             player->GetZoneId() == zone &&
-            player->GetSession() != self &&
+            session != self &&
             (team == 0 || player->GetTeam() == team))
         {
             player->SendDirectMessage(packet);

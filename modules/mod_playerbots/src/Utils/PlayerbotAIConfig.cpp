@@ -449,7 +449,7 @@ bool PlayerbotAIConfig::Initialize()
     randomBotsMaxLoginsPerInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotsMaxLoginsPerInterval", 10);
     randomBotsDatabasePingInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotsDatabasePingInterval", 1000);
     randomBotsDatabaseDelayThreshold = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotsDatabaseDelayThreshold", 10000);
-    randomBotUpdateInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotUpdateInterval", 1);
+    randomBotUpdateInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotUpdateInterval", 1000);
     randomBotCountChangeMinInterval =
         sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotCountChangeMinInterval", 30 * MINUTE);
     randomBotCountChangeMaxInterval =

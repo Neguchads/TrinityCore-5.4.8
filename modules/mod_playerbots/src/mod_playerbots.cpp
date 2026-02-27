@@ -26,6 +26,7 @@
 #include "ScriptMgr.h"
 #include "World.h"
 #include "WorldPacket.h"
+#include "WorldSession.h"
 #include "WorldSocket.h"
 
 #include "ExternalEventHelper.h"
@@ -688,8 +689,24 @@ public:
 
     bool OnPlayerbotCheckUpdatesToSend(Player* player) override
     {
+        if (!player)
+            return true;
+
+        WorldSession* session = player->GetSession();
+        if (!session)
+            return true;
+
+        // Allow full packet/update flow during login/initial world setup.
+        if (session->PlayerLoading() || !player->IsInWorld())
+            return true;
+
         if (PlayerbotAI* botAI = GET_PLAYERBOT_AI(player))
-            return botAI->IsRealPlayer();
+        {
+            if (sPlayerbotAIConfig->disableBotOptimizations)
+                return true;
+
+            return botAI->IsRealPlayer() || botAI->HasRealPlayerMaster();
+        }
 
         return true;
     }

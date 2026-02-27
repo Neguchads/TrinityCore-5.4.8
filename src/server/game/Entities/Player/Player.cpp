@@ -97,6 +97,7 @@
 #include "SpellHistory.h"
 #include "RatedPvp.h"
 #include "PoolMgr.h"
+#include "ScriptMgr.h"
 #include "Vignette.h"
 #include "LootLockoutMap.h"
 
@@ -24888,6 +24889,13 @@ inline void BeforeVisibilityDestroy<Creature>(Creature* t, Player* p)
 
 void Player::UpdateVisibilityOf(WorldObject* target)
 {
+    WorldSession* session = GetSession();
+    if (!session)
+        return;
+
+    if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(this))
+        return;
+
     if (HaveAtClient(target))
     {
         if (!CanSeeOrDetect(target, false, true))
@@ -24942,6 +24950,13 @@ void Player::UpdateVisibilityOf(WorldObject* target)
 
 void Player::UpdateTriggerVisibility()
 {
+    WorldSession* session = GetSession();
+    if (!session)
+        return;
+
+    if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(this))
+        return;
+
     if (m_clientGUIDs.empty())
         return;
 
@@ -25060,6 +25075,13 @@ template void Player::UpdateVisibilityOf(AreaTrigger*   target, UpdateData& data
 
 void Player::UpdateVisibilityForPlayer()
 {
+    WorldSession* session = GetSession();
+    if (!session)
+        return;
+
+    if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(this))
+        return;
+
     // updates visibility of all objects around point of view for current player
     Trinity::VisibleNotifier notifier(*this);
     m_seer->VisitNearbyObject(GetSightRange(), notifier, true, true);

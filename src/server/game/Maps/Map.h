@@ -21,6 +21,7 @@
 #include "Define.h"
 #include <mutex>
 #include <shared_mutex>
+#include <unordered_map>
 #include <unordered_set>
 
 #include "DBCStructure.h"
@@ -461,6 +462,9 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
 
         bool HavePlayers() const { return !m_mapRefManager.isEmpty(); }
         uint32 GetPlayersCountExceptGMs() const;
+        bool HasRealPlayers() const;
+        bool HasActiveZones() const;
+        bool HasActiveZone(uint32 zoneId) const;
         bool ActiveObjectsNearGrid(NGridType const& ngrid) const;
 
         void AddWorldObject(WorldObject* obj) { i_worldObjects.insert(obj); }
@@ -720,6 +724,11 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         void setNGrid(NGridType* grid, uint32 x, uint32 y);
         void ScriptsProcess();
         void SendObjectUpdates();
+        bool ShouldTrackPlayerForBotActivity(Player* player) const;
+        uint32 ResolvePlayerBotActivityZone(Player* player, float x, float y, float z) const;
+        void AddActivePlayerZone(uint32 zoneId);
+        void RemoveActivePlayerZone(uint32 zoneId);
+        void UpdatePlayerBotActivityStateOnMove(Player* player, uint32 oldZoneId, uint32 newZoneId);
 
         void UpdateActiveCells(const float &x, const float &y, const uint32 t_diff);
 
@@ -839,6 +848,8 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         bool m_mmapErrorReportEnabled = true;
         std::unordered_set<Object*> _updateObjects;
         std::map<uint32, uint64> m_worldStates;
+        std::unordered_set<ObjectGuid> _activePlayersForBotActivity;
+        std::unordered_map<uint32, uint32> _activePlayerZoneRefCount;
 
         uint32 debugFlexPlayersCount;
 
