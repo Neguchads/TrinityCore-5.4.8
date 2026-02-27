@@ -430,6 +430,7 @@ bool PlayerbotAIConfig::Initialize()
     minRandomBots = sConfigMgr->GetIntDefault("AiPlayerbot.MinRandomBots", 50);
     maxRandomBots = sConfigMgr->GetIntDefault("AiPlayerbot.MaxRandomBots", 200);
     disableRandomLevels = sConfigMgr->GetBoolDefault("AiPlayerbot.DisableRandomLevels", false);
+    randomGearUpgradeEnabled = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomGearUpgradeEnabled", false);
     randomBotMaxLevel = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotMaxLevel", 90);
     randomBotMinLevel = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotMinLevel", 1);
     syncLevelWithPlayers = sConfigMgr->GetBoolDefault("AiPlayerbot.SyncLevelWithPlayers", false);

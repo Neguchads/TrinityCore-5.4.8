@@ -96,7 +96,7 @@ public:
     bool altMaintenanceReputation;
 
     uint32 openGoSpell;
-    bool randomBotAutologin, disableRandomLevels, syncLevelWithPlayers;
+    bool randomBotAutologin, disableRandomLevels, randomGearUpgradeEnabled, syncLevelWithPlayers;
     uint32 syncLevelMaxAbove, syncLevelNoPlayer;
     uint32 randomBotMaxLevel, randomBotMinLevel;
     float randomBotMaxLevelChance;

@@ -628,6 +628,10 @@ AiPlayerbot.DisableDeathKnightLogin = 0
 # Every bots started on the specified level and level up by killing mobs.
 AiPlayerbot.DisableRandomLevels = 0
 
+# Upgrade random bots on randomize timer instead of only rescheduling.
+# Default: 0 (cMaNGOS-like lightweight behavior)
+AiPlayerbot.RandomGearUpgradeEnabled = 0
+
 # Set randombots starting level here if "AiPlayerbot.DisableRandomLevels" enabled
 AiPlayerbot.RandombotStartingLevel = 5
 
@@ -959,8 +963,8 @@ AiPlayerbot.FastReactInBG = 1
 #
 #
 
-# All In seconds
-AiPlayerbot.RandomBotUpdateInterval = 1
+# All in seconds, except RandomBotUpdateInterval which is in milliseconds.
+AiPlayerbot.RandomBotUpdateInterval = 1000
 AiPlayerbot.RandomBotCountChangeMinInterval = 1800
 AiPlayerbot.RandomBotCountChangeMaxInterval = 7200
 AiPlayerbot.MinRandomBotInWorldTime = 3600

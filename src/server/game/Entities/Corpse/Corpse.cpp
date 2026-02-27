@@ -103,7 +103,6 @@ void Corpse::SaveToDB()
 
     uint16 index = 0;
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CORPSE);
-    stmt->setUInt32(index++, GetGUID().GetCounter());                                 // corpseGuid
     stmt->setUInt32(index++, GetOwnerGUID().GetCounter());                            // guid
     stmt->setFloat (index++, GetPositionX());                                         // posX
     stmt->setFloat (index++, GetPositionY());                                         // posY
@@ -141,10 +140,10 @@ void Corpse::DeleteFromDB(ObjectGuid const& ownerGuid, CharacterDatabaseTransact
 
 bool Corpse::LoadCorpseFromDB(uint32 guid, Field* fields)
 {
-    //        0     1     2     3            4      5          6          7       8       9      10        11    12          13          14          15         16
-    // SELECT posX, posY, posZ, orientation, mapId, displayId, itemCache, bytes1, bytes2, flags, dynFlags, time, corpseType, instanceId, phaseMask, corpseGuid, guid FROM corpse
+    //        0     1     2     3            4      5          6          7       8       9      10        11    12          13          14          15
+    // SELECT posX, posY, posZ, orientation, mapId, displayId, itemCache, bytes1, bytes2, flags, dynFlags, time, corpseType, instanceId, phaseMask, guid FROM corpse
 
-    uint32 ownerGuid = fields[16].GetUInt32();
+    uint32 ownerGuid = fields[15].GetUInt32();
     float posX   = fields[0].GetFloat();
     float posY   = fields[1].GetFloat();
     float posZ   = fields[2].GetFloat();

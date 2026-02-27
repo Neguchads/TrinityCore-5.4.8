@@ -402,7 +402,12 @@ void PlayerbotAI::UpdateAI(uint32 elapsed, bool minimal)
 
     // Update internal AI
     UpdateAIInternal(elapsed, minimal);
-    YieldThread();
+
+    uint32 yieldDelay = minimal ? sPlayerbotAIConfig->reactDelay * 10 : sPlayerbotAIConfig->reactDelay;
+    if (bot->IsInCombat() || _currentState == BOT_STATE_COMBAT || HasRealPlayerMaster())
+        yieldDelay = sPlayerbotAIConfig->reactDelay;
+
+    YieldThread(yieldDelay);
 }
 
 void PlayerbotAI::UpdateAIInternal([[maybe_unused]] uint32 elapsed, bool minimal)
@@ -560,10 +565,12 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
         return true;
     }
 
-    // bg, raid, dungeon
+    // Keep battleground/arena and player-controlled bots always active,
+    // but let unattended instance bots participate in activity scaling.
     if (!WorldPosition(bot).isOverworld())
     {
-        return true;
+        if (bot->InBattleground() || bot->InArena() || HasRealPlayerMaster())
+            return true;
     }
 
     // bot map has active players.
@@ -1299,23 +1306,15 @@ bool PlayerbotAI::IsInRealGuild()
     if (!bot->GetGuildId())
         return false;
 
-    uint32 guildId = bot->GetGuildId();
-    auto const& players = ObjectAccessor::GetPlayers();
-    for (auto const& itr : players)
-    {
-        Player* player = itr.second;
-        if (!player || !player->IsInWorld())
-            continue;
+    Guild* guild = sGuildMgr->GetGuildById(bot->GetGuildId());
+    if (!guild)
+        return false;
 
-        PlayerbotAI* playerAI = GET_PLAYERBOT_AI(player);
-        if (playerAI && !playerAI->IsRealPlayer())
-            continue;
+    uint32 leaderAccount = sObjectMgr->GetPlayerAccountIdByGUID(guild->GetLeaderGUID());
+    if (!leaderAccount)
+        return false;
 
-        if (player->GetGuildId() == guildId)
-            return true;
-    }
-
-    return false;
+    return !sPlayerbotAIConfig->IsInRandomAccountList(leaderAccount);
 }
 
 bool PlayerbotAI::IsInVehicle(bool canControl, bool canCast, bool canAttack, bool canTurn, bool fixed)
