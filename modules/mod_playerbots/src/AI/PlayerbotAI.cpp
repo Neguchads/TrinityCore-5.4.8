@@ -33,6 +33,7 @@
 #include "Chat.h"
 #include "ChatHelper.h"
 #include "CreatureAIImpl.h"
+#include "CharacterCache.h"
 #include "Engine.h"
 #include "ExternalEventHelper.h"
 #include "Bag.h"
@@ -302,6 +303,10 @@ void PlayerbotAI::UpdateAI(uint32 elapsed, bool minimal)
         bot->GetSession()->isLogingOut() || bot->IsDuringRemoveFromWorld())
         return;
 
+    // Most bots are sleeping between decisions; keep this path minimal.
+    if (!CanUpdateAI())
+        return;
+
     if (bot->IsAlive() &&
         (static_cast<uint32>(GetCheat()) > 0 || static_cast<uint32>(sPlayerbotAIConfig->botCheatMask) > 0))
     {
@@ -322,9 +327,6 @@ void PlayerbotAI::UpdateAI(uint32 elapsed, bool minimal)
     }
 
     AllowActivity();
-
-    if (!CanUpdateAI())
-        return;
 
     // Handle the current spell
     Spell* currentSpell = bot->GetCurrentSpell(CURRENT_GENERIC_SPELL);
@@ -401,7 +403,12 @@ void PlayerbotAI::UpdateAI(uint32 elapsed, bool minimal)
 
     // Update internal AI
     UpdateAIInternal(elapsed, minimal);
-    YieldThread();
+
+    uint32 yieldDelay = minimal ? sPlayerbotAIConfig->reactDelay * 10 : sPlayerbotAIConfig->reactDelay;
+    if (bot->IsInCombat() || _currentState == BOT_STATE_COMBAT || HasRealPlayerMaster())
+        yieldDelay = sPlayerbotAIConfig->reactDelay;
+
+    YieldThread(yieldDelay);
 }
 
 void PlayerbotAI::UpdateAIInternal([[maybe_unused]] uint32 elapsed, bool minimal)
@@ -527,63 +534,6 @@ bool PlayerbotAI::DoSpecificAction(std::string const name, Event event, bool sil
 
 bool PlayerbotAI::AllowActive(ActivityType activityType)
 {
-    auto HasRealPlayers = ([](Map* map)
-    {
-        Map::PlayerList const& players = map->GetPlayers();
-        if (players.isEmpty())
-        {
-            return false;
-        }
-
-        for (auto const& itr : players)
-        {
-            Player* player = itr.GetSource();
-            if (!player || !player->IsVisible())
-            {
-                continue;
-            }
-
-            PlayerbotAI* botAI = GET_PLAYERBOT_AI(player);
-            if (!botAI || botAI->IsRealPlayer() || botAI->HasRealPlayerMaster())
-            {
-                return true;
-            }
-        }
-
-        return false;
-    });
-
-    auto ZoneHasRealPlayers = ([](Player * bot)
-    {
-        Map* map = bot->GetMap();
-        if (!bot || !map)
-        {
-            return false;
-        }
-
-        for (Player* player : sRandomPlayerbotMgr->GetPlayers())
-        {
-            if (player->GetMapId() != bot->GetMapId())
-                continue;
-
-            if (player->IsGameMaster())
-            {
-                continue;
-            }
-
-            if (player->GetZoneId() == bot->GetZoneId())
-            {
-                PlayerbotAI* botAI = GET_PLAYERBOT_AI(player);
-                if (!botAI || botAI->IsRealPlayer() || botAI->HasRealPlayerMaster())
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    });
-
     // when botActiveAlone is 100% and smartScale disabled
     if (sPlayerbotAIConfig->botActiveAlone >= 100 && !sPlayerbotAIConfig->botActiveAloneSmartScale)
         return true;
@@ -616,28 +566,23 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
         return true;
     }
 
-    // bg, raid, dungeon
+    // Keep battleground/arena and player-controlled bots always active,
+    // but let unattended instance bots participate in activity scaling.
     if (!WorldPosition(bot).isOverworld())
     {
-        return true;
+        if (bot->InBattleground() || bot->InArena() || HasRealPlayerMaster())
+            return true;
     }
 
     // bot map has active players.
-    if (sPlayerbotAIConfig->BotActiveAloneForceWhenInMap)
+    if (Map* map = bot->GetMap())
     {
-        if (HasRealPlayers(bot->GetMap()))
-        {
+        if (sPlayerbotAIConfig->BotActiveAloneForceWhenInMap && map->HasRealPlayers())
             return true;
-        }
-    }
 
-    // bot zone has active players.
-    if (sPlayerbotAIConfig->BotActiveAloneForceWhenInZone)
-    {
-        if (ZoneHasRealPlayers(bot))
-        {
+        // bot zone has active players.
+        if (sPlayerbotAIConfig->BotActiveAloneForceWhenInZone && map->HasActiveZone(bot->GetZoneId()))
             return true;
-        }
     }
 
     // when in real guild
@@ -1362,23 +1307,17 @@ bool PlayerbotAI::IsInRealGuild()
     if (!bot->GetGuildId())
         return false;
 
-    uint32 guildId = bot->GetGuildId();
-    auto const& players = ObjectAccessor::GetPlayers();
-    for (auto const& itr : players)
-    {
-        Player* player = itr.second;
-        if (!player || !player->IsInWorld())
-            continue;
+    Guild* guild = sGuildMgr->GetGuildById(bot->GetGuildId());
+    if (!guild)
+        return false;
 
-        PlayerbotAI* playerAI = GET_PLAYERBOT_AI(player);
-        if (playerAI && !playerAI->IsRealPlayer())
-            continue;
+    uint32 leaderAccount = sCharacterCache->GetCharacterAccountIdByGuid(guild->GetLeaderGUID());
+    if (!leaderAccount)
+        leaderAccount = sObjectMgr->GetPlayerAccountIdByGUID(guild->GetLeaderGUID());
+    if (!leaderAccount)
+        return false;
 
-        if (player->GetGuildId() == guildId)
-            return true;
-    }
-
-    return false;
+    return !sPlayerbotAIConfig->IsInRandomAccountList(leaderAccount);
 }
 
 bool PlayerbotAI::IsInVehicle(bool canControl, bool canCast, bool canAttack, bool canTurn, bool fixed)

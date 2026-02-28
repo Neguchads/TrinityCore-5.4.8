@@ -304,6 +304,7 @@ private:
     uint32 _dbPingTimer = 0;
     uint32 _randomBotGuidCacheTimer = 0;
     size_t _randomBotGuidCursor = 0;
+    size_t _updateBotCursor = 0;
     std::vector<uint32> _randomBotGuidCache;
     std::vector<uint32> _availableBots;
     std::unordered_map<std::string, botPerformanceMetric> _botPerformanceMetrics;

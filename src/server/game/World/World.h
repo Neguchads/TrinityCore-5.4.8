@@ -833,12 +833,52 @@ class TC_GAME_API World
         /// Get the number of current active sessions
         void UpdateMaxSessionCounters();
         const SessionMap& GetAllSessions() const { return m_sessions; }
-        uint32 GetActiveAndQueuedSessionCount() const { return m_sessions.size(); }
-        uint32 GetActiveSessionCount() const { return m_sessions.size() - m_QueuedPlayer.size(); }
-        uint32 GetQueuedSessionCount() const { return m_QueuedPlayer.size(); }
+        uint32 GetActiveAndQueuedSessionCount() const { return m_sessions.size() + GetBotSessionCount(); }
+        uint32 GetActiveSessionCount() const { return m_sessions.size() - m_QueuedPlayer.size() + GetBotSessionCount(); }
+        uint32 GetQueuedSessionCount() const { return m_QueuedPlayer.size() + GetBotQueuedSessionCount(); }
         /// Get the maximum number of parallel sessions on the server since last reboot
         uint32 GetMaxQueuedSessionCount() const { return m_maxQueuedSessionCount; }
         uint32 GetMaxActiveSessionCount() const { return m_maxActiveSessionCount; }
+        uint32 GetBotSessionCount() const
+        {
+#ifdef PLAYERBOTS
+            return m_botSessionCount.load(std::memory_order_relaxed);
+#else
+            return 0;
+#endif
+        }
+        uint32 GetBotQueuedSessionCount() const
+        {
+#ifdef PLAYERBOTS
+            return m_botQueuedSessionCount.load(std::memory_order_relaxed);
+#else
+            return 0;
+#endif
+        }
+        void SetBotQueuedSessionCount(uint32 count)
+        {
+#ifdef PLAYERBOTS
+            m_botQueuedSessionCount.store(count, std::memory_order_relaxed);
+#else
+            (void)count;
+#endif
+        }
+        void IncreaseBotSessionCount()
+        {
+#ifdef PLAYERBOTS
+            m_botSessionCount.fetch_add(1, std::memory_order_relaxed);
+#endif
+        }
+        void DecreaseBotSessionCount()
+        {
+#ifdef PLAYERBOTS
+            uint32 current = m_botSessionCount.load(std::memory_order_relaxed);
+            while (current > 0 &&
+                !m_botSessionCount.compare_exchange_weak(current, current - 1, std::memory_order_relaxed))
+            {
+            }
+#endif
+        }
         /// Get number of players
         inline uint32 GetPlayerCount() const { return m_PlayerCount; }
         inline uint32 GetMaxPlayerCount() const { return m_MaxPlayerCount; }
@@ -1139,6 +1179,10 @@ class TC_GAME_API World
         DisconnectMap m_disconnects;
         uint32 m_maxActiveSessionCount;
         uint32 m_maxQueuedSessionCount;
+#ifdef PLAYERBOTS
+        std::atomic<uint32> m_botSessionCount{ 0 };
+        std::atomic<uint32> m_botQueuedSessionCount{ 0 };
+#endif
         uint32 m_PlayerCount;
         uint32 m_MaxPlayerCount;
 

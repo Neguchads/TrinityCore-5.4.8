@@ -25,57 +25,64 @@ void ScriptMgr::OnPlayerbotCheckKillTask(Player* player, Unit* victim)
         script->OnPlayerbotCheckKillTask(player, victim);
     });
 }
+
 void ScriptMgr::OnPlayerbotCheckPetitionAccount(Player* player, bool& found)
 {
     ExecuteScript<PlayerbotScript>([&](PlayerbotScript* script)
-        {
-            script->OnPlayerbotCheckPetitionAccount(player, found);
-        });
+    {
+        script->OnPlayerbotCheckPetitionAccount(player, found);
+    });
 }
+
 bool ScriptMgr::OnPlayerbotCheckUpdatesToSend(Player* player)
 {
     auto ret = IsValidBoolScript<PlayerbotScript>([&](PlayerbotScript* script)
-        {
-            return !script->OnPlayerbotCheckUpdatesToSend(player);
-        });
-    if (ret && *ret)
     {
+        return !script->OnPlayerbotCheckUpdatesToSend(player);
+    });
+
+    if (ret && *ret)
         return false;
-    }
+
     return true;
 }
+
 void ScriptMgr::OnPlayerbotPacketSent(Player* player, WorldPacket const* packet)
 {
     ExecuteScript<PlayerbotScript>([&](PlayerbotScript* script)
-        {
-            script->OnPlayerbotPacketSent(player, packet);
-        });
+    {
+        script->OnPlayerbotPacketSent(player, packet);
+    });
 }
+
 void ScriptMgr::OnPlayerbotUpdate(uint32 diff)
 {
     ExecuteScript<PlayerbotScript>([&](PlayerbotScript* script)
-        {
-            script->OnPlayerbotUpdate(diff);
-        });
+    {
+        script->OnPlayerbotUpdate(diff);
+    });
 }
+
 void ScriptMgr::OnPlayerbotUpdateSessions(Player* player)
 {
     ExecuteScript<PlayerbotScript>([&](PlayerbotScript* script)
-        {
-            script->OnPlayerbotUpdateSessions(player);
-        });
+    {
+        script->OnPlayerbotUpdateSessions(player);
+    });
 }
+
 void ScriptMgr::OnPlayerbotLogout(Player* player)
 {
     ExecuteScript<PlayerbotScript>([&](PlayerbotScript* script)
-        {
-            script->OnPlayerbotLogout(player);
-        });
+    {
+        script->OnPlayerbotLogout(player);
+    });
 }
+
 void ScriptMgr::OnPlayerbotLogoutBots()
 {
     ExecuteScript<PlayerbotScript>([&](PlayerbotScript* script)
-        {
-            script->OnPlayerbotLogoutBots();
-        });
+    {
+        script->OnPlayerbotLogoutBots();
+    });
 }

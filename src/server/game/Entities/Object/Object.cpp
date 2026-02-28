@@ -37,6 +37,7 @@
 #include "Opcodes.h"
 #include "OutdoorPvPMgr.h"
 #include "Player.h"
+#include "ScriptMgr.h"
 #include "SharedDefines.h"
 #include "SpellAuraEffects.h"
 #include "TargetedMovementGenerator.h"
@@ -268,6 +269,15 @@ void Object::BuildCreateUpdateBlockForPlayer(UpdateData* data, Player* target) c
 
 void Object::SendUpdateToPlayer(Player* player)
 {
+    WorldSession* session = player->GetSession();
+    if (!session)
+        return;
+
+#ifdef PLAYERBOTS
+    if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
+        return;
+#endif
+
     // send create update to player
     UpdateData upd(player->GetMapId());
     WorldPacket packet;
@@ -297,6 +307,15 @@ void Object::BuildOutOfRangeUpdateBlock(UpdateData* data) const
 void Object::DestroyForPlayer(Player* target, bool onDeath) const
 {
     ASSERT(target);
+
+    WorldSession* session = target->GetSession();
+    if (!session)
+        return;
+
+#ifdef PLAYERBOTS
+    if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(target))
+        return;
+#endif
 
     if (isType(TYPEMASK_UNIT) || isType(TYPEMASK_PLAYER))
     {
@@ -360,6 +379,16 @@ void Object::DestroyForPlayer(Player* target, bool onDeath) const
 void Object::SendOutOfRangeForPlayer(Player* target) const
 {
     ASSERT(target);
+
+    WorldSession* session = target->GetSession();
+    if (!session)
+        return;
+
+#ifdef PLAYERBOTS
+    if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(target))
+        return;
+#endif
+
     UpdateData updateData(target->GetMapId());
     BuildOutOfRangeUpdateBlock(&updateData);
     WorldPacket packet;
@@ -3850,7 +3879,17 @@ struct WorldObjectChangeAccumulator
     void BuildPacket(Player* player)
     {
         // Only send update once to a player
-        if (plr_list.find(player->GetGUID()) == plr_list.end() && player->HaveAtClient(&i_object))
+        WorldSession* session = player->GetSession();
+        if (!session)
+            return;
+
+        bool canReceiveUpdate = player->HaveAtClient(&i_object);
+#ifdef PLAYERBOTS
+        canReceiveUpdate = canReceiveUpdate &&
+            (!session->IsBot() || sScriptMgr->OnPlayerbotCheckUpdatesToSend(player));
+#endif
+
+        if (plr_list.find(player->GetGUID()) == plr_list.end() && canReceiveUpdate)
         {
             i_object.BuildFieldsUpdate(player, i_updateDatas);
             plr_list.insert(player->GetGUID());

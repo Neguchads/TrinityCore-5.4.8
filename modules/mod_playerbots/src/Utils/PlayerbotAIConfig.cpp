@@ -236,7 +236,6 @@ bool PlayerbotAIConfig::Initialize()
     randomBotTimedLogout = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotTimedLogout", true);
     randomBotTimedOffline = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotTimedOffline", false);
     randomBotLoginWithPlayer = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotLoginWithPlayer", false);
-    asyncBotLogin = sConfigMgr->GetBoolDefault("AiPlayerbot.AsyncBotLogin", false);
     preloadHolders = sConfigMgr->GetBoolDefault("AiPlayerbot.PreloadHolders", false);
     freeRoomForNonSpareBots = sConfigMgr->GetIntDefault("AiPlayerbot.FreeRoomForNonSpareBots", 1);
     loginBotsNearPlayerRange = sConfigMgr->GetIntDefault("AiPlayerbot.LoginBotsNearPlayerRange", 1000);
@@ -430,6 +429,7 @@ bool PlayerbotAIConfig::Initialize()
     minRandomBots = sConfigMgr->GetIntDefault("AiPlayerbot.MinRandomBots", 50);
     maxRandomBots = sConfigMgr->GetIntDefault("AiPlayerbot.MaxRandomBots", 200);
     disableRandomLevels = sConfigMgr->GetBoolDefault("AiPlayerbot.DisableRandomLevels", false);
+    randomGearUpgradeEnabled = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomGearUpgradeEnabled", false);
     randomBotMaxLevel = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotMaxLevel", 90);
     randomBotMinLevel = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotMinLevel", 1);
     syncLevelWithPlayers = sConfigMgr->GetBoolDefault("AiPlayerbot.SyncLevelWithPlayers", false);
@@ -449,7 +449,7 @@ bool PlayerbotAIConfig::Initialize()
     randomBotsMaxLoginsPerInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotsMaxLoginsPerInterval", 10);
     randomBotsDatabasePingInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotsDatabasePingInterval", 1000);
     randomBotsDatabaseDelayThreshold = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotsDatabaseDelayThreshold", 10000);
-    randomBotUpdateInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotUpdateInterval", 1);
+    randomBotUpdateInterval = sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotUpdateInterval", 1000);
     randomBotCountChangeMinInterval =
         sConfigMgr->GetIntDefault("AiPlayerbot.RandomBotCountChangeMinInterval", 30 * MINUTE);
     randomBotCountChangeMaxInterval =

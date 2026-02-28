@@ -26,6 +26,7 @@
 #include "ScriptMgr.h"
 #include "World.h"
 #include "WorldPacket.h"
+#include "WorldSession.h"
 #include "WorldSocket.h"
 
 #include "ExternalEventHelper.h"
@@ -58,6 +59,10 @@ namespace
     bool IsRealPlayer(Player* player)
     {
         if (!player)
+            return false;
+
+        WorldSession* session = player->GetSession();
+        if (!session || session->IsBot())
             return false;
 
         PlayerbotAI* playerAI = GET_PLAYERBOT_AI(player);
@@ -688,10 +693,27 @@ public:
 
     bool OnPlayerbotCheckUpdatesToSend(Player* player) override
     {
-        if (PlayerbotAI* botAI = GET_PLAYERBOT_AI(player))
-            return botAI->IsRealPlayer();
+        if (!player)
+            return true;
 
-        return true;
+        WorldSession* session = player->GetSession();
+        if (!session)
+            return true;
+
+        // Allow full packet/update flow during login/initial world setup.
+        if (session->PlayerLoading() || !player->IsInWorld())
+            return true;
+
+        if (PlayerbotAI* botAI = GET_PLAYERBOT_AI(player))
+        {
+            if (sPlayerbotAIConfig->disableBotOptimizations)
+                return true;
+
+            return botAI->IsRealPlayer() || botAI->HasRealPlayerMaster();
+        }
+
+        // Bot session without AI mapping should not consume full update flow.
+        return false;
     }
 
     void OnPlayerbotPacketSent(Player* player, WorldPacket const* packet) override

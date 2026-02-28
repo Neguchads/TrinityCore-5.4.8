@@ -18,8 +18,7 @@ bool ReachTargetAction::Execute(Event event)
     // Melee reaches are smoother with persistent chase than repeated point moves.
     if (getName() == "reach melee")
     {
-        float chaseDistance = distance + bot->GetCombatReach() + target->GetCombatReach();
-        return ChaseTo(target, chaseDistance);
+        return ChaseTo(target, distance, bot->GetAngle(target));
     }
 
     return ReachCombatTo(target, distance);

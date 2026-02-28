@@ -105,6 +105,14 @@ void CheckMailAction::ProcessMail(Mail* mail, uint32 senderLow)
         body << "Hello,\n\nHere are the item(s) you've sent me by mistake.\n\nThanks,\n" << bot->GetName() << "\n";
 
         CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
+        CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_MAIL_BY_ID);
+        stmt->setUInt32(0, mail->messageID);
+        trans->Append(stmt);
+
+        stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_MAIL_ITEM_BY_ID);
+        stmt->setUInt32(0, mail->messageID);
+        trans->Append(stmt);
+
         MailDraft draft("Item(s) you've sent me", body.str());
         bot->RemoveMItem(mi.item_guid);
         item->SetOwnerGUID(senderGuid);

@@ -671,6 +671,9 @@ void BotFactory::InitSkills()
 
 void BotFactory::SetRandomSkill(uint16 id)
 {
+    if (!sSkillLineStore.LookupEntry(id))
+        return;
+
     uint32 maxValue = level * 5;
     uint32 value = maxValue;
     bot->SetSkill(id, 0, value, maxValue);

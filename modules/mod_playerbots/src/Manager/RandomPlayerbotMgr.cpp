@@ -54,7 +54,6 @@
 #include "Player.h"
 #include "PlayerbotAI.h"
 #include "PlayerbotAIConfig.h"
-#include "PlayerbotLoginMgr.h"
 #include "PerformanceMonitor.h"
 #include "Playerbots.h"
 #include "RandomItemManager.h"
@@ -210,7 +209,7 @@ void RandomPlayerbotMgr::ScheduleRandomize(uint32 bot, uint32 time)
 void RandomPlayerbotMgr::ScheduleTeleport(uint32 bot, uint32 time)
 {
     if (!time)
-        time = 60 + urand(sPlayerbotAIConfig->randomBotUpdateInterval, sPlayerbotAIConfig->randomBotUpdateInterval * 3);
+        time = 60 + urand(sPlayerbotAIConfig->minRandomBotTeleportInterval, sPlayerbotAIConfig->maxRandomBotTeleportInterval);
 
     SetEventValue(bot, "teleport", 1, time);
 }
@@ -237,7 +236,10 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
     totalPmo = sPerformanceMonitor->start(PERF_MON_TOTAL, "RandomPlayerbotMgr::FullTick");
 
     if (!sPlayerbotAIConfig->randomBotAutologin || !sPlayerbotAIConfig->enabled)
+    {
+        sWorld->SetBotQueuedSessionCount(0);
         return;
+    }
 
     if (_processTicks == 0)
         LoadNamedLocations();
@@ -259,26 +261,6 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
 
     std::vector<Player*> const realPlayersSnapshot = GetPlayers();
     bool const hasRealPlayers = !realPlayersSnapshot.empty();
-
-    if (sPlayerbotAIConfig->asyncBotLogin)
-    {
-        auto pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "AsyncBotLogin");
-        RealPlayers realPlayers;
-        for (Player* player : realPlayersSnapshot)
-        {
-            if (!player || !player->IsInWorld())
-                continue;
-
-            PlayerbotAI* playerAI = GET_PLAYERBOT_AI(player);
-            if (!playerAI || playerAI->IsRealPlayer())
-                realPlayers[player->GetGUID().GetCounter()] = player;
-        }
-
-        sPlayerBotLoginMgr->Update(realPlayers);
-
-        if (pmo)
-            pmo->finish();
-    }
 
     uint32 const nowMs = getMSTime();
     if (sPlayerbotAIConfig->randomBotsDatabasePingInterval &&
@@ -315,6 +297,33 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
     }
     uint32 onlineBotCount = GetPlayerbotsCount();
     bool const loginAllowedByRealPlayers = !(sPlayerbotAIConfig->randomBotLoginWithPlayer && !hasRealPlayers);
+    uint32 const worldPlayerLimit = sWorld->GetPlayerAmountLimit();
+    uint32 const worldActiveSessions = sWorld->GetActiveSessionCount();
+    bool const worldHasFreeSlots = worldPlayerLimit == 0 || worldActiveSessions < worldPlayerLimit;
+
+    if (sWorld->IsShuttingDown() || worldPlayerLimit == 0)
+    {
+        sWorld->SetBotQueuedSessionCount(0);
+    }
+    else
+    {
+        uint32 activeRealSessions = worldActiveSessions;
+        uint32 activeBotSessions = sWorld->GetBotSessionCount();
+        if (activeRealSessions > activeBotSessions)
+            activeRealSessions -= activeBotSessions;
+        else
+            activeRealSessions = 0;
+
+        uint32 maxBotSlotsByLimit = 0;
+        if (activeRealSessions < worldPlayerLimit)
+            maxBotSlotsByLimit = worldPlayerLimit - activeRealSessions;
+
+        uint32 queuedBots = 0;
+        if (maxAllowedBotCount > maxBotSlotsByLimit)
+            queuedBots = maxAllowedBotCount - maxBotSlotsByLimit;
+
+        sWorld->SetBotQueuedSessionCount(queuedBots);
+    }
 
     EnsureRandomBotGuilds();
 
@@ -329,14 +338,14 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
         _isBotInitializing = sWorld->GetUptime() < sPlayerbotAIConfig->maxRandomBots * (0.11 + 0.4);
     }
 
-    uint32 const updateIntervalMs = std::max<uint32>(1, sPlayerbotAIConfig->randomBotUpdateInterval) * IN_MILLISECONDS;
+    uint32 const updateIntervalMs = std::max<uint32>(1, sPlayerbotAIConfig->randomBotUpdateInterval);
     SetNextCheckDelay(updateIntervalMs);
 
     auto pmo = sPerformanceMonitor->start(
             PERF_MON_TOTAL,
             onlineBotCount < maxAllowedBotCount ? "RandomPlayerbotMgr::Login" : "RandomPlayerbotMgr::UpdateAIInternal");
 
-    if (availableBotCount < maxAllowedBotCount && loginAllowedByRealPlayers && !sWorld->IsShuttingDown())
+    if (availableBotCount < maxAllowedBotCount && loginAllowedByRealPlayers && !sWorld->IsShuttingDown() && worldHasFreeSlots)
     {
         AddRandomBots();
     }
@@ -359,11 +368,7 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
             loginBots = std::min(loginBots, maxLoginsPerInterval - pendingLogins);
     }
 
-    if (sPlayerbotAIConfig->asyncBotLogin)
-    {
-        loginBots = 0;
-    }
-    else if (sPlayerbotAIConfig->randomBotsDatabaseDelayThreshold &&
+    if (sPlayerbotAIConfig->randomBotsDatabaseDelayThreshold &&
         dbDelay > sPlayerbotAIConfig->randomBotsDatabaseDelayThreshold)
     {
         loginBots = 0;
@@ -374,24 +379,37 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
         loginBots = 0;
     }
 
+    if (worldPlayerLimit > 0)
+    {
+        if (worldActiveSessions >= worldPlayerLimit)
+            loginBots = 0;
+        else
+            loginBots = std::min(loginBots, worldPlayerLimit - worldActiveSessions);
+    }
+
     if (!availableBots.empty())
     {
-        // Update bots
-        for (auto bot : availableBots)
+        // Update a rotating slice of online bots to avoid full scans each interval.
+        uint32 const updateBudget = std::min<uint32>(updateBots, static_cast<uint32>(availableBots.size()));
+        if (updateBudget > 0)
         {
-            if (GetPlayerBot(bot))
-            {
-                if (ProcessBot(bot))
-                    updateBots--;
+            size_t const totalBots = availableBots.size();
+            if (_updateBotCursor >= totalBots)
+                _updateBotCursor = 0;
 
-                if (!updateBots)
-                    break;
+            for (uint32 i = 0; i < updateBudget; ++i)
+            {
+                size_t const index = (_updateBotCursor + i) % totalBots;
+                uint32 const bot = availableBots[index];
+                if (GetPlayerBot(bot))
+                    ProcessBot(bot);
             }
+
+            _updateBotCursor = (_updateBotCursor + updateBudget) % totalBots;
         }
 
         if (loginBots)
         {
-            loginBots += updateBots;
             loginBots = std::min(loginBots, maxNewBots);
             if (maxLoginsPerInterval > pendingLogins)
                 loginBots = std::min(loginBots, maxLoginsPerInterval - pendingLogins);
@@ -1407,6 +1425,10 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
         if (!botsAllowedInWorld)
             return false;
 
+        uint32 const playerLimit = sWorld->GetPlayerAmountLimit();
+        if (playerLimit > 0 && sWorld->GetActiveSessionCount() >= playerLimit)
+            return false;
+
         if (IsBotLoading(botGUID))
             return false;
 
@@ -1414,40 +1436,8 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
         if (!IsBotLoading(botGUID))
             return false;
 
-        randomTime = 1 + (std::rand() % 2);
-
-        uint32 randomBotUpdateInterval = _isBotInitializing ? 1 : sPlayerbotAIConfig->randomBotUpdateInterval;
-        int minValue = std::max(5, static_cast<int>(randomBotUpdateInterval * 0.5));
-        int maxValue = std::max(12, static_cast<int>(randomBotUpdateInterval * 2));
-        randomTime = minValue + (std::rand() % (maxValue - minValue + 1));
-        
+        randomTime = urand(sPlayerbotAIConfig->minRandomBotReviveTime, sPlayerbotAIConfig->maxRandomBotReviveTime);
         SetEventValue(bot, "update", 1, randomTime);
-
-        // do not randomize or teleport immediately after server start (prevent lagging)
-        if (!GetEventValue(bot, "randomize"))
-        {
-            int minValue = std::max(7, static_cast<int>(randomBotUpdateInterval * 0.7));
-            int maxValue = std::max(14, static_cast<int>(randomBotUpdateInterval * 1.4));
-            randomTime = minValue + (std::rand() % (maxValue - minValue + 1));
-
-            ScheduleRandomize(bot, randomTime);
-        }
-        if (!GetEventValue(bot, "teleport"))
-        {
-            int minValue = std::max(7, static_cast<int>(randomBotUpdateInterval * 0.7));
-            int maxValue = std::max(14, static_cast<int>(randomBotUpdateInterval * 1.4));
-            randomTime = minValue + (std::rand() % (maxValue - minValue + 1));
-
-            ScheduleTeleport(bot, randomTime);
-        }
-        if (!GetEventValue(bot, "change_strategy"))
-        {
-            int minValue = std::max(7, static_cast<int>(randomBotUpdateInterval * 0.7));
-            int maxValue = std::max(14, static_cast<int>(randomBotUpdateInterval * 1.4));
-            randomTime = minValue + (std::rand() % (maxValue - minValue + 1));
-
-            ScheduleChangeStrategy(bot, randomTime);
-        }
 
         return true;
     }
@@ -1525,7 +1515,7 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
         return false;
 
     std::lock_guard<std::recursive_mutex> lock(_stateMutex);
-    ObjectGuid bot = player->GetGUID();
+    uint32 bot = player->GetGUID().GetCounter();
 
     if (player->InBattleground())
         return false;
@@ -1577,7 +1567,7 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
         {
             auto pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "Randomize");
             Randomize(player);
-            TC_LOG_DEBUG("playerbots", "Bot #%u %s:%u <%s>: randomized", bot.GetCounter(), player->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", player->GetLevel(), player->GetName().c_str());
+            TC_LOG_DEBUG("playerbots", "Bot #%u %s:%u <%s>: randomized", bot, player->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", player->GetLevel(), player->GetName().c_str());
             if (pmo)
                 pmo->finish();
             return true;
@@ -1587,7 +1577,7 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
         if (!teleport && HasPlayers())
         {
             auto pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "RandomTeleportByLocations");
-            TC_LOG_DEBUG("playerbots", "Bot #%u <%s>: teleport for level and refresh", bot.GetCounter(), player->GetName().c_str());
+            TC_LOG_DEBUG("playerbots", "Bot #%u <%s>: teleport for level and refresh", bot, player->GetName().c_str());
             Refresh(player);
             RandomTeleportForLevel(player);
             uint32 time = urand(sPlayerbotAIConfig->minRandomBotTeleportInterval, sPlayerbotAIConfig->maxRandomBotTeleportInterval);
@@ -1687,6 +1677,8 @@ void RandomPlayerbotMgr::RandomizeFirst(Player* bot)
     uint32 randomTime   = urand(sPlayerbotAIConfig->minRandomBotRandomizeTime, sPlayerbotAIConfig->maxRandomBotRandomizeTime);
     uint32 inworldTime  = urand(sPlayerbotAIConfig->minRandomBotInWorldTime, sPlayerbotAIConfig->maxRandomBotInWorldTime);
 
+    ScheduleRandomize(bot->GetGUID().GetCounter(), randomTime);
+
     CharacterDatabase.PExecute("UPDATE playerbots_random_bots SET validIn = %u WHERE `event` = 'bot_delete' AND bot = %u",
         randomTime, bot->GetGUID().GetCounter());
     CharacterDatabase.PExecute("UPDATE playerbots_random_bots SET validIn = %u WHERE `event` = 'logout' AND bot = %u",
@@ -1728,26 +1720,20 @@ void RandomPlayerbotMgr::Randomize(Player* bot)
             initialRandom = true;
     }
 
-    uint32 level = GetValue(bot, "level");
     uint32 maxLevel = std::min(sPlayerbotAIConfig->randomBotMaxLevel, sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL));
     uint32 minLevel = std::min(sPlayerbotAIConfig->randomBotMinLevel, maxLevel);
+    uint32 level = GetValue(bot, "level");
+
     if (initialRandom || !level || level < minLevel || level > maxLevel)
     {
         RandomizeFirst(bot);
         return;
     }
-    BotFactory factory(bot, level);
-    factory.Randomize(false);
-    factory.InitTalentsTree(true);
-    factory.InitEquipment(true);
-    if (bot->GetLevel() >= sPlayerbotAIConfig->minEnchantingBotLevel)
-        factory.ApplyEnchantAndGemsNew();
-
-    // rez / clean cd / etc
-    Refresh(bot);
-    RandomTeleportForLevel(bot);
 
     uint32 randomTime = urand(sPlayerbotAIConfig->minRandomBotRandomizeTime, sPlayerbotAIConfig->maxRandomBotRandomizeTime);
+    if (sPlayerbotAIConfig->randomGearUpgradeEnabled)
+        UpdateGearSpells(bot);
+
     ScheduleRandomize(bot->GetGUID().GetCounter(), randomTime);
 }
 
@@ -1896,7 +1882,11 @@ CachedEvent* RandomPlayerbotMgr::FindEvent(uint32 bot, std::string const& event)
     if (!cache.loaded)
     {
         cache.events.clear();
-        if (QueryResult result = CharacterDatabase.PQuery("SELECT `event`, `value`, `time`, validIn, `data` FROM playerbots_random_bots WHERE owner = 0 AND bot = %u", bot))
+        if (QueryResult result = CharacterDatabase.PQuery(
+                "SELECT `event`, `value`, `time`, validIn, `data` "
+                "FROM playerbots_random_bots "
+                "WHERE owner = 0 AND bot = %u",
+                bot))
         {
             do
             {
@@ -1908,7 +1898,7 @@ CachedEvent* RandomPlayerbotMgr::FindEvent(uint32 bot, std::string const& event)
                 e.lastChangeTime = fields[2].GetUInt32();
                 e.validIn = fields[3].GetUInt32();
                 e.data = fields[4].GetString();
-                cache.events.emplace(eventName, std::move(e));
+                cache.events[eventName] = std::move(e);
             } while (result->NextRow());
         }
 
@@ -1953,6 +1943,7 @@ uint32 RandomPlayerbotMgr::SetEventValue(uint32 bot, std::string const event, ui
 {
     std::lock_guard<std::recursive_mutex> lock(_stateMutex);
     BotEventCache& cache = _eventCache[bot];
+
     if (cache.loaded && value == 0)
     {
         auto itr = cache.events.find(event);
@@ -1975,20 +1966,17 @@ uint32 RandomPlayerbotMgr::SetEventValue(uint32 bot, std::string const event, ui
             bot, event.c_str());
     }
 
-    if (cache.loaded)
+    if (value == 0)
     {
-        if (value == 0)
-        {
-            cache.events.erase(event);
-        }
-        else
-        {
-            CachedEvent& cachedEvent = cache.events[event];
-            cachedEvent.value = value;
-            cachedEvent.lastChangeTime = static_cast<uint32>(time(nullptr));
-            cachedEvent.validIn = validIn;
-            cachedEvent.data = data;
-        }
+        cache.events.erase(event);
+    }
+    else
+    {
+        CachedEvent& cachedEvent = cache.events[event];
+        cachedEvent.value = value;
+        cachedEvent.lastChangeTime = static_cast<uint32>(time(nullptr));
+        cachedEvent.validIn = validIn;
+        cachedEvent.data = data;
     }
 
     return value;
