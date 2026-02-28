@@ -236,7 +236,6 @@ bool PlayerbotAIConfig::Initialize()
     randomBotTimedLogout = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotTimedLogout", true);
     randomBotTimedOffline = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotTimedOffline", false);
     randomBotLoginWithPlayer = sConfigMgr->GetBoolDefault("AiPlayerbot.RandomBotLoginWithPlayer", false);
-    asyncBotLogin = sConfigMgr->GetBoolDefault("AiPlayerbot.AsyncBotLogin", false);
     preloadHolders = sConfigMgr->GetBoolDefault("AiPlayerbot.PreloadHolders", false);
     freeRoomForNonSpareBots = sConfigMgr->GetIntDefault("AiPlayerbot.FreeRoomForNonSpareBots", 1);
     loginBotsNearPlayerRange = sConfigMgr->GetIntDefault("AiPlayerbot.LoginBotsNearPlayerRange", 1000);

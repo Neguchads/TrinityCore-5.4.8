@@ -343,7 +343,7 @@ void World::AddSession_(WorldSession* s)
     if (decrease_session)
         --Sessions;
 
-    if (pLimit > 0 && Sessions >= pLimit && !s->GetSecurity() == SEC_PLAYER && !HasRecentlyDisconnected(s))
+    if (pLimit > 0 && Sessions >= pLimit && s->GetSecurity() == SEC_PLAYER && !HasRecentlyDisconnected(s))
     {
         AddQueuedPlayer(s);
         UpdateMaxSessionCounters();
@@ -394,11 +394,19 @@ bool World::HasRecentlyDisconnected(WorldSession* session)
 
 int32 World::GetQueuePos(WorldSession* sess)
 {
+    uint32 queueOffset = GetBotQueuedSessionCount();
+    if (uint32 playerLimit = GetPlayerAmountLimit())
+    {
+        uint32 activeSessions = GetActiveSessionCount();
+        if (activeSessions > playerLimit)
+            queueOffset += activeSessions - playerLimit;
+    }
+
     uint32 position = 1;
 
     for (Queue::const_iterator iter = m_QueuedPlayer.begin(); iter != m_QueuedPlayer.end(); ++iter, ++position)
         if ((*iter) == sess)
-            return position;
+            return queueOffset + position;
 
     return 0;
 }
@@ -466,8 +474,16 @@ bool World::RemoveQueuedPlayer(WorldSession* sess)
 
     // update position from iter to end()
     // iter point to first not updated socket, position store new position
+    uint32 queueOffset = GetBotQueuedSessionCount();
+    if (uint32 playerLimit = GetPlayerAmountLimit())
+    {
+        uint32 activeSessions = GetActiveSessionCount();
+        if (activeSessions > playerLimit)
+            queueOffset += activeSessions - playerLimit;
+    }
+
     for (; iter != m_QueuedPlayer.end(); ++iter, ++position)
-        (*iter)->SendAuthWaitQue(position);
+        (*iter)->SendAuthWaitQue(queueOffset + position);
 
     return found;
 }

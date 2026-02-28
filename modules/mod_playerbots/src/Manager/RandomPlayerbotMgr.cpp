@@ -54,7 +54,6 @@
 #include "Player.h"
 #include "PlayerbotAI.h"
 #include "PlayerbotAIConfig.h"
-#include "PlayerbotLoginMgr.h"
 #include "PerformanceMonitor.h"
 #include "Playerbots.h"
 #include "RandomItemManager.h"
@@ -237,7 +236,10 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
     totalPmo = sPerformanceMonitor->start(PERF_MON_TOTAL, "RandomPlayerbotMgr::FullTick");
 
     if (!sPlayerbotAIConfig->randomBotAutologin || !sPlayerbotAIConfig->enabled)
+    {
+        sWorld->SetBotQueuedSessionCount(0);
         return;
+    }
 
     if (_processTicks == 0)
         LoadNamedLocations();
@@ -259,26 +261,6 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
 
     std::vector<Player*> const realPlayersSnapshot = GetPlayers();
     bool const hasRealPlayers = !realPlayersSnapshot.empty();
-
-    if (sPlayerbotAIConfig->asyncBotLogin)
-    {
-        auto pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "AsyncBotLogin");
-        RealPlayers realPlayers;
-        for (Player* player : realPlayersSnapshot)
-        {
-            if (!player || !player->IsInWorld())
-                continue;
-
-            PlayerbotAI* playerAI = GET_PLAYERBOT_AI(player);
-            if (!playerAI || playerAI->IsRealPlayer())
-                realPlayers[player->GetGUID().GetCounter()] = player;
-        }
-
-        sPlayerBotLoginMgr->Update(realPlayers);
-
-        if (pmo)
-            pmo->finish();
-    }
 
     uint32 const nowMs = getMSTime();
     if (sPlayerbotAIConfig->randomBotsDatabasePingInterval &&
@@ -315,6 +297,33 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
     }
     uint32 onlineBotCount = GetPlayerbotsCount();
     bool const loginAllowedByRealPlayers = !(sPlayerbotAIConfig->randomBotLoginWithPlayer && !hasRealPlayers);
+    uint32 const worldPlayerLimit = sWorld->GetPlayerAmountLimit();
+    uint32 const worldActiveSessions = sWorld->GetActiveSessionCount();
+    bool const worldHasFreeSlots = worldPlayerLimit == 0 || worldActiveSessions < worldPlayerLimit;
+
+    if (sWorld->IsShuttingDown() || worldPlayerLimit == 0)
+    {
+        sWorld->SetBotQueuedSessionCount(0);
+    }
+    else
+    {
+        uint32 activeRealSessions = worldActiveSessions;
+        uint32 activeBotSessions = sWorld->GetBotSessionCount();
+        if (activeRealSessions > activeBotSessions)
+            activeRealSessions -= activeBotSessions;
+        else
+            activeRealSessions = 0;
+
+        uint32 maxBotSlotsByLimit = 0;
+        if (activeRealSessions < worldPlayerLimit)
+            maxBotSlotsByLimit = worldPlayerLimit - activeRealSessions;
+
+        uint32 queuedBots = 0;
+        if (maxAllowedBotCount > maxBotSlotsByLimit)
+            queuedBots = maxAllowedBotCount - maxBotSlotsByLimit;
+
+        sWorld->SetBotQueuedSessionCount(queuedBots);
+    }
 
     EnsureRandomBotGuilds();
 
@@ -336,7 +345,7 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
             PERF_MON_TOTAL,
             onlineBotCount < maxAllowedBotCount ? "RandomPlayerbotMgr::Login" : "RandomPlayerbotMgr::UpdateAIInternal");
 
-    if (availableBotCount < maxAllowedBotCount && loginAllowedByRealPlayers && !sWorld->IsShuttingDown())
+    if (availableBotCount < maxAllowedBotCount && loginAllowedByRealPlayers && !sWorld->IsShuttingDown() && worldHasFreeSlots)
     {
         AddRandomBots();
     }
@@ -359,11 +368,7 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
             loginBots = std::min(loginBots, maxLoginsPerInterval - pendingLogins);
     }
 
-    if (sPlayerbotAIConfig->asyncBotLogin)
-    {
-        loginBots = 0;
-    }
-    else if (sPlayerbotAIConfig->randomBotsDatabaseDelayThreshold &&
+    if (sPlayerbotAIConfig->randomBotsDatabaseDelayThreshold &&
         dbDelay > sPlayerbotAIConfig->randomBotsDatabaseDelayThreshold)
     {
         loginBots = 0;
@@ -372,6 +377,14 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool /*minimal*/)
     if (!loginAllowedByRealPlayers || sWorld->IsShuttingDown())
     {
         loginBots = 0;
+    }
+
+    if (worldPlayerLimit > 0)
+    {
+        if (worldActiveSessions >= worldPlayerLimit)
+            loginBots = 0;
+        else
+            loginBots = std::min(loginBots, worldPlayerLimit - worldActiveSessions);
     }
 
     if (!availableBots.empty())
@@ -1410,6 +1423,10 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
     if (!player)
     {
         if (!botsAllowedInWorld)
+            return false;
+
+        uint32 const playerLimit = sWorld->GetPlayerAmountLimit();
+        if (playerLimit > 0 && sWorld->GetActiveSessionCount() >= playerLimit)
             return false;
 
         if (IsBotLoading(botGUID))

@@ -1,9 +1,9 @@
 #include "PlayerbotLoginMgr.h"
 
 #include <algorithm>
-#include <chrono>
 #include <cmath>
 #include <set>
+#include <sstream>
 
 #include "CharacterCache.h"
 #include "DatabaseEnv.h"
@@ -388,92 +388,95 @@ void PlayerBotLoginMgr::Update(RealPlayers& realPlayers)
 {
     _queryProcessor.ProcessReadyCallbacks();
 
-    if (sPlayerbotAIConfig->asyncBotLogin &&
-        futureQueue.valid() &&
-        futureQueue.wait_for(std::chrono::milliseconds(0)) != std::future_status::ready)
-    {
-        return;
-    }
-
     UpdateOnlineBots();
 
     if (botPool.empty())
     {
-        if (!futurePool.valid())
-            futurePool = std::async(std::launch::async, &PlayerBotLoginMgr::LoadBotsFromDb);
-        else if (futurePool.wait_for(std::chrono::milliseconds(0)) == std::future_status::ready)
+        botPool = LoadBotsFromDb();
+        onlineBots.clear();
+        for (auto& [guid, info] : botPool)
         {
-            botPool = futurePool.get();
-            onlineBots.clear();
-            for (auto& [guid, info] : botPool)
+            (void)guid;
+            if (Player* player = info.GetPlayer())
             {
-                (void)guid;
-                if (Player* player = info.GetPlayer())
+                if (player->IsInWorld())
                 {
-                    if (player->IsInWorld())
-                    {
-                        info.Update(player);
-                        onlineBots.push_back(&info);
-                    }
+                    info.Update(player);
+                    onlineBots.push_back(&info);
                 }
             }
         }
         return;
     }
 
-    if (!sPlayerbotAIConfig->asyncBotLogin)
-    {
-        BotInfos queue = FillLoginLogoutQueue(&botPool, realPlayers);
-        if (!sPlayerbotAIConfig->preloadHolders)
-            SendHolders(queue);
-        else
-            SendHolders(&botPool);
-
-        if (!queue.empty())
-            LoginLogoutBots(queue);
-        return;
-    }
-
-    BotInfos queue;
-    if (futureQueue.valid())
-    {
-        queue = futureQueue.get();
-        if (!sPlayerbotAIConfig->preloadHolders)
-            SendHolders(queue);
-        else
-            SendHolders(&botPool);
-    }
+    BotInfos queue = FillLoginLogoutQueue(&botPool, realPlayers);
+    if (!sPlayerbotAIConfig->preloadHolders)
+        SendHolders(queue);
+    else
+        SendHolders(&botPool);
 
     if (!queue.empty())
         LoginLogoutBots(queue);
-
-    futureQueue = std::async(
-        std::launch::async,
-        [this, realPlayersSnapshot = realPlayers]()
-        {
-            return FillLoginLogoutQueue(&botPool, realPlayersSnapshot);
-        });
 }
 
 BotPool PlayerBotLoginMgr::LoadBotsFromDb()
 {
     BotPool newPool;
     std::set<uint32> accounts;
-    std::string const prefixString = sPlayerbotAIConfig->randomBotAccountPrefix + "%";
-    QueryResult accountResult = LoginDatabase.PQuery("SELECT id FROM account where UPPER(username) like UPPER('%s')", prefixString.c_str());
-    if (!accountResult)
+    for (uint32 accountId : sPlayerbotAIConfig->randomBotAccounts)
+        accounts.insert(accountId);
+
+    if (!sPlayerbotAIConfig->randomBotAccountPrefix.empty())
+    {
+        std::string const prefixString = sPlayerbotAIConfig->randomBotAccountPrefix + "%";
+        QueryResult accountResult = LoginDatabase.PQuery(
+            "SELECT id FROM account where UPPER(username) like UPPER('%s')", prefixString.c_str());
+        if (accountResult)
+        {
+            do
+            {
+                Field* accountFields = accountResult->Fetch();
+                accounts.insert(accountFields[0].GetUInt32());
+            } while (accountResult->NextRow());
+        }
+    }
+
+    if (accounts.empty())
+    {
+        QueryResult accountResult = CharacterDatabase.Query(
+            "SELECT DISTINCT c.account "
+            "FROM characters c "
+            "INNER JOIN playerbots_random_bots rb ON rb.bot = c.guid "
+            "WHERE rb.owner = 0");
+        if (accountResult)
+        {
+            do
+            {
+                Field* accountFields = accountResult->Fetch();
+                accounts.insert(accountFields[0].GetUInt32());
+            } while (accountResult->NextRow());
+        }
+    }
+
+    if (accounts.empty())
         return newPool;
 
-    do
+    std::ostringstream accountList;
+    bool first = true;
+    for (uint32 accountId : accounts)
     {
-        Field* accountFields = accountResult->Fetch();
-        accounts.insert(accountFields[0].GetUInt32());
-    } while (accountResult->NextRow());
+        if (!first)
+            accountList << ',';
+        accountList << accountId;
+        first = false;
+    }
 
-    QueryResult result = CharacterDatabase.Query(
+    std::string const query =
         "SELECT c.account, c.guid, c.race, c.class, c.level, c.totaltime, c.map, c.position_x, c.position_y, c.position_z, c.orientation, "
         "(SELECT guildid FROM guild_member gm WHERE gm.guid = c.guid LIMIT 1) "
-        "FROM characters c");
+        "FROM characters c WHERE c.account IN (" + accountList.str() + ")";
+
+    QueryResult result = CharacterDatabase.Query(query.c_str());
     if (!result)
         return newPool;
 
@@ -482,9 +485,6 @@ BotPool PlayerBotLoginMgr::LoadBotsFromDb()
         Field* fields = result->Fetch();
 
         uint32 account = fields[0].GetUInt32();
-        if (accounts.find(account) == accounts.end())
-            continue;
-
         uint32 guid = fields[1].GetUInt32();
         uint8 race = fields[2].GetUInt8();
         uint8 cls = fields[3].GetUInt8();

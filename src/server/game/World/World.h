@@ -833,12 +833,24 @@ class TC_GAME_API World
         /// Get the number of current active sessions
         void UpdateMaxSessionCounters();
         const SessionMap& GetAllSessions() const { return m_sessions; }
-        uint32 GetActiveAndQueuedSessionCount() const { return m_sessions.size(); }
-        uint32 GetActiveSessionCount() const { return m_sessions.size() - m_QueuedPlayer.size(); }
-        uint32 GetQueuedSessionCount() const { return m_QueuedPlayer.size(); }
+        uint32 GetActiveAndQueuedSessionCount() const { return m_sessions.size() + GetBotSessionCount(); }
+        uint32 GetActiveSessionCount() const { return m_sessions.size() - m_QueuedPlayer.size() + GetBotSessionCount(); }
+        uint32 GetQueuedSessionCount() const { return m_QueuedPlayer.size() + GetBotQueuedSessionCount(); }
         /// Get the maximum number of parallel sessions on the server since last reboot
         uint32 GetMaxQueuedSessionCount() const { return m_maxQueuedSessionCount; }
         uint32 GetMaxActiveSessionCount() const { return m_maxActiveSessionCount; }
+        uint32 GetBotSessionCount() const { return m_botSessionCount.load(std::memory_order_relaxed); }
+        uint32 GetBotQueuedSessionCount() const { return m_botQueuedSessionCount.load(std::memory_order_relaxed); }
+        void SetBotQueuedSessionCount(uint32 count) { m_botQueuedSessionCount.store(count, std::memory_order_relaxed); }
+        void IncreaseBotSessionCount() { m_botSessionCount.fetch_add(1, std::memory_order_relaxed); }
+        void DecreaseBotSessionCount()
+        {
+            uint32 current = m_botSessionCount.load(std::memory_order_relaxed);
+            while (current > 0 &&
+                !m_botSessionCount.compare_exchange_weak(current, current - 1, std::memory_order_relaxed))
+            {
+            }
+        }
         /// Get number of players
         inline uint32 GetPlayerCount() const { return m_PlayerCount; }
         inline uint32 GetMaxPlayerCount() const { return m_MaxPlayerCount; }
@@ -1139,6 +1151,8 @@ class TC_GAME_API World
         DisconnectMap m_disconnects;
         uint32 m_maxActiveSessionCount;
         uint32 m_maxQueuedSessionCount;
+        std::atomic<uint32> m_botSessionCount{ 0 };
+        std::atomic<uint32> m_botQueuedSessionCount{ 0 };
         uint32 m_PlayerCount;
         uint32 m_MaxPlayerCount;
 

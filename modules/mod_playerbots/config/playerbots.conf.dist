@@ -160,9 +160,6 @@ AiPlayerbot.RandomBotTimedLogout = 1
 # Keep logged-out random bots offline for a timed interval.
 AiPlayerbot.RandomBotTimedOffline = 0
 
-# Enable asynchronous random-bot login queue manager.
-AiPlayerbot.AsyncBotLogin = 0
-
 # Preload login holders for queued bots.
 AiPlayerbot.PreloadHolders = 0
 

@@ -155,7 +155,7 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
                 bot->Dismount();
 
             float chaseDistance = PlayerBotSpec::IsMelee(bot) ? 0.0f : sPlayerbotAIConfig->tooCloseDistance;
-            if (ChaseTo(target, chaseDistance))
+            if (ChaseTo(target, chaseDistance, bot->GetAngle(target)))
                 return true;
         }
 

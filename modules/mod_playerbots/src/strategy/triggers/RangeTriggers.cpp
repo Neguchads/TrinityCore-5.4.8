@@ -69,6 +69,15 @@ bool OutOfRangeTrigger::IsActive()
             dis);  // sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", GetTargetName()), distance);
 }
 
+bool EnemyOutOfMeleeTrigger::IsActive()
+{
+    Unit* target = AI_VALUE(Unit*, GetTargetName());
+    if (!target)
+        return false;
+
+    return !bot->IsWithinMeleeRange(target) || !bot->IsWithinLOSInMap(target);
+}
+
 EnemyOutOfSpellRangeTrigger::EnemyOutOfSpellRangeTrigger(PlayerbotAI* botAI)
     : OutOfRangeTrigger(botAI, "enemy out of spell range", botAI->GetRange("spell"))
 {

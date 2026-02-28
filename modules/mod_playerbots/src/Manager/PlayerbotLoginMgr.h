@@ -2,7 +2,6 @@
 #define _PLAYERBOT_PLAYERBOTLOGINMGR_H
 
 #include <functional>
-#include <future>
 #include <map>
 #include <memory>
 #include <set>
@@ -169,8 +168,6 @@ private:
     bool debug = false;
     BotInfos onlineBots;
     BotPool botPool;
-    std::future<BotInfos> futureQueue;
-    std::future<BotPool> futurePool;
     QueryCallbackProcessor _queryProcessor;
 };
 

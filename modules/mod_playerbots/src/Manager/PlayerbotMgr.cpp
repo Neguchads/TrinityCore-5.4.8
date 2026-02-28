@@ -130,6 +130,14 @@ void PlayerbotHolder::HandlePlayerBotLoginCallback(PlayerbotLoginQueryHolder con
     uint32 botAccountId = holder.GetAccountId();
     ObjectGuid botGUID = holder.GetGuid();
 
+    uint32 const playerLimit = sWorld->GetPlayerAmountLimit();
+    if (playerLimit > 0 && sWorld->GetActiveSessionCount() >= playerLimit)
+    {
+        TC_LOG_INFO("playerbots", "Bot %u login delayed: player limit reached (%u).", botGUID.GetCounter(), playerLimit);
+        UnmarkBotLoading(botGUID);
+        return;
+    }
+
     // At login DBC locale should be what the server is set to use by default (as spells etc are hardcoded to ENUS this
     // allows channels to work as intended)
     // Create a WorldSession for the bot
@@ -160,9 +168,12 @@ void PlayerbotHolder::HandlePlayerBotLoginCallback(PlayerbotLoginQueryHolder con
     std::ostringstream out;
     bool allowed = true;
 
-    // Random-bot only: only allow control for bots from configured random-bot accounts.
-    // (Plus GM override for admin/testing.)
-    allowed = sPlayerbotAIConfig->IsInRandomAccountList(botAccountId) ||
+    // Random-bot only: prefer configured random-bot accounts.
+    // Also allow bots explicitly tracked in random-bot events (for async/account-discovery fallback).
+    bool const inRandomAccounts = sPlayerbotAIConfig->IsInRandomAccountList(botAccountId);
+    bool const hasRandomBotEvent = !masterAccount &&
+        (sRandomPlayerbotMgr->GetValue(botGUID.GetCounter(), "add") || sRandomPlayerbotMgr->GetValue(botGUID.GetCounter(), "logout"));
+    allowed = inRandomAccounts || hasRandomBotEvent ||
         (masterSession && masterSession->GetSecurity() >= SEC_GAMEMASTER);
 
     if (!allowed)
@@ -386,6 +397,7 @@ void PlayerbotHolder::LogoutPlayerBot(ObjectGuid guid)
                     std::lock_guard<std::recursive_mutex> lock(_botStateMutex);
                     playerBots.erase(guid);  // deletes bot player ptr inside this WorldSession PlayerBotMap
                 }
+                sWorld->DecreaseBotSessionCount();
                 delete botWorldSessionPtr;  // finally delete the bot's WorldSession
                 //if (target)
                     //delete target;
@@ -399,6 +411,7 @@ void PlayerbotHolder::LogoutPlayerBot(ObjectGuid guid)
                 std::lock_guard<std::recursive_mutex> lock(_botStateMutex);
                 playerBots.erase(guid);  // deletes bot player ptr inside this WorldSession PlayerBotMap
             }
+            sWorld->DecreaseBotSessionCount();
             sPlayerbotsMgr->RemovePlayerBotData(guid, true);
             botWorldSessionPtr->LogoutPlayer(true);  // this will delete the bot Player object and PlayerbotAI object
             delete botWorldSessionPtr;               // finally delete the bot's WorldSession
@@ -441,6 +454,7 @@ void PlayerbotHolder::DisablePlayerBot(ObjectGuid guid)
             std::lock_guard<std::recursive_mutex> lock(_botStateMutex);
             playerBots.erase(guid);  // deletes bot player ptr inside this WorldSession PlayerBotMap
         }
+        sWorld->DecreaseBotSessionCount();
         sPlayerbotsMgr->RemovePlayerBotData(guid, true);
 
         delete botAI;
@@ -476,6 +490,7 @@ void PlayerbotHolder::OnBotLogin(Player* const bot)
         std::lock_guard<std::recursive_mutex> lock(_botStateMutex);
         playerBots[bot->GetGUID()] = bot;
     }
+    sWorld->IncreaseBotSessionCount();
     OnBotLoginInternal(bot);
 
     PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);

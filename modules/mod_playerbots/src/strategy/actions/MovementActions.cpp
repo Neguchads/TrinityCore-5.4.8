@@ -173,7 +173,7 @@ bool MovementAction::ChaseTo(WorldObject* obj, float distance, float angle)
             return true;
     }
 
-    bot->GetMotionMaster()->MoveChase(chaseTarget, distance);
+    bot->GetMotionMaster()->MoveChase(chaseTarget, distance, angle);
 
     // TODO shouldnt this use "last movement" value?
     WaitForReach(bot->GetExactDist2d(obj) - distance);

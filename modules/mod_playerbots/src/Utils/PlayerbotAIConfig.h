@@ -123,7 +123,6 @@ public:
     bool randomBotTimedLogout;
     bool randomBotTimedOffline;
     bool randomBotLoginWithPlayer;
-    bool asyncBotLogin;
     bool preloadHolders;
     uint32 freeRoomForNonSpareBots;
     uint32 loginBotsNearPlayerRange;

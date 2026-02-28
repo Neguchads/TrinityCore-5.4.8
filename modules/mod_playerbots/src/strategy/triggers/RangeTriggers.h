@@ -79,7 +79,7 @@ public:
     {
     }
 
-    // bool IsActive() override;
+    bool IsActive() override;
 };
 
 class EnemyOutOfSpellRangeTrigger : public OutOfRangeTrigger
