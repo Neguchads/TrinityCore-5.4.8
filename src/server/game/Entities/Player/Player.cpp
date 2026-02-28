@@ -24893,8 +24893,10 @@ void Player::UpdateVisibilityOf(WorldObject* target)
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(this))
         return;
+#endif
 
     if (HaveAtClient(target))
     {
@@ -24954,8 +24956,10 @@ void Player::UpdateTriggerVisibility()
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(this))
         return;
+#endif
 
     if (m_clientGUIDs.empty())
         return;
@@ -25079,8 +25083,10 @@ void Player::UpdateVisibilityForPlayer()
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(this))
         return;
+#endif
 
     // updates visibility of all objects around point of view for current player
     Trinity::VisibleNotifier notifier(*this);

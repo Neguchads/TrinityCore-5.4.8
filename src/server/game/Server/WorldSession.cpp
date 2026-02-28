@@ -209,7 +209,9 @@ void WorldSession::SendPacket(WorldPacket const* packet, bool forced /*= false*/
         TC_LOG_ERROR("network.opcode", "Prevented sending of UNKNOWN_OPCODE to %s", GetPlayerInfo().c_str());
         return;
     }
+#ifdef PLAYERBOTS
     sScriptMgr->OnPlayerbotPacketSent(GetPlayer(), packet);
+#endif
 
     ServerOpcodeHandler const* handler = opcodeTable[static_cast<OpcodeServer>(packet->GetOpcode())];
     if (!handler)
@@ -480,7 +482,9 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
         _warden->Update();
 
     ProcessQueryCallbacks();
+#ifdef PLAYERBOTS
     sScriptMgr->OnPlayerbotUpdateSessions(GetPlayer());
+#endif
 
     uint32 sessionDiff = getMSTime();
     sessionDiff = getMSTime() - sessionDiff;
@@ -546,7 +550,9 @@ void WorldSession::LogoutPlayer(bool save)
         if (uint64 lguid = _player->GetLootGUID())
             DoLootReleaseAll();
 
+#ifdef PLAYERBOTS
         sScriptMgr->OnPlayerbotLogout(_player);
+#endif
 
         ///- If the player just died before logging out, make him appear as a ghost
         //FIXME: logout must be delayed in case lost connection with client in time of combat

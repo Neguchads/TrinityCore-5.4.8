@@ -849,9 +849,11 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         bool m_mmapErrorReportEnabled = true;
         std::unordered_set<Object*> _updateObjects;
         std::map<uint32, uint64> m_worldStates;
+#ifdef PLAYERBOTS
         std::unordered_set<ObjectGuid> _activePlayersForBotActivity;
         std::unordered_map<uint32, uint32> _activePlayerZoneRefCount;
         uint32 _playerBotActivityRefreshTimer = 0;
+#endif
 
         uint32 debugFlexPlayersCount;
 

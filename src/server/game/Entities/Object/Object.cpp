@@ -273,8 +273,10 @@ void Object::SendUpdateToPlayer(Player* player)
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
         return;
+#endif
 
     // send create update to player
     UpdateData upd(player->GetMapId());
@@ -310,8 +312,10 @@ void Object::DestroyForPlayer(Player* target, bool onDeath) const
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(target))
         return;
+#endif
 
     if (isType(TYPEMASK_UNIT) || isType(TYPEMASK_PLAYER))
     {
@@ -380,8 +384,10 @@ void Object::SendOutOfRangeForPlayer(Player* target) const
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(target))
         return;
+#endif
 
     UpdateData updateData(target->GetMapId());
     BuildOutOfRangeUpdateBlock(&updateData);
@@ -3877,9 +3883,13 @@ struct WorldObjectChangeAccumulator
         if (!session)
             return;
 
-        if (plr_list.find(player->GetGUID()) == plr_list.end() &&
-            (!session->IsBot() || sScriptMgr->OnPlayerbotCheckUpdatesToSend(player)) &&
-            player->HaveAtClient(&i_object))
+        bool canReceiveUpdate = player->HaveAtClient(&i_object);
+#ifdef PLAYERBOTS
+        canReceiveUpdate = canReceiveUpdate &&
+            (!session->IsBot() || sScriptMgr->OnPlayerbotCheckUpdatesToSend(player));
+#endif
+
+        if (plr_list.find(player->GetGUID()) == plr_list.end() && canReceiveUpdate)
         {
             i_object.BuildFieldsUpdate(player, i_updateDatas);
             plr_list.insert(player->GetGUID());

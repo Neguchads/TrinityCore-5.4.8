@@ -394,13 +394,16 @@ bool World::HasRecentlyDisconnected(WorldSession* session)
 
 int32 World::GetQueuePos(WorldSession* sess)
 {
-    uint32 queueOffset = GetBotQueuedSessionCount();
+    uint32 queueOffset = 0;
+#ifdef PLAYERBOTS
+    queueOffset = GetBotQueuedSessionCount();
     if (uint32 playerLimit = GetPlayerAmountLimit())
     {
         uint32 activeSessions = GetActiveSessionCount();
         if (activeSessions > playerLimit)
             queueOffset += activeSessions - playerLimit;
     }
+#endif
 
     uint32 position = 1;
 
@@ -474,13 +477,16 @@ bool World::RemoveQueuedPlayer(WorldSession* sess)
 
     // update position from iter to end()
     // iter point to first not updated socket, position store new position
-    uint32 queueOffset = GetBotQueuedSessionCount();
+    uint32 queueOffset = 0;
+#ifdef PLAYERBOTS
+    queueOffset = GetBotQueuedSessionCount();
     if (uint32 playerLimit = GetPlayerAmountLimit())
     {
         uint32 activeSessions = GetActiveSessionCount();
         if (activeSessions > playerLimit)
             queueOffset += activeSessions - playerLimit;
     }
+#endif
 
     for (; iter != m_QueuedPlayer.end(); ++iter, ++position)
         (*iter)->SendAuthWaitQue(queueOffset + position);
@@ -2550,7 +2556,9 @@ void World::Update(uint32 diff)
         sGuildMgr->ResetGuildChallenges();
     }
 
+#ifdef PLAYERBOTS
     sScriptMgr->OnPlayerbotUpdate(diff);
+#endif
 
     /// <ul><li> Handle auctions when the timer has passed
     if (m_timers[WUPDATE_BLACK_MARKET].Passed())
@@ -2970,7 +2978,9 @@ void World::KickAll()
 
     for (SessionMap::const_iterator itr = _offlineSessions.begin(); itr != _offlineSessions.end(); ++itr)
         itr->second->KickPlayer();
+#ifdef PLAYERBOTS
     sScriptMgr->OnPlayerbotLogoutBots();
+#endif
 }
 
 /// Kick (and save) all players with security level less `sec`

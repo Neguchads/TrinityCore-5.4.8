@@ -843,6 +843,7 @@ public:
     virtual void OnAfterUpdate(Player* /*player*/, uint32 /*diff*/) {}
 };
 
+#ifdef PLAYERBOTS
 class PlayerbotScript : public ScriptObject
 {
 protected:
@@ -858,6 +859,7 @@ public:
     virtual void OnPlayerbotLogout(Player* /*player*/) { }
     virtual void OnPlayerbotLogoutBots() { }
 };
+#endif
 
 class GuildScript : public ScriptObject
 {
@@ -1323,6 +1325,7 @@ public: /* QuestScript */
     void OnQuestObjectiveChange(Player* player, Quest const* quest, QuestObjective const* objective, int32 oldAmount, int32 newAmount);
 
 public: /* PlayerbotScript */
+#ifdef PLAYERBOTS
     void OnPlayerbotCheckKillTask(Player* player, Unit* victim);
     void OnPlayerbotCheckPetitionAccount(Player* player, bool& found);
     bool OnPlayerbotCheckUpdatesToSend(Player* player);
@@ -1331,6 +1334,16 @@ public: /* PlayerbotScript */
     void OnPlayerbotUpdateSessions(Player* player);
     void OnPlayerbotLogout(Player* player);
     void OnPlayerbotLogoutBots();
+#else
+    void OnPlayerbotCheckKillTask(Player* /*player*/, Unit* /*victim*/) { }
+    void OnPlayerbotCheckPetitionAccount(Player* /*player*/, bool& /*found*/) { }
+    bool OnPlayerbotCheckUpdatesToSend(Player* /*player*/) { return true; }
+    void OnPlayerbotPacketSent(Player* /*player*/, WorldPacket const* /*packet*/) { }
+    void OnPlayerbotUpdate(uint32 /*diff*/) { }
+    void OnPlayerbotUpdateSessions(Player* /*player*/) { }
+    void OnPlayerbotLogout(Player* /*player*/) { }
+    void OnPlayerbotLogoutBots() { }
+#endif
 
 public:
     static bool CanHavePetAI(Creature* creature);

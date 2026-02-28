@@ -74,10 +74,12 @@ struct TSpellSummary
     uint8 Effects;                                          // set of enum SelectEffect
 } *SpellSummary;
 
+#ifdef PLAYERBOTS
 PlayerbotScript::PlayerbotScript(char const* name) : ScriptObject(name)
 {
     ScriptRegistry<PlayerbotScript>::AddScript(this);
 }
+#endif
 
 ScriptObject::ScriptObject(char const* name) : _name(name)
 {

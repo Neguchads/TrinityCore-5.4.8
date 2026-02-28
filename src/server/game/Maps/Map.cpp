@@ -56,7 +56,9 @@ static uint16 const holetab_v[4] = { 0x000F, 0x00F0, 0x0F00, 0xF000 };
 #define DEFAULT_GRID_EXPIRY     300
 #define MAX_GRID_LOAD_TIME      50
 #define MAX_CREATURE_ATTACK_RADIUS  (45.0f * sWorld->getRate(RATE_CREATURE_AGGRO))
+#ifdef PLAYERBOTS
 static constexpr uint32 PLAYERBOT_ACTIVITY_REFRESH_INTERVAL = 10 * IN_MILLISECONDS;
+#endif
 
 GridState* si_GridStates[MAX_GRID_STATE];
 
@@ -528,8 +530,10 @@ bool Map::AddPlayerToMap(Player* player)
 
     player->RestoreCombatWithInstance();
 
+#ifdef PLAYERBOTS
     if (ShouldTrackPlayerForBotActivity(player) && _activePlayersForBotActivity.insert(player->GetGUID()).second)
         AddActivePlayerZone(ResolvePlayerBotActivityZone(player, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ()));
+#endif
 
     sScriptMgr->OnPlayerEnterMap(this, player);
     return true;
@@ -708,12 +712,14 @@ void Map::Update(const uint32 t_diff)
         }
     }
 
+#ifdef PLAYERBOTS
     _playerBotActivityRefreshTimer += t_diff;
     if (_playerBotActivityRefreshTimer >= PLAYERBOT_ACTIVITY_REFRESH_INTERVAL)
     {
         _playerBotActivityRefreshTimer = 0;
         RebuildPlayerBotActivityState();
     }
+#endif
 
     /// update active cells around players and active objects
     resetMarkedCells();
@@ -803,8 +809,10 @@ void Map::Update(const uint32 t_diff)
 
 void Map::RemovePlayerFromMap(Player* player, bool remove)
 {
+#ifdef PLAYERBOTS
     if (_activePlayersForBotActivity.erase(player->GetGUID()))
         RemoveActivePlayerZone(ResolvePlayerBotActivityZone(player, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ()));
+#endif
 
     // Before leaving map, update zone/area for stats
     player->UpdateZone(MAP_INVALID_ZONE, 0);
@@ -902,10 +910,12 @@ void Map::PlayerRelocation(Player* player, float x, float y, float z, float orie
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     bool const needsActivityTracking = !session->IsBot() || _activePlayersForBotActivity.find(player->GetGUID()) != _activePlayersForBotActivity.end();
     uint32 oldZoneId = 0;
     if (needsActivityTracking)
         oldZoneId = ResolvePlayerBotActivityZone(player, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ());
+#endif
 
     Cell old_cell(player->GetPositionX(), player->GetPositionY());
     Cell new_cell(x, y);
@@ -929,11 +939,13 @@ void Map::PlayerRelocation(Player* player, float x, float y, float z, float orie
     player->OnRelocated();
     player->UpdatePositionData();
 
+#ifdef PLAYERBOTS
     if (needsActivityTracking)
     {
         uint32 newZoneId = ResolvePlayerBotActivityZone(player, x, y, z);
         UpdatePlayerBotActivityStateOnMove(player, oldZoneId, newZoneId);
     }
+#endif
 
 }
 
@@ -2992,8 +3004,10 @@ void Map::UpdateObjectsVisibilityFor(Player* player, Cell cell, CellCoord cellpa
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
         return;
+#endif
 
     Trinity::VisibleNotifier notifier(*player);
 
@@ -3013,8 +3027,10 @@ void Map::SendInitSelf(Player* player)
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
         return;
+#endif
 
     TC_LOG_INFO("maps", "Creating player data for himself %u", player->GetGUID().GetCounter());
 
@@ -3046,8 +3062,10 @@ void Map::SendInitTransports(Player* player)
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
         return;
+#endif
 
     // Hack to send out transports
     UpdateData transData(player->GetMapId());
@@ -3066,8 +3084,10 @@ void Map::SendRemoveTransports(Player* player)
     if (!session)
         return;
 
+#ifdef PLAYERBOTS
     if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
         return;
+#endif
 
     // Hack to send out transports
     UpdateData transData(player->GetMapId());
@@ -3106,8 +3126,10 @@ void Map::SendObjectUpdates()
             if (!session)
                 continue;
 
+#ifdef PLAYERBOTS
             if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(it.first))
                 continue;
+#endif
 
             it.second.BuildPacket(&packet);
             it.first->GetSession()->SendPacket(&packet);
@@ -3287,14 +3309,19 @@ bool Map::HasRealPlayers() const
 
 bool Map::HasActiveZones() const
 {
+#ifdef PLAYERBOTS
     if (!GetEntry() || !GetEntry()->IsContinent())
         return false;
 
     return !_activePlayerZoneRefCount.empty();
+#else
+    return false;
+#endif
 }
 
 bool Map::HasActiveZone(uint32 zoneId) const
 {
+#ifdef PLAYERBOTS
     if (!GetEntry() || !GetEntry()->IsContinent())
         return false;
 
@@ -3302,6 +3329,10 @@ bool Map::HasActiveZone(uint32 zoneId) const
         return false;
 
     return _activePlayerZoneRefCount.find(zoneId) != _activePlayerZoneRefCount.end();
+#else
+    (void)zoneId;
+    return false;
+#endif
 }
 
 bool Map::ShouldTrackPlayerForBotActivity(Player* player) const
@@ -3339,6 +3370,7 @@ uint32 Map::ResolvePlayerBotActivityZone(Player* player, float x, float y, float
 
 void Map::AddActivePlayerZone(uint32 zoneId)
 {
+#ifdef PLAYERBOTS
     if (!GetEntry() || !GetEntry()->IsContinent())
         return;
 
@@ -3346,10 +3378,14 @@ void Map::AddActivePlayerZone(uint32 zoneId)
         return;
 
     ++_activePlayerZoneRefCount[zoneId];
+#else
+    (void)zoneId;
+#endif
 }
 
 void Map::RemoveActivePlayerZone(uint32 zoneId)
 {
+#ifdef PLAYERBOTS
     if (!GetEntry() || !GetEntry()->IsContinent())
         return;
 
@@ -3367,10 +3403,14 @@ void Map::RemoveActivePlayerZone(uint32 zoneId)
     }
 
     _activePlayerZoneRefCount.erase(itr);
+#else
+    (void)zoneId;
+#endif
 }
 
 void Map::UpdatePlayerBotActivityStateOnMove(Player* player, uint32 oldZoneId, uint32 newZoneId)
 {
+#ifdef PLAYERBOTS
     WorldSession* session = player ? player->GetSession() : nullptr;
     if (!session)
         return;
@@ -3407,10 +3447,16 @@ void Map::UpdatePlayerBotActivityStateOnMove(Player* player, uint32 oldZoneId, u
 
     RemoveActivePlayerZone(oldZoneId);
     AddActivePlayerZone(newZoneId);
+#else
+    (void)player;
+    (void)oldZoneId;
+    (void)newZoneId;
+#endif
 }
 
 void Map::RebuildPlayerBotActivityState()
 {
+#ifdef PLAYERBOTS
     _activePlayersForBotActivity.clear();
     _activePlayerZoneRefCount.clear();
 
@@ -3426,6 +3472,7 @@ void Map::RebuildPlayerBotActivityState()
         if (_activePlayersForBotActivity.insert(player->GetGUID()).second)
             AddActivePlayerZone(ResolvePlayerBotActivityZone(player, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ()));
     }
+#endif
 }
 
 void Map::SendToPlayers(WorldPacket const* data) const
@@ -3437,8 +3484,10 @@ void Map::SendToPlayers(WorldPacket const* data) const
         if (!session)
             continue;
 
+#ifdef PLAYERBOTS
         if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
             continue;
+#endif
 
         session->SendPacket(data);
     }
@@ -3456,8 +3505,10 @@ bool Map::SendZoneMessage(uint32 zone, WorldPacket const* packet, WorldSession c
         if (!session)
             continue;
 
+#ifdef PLAYERBOTS
         if (session->IsBot() && !sScriptMgr->OnPlayerbotCheckUpdatesToSend(player))
             continue;
+#endif
 
         if (player->IsInWorld() &&
             player->GetZoneId() == zone &&
