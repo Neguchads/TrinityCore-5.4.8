@@ -23,6 +23,14 @@
 #include <string>
 #include "PlayerbotAIConfig.h"
 
+#ifndef LOG_INFO
+#define LOG_INFO(filter, ...) TC_LOG_INFO(filter, "%s", fmt::format(__VA_ARGS__).c_str())
+#endif
+
+#ifndef LOG_ERROR
+#define LOG_ERROR(filter, ...) TC_LOG_ERROR(filter, "%s", fmt::format(__VA_ARGS__).c_str())
+#endif
+
 // Forward declarations.
 class Guild;
 static bool IsAlliancePlayerBot(Player* bot);
@@ -170,7 +178,7 @@ static void LoadBotLevelBracketsConfig()
         for (uint8 i = 0; i < g_NumRanges; ++i) {
             if (g_AllianceLevelRanges[i].lower != g_HordeLevelRanges[i].lower ||
                 g_AllianceLevelRanges[i].upper != g_HordeLevelRanges[i].upper) {
-                TC_LOG_ERROR("server.loading", "[BotLevelBrackets] FATAL: Bracket mismatch detected between factions at index {}. "
+                LOG_ERROR("server.loading", "[BotLevelBrackets] FATAL: Bracket mismatch detected between factions at index {}. "
                     "Alliance: {}-{}, Horde: {}-{}. "
                     "When SyncFactions is enabled, both bracket number and min/max levels must match exactly. "
                     "Check your configuration.", 
