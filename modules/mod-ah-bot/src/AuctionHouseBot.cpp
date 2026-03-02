@@ -28,7 +28,9 @@
 #include "ItemPrototype.h"
 #include "SharedDefines.h"
 #include "SpellMgr.h"
+#include <algorithm>
 #include <cmath>
+#include <random>
 
 #include <set>
 #include <unordered_map>
@@ -1863,12 +1865,16 @@ bool AuctionHouseBot::IsModuleEnabled()
     bool buyerEnabled = sConfigMgr->GetOption<bool>("AuctionHouseBot.Buyer.Enabled", false);
     if (sellerEnabled == false && buyerEnabled == false)
         return false;
+
     string charString = sConfigMgr->GetOption<std::string>("AuctionHouseBot.GUIDs", "0");
-    if (charString == "0" || charString.empty())
+    bool autoDetectFromRandomBotAccounts = sConfigMgr->GetOption<bool>("AuctionHouseBot.AutoDetectRandomBotCharacters", true);
+    if ((charString == "0" || charString.empty()) && !autoDetectFromRandomBotAccounts)
     {
-        LOG_INFO("module", "AuctionHouseBot: AuctionHouseBot.GUIDs is not configured so this module will be disabled");
+        LOG_INFO("module",
+            "AuctionHouseBot: AuctionHouseBot.GUIDs is empty and AuctionHouseBot.AutoDetectRandomBotCharacters is disabled, so this module will be disabled");
         return false;
     }
+
     return true;
 }
 
@@ -2277,9 +2283,132 @@ void AuctionHouseBot::GetConfigMinAndMax(std::string config, uint32& min, uint32
         min = max = std::stoul(config);
 }
 
+void AuctionHouseBot::AddCharactersFromRandomBotAccounts()
+{
+    std::string randomBotAccountPrefix = sConfigMgr->GetOption<std::string>("AiPlayerbot.RandomBotAccountPrefix", "rndbot");
+    if (randomBotAccountPrefix.empty())
+    {
+        LOG_ERROR("module", "AuctionHouseBot: Auto-detection is enabled but AiPlayerbot.RandomBotAccountPrefix is empty.");
+        return;
+    }
+
+    uint32 maxAutoDetectedCharacters = sConfigMgr->GetOption<uint32>("AuctionHouseBot.AutoDetectRandomBotCharactersCount", 12);
+    if (maxAutoDetectedCharacters == 0)
+        maxAutoDetectedCharacters = 1;
+
+    // Escape single quotes for SQL LIKE expression safety.
+    std::string escapedPrefix = randomBotAccountPrefix;
+    for (size_t pos = 0; (pos = escapedPrefix.find('\'', pos)) != std::string::npos; pos += 2)
+        escapedPrefix.insert(pos, "'");
+
+    QueryResult accountResult = LoginDatabase.PQuery(
+        "SELECT `id` FROM `account` WHERE UPPER(`username`) LIKE UPPER('%s%%')", escapedPrefix.c_str());
+    if (!accountResult || accountResult->GetRowCount() == 0)
+    {
+        LOG_ERROR("module",
+            "AuctionHouseBot: Auto-detection is enabled but no accounts matched AiPlayerbot.RandomBotAccountPrefix='{}'.",
+            randomBotAccountPrefix);
+        return;
+    }
+
+    std::vector<uint32> accountIds;
+    accountIds.reserve(accountResult->GetRowCount());
+    do
+    {
+        Field* fields = accountResult->Fetch();
+        accountIds.push_back(fields[0].GetUInt32());
+    } while (accountResult->NextRow());
+
+    std::ostringstream accountIdsForQuery;
+    bool firstAccount = true;
+    for (uint32 accountId : accountIds)
+    {
+        if (!firstAccount)
+            accountIdsForQuery << ", ";
+
+        accountIdsForQuery << accountId;
+        firstAccount = false;
+    }
+
+    QueryResult characterResult = CharacterDatabase.PQuery(
+        "SELECT `guid`, `account` FROM `characters` WHERE `account` IN (%s)", accountIdsForQuery.str().c_str());
+    if (!characterResult || characterResult->GetRowCount() == 0)
+    {
+        LOG_ERROR("module",
+            "AuctionHouseBot: Found random-bot accounts with prefix '{}' but no matching characters were found.",
+            randomBotAccountPrefix);
+        return;
+    }
+
+    std::vector<AuctionHouseBotCharacter> discoveredCharacters;
+    discoveredCharacters.reserve(characterResult->GetRowCount());
+    do
+    {
+        Field* fields = characterResult->Fetch();
+        uint32 guid = fields[0].GetUInt32();
+        uint32 account = fields[1].GetUInt32();
+        discoveredCharacters.emplace_back(account, guid);
+    } while (characterResult->NextRow());
+
+    std::mt19937 rng(std::random_device{}());
+    std::shuffle(discoveredCharacters.begin(), discoveredCharacters.end(), rng);
+
+    uint32 selectedCount = std::min<uint32>(maxAutoDetectedCharacters, static_cast<uint32>(discoveredCharacters.size()));
+    AHCharacters.reserve(selectedCount);
+
+    std::set<uint32> selectedCharacterGuids;
+    for (uint32 i = 0; i < selectedCount; ++i)
+    {
+        AHCharacters.push_back(discoveredCharacters[i]);
+        selectedCharacterGuids.insert(discoveredCharacters[i].CharacterGUID);
+    }
+
+    AHCharactersGUIDsForQuery.clear();
+    bool firstGuid = true;
+    for (uint32 guid : selectedCharacterGuids)
+    {
+        if (!firstGuid)
+            AHCharactersGUIDsForQuery += ", ";
+
+        AHCharactersGUIDsForQuery += std::to_string(guid);
+        firstGuid = false;
+    }
+
+    LOG_INFO("module",
+        "AuctionHouseBot: Auto-selected {} AH characters from random-bot accounts using prefix '{}' (pool size: {}, max configured: {}).",
+        AHCharacters.size(), randomBotAccountPrefix, discoveredCharacters.size(), maxAutoDetectedCharacters);
+}
+
 void AuctionHouseBot::AddCharacters(std::string characterGUIDString)
 {
     AHCharacters.clear();
+    AHCharactersGUIDsForQuery.clear();
+
+    size_t firstNonWhitespace = characterGUIDString.find_first_not_of(" \t");
+    if (firstNonWhitespace == std::string::npos)
+        characterGUIDString.clear();
+    else
+    {
+        characterGUIDString.erase(0, firstNonWhitespace);
+        size_t lastNonWhitespace = characterGUIDString.find_last_not_of(" \t");
+        if (lastNonWhitespace != std::string::npos)
+            characterGUIDString.erase(lastNonWhitespace + 1);
+    }
+
+    if (characterGUIDString.empty() || characterGUIDString == "0" || characterGUIDString == "auto")
+    {
+        bool autoDetectFromRandomBotAccounts = sConfigMgr->GetOption<bool>("AuctionHouseBot.AutoDetectRandomBotCharacters", true);
+        if (autoDetectFromRandomBotAccounts)
+        {
+            AddCharactersFromRandomBotAccounts();
+            return;
+        }
+
+        LOG_ERROR("module",
+            "AuctionHouseBot: No explicit AuctionHouseBot.GUIDs configured and AuctionHouseBot.AutoDetectRandomBotCharacters is disabled.");
+        return;
+    }
+
     std::string delimitedValue;
     std::stringstream characterGUIDStream;
     std::set<uint32> characterGUIDs;
@@ -2306,10 +2435,11 @@ void AuctionHouseBot::AddCharacters(std::string characterGUIDString)
     // Lookup accounts and add them
     if (characterGUIDs.empty() == true)
     {
-        LOG_ERROR("module", "AuctionHouseBot: No character GUIDs were supplied. Be sure to set AuctionHouseBot.GUIDs");
+        LOG_ERROR("module",
+            "AuctionHouseBot: No valid character GUIDs were supplied. Set AuctionHouseBot.GUIDs or enable AuctionHouseBot.AutoDetectRandomBotCharacters.");
         return;
     }
-    AHCharactersGUIDsForQuery = "";
+
     bool first = true;
     for (uint32 curGUID : characterGUIDs)
     {

@@ -47,15 +47,24 @@
 #    Default: false (disabled)
 #
 #    AuctionHouseBot.GUIDs
-#        These are the character GUIDS (from characters->characters table) that
-#        will be used to create auctions and otherwise interact with auctions.
-#        It can be a single value or multiple values that are separated by a
-#        comma (do not have spaces!).  Note: a GUID of "0" will be ignored!
-#        Important: Do not use a bot character (such as playerbot bots)
-#        or it will likely crash the server
+#        Optional explicit character GUID list (characters.guid) used by AHBot.
+#        If set, these GUIDs are used directly (comma-separated, no spaces).
+#        If set to 0 (or empty), AHBot can auto-detect characters from
+#        random-bot accounts using AiPlayerbot.RandomBotAccountPrefix.
 #    Examples:
 #        AuctionHouseBot.GUIDs = 3 <- Only character with GUID 3
 #        AuctionHouseBot.GUIDs = 3,4 <- Both characters with GUID 3 and 4
+#        AuctionHouseBot.GUIDs = 0 <- Auto-detect characters from random-bot accounts
+#
+#    AuctionHouseBot.AutoDetectRandomBotCharacters
+#        If true and AuctionHouseBot.GUIDs is 0/empty, AHBot auto-selects
+#        characters from accounts matching AiPlayerbot.RandomBotAccountPrefix.
+#    Default: true
+#
+#    AuctionHouseBot.AutoDetectRandomBotCharactersCount
+#        Maximum number of auto-detected characters to use.
+#        Keep this reasonably low because AHBot loads these chars each cycle.
+#    Default: 12
 #
 #    AuctionHouseBot.ItemsPerCycle
 #        How many items to post on the auction house every house update.
@@ -77,6 +86,8 @@ AuctionHouseBot.MinutesBetweenSellCycle = 1
 AuctionHouseBot.EnableSeller = false
 AuctionHouseBot.ReturnExpiredAuctionItemsToBot = false
 AuctionHouseBot.GUIDs = 0
+AuctionHouseBot.AutoDetectRandomBotCharacters = true
+AuctionHouseBot.AutoDetectRandomBotCharactersCount = 12
 AuctionHouseBot.ItemsPerCycle = 150
 AuctionHouseBot.ListingExpireTimeInSecondsMin = 900
 AuctionHouseBot.ListingExpireTimeInSecondsMax = 86400

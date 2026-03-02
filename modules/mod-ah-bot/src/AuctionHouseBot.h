@@ -352,6 +352,7 @@ public:
     void SetCyclesBetweenBuyOrSell();
     void SetBuyingBotBuyCandidatesPerBuyCycle();
     void GetConfigMinAndMax(std::string config, uint32& min, uint32& max);
+    void AddCharactersFromRandomBotAccounts();
     void AddCharacters(std::string characterGUIDString);
     void ParseNumberListToSet(std::set<uint32>& workingItemIDSet, std::string itemString, const char* parentOperationName);
     void AddToNumberListSet(std::set<uint32>& workingItemIDSet, uint32 itemID, const char* parentOperationName);
