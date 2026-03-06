@@ -1,0 +1,40 @@
+services:
+  wow-auth:
+    build:
+      context: ../..
+      dockerfile: apps/docker/Dockerfile
+      args:
+        CMAKE_BUILD_TYPE: RelWithDebInfo
+    image: trinitycore548:local
+    container_name: wow-auth
+    command: ["./bin/authserver", "-c", "/opt/trinitycore/config/authserver.conf"]
+    working_dir: /opt/trinitycore/install
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./data/config:/opt/trinitycore/config
+      - ./data/logs:/opt/trinitycore/install/logs
+    ports:
+      - "3724:3724"
+
+  wow-world:
+    image: trinitycore548:local
+    pull_policy: never
+    container_name: wow-world
+    depends_on:
+      - wow-auth
+    command:
+      - "bash"
+      - "-lc"
+      - "cp -n /opt/trinitycore/tdb_full/*.sql /opt/trinitycore/install/ 2>/dev/null || true; ./bin/worldserver -c /opt/trinitycore/config/worldserver.conf"
+    working_dir: /opt/trinitycore/install
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./data/config:/opt/trinitycore/config
+      - ./data/logs:/opt/trinitycore/install/logs
+      - ./data/data:/opt/trinitycore/install/data
+      - ./data/tdb_full:/opt/trinitycore/tdb_full
+      - ./data/crashes:/opt/trinitycore/crashes
+    ports:
+      - "8085:8085"
