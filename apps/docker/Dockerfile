@@ -29,10 +29,7 @@ RUN mkdir -p build && cd build && \
     -DCMAKE_INSTALL_PREFIX=/opt/trinitycore/install \
     -DCMAKE_C_COMPILER=gcc-12 \
     -DCMAKE_CXX_COMPILER=g++-12 && \
-    JOBS="$(nproc)"; \
-    if [ "$JOBS" -gt 4 ]; then JOBS="$((JOBS / 4))"; fi; \
-    if [ "$JOBS" -lt 1 ]; then JOBS=1; fi; \
-    cmake --build . --parallel "$JOBS" && \
+    cmake --build . --parallel "$(nproc)" && \
     cmake --install .
 
 WORKDIR /opt/trinitycore/install
