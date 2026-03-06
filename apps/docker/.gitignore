@@ -1,0 +1,6 @@
+# Ignore all runtime content under data/
+data/**
+# Re-include directories and keep markers
+!data/**/
+!data/**/.gitkeep
+*.tar
