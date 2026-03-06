@@ -4,8 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${SCRIPT_DIR}"
 
-IMAGE_NAME="trinitycore548"
-IMAGE_TAR="${IMAGE_NAME}.tar"
+IMAGE_NAME="trinitycore548:local"
+IMAGE_TAR="trinitycore548.tar"
 
 if ! docker image inspect "${IMAGE_NAME}" >/dev/null 2>&1; then
   if [[ ! -f "${IMAGE_TAR}" ]]; then

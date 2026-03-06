@@ -3,3 +3,4 @@ data/**
 # Re-include directories and keep markers
 !data/**/
 !data/**/.gitkeep
+*.tar

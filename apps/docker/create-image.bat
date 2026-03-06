@@ -3,24 +3,18 @@ setlocal
 
 cd /d "%~dp0"
 
-set IMAGE_NAME=trinitycore548
-set IMAGE_TAR=%IMAGE_NAME%.tar
+set IMAGE_NAME=trinitycore548:local
+set IMAGE_TAR=trinitycore548.tar
+set REPO_ROOT=%~dp0..\..
 
-if "%GITHUB_TOKEN%"=="" if exist ".env" (
-  for /f "usebackq tokens=1,* delims==" %%A in (".env") do (
-    if /I "%%~A"=="GITHUB_TOKEN" set "GITHUB_TOKEN=%%~B"
-  )
-)
-if not "%GITHUB_TOKEN%"=="" set "GITHUB_TOKEN=%GITHUB_TOKEN:"=%"
-
-if "%GITHUB_TOKEN%"=="" (
-  echo GITHUB_TOKEN is not set.
-  echo Set it in .env as GITHUB_TOKEN=... or export it in your shell, then rerun this script.
+if not exist "%REPO_ROOT%\CMakeLists.txt" (
+  echo Could not find TrinityCore repo root at %REPO_ROOT%.
+  echo Expected to find CMakeLists.txt two levels above this script.
   exit /b 1
 )
 
-docker build --secret id=github_token,env=GITHUB_TOKEN -t %IMAGE_NAME% -f Dockerfile . || exit /b 1
+docker build -t "%IMAGE_NAME%" -f Dockerfile "%REPO_ROOT%" || exit /b 1
 
-docker save %IMAGE_NAME% -o %IMAGE_TAR% || exit /b 1
+docker save "%IMAGE_NAME%" -o "%IMAGE_TAR%" || exit /b 1
 
 echo Image %IMAGE_NAME% has been built and saved to %IMAGE_TAR%.

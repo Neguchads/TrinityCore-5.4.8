@@ -3,10 +3,10 @@ setlocal
 
 cd /d "%~dp0"
 
-set IMAGE_NAME=trinitycore548
-set IMAGE_TAR=%IMAGE_NAME%.tar
+set IMAGE_NAME=trinitycore548:local
+set IMAGE_TAR=trinitycore548.tar
 
-docker image inspect %IMAGE_NAME% >nul 2>&1
+docker image inspect "%IMAGE_NAME%" >nul 2>&1
 if errorlevel 1 (
   if not exist "%IMAGE_TAR%" (
     echo Image %IMAGE_NAME% was not found and %IMAGE_TAR% is missing.
