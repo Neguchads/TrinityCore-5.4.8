@@ -22,7 +22,7 @@ BotLevelBrackets.FullDebugMode = 0
 #        Description: Enables lite debug logging for the Bot Level Brackets module.
 #        Default:     0 (disabled)
 #                     Valid values: 0 (off) / 1 (on)
-BotLevelBrackets.LiteDebugMode = 0
+BotLevelBrackets.LiteDebugMode = 1
 
 #
 #    BotLevelBrackets.CheckFrequency
@@ -89,6 +89,20 @@ BotLevelBrackets.ExcludeNames =
 #            mod_player_bot_level_brackets.conf file AND the corresponding mod_player_bot_level_brackets.conf.dist file to include configuration
 #            lines for the additional bracket lines added below (e.g. Range10, Range11, etc.). Ensure that the
 #            sum of the Pct values for each faction remains 100.
+#
+# NOTE: Brackets below are aligned to MoP 5.4.8 RDF (Dungeon Finder) level pools so that
+#       bots are always present in any bracket a real player can queue for:
+#
+#   Range1:  1-14   (Pre-RDF, no dungeon finder available yet)
+#   Range2:  15-29  (Classic Random Dungeons open at 15)
+#   Range3:  30-44  (Classic Random Dungeons)
+#   Range4:  45-57  (Classic Random Dungeons)
+#   Range5:  58-69  (BC Normal opens at 58, overlaps Classic 58-60)
+#   Range6:  70-79  (WotLK Normal)
+#   Range7:  80-82  (WotLK Heroic opens at 80, Cata/MoP Normal open at 80)
+#   Range8:  83-84  (Cata/MoP Normal)
+#   Range9:  85-89  (Cata Heroic opens at 85, MoP Normal continues)
+#   Range10: 90-90  (MoP Heroic opens at 90 - max level)
 BotLevelBrackets.NumRanges = 10
 
 #
@@ -97,7 +111,7 @@ BotLevelBrackets.NumRanges = 10
 #                     present in each level bracket. This overrides any custom brackets in the conf.
 #        Default:     0 (disabled)
 #                     Valid values: 0 (off) / 1 (on)
-BotLevelBrackets.Dynamic.UseDynamicDistribution = 0
+BotLevelBrackets.Dynamic.UseDynamicDistribution = 1
 
 #    BotLevelBrackets.Dynamic.RealPlayerWeight
 #        Description: This setting controls how much extra weight is given to brackets (level ranges) that contain real (non-bot) players, when dynamic distribution is enabled.
@@ -160,44 +174,44 @@ BotLevelBrackets.Dynamic.SyncFactions = 0
 #   The sum of all Pct values for the Alliance brackets must equal 100.
 #
 BotLevelBrackets.Alliance.Range1.Lower = 1
-BotLevelBrackets.Alliance.Range1.Upper = 9
-BotLevelBrackets.Alliance.Range1.Pct   = 10
+BotLevelBrackets.Alliance.Range1.Upper = 14
+BotLevelBrackets.Alliance.Range1.Pct   = 5
 
-BotLevelBrackets.Alliance.Range2.Lower = 10
-BotLevelBrackets.Alliance.Range2.Upper = 19
-BotLevelBrackets.Alliance.Range2.Pct   = 10
+BotLevelBrackets.Alliance.Range2.Lower = 15
+BotLevelBrackets.Alliance.Range2.Upper = 29
+BotLevelBrackets.Alliance.Range2.Pct   = 8
 
-BotLevelBrackets.Alliance.Range3.Lower = 20
-BotLevelBrackets.Alliance.Range3.Upper = 29
-BotLevelBrackets.Alliance.Range3.Pct   = 10
+BotLevelBrackets.Alliance.Range3.Lower = 30
+BotLevelBrackets.Alliance.Range3.Upper = 44
+BotLevelBrackets.Alliance.Range3.Pct   = 8
 
-BotLevelBrackets.Alliance.Range4.Lower = 30
-BotLevelBrackets.Alliance.Range4.Upper = 39
-BotLevelBrackets.Alliance.Range4.Pct   = 10
+BotLevelBrackets.Alliance.Range4.Lower = 45
+BotLevelBrackets.Alliance.Range4.Upper = 57
+BotLevelBrackets.Alliance.Range4.Pct   = 8
 
-BotLevelBrackets.Alliance.Range5.Lower = 40
-BotLevelBrackets.Alliance.Range5.Upper = 49
+BotLevelBrackets.Alliance.Range5.Lower = 58
+BotLevelBrackets.Alliance.Range5.Upper = 69
 BotLevelBrackets.Alliance.Range5.Pct   = 10
 
-BotLevelBrackets.Alliance.Range6.Lower = 50
-BotLevelBrackets.Alliance.Range6.Upper = 59
+BotLevelBrackets.Alliance.Range6.Lower = 70
+BotLevelBrackets.Alliance.Range6.Upper = 79
 BotLevelBrackets.Alliance.Range6.Pct   = 10
 
-BotLevelBrackets.Alliance.Range7.Lower = 60
-BotLevelBrackets.Alliance.Range7.Upper = 69
+BotLevelBrackets.Alliance.Range7.Lower = 80
+BotLevelBrackets.Alliance.Range7.Upper = 82
 BotLevelBrackets.Alliance.Range7.Pct   = 10
 
-BotLevelBrackets.Alliance.Range8.Lower = 70
-BotLevelBrackets.Alliance.Range8.Upper = 79
-BotLevelBrackets.Alliance.Range8.Pct   = 10
+BotLevelBrackets.Alliance.Range8.Lower = 83
+BotLevelBrackets.Alliance.Range8.Upper = 84
+BotLevelBrackets.Alliance.Range8.Pct   = 8
 
-BotLevelBrackets.Alliance.Range9.Lower = 80
-BotLevelBrackets.Alliance.Range9.Upper = 84
-BotLevelBrackets.Alliance.Range9.Pct   = 10
+BotLevelBrackets.Alliance.Range9.Lower = 85
+BotLevelBrackets.Alliance.Range9.Upper = 89
+BotLevelBrackets.Alliance.Range9.Pct   = 18
 
-BotLevelBrackets.Alliance.Range10.Lower = 85
+BotLevelBrackets.Alliance.Range10.Lower = 90
 BotLevelBrackets.Alliance.Range10.Upper = 90
-BotLevelBrackets.Alliance.Range10.Pct   = 10
+BotLevelBrackets.Alliance.Range10.Pct   = 15
 
 ##############################################
 # Horde Level Brackets Configuration
@@ -226,41 +240,41 @@ BotLevelBrackets.Alliance.Range10.Pct   = 10
 #   The sum of all Pct values for the Horde brackets must equal 100.
 #
 BotLevelBrackets.Horde.Range1.Lower = 1
-BotLevelBrackets.Horde.Range1.Upper = 9
-BotLevelBrackets.Horde.Range1.Pct   = 10
+BotLevelBrackets.Horde.Range1.Upper = 14
+BotLevelBrackets.Horde.Range1.Pct   = 5
 
-BotLevelBrackets.Horde.Range2.Lower = 10
-BotLevelBrackets.Horde.Range2.Upper = 19
-BotLevelBrackets.Horde.Range2.Pct   = 10
+BotLevelBrackets.Horde.Range2.Lower = 15
+BotLevelBrackets.Horde.Range2.Upper = 29
+BotLevelBrackets.Horde.Range2.Pct   = 8
 
-BotLevelBrackets.Horde.Range3.Lower = 20
-BotLevelBrackets.Horde.Range3.Upper = 29
-BotLevelBrackets.Horde.Range3.Pct   = 10
+BotLevelBrackets.Horde.Range3.Lower = 30
+BotLevelBrackets.Horde.Range3.Upper = 44
+BotLevelBrackets.Horde.Range3.Pct   = 8
 
-BotLevelBrackets.Horde.Range4.Lower = 30
-BotLevelBrackets.Horde.Range4.Upper = 39
-BotLevelBrackets.Horde.Range4.Pct   = 10
+BotLevelBrackets.Horde.Range4.Lower = 45
+BotLevelBrackets.Horde.Range4.Upper = 57
+BotLevelBrackets.Horde.Range4.Pct   = 8
 
-BotLevelBrackets.Horde.Range5.Lower = 40
-BotLevelBrackets.Horde.Range5.Upper = 49
+BotLevelBrackets.Horde.Range5.Lower = 58
+BotLevelBrackets.Horde.Range5.Upper = 69
 BotLevelBrackets.Horde.Range5.Pct   = 10
 
-BotLevelBrackets.Horde.Range6.Lower = 50
-BotLevelBrackets.Horde.Range6.Upper = 59
+BotLevelBrackets.Horde.Range6.Lower = 70
+BotLevelBrackets.Horde.Range6.Upper = 79
 BotLevelBrackets.Horde.Range6.Pct   = 10
 
-BotLevelBrackets.Horde.Range7.Lower = 60
-BotLevelBrackets.Horde.Range7.Upper = 69
+BotLevelBrackets.Horde.Range7.Lower = 80
+BotLevelBrackets.Horde.Range7.Upper = 82
 BotLevelBrackets.Horde.Range7.Pct   = 10
 
-BotLevelBrackets.Horde.Range8.Lower = 70
-BotLevelBrackets.Horde.Range8.Upper = 79
-BotLevelBrackets.Horde.Range8.Pct   = 10
+BotLevelBrackets.Horde.Range8.Lower = 83
+BotLevelBrackets.Horde.Range8.Upper = 84
+BotLevelBrackets.Horde.Range8.Pct   = 8
 
-BotLevelBrackets.Horde.Range9.Lower = 80
-BotLevelBrackets.Horde.Range9.Upper = 84
-BotLevelBrackets.Horde.Range9.Pct   = 10
+BotLevelBrackets.Horde.Range9.Lower = 85
+BotLevelBrackets.Horde.Range9.Upper = 89
+BotLevelBrackets.Horde.Range9.Pct   = 18
 
-BotLevelBrackets.Horde.Range10.Lower = 85
+BotLevelBrackets.Horde.Range10.Lower = 90
 BotLevelBrackets.Horde.Range10.Upper = 90
-BotLevelBrackets.Horde.Range10.Pct   = 10
+BotLevelBrackets.Horde.Range10.Pct   = 15

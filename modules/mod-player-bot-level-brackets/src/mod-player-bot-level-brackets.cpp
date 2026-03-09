@@ -264,6 +264,20 @@ static bool IsHordePlayerBot(Player* bot)
     return bot && (bot->GetTeamId() == TEAM_HORDE);
 }
 
+static bool HasOnlineRealPlayers()
+{
+    const auto& allPlayers = ObjectAccessor::GetPlayers();
+    for (auto const& itr : allPlayers)
+    {
+        Player* player = itr.second;
+        if (player && player->IsInWorld() && !IsPlayerBot(player))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 /**
  * @brief Removes a bot from the list of pending level resets.
@@ -1014,6 +1028,17 @@ static void ProcessPendingLevelResets()
         return;
     }
 
+    // In dynamic mode, never process pending bot resets unless real players are online.
+    if (g_UseDynamicDistribution && !HasOnlineRealPlayers())
+    {
+        if (g_BotDistFullDebugMode || g_BotDistLiteDebugMode)
+        {
+            LOG_INFO("server.loading", "[BotLevelBrackets] Skipping pending resets: no online real players.");
+        }
+        g_PendingLevelResets.clear();
+        return;
+    }
+
     // Limit the number of resets processed in one cycle if configured.
     uint32 processed = 0;
     for (auto it = g_PendingLevelResets.begin(); it != g_PendingLevelResets.end(); )
@@ -1031,6 +1056,17 @@ static void ProcessPendingLevelResets()
 
             if (!bot->IsInWorld() || !bot->GetSession() || bot->GetSession()->isLogingOut() || bot->IsDuringRemoveFromWorld())
             {
+                it = g_PendingLevelResets.erase(it);
+                continue;
+            }
+
+            // Safety guard: pending reset entries must only ever target random player bots.
+            if (!IsPlayerBot(bot) || !IsPlayerRandomBot(bot))
+            {
+                if (g_BotDistFullDebugMode)
+                {
+                    LOG_INFO("server.loading", "[BotLevelBrackets] Removing pending reset for non-random bot player '{}'.", bot->GetName());
+                }
                 it = g_PendingLevelResets.erase(it);
                 continue;
             }
@@ -1099,49 +1135,69 @@ static void ProcessPendingLevelResets()
 
 
 /**
- * @brief Determines the level bracket index for a given player or flags the player for a level reset if not in any bracket.
+ * @brief Returns the current bracket index for a player without mutating reset state.
  *
- * This function attempts to find the appropriate level range (bracket) for the specified player based on their level and faction.
- * If the player is not currently within any defined bracket, the function finds the closest bracket and flags the player for a level reset,
- * ensuring that each player is only flagged once. The function returns the index of the bracket if found, or -1 if the player is not in any bracket.
+ * Used for real-player bracket influence calculations.
  *
  * @param player Pointer to the Player object whose bracket is to be determined.
  * @return int The index of the level bracket if found, otherwise -1.
  */
-static int GetOrFlagPlayerBracket(Player* player)
+static int GetPlayerBracket(Player* player)
 {
-    if (IsPlayerBot(player) && IsBotExcluded(player))
+    if (!player)
     {
         return -1;
     }
 
-    if (IsPlayerBot(player) && g_IgnoreGuildBotsWithRealPlayers && BotInGuildWithRealPlayer(player))
+    return GetLevelRangeIndex(player->GetLevel(), player->GetTeamId());
+}
+
+/**
+ * @brief Determines the level bracket index for a random bot or flags the bot for a level reset if not in any bracket.
+ *
+ * This function attempts to find the appropriate level range (bracket) for the specified bot based on level and faction.
+ * If the bot is not currently within any defined bracket, the function finds the closest bracket and flags the bot for a level reset,
+ * ensuring that each bot is only flagged once. The function returns the index of the bracket if found, or -1 if the bot is not in any bracket.
+ *
+ * @param player Pointer to the Player object representing a bot whose bracket is to be determined.
+ * @return int The index of the level bracket if found, otherwise -1.
+ */
+static int GetOrFlagBotBracket(Player* player)
+{
+    if (!player || !IsPlayerBot(player) || !IsPlayerRandomBot(player))
     {
         return -1;
     }
 
-    if (IsPlayerBot(player) && g_IgnoreArenaTeamBots && BotInArenaTeam(player))
+    if (IsBotExcluded(player))
+    {
+        return -1;
+    }
+
+    if (g_IgnoreGuildBotsWithRealPlayers && BotInGuildWithRealPlayer(player))
+    {
+        return -1;
+    }
+
+    if (g_IgnoreArenaTeamBots && BotInArenaTeam(player))
     {
         return -1;
     }
 
     // Check if bot is in a group with real players - if so, exclude from bracket processing
-    if (IsPlayerBot(player))
+    if (Group* group = player->GetGroup())
     {
-        if (Group* group = player->GetGroup())
+        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
         {
-            for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
+            Player* member = ref->GetSource();
+            if (member && member->IsInWorld() && !IsPlayerBot(member))
             {
-                Player* member = ref->GetSource();
-                if (member && member->IsInWorld() && !IsPlayerBot(member))
+                if (g_BotDistFullDebugMode)
                 {
-                    if (g_BotDistFullDebugMode)
-                    {
-                        LOG_INFO("server.loading", "[BotLevelBrackets] GetOrFlagPlayerBracket: Bot {} (Level {}) is in group with real player {} - excluding from bracket processing.", 
-                                 player->GetName(), player->GetLevel(), member->GetName());
-                    }
-                    return -1;
+                    LOG_INFO("server.loading", "[BotLevelBrackets] GetOrFlagBotBracket: Bot {} (Level {}) is in group with real player {} - excluding from bracket processing.",
+                             player->GetName(), player->GetLevel(), member->GetName());
                 }
+                return -1;
             }
         }
     }
@@ -1369,7 +1425,7 @@ public:
                     continue;
                 if (IsPlayerBot(player))
                     continue; // Only count real players.
-                int rangeIndex = GetOrFlagPlayerBracket(player);
+                int rangeIndex = GetPlayerBracket(player);
                 if (rangeIndex < 0)
                     continue;
                 if (player->GetTeamId() == TEAM_ALLIANCE)
@@ -1382,6 +1438,16 @@ public:
                     hordeRealCounts[rangeIndex]++;
                     totalHordeReal++;
                 }
+            }
+
+            if ((totalAllianceReal + totalHordeReal) == 0)
+            {
+                if (g_BotDistFullDebugMode || g_BotDistLiteDebugMode)
+                {
+                    LOG_INFO("server.loading", "[BotLevelBrackets] Dynamic distribution skipped: no online real players.");
+                }
+                g_PendingLevelResets.clear();
+                return;
             }
 
             const float baseline = 1.0f;
@@ -1532,7 +1598,7 @@ public:
             if (IsAlliancePlayerBot(player))
             {
                 totalAllianceBots++;
-                int rangeIndex = GetOrFlagPlayerBracket(player);
+                int rangeIndex = GetOrFlagBotBracket(player);
                 if (rangeIndex >= 0)
                 {
                     allianceActualCounts[rangeIndex]++;
@@ -1551,7 +1617,7 @@ public:
             else if (IsHordePlayerBot(player))
             {
                 totalHordeBots++;
-                int rangeIndex = GetOrFlagPlayerBracket(player);
+                int rangeIndex = GetOrFlagBotBracket(player);
                 if (rangeIndex >= 0)
                 {
                     hordeActualCounts[rangeIndex]++;
